@@ -1,0 +1,18 @@
+#
+# Makefile-Rules for PhotoFilmStrip
+#
+
+appname = photofilmstrip
+displayname = PhotoFilmStrip
+srcdir = .
+
+prefix = /usr
+datarootdir = $(prefix)/share
+pixmapdir = $(datarootdir)/pixmaps
+appdir = $(datarootdir)/$(appname)
+bindir = $(prefix)/bin
+desktopdir = $(datarootdir)/applications
+localedir = $(datarootdir)/locale
+
+mkdir = mkdir -p --
+

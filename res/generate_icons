@@ -1,0 +1,14 @@
+#!/bin/sh
+
+img2py -c -u -n ALIGN_BOTTOM icons/align_bottom.png images.py
+img2py -a -c -u -n ALIGN_MIDDLE icons/align_middle.png images.py
+img2py -a -c -u -n ALIGN_TOP icons/align_top.png images.py
+img2py -a -c -u -n ALIGN_LEFT icons/align_left.png images.py
+img2py -a -c -u -n ALIGN_CENTER icons/align_center.png images.py
+img2py -a -c -u -n ALIGN_RIGHT icons/align_right.png images.py
+
+img2py -a -c -u -n ICON_32 icons/photofilmstrip_32.png images.py
+img2py -a -c -u -n ICON_48 icons/photofilmstrip_48.png images.py
+
+mv images.py ../src/res/
+

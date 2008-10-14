@@ -1,0 +1,15 @@
+
+composite 000.png 008.png -quality 100 -dissolve 50 faded.pnm
+
+convert -depth 8  ppm:"*.pnm" - >>output.ppm 
+
+ppmtoy4m -F 25:1 -S 420mpeg2 output.ppm | yuvscaler -n p -O "SIZE_1280x720" | mpeg2enc -o output.m2v
+
+
+$PPMTOY4M_BIN -v $VERBOSE -n $NBFRAMETOTAL -F $IMAGES_SEC_FORMAT $PPMTOY4M_CHROMA_OPT | $YUVSCALER_BIN -v $VERBOSE -n $VIDEO_TYPE_LETTER -O $VIDEO_FORMAT | $MPEG2ENC_BIN -v $VERBOSE -n $VIDEO_TYPE_LETTER -b $BIT_RATE -V $BUFFER_SIZE -f $VIDEO_FORMAT_NUMBER -o "$TMPFILENAME.tmp.m2v"
+
+
+
+ppmtoy4m -F 25:1 -S 420mpeg2 output.ppm | yuvscaler -n p -O "SIZE_1280x720" | mpeg2enc -v 0 -a 1 -f 3 -b 4000 -o output.m2v
+
+ppmtoy4m -v 0 -F 25:1 -S 420mpeg2 soutput.ppm | yuvscaler -v 0 -n p -O "SIZE_1280x720" | mpeg2enc -v 0 -M 2 -a 1 -V 230 -b 8000 -o soutput.m2v

@@ -1,0 +1,272 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2008-10-12 16:20+CEST\n"
+"PO-Revision-Date: 2008-10-12 16:21+0100\n"
+"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
+"Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: src/core/BaseRenderer.py:94
+msgid "initialize renderer"
+msgstr ""
+
+#: src/core/BaseRenderer.py:103
+msgid "processing image '%s'"
+msgstr ""
+
+#: src/core/BaseRenderer.py:106
+msgid "prepare"
+msgstr ""
+
+#: src/core/BaseRenderer.py:119
+msgid "crop and resize"
+msgstr ""
+
+#: src/core/BaseRenderer.py:141
+msgid "calculating transition"
+msgstr ""
+
+#: src/core/BaseRenderer.py:154
+msgid "creating output..."
+msgstr ""
+
+#: src/core/ProgressHandler.py:31
+msgid "Please wait..."
+msgstr ""
+
+#: src/gui/ActionManager.py:54
+msgid "&File"
+msgstr ""
+
+#: src/gui/ActionManager.py:55
+msgid "&Edit"
+msgstr ""
+
+#: src/gui/ActionManager.py:56
+msgid "&Tools"
+msgstr ""
+
+#: src/gui/ActionManager.py:57
+msgid "&Help"
+msgstr ""
+
+#: src/gui/ActionManager.py:68
+msgid "New Project"
+msgstr ""
+
+#: src/gui/ActionManager.py:71
+msgid "Load Project"
+msgstr ""
+
+#: src/gui/ActionManager.py:74
+msgid "Save Project"
+msgstr ""
+
+#: src/gui/ActionManager.py:77
+msgid "Save Project as"
+msgstr ""
+
+#: src/gui/ActionManager.py:81
+msgid "Import Pictures"
+msgstr ""
+
+#: src/gui/ActionManager.py:84
+msgid "Render filmstrip"
+msgstr ""
+
+#: src/gui/ActionManager.py:119
+msgid "Open &recent"
+msgstr ""
+
+#: src/gui/ActionManager.py:134
+msgid "Move picture &left"
+msgstr ""
+
+#: src/gui/ActionManager.py:138
+msgid "Move picture &right"
+msgstr ""
+
+#: src/gui/ActionManager.py:143
+msgid "&Remove Picture"
+msgstr ""
+
+#: src/gui/ActionManager.py:148
+msgid "Rotate &clockwise"
+msgstr ""
+
+#: src/gui/ActionManager.py:152
+msgid "Rotate counter clock&wise"
+msgstr ""
+
+#: src/gui/ActionManager.py:160
+msgid "&Import Pictures"
+msgstr ""
+
+#: src/gui/ActionManager.py:165
+msgid "&Render filmstrip"
+msgstr ""
+
+#: src/gui/DlgRender.py:210
+msgid "Render photo filmstrip"
+msgstr ""
+
+#: src/gui/DlgRender.py:213
+msgid "Settings"
+msgstr ""
+
+#: src/gui/DlgRender.py:224
+msgid "Size:"
+msgstr ""
+
+#: src/gui/DlgRender.py:236
+msgid "Type:"
+msgstr ""
+
+#: src/gui/DlgRender.py:249
+msgid "Transition speed:"
+msgstr ""
+
+#: src/gui/DlgRender.py:263
+msgid "Sec."
+msgstr ""
+
+#: src/gui/DlgRender.py:267
+msgid "Total length:"
+msgstr ""
+
+#: src/gui/DlgRender.py:282
+msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
+msgstr ""
+
+#: src/gui/DlgRender.py:287
+msgid "Output"
+msgstr ""
+
+#: src/gui/DlgRender.py:299
+msgid "Format:"
+msgstr ""
+
+#: src/gui/DlgRender.py:307
+msgid "Output directory:"
+msgstr ""
+
+#: src/gui/DlgRender.py:324
+msgid "&Start"
+msgstr ""
+
+#: src/gui/DlgRender.py:330
+#: src/gui/DlgRender.py:502
+msgid "&Close"
+msgstr ""
+
+#: src/gui/DlgRender.py:383
+msgid "Single Pictures"
+msgstr ""
+
+#: src/gui/DlgRender.py:384
+msgid "MPEG-Video"
+msgstr ""
+
+#: src/gui/DlgRender.py:399
+msgid "Output path does not exists! Do you want %s to create ist?"
+msgstr ""
+
+#: src/gui/DlgRender.py:400
+#: src/gui/DlgRender.py:421
+#: src/gui/DlgRender.py:472
+#: src/gui/FrmMain.py:237
+msgid "Question"
+msgstr ""
+
+#: src/gui/DlgRender.py:409
+msgid "Cannot create direcotory: %s"
+msgstr ""
+
+#: src/gui/DlgRender.py:410
+msgid "Error"
+msgstr ""
+
+#: src/gui/DlgRender.py:420
+msgid "Output path is not empty! Use it anyway?"
+msgstr ""
+
+#: src/gui/DlgRender.py:460
+msgid "&Cancel"
+msgstr ""
+
+#: src/gui/DlgRender.py:471
+msgid "Abort current process?"
+msgstr ""
+
+#: src/gui/FrmMain.py:236
+msgid "'%s' has been modified. Save changes?"
+msgstr ""
+
+#: src/gui/FrmMain.py:255
+msgid "Images"
+msgstr ""
+
+#: src/gui/FrmMain.py:263
+msgid "Duration"
+msgstr ""
+
+#: src/gui/FrmMain.py:309
+msgid "Select %s-Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:311
+#: src/gui/FrmMain.py:346
+msgid "Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:344
+msgid "Save %s-Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:363
+msgid "Import images"
+msgstr ""
+
+#: src/gui/FrmMain.py:365
+msgid "Imagefiles"
+msgstr ""
+
+#: src/gui/FrmMain.py:499
+msgid "Help will be available soon."
+msgstr ""
+
+#: src/gui/FrmMain.py:499
+msgid "Information"
+msgstr ""
+
+#: src/gui/PnlEditPicture.py:130
+msgid "Rotation:"
+msgstr ""
+
+#: src/gui/PnlEditPicture.py:150
+msgid "Effect:"
+msgstr ""
+
+#: src/gui/PnlEditPicture.py:160
+msgid "Duartion (sec):"
+msgstr ""
+
+#: src/gui/PnlEditPicture.py:250
+msgid "No effect"
+msgstr ""
+
+#: src/gui/PnlEditPicture.py:251
+msgid "Black and White"
+msgstr ""
+

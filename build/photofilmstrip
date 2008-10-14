@@ -1,0 +1,6 @@
+#!/bin/sh
+
+prefix=/usr
+export PFSDIR=${prefix}/share/photofilmstrip
+
+exec /usr/bin/python $PFSDIR/photofilmstrip-gui.py "$@"

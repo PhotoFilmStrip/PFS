@@ -1,0 +1,13 @@
+Source: photofilmstrip
+Section: graphics
+Priority: extra
+Maintainer: Jens Göpfert <jens@sg-dev.de>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: http://www.sg-dev.de
+
+Package: photofilmstrip
+Architecture: all
+Depends: python, python-wxgtk2.8, mjpegtools, imagemagick
+Description: PhotoFilmStrip creates animated slide shows.
+ PhotoFilmStrip creates animated slide shows. 

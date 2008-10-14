@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2008-10-12 16:20+CEST\n"
+"PO-Revision-Date: 2008-10-12 16:21+0100\n"
+"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
+"Language-Team: Jens <jens@sg-dev.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: src/core/BaseRenderer.py:94
+msgid "initialize renderer"
+msgstr "Initialisiere"
+
+#: src/core/BaseRenderer.py:103
+msgid "processing image '%s'"
+msgstr "Verarbeite Bild '%s'"
+
+#: src/core/BaseRenderer.py:106
+msgid "prepare"
+msgstr "vorbereiten"
+
+#: src/core/BaseRenderer.py:119
+msgid "crop and resize"
+msgstr "Zuschneiden und Größe ändern"
+
+#: src/core/BaseRenderer.py:141
+msgid "calculating transition"
+msgstr "Berechne Bildübergang"
+
+#: src/core/BaseRenderer.py:154
+msgid "creating output..."
+msgstr "Ausgabe erstellen..."
+
+#: src/core/ProgressHandler.py:31
+msgid "Please wait..."
+msgstr "Bitte warten"
+
+#: src/gui/ActionManager.py:54
+msgid "&File"
+msgstr "&Datei"
+
+#: src/gui/ActionManager.py:55
+msgid "&Edit"
+msgstr "&Bearbeiten"
+
+#: src/gui/ActionManager.py:56
+msgid "&Tools"
+msgstr "&Extras"
+
+#: src/gui/ActionManager.py:57
+msgid "&Help"
+msgstr "&Hilfe"
+
+#: src/gui/ActionManager.py:68
+msgid "New Project"
+msgstr "Neues Projekt"
+
+#: src/gui/ActionManager.py:71
+msgid "Load Project"
+msgstr "Projekt laden"
+
+#: src/gui/ActionManager.py:74
+msgid "Save Project"
+msgstr "Projekt speichern"
+
+#: src/gui/ActionManager.py:77
+msgid "Save Project as"
+msgstr "Projekt speichern unter"
+
+#: src/gui/ActionManager.py:81
+msgid "Import Pictures"
+msgstr "Bilder importieren"
+
+#: src/gui/ActionManager.py:84
+msgid "Render filmstrip"
+msgstr "Filmstreifen erstellen"
+
+#: src/gui/ActionManager.py:119
+msgid "Open &recent"
+msgstr "Zuletzt &verwendet"
+
+#: src/gui/ActionManager.py:134
+msgid "Move picture &left"
+msgstr "Bild nach &links"
+
+#: src/gui/ActionManager.py:138
+msgid "Move picture &right"
+msgstr "Bild nach re&chts"
+
+#: src/gui/ActionManager.py:143
+msgid "&Remove Picture"
+msgstr "Bilder &entfernen"
+
+#: src/gui/ActionManager.py:148
+msgid "Rotate &clockwise"
+msgstr "Im Uhrzeigersinn d&rehen"
+
+#: src/gui/ActionManager.py:152
+msgid "Rotate counter clock&wise"
+msgstr "&Gegen Uhrzeigersinn drehen"
+
+#: src/gui/ActionManager.py:160
+msgid "&Import Pictures"
+msgstr "Bilder &importieren"
+
+#: src/gui/ActionManager.py:165
+msgid "&Render filmstrip"
+msgstr "&Filmstreifen erstellen"
+
+#: src/gui/DlgRender.py:210
+msgid "Render photo filmstrip"
+msgstr "Filmstreifen erstellen"
+
+#: src/gui/DlgRender.py:213
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/gui/DlgRender.py:224
+msgid "Size:"
+msgstr "Größe:"
+
+#: src/gui/DlgRender.py:236
+msgid "Type:"
+msgstr "Typ:"
+
+#: src/gui/DlgRender.py:249
+msgid "Transition speed:"
+msgstr "Bildübergangsdauer:"
+
+#: src/gui/DlgRender.py:263
+msgid "Sec."
+msgstr "Sek."
+
+#: src/gui/DlgRender.py:267
+msgid "Total length:"
+msgstr "Gesamtlänge:"
+
+#: src/gui/DlgRender.py:282
+msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
+msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
+
+#: src/gui/DlgRender.py:287
+msgid "Output"
+msgstr "Ausgabe"
+
+#: src/gui/DlgRender.py:299
+msgid "Format:"
+msgstr "Format:"
+
+#: src/gui/DlgRender.py:307
+msgid "Output directory:"
+msgstr "Ausgabeordner:"
+
+#: src/gui/DlgRender.py:324
+msgid "&Start"
+msgstr "&Start"
+
+#: src/gui/DlgRender.py:330
+#: src/gui/DlgRender.py:502
+msgid "&Close"
+msgstr "S&chließen"
+
+#: src/gui/DlgRender.py:383
+msgid "Single Pictures"
+msgstr "Einzelbilder"
+
+#: src/gui/DlgRender.py:384
+msgid "MPEG-Video"
+msgstr "MPEG-Video"
+
+#: src/gui/DlgRender.py:399
+msgid "Output path does not exists! Do you want %s to create ist?"
+msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
+
+#: src/gui/DlgRender.py:400
+#: src/gui/DlgRender.py:421
+#: src/gui/DlgRender.py:472
+#: src/gui/FrmMain.py:237
+msgid "Question"
+msgstr "Frage"
+
+#: src/gui/DlgRender.py:409
+msgid "Cannot create direcotory: %s"
+msgstr "Verzeichnis kann nicht erstellt werden: %s"
+
+#: src/gui/DlgRender.py:410
+msgid "Error"
+msgstr "Fehler"
+
+#: src/gui/DlgRender.py:420
+msgid "Output path is not empty! Use it anyway?"
+msgstr "Ausgabeordner nicht leer. Dennoch verwenden?"
+
+#: src/gui/DlgRender.py:460
+msgid "&Cancel"
+msgstr "&Abbrechen"
+
+#: src/gui/DlgRender.py:471
+msgid "Abort current process?"
+msgstr "Aktuellen Vorgang abbrechen?"
+
+#: src/gui/FrmMain.py:236
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' wurde geändert. Änderungen speichern?"
+
+#: src/gui/FrmMain.py:255
+msgid "Images"
+msgstr "Bilder"
+
+#: src/gui/FrmMain.py:263
+msgid "Duration"
+msgstr "Dauer"
+
+#: src/gui/FrmMain.py:309
+msgid "Select %s-Project"
+msgstr "%s-Projekt auswählen"
+
+#: src/gui/FrmMain.py:311
+#: src/gui/FrmMain.py:346
+msgid "Project"
+msgstr "Projekt"
+
+#: src/gui/FrmMain.py:344
+msgid "Save %s-Project"
+msgstr "%s-Projekt speichern"
+
+#: src/gui/FrmMain.py:363
+msgid "Import images"
+msgstr "Bilder importieren"
+
+#: src/gui/FrmMain.py:365
+msgid "Imagefiles"
+msgstr "Bilddateien"
+
+#: src/gui/FrmMain.py:499
+msgid "Help will be available soon."
+msgstr "Hilfe bald verfügbar."
+
+#: src/gui/FrmMain.py:499
+msgid "Information"
+msgstr "Information"
+
+#: src/gui/PnlEditPicture.py:130
+msgid "Rotation:"
+msgstr "Drehung:"
+
+#: src/gui/PnlEditPicture.py:150
+msgid "Effect:"
+msgstr "Effekt:"
+
+#: src/gui/PnlEditPicture.py:160
+msgid "Duartion (sec):"
+msgstr "Dauer (Sek):"
+
+#: src/gui/PnlEditPicture.py:250
+msgid "No effect"
+msgstr "Kein Effekt"
+
+#: src/gui/PnlEditPicture.py:251
+msgid "Black and White"
+msgstr "Schwarz-Weiss"
+
+#~ msgid "Render slideshow"
+#~ msgstr "Slideshow erstellen"
+#~ msgid "&Render Slideshow"
+#~ msgstr "&Slideshow erstellen"
+#~ msgid "Render Story"
+#~ msgstr "Slideshow erstellen"
+#~ msgid "&Import Pictures\tCtrl+I"
+#~ msgstr "Bilder &importieren\tCtrl+I"
+
