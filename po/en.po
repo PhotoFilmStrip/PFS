@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-10-12 16:20+CEST\n"
-"PO-Revision-Date: 2008-10-12 16:21+0100\n"
+"POT-Creation-Date: 2008-10-17 09:10+CEST\n"
+"PO-Revision-Date: 2008-10-17 09:11+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -29,15 +29,15 @@ msgstr ""
 msgid "prepare"
 msgstr ""
 
-#: src/core/BaseRenderer.py:119
+#: src/core/BaseRenderer.py:120
 msgid "crop and resize"
 msgstr ""
 
-#: src/core/BaseRenderer.py:141
+#: src/core/BaseRenderer.py:144
 msgid "calculating transition"
 msgstr ""
 
-#: src/core/BaseRenderer.py:154
+#: src/core/BaseRenderer.py:157
 msgid "creating output..."
 msgstr ""
 
@@ -117,136 +117,148 @@ msgstr ""
 msgid "&Render filmstrip"
 msgstr ""
 
-#: src/gui/DlgRender.py:210
+#: src/gui/DlgRender.py:211
 msgid "Render photo filmstrip"
 msgstr ""
 
-#: src/gui/DlgRender.py:213
+#: src/gui/DlgRender.py:214
 msgid "Settings"
 msgstr ""
 
-#: src/gui/DlgRender.py:224
+#: src/gui/DlgRender.py:225
 msgid "Size:"
 msgstr ""
 
-#: src/gui/DlgRender.py:236
+#: src/gui/DlgRender.py:237
 msgid "Type:"
 msgstr ""
 
-#: src/gui/DlgRender.py:249
+#: src/gui/DlgRender.py:250
 msgid "Transition speed:"
 msgstr ""
 
-#: src/gui/DlgRender.py:263
+#: src/gui/DlgRender.py:264
 msgid "Sec."
 msgstr ""
 
-#: src/gui/DlgRender.py:267
+#: src/gui/DlgRender.py:268
 msgid "Total length:"
 msgstr ""
 
-#: src/gui/DlgRender.py:282
+#: src/gui/DlgRender.py:283
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr ""
 
-#: src/gui/DlgRender.py:287
+#: src/gui/DlgRender.py:288
 msgid "Output"
 msgstr ""
 
-#: src/gui/DlgRender.py:299
+#: src/gui/DlgRender.py:300
 msgid "Format:"
 msgstr ""
 
-#: src/gui/DlgRender.py:307
+#: src/gui/DlgRender.py:308
 msgid "Output directory:"
 msgstr ""
 
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgRender.py:325
 msgid "&Start"
 msgstr ""
 
-#: src/gui/DlgRender.py:330
-#: src/gui/DlgRender.py:502
+#: src/gui/DlgRender.py:331
+#: src/gui/DlgRender.py:510
 msgid "&Close"
 msgstr ""
 
-#: src/gui/DlgRender.py:383
-msgid "Single Pictures"
-msgstr ""
-
 #: src/gui/DlgRender.py:384
-msgid "MPEG-Video"
+msgid "Single pictures"
 msgstr ""
 
-#: src/gui/DlgRender.py:399
+#: src/gui/DlgRender.py:385
+msgid "Single pictures (shellscript)"
+msgstr ""
+
+#: src/gui/DlgRender.py:386
+msgid "MPEG-Video (fast)"
+msgstr ""
+
+#: src/gui/DlgRender.py:387
+msgid "MPEG-Video (HQ; slow)"
+msgstr ""
+
+#: src/gui/DlgRender.py:402
 msgid "Output path does not exists! Do you want %s to create ist?"
 msgstr ""
 
-#: src/gui/DlgRender.py:400
-#: src/gui/DlgRender.py:421
-#: src/gui/DlgRender.py:472
-#: src/gui/FrmMain.py:237
+#: src/gui/DlgRender.py:403
+#: src/gui/DlgRender.py:424
+#: src/gui/DlgRender.py:480
+#: src/gui/FrmMain.py:241
 msgid "Question"
 msgstr ""
 
-#: src/gui/DlgRender.py:409
+#: src/gui/DlgRender.py:412
 msgid "Cannot create direcotory: %s"
 msgstr ""
 
-#: src/gui/DlgRender.py:410
+#: src/gui/DlgRender.py:413
 msgid "Error"
 msgstr ""
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:423
 msgid "Output path is not empty! Use it anyway?"
 msgstr ""
 
-#: src/gui/DlgRender.py:460
+#: src/gui/DlgRender.py:468
 msgid "&Cancel"
 msgstr ""
 
-#: src/gui/DlgRender.py:471
+#: src/gui/DlgRender.py:479
 msgid "Abort current process?"
 msgstr ""
 
-#: src/gui/FrmMain.py:236
+#: src/gui/FrmMain.py:237
+msgid "Unnamed PhotoFilmStrip"
+msgstr ""
+
+#: src/gui/FrmMain.py:240
 msgid "'%s' has been modified. Save changes?"
 msgstr ""
 
-#: src/gui/FrmMain.py:255
+#: src/gui/FrmMain.py:259
 msgid "Images"
 msgstr ""
 
-#: src/gui/FrmMain.py:263
+#: src/gui/FrmMain.py:267
 msgid "Duration"
 msgstr ""
 
-#: src/gui/FrmMain.py:309
+#: src/gui/FrmMain.py:315
 msgid "Select %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:311
-#: src/gui/FrmMain.py:346
+#: src/gui/FrmMain.py:317
+#: src/gui/FrmMain.py:353
 msgid "Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:344
+#: src/gui/FrmMain.py:350
 msgid "Save %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:363
+#: src/gui/FrmMain.py:370
 msgid "Import images"
 msgstr ""
 
-#: src/gui/FrmMain.py:365
+#: src/gui/FrmMain.py:372
 msgid "Imagefiles"
 msgstr ""
 
-#: src/gui/FrmMain.py:499
+#: src/gui/FrmMain.py:507
 msgid "Help will be available soon."
 msgstr ""
 
-#: src/gui/FrmMain.py:499
+#: src/gui/FrmMain.py:507
 msgid "Information"
 msgstr ""
 

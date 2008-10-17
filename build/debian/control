@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Jens Göpfert <jens@sg-dev.de>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.7.3
-Homepage: http://www.sg-dev.de
+Homepage: http://photostoryx.sourceforge.net
 
 Package: photofilmstrip
 Architecture: all

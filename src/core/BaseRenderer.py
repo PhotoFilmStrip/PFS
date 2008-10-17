@@ -109,14 +109,17 @@ class BaseRenderer(object):
 
             filesCurrent = []
             pathRects = self.__ComputePath(pic)
-            for rect in pathRects:
+            for idxRect, rect in enumerate(pathRects):
                 if self.__progressHandler.IsAborted():
                     self.__progressHandler.Done()
                     return
 
                 self.__progressHandler.Step()
                 
-                self.__progressHandler.SetInfo(u"%s - %s" % (infoText, _(u"crop and resize")))
+                self.__progressHandler.SetInfo(u"%s - %s (%d/%d)" % (infoText, 
+                                                                     _(u"crop and resize"),
+                                                                     idxRect,
+                                                                     len(pathRects)))
                 filename = self.ProcessCropAndResize(preparedResult,
                                                      rect, 
                                                      self.GetResolution())

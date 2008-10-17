@@ -29,6 +29,7 @@ import wx.lib.masked.textctrl
 
 from core.ProgressHandler import ProgressHandler
 from core.renderer.SingleFileRenderer import SingleFileRenderer
+from core.renderer.ShellScriptRenderer import ShellScriptRenderer
 from core.renderer.MovieRenderer import MovieRenderer
 
 from lib.common.ObserverPattern import Observer
@@ -369,7 +370,7 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceSize.Append("VCD", [(352, 288), (352, 240), 1150])
         self.choiceSize.Append("SVCD", [(576, 480), (480, 480), 2500])
         self.choiceSize.Append("DVD", [(720, 576), (720, 480), 8000])
-        self.choiceSize.Append("Medium 640x360", [(640, 360), (640, 360), 2500])
+        self.choiceSize.Append("Medium 640x360", [(640, 360), (640, 360), 8000])
         self.choiceSize.Append("HD 1280x720", [(1280, 720), (1280, 720), 8000])
         self.choiceSize.Append("FULL-HD 1920x1080", [(1920, 1080), (1920, 1080), 8000])
         
@@ -380,8 +381,10 @@ class DlgRender(wx.Dialog, Observer):
         
         self.choiceType.SetSelection(settings.GetVideoType())
         
-        self.choiceFormat.Append(_(u"Single Pictures"))
-        self.choiceFormat.Append(_(u"MPEG-Video"))
+        self.choiceFormat.Append(_(u"Single pictures"))
+        self.choiceFormat.Append(_(u"Single pictures (shellscript)"))
+        self.choiceFormat.Append(_(u"MPEG-Video (fast)"))
+        self.choiceFormat.Append(_(u"MPEG-Video (HQ; slow)"))
         
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         
@@ -445,11 +448,16 @@ class DlgRender(wx.Dialog, Observer):
         if self.choiceFormat.GetSelection() == 0:
             renderer = SingleFileRenderer()
         elif self.choiceFormat.GetSelection() == 1:
+            renderer = ShellScriptRenderer()
+        elif self.choiceFormat.GetSelection() == 2:
             renderer = MovieRenderer()
             renderer.SetBitrate(bitrate)
+            renderer.SetUseResample(False)
+        elif self.choiceFormat.GetSelection() == 3:
+            renderer = MovieRenderer()
+            renderer.SetBitrate(bitrate)
+            renderer.SetUseResample(True)
         
-        #"25:1"
-        #"30000:1001"
         renderer.SetFrameRate(frameRate)
         renderer.SetResolution(resolution)
         

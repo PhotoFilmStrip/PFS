@@ -31,7 +31,7 @@ def initI18N():
     import os, gettext, locale
     from lib.Settings import Settings
     curLang = locale.getdefaultlocale()[0]
-    localeDir = "../locale"
+    localeDir = os.path.join(os.path.dirname(__file__), "../locale")
     
     if not os.path.isdir(localeDir):
         gettext.install(Settings.APP_NAME)

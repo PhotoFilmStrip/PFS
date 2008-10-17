@@ -1,6 +1,22 @@
-photofilmstrip (0.70-1) unstable; urgency=low
+photofilmstrip (0.71-1) unstable; urgency=low
 
-  * Initial release
+  * 2008/10/17
+    added:
+    - subimage counter for progressbar
+    - new shellscript renderer
+    - resample option for MPEG-renderer to improve quality
+    - image sections can now edited with cursor keys
+    changed:
+    - default duration for pictures is now 7 seconds
+    - filedialogs reminds last selection
+    - resource file for images is now compatible with older wxPython version
+    bugfix:
+    - framerate and imagemode are correctly sent to encoder
+    - encoding for german po-file fixed
+    - statusbar update when starting new project
+  
+  * 2008/10/11
+    initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Sun, 05 Oct 2008 17:31:35 +0200
+ -- Jens Göpfert <jens@sg-dev.de>  Fri, 17 Oct 2008 10:07:59 +0200
 

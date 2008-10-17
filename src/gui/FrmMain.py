@@ -223,7 +223,7 @@ class FrmMain(wx.Frame, Observer):
         info.Description = wordwrap(
             u"%s creates movies out of your pictures." % Settings.APP_NAME,
             350, wx.ClientDC(self))
-        info.WebSite = (u"http://www.sg-dev.de", "%s home page" % Settings.APP_NAME)
+        info.WebSite = (u"http://photostoryx.sourceforge.net", "%s home page" % Settings.APP_NAME)
         info.Developers = [u"Jens G\xf6pfert"]
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
@@ -232,8 +232,12 @@ class FrmMain(wx.Frame, Observer):
         
     def __CheckAndAskSaving(self):
         if self.actionManager.CanSave():
+            name = self.__currentProject
+            if not name:
+                name = _("Unnamed PhotoFilmStrip")
+                
             dlg = wx.MessageDialog(self,
-                                   _(u"'%s' has been modified. Save changes?") % self.__currentProject, 
+                                   _(u"'%s' has been modified. Save changes?") % name, 
                                    _(u"Question"),
                                    wx.YES_NO | wx.CANCEL | wx.ICON_QUESTION)
             response = dlg.ShowModal()
@@ -268,8 +272,6 @@ class FrmMain(wx.Frame, Observer):
         if askSaving and not self.__CheckAndAskSaving():
             return
 
-        self.__UpdateStatusText()
-        
         self._imageList.RemoveAll()
         self.listView.DeleteAllItems()
         self.bitmapLeft.SetBitmap(None)
@@ -283,8 +285,10 @@ class FrmMain(wx.Frame, Observer):
         self.actionManager.OnPictureSelected(False)
         self.actionManager.OnProjectChanged(False)
         self.actionManager.OnProjectReady(False)
+
         self.SetTitle(Settings.APP_NAME)
         self.__currentProject = ""
+        self.__UpdateStatusText()
         
     def __LoadProject(self, filepath):
         self.__NewProject(False)
@@ -301,13 +305,15 @@ class FrmMain(wx.Frame, Observer):
         self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
         self.actionManager.OnProjectChanged(False)
         self.actionManager.OnProjectReady(True)
+        
+        Settings().SetProjectPath(os.path.dirname(filepath))
     
     def OnProjectLoad(self, event):
         if not self.__CheckAndAskSaving():
             return
 
         dlg = wx.FileDialog(self, _(u"Select %s-Project") % Settings.APP_NAME, 
-                            "", "", 
+                            Settings().GetProjectPath(), "", 
                             Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
@@ -342,7 +348,8 @@ class FrmMain(wx.Frame, Observer):
 
     def OnProjectSaveAs(self, event):
         dlg = wx.FileDialog(self, _(u"Save %s-Project") % Settings.APP_NAME, 
-                            "", "", 
+                            Settings().GetProjectPath(), 
+                            "" if self.__currentProject else "photofilmstrip", 
                             Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.SAVE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -361,7 +368,7 @@ class FrmMain(wx.Frame, Observer):
 
     def OnImportPics(self, event):
         dlg = wx.FileDialog(self, _(u"Import images"), 
-                            "", "", 
+                            Settings().GetImagePath(), "", 
                             _(u"Imagefiles") + " (*.*)|*.*", 
                             wx.OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
@@ -372,7 +379,8 @@ class FrmMain(wx.Frame, Observer):
             
             self._InsertPictures(pics)
             self.actionManager.OnProjectChanged(True)
-
+            
+            Settings().SetImagePath(os.path.dirname(path))
 
     def OnListViewListItemSelected(self, event):
         item = event.GetIndex()

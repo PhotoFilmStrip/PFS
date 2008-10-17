@@ -34,7 +34,7 @@ class Picture(Observable):
         self.__bmp = None
         self.__img = None
 
-        self._duration = 5.0
+        self._duration = 7.0
         self._rotation = 0
         self._comment = u""
         

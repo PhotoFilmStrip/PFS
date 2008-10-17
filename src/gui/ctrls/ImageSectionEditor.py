@@ -163,24 +163,39 @@ class ImageSectionEditor(wx.Panel):
         key = event.GetKeyCode()
         if key == wx.WXK_NUMPAD_ADD:
             self._sectRect.Inflate(16, 9)
-            self._SendRectChangedEvent()
-            self.Refresh()
         elif key == wx.WXK_NUMPAD_SUBTRACT:
             self._sectRect.Inflate(-16, -9)
-            self._SendRectChangedEvent()
-            self.Refresh()
         elif key == wx.WXK_NUMPAD_DIVIDE:
             self._sectRect.SetWidth(1280)
             self._sectRect.SetHeight(720)
-            self._SendRectChangedEvent()
-            self.Refresh()
         elif key == wx.WXK_NUMPAD_MULTIPLY:
             self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / (16.0 / 9.0))
-
-            self._SendRectChangedEvent()
-            self.Refresh()
+        elif key == wx.WXK_LEFT:
+            if event.ShiftDown():
+                self._sectRect.OffsetXY(-50, 0)
+            else:
+                self._sectRect.OffsetXY(-10, 0)
+        elif key == wx.WXK_UP:
+            if event.ShiftDown():
+                self._sectRect.OffsetXY(0, -50)
+            else:
+                self._sectRect.OffsetXY(0, -10)
+        elif key == wx.WXK_RIGHT:
+            if event.ShiftDown():
+                self._sectRect.OffsetXY(50, 0)
+            else:
+                self._sectRect.OffsetXY(10, 0)
+        elif key == wx.WXK_DOWN:
+            if event.ShiftDown():
+                self._sectRect.OffsetXY(0, 50)
+            else:
+                self._sectRect.OffsetXY(0, 10)
         else:
             event.Skip()
+            return
+        
+        self._SendRectChangedEvent()
+        self.Refresh()
             
     def __KeepRectInImage(self):
         if self._image is None:

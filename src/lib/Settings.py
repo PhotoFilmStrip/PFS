@@ -73,16 +73,27 @@ class Settings(Singleton):
 
         return fileList
     
-    def SetLanguage(self, lang):
+    def SetProjectPath(self, path):
         self.Load()
-        self.cp.set("General", "language", lang)
+        self.cp.set("General", "ProjectPath", path)
         self.Save()
 
-    def GetLanguage(self):
+    def GetProjectPath(self):
         self.Load()
-        if self.cp.has_option("General", "language"):
-            return self.cp.get("General", "language")
-        return "en_US"
+        if self.cp.has_option("General", "ProjectPath"):
+            return self.cp.get("General", "ProjectPath")
+        return ""
+
+    def SetImagePath(self, path):
+        self.Load()
+        self.cp.set("General", "ImagePath", path)
+        self.Save()
+
+    def GetImagePath(self):
+        self.Load()
+        if self.cp.has_option("General", "ImagePath"):
+            return self.cp.get("General", "ImagePath")
+        return ""
 
     def SetVideoSize(self, size):
         self.Load()

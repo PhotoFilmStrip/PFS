@@ -31,6 +31,10 @@ class SingleFileRenderer(BaseRenderer):
     def __init__(self):
         BaseRenderer.__init__(self)
         self._counter = 0
+        self._useResample = True
+    
+    def SetUseResample(self, value):
+        self._useResample = value
     
     def CheckDependencies(self):
         pass
@@ -50,10 +54,17 @@ class SingleFileRenderer(BaseRenderer):
         self._counter += 1
         
         subImg = preparedResult.GetSubImage(cropRect)
-        subImg.Rescale(*size)
+        
+        if not self._useResample:
+            subImg.Rescale(*size)
 
         newFilename = '%s/%09d.pnm' % (self.GetOutputPath(), self._counter)
         subImg.SaveFile(newFilename, wx.BITMAP_TYPE_PNM)
+        
+        if self._useResample:
+            os.system("convert %s -depth 8 -filter Sinc -resize %dx%d! %s" % (newFilename, 
+                                                                              size[0], size[1], 
+                                                                              newFilename))
         
         if not os.path.exists(newFilename):
             logging.getLogger('CropAndResize').warning("imagefile '%s' not created!", newFilename)

@@ -1,0 +1,25 @@
+
+2008/10/17
+
+added: 
+- subimage counter for progressbar
+- new shellscript renderer
+- resample option for MPEG-renderer to improve quality
+- image sections can now edited with cursor keys
+
+changed: 
+- default duration for pictures is now 7 seconds
+- filedialogs reminds last selection
+- resource file for images is now compatible with older wxPython version
+
+bugfix: 
+- framerate and imagemode are correctly sent to encoder
+- encoding for german po-file fixed
+- statusbar update when starting new project
+
+
+2008/10/11
+
+initial release
+
+

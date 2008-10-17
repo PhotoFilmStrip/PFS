@@ -38,14 +38,24 @@ class MovieRenderer(SingleFileRenderer):
         os.remove(filename)
     
     def Finalize(self):
-        cmd = 'ppmtoy4m -v 0 -F 25:1 -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
-              'yuvscaler -v 0 -n p -O "SIZE_%(width)dx%(height)d" | '\
-              'mpeg2enc -v 0 -M 2 -a 1 -V 230 -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
+        fr = self.GetFrameRate()
+        if fr == 25.0:
+            framerate = "25:1"
+            mode = "p"
+        else:
+            framerate = "30000:1001"
+            mode = "n"
+        
+#              'yuvscaler -v 0 -n %(mode)s -O "SIZE_%(width)dx%(height)d" | '\
+        cmd = 'ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
+              'mpeg2enc -v 0 -M 3 -n %(mode)s -a 1 -V 230 -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
                             {"path": self.GetOutputPath(),
                              "sep": os.sep,
+                             "mode": mode,
                              "width": self.GetResolution()[0],
                              "height": self.GetResolution()[1],
-                             "bitrate": self._bitrate}
+                             "bitrate": self._bitrate,
+                             "framerate": framerate}
         os.system(cmd)
 
         os.remove("%s%soutput.ppm" % (self.GetOutputPath(), os.sep))
