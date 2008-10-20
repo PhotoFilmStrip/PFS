@@ -8,7 +8,16 @@ import cStringIO
 catalog = {}
 index = []
 
-class ImageClass: pass
+class ImageClass:
+
+    def getBitmap(self):
+        return self.GetBitmap()
+    def getImage(self):
+        return self.GetImage()
+    def getData(self):
+        return self.GetData()
+
+
 
 def getALIGN_BOTTOMData():
     return \

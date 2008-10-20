@@ -21,6 +21,8 @@
 
 import wx
 
+from core.Picture import Picture
+
 from gui.util.FloatValidator import FloatValidator
 
 
@@ -247,12 +249,17 @@ class PnlEditPicture(wx.Panel):
         self.spinButtonDuration.SetRange(10, 200)
         self.spinButtonDuration.SetValue(50)
         
-        self.choiceEffect.Append(_(u"No effect"))
-        self.choiceEffect.Append(_(u"Black and White"))
-        
-        self.choiceEffect.Enable(False)
+        self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
+        self.choiceEffect.Append(_(u"Black and White"), Picture.EFFECT_BLACK_WHITE)
+        self.choiceEffect.SetSelection(0)
         
         self._picture = None
+
+    def __SetChoiceSelectionByData(self, choice, data):
+        for idx in range(choice.GetCount()):
+            if choice.GetClientData(idx) == data:
+                choice.Select(idx)
+                return
 
     def OnCmdRotateLeftButton(self, event):
         self._picture.Rotate(False)
@@ -263,6 +270,7 @@ class PnlEditPicture(wx.Panel):
         event.Skip()
 
     def OnChoiceEffectChoice(self, event):
+        self._picture.SetEffect(event.GetClientData())
         event.Skip()
 
     def OnCmdSelectFontButton(self, event):
@@ -317,3 +325,5 @@ class PnlEditPicture(wx.Panel):
             self.tcDuration.SetValue("%.1f" % duration)
             self.spinButtonDuration.SetValue(int(duration * 10))
             self.tcComment.SetValue(self._picture.GetComment())
+            self.__SetChoiceSelectionByData(self.choiceEffect, self._picture.GetEffect())
+            

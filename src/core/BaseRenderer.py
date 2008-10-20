@@ -105,7 +105,8 @@ class BaseRenderer(object):
 
             self.__progressHandler.SetInfo(u"%s - %s" % (infoText, _(u"prepare")))
             preparedResult = self.ProcessPrepare(pic.GetFilename(),
-                                                 pic.GetRotation())
+                                                 pic.GetRotation(),
+                                                 pic.GetEffect())
 
             filesCurrent = []
             pathRects = self.__ComputePath(pic)
@@ -176,7 +177,7 @@ class BaseRenderer(object):
     def Prepare(self):
         raise NotImplementedError()        
     
-    def ProcessPrepare(self, filename, rotation):
+    def ProcessPrepare(self, filename, rotation, effect):
         raise NotImplementedError()
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):

@@ -24,6 +24,7 @@ import logging
 import wx
 
 from core.BaseRenderer import BaseRenderer
+from core.Picture import Picture
 
 
 class SingleFileRenderer(BaseRenderer):
@@ -42,12 +43,15 @@ class SingleFileRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
-    def ProcessPrepare(self, filename, rotation):
+    def ProcessPrepare(self, filename, rotation, effect):
         img = wx.Image(filename)
         
         for i in range(abs(rotation)):
             img = img.Rotate90(rotation > 0)
             
+        if effect == Picture.EFFECT_BLACK_WHITE:
+            img = img.ConvertToGreyscale()
+
         return img
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):
@@ -56,7 +60,7 @@ class SingleFileRenderer(BaseRenderer):
         subImg = preparedResult.GetSubImage(cropRect)
         
         if not self._useResample:
-            subImg.Rescale(*size)
+            subImg.Rescale(size[0], size[1], wx.IMAGE_QUALITY_HIGH)
 
         newFilename = '%s/%09d.pnm' % (self.GetOutputPath(), self._counter)
         subImg.SaveFile(newFilename, wx.BITMAP_TYPE_PNM)

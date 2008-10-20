@@ -1,3 +1,19 @@
+2008/10/20
+
+added:
+ - effect parameter in renderer added
+ - black and white effect works
+ - dummy pictured inserted for pictures that do not exist anymore
+ - effect, comment alignment are saved in project now
+ - database field for image date prepared
+ - picture object marked changes if there are really changes
+
+changed:
+ - parameters for mpegencoder changed for better quality
+
+bugfix:
+ - image resource file supports deprecated methods of older wxPython Versions
+
 
 2008/10/17
 

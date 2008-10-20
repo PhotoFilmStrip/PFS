@@ -13,3 +13,21 @@ $PPMTOY4M_BIN -v $VERBOSE -n $NBFRAMETOTAL -F $IMAGES_SEC_FORMAT $PPMTOY4M_CHROM
 ppmtoy4m -F 25:1 -S 420mpeg2 output.ppm | yuvscaler -n p -O "SIZE_1280x720" | mpeg2enc -v 0 -a 1 -f 3 -b 4000 -o output.m2v
 
 ppmtoy4m -v 0 -F 25:1 -S 420mpeg2 soutput.ppm | yuvscaler -v 0 -n p -O "SIZE_1280x720" | mpeg2enc -v 0 -M 2 -a 1 -V 230 -b 8000 -o soutput.m2v
+
+
+high-quality mp2 encoding:
+ppmtoy4m -v 0 -F 30000:1001 -S 420mpeg2 output.ppm | mpeg2enc -f 3 -4 1 -2 1 -q7 -b 2000 -V 300 -P -g 6 -G 18 -v 0 -o video.m2v
+
+avi:
+mencoder video_high.mpg -ovc lavc -lavcopts vcodec=mpeg4:vbitrate=2000:vhq:vqmin=2:autoaspect -ffourcc DX50 -oac mp3lame -lameopts vbr=0:br=128 -o s.avi
+
+
+audio: multiplex
+mplex video_high.m2v 9mill.mp2 -f 3 -o video_high.mpg
+
+wav2mp2:
+mp2enc -r 48000 -o 9mill.mp2 < wavfile.wav
+
+mp32wav:
+mpg123 -w wavfile.wav Bicycles.mp3
+

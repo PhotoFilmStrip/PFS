@@ -36,7 +36,7 @@ class ShellScriptRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
-    def ProcessPrepare(self, filename, rotation):
+    def ProcessPrepare(self, filename, rotation, effect):
         return "%s -depth 8 -rotate %d" % (filename, rotation * 90)
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):

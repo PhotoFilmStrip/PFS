@@ -25,6 +25,16 @@ from lib.common.ObserverPattern import Observable
 
 class Picture(Observable):
     
+    COMMENT_LEFT = 1
+    COMMENT_CENTER = 2
+    COMMENT_RIGHT = 4
+    COMMENT_BOTTOM = 8
+    COMMENT_MIDDLE = 16
+    COMMENT_TOP = 32
+    
+    EFFECT_NONE = 0
+    EFFECT_BLACK_WHITE = 1
+    
     def __init__(self, filename):
         Observable.__init__(self)
         self._filename = filename
@@ -32,41 +42,71 @@ class Picture(Observable):
         self._targetRect = wx.Rect(0, 0, 1280, 720)
         
         self.__bmp = None
-        self.__img = None
+        self._img = None
 
         self._duration = 7.0
         self._rotation = 0
         self._comment = u""
+        self._commentAlignment = Picture.COMMENT_BOTTOM | Picture.COMMENT_CENTER
+        self._effect = Picture.EFFECT_NONE
         
     def GetFilename(self):
         return self._filename
     
     def SetStartRect(self, rect):
+        if rect == self._startRect:
+            return
         self._startRect = rect
         self.Notify("start")
     def GetStartRect(self):
         return self._startRect
         
     def SetTargetRect(self, rect):
+        if rect == self._targetRect:
+            return
         self._targetRect = rect
         self.Notify("target")
     def GetTargetRect(self):
         return self._targetRect
     
     def SetDuration(self, duration):
+        if duration == self._duration:
+            return
         self._duration = duration
         self.Notify("duration")
     def GetDuration(self):
         return self._duration
     
     def SetComment(self, comment):
+        if comment == self._comment:
+            return
         self._comment = comment
         self.Notify('comment')
     def GetComment(self):
         return self._comment
     
+    def SetCommentAlignment(self, alignment):
+        if alignment is None:
+            alignment = Picture.COMMENT_CENTER | Picture.COMMENT_BOTTOM
+        if alignment == self._commentAlignment:
+            return
+        self._commentAlignment = alignment
+        self.Notify('alignment')
+    def GetCommentAlignment(self):
+        return self._commentAlignment
+    
+    def SetEffect(self, effect):
+        if effect == self._effect:
+            return
+        self._effect = effect
+        self._img = None
+        self.__bmp = None
+        self.Notify('effect')
+        self.Notify("bitmap")
+    def GetEffect(self):
+        return self._effect
+
     def SetRotation(self, rotation):
-#        self._rotation = rotation
         for i in range(abs(rotation)):
             self.__Rotate(rotation > 0)
         self.Notify("rotation")
@@ -82,7 +122,7 @@ class Picture(Observable):
             self._rotation = 0
         if self._rotation < -3:
             self._rotation = 0
-        self.__img = self.GetImage().Rotate90(clockwise)
+        self._img = self.GetImage().Rotate90(clockwise)
         self.__bmp = None
     
     def Rotate(self, clockwise=True):
@@ -90,9 +130,11 @@ class Picture(Observable):
         self.Notify("bitmap")
         
     def GetImage(self):
-        if self.__img is None:
-            self.__img = wx.Image(self._filename)
-        return self.__img
+        if self._img is None:
+            self._img = wx.Image(self._filename)
+            if self.GetEffect() == Picture.EFFECT_BLACK_WHITE:
+                self._img = self._img.ConvertToGreyscale()
+        return self._img
     
     def GetBitmap(self):
         if self.__bmp is None:
@@ -122,3 +164,28 @@ class Picture(Observable):
         newImg = img.Scale(newWidth, newHeight)
         dc.DrawBitmap(newImg.ConvertToBitmap(), 0, 0)
         return bmp
+
+
+class DummyPicture(Picture):
+    
+    def __init__(self, filename):
+        Picture.__init__(self, filename)
+
+    def GetImage(self):
+        if self._img is None:
+            w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
+            h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
+            w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
+            h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
+            img = wx.EmptyImage(max(w1, w2), max(h1, h2))
+            
+#            bmp2 = wx.ArtProvider_GetBitmap(wx.ART_OTHER, wx.ART_ERROR, (128, 128))
+#            bmp = wx.EmptyBitmap(max(w1, w2), max(h1, h2))
+#            dc = wx.MemoryDC()
+#            dc.SelectObjectAsSource(bmp)
+#            dc.DrawBitmap(bmp2, 0, 0)
+#            img = bmp.ConvertToImage()
+            
+            self._img = img
+        
+        return self._img

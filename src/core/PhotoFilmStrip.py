@@ -19,11 +19,12 @@
 #
 
 import os
+import logging
 import sqlite3
 
 from lib.common.ObserverPattern import Observable
 
-from core.Picture import Picture
+from core.Picture import Picture, DummyPicture
 
 
 class PhotoFilmStrip(Observable):
@@ -51,17 +52,23 @@ class PhotoFilmStrip(Observable):
         for row in resultSet:
             if os.path.exists(row["filename"]):
                 pic = Picture(row["filename"])
-                rect = wx.Rect(row["start_left"], row["start_top"], row["start_width"], row["start_height"])
-                pic.SetStartRect(rect)
-                rect = wx.Rect(row["target_left"], row["target_top"], row["target_width"], row["target_height"])
-                pic.SetTargetRect(rect)
-                pic.SetDuration(row["duration"])
-                pic.SetComment(row["comment"])
-                pic.SetRotation(row['rotation'])
-                picList.append(pic)
             else:
-                # TODO: insert dummy-picture 
-                print 'Imagefile not found:', row["filename"]
+                logging.warn("Imagefile '%s' not found:", row["filename"])
+                pic = DummyPicture(row["filename"])
+            rect = wx.Rect(row["start_left"], row["start_top"], row["start_width"], row["start_height"])
+            pic.SetStartRect(rect)
+            rect = wx.Rect(row["target_left"], row["target_top"], row["target_width"], row["target_height"])
+            pic.SetTargetRect(rect)
+            pic.SetDuration(row["duration"])
+            pic.SetComment(row["comment"])
+            pic.SetCommentAlignment(row["comment_align"])
+            pic.SetRotation(row['rotation'])
+            
+            try:
+                pic.SetEffect(row['effect'])
+            except IndexError:
+                pass
+            picList.append(pic)
         
         cur.close()
         self.__pictures = picList
@@ -70,13 +77,13 @@ class PhotoFilmStrip(Observable):
         query = "INSERT INTO `%s` (filename, " \
                                   "start_left, start_top, start_width, start_height, " \
                                   "target_left, target_top, target_width, target_height, " \
-                                  "rotation, duration, comment) " \
-                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
+                                  "rotation, duration, comment, comment_align, effect) " \
+                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
 
         values =  (pic.GetFilename(), 
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
-                   pic.GetRotation(), pic.GetDuration(), pic.GetComment())
+                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetCommentAlignment(), pic.GetEffect())
         return query, values
 
     def __CreateSchema(self, conn):
@@ -93,10 +100,9 @@ class PhotoFilmStrip(Observable):
                                         "rotation INTEGER, " \
                                         "duration DOUBLE, " \
                                         "comment TEXT, " \
-                                        "comment_align INTEGER);\n"
-        query += "CREATE TABLE `effect` (effect_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
-                                        "picture_id INTEGER," \
-                                        "effect INTEGER);\n"
+                                        "comment_align INTEGER, "\
+                                        "effect INTEGER, "\
+                                        "data BLOB);\n"
         conn.executescript(query)
         
     
