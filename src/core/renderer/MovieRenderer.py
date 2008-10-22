@@ -47,8 +47,9 @@ class MovieRenderer(SingleFileRenderer):
             mode = "n"
         
 #              'yuvscaler -v 0 -n %(mode)s -O "SIZE_%(width)dx%(height)d" | '\
+#              'mpeg2enc -v 0 -M 3 -4 1 -2 1 -q 7 -P -g 6 -G 18 -a 1 -V 300 -n %(mode)s -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
         cmd = 'ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
-              'mpeg2enc -v 0 -M 3 -f 3 -4 1 -2 1 -q7 -P -g 6 -G 18 -a 1 -V 300 -n %(mode)s -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
+              'mpeg2enc -v 0 -M 3 -4 1 -2 1 -P -g 6 -G 18 -a 1 -V 300 -n %(mode)s -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
                             {"path": self.GetOutputPath(),
                              "sep": os.sep,
                              "mode": mode,

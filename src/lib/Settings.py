@@ -27,6 +27,7 @@ from lib.common.Singleton import Singleton
 class Settings(Singleton):
     
     APP_NAME = u"PhotoFilmStrip"
+    APP_VERSION = "0.73"
     
     def Init(self):
         self.filename = os.path.join(os.path.expanduser("~"), '.%s' % Settings.APP_NAME)

@@ -1,4 +1,26 @@
-photofilmstrip (0.71-1) unstable; urgency=low
+photofilmstrip (0.73-1) unstable; urgency=low
+
+  * 2008/10/22
+    added:
+     - command line interface
+
+    bugfix:
+     - wrong parameter for mpegencoder
+
+  * 2008/10/20
+    added:
+    - effect parameter in renderer added
+    - black and white effect works
+    - dummy pictured inserted for pictures that do not exist anymore
+    - effect, comment alignment are saved in project now
+    - database field for image date prepared
+    - picture object marked changes if there are really changes
+
+    changed:
+    - parameters for mpegencoder changed for better quality
+
+    bugfix:
+    - image resource file supports deprecated methods of older wxPython Versions
 
   * 2008/10/17
     added:
@@ -14,9 +36,9 @@ photofilmstrip (0.71-1) unstable; urgency=low
     - framerate and imagemode are correctly sent to encoder
     - encoding for german po-file fixed
     - statusbar update when starting new project
-  
+
   * 2008/10/11
     initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Fri, 17 Oct 2008 10:07:59 +0200
+ -- Jens Göpfert <jens@sg-dev.de>  Mon, 20 Oct 2008 21:05:05 +0200
 

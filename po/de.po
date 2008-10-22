@@ -5,17 +5,107 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-10-17 09:10+CEST\n"
-"PO-Revision-Date: 2008-10-17 09:11+0100\n"
-"Last-Translator: Jens Gˆpfert <jens@sg-dev.de>\n"
+"POT-Creation-Date: 2008-10-22 20:48+CEST\n"
+"PO-Revision-Date: 2008-10-22 20:53+0100\n"
+"Last-Translator: Jens G√∂pfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: src/cli/Main.py:73
+msgid "specifies the project file"
+msgstr "Angabe der Projektdatei"
+
+#: src/cli/Main.py:74
+msgid "the path where to save the output files"
+msgstr "Pfad, in dem die Ausgabe gespeichert wird"
+
+#: src/cli/Main.py:75
+msgid "one of: VCD, SVCD, DVD, Medium, HD, FULL-HD"
+msgstr "VCD, SVCD, DVD, Medium, HD oder FULL-HD"
+
+#: src/cli/Main.py:77
+msgid "0=Single pictures, 1=Shellscript, 2=MPEG-Video (fast), 3=MPEG-Video (HQ)"
+msgstr "0=Einzelbilder, 1=Shellscript, 2=MPEG-Video (schnell), 3=MPEG-Video (HQ)"
+
+#: src/cli/Main.py:84
+msgid "projectfile does not exist: %s"
+msgstr "Projektdatei nicht gefunden: %s"
+
+#: src/cli/Main.py:86
+msgid "no projectfile specified!"
+msgstr "Keine Projektdatei angegeben!"
+
+#: src/cli/Main.py:95
+#, fuzzy
+msgid "cannot create outputpath: %s"
+msgstr "Verzeichnis kann nicht erstellt werden: %s"
+
+#: src/cli/Main.py:97
+msgid "no outputpath specified!"
+msgstr "Ausgabepfad erforderlich!"
+
+#: src/cli/Main.py:114
+msgid "invalid videonorm specified: %s"
+msgstr "Videonorm ung√ºltig: %s"
+
+#: src/cli/Main.py:119
+msgid "invalid format specified: %s"
+msgstr "Ung√ºltiges Format: %s"
+
+#: src/cli/Main.py:128
+#: src/gui/DlgRender.py:384
+msgid "Single pictures"
+msgstr "Einzelbilder"
+
+#: src/cli/Main.py:131
+#: src/gui/DlgRender.py:385
+#, fuzzy
+msgid "Single pictures (shellscript)"
+msgstr "Einzelbilder (Shellscript)"
+
+#: src/cli/Main.py:136
+#: src/gui/DlgRender.py:386
+msgid "MPEG-Video (fast)"
+msgstr "MPEG-Video (schnell)"
+
+#: src/cli/Main.py:144
+#: src/gui/DlgRender.py:387
+msgid "MPEG-Video (HQ; slow)"
+msgstr "MPEG-Video (HQ; langsam)"
+
+#: src/cli/Main.py:146
+msgid "invalid renderer specified: %s"
+msgstr "Ung√ºltiger Renderer: %s"
+
+#: src/cli/Main.py:160
+msgid "processing project"
+msgstr "Verarbeite Projekt '%s'"
+
+#: src/cli/Main.py:161
+msgid "using renderer"
+msgstr "Verwende Renderer"
+
+#: src/cli/Main.py:162
+msgid "output format"
+msgstr "Ausgabeformat"
+
+#: src/cli/Main.py:163
+msgid "framerate"
+msgstr "Bildrate"
+
+#: src/cli/Main.py:172
+msgid "...aborted!"
+msgstr "...abgebrochen!"
+
+#: src/cli/Main.py:177
+msgid "all done"
+msgstr "Fertig"
 
 #: src/core/BaseRenderer.py:94
 msgid "initialize renderer"
@@ -29,15 +119,21 @@ msgstr "Verarbeite Bild '%s'"
 msgid "prepare"
 msgstr "vorbereiten"
 
-#: src/core/BaseRenderer.py:120
+#: src/core/BaseRenderer.py:121
 msgid "crop and resize"
-msgstr "Zuschneiden und Grˆﬂe ‰ndern"
+msgstr "Zuschneiden und Gr√∂√üe √§ndern"
 
-#: src/core/BaseRenderer.py:144
+#: src/core/BaseRenderer.py:142
+#: src/core/BaseRenderer.py:149
+#: src/core/BaseRenderer.py:155
+msgid "finalizing '%s'"
+msgstr "Abschlie√üen von '%s'"
+
+#: src/core/BaseRenderer.py:145
 msgid "calculating transition"
-msgstr "Berechne Bild¸bergang"
+msgstr "Berechne Bild√ºbergang"
 
-#: src/core/BaseRenderer.py:157
+#: src/core/BaseRenderer.py:158
 msgid "creating output..."
 msgstr "Ausgabe erstellen..."
 
@@ -127,7 +223,7 @@ msgstr "Einstellungen"
 
 #: src/gui/DlgRender.py:225
 msgid "Size:"
-msgstr "Grˆﬂe:"
+msgstr "Gr√∂√üe:"
 
 #: src/gui/DlgRender.py:237
 msgid "Type:"
@@ -135,7 +231,7 @@ msgstr "Typ:"
 
 #: src/gui/DlgRender.py:250
 msgid "Transition speed:"
-msgstr "Bild¸bergangsdauer:"
+msgstr "Bild√ºbergangsdauer:"
 
 #: src/gui/DlgRender.py:264
 msgid "Sec."
@@ -143,11 +239,11 @@ msgstr "Sek."
 
 #: src/gui/DlgRender.py:268
 msgid "Total length:"
-msgstr "Gesamtl‰nge:"
+msgstr "Gesamtl√§nge:"
 
 #: src/gui/DlgRender.py:283
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
-msgstr "Dauer der Einzelbilder durch diese Gesamtl‰nge ¸berschreiben."
+msgstr "Dauer der Einzelbilder durch diese Gesamtl√§nge √ºberschreiben."
 
 #: src/gui/DlgRender.py:288
 msgid "Output"
@@ -168,24 +264,7 @@ msgstr "&Start"
 #: src/gui/DlgRender.py:331
 #: src/gui/DlgRender.py:510
 msgid "&Close"
-msgstr "S&chlieﬂen"
-
-#: src/gui/DlgRender.py:384
-msgid "Single pictures"
-msgstr "Einzelbilder"
-
-#: src/gui/DlgRender.py:385
-#, fuzzy
-msgid "Single pictures (shellscript)"
-msgstr "Einzelbilder (Shellscript)"
-
-#: src/gui/DlgRender.py:386
-msgid "MPEG-Video (fast)"
-msgstr "MPEG-Video (schnell)"
-
-#: src/gui/DlgRender.py:387
-msgid "MPEG-Video (HQ; slow)"
-msgstr "MPEG-Video (HQ; langsam)"
+msgstr "S&chlie√üen"
 
 #: src/gui/DlgRender.py:402
 msgid "Output path does not exists! Do you want %s to create ist?"
@@ -224,7 +303,7 @@ msgstr "Unbenannter PhotoFilmStrip"
 
 #: src/gui/FrmMain.py:240
 msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' wurde ge‰ndert. ƒnderungen speichern?"
+msgstr "'%s' wurde ge√§ndert. √Ñnderungen speichern?"
 
 #: src/gui/FrmMain.py:259
 msgid "Images"
@@ -236,7 +315,7 @@ msgstr "Dauer"
 
 #: src/gui/FrmMain.py:315
 msgid "Select %s-Project"
-msgstr "%s-Projekt ausw‰hlen"
+msgstr "%s-Projekt ausw√§hlen"
 
 #: src/gui/FrmMain.py:317
 #: src/gui/FrmMain.py:353
@@ -257,29 +336,29 @@ msgstr "Bilddateien"
 
 #: src/gui/FrmMain.py:507
 msgid "Help will be available soon."
-msgstr "Hilfe bald verf¸gbar."
+msgstr "Hilfe bald verf√ºgbar."
 
 #: src/gui/FrmMain.py:507
 msgid "Information"
 msgstr "Information"
 
-#: src/gui/PnlEditPicture.py:130
+#: src/gui/PnlEditPicture.py:132
 msgid "Rotation:"
 msgstr "Drehung:"
 
-#: src/gui/PnlEditPicture.py:150
+#: src/gui/PnlEditPicture.py:152
 msgid "Effect:"
 msgstr "Effekt:"
 
-#: src/gui/PnlEditPicture.py:160
+#: src/gui/PnlEditPicture.py:162
 msgid "Duartion (sec):"
 msgstr "Dauer (Sek):"
 
-#: src/gui/PnlEditPicture.py:250
+#: src/gui/PnlEditPicture.py:252
 msgid "No effect"
 msgstr "Kein Effekt"
 
-#: src/gui/PnlEditPicture.py:251
+#: src/gui/PnlEditPicture.py:253
 msgid "Black and White"
 msgstr "Schwarz-Weiss"
 

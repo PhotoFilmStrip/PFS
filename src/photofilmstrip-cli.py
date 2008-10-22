@@ -20,5 +20,37 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from cli.Main import main
-main()
+
+def initLogging():
+    import logging
+    logging.basicConfig(level=logging.WARNING,
+                        format='%(asctime)s (%(levelname)s): %(message)s',
+                        datefmt='%d.%m.%Y %H:%M:%S')
+
+def initI18N():
+    import os, gettext, locale
+    from lib.Settings import Settings
+    curLang = locale.getdefaultlocale()[0]
+    localeDir = os.path.join(os.path.dirname(__file__), "../locale")
+    
+    if not os.path.isdir(localeDir):
+        gettext.install(Settings.APP_NAME)
+        return 
+
+    lang = gettext.translation(Settings.APP_NAME, 
+                               localeDir, 
+                               languages=[curLang, "en"])
+    lang.install(True)
+
+
+def main():
+    initLogging()
+    initI18N()
+    
+    from cli.Main import main
+    main()
+
+
+if __name__ == "__main__":
+    main()
+

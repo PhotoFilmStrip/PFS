@@ -1,3 +1,12 @@
+2008/10/22
+
+added:
+ - command line interface
+ 
+bugfix:
+ - wrong parameter for mpegencoder
+
+
 2008/10/20
 
 added:

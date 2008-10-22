@@ -38,6 +38,7 @@ install:
 	
 	$(mkdir) "$(DESTDIR)$(bindir)"
 	cp "$(srcdir)/build/$(appname)" "$(DESTDIR)$(bindir)/"
+	cp "$(srcdir)/build/$(appname)-cli" "$(DESTDIR)$(bindir)/"
 	
 	target=`echo $@`; \
 	make -C po $$target
@@ -47,6 +48,7 @@ uninstall:
 	rm -f "$(DESTDIR)$(desktopdir)/$(appname).desktop"
 	rm -f "$(DESTDIR)$(pixmapdir)/$(appname).xpm"
 	rm -f "$(DESTDIR)$(bindir)/$(appname)"
+	rm -f "$(DESTDIR)$(bindir)/$(appname)-cli"
 	
 	target=`echo $@`; \
 	make -C po $$target
@@ -54,3 +56,26 @@ uninstall:
 pot:
 	pygettext -o "$(displayname).pot" -v "$(srcdir)/src"
 
+
+deb:
+	appver=`echo $(appname)-$(VER)`; \
+	releasedir=`echo release_\`date +"%Y_%m_%d"\``; \
+	targetdir=`echo $$releasedir/$$appver`; \
+	rm -rf $$releasedir; \
+	$(mkdir) "$$targetdir"; \
+	cp -R build/ "$$targetdir"; \
+	cp -R po/ "$$targetdir"; \
+	cp -R res/ "$$targetdir"; \
+	cp -R src/ "$$targetdir"; \
+	cp CHANGES "$$targetdir/"; \
+	cp COPYING "$$targetdir/"; \
+	cp Makefile "$$targetdir/"; \
+	cp Makefile.rules "$$targetdir/"; \
+	cp README "$$targetdir/"; \
+	cp TODO "$$targetdir/"; \
+	rm -rf `find $$targetdir -name .svn -type d`; \
+	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
+	cd $$targetdir; \
+	dh_make -e "jens@sg-dev.de" -c gpl -s -f "../$$appver.tar.gz"; \
+	rm debian/*.ex; \
+	rm debian/*.EX

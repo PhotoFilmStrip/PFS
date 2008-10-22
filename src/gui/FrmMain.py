@@ -218,7 +218,7 @@ class FrmMain(wx.Frame, Observer):
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
-        info.Version = "0.7.0"
+        info.Version = Settings.APP_VERSION
         info.Copyright = u"(C) 2008 Jens G\xf6pfert"
         info.Description = wordwrap(
             u"%s creates movies out of your pictures." % Settings.APP_NAME,

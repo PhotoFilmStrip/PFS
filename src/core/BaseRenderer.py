@@ -139,20 +139,20 @@ class BaseRenderer(object):
                 del filesCurrent[:TRANS_COUNT]
                 
                 for filename in filesBefore:
-                    self.__progressHandler.SetInfo(u"finalizing '%s'" % (os.path.basename(filename)))
+                    self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
                     self.ProcessFinalize(filename)
                 
                 self.__progressHandler.SetInfo(_(u"calculating transition"))
                 files = self.ProcessTransition(filesTransFrom, filesTransTo)
                 
                 for filename in files:
-                    self.__progressHandler.SetInfo(u"finalizing '%s'" % (os.path.basename(filename)))
+                    self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
                     self.ProcessFinalize(filename)
 
                 filesBefore = filesCurrent
         
         for filename in filesCurrent:
-            self.__progressHandler.SetInfo(u"finalizing '%s'" % (os.path.basename(filename)))
+            self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
             self.ProcessFinalize(filename)
                     
         self.__progressHandler.SetInfo(_(u"creating output..."))
@@ -161,7 +161,8 @@ class BaseRenderer(object):
     def Start(self, pics, outputPath):
         count = 0
         for pic in pics:
-            count += pic.GetDuration() * self.GetFrameRate()
+            count += (pic.GetDuration() + self.GetTransitionDuration()) * self.GetFrameRate()
+
         self.__progressHandler.SetMaxProgress(int(count))
         
         try:
