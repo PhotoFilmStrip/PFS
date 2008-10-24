@@ -81,21 +81,15 @@ class MovieRenderer(SingleFileRenderer):
             os.system(cmd)
         
         else:
-            cmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm  > %(path)s%(sep)soutput.yuv" % \
-                        {'framerate': framerate,
-                         'path': self.GetOutputPath(),
-                         'sep': os.sep}
-            os.system(cmd)
-            
 #                  "-ovc x264 -x264encopts subq=6:partitions=all:8x8dct:me=umh:frameref=5:bframes=3:b_pyramid:weight_b:turbo=1:bitrate=%(bitrate)d " \
-            cmd = "mencoder %(path)s%(sep)soutput.yuv " \
+            cmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | " \
+                  "mencoder " \
                   "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
-                  "-o %(path)s%(sep)soutput.avi" % {'path': self.GetOutputPath(),
-                                                    'sep': os.sep,
-                                                    'bitrate': self._bitrate}
-            print cmd
+                  "-o %(path)s%(sep)soutput.avi -" % {'framerate': framerate,
+                                                      'path': self.GetOutputPath(),
+                                                      'sep': os.sep,
+                                                      'bitrate': self._bitrate}
             os.system(cmd)
-            os.remove("%s%soutput.yuv" % (self.GetOutputPath(), os.sep))
 
         os.remove("%s%soutput.ppm" % (self.GetOutputPath(), os.sep))
     
