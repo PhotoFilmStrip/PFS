@@ -74,7 +74,7 @@ def main():
     parser.add_option("-o", "--outputpath", help=_(u"the path where to save the output files"), metavar="PATH")
     parser.add_option("-f", "--format", help=_(u"one of: VCD, SVCD, DVD, Medium, HD, FULL-HD") + " [default: %default]", metavar="FORMAT", default="HD")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", metavar="VIDEONORM", default="p")
-    parser.add_option("-r", "--renderer", help=_(u"0=Single pictures, 1=Shellscript, 2=MPEG-Video (fast), 3=MPEG-Video (HQ)") + " [default: %default]", metavar="VIDEONORM", default=2, type="int")
+    parser.add_option("-r", "--renderer", help=_(u"0=Single pictures, 1=Shellscript, 2=MPEG-Video (fast), 3=MPEG-Video (HQ)") + " [default: %default]", metavar="RENDERER", default=2, type="int")
     
     options, args = parser.parse_args()
     
