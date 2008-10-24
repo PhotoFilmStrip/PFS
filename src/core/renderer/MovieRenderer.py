@@ -29,6 +29,18 @@ class MovieRenderer(SingleFileRenderer):
         SingleFileRenderer.__init__(self)
         self._bitrate = 2000
         
+    @staticmethod
+    def CheckDependencies():
+        pass
+
+    @staticmethod
+    def GetName():
+        return _(u"MPEG-Video")
+    
+    @staticmethod
+    def GetProperties():
+        return SingleFileRenderer.GetProperties() + ["Bitrate"]
+
     def SetBitrate(self, bitrate):
         self._bitrate = bitrate
 
@@ -45,19 +57,45 @@ class MovieRenderer(SingleFileRenderer):
         else:
             framerate = "30000:1001"
             mode = "n"
+            
+        profs = ["VCD", "SVCD", "DVD"]
+        if self.GetProfileName() in profs:
+            scaler = 'yuvscaler -v 0 -n %s -O %s |' % (mode, self.GetProfileName())
+            formatArgs = "-f %d -a 3" % (profs.index(self.GetProfileName()) + 6)
+            
+            cmd = 'ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
+                  '%(scaler)s'\
+                  'mpeg2enc -v 0 -M 3 ' \
+                           '-4 1 -2 1 -P -g 6 -G 18 ' \
+                           '%(formatArgs)s ' \
+                           '-n %(mode)s ' \
+                           '-b %(bitrate)d ' \
+                           '-o %(path)s%(sep)soutput.m2v' % \
+                                {"path": self.GetOutputPath(),
+                                 "sep": os.sep,
+                                 "mode": mode,
+                                 "bitrate": self._bitrate,
+                                 "framerate": framerate,
+                                 "scaler": scaler,
+                                 "formatArgs": formatArgs}
+            os.system(cmd)
         
-#              'yuvscaler -v 0 -n %(mode)s -O "SIZE_%(width)dx%(height)d" | '\
-#              'mpeg2enc -v 0 -M 3 -4 1 -2 1 -q 7 -P -g 6 -G 18 -a 1 -V 300 -n %(mode)s -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
-        cmd = 'ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
-              'mpeg2enc -v 0 -M 3 -4 1 -2 1 -P -g 6 -G 18 -a 1 -V 300 -n %(mode)s -b %(bitrate)d -o %(path)s%(sep)soutput.m2v' % \
-                            {"path": self.GetOutputPath(),
-                             "sep": os.sep,
-                             "mode": mode,
-                             "width": self.GetResolution()[0],
-                             "height": self.GetResolution()[1],
-                             "bitrate": self._bitrate,
-                             "framerate": framerate}
-        os.system(cmd)
+        else:
+            cmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm  > %(path)s%(sep)soutput.yuv" % \
+                        {'framerate': framerate,
+                         'path': self.GetOutputPath(),
+                         'sep': os.sep}
+            os.system(cmd)
+            
+#                  "-ovc x264 -x264encopts subq=6:partitions=all:8x8dct:me=umh:frameref=5:bframes=3:b_pyramid:weight_b:turbo=1:bitrate=%(bitrate)d " \
+            cmd = "mencoder %(path)s%(sep)soutput.yuv " \
+                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
+                  "-o %(path)s%(sep)soutput.avi" % {'path': self.GetOutputPath(),
+                                                    'sep': os.sep,
+                                                    'bitrate': self._bitrate}
+            print cmd
+            os.system(cmd)
+            os.remove("%s%soutput.yuv" % (self.GetOutputPath(), os.sep))
 
         os.remove("%s%soutput.ppm" % (self.GetOutputPath(), os.sep))
     

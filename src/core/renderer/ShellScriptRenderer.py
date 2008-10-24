@@ -30,7 +30,12 @@ class ShellScriptRenderer(BaseRenderer):
         self._counter = 0
         self._commands = []
     
-    def CheckDependencies(self):
+    @staticmethod
+    def GetName():
+        return _(u"Single pictures (shellscript)")
+    
+    @staticmethod
+    def CheckDependencies():
         pass
     
     def Prepare(self):

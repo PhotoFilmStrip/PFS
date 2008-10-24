@@ -32,14 +32,25 @@ class SingleFileRenderer(BaseRenderer):
     def __init__(self):
         BaseRenderer.__init__(self)
         self._counter = 0
-        self._useResample = True
     
-    def SetUseResample(self, value):
-        self._useResample = value
-    
-    def CheckDependencies(self):
+    @staticmethod
+    def CheckDependencies():
         pass
     
+    @staticmethod
+    def GetName():
+        return _(u"Single pictures")
+    
+    @staticmethod
+    def GetProperties():
+        return ["UseResample"]
+    
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "UseResample":
+            return False
+        return BaseRenderer.GetDefaultProperty(prop)
+
     def Prepare(self):
         pass
     
@@ -59,13 +70,13 @@ class SingleFileRenderer(BaseRenderer):
         
         subImg = preparedResult.GetSubImage(cropRect)
         
-        if not self._useResample:
+        if not self.GetProperty("UseResample"):
             subImg.Rescale(size[0], size[1], wx.IMAGE_QUALITY_HIGH)
 
         newFilename = '%s/%09d.pnm' % (self.GetOutputPath(), self._counter)
         subImg.SaveFile(newFilename, wx.BITMAP_TYPE_PNM)
         
-        if self._useResample:
+        if self.GetProperty("UseResample"):
             os.system("convert %s -depth 8 -filter Sinc -resize %dx%d! %s" % (newFilename, 
                                                                               size[0], size[1], 
                                                                               newFilename))

@@ -25,14 +25,44 @@ import wx
 
 class BaseRenderer(object):
     
+    PROP_VALUES = {}
+    
     def __init__(self):
         self._frameRate = 25.0
         self._resolution = (1280, 720)
         self._transDuration = 1.0
+        self._profileName = None
         self._outputPath = None
         
         self.__progressHandler = None
         
+    @staticmethod
+    def CheckDependencies():
+        pass
+
+    @staticmethod
+    def GetName():
+        raise NotImplementedError()
+    
+    @staticmethod
+    def GetProperties():
+        return []
+    
+    @classmethod
+    def SetProperty(cls, prop, value):
+        if prop in cls.GetProperties():
+            cls.PROP_VALUES[prop] = value
+        else:
+            logging.getLogger(cls.GetName()).warning(_(u"Unknown property: %s"), prop)
+            
+    @classmethod
+    def GetProperty(cls, prop):
+        return cls.PROP_VALUES.get(prop, cls.GetDefaultProperty(prop))
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        return _(u"<default>")
+    
     def SetProgressHandler(self, progressHandler):
         self.__progressHandler = progressHandler
         
@@ -53,6 +83,11 @@ class BaseRenderer(object):
         return self._transDuration
     def SetTransitionDuration(self, tr):
         self._transDuration = tr
+    
+    def GetProfileName(self):
+        return self._profileName
+    def SetProfileName(self, profile):
+        self._profileName = profile
     
     def __ComputePath(self, pic):
         px1, py1 = pic.GetStartRect().GetPosition().Get()
@@ -172,9 +207,6 @@ class BaseRenderer(object):
         
         self.__progressHandler.Done()
                     
-    def CheckDependencies(self):
-        raise NotImplementedError
-    
     def Prepare(self):
         raise NotImplementedError()        
     

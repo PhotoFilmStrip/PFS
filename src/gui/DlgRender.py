@@ -28,9 +28,7 @@ import wx.lib.masked.textctrl
 
 
 from core.ProgressHandler import ProgressHandler
-from core.renderer.SingleFileRenderer import SingleFileRenderer
-from core.renderer.ShellScriptRenderer import ShellScriptRenderer
-from core.renderer.MovieRenderer import MovieRenderer
+from core.renderer import RENDERERS
 
 from lib.common.ObserverPattern import Observer
 from lib.Settings import Settings
@@ -39,13 +37,13 @@ from lib.Settings import Settings
 [wxID_DLGRENDER, wxID_DLGRENDERCBTOTALLENGTH, wxID_DLGRENDERCHOICEFORMAT, 
  wxID_DLGRENDERCHOICESIZE, wxID_DLGRENDERCHOICETYPE, 
  wxID_DLGRENDERCMDBROWSEOUTPUTDIR, wxID_DLGRENDERCMDCLOSE, 
- wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERPNLOUTPUT, 
- wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSLOUTPUT, wxID_DLGRENDERSLSETTINGS, 
- wxID_DLGRENDERSPINBUTTONTRANSDUR, wxID_DLGRENDERSTATICLINE1, 
- wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTOUTPUTDIR, 
+ wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERLCPROPS, 
+ wxID_DLGRENDERPNLOUTPUT, wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSLOUTPUT, 
+ wxID_DLGRENDERSLSETTINGS, wxID_DLGRENDERSPINBUTTONTRANSDUR, 
+ wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTOUTPUTDIR, 
  wxID_DLGRENDERSTOUTPUTHEADER, wxID_DLGRENDERSTPROGRESS, 
  wxID_DLGRENDERSTSETTINGSHEADER, wxID_DLGRENDERSTSIZE, 
- wxID_DLGRENDERSTSIZEDESCR, wxID_DLGRENDERSTTOTALLENDESCR, 
+ wxID_DLGRENDERSTSIZEDESCR,  
  wxID_DLGRENDERSTTRANSDUR, wxID_DLGRENDERSTTRANSDURDESCR, 
  wxID_DLGRENDERSTTYPE, wxID_DLGRENDERSTTYPEDESCR, wxID_DLGRENDERTCOUTPUTDIR, 
  wxID_DLGRENDERTCTRANSDURATION, wxID_DLGRENDERTIMECTRLTOTALLENGTH, 
@@ -74,8 +72,6 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.cbTotalLength, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.timeCtrlTotalLength, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stTotalLenDescr, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_sizerOutput_Items(self, parent):
         # generated method, don't edit
@@ -134,6 +130,8 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.stFormat, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceFormat, 0, border=0, flag=wx.EXPAND)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddWindow(self.lcProps, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.stOutputDir, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddSizer(self.sizerOutputDir, 0, border=0, flag=wx.EXPAND)
@@ -162,6 +160,14 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.slSettings, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
+    def _init_coll_lcProps_Columns(self, parent):
+        # generated method, don't edit
+
+        parent.InsertColumn(col=0, format=wx.LIST_FORMAT_LEFT,
+              heading=_(u'Property'), width=200)
+        parent.InsertColumn(col=1, format=wx.LIST_FORMAT_LEFT,
+              heading=_(u'Value'), width=200)
+
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.VERTICAL)
@@ -183,7 +189,7 @@ class DlgRender(wx.Dialog, Observer):
         self.sizerOutput = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self.sizerOutputCtrls = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
-        self.sizerOutputCtrls.SetFlexibleDirection(wx.HORIZONTAL)
+        self.sizerOutputCtrls.SetFlexibleDirection(wx.BOTH)
 
         self.sizerOutputDir = wx.BoxSizer(orient=wx.HORIZONTAL)
 
@@ -208,7 +214,8 @@ class DlgRender(wx.Dialog, Observer):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render photo filmstrip'))
+              style=wx.DEFAULT_DIALOG_STYLE,
+              title=_(u'Render photo filmstrip'))
 
         self.stSettingsHeader = wx.StaticText(id=wxID_DLGRENDERSTSETTINGSHEADER,
               label=_(u'Settings'), name=u'stSettingsHeader', parent=self,
@@ -257,18 +264,19 @@ class DlgRender(wx.Dialog, Observer):
 
         self.spinButtonTransDur = wx.SpinButton(id=wxID_DLGRENDERSPINBUTTONTRANSDUR,
               name=u'spinButtonTransDur', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.SP_VERTICAL)
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.SP_VERTICAL)
 
         self.stTransDurDescr = wx.StaticText(id=wxID_DLGRENDERSTTRANSDURDESCR,
-              label=_(u'Sec.'), name=u'stTransDurDescr', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+              label=_(u'Sec.'), name=u'stTransDurDescr',
+              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
+              -1), style=0)
 
         self.cbTotalLength = wx.CheckBox(id=wxID_DLGRENDERCBTOTALLENGTH,
               label=_(u'Total length:'), name=u'cbTotalLength',
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=0)
         self.cbTotalLength.SetValue(False)
+        self.cbTotalLength.SetToolTipString(_(u'Overrides the duration of single pictures and gives the photo filmstrip this total length.'))
         self.cbTotalLength.Bind(wx.EVT_CHECKBOX, self.OnCbTotalLengthCheckbox,
               id=wxID_DLGRENDERCBTOTALLENGTH)
 
@@ -278,11 +286,6 @@ class DlgRender(wx.Dialog, Observer):
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=0, useFixedWidthFont=True, value='12:00:00 AM')
         self.timeCtrlTotalLength.Enable(False)
-
-        self.stTotalLenDescr = wx.StaticText(id=wxID_DLGRENDERSTTOTALLENDESCR,
-              label=_(u'Overrides the duration of single pictures and gives the photo filmstrip this total length.'),
-              name=u'stTotalLenDescr', parent=self.pnlSettings, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
 
         self.stOutputHeader = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTHEADER,
               label=_(u'Output'), name=u'stOutputHeader', parent=self,
@@ -303,6 +306,15 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceFormat = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICEFORMAT,
               name=u'choiceFormat', parent=self.pnlOutput, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
+        self.choiceFormat.Bind(wx.EVT_CHOICE, self.OnChoiceFormatChoice,
+              id=wxID_DLGRENDERCHOICEFORMAT)
+
+        self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERLCPROPS, name=u'lcProps',
+              parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=wx.LC_REPORT | wx.SUNKEN_BORDER)
+        self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
+              id=wxID_DLGRENDERLCPROPS)
+        self._init_coll_lcProps_Columns(self.lcProps)
 
         self.stOutputDir = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTDIR,
               label=_(u'Output directory:'), name=u'stOutputDir',
@@ -342,14 +354,15 @@ class DlgRender(wx.Dialog, Observer):
               name=u'gaugeProgress', parent=self, pos=wx.Point(-1, -1),
               range=100, size=wx.Size(-1, -1), style=wx.GA_HORIZONTAL)
 
-        self.stProgress = wx.StaticText(id=wxID_DLGRENDERSTPROGRESS,
-              label=u'', name=u'stProgress', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+        self.stProgress = wx.StaticText(id=wxID_DLGRENDERSTPROGRESS, label=u'',
+              name=u'stProgress', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()
 
     def __init__(self, parent, photoFilmStrip):
         self._init_ctrls(parent)
+        self.tcOutputDir.SetMinSize(wx.Size(400, -1))
 
         font = self.stSettingsHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
@@ -367,26 +380,18 @@ class DlgRender(wx.Dialog, Observer):
         
         settings = Settings()
         
-        self.choiceSize.Append("VCD", [(352, 288), (352, 240), 1150])
-        self.choiceSize.Append("SVCD", [(576, 480), (480, 480), 2500])
-        self.choiceSize.Append("DVD", [(720, 576), (720, 480), 8000])
-        self.choiceSize.Append("Medium 640x360", [(640, 360), (640, 360), 8000])
-        self.choiceSize.Append("HD 1280x720", [(1280, 720), (1280, 720), 8000])
-        self.choiceSize.Append("FULL-HD 1920x1080", [(1920, 1080), (1920, 1080), 8000])
-        
+        for profile in settings.GetOutputProfiles():
+            self.choiceSize.Append(profile.PName, profile)
         self.choiceSize.SetSelection(settings.GetVideoSize())
         
         self.choiceType.Append("PAL", 25.0)
         self.choiceType.Append("NTSC", 30.0)
-        
         self.choiceType.SetSelection(settings.GetVideoType())
         
-        self.choiceFormat.Append(_(u"Single pictures"))
-        self.choiceFormat.Append(_(u"Single pictures (shellscript)"))
-        self.choiceFormat.Append(_(u"MPEG-Video (fast)"))
-        self.choiceFormat.Append(_(u"MPEG-Video (HQ; slow)"))
-        
+        for rend in RENDERERS:
+            self.choiceFormat.Append(rend.GetName(), rend)
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
+        self.OnChoiceFormatChoice(None)
         
         self.tcOutputDir.SetValue(settings.GetLastOutputPath())
         
@@ -417,6 +422,9 @@ class DlgRender(wx.Dialog, Observer):
                     return False
             else:
                 return False
+        else:
+            # TODO: folder write test
+            pass
     
         if len(os.listdir(path)) > 2:
             dlg = wx.MessageDialog(self,
@@ -428,7 +436,6 @@ class DlgRender(wx.Dialog, Observer):
             if resp != wx.ID_YES:
                 return False
         
-        # TODO: folder write test
         return True
     
     def OnCmdStartButton(self, event):
@@ -442,21 +449,17 @@ class DlgRender(wx.Dialog, Observer):
         settings.SetLastOutputPath(self.tcOutputDir.GetValue())
         
         frameRate = self.__GetChoiceDataSelected(self.choiceType)
-        resolution = self.__GetChoiceDataSelected(self.choiceSize)[self.choiceType.GetSelection()]
-        bitrate = self.__GetChoiceDataSelected(self.choiceSize)[2]
+        profile = self.__GetChoiceDataSelected(self.choiceSize)
+        resolution = profile.PResPal if self.choiceType.GetSelection() == 0 else profile.PResNtsc
+        bitrate = profile.PBitrate
 
-        if self.choiceFormat.GetSelection() == 0:
-            renderer = SingleFileRenderer()
-        elif self.choiceFormat.GetSelection() == 1:
-            renderer = ShellScriptRenderer()
-        elif self.choiceFormat.GetSelection() == 2:
-            renderer = MovieRenderer()
-            renderer.SetBitrate(bitrate)
-            renderer.SetUseResample(False)
-        elif self.choiceFormat.GetSelection() == 3:
-            renderer = MovieRenderer()
-            renderer.SetBitrate(bitrate)
-            renderer.SetUseResample(True)
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
+        renderer = rendererClass()
+        renderer.SetProfileName(profile.PName)
+        
+        for prop in rendererClass.GetProperties():
+            if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
+                renderer.SetBitrate(bitrate)
         
         renderer.SetFrameRate(frameRate)
         renderer.SetResolution(resolution)
@@ -488,6 +491,27 @@ class DlgRender(wx.Dialog, Observer):
 
     def OnCbTotalLengthCheckbox(self, event):
         event.Skip()
+        
+    def OnActivateProperty(self, event):
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
+        idx = event.GetIndex()
+        prop = self.lcProps.GetItemText(idx)
+        dlg = wx.TextEntryDialog(self, _(u"Edit property"), prop, unicode(rendererClass.GetProperty(prop)))
+        if dlg.ShowModal() == wx.ID_OK:
+            try:
+                value = eval(dlg.GetValue())
+            except:
+                value = rendererClass.GetDefaultProperty(prop)
+            rendererClass.SetProperty(prop, value)
+            self.lcProps.SetStringItem(idx, 1, unicode(value))
+        dlg.Destroy()
+    
+    def OnChoiceFormatChoice(self, event):
+        data = self.__GetChoiceDataSelected(self.choiceFormat)
+        self.lcProps.DeleteAllItems()
+        for prop in data.GetProperties():
+            value = data.GetProperty(prop)
+            self.lcProps.Append([prop, value])
         
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, ProgressHandler):
