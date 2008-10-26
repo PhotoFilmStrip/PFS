@@ -19,6 +19,7 @@
 #
 
 import os
+from subprocess import Popen, PIPE
 
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
@@ -28,6 +29,8 @@ class MovieRenderer(SingleFileRenderer):
     def __init__(self):
         SingleFileRenderer.__init__(self)
         self._bitrate = 2000
+        
+        self._ppmIn = None
         
     @staticmethod
     def CheckDependencies():
@@ -45,11 +48,12 @@ class MovieRenderer(SingleFileRenderer):
         self._bitrate = bitrate
 
     def ProcessFinalize(self, filename):
-        cmd = 'convert ppm:"%s" - >> %s%soutput.ppm' % (filename, os.path.dirname(filename), os.sep)
-        os.system(cmd)
+        cmd = 'convert ppm:"%s" - ' % (filename)
+        conv = Popen(cmd, stdout=PIPE, shell=True)
+        self._ppmIn.stdin.write(conv.stdout.read())
         os.remove(filename)
     
-    def Finalize(self):
+    def Prepare(self):
         fr = self.GetFrameRate()
         if fr == 25.0:
             framerate = "25:1"
@@ -63,7 +67,7 @@ class MovieRenderer(SingleFileRenderer):
             scaler = 'yuvscaler -v 0 -n %s -O %s |' % (mode, self.GetProfileName())
             formatArgs = "-f %d -a 3" % (profs.index(self.GetProfileName()) + 6)
             
-            cmd = 'ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | '\
+            cmd = 'cat | ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 | '\
                   '%(scaler)s'\
                   'mpeg2enc -v 0 -M 3 ' \
                            '-4 1 -2 1 -P -g 6 -G 18 ' \
@@ -78,18 +82,25 @@ class MovieRenderer(SingleFileRenderer):
                                  "framerate": framerate,
                                  "scaler": scaler,
                                  "formatArgs": formatArgs}
-            os.system(cmd)
         
         else:
-#                  "-ovc x264 -x264encopts subq=6:partitions=all:8x8dct:me=umh:frameref=5:bframes=3:b_pyramid:weight_b:turbo=1:bitrate=%(bitrate)d " \
-            cmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 %(path)s%(sep)soutput.ppm | " \
-                  "mencoder " \
-                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
-                  "-o %(path)s%(sep)soutput.avi -" % {'framerate': framerate,
-                                                      'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'bitrate': self._bitrate}
-            os.system(cmd)
+            cmd = "cat | ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 " \
+                  ">> %(path)s%(sep)soutput.yuv " % {'framerate': framerate,
+                                                     'path': self.GetOutputPath(),
+                                                     'sep': os.sep}
+            
+        self._ppmIn = Popen(cmd, stdin=PIPE, shell=True)
 
-        os.remove("%s%soutput.ppm" % (self.GetOutputPath(), os.sep))
-    
+    def Finalize(self):
+        self._ppmIn.communicate()        
+
+        if self.GetProfileName() not in ["VCD", "SVCD", "DVD"]:
+#                  "-ovc x264 -x264encopts subq=6:partitions=all:8x8dct:me=umh:frameref=5:bframes=3:b_pyramid:weight_b:turbo=1:bitrate=%(bitrate)d " \
+            cmd = "mencoder %(path)s%(sep)soutput.yuv " \
+                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
+                  "-o %(path)s%(sep)soutput.avi" % {'path': self.GetOutputPath(),
+                                                    'sep': os.sep,
+                                                    'bitrate': self._bitrate}
+            proc = Popen(cmd, stdout=PIPE, shell=True)
+            if proc.wait() == 0:
+                os.remove("%s%soutput.yuv" % (self.GetOutputPath(), os.sep))
