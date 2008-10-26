@@ -42,6 +42,7 @@ class Settings(Singleton):
         self.cp = ConfigParser()
         self.cp.add_section("General")
         self.cp.add_section("History")
+        self.cp.add_section("Profiles")
         self.Save()
         
     def Load(self):
@@ -139,6 +140,25 @@ class Settings(Singleton):
         if self.cp.has_option("General", "LastOutputPath"):
             return self.cp.get("General", "LastOutputPath")
         return os.getcwd()
+    
+    def SetRenderProperties(self, renderer, props):
+        self.Load()
+        if self.cp.has_section(renderer):
+            self.cp.remove_section(renderer)
+        self.cp.add_section(renderer)
+        for prop, value in props.items():
+            self.cp.set(renderer, prop, value)
+        self.Save()
+    
+    def GetRenderProperties(self, renderer):
+        self.Load()
+        result = {}
+        if not self.cp.has_section(renderer):
+            return result
+        for prop, value in self.cp.items(renderer):
+            result[prop] = eval(value)
+        
+        return result
     
     def GetOutputProfiles(self):
         vcd = OutputProfile()

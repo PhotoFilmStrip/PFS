@@ -23,9 +23,16 @@ import os, logging
 import wx
 
 
+class MetaBaseRenderer(type):
+    def __new__(cls, name, bases, dic):
+        newBaseRendererClass = type.__new__(cls, name, bases, dic)
+        newBaseRendererClass.PROP_VALUES = {}
+        return newBaseRendererClass
+
+
 class BaseRenderer(object):
     
-    PROP_VALUES = {}
+    __metaclass__  = MetaBaseRenderer
     
     def __init__(self):
         self._frameRate = 25.0

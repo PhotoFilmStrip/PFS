@@ -456,10 +456,15 @@ class DlgRender(wx.Dialog, Observer):
         rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
         renderer = rendererClass()
         renderer.SetProfileName(profile.PName)
-        
+
+        propDict = {}
         for prop in rendererClass.GetProperties():
             if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
                 renderer.SetBitrate(bitrate)
+            else:
+                propDict[prop] = bitrate
+
+        settings.SetRenderProperties(rendererClass.__name__, propDict)
         
         renderer.SetFrameRate(frameRate)
         renderer.SetResolution(resolution)
@@ -509,8 +514,9 @@ class DlgRender(wx.Dialog, Observer):
     def OnChoiceFormatChoice(self, event):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
         self.lcProps.DeleteAllItems()
+        savedProps = Settings().GetRenderProperties(data.__name__)
         for prop in data.GetProperties():
-            value = data.GetProperty(prop)
+            value = savedProps.get(prop.lower(), data.GetProperty(prop))
             self.lcProps.Append([prop, value])
         
     def ObservableUpdate(self, obj, arg):
