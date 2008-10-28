@@ -462,7 +462,7 @@ class DlgRender(wx.Dialog, Observer):
             if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
                 renderer.SetBitrate(bitrate)
             else:
-                propDict[prop] = bitrate
+                propDict[prop] = rendererClass.GetProperty(prop)
 
         settings.SetRenderProperties(rendererClass.__name__, propDict)
         

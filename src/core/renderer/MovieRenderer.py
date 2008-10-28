@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
+import os, logging
 from subprocess import Popen, PIPE
 
 from core.renderer.SingleFileRenderer import SingleFileRenderer
@@ -30,7 +30,8 @@ class MovieRenderer(SingleFileRenderer):
         SingleFileRenderer.__init__(self)
         self._bitrate = 2000
         
-        self._ppmIn = None
+        self._procPpmIn   = None
+        self._procEncoder = None
         
     @staticmethod
     def CheckDependencies():
@@ -49,9 +50,12 @@ class MovieRenderer(SingleFileRenderer):
 
     def ProcessFinalize(self, filename):
         cmd = 'convert ppm:"%s" - ' % (filename)
-        conv = Popen(cmd, stdout=PIPE, shell=True)
-        self._ppmIn.stdin.write(conv.stdout.read())
-        os.remove(filename)
+        conv = Popen(cmd, stdout=self._procPpmIn.stdin, shell=True)
+        exitCode = conv.wait() 
+        if exitCode == 0:
+            os.remove(filename)
+        else:
+            logging.getLogger('MovieRenderer').error("command '%s' returned exitcode: %d", cmd, exitCode)
     
     def Prepare(self):
         fr = self.GetFrameRate()
@@ -64,43 +68,35 @@ class MovieRenderer(SingleFileRenderer):
             
         profs = ["VCD", "SVCD", "DVD"]
         if self.GetProfileName() in profs:
-            scaler = 'yuvscaler -v 0 -n %s -O %s |' % (mode, self.GetProfileName())
-            formatArgs = "-f %d -a 3" % (profs.index(self.GetProfileName()) + 6)
-            
-            cmd = 'cat | ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 | '\
-                  '%(scaler)s'\
+            cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
                   'mpeg2enc -v 0 -M 3 ' \
                            '-4 1 -2 1 -P -g 6 -G 18 ' \
-                           '%(formatArgs)s ' \
+                           '-f %(profileIdx)d -a 3 ' \
                            '-n %(mode)s ' \
                            '-b %(bitrate)d ' \
                            '-o %(path)s%(sep)soutput.m2v' % \
                                 {"path": self.GetOutputPath(),
                                  "sep": os.sep,
                                  "mode": mode,
-                                 "bitrate": self._bitrate,
-                                 "framerate": framerate,
-                                 "scaler": scaler,
-                                 "formatArgs": formatArgs}
-        
+                                 'profile': self.GetProfileName(),
+                                 'profileIdx': profs.index(self.GetProfileName()) + 6,
+                                 "bitrate": self._bitrate}
         else:
-            cmd = "cat | ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2 " \
-                  ">> %(path)s%(sep)soutput.yuv " % {'framerate': framerate,
-                                                     'path': self.GetOutputPath(),
-                                                     'sep': os.sep}
-            
-        self._ppmIn = Popen(cmd, stdin=PIPE, shell=True)
+            cmd = "mencoder -cache 1024 " \
+                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
+                  "-o %(path)s%(sep)soutput.avi -" % {'path': self.GetOutputPath(),
+                                                      'sep': os.sep,
+                                                      'bitrate': self._bitrate}
+
+        ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
+        self._procEncoder = Popen(cmd, stdin=PIPE, shell=True)
+        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
 
     def Finalize(self):
-        self._ppmIn.communicate()        
+        self._procPpmIn.communicate()
+        self._procEncoder.communicate()
 
-        if self.GetProfileName() not in ["VCD", "SVCD", "DVD"]:
-#                  "-ovc x264 -x264encopts subq=6:partitions=all:8x8dct:me=umh:frameref=5:bframes=3:b_pyramid:weight_b:turbo=1:bitrate=%(bitrate)d " \
-            cmd = "mencoder %(path)s%(sep)soutput.yuv " \
-                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
-                  "-o %(path)s%(sep)soutput.avi" % {'path': self.GetOutputPath(),
-                                                    'sep': os.sep,
-                                                    'bitrate': self._bitrate}
-            proc = Popen(cmd, stdout=PIPE, shell=True)
-            if proc.wait() == 0:
-                os.remove("%s%soutput.yuv" % (self.GetOutputPath(), os.sep))
+    def ProcessAbort(self):
+        self._procEncoder.stdin.close()
+        self._procPpmIn.stdin.close()
+#        self.Finalize()

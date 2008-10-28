@@ -154,6 +154,7 @@ class BaseRenderer(object):
             pathRects = self.__ComputePath(pic)
             for idxRect, rect in enumerate(pathRects):
                 if self.__progressHandler.IsAborted():
+                    self.ProcessAbort()
                     self.__progressHandler.Done()
                     return
 
@@ -232,4 +233,5 @@ class BaseRenderer(object):
     def Finalize(self):
         raise NotImplementedError()
     
-    
+    def ProcessAbort(self):
+        raise NotImplementedError()

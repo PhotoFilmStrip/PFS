@@ -84,3 +84,6 @@ class ShellScriptRenderer(BaseRenderer):
             fd.write(line)
             fd.write("\n")
         fd.close()
+
+    def ProcessAbort(self):
+        pass

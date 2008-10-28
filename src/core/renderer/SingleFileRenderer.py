@@ -107,3 +107,6 @@ class SingleFileRenderer(BaseRenderer):
     
     def Finalize(self):
         pass
+
+    def ProcessAbort(self):
+        pass
