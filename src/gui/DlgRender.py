@@ -371,9 +371,9 @@ class DlgRender(wx.Dialog, Observer):
         self.stSettingsHeader.SetFont(font)
         self.stOutputHeader.SetFont(font)
 
-        self.photoFilmStrip = photoFilmStrip
-        self.__renderingDone = False
+        self.__photoFilmStrip = photoFilmStrip
         self.__progressHandler = None
+        self.__renderEngine = None
         
         self.stTransDur.Enable(False)
         self.tcTransDuration.Enable(False)
@@ -474,8 +474,9 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = ProgressHandler()
         self.__progressHandler.AddObserver(self)
         
-        renderEngine = RenderEngine(renderer, self.__progressHandler)
-        thread.start_new_thread(renderEngine.Start, (self.photoFilmStrip.GetPictures(),))
+        self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
+        thread.start_new_thread(self.__renderEngine.Start, 
+                                (self.__photoFilmStrip.GetPictures(),))
 
     def OnCmdCancelButton(self, event):
         if self.__progressHandler:
@@ -532,6 +533,14 @@ class DlgRender(wx.Dialog, Observer):
 #        else:
 #            self.stProgress.SetLabel(_(u"all done"))
 
+        if self.__renderEngine and self.__renderEngine.GetErrorMessage():
+            dlg = wx.MessageDialog(self,
+                                   self.__renderEngine.GetErrorMessage(),
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+
         self.stProgress.SetLabel("")
         self.cmdClose.SetLabel(_(u"&Close"))
         self.cmdStart.Enable(True)
@@ -539,6 +548,7 @@ class DlgRender(wx.Dialog, Observer):
         self.pnlOutput.Enable(True)
 
         self.__progressHandler = None
+        self.__renderEngine    = None
         
     def __OnProgressInfo(self, info):
         self.stProgress.SetLabel(info)

@@ -18,7 +18,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import logging
 import os
 
 import wx
@@ -30,6 +29,7 @@ class RenderEngine(object):
         self.__aRenderer = aRenderer
         self.__profile = aRenderer.GetProfile()
         self.__progressHandler = progressHandler
+        self.__errorMsg = None
 
         self.__transDuration = 1.0
         
@@ -146,8 +146,12 @@ class RenderEngine(object):
         
         try:
             self.__Start(pics)
+            return True
         except Exception, err:
-            logging.error(str(err))
-        
-        self.__progressHandler.Done()
-                    
+            self.__errorMsg = str(err)
+            return False
+        finally:
+            self.__progressHandler.Done()
+
+    def GetErrorMessage(self):
+        return self.__errorMsg

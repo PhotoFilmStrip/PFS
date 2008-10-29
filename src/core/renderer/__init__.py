@@ -18,8 +18,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from core.renderer.MovieRenderer import MovieRenderer
+from core.renderer.MovieRenderer import MPEG2Renderer, MPEG4Renderer
 from core.renderer.ShellScriptRenderer import ShellScriptRenderer
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
-RENDERERS = [SingleFileRenderer, ShellScriptRenderer, MovieRenderer]
+RENDERERS = [SingleFileRenderer, ShellScriptRenderer, 
+             MPEG2Renderer, MPEG4Renderer]

@@ -39,10 +39,6 @@ class MovieRenderer(SingleFileRenderer):
         pass
 
     @staticmethod
-    def GetName():
-        return _(u"MPEG-Video")
-    
-    @staticmethod
     def GetProperties():
         return SingleFileRenderer.GetProperties() + ["Bitrate"]
 
@@ -58,6 +54,28 @@ class MovieRenderer(SingleFileRenderer):
         else:
             logging.getLogger('MovieRenderer').error("command '%s' returned exitcode: %d", cmd, exitCode)
     
+    def Finalize(self):
+        self._procPpmIn.communicate()
+        self._procEncoder.communicate()
+
+    def ProcessAbort(self):
+        self._procEncoder.stdin.close()
+        self._procPpmIn.stdin.close()
+
+
+class MPEG2Renderer(MovieRenderer):
+    
+    def __init__(self):
+        MovieRenderer.__init__(self)
+        
+    @staticmethod
+    def CheckDependencies():
+        pass
+
+    @staticmethod
+    def GetName():
+        return _(u"MPEG2-Video")
+    
     def Prepare(self):
         if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25:1"
@@ -67,36 +85,54 @@ class MovieRenderer(SingleFileRenderer):
             mode = "n"
             
         profs = ["VCD", "SVCD", "DVD"]
-        if self.PProfile.PName in profs:
-            cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
-                  'mpeg2enc -v 0 -M 3 ' \
-                           '-4 1 -2 1 -P -g 6 -G 18 ' \
-                           '-f %(profileIdx)d -a 3 ' \
-                           '-n %(mode)s ' \
-                           '-b %(bitrate)d ' \
-                           '-o %(path)s%(sep)soutput.m2v' % \
-                                {"path": self.GetOutputPath(),
-                                 "sep": os.sep,
-                                 "mode": mode,
-                                 'profile': self.PProfile.PName,
-                                 'profileIdx': profs.index(self.PProfile.PName) + 6,
-                                 "bitrate": self._bitrate}
-        else:
-            cmd = "mencoder -cache 1024 " \
-                  "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
-                  "-o %(path)s%(sep)soutput.avi -" % {'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'bitrate': self._bitrate}
+        if not self.PProfile.PName in profs:
+            raise RuntimeError('format not supported')
+        
+        cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
+              'mpeg2enc -v 0 -M 3 ' \
+                       '-4 1 -2 1 -P -g 6 -G 18 ' \
+                       '-f %(profileIdx)d -a 3 ' \
+                       '-n %(mode)s ' \
+                       '-b %(bitrate)d ' \
+                       '-o %(path)s%(sep)soutput.m2v' % \
+                            {"path": self.GetOutputPath(),
+                             "sep": os.sep,
+                             "mode": mode,
+                             'profile': self.PProfile.PName,
+                             'profileIdx': profs.index(self.PProfile.PName) + 6,
+                             "bitrate": self._bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, shell=True)
         self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
 
-    def Finalize(self):
-        self._procPpmIn.communicate()
-        self._procEncoder.communicate()
 
-    def ProcessAbort(self):
-        self._procEncoder.stdin.close()
-        self._procPpmIn.stdin.close()
-#        self.Finalize()
+class MPEG4Renderer(MovieRenderer):
+    
+    def __init__(self):
+        MovieRenderer.__init__(self)
+        
+    @staticmethod
+    def CheckDependencies():
+        pass
+
+    @staticmethod
+    def GetName():
+        return _(u"MPEG4-Video (XVid)")
+
+    def Prepare(self):
+        if self.PProfile.PVideoNorm == OutputProfile.PAL:
+            framerate = "25:1"
+        else:
+            framerate = "30000:1001"
+            
+        cmd = "mencoder -cache 1024 " \
+              "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
+              "-o %(path)s%(sep)soutput.avi -" % {'path': self.GetOutputPath(),
+                                                  'sep': os.sep,
+                                                  'bitrate': self._bitrate}
+
+        ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, shell=True)
+        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
+
