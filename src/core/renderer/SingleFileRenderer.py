@@ -48,7 +48,7 @@ class SingleFileRenderer(BaseRenderer):
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "UseResample":
-            return False
+            return True
         return BaseRenderer.GetDefaultProperty(prop)
 
     def Prepare(self):

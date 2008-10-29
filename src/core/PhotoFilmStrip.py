@@ -119,6 +119,3 @@ class PhotoFilmStrip(Observable):
             cur.execute(query, values)
         conn.commit()
         cur.close()
-        
-    def Render(self, renderer, path):
-        renderer.Start(self.GetPictures(), path)

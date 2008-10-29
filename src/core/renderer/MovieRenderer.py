@@ -21,6 +21,7 @@
 import os, logging
 from subprocess import Popen, PIPE
 
+from core.OutputProfile import OutputProfile
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 
@@ -58,8 +59,7 @@ class MovieRenderer(SingleFileRenderer):
             logging.getLogger('MovieRenderer').error("command '%s' returned exitcode: %d", cmd, exitCode)
     
     def Prepare(self):
-        fr = self.GetFrameRate()
-        if fr == 25.0:
+        if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25:1"
             mode = "p"
         else:
@@ -67,7 +67,7 @@ class MovieRenderer(SingleFileRenderer):
             mode = "n"
             
         profs = ["VCD", "SVCD", "DVD"]
-        if self.GetProfileName() in profs:
+        if self.PProfile.PName in profs:
             cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
                   'mpeg2enc -v 0 -M 3 ' \
                            '-4 1 -2 1 -P -g 6 -G 18 ' \
@@ -78,8 +78,8 @@ class MovieRenderer(SingleFileRenderer):
                                 {"path": self.GetOutputPath(),
                                  "sep": os.sep,
                                  "mode": mode,
-                                 'profile': self.GetProfileName(),
-                                 'profileIdx': profs.index(self.GetProfileName()) + 6,
+                                 'profile': self.PProfile.PName,
+                                 'profileIdx': profs.index(self.PProfile.PName) + 6,
                                  "bitrate": self._bitrate}
         else:
             cmd = "mencoder -cache 1024 " \
@@ -89,7 +89,7 @@ class MovieRenderer(SingleFileRenderer):
                                                       'bitrate': self._bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
-        self._procEncoder = Popen(cmd, stdin=PIPE, shell=True)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, shell=True)
         self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
 
     def Finalize(self):

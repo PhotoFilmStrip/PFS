@@ -27,7 +27,9 @@ import wx.lib.masked.timectrl
 import wx.lib.masked.textctrl
 
 
+from core.OutputProfile import OutputProfile
 from core.ProgressHandler import ProgressHandler
+from core.RenderEngine import RenderEngine
 from core.renderer import RENDERERS
 
 from lib.common.ObserverPattern import Observer
@@ -384,8 +386,8 @@ class DlgRender(wx.Dialog, Observer):
             self.choiceSize.Append(profile.PName, profile)
         self.choiceSize.SetSelection(settings.GetVideoSize())
         
-        self.choiceType.Append("PAL", 25.0)
-        self.choiceType.Append("NTSC", 30.0)
+        self.choiceType.Append("PAL", OutputProfile.PAL)
+        self.choiceType.Append("NTSC", OutputProfile.NTSC)
         self.choiceType.SetSelection(settings.GetVideoType())
         
         for rend in RENDERERS:
@@ -442,44 +444,38 @@ class DlgRender(wx.Dialog, Observer):
         if not self.__ValidateOutDir():
             return
         
+        profile = self.__GetChoiceDataSelected(self.choiceSize)
+        profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
+        path = self.tcOutputDir.GetValue()
+
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
+        renderer = rendererClass()
+        renderer.Init(profile, path)
+
+        propDict = {}
+        for prop in rendererClass.GetProperties():
+            if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
+                renderer.SetBitrate(profile.PBitrate)
+            else:
+                propDict[prop] = rendererClass.GetProperty(prop)
+
         settings = Settings()
         settings.SetVideoSize(self.choiceSize.GetSelection())
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
         settings.SetLastOutputPath(self.tcOutputDir.GetValue())
-        
-        frameRate = self.__GetChoiceDataSelected(self.choiceType)
-        profile = self.__GetChoiceDataSelected(self.choiceSize)
-        resolution = profile.PResPal if self.choiceType.GetSelection() == 0 else profile.PResNtsc
-        bitrate = profile.PBitrate
-
-        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
-        renderer = rendererClass()
-        renderer.SetProfileName(profile.PName)
-
-        propDict = {}
-        for prop in rendererClass.GetProperties():
-            if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
-                renderer.SetBitrate(bitrate)
-            else:
-                propDict[prop] = rendererClass.GetProperty(prop)
-
         settings.SetRenderProperties(rendererClass.__name__, propDict)
-        
-        renderer.SetFrameRate(frameRate)
-        renderer.SetResolution(resolution)
-        
-        self.__progressHandler = ProgressHandler()
-        self.__progressHandler.AddObserver(self)
-        renderer.SetProgressHandler(self.__progressHandler)
         
         self.cmdClose.SetLabel(_(u"&Cancel"))
         self.cmdStart.Enable(False)
         self.pnlSettings.Enable(False)
         self.pnlOutput.Enable(False)
         
-        path = self.tcOutputDir.GetValue()
-        thread.start_new_thread(self.photoFilmStrip.Render, (renderer, path))
+        self.__progressHandler = ProgressHandler()
+        self.__progressHandler.AddObserver(self)
+        
+        renderEngine = RenderEngine(renderer, self.__progressHandler)
+        thread.start_new_thread(renderEngine.Start, (self.photoFilmStrip.GetPictures(),))
 
     def OnCmdCancelButton(self, event):
         if self.__progressHandler:
