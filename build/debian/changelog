@@ -1,4 +1,27 @@
-photofilmstrip (0.73-1) unstable; urgency=low
+photofilmstrip (0.74-1) unstable; urgency=low
+
+  * 2008/10/31
+    added:
+     - subtitles are generated now
+     - MovieRenderer splitted up into Renderer for MPEG2 and MPEG4
+     - method factory in renderers to process abort signal
+     - each renderer gets his own value dictionary and it is saved in ini file
+     - output profiles in settings module configurable
+     - MPEG4 output for HD movies
+
+    changed:
+     - RenderEngine implements render logic
+     - Renderer classes only process instructions from RenderEnging
+     - using pipes to feed the mpegencoder
+     - mencoder reads data from pipe; no yuv file needed anymore
+     - Renderer dynamically loaded into render dialog
+
+    bugfix:
+     - progressbar improved
+     - typo
+     - CLI works again
+     - renderer properties saved correctly
+     - encoded output for VCD, SVCD and DVD corrected
 
   * 2008/10/22
     added:
@@ -40,5 +63,5 @@ photofilmstrip (0.73-1) unstable; urgency=low
   * 2008/10/11
     initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Mon, 20 Oct 2008 21:05:05 +0200
+ -- Jens Göpfert <jens@sg-dev.de>  Fri, 31 Oct 2008 17:16:19 +0100
 

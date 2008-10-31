@@ -8,6 +8,8 @@ Homepage: http://photostoryx.sourceforge.net
 
 Package: photofilmstrip
 Architecture: all
-Depends: python, python-wxgtk2.8, mjpegtools, imagemagick
-Description: PhotoFilmStrip creates animated slide shows.
- PhotoFilmStrip creates animated slide shows. 
+Depends: python, python-wxgtk2.8, mjpegtools, imagemagick, mencoder
+Description: PhotoFilmStrip creates movies out of your pictures in just 3 steps.
+ PhotoFilmStrip creates movies out of your pictures in just 3 steps. 
+ First select your photos, customize the motion path and render the video. 
+ There are several output possibilities for VCD, SVCD, DVD up to FULL-HD. 
