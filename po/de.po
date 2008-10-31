@@ -5,141 +5,150 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-10-22 20:48+CEST\n"
-"PO-Revision-Date: 2008-10-22 20:53+0100\n"
-"Last-Translator: Jens GÃ¶pfert <jens@sg-dev.de>\n"
+"POT-Creation-Date: 2008-10-31 16:53+CET\n"
+"PO-Revision-Date: 2008-10-31 16:54+0100\n"
+"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/cli/Main.py:73
+#: src/cli/Main.py:62
+#: src/cli/Main.py:174
+msgid "all done"
+msgstr "Fertig"
+
+#: src/cli/Main.py:64
+msgid "aborting..."
+msgstr "abbrechen..."
+
+#: src/cli/Main.py:79
 msgid "specifies the project file"
 msgstr "Angabe der Projektdatei"
 
-#: src/cli/Main.py:74
+#: src/cli/Main.py:80
 msgid "the path where to save the output files"
 msgstr "Pfad, in dem die Ausgabe gespeichert wird"
 
-#: src/cli/Main.py:75
-msgid "one of: VCD, SVCD, DVD, Medium, HD, FULL-HD"
-msgstr "VCD, SVCD, DVD, Medium, HD oder FULL-HD"
-
-#: src/cli/Main.py:77
-msgid "0=Single pictures, 1=Shellscript, 2=MPEG-Video (fast), 3=MPEG-Video (HQ)"
-msgstr "0=Einzelbilder, 1=Shellscript, 2=MPEG-Video (schnell), 3=MPEG-Video (HQ)"
-
-#: src/cli/Main.py:84
+#: src/cli/Main.py:91
 msgid "projectfile does not exist: %s"
 msgstr "Projektdatei nicht gefunden: %s"
 
-#: src/cli/Main.py:86
+#: src/cli/Main.py:95
 msgid "no projectfile specified!"
 msgstr "Keine Projektdatei angegeben!"
 
-#: src/cli/Main.py:95
+#: src/cli/Main.py:105
 #, fuzzy
 msgid "cannot create outputpath: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/cli/Main.py:97
+#: src/cli/Main.py:109
 msgid "no outputpath specified!"
 msgstr "Ausgabepfad erforderlich!"
 
-#: src/cli/Main.py:114
+#: src/cli/Main.py:115
+msgid "invalid profile specified: %s"
+msgstr "Ungültiges Profil: %s"
+
+#: src/cli/Main.py:126
 msgid "invalid videonorm specified: %s"
-msgstr "Videonorm ungÃ¼ltig: %s"
+msgstr "Videonorm ungültig: %s"
 
-#: src/cli/Main.py:119
+#: src/cli/Main.py:132
 msgid "invalid format specified: %s"
-msgstr "UngÃ¼ltiges Format: %s"
+msgstr "Ungültiges Format: %s"
 
-#: src/cli/Main.py:128
-#: src/gui/DlgRender.py:384
-msgid "Single pictures"
-msgstr "Einzelbilder"
-
-#: src/cli/Main.py:131
-#: src/gui/DlgRender.py:385
-#, fuzzy
-msgid "Single pictures (shellscript)"
-msgstr "Einzelbilder (Shellscript)"
-
-#: src/cli/Main.py:136
-#: src/gui/DlgRender.py:386
-msgid "MPEG-Video (fast)"
-msgstr "MPEG-Video (schnell)"
-
-#: src/cli/Main.py:144
-#: src/gui/DlgRender.py:387
-msgid "MPEG-Video (HQ; slow)"
-msgstr "MPEG-Video (HQ; langsam)"
-
-#: src/cli/Main.py:146
-msgid "invalid renderer specified: %s"
-msgstr "UngÃ¼ltiger Renderer: %s"
-
-#: src/cli/Main.py:160
+#: src/cli/Main.py:158
 msgid "processing project"
-msgstr "Verarbeite Projekt '%s'"
+msgstr "Verarbeite Projekt"
 
-#: src/cli/Main.py:161
+#: src/cli/Main.py:159
 msgid "using renderer"
 msgstr "Verwende Renderer"
 
-#: src/cli/Main.py:162
+#: src/cli/Main.py:160
 msgid "output format"
 msgstr "Ausgabeformat"
 
-#: src/cli/Main.py:163
+#: src/cli/Main.py:161
 msgid "framerate"
 msgstr "Bildrate"
 
-#: src/cli/Main.py:172
+#: src/cli/Main.py:169
 msgid "...aborted!"
 msgstr "...abgebrochen!"
 
-#: src/cli/Main.py:177
-msgid "all done"
-msgstr "Fertig"
+#: src/cli/Main.py:176
+msgid "Error: %s"
+msgstr "Fehler: %s"
 
-#: src/core/BaseRenderer.py:94
-msgid "initialize renderer"
-msgstr "Initialisiere"
+#: src/core/BaseRenderer.py:60
+msgid "Unknown property: %s"
+msgstr "Unbekannte Eigenschaft: %s"
 
-#: src/core/BaseRenderer.py:103
-msgid "processing image '%s'"
-msgstr "Verarbeite Bild '%s'"
-
-#: src/core/BaseRenderer.py:106
-msgid "prepare"
-msgstr "vorbereiten"
-
-#: src/core/BaseRenderer.py:121
-msgid "crop and resize"
-msgstr "Zuschneiden und GrÃ¶ÃŸe Ã¤ndern"
-
-#: src/core/BaseRenderer.py:142
-#: src/core/BaseRenderer.py:149
-#: src/core/BaseRenderer.py:155
-msgid "finalizing '%s'"
-msgstr "AbschlieÃŸen von '%s'"
-
-#: src/core/BaseRenderer.py:145
-msgid "calculating transition"
-msgstr "Berechne BildÃ¼bergang"
-
-#: src/core/BaseRenderer.py:158
-msgid "creating output..."
-msgstr "Ausgabe erstellen..."
+#: src/core/BaseRenderer.py:68
+msgid "<default>"
+msgstr "<standard>"
 
 #: src/core/ProgressHandler.py:31
 msgid "Please wait..."
 msgstr "Bitte warten"
+
+#: src/core/RenderEngine.py:80
+msgid "initialize renderer"
+msgstr "Initialisiere"
+
+#: src/core/RenderEngine.py:89
+msgid "processing image '%s'"
+msgstr "Verarbeite Bild '%s'"
+
+#: src/core/RenderEngine.py:92
+msgid "prepare"
+msgstr "vorbereiten"
+
+#: src/core/RenderEngine.py:106
+msgid "crop and resize"
+msgstr "Zuschneiden und Größe ändern"
+
+#: src/core/RenderEngine.py:127
+#: src/core/RenderEngine.py:134
+#: src/core/RenderEngine.py:140
+msgid "finalizing '%s'"
+msgstr "Abschließen von '%s'"
+
+#: src/core/RenderEngine.py:130
+msgid "calculating transition"
+msgstr "Berechne Bildübergang"
+
+#: src/core/RenderEngine.py:143
+msgid "creating output..."
+msgstr "Ausgabe erstellen..."
+
+#: src/core/RenderEngine.py:165
+msgid "generating subtitle"
+msgstr "generiere Untertitel"
+
+#: src/core/renderer/MovieRenderer.py:76
+msgid "MPEG2-Video"
+msgstr "MPEG2-Video"
+
+#: src/core/renderer/MovieRenderer.py:120
+msgid "MPEG4-Video (XVid)"
+msgstr "MPEG4-Video (XVid)"
+
+#: src/core/renderer/ShellScriptRenderer.py:35
+#, fuzzy
+msgid "Single pictures (shellscript)"
+msgstr "Einzelbilder (Shellscript)"
+
+#: src/core/renderer/SingleFileRenderer.py:42
+msgid "Single pictures"
+msgstr "Einzelbilder"
 
 #: src/gui/ActionManager.py:54
 msgid "&File"
@@ -178,6 +187,7 @@ msgid "Import Pictures"
 msgstr "Bilder importieren"
 
 #: src/gui/ActionManager.py:84
+#: src/gui/DlgRender.py:220
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
@@ -195,7 +205,7 @@ msgstr "Bild nach re&chts"
 
 #: src/gui/ActionManager.py:143
 msgid "&Remove Picture"
-msgstr "Bilder &entfernen"
+msgstr "Bild &entfernen"
 
 #: src/gui/ActionManager.py:148
 msgid "Rotate &clockwise"
@@ -213,89 +223,99 @@ msgstr "Bilder &importieren"
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
-#: src/gui/DlgRender.py:211
-msgid "Render photo filmstrip"
-msgstr "Filmstreifen erstellen"
+#: src/gui/DlgRender.py:169
+msgid "Property"
+msgstr "Eigenschaft"
 
-#: src/gui/DlgRender.py:214
+#: src/gui/DlgRender.py:171
+msgid "Value"
+msgstr "Wert"
+
+#: src/gui/DlgRender.py:224
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/gui/DlgRender.py:225
-msgid "Size:"
-msgstr "GrÃ¶ÃŸe:"
+#: src/gui/DlgRender.py:236
+msgid "Profile:"
+msgstr "Profil:"
 
-#: src/gui/DlgRender.py:237
+#: src/gui/DlgRender.py:248
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/gui/DlgRender.py:250
+#: src/gui/DlgRender.py:261
 msgid "Transition speed:"
-msgstr "BildÃ¼bergangsdauer:"
+msgstr "Bildübergangsdauer:"
 
-#: src/gui/DlgRender.py:264
+#: src/gui/DlgRender.py:274
 msgid "Sec."
 msgstr "Sek."
 
-#: src/gui/DlgRender.py:268
+#: src/gui/DlgRender.py:279
 msgid "Total length:"
-msgstr "GesamtlÃ¤nge:"
+msgstr "Gesamtlänge:"
 
 #: src/gui/DlgRender.py:283
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
-msgstr "Dauer der Einzelbilder durch diese GesamtlÃ¤nge Ã¼berschreiben."
+msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgRender.py:288
+#: src/gui/DlgRender.py:295
 msgid "Output"
 msgstr "Ausgabe"
 
-#: src/gui/DlgRender.py:300
+#: src/gui/DlgRender.py:307
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:308
+#: src/gui/DlgRender.py:324
 msgid "Output directory:"
 msgstr "Ausgabeordner:"
 
-#: src/gui/DlgRender.py:325
+#: src/gui/DlgRender.py:341
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:331
-#: src/gui/DlgRender.py:510
+#: src/gui/DlgRender.py:347
+#: src/gui/DlgRender.py:549
 msgid "&Close"
-msgstr "S&chlieÃŸen"
+msgstr "S&chließen"
 
-#: src/gui/DlgRender.py:402
-msgid "Output path does not exists! Do you want %s to create ist?"
+#: src/gui/DlgRender.py:411
+#, fuzzy
+msgid "Output path does not exists! Do you want %s to create it?"
 msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgRender.py:403
-#: src/gui/DlgRender.py:424
-#: src/gui/DlgRender.py:480
+#: src/gui/DlgRender.py:412
+#: src/gui/DlgRender.py:436
+#: src/gui/DlgRender.py:487
 #: src/gui/FrmMain.py:241
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgRender.py:412
+#: src/gui/DlgRender.py:421
 msgid "Cannot create direcotory: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/gui/DlgRender.py:413
+#: src/gui/DlgRender.py:422
+#: src/gui/DlgRender.py:543
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gui/DlgRender.py:423
+#: src/gui/DlgRender.py:435
 msgid "Output path is not empty! Use it anyway?"
 msgstr "Ausgabeordner nicht leer. Dennoch verwenden?"
 
-#: src/gui/DlgRender.py:468
+#: src/gui/DlgRender.py:471
 msgid "&Cancel"
 msgstr "&Abbrechen"
 
-#: src/gui/DlgRender.py:479
+#: src/gui/DlgRender.py:486
 msgid "Abort current process?"
 msgstr "Aktuellen Vorgang abbrechen?"
+
+#: src/gui/DlgRender.py:503
+msgid "Edit property"
+msgstr "Eigenschaft bearbeiten"
 
 #: src/gui/FrmMain.py:237
 msgid "Unnamed PhotoFilmStrip"
@@ -303,65 +323,85 @@ msgstr "Unbenannter PhotoFilmStrip"
 
 #: src/gui/FrmMain.py:240
 msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' wurde geÃ¤ndert. Ã„nderungen speichern?"
+msgstr "'%s' wurde geändert. Änderungen speichern?"
 
 #: src/gui/FrmMain.py:259
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:267
+#: src/gui/FrmMain.py:266
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:315
+#: src/gui/FrmMain.py:314
 msgid "Select %s-Project"
-msgstr "%s-Projekt auswÃ¤hlen"
+msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:317
-#: src/gui/FrmMain.py:353
+#: src/gui/FrmMain.py:316
+#: src/gui/FrmMain.py:352
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:350
+#: src/gui/FrmMain.py:349
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:370
+#: src/gui/FrmMain.py:369
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/FrmMain.py:372
+#: src/gui/FrmMain.py:371
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/FrmMain.py:507
+#: src/gui/FrmMain.py:506
 msgid "Help will be available soon."
-msgstr "Hilfe bald verfÃ¼gbar."
+msgstr "Hilfe bald verfügbar."
 
-#: src/gui/FrmMain.py:507
+#: src/gui/FrmMain.py:506
 msgid "Information"
 msgstr "Information"
 
-#: src/gui/PnlEditPicture.py:132
+#: src/gui/PnlEditPicture.py:114
 msgid "Rotation:"
 msgstr "Drehung:"
 
-#: src/gui/PnlEditPicture.py:152
+#: src/gui/PnlEditPicture.py:134
 msgid "Effect:"
 msgstr "Effekt:"
 
-#: src/gui/PnlEditPicture.py:162
+#: src/gui/PnlEditPicture.py:144
 msgid "Duartion (sec):"
 msgstr "Dauer (Sek):"
 
-#: src/gui/PnlEditPicture.py:252
+#: src/gui/PnlEditPicture.py:165
+msgid "Subtitle:"
+msgstr "Untertitel:"
+
+#: src/gui/PnlEditPicture.py:183
 msgid "No effect"
 msgstr "Kein Effekt"
 
-#: src/gui/PnlEditPicture.py:253
+#: src/gui/PnlEditPicture.py:184
 msgid "Black and White"
 msgstr "Schwarz-Weiss"
 
+#~ msgid "done"
+#~ msgstr "Fertig"
+#~ msgid "Render photo filmstrip"
+#~ msgstr "Filmstreifen erstellen"
+#~ msgid "one of: VCD, SVCD, DVD, Medium, HD, FULL-HD"
+#~ msgstr "VCD, SVCD, DVD, Medium, HD oder FULL-HD"
+#~ msgid ""
+#~ "0=Single pictures, 1=Shellscript, 2=MPEG-Video (fast), 3=MPEG-Video (HQ)"
+#~ msgstr ""
+#~ "0=Einzelbilder, 1=Shellscript, 2=MPEG-Video (schnell), 3=MPEG-Video (HQ)"
+#~ msgid "MPEG-Video (fast)"
+#~ msgstr "MPEG-Video (schnell)"
+#~ msgid "MPEG-Video (HQ; slow)"
+#~ msgstr "MPEG-Video (HQ; langsam)"
+#~ msgid "Size:"
+#~ msgstr "Größe:"
 #~ msgid "Render slideshow"
 #~ msgstr "Slideshow erstellen"
 #~ msgid "&Render Slideshow"

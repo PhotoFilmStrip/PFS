@@ -23,9 +23,10 @@
 
 def initLogging():
     import logging
+    from lib.Settings import Settings
     logging.basicConfig(level=logging.WARNING,
-                        format='%(asctime)s (%(levelname)s): %(message)s',
-                        datefmt='%d.%m.%Y %H:%M:%S')
+                        format='\n%(levelname)s: %(message)s',
+                        datefmt='')
 
 def initI18N():
     import os, gettext, locale

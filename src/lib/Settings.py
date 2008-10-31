@@ -99,16 +99,16 @@ class Settings(Singleton):
             return self.cp.get("General", "ImagePath")
         return ""
 
-    def SetVideoSize(self, size):
+    def SetLastProfile(self, profile):
         self.Load()
-        self.cp.set("General", "VideoSize", size)
+        self.cp.set("General", "LastProfile", profile)
         self.Save()
 
-    def GetVideoSize(self):
+    def GetLastProfile(self):
         self.Load()
-        if self.cp.has_option("General", "VideoSize"):
-            return self.cp.getint("General", "VideoSize")
-        return 3
+        if self.cp.has_option("General", "LastProfile"):
+            return self.cp.getint("General", "LastProfile")
+        return 0
 
     def SetVideoType(self, typ):
         self.Load()

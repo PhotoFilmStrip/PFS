@@ -61,7 +61,6 @@ class PhotoFilmStrip(Observable):
             pic.SetTargetRect(rect)
             pic.SetDuration(row["duration"])
             pic.SetComment(row["comment"])
-            pic.SetCommentAlignment(row["comment_align"])
             pic.SetRotation(row['rotation'])
             
             try:
@@ -77,13 +76,13 @@ class PhotoFilmStrip(Observable):
         query = "INSERT INTO `%s` (filename, " \
                                   "start_left, start_top, start_width, start_height, " \
                                   "target_left, target_top, target_width, target_height, " \
-                                  "rotation, duration, comment, comment_align, effect) " \
-                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
+                                  "rotation, duration, comment, effect) " \
+                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
 
         values =  (pic.GetFilename(), 
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
-                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetCommentAlignment(), pic.GetEffect())
+                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect())
         return query, values
 
     def __CreateSchema(self, conn):
@@ -100,7 +99,6 @@ class PhotoFilmStrip(Observable):
                                         "rotation INTEGER, " \
                                         "duration DOUBLE, " \
                                         "comment TEXT, " \
-                                        "comment_align INTEGER, "\
                                         "effect INTEGER, "\
                                         "data BLOB);\n"
         conn.executescript(query)

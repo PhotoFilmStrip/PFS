@@ -37,17 +37,17 @@ from lib.Settings import Settings
 
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBTOTALLENGTH, wxID_DLGRENDERCHOICEFORMAT, 
- wxID_DLGRENDERCHOICESIZE, wxID_DLGRENDERCHOICETYPE, 
+ wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
  wxID_DLGRENDERCMDBROWSEOUTPUTDIR, wxID_DLGRENDERCMDCLOSE, 
  wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERLCPROPS, 
  wxID_DLGRENDERPNLOUTPUT, wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSLOUTPUT, 
  wxID_DLGRENDERSLSETTINGS, wxID_DLGRENDERSPINBUTTONTRANSDUR, 
  wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTOUTPUTDIR, 
- wxID_DLGRENDERSTOUTPUTHEADER, wxID_DLGRENDERSTPROGRESS, 
- wxID_DLGRENDERSTSETTINGSHEADER, wxID_DLGRENDERSTSIZE, 
- wxID_DLGRENDERSTSIZEDESCR,  
- wxID_DLGRENDERSTTRANSDUR, wxID_DLGRENDERSTTRANSDURDESCR, 
- wxID_DLGRENDERSTTYPE, wxID_DLGRENDERSTTYPEDESCR, wxID_DLGRENDERTCOUTPUTDIR, 
+ wxID_DLGRENDERSTOUTPUTHEADER, wxID_DLGRENDERSTPROFILE, 
+ wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTSETTINGSHEADER, 
+ wxID_DLGRENDERSTSIZEDESCR, wxID_DLGRENDERSTTRANSDUR, 
+ wxID_DLGRENDERSTTRANSDURDESCR, wxID_DLGRENDERSTTYPE, 
+ wxID_DLGRENDERSTTYPEDESCR, wxID_DLGRENDERTCOUTPUTDIR, 
  wxID_DLGRENDERTCTRANSDURATION, wxID_DLGRENDERTIMECTRLTOTALLENGTH, 
 ] = [wx.NewId() for _init_ctrls in range(30)]
 
@@ -56,9 +56,9 @@ class DlgRender(wx.Dialog, Observer):
     def _init_coll_sizerSettingsCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stSize, 0, border=0,
+        parent.AddWindow(self.stProfile, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceSize, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.stSizeDescr, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.stType, 0, border=0,
@@ -217,7 +217,7 @@ class DlgRender(wx.Dialog, Observer):
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE,
-              title=_(u'Render photo filmstrip'))
+              title=_(u'Render filmstrip'))
 
         self.stSettingsHeader = wx.StaticText(id=wxID_DLGRENDERSTSETTINGSHEADER,
               label=_(u'Settings'), name=u'stSettingsHeader', parent=self,
@@ -231,13 +231,14 @@ class DlgRender(wx.Dialog, Observer):
               name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.stSize = wx.StaticText(id=wxID_DLGRENDERSTSIZE, label=_(u'Size:'),
-              name=u'stSize', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+        self.stProfile = wx.StaticText(id=wxID_DLGRENDERSTPROFILE,
+              label=_(u'Profile:'), name=u'stProfile', parent=self.pnlSettings,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.choiceSize = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICESIZE,
-              name=u'choiceSize', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+        self.choiceProfile = wx.Choice(choices=[],
+              id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
+              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
+              -1), style=0)
 
         self.stSizeDescr = wx.StaticText(id=wxID_DLGRENDERSTSIZEDESCR,
               label=u'', name=u'stSizeDescr', parent=self.pnlSettings,
@@ -314,9 +315,9 @@ class DlgRender(wx.Dialog, Observer):
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERLCPROPS, name=u'lcProps',
               parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.LC_REPORT | wx.SUNKEN_BORDER)
+        self._init_coll_lcProps_Columns(self.lcProps)
         self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
               id=wxID_DLGRENDERLCPROPS)
-        self._init_coll_lcProps_Columns(self.lcProps)
 
         self.stOutputDir = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTDIR,
               label=_(u'Output directory:'), name=u'stOutputDir',
@@ -383,8 +384,8 @@ class DlgRender(wx.Dialog, Observer):
         settings = Settings()
         
         for profile in settings.GetOutputProfiles():
-            self.choiceSize.Append(profile.PName, profile)
-        self.choiceSize.SetSelection(settings.GetVideoSize())
+            self.choiceProfile.Append(profile.PName, profile)
+        self.choiceProfile.SetSelection(settings.GetLastProfile())
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
@@ -406,7 +407,7 @@ class DlgRender(wx.Dialog, Observer):
         path = self.tcOutputDir.GetValue()
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Output path does not exists! Do you want %s to create ist?") % Settings.APP_NAME, 
+                                   _(u"Output path does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
                                    _(u"Question"),
                                    wx.YES_NO | wx.ICON_QUESTION)
             resp = dlg.ShowModal()
@@ -444,7 +445,7 @@ class DlgRender(wx.Dialog, Observer):
         if not self.__ValidateOutDir():
             return
         
-        profile = self.__GetChoiceDataSelected(self.choiceSize)
+        profile = self.__GetChoiceDataSelected(self.choiceProfile)
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
         path = self.tcOutputDir.GetValue()
 
@@ -460,7 +461,7 @@ class DlgRender(wx.Dialog, Observer):
                 propDict[prop] = rendererClass.GetProperty(prop)
 
         settings = Settings()
-        settings.SetVideoSize(self.choiceSize.GetSelection())
+        settings.SetLastProfile(self.choiceProfile.GetSelection())
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
         settings.SetLastOutputPath(self.tcOutputDir.GetValue())
@@ -515,6 +516,8 @@ class DlgRender(wx.Dialog, Observer):
         for prop in data.GetProperties():
             value = savedProps.get(prop.lower(), data.GetProperty(prop))
             self.lcProps.Append([prop, value])
+            
+            data.SetProperty(prop, value)
         
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, ProgressHandler):

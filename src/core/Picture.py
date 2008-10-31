@@ -25,13 +25,6 @@ from lib.common.ObserverPattern import Observable
 
 class Picture(Observable):
     
-    COMMENT_LEFT = 1
-    COMMENT_CENTER = 2
-    COMMENT_RIGHT = 4
-    COMMENT_BOTTOM = 8
-    COMMENT_MIDDLE = 16
-    COMMENT_TOP = 32
-    
     EFFECT_NONE = 0
     EFFECT_BLACK_WHITE = 1
     
@@ -47,7 +40,6 @@ class Picture(Observable):
         self._duration = 7.0
         self._rotation = 0
         self._comment = u""
-        self._commentAlignment = Picture.COMMENT_BOTTOM | Picture.COMMENT_CENTER
         self._effect = Picture.EFFECT_NONE
         
     def GetFilename(self):
@@ -84,16 +76,6 @@ class Picture(Observable):
         self.Notify('comment')
     def GetComment(self):
         return self._comment
-    
-    def SetCommentAlignment(self, alignment):
-        if alignment is None:
-            alignment = Picture.COMMENT_CENTER | Picture.COMMENT_BOTTOM
-        if alignment == self._commentAlignment:
-            return
-        self._commentAlignment = alignment
-        self.Notify('alignment')
-    def GetCommentAlignment(self):
-        return self._commentAlignment
     
     def SetEffect(self, effect):
         if effect == self._effect:

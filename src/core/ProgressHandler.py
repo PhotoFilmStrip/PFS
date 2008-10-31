@@ -57,6 +57,8 @@ class ProgressHandler(Observable):
             self.Notify('info')
         
     def Done(self):
+        self.__currProgress = self.__maxProgress
+        self.Notify('currentProgress')
         self.Notify('done')
 
     def Abort(self):

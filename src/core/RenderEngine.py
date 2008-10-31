@@ -22,6 +22,8 @@ import os
 
 import wx
 
+from core.Subtitle import SubtitleSrt
+
 
 class RenderEngine(object):
     
@@ -67,12 +69,18 @@ class RenderEngine(object):
             
             pathRects.append(rect)
         return pathRects
+    
+    def __GetTransCount(self):
+        """
+        returns the number of pictures needed for the transition
+        """
+        return int(self.__transDuration * self.__profile.PFramerate)
 
     def __Start(self, pics):
         self.__progressHandler.SetInfo(_(u"initialize renderer"))
         self.__aRenderer.Prepare()
         
-        TRANS_COUNT = int(self.__transDuration * self.__profile.PFramerate)
+        TRANS_COUNT = self.__GetTransCount()
 
         filesBefore = None
         filesCurrent = None
@@ -94,12 +102,10 @@ class RenderEngine(object):
                     self.__progressHandler.Done()
                     return
 
-                self.__progressHandler.Step()
-                
-                self.__progressHandler.SetInfo(u"%s - %s (%d/%d)" % (infoText, 
-                                                                     _(u"crop and resize"),
-                                                                     idxRect,
-                                                                     len(pathRects)))
+                self.__progressHandler.Step(u"%s - %s (%d/%d)" % (infoText, 
+                                                                  _(u"crop and resize"),
+                                                                  idxRect,
+                                                                  len(pathRects)))
                 filename = self.__aRenderer.ProcessCropAndResize(preparedResult,
                                                                  rect, 
                                                                  self.__profile.PResolution)
@@ -118,33 +124,49 @@ class RenderEngine(object):
                 del filesCurrent[:TRANS_COUNT]
                 
                 for filename in filesBefore:
-                    self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
+                    self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
                     self.__aRenderer.ProcessFinalize(filename)
                 
-                self.__progressHandler.SetInfo(_(u"calculating transition"))
+                self.__progressHandler.Step(_(u"calculating transition"))
                 files = self.__aRenderer.ProcessTransition(filesTransFrom, filesTransTo)
                 
                 for filename in files:
-                    self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
+                    self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
                     self.__aRenderer.ProcessFinalize(filename)
 
                 filesBefore = filesCurrent
         
         for filename in filesCurrent:
-            self.__progressHandler.SetInfo(_(u"finalizing '%s'") % (os.path.basename(filename)))
+            self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
             self.__aRenderer.ProcessFinalize(filename)
                     
         self.__progressHandler.SetInfo(_(u"creating output..."))
         self.__aRenderer.Finalize()
         
     def Start(self, pics):
+        generateSubtitle = False
         count = 0
         for pic in pics:
-            count += (pic.GetDuration() + self.__transDuration) * self.__profile.PFramerate
+            picCount = (pic.GetDuration() + self.__transDuration) * self.__profile.PFramerate 
+            # every single picture to process
+            count += int(picCount)
+            
+            # every single picture subtracted by half the pictures of the transition to finalize  
+            count += int(picCount) - (self.__GetTransCount() / 2)
+
+            if pic.GetComment():
+                generateSubtitle = True
+                count += 1
 
         self.__progressHandler.SetMaxProgress(int(count))
         
         try:
+            if generateSubtitle:
+                self.__progressHandler.SetInfo(_(u"generating subtitle"))
+                st = SubtitleSrt(self.__aRenderer.POutputPath)
+                st.Start(pics)
+                self.__progressHandler.Step()
+            
             self.__Start(pics)
             return True
         except Exception, err:

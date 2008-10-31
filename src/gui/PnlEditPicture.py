@@ -27,15 +27,12 @@ from gui.util.FloatValidator import FloatValidator
 
 
 [wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT, 
- wxID_PNLEDITPICTURECMDALIGNBOTTOM, wxID_PNLEDITPICTURECMDALIGNCENTER, 
- wxID_PNLEDITPICTURECMDALIGNLEFT, wxID_PNLEDITPICTURECMDALIGNMIDDLE, 
- wxID_PNLEDITPICTURECMDALIGNRIGHT, wxID_PNLEDITPICTURECMDALIGNTOP, 
  wxID_PNLEDITPICTURECMDROTATELEFT, wxID_PNLEDITPICTURECMDROTATERIGHT, 
- wxID_PNLEDITPICTURECMDSELECTFONT, wxID_PNLEDITPICTURESPINBUTTONDURATION, 
- wxID_PNLEDITPICTURESTATICLINE1, wxID_PNLEDITPICTURESTDURATION, 
- wxID_PNLEDITPICTURESTEFFECT, wxID_PNLEDITPICTURESTROTATION, 
+ wxID_PNLEDITPICTURESPINBUTTONDURATION, wxID_PNLEDITPICTURESTATICLINE1, 
+ wxID_PNLEDITPICTURESTDURATION, wxID_PNLEDITPICTURESTEFFECT, 
+ wxID_PNLEDITPICTURESTROTATION, wxID_PNLEDITPICTURESTSUBTITLE, 
  wxID_PNLEDITPICTURETCCOMMENT, wxID_PNLEDITPICTURETCDURATION, 
-] = [wx.NewId() for _init_ctrls in range(18)]
+] = [wx.NewId() for _init_ctrls in range(12)]
 
 
 class PnlEditPicture(wx.Panel):
@@ -74,7 +71,7 @@ class PnlEditPicture(wx.Panel):
     def _init_coll_sizerRight_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSizer(self.sizerFontTools, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.tcComment, 1, border=0, flag=wx.EXPAND)
 
@@ -85,19 +82,6 @@ class PnlEditPicture(wx.Panel):
         parent.AddStretchSpacer(1)
         parent.AddWindow(self.cmdRotateRight, 0, border=0, flag=0)
 
-    def _init_coll_sizerFontTools_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.cmdSelectFont, 0, border=0, flag=0)
-        parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdAlignLeft, 0, border=0, flag=0)
-        parent.AddWindow(self.cmdAlignCenter, 0, border=0, flag=0)
-        parent.AddWindow(self.cmdAlignRight, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdAlignTop, 0, border=0, flag=0)
-        parent.AddWindow(self.cmdAlignMiddle, 0, border=0, flag=0)
-        parent.AddWindow(self.cmdAlignBottom, 0, border=0, flag=0)
-
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.HORIZONTAL)
@@ -105,8 +89,6 @@ class PnlEditPicture(wx.Panel):
         self.sizerLeft = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
 
         self.sizerRight = wx.BoxSizer(orient=wx.VERTICAL)
-
-        self.sizerFontTools = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self.spinSizer = wx.BoxSizer(orient=wx.HORIZONTAL)
 
@@ -116,7 +98,6 @@ class PnlEditPicture(wx.Panel):
         self._init_coll_sizerLeft_Items(self.sizerLeft)
         self._init_coll_sizerLeft_Growables(self.sizerLeft)
         self._init_coll_sizerRight_Items(self.sizerRight)
-        self._init_coll_sizerFontTools_Items(self.sizerFontTools)
         self._init_coll_spinSizer_Items(self.spinSizer)
         self._init_coll_sizerRotationTools_Items(self.sizerRotationTools)
 
@@ -125,8 +106,9 @@ class PnlEditPicture(wx.Panel):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name=u'PnlEditPicture',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, 150),
+              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
+        self.SetClientSize(wx.Size(687, 192))
 
         self.stRotation = wx.StaticText(id=wxID_PNLEDITPICTURESTROTATION,
               label=_(u'Rotation:'), name=u'stRotation', parent=self,
@@ -149,8 +131,8 @@ class PnlEditPicture(wx.Panel):
               id=wxID_PNLEDITPICTURECMDROTATERIGHT)
 
         self.stEffect = wx.StaticText(id=wxID_PNLEDITPICTURESTEFFECT,
-              label=_(u'Effect:'), name=u'stEffect', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+              label=_(u'Effect:'), name=u'stEffect', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceEffect = wx.Choice(choices=[],
               id=wxID_PNLEDITPICTURECHOICEEFFECT, name=u'choiceEffect',
@@ -165,7 +147,8 @@ class PnlEditPicture(wx.Panel):
         self.tcDuration = wx.TextCtrl(id=wxID_PNLEDITPICTURETCDURATION,
               name=u'tcDuration', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0, value=u'5.0')
-        self.tcDuration.Bind(wx.EVT_KILL_FOCUS, self.OnTextCtrlDurationKillFocus,
+        self.tcDuration.Bind(wx.EVT_KILL_FOCUS,
+              self.OnTextCtrlDurationKillFocus,
               id=wxID_PNLEDITPICTURETCDURATION)
 
         self.spinButtonDuration = wx.SpinButton(id=wxID_PNLEDITPICTURESPINBUTTONDURATION,
@@ -178,61 +161,9 @@ class PnlEditPicture(wx.Panel):
               name='staticLine1', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
 
-        self.cmdSelectFont = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_HELP_SETTINGS',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDSELECTFONT, name=u'cmdSelectFont',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdSelectFont.Bind(wx.EVT_BUTTON, self.OnCmdSelectFontButton,
-              id=wxID_PNLEDITPICTURECMDSELECTFONT)
-
-        self.cmdAlignLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_LEFT',
-              wx.ART_OTHER, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNLEFT, name=u'cmdAlignLeft',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignLeft.Bind(wx.EVT_BUTTON, self.OnCmdAlignLeftButton,
-              id=wxID_PNLEDITPICTURECMDALIGNLEFT)
-
-        self.cmdAlignCenter = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_CENTER',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNCENTER, name=u'cmdAlignCenter',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignCenter.Bind(wx.EVT_BUTTON, self.OnCmdAlignCenterButton,
-              id=wxID_PNLEDITPICTURECMDALIGNCENTER)
-
-        self.cmdAlignRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_RIGHT',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNRIGHT, name=u'cmdAlignRight',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignRight.Bind(wx.EVT_BUTTON, self.OnCmdAlignRightButton,
-              id=wxID_PNLEDITPICTURECMDALIGNRIGHT)
-
-        self.cmdAlignTop = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_TOP',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNTOP, name=u'cmdAlignTop',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignTop.Bind(wx.EVT_BUTTON, self.OnCmdAlignTopButton,
-              id=wxID_PNLEDITPICTURECMDALIGNTOP)
-
-        self.cmdAlignMiddle = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_MIDDLE',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNMIDDLE, name=u'cmdAlignMiddle',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignMiddle.Bind(wx.EVT_BUTTON, self.OnCmdAlignMiddleButton,
-              id=wxID_PNLEDITPICTURECMDALIGNMIDDLE)
-
-        self.cmdAlignBottom = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_ALIGN_BOTTOM',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_PNLEDITPICTURECMDALIGNBOTTOM, name=u'cmdAlignBottom',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdAlignBottom.Bind(wx.EVT_BUTTON, self.OnCmdAlignBottomButton,
-              id=wxID_PNLEDITPICTURECMDALIGNBOTTOM)
+        self.stSubtitle = wx.StaticText(id=wxID_PNLEDITPICTURESTSUBTITLE,
+              label=_(u'Subtitle:'), name=u'stSubtitle', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcComment = wx.TextCtrl(id=wxID_PNLEDITPICTURETCCOMMENT,
               name=u'tcComment', parent=self, pos=wx.Point(-1, -1),
@@ -271,27 +202,6 @@ class PnlEditPicture(wx.Panel):
 
     def OnChoiceEffectChoice(self, event):
         self._picture.SetEffect(event.GetClientData())
-        event.Skip()
-
-    def OnCmdSelectFontButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignBottomButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignMiddleButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignLeftButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignCenterButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignRightButton(self, event):
-        event.Skip()
-
-    def OnCmdAlignTopButton(self, event):
         event.Skip()
 
     def OnSpinButtonDurationSpin(self, event):

@@ -59,8 +59,7 @@ class MovieRenderer(SingleFileRenderer):
         self._procEncoder.communicate()
 
     def ProcessAbort(self):
-        self._procEncoder.stdin.close()
-        self._procPpmIn.stdin.close()
+        self.Finalize()
 
 
 class MPEG2Renderer(MovieRenderer):
@@ -103,7 +102,7 @@ class MPEG2Renderer(MovieRenderer):
                              "bitrate": self._bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, shell=True)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
         self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
 
 

@@ -261,12 +261,11 @@ class FrmMain(wx.Frame, Observer):
         totalTime = 0
         for pic in pics:
             totalTime += pic.GetDuration()
-
         minutes = totalTime / 60
         seconds = totalTime % 60
         self.statusBar.SetStatusText("%s: %02d:%02d" % (_(u"Duration"), 
-                                                    minutes, 
-                                                    seconds), 2)
+                                                        minutes, 
+                                                        seconds), 2)
 
     def __NewProject(self, askSaving=True):
         if askSaving and not self.__CheckAndAskSaving():
