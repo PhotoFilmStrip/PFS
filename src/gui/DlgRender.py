@@ -366,6 +366,7 @@ class DlgRender(wx.Dialog, Observer):
     def __init__(self, parent, photoFilmStrip):
         self._init_ctrls(parent)
         self.tcOutputDir.SetMinSize(wx.Size(400, -1))
+        self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         font = self.stSettingsHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
@@ -529,12 +530,14 @@ class DlgRender(wx.Dialog, Observer):
                 wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
             elif arg == 'done':
                 wx.CallAfter(self.__OnDone)
+            elif arg == 'aborting':
+                wx.CallAfter(self.__OnDone)
 
     def __OnDone(self):
-#        if self.__progressHandler.IsAborted():
-#            self.stProgress.SetLabel(_(u"aborted"))
-#        else:
-#            self.stProgress.SetLabel(_(u"all done"))
+        if self.__progressHandler.IsAborted():
+            self.stProgress.SetLabel(_(u"aborted"))
+        else:
+            self.stProgress.SetLabel(_(u"all done"))
 
         if self.__renderEngine and self.__renderEngine.GetErrorMessage():
             dlg = wx.MessageDialog(self,
@@ -544,7 +547,6 @@ class DlgRender(wx.Dialog, Observer):
             dlg.ShowModal()
             dlg.Destroy()
 
-        self.stProgress.SetLabel("")
         self.cmdClose.SetLabel(_(u"&Close"))
         self.cmdStart.Enable(True)
         self.pnlSettings.Enable(True)
@@ -552,6 +554,7 @@ class DlgRender(wx.Dialog, Observer):
 
         self.__progressHandler = None
         self.__renderEngine    = None
+        self.Layout()
         
     def __OnProgressInfo(self, info):
         self.stProgress.SetLabel(info)
