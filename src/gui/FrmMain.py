@@ -162,6 +162,12 @@ class FrmMain(wx.Frame, Observer):
         iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_48", wx.ART_OTHER))
         self.SetIcons(iconBundle)
         
+        self.listView.SetDropTarget(ImageDropTarget(self))
+        
+        pdt = ProjectDropTarget(self)
+        self.bitmapLeft.SetDropTarget(pdt)
+        self.bitmapRight.SetDropTarget(pdt)
+        
         self.statusBar = wx.StatusBar(self)
         self.statusBar.SetFieldsCount(3)
         self.SetStatusBar(self.statusBar)
@@ -209,10 +215,10 @@ class FrmMain(wx.Frame, Observer):
 
         self.__currentProject = ""
         
-        self.OnProjectNew(None)
+        self.NewProject(False)
         
     def OnClose(self, event):
-        if self.__CheckAndAskSaving():
+        if self.CheckAndAskSaving():
             self.Destroy()
 
     def OnAbout(self, event):
@@ -230,85 +236,11 @@ class FrmMain(wx.Frame, Observer):
 
         wx.AboutBox(info)
         
-    def __CheckAndAskSaving(self):
-        if self.actionManager.CanSave():
-            name = self.__currentProject
-            if not name:
-                name = _("Unnamed PhotoFilmStrip")
-                
-            dlg = wx.MessageDialog(self,
-                                   _(u"'%s' has been modified. Save changes?") % name, 
-                                   _(u"Question"),
-                                   wx.YES_NO | wx.CANCEL | wx.ICON_QUESTION)
-            response = dlg.ShowModal()
-            dlg.Destroy()
-            
-            if response == wx.ID_CANCEL:
-                return False
-            elif response == wx.ID_YES and not self.OnProjectSave(None):
-                return False
-        return True
-
     def OnProjectNew(self, event):
-        self.__NewProject()
+        self.NewProject()
         
-    def __UpdateStatusText(self):
-        pics = self.listView.GetPyDataList()
-
-        imgCount = len(pics)
-        self.statusBar.SetStatusText("%s: %d" % (_(u"Images"), imgCount), 1)
-        
-        totalTime = 0
-        for pic in pics:
-            totalTime += pic.GetDuration()
-        minutes = totalTime / 60
-        seconds = totalTime % 60
-        self.statusBar.SetStatusText("%s: %02d:%02d" % (_(u"Duration"), 
-                                                        minutes, 
-                                                        seconds), 2)
-
-    def __NewProject(self, askSaving=True):
-        if askSaving and not self.__CheckAndAskSaving():
-            return
-
-        self._imageList.RemoveAll()
-        self.listView.DeleteAllItems()
-        self.bitmapLeft.SetBitmap(None)
-        self.bitmapRight.SetBitmap(None)
-
-        self.cmdMoveLeft.Enable(False)
-        self.cmdMoveRight.Enable(False)
-        self.cmdRemove.Enable(False)
-        self.pnlEditPicture.Enable(False)
-
-        self.actionManager.OnPictureSelected(False)
-        self.actionManager.OnProjectChanged(False)
-        self.actionManager.OnProjectReady(False)
-
-        self.SetTitle(Settings.APP_NAME)
-        self.__currentProject = ""
-        self.__UpdateStatusText()
-        
-    def __LoadProject(self, filepath):
-        self.__NewProject(False)
-        
-        self.actionManager.AddFileToHistory(filepath)
-        
-        photoFilmStrip = PhotoFilmStrip()
-        photoFilmStrip.Load(filepath)
-        pics = photoFilmStrip.GetPictures()
-        
-        self._InsertPictures(pics)
-
-        self.__currentProject = filepath
-        self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
-        self.actionManager.OnProjectChanged(False)
-        self.actionManager.OnProjectReady(True)
-        
-        Settings().SetProjectPath(os.path.dirname(filepath))
-    
     def OnProjectLoad(self, event):
-        if not self.__CheckAndAskSaving():
+        if not self.CheckAndAskSaving():
             return
 
         dlg = wx.FileDialog(self, _(u"Select %s-Project") % Settings.APP_NAME, 
@@ -316,32 +248,19 @@ class FrmMain(wx.Frame, Observer):
                             Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
-            self.__LoadProject(dlg.GetPath())
+            self.LoadProject(dlg.GetPath())
             
     def OnProjectLoadFileHistory(self, event):
-        if not self.__CheckAndAskSaving():
+        if not self.CheckAndAskSaving():
             return
 
         fileNum = event.GetId() - wx.ID_FILE1
         path = self.actionManager.GetHistoryFile(fileNum)
-        self.__LoadProject(path)
+        self.LoadProject(path)
         
-    def __SaveProject(self, filepath):
-        pics = self.listView.GetPyDataList()
-        photoFilmStrip = PhotoFilmStrip()
-        photoFilmStrip.SetPictures(pics)
-        photoFilmStrip.Save(filepath)
-        
-        self.actionManager.AddFileToHistory(filepath)
-        
-        self.__currentProject = filepath
-        self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
-        self.actionManager.OnProjectChanged(False)
-        return True
-    
     def OnProjectSave(self, event):
         if self.__currentProject:
-            return self.__SaveProject(self.__currentProject)
+            return self.SaveProject(self.__currentProject)
         else:
             return self.OnProjectSaveAs(event)
 
@@ -355,7 +274,7 @@ class FrmMain(wx.Frame, Observer):
             filepath = dlg.GetPath()
             if os.path.splitext(filepath)[1].lower() != ".pfs":
                 filepath += ".pfs"
-            return self.__SaveProject(filepath)
+            return self.SaveProject(filepath)
         return False
 
     def OnRenderFilmstrip(self, event):
@@ -376,8 +295,7 @@ class FrmMain(wx.Frame, Observer):
                 pic = Picture(path)
                 pics.append(pic)
             
-            self._InsertPictures(pics)
-            self.actionManager.OnProjectChanged(True)
+            self.InsertPictures(pics)
             
             Settings().SetImagePath(os.path.dirname(path))
 
@@ -421,26 +339,6 @@ class FrmMain(wx.Frame, Observer):
         else:
             pic.SetTargetRect(self.bitmapRight.GetSection())
 
-    def _InsertPictures(self, pics):
-        count = self.listView.GetItemCount()
-        for idx, pic in enumerate(pics):
-            path = pic.GetFilename()
-            imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
-            itm = self.listView.InsertStringItem(sys.maxint, 
-                                                 os.path.basename(path))
-            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 80, 10))
-            self.listView.SetItemImage(itm, imgIdx)
-            self.listView.SetPyData(itm, pic)
-
-            pic.AddObserver(self)
-        
-        if self.listView.GetSelectedItemCount() == 0:
-            self.listView.Select(0)
-        
-        self.__UpdateStatusText()
-        self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
-        self.actionManager.OnProjectChanged(True)
-
     def OnCmdMoveLeftButton(self, event):
         selItem = self.listView.GetFirstSelected()
         pic = self.listView.GetPyData(selItem)
@@ -481,11 +379,124 @@ class FrmMain(wx.Frame, Observer):
         if self.listView.GetItemCount() == 0:
             self.pnlEditPicture.SetPicture(None)
         
-        self.__UpdateStatusText()
+        self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
         self.actionManager.OnPictureSelected(self.listView.GetSelectedItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
+
+    def OnHelp(self, event):
+        wx.MessageBox(_(u"Help will be available soon."), _(u"Information"))
+
+    def CheckAndAskSaving(self):
+        if self.actionManager.CanSave():
+            name = self.__currentProject
+            if not name:
+                name = _(u"Unnamed PhotoFilmStrip")
+                
+            dlg = wx.MessageDialog(self,
+                                   _(u"'%s' has been modified. Save changes?") % name, 
+                                   _(u"Question"),
+                                   wx.YES_NO | wx.CANCEL | wx.ICON_QUESTION)
+            response = dlg.ShowModal()
+            dlg.Destroy()
+            
+            if response == wx.ID_CANCEL:
+                return False
+            elif response == wx.ID_YES and not self.OnProjectSave(None):
+                return False
+        return True
+
+    def UpdateStatusText(self):
+        pics = self.listView.GetPyDataList()
+
+        imgCount = len(pics)
+        self.statusBar.SetStatusText("%s: %d" % (_(u"Images"), imgCount), 1)
+        
+        totalTime = 0
+        for pic in pics:
+            totalTime += pic.GetDuration()
+        minutes = totalTime / 60
+        seconds = totalTime % 60
+        self.statusBar.SetStatusText("%s: %02d:%02d" % (_(u"Duration"), 
+                                                        minutes, 
+                                                        seconds), 2)
+
+    def NewProject(self, askSaving=True):
+        if askSaving and not self.CheckAndAskSaving():
+            return
+
+        self._imageList.RemoveAll()
+        self.listView.DeleteAllItems()
+        self.bitmapLeft.SetBitmap(None)
+        self.bitmapRight.SetBitmap(None)
+
+        self.cmdMoveLeft.Enable(False)
+        self.cmdMoveRight.Enable(False)
+        self.cmdRemove.Enable(False)
+        self.pnlEditPicture.Enable(False)
+
+        self.actionManager.OnPictureSelected(False)
+        self.actionManager.OnProjectChanged(False)
+        self.actionManager.OnProjectReady(False)
+
+        self.SetTitle(Settings.APP_NAME)
+        self.__currentProject = ""
+        self.UpdateStatusText()
+        
+    def LoadProject(self, filepath):
+        self.NewProject(False)
+        
+        self.actionManager.AddFileToHistory(filepath)
+        
+        photoFilmStrip = PhotoFilmStrip()
+        photoFilmStrip.Load(filepath)
+        pics = photoFilmStrip.GetPictures()
+        
+        self.InsertPictures(pics)
+
+        self.__currentProject = filepath
+        self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
+        self.actionManager.OnProjectChanged(False)
+        self.actionManager.OnProjectReady(True)
+        
+        Settings().SetProjectPath(os.path.dirname(filepath))
+    
+    def SaveProject(self, filepath):
+        pics = self.listView.GetPyDataList()
+        photoFilmStrip = PhotoFilmStrip()
+        photoFilmStrip.SetPictures(pics)
+        photoFilmStrip.Save(filepath)
+        
+        self.actionManager.AddFileToHistory(filepath)
+        
+        self.__currentProject = filepath
+        self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
+        self.actionManager.OnProjectChanged(False)
+        return True
+    
+    def InsertPictures(self, pics, position=None):
+        if position is None:
+            position = sys.maxint
+        
+        count = self.listView.GetItemCount()
+        for idx, pic in enumerate(pics):
+            path = pic.GetFilename()
+            imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
+            itm = self.listView.InsertStringItem(position, 
+                                                 os.path.basename(path))
+#            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 80, 10))
+            self.listView.SetItemImage(itm, imgIdx)
+            self.listView.SetPyData(itm, pic)
+
+            pic.AddObserver(self)
+        
+        if self.listView.GetSelectedItemCount() == 0:
+            self.listView.Select(0)
+        
+        self.UpdateStatusText()
+        self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
+        self.actionManager.OnProjectChanged(True)
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
@@ -498,9 +509,47 @@ class FrmMain(wx.Frame, Observer):
                 self.listView.SetItemImage(item, imgIdx)
             
             if arg == 'duration':
-                self.__UpdateStatusText()
+                self.UpdateStatusText()
              
             self.actionManager.OnProjectChanged(True)
 
-    def OnHelp(self, event):
-        wx.MessageBox(_(u"Help will be available soon."), _(u"Information"))
+        
+class ImageDropTarget(wx.FileDropTarget):
+    def __init__(self, frmMain):
+        wx.FileDropTarget.__init__(self)
+        self.frmMain = frmMain
+
+    def OnDropFiles(self, x, y, filenames):
+        itm = self.frmMain.listView.HitTest((x, y))[0]
+        
+        pics = [] 
+        for path in filenames:
+            ext = os.path.splitext(path)[1].lower()
+            if ext in ['.jpg', '.jpeg', '.png', '.bmp']:
+                pic = Picture(path)
+                pics.append(pic)
+
+        if pics:
+            self.frmMain.InsertPictures(pics, itm + 1 if itm != wx.NOT_FOUND else None)
+            return True
+        return False
+    
+
+class ProjectDropTarget(wx.FileDropTarget):
+    def __init__(self, frmMain):
+        wx.FileDropTarget.__init__(self)
+        self.frmMain = frmMain
+
+    def OnDropFiles(self, x, y, filenames):
+        if len(filenames) == 1:
+            path = filenames[0]
+            ext = os.path.splitext(path)[1].lower()
+            if ext == '.pfs':
+
+                if not self.frmMain.CheckAndAskSaving():
+                    return False
+
+                self.frmMain.LoadProject(path)
+                return True
+
+        return False

@@ -18,6 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import sys
+
 import wx
 
 
@@ -34,6 +36,9 @@ class PhotoFilmStripApp(wx.App):
         frame.Show()
         frame.Maximize()
         self.SetTopWindow(frame)
+        
+        if len(sys.argv) > 1:
+            frame.LoadProject(sys.argv[1])
 
         return True
 
