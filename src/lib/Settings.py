@@ -29,7 +29,7 @@ from core.OutputProfile import DEFAULT_PROFILES
 class Settings(Singleton):
     
     APP_NAME = u"PhotoFilmStrip"
-    APP_VERSION = "0.74"
+    APP_VERSION = "0.75"
     
     def Init(self):
         self.filename = os.path.join(os.path.expanduser("~"), '.%s' % Settings.APP_NAME)

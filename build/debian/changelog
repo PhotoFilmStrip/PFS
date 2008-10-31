@@ -1,4 +1,4 @@
-photofilmstrip (0.74-1) unstable; urgency=low
+photofilmstrip (0.75-1) unstable; urgency=low
 
   * 2008/10/31
     added:
@@ -8,6 +8,8 @@ photofilmstrip (0.74-1) unstable; urgency=low
      - each renderer gets his own value dictionary and it is saved in ini file
      - output profiles in settings module configurable
      - MPEG4 output for HD movies
+     - drag and drop accepts images and project files
+     - GUI opens project from command line argument
 
     changed:
      - RenderEngine implements render logic
@@ -63,5 +65,5 @@ photofilmstrip (0.74-1) unstable; urgency=low
   * 2008/10/11
     initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Fri, 31 Oct 2008 17:16:19 +0100
+ -- Jens Göpfert <jens@sg-dev.de>  Fri, 31 Oct 2008 23:22:12 +0100
 
