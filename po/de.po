@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-10-31 16:53+CET\n"
-"PO-Revision-Date: 2008-10-31 16:54+0100\n"
+"POT-Creation-Date: 2008-11-01 17:23+CET\n"
+"PO-Revision-Date: 2008-11-01 17:23+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 
 #: src/cli/Main.py:62
 #: src/cli/Main.py:174
+#: src/gui/DlgRender.py:607
 msgid "all done"
 msgstr "Fertig"
 
@@ -80,6 +81,7 @@ msgid "framerate"
 msgstr "Bildrate"
 
 #: src/cli/Main.py:169
+#: src/gui/DlgRender.py:605
 msgid "...aborted!"
 msgstr "...abgebrochen!"
 
@@ -133,11 +135,11 @@ msgstr "Ausgabe erstellen..."
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
-#: src/core/renderer/MovieRenderer.py:76
+#: src/core/renderer/MovieRenderer.py:84
 msgid "MPEG2-Video"
 msgstr "MPEG2-Video"
 
-#: src/core/renderer/MovieRenderer.py:120
+#: src/core/renderer/MovieRenderer.py:132
 msgid "MPEG4-Video (XVid)"
 msgstr "MPEG4-Video (XVid)"
 
@@ -187,7 +189,7 @@ msgid "Import Pictures"
 msgstr "Bilder importieren"
 
 #: src/gui/ActionManager.py:84
-#: src/gui/DlgRender.py:220
+#: src/gui/DlgRender.py:241
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
@@ -223,144 +225,165 @@ msgstr "Bilder &importieren"
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
-#: src/gui/DlgRender.py:169
+#: src/gui/DlgRender.py:188
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: src/gui/DlgRender.py:171
+#: src/gui/DlgRender.py:190
 msgid "Value"
 msgstr "Wert"
 
-#: src/gui/DlgRender.py:224
+#: src/gui/DlgRender.py:245
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/gui/DlgRender.py:236
+#: src/gui/DlgRender.py:257
 msgid "Profile:"
 msgstr "Profil:"
 
-#: src/gui/DlgRender.py:248
+#: src/gui/DlgRender.py:269
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/gui/DlgRender.py:261
+#: src/gui/DlgRender.py:282
 msgid "Transition speed:"
 msgstr "Bildübergangsdauer:"
 
-#: src/gui/DlgRender.py:274
+#: src/gui/DlgRender.py:295
 msgid "Sec."
 msgstr "Sek."
 
-#: src/gui/DlgRender.py:279
+#: src/gui/DlgRender.py:299
 msgid "Total length:"
 msgstr "Gesamtlänge:"
 
-#: src/gui/DlgRender.py:283
+#: src/gui/DlgRender.py:303
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgRender.py:295
+#: src/gui/DlgRender.py:315
+msgid "User defined:"
+msgstr "Manuell:"
+
+#: src/gui/DlgRender.py:323
+msgid "Audio file:"
+msgstr "Audiodatei:"
+
+#: src/gui/DlgRender.py:347
 msgid "Output"
 msgstr "Ausgabe"
 
-#: src/gui/DlgRender.py:307
+#: src/gui/DlgRender.py:359
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgRender.py:376
 msgid "Output directory:"
 msgstr "Ausgabeordner:"
 
-#: src/gui/DlgRender.py:341
+#: src/gui/DlgRender.py:393
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:347
-#: src/gui/DlgRender.py:549
+#: src/gui/DlgRender.py:399
+#: src/gui/DlgRender.py:617
 msgid "&Close"
 msgstr "S&chließen"
 
-#: src/gui/DlgRender.py:411
+#: src/gui/DlgRender.py:481
 #, fuzzy
 msgid "Output path does not exists! Do you want %s to create it?"
 msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgRender.py:412
-#: src/gui/DlgRender.py:436
-#: src/gui/DlgRender.py:487
-#: src/gui/FrmMain.py:241
+#: src/gui/DlgRender.py:482
+#: src/gui/DlgRender.py:506
+#: src/gui/DlgRender.py:557
+#: src/gui/FrmMain.py:400
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgRender.py:421
+#: src/gui/DlgRender.py:491
 msgid "Cannot create direcotory: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/gui/DlgRender.py:422
-#: src/gui/DlgRender.py:543
+#: src/gui/DlgRender.py:492
+#: src/gui/DlgRender.py:612
+#: src/gui/DlgRender.py:672
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gui/DlgRender.py:435
+#: src/gui/DlgRender.py:505
 msgid "Output path is not empty! Use it anyway?"
 msgstr "Ausgabeordner nicht leer. Dennoch verwenden?"
 
-#: src/gui/DlgRender.py:471
+#: src/gui/DlgRender.py:541
 msgid "&Cancel"
 msgstr "&Abbrechen"
 
-#: src/gui/DlgRender.py:486
+#: src/gui/DlgRender.py:556
 msgid "Abort current process?"
 msgstr "Aktuellen Vorgang abbrechen?"
 
-#: src/gui/DlgRender.py:503
+#: src/gui/DlgRender.py:570
 msgid "Edit property"
 msgstr "Eigenschaft bearbeiten"
 
-#: src/gui/FrmMain.py:237
-msgid "Unnamed PhotoFilmStrip"
-msgstr "Unbenannter PhotoFilmStrip"
+#: src/gui/DlgRender.py:652
+msgid "Select music"
+msgstr "Audiodatei auswählen"
 
-#: src/gui/FrmMain.py:240
-msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' wurde geändert. Änderungen speichern?"
+#: src/gui/DlgRender.py:654
+msgid "Audiofiles"
+msgstr "Audiodateien"
 
-#: src/gui/FrmMain.py:259
-msgid "Images"
-msgstr "Bilder"
+#: src/gui/DlgRender.py:671
+msgid "Invalid audio file!"
+msgstr "Ungültige Audio-Datei"
 
-#: src/gui/FrmMain.py:266
-msgid "Duration"
-msgstr "Dauer"
-
-#: src/gui/FrmMain.py:314
+#: src/gui/FrmMain.py:246
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:316
-#: src/gui/FrmMain.py:352
+#: src/gui/FrmMain.py:248
+#: src/gui/FrmMain.py:271
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:349
+#: src/gui/FrmMain.py:268
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:369
+#: src/gui/FrmMain.py:288
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/FrmMain.py:371
+#: src/gui/FrmMain.py:290
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/FrmMain.py:506
+#: src/gui/FrmMain.py:390
 msgid "Help will be available soon."
 msgstr "Hilfe bald verfügbar."
 
-#: src/gui/FrmMain.py:506
+#: src/gui/FrmMain.py:390
 msgid "Information"
 msgstr "Information"
+
+#: src/gui/FrmMain.py:396
+msgid "Unnamed PhotoFilmStrip"
+msgstr "Unbenannter PhotoFilmStrip"
+
+#: src/gui/FrmMain.py:399
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' wurde geändert. Änderungen speichern?"
+
+#: src/gui/FrmMain.py:415
+msgid "Images"
+msgstr "Bilder"
+
+#: src/gui/FrmMain.py:422
+msgid "Duration"
+msgstr "Dauer"
 
 #: src/gui/PnlEditPicture.py:114
 msgid "Rotation:"
@@ -386,6 +409,9 @@ msgstr "Kein Effekt"
 msgid "Black and White"
 msgstr "Schwarz-Weiss"
 
+#, fuzzy
+#~ msgid "aborted"
+#~ msgstr "...abgebrochen!"
 #~ msgid "done"
 #~ msgstr "Fertig"
 #~ msgid "Render photo filmstrip"
