@@ -546,9 +546,17 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = ProgressHandler()
         self.__progressHandler.AddObserver(self)
         
+        totalLength = None
+        if self.cbTotalLength.GetValue():
+            totalLength = 0.0
+            dateTime = self.timeCtrlTotalLength.GetValue(as_wxDateTime=True)
+            totalLength += dateTime.GetHour() * 3600
+            totalLength += dateTime.GetMinute() * 60
+            totalLength += dateTime.GetSecond()
+        
         self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
         thread.start_new_thread(self.__renderEngine.Start, 
-                                (self.__photoFilmStrip.GetPictures(),))
+                                (self.__photoFilmStrip.GetPictures(), totalLength))
 
     def OnCmdCancelButton(self, event):
         if self.__progressHandler:

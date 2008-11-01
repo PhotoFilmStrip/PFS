@@ -4,10 +4,11 @@ import os
 
 class SubtitleSrt(object):
     
-    def __init__(self, outputPath):
+    def __init__(self, outputPath, factor=1.0):
         self.__outputPath = outputPath
         self.__index = 0
         self.__curTime = 0.0
+        self.__factor = factor
         
     def __FormatTime(self, totalSecs):
         minutes = int(totalSecs) / 60
@@ -16,9 +17,12 @@ class SubtitleSrt(object):
         frac = int((totalSecs - int(totalSecs)) * 1000)
         return "%02d:%02d:%02d,%03d" % (hours, minutes, seconds, frac)
     
+    def __GetPicDuration(self, pic):
+        return pic.GetDuration() * self.__factor
+    
     def __ProcessPic(self, pic):
         start = self.__FormatTime(self.__curTime + 0.5)
-        end   = self.__FormatTime(self.__curTime + pic.GetDuration() - 0.5)
+        end   = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic) - 0.5)
         
         result = "%(idx)d\n" \
                  "%(start)s --> %(end)s\n" \
@@ -39,7 +43,7 @@ class SubtitleSrt(object):
             data = self.__ProcessPic(pic)
             fd.write(data)
             
-            self.__curTime += pic.GetDuration()
+            self.__curTime += self.__GetPicDuration(pic)
             
         fd.close()
         

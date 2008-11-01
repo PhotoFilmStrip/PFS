@@ -34,6 +34,7 @@ class RenderEngine(object):
         self.__errorMsg = None
 
         self.__transDuration = 1.0
+        self.__picCountFactor = 1.0
         
     def __ComputePath(self, pic):
         px1, py1 = pic.GetStartRect().GetPosition().Get()
@@ -48,7 +49,7 @@ class RenderEngine(object):
         cx2 = (w2 / 2.0) + px2
         cy2 = (h2 / 2.0) + py2
         
-        pics = (pic.GetDuration() + self.__transDuration) * self.__profile.PFramerate
+        pics = self.__GetPicCount(pic)
         
         dx = (cx2 - cx1) / pics
         dy = (cy2 - cy1) / pics
@@ -69,6 +70,13 @@ class RenderEngine(object):
             
             pathRects.append(rect)
         return pathRects
+    
+    def __GetPicCount(self, pic):
+        """
+        returns the number of pictures
+        """
+        return ((pic.GetDuration() * self.__profile.PFramerate) * self.__picCountFactor) + \
+               (self.__transDuration * self.__profile.PFramerate)
     
     def __GetTransCount(self):
         """
@@ -143,11 +151,18 @@ class RenderEngine(object):
         self.__progressHandler.SetInfo(_(u"creating output..."))
         self.__aRenderer.Finalize()
         
-    def Start(self, pics):
+    def Start(self, pics, targetLengthSecs=None):
         generateSubtitle = False
+        
+        if targetLengthSecs is not None:
+            totalSecs = 0
+            for pic in pics:
+                totalSecs += pic.GetDuration()
+            self.__picCountFactor = targetLengthSecs / totalSecs
+            
         count = 0
         for pic in pics:
-            picCount = (pic.GetDuration() + self.__transDuration) * self.__profile.PFramerate 
+            picCount = self.__GetPicCount(pic)
             # every single picture to process
             count += int(picCount)
             
@@ -163,7 +178,7 @@ class RenderEngine(object):
         try:
             if generateSubtitle:
                 self.__progressHandler.SetInfo(_(u"generating subtitle"))
-                st = SubtitleSrt(self.__aRenderer.POutputPath)
+                st = SubtitleSrt(self.__aRenderer.POutputPath, self.__picCountFactor)
                 st.Start(pics)
                 self.__progressHandler.Step()
             
