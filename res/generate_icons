@@ -7,8 +7,9 @@
 #img2py -a -c -u -n ALIGN_CENTER icons/align_center.png images.py
 #img2py -a -c -u -n ALIGN_RIGHT icons/align_right.png images.py
 
-img2py -a -c -u -n ICON_32 icons/photofilmstrip_32.png images.py
-img2py -a -c -u -n ICON_48 icons/photofilmstrip_48.png images.py
+img2py -f -c -u -n PLAY_PAUSE icons/play_pause.png images.py
+img2py -f -a -c -u -n ICON_32 icons/photofilmstrip_32.png images.py
+img2py -f -a -c -u -n ICON_48 icons/photofilmstrip_48.png images.py
 
 mv images.py ../src/res/
 

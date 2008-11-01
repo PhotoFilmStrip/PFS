@@ -298,6 +298,7 @@ class FrmMain(wx.Frame, Observer):
             self.InsertPictures(pics)
             
             Settings().SetImagePath(os.path.dirname(path))
+        dlg.Destroy()
 
     def OnListViewListItemSelected(self, event):
         item = event.GetIndex()

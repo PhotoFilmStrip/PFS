@@ -19,6 +19,32 @@ class ImageClass:
 
 
 #----------------------------------------------------------------------
+def getPLAY_PAUSEData():
+    return \
+'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x18\x00\x00\x00\x18\x08\x06\
+\x00\x00\x00\xe0w=\xf8\x00\x00\x00\x04sBIT\x08\x08\x08\x08|\x08d\x88\x00\x00\
+\x00\x80IDATH\x89\xed\xd5\xc1\n\xc0 \x08\x06`\xb5\xf7\x7fdu\xa7A[\xcef\xd3KL\
+\xd8!\xa8\xff\x13\x17\x84H\r*\x8bJ\xd3\xf7\x01TX#\x87\xfa\xfd*\xac\xe7g\xad\
+\xc9:\x94Y\x97\x11U \xc3?\x98!*\xacH\r\x97\x817H\xa4\x1eoQ\x16\xe2^\xd3;\x12\
+\x1d\xcf\x14\xb0\x90hM\x81h\xc7!\xa0\x0f_\x19\x8f\x0b|\xed\xdc\x05\xb2\xc2M\
+\xc0\n_\x1d\xcf\x00dv>\x00\x15\xe1\x00\x00\xf8?\x99\xfb\x03\x07\x9c\xc5L\x03\
+2\xe4\xb2\x05\x00\x00\x00\x00IEND\xaeB`\x82' 
+
+def getPLAY_PAUSEBitmap():
+    return BitmapFromImage(getPLAY_PAUSEImage())
+
+def getPLAY_PAUSEImage():
+    stream = cStringIO.StringIO(getPLAY_PAUSEData())
+    return ImageFromStream(stream)
+
+index.append('PLAY_PAUSE')
+catalog['PLAY_PAUSE'] = ImageClass()
+catalog['PLAY_PAUSE'].GetData = getPLAY_PAUSEData
+catalog['PLAY_PAUSE'].GetImage = getPLAY_PAUSEImage
+catalog['PLAY_PAUSE'].GetBitmap = getPLAY_PAUSEBitmap
+
+
+#----------------------------------------------------------------------
 def getICON_32Data():
     return \
 '\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\x00\x00 \x08\x02\x00\

@@ -99,6 +99,17 @@ class Settings(Singleton):
             return self.cp.get("General", "ImagePath")
         return ""
 
+    def SetAudioPath(self, path):
+        self.Load()
+        self.cp.set("General", "AudioPath", path)
+        self.Save()
+
+    def GetAudioPath(self):
+        self.Load()
+        if self.cp.has_option("General", "AudioPath"):
+            return self.cp.get("General", "AudioPath")
+        return ""
+
     def SetLastProfile(self, profile):
         self.Load()
         self.cp.set("General", "LastProfile", profile)
