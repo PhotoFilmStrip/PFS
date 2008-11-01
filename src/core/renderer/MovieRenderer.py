@@ -31,6 +31,10 @@ class MovieRenderer(SingleFileRenderer):
         SingleFileRenderer.__init__(self)
         self._bitrate = 2000
         
+        self._ppmErr = None
+        self._encOut = None
+        self._encErr = None
+        
         self._procPpmIn   = None
         self._procEncoder = None
         
@@ -58,6 +62,10 @@ class MovieRenderer(SingleFileRenderer):
         self._procPpmIn.communicate()
         self._procEncoder.communicate()
 
+        for log in [self._ppmErr, self._encOut, self._encErr]:
+            if log:
+                log.close()
+        
     def ProcessAbort(self):
         self.Finalize()
 
@@ -76,6 +84,10 @@ class MPEG2Renderer(MovieRenderer):
         return _(u"MPEG2-Video")
     
     def Prepare(self):
+        self._ppmErr = open(os.path.join(self.GetOutputPath(), "ppmtoy4m_err.log"), 'w')
+        self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
+        self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
+
         if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25:1"
             mode = "p"
@@ -102,8 +114,8 @@ class MPEG2Renderer(MovieRenderer):
                              "bitrate": self._bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
-        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, stderr=self._ppmErr, shell=True)
 
 
 class MPEG4Renderer(MovieRenderer):
@@ -120,6 +132,10 @@ class MPEG4Renderer(MovieRenderer):
         return _(u"MPEG4-Video (XVid)")
 
     def Prepare(self):
+        self._ppmErr = open(os.path.join(self.GetOutputPath(), "ppmtoy4m_err.log"), 'w')
+        self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
+        self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
+        
         if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25:1"
         else:
@@ -132,6 +148,6 @@ class MPEG4Renderer(MovieRenderer):
                                                   'bitrate': self._bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=PIPE, shell=True)
-        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, shell=True)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, stderr=self._ppmErr, shell=True)
 

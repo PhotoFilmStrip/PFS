@@ -46,13 +46,15 @@ class ProgressHandler(Observable):
     def GetInfo(self):
         return self.__info    
     def SetInfo(self, info):
+        if self.__isAborted:
+            return
         self.__info = info
         self.Notify('info')
     
     def Step(self, info=""):
         self.__currProgress += 1
         self.Notify('currentProgress')
-        if info:
+        if info and not self.__isAborted:
             self.__info = info
             self.Notify('info')
         

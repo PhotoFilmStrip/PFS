@@ -601,7 +601,7 @@ class DlgRender(wx.Dialog, Observer):
                 wx.CallAfter(self.__OnDone)
 
     def __OnDone(self):
-        if self.__progressHandler.IsAborted():
+        if self.__progressHandler and self.__progressHandler.IsAborted():
             self.stProgress.SetLabel(_(u"aborted"))
         else:
             self.stProgress.SetLabel(_(u"all done"))
