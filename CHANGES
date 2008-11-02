@@ -1,3 +1,20 @@
+2009/11/02
+
+added:
+ - total length adjustable in dialog
+ - total length can be set to length of an audio clip
+ - specified total length applied when rendering a filmstrip
+ - drag and drop accepts images and project files
+ - GUI opens project from command line argument
+
+changed:
+ - Internationalization
+
+bugfix:
+ - command line tools (ppmtoy4m, mencoder) sends output to logfiles, because pipe buffer is limited
+ - aborting processed correctly
+
+
 2008/10/31
 
 added:

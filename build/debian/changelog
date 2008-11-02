@@ -1,5 +1,20 @@
 photofilmstrip (0.75-1) unstable; urgency=low
 
+  * 2008/11/02
+    added:
+     - total length adjustable in dialog
+     - total length can be set to length of an audio clip
+     - specified total length applied when rendering a filmstrip
+     - drag and drop accepts images and project files
+     - GUI opens project from command line argument
+
+    changed:
+     - Internationalization
+
+    bugfix:
+     - command line tools (ppmtoy4m, mencoder) sends output to logfiles, because pipe buffer is limited
+     - aborting processed correctly
+
   * 2008/10/31
     added:
      - subtitles are generated now
@@ -65,5 +80,5 @@ photofilmstrip (0.75-1) unstable; urgency=low
   * 2008/10/11
     initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Fri, 31 Oct 2008 23:22:12 +0100
+ -- Jens Göpfert <jens@sg-dev.de>  Sun, 02 Nov 2008 19:04:15 +0100
 
