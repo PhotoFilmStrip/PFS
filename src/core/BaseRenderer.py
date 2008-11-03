@@ -35,6 +35,7 @@ class BaseRenderer(object):
     def __init__(self):
         self._outputPath = None
         self._profile = None
+        self._audioFile = None
 
     def Init(self, profile, outputPath):
         self._outputPath = outputPath
@@ -67,6 +68,12 @@ class BaseRenderer(object):
     def GetDefaultProperty(prop):
         return _(u"<default>")
     
+    def SetAudioFile(self, audioFile):
+        self._audioFile = audioFile
+    def GetAudioFile(self):
+        return self._audioFile
+    PAudioFile = property(GetAudioFile, SetAudioFile)
+        
     def GetOutputPath(self):
         return self._outputPath
     POutputPath = property(GetOutputPath)
@@ -95,4 +102,3 @@ class BaseRenderer(object):
     
     def ProcessAbort(self):
         raise NotImplementedError()
-    

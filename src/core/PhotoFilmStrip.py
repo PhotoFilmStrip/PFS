@@ -25,6 +25,7 @@ import sqlite3
 from lib.common.ObserverPattern import Observable
 
 from core.Picture import Picture, DummyPicture
+from core.ProgressHandler import ProgressHandler
 
 
 class PhotoFilmStrip(Observable):
@@ -33,28 +34,55 @@ class PhotoFilmStrip(Observable):
         Observable.__init__(self)
         
         self.__pictures = []
+        self.__uiHandler = UserInteractionHandler()
+        self.__progressHandler = ProgressHandler()
         
     def GetPictures(self):
         return self.__pictures
     
     def SetPictures(self, picList):
         self.__pictures = picList
+        
+    def SetUserInteractionHandler(self, uiHdl):
+        self.__uiHandler = uiHdl
+        
+    def SetProgressHandler(self, progressHandler):
+        self.__progressHandler = progressHandler
     
     def Load(self, filename):
+        if not os.path.isfile(filename):
+            return False
         conn = sqlite3.connect(filename, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = conn.cursor()
         cur.row_factory = sqlite3.Row
         cur.execute("select * from `picture`")
         resultSet = cur.fetchall()
         
+        self.__progressHandler.SetMaxProgress(len(resultSet))
+        
         import wx
         picList = []
+        altPaths = {}
         for row in resultSet:
-            if os.path.exists(row["filename"]):
-                pic = Picture(row["filename"])
+            imgFile = row["filename"]
+            imgPath =os.path.dirname(imgFile)
+            self.__progressHandler.Step(_(u"Loading '%s' ...") % (os.path.basename(imgFile)))
+            
+            if not os.path.exists(imgPath):
+                if altPaths.has_key(imgPath):
+                    altPath = altPaths[imgPath]
+                else:
+                    altPath = self.__uiHandler.GetAltPath(imgPath)
+                    altPaths[imgPath] = altPath
+                    
+                imgFile = os.path.join(altPaths[imgPath], os.path.basename(imgFile))
+            
+            if os.path.isfile(imgFile):
+                pic = Picture(imgFile)
             else:
-                logging.warn("Imagefile '%s' not found:", row["filename"])
+                logging.warn("Imagefile '%s' not found:", imgFile)
                 pic = DummyPicture(row["filename"])
+            
             rect = wx.Rect(row["start_left"], row["start_top"], row["start_width"], row["start_height"])
             pic.SetStartRect(rect)
             rect = wx.Rect(row["target_left"], row["target_top"], row["target_width"], row["target_height"])
@@ -71,6 +99,8 @@ class PhotoFilmStrip(Observable):
         
         cur.close()
         self.__pictures = picList
+        
+        return True
         
     def __PicToQuery(self, tableName, pic):
         query = "INSERT INTO `%s` (filename, " \
@@ -117,3 +147,10 @@ class PhotoFilmStrip(Observable):
             cur.execute(query, values)
         conn.commit()
         cur.close()
+
+
+class UserInteractionHandler(object):
+    
+    def GetAltPath(self, imgPath):
+        return imgPath
+    

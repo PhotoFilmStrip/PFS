@@ -29,7 +29,6 @@ class MovieRenderer(SingleFileRenderer):
     
     def __init__(self):
         SingleFileRenderer.__init__(self)
-        self._bitrate = 2000
         
         self._ppmErr = None
         self._encOut = None
@@ -46,9 +45,6 @@ class MovieRenderer(SingleFileRenderer):
     def GetProperties():
         return SingleFileRenderer.GetProperties() + ["Bitrate"]
 
-    def SetBitrate(self, bitrate):
-        self._bitrate = bitrate
-
     def ProcessFinalize(self, filename):
         cmd = 'convert ppm:"%s" - ' % (filename)
         conv = Popen(cmd, stdout=self._procPpmIn.stdin, shell=True)
@@ -58,7 +54,7 @@ class MovieRenderer(SingleFileRenderer):
         else:
             logging.getLogger('MovieRenderer').error("command '%s' returned exitcode: %d", cmd, exitCode)
     
-    def Finalize(self):
+    def _CleanUp(self):
         self._procPpmIn.communicate()
         self._procEncoder.communicate()
 
@@ -67,7 +63,7 @@ class MovieRenderer(SingleFileRenderer):
                 log.close()
         
     def ProcessAbort(self):
-        self.Finalize()
+        self._CleanUp()
 
 
 class MPEG2Renderer(MovieRenderer):
@@ -99,23 +95,54 @@ class MPEG2Renderer(MovieRenderer):
         if not self.PProfile.PName in profs:
             raise RuntimeError('format not supported')
         
+        if MPEG2Renderer.GetProperty("Bitrate") == MPEG2Renderer.GetDefaultProperty("Bitrate"):
+            bitrate = self.PProfile.PBitrate
+        else:
+            bitrate = MPEG2Renderer.GetProperty("Bitrate")
+
+#                       '-4 1 -2 1 -P -g 6 -G 18 ' \
         cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
               'mpeg2enc -v 0 -M 3 ' \
-                       '-4 1 -2 1 -P -g 6 -G 18 ' \
                        '-f %(profileIdx)d -a 3 ' \
                        '-n %(mode)s ' \
                        '-b %(bitrate)d ' \
-                       '-o %(path)s%(sep)soutput.m2v' % \
+                       '-o \"%(path)s%(sep)soutput.m2v\"' % \
                             {"path": self.GetOutputPath(),
                              "sep": os.sep,
                              "mode": mode,
                              'profile': self.PProfile.PName,
                              'profileIdx': profs.index(self.PProfile.PName) + 6,
-                             "bitrate": self._bitrate}
+                             "bitrate": bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
         self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, stderr=self._ppmErr, shell=True)
+
+    def Finalize(self):
+        self._CleanUp()
+
+        if self.PAudioFile is None:
+            return
+        
+#        cmd = "mpg123 -s \"%s\"" % (self.PAudioFile)
+##        cmd = "mplayer -ao pcm:file=Zieldatei.wav Quelldatei.rm"
+##        cmd = "lame --decode Beispiel.mp3 Beispiel.wav" 
+#        print cmd
+#        os.system(cmd)
+#        
+#        cmd = "mp2enc -r 48000 -o \"%(path)s%(sep)saudio.mp2\" < \"%(path)s%(sep)saudio.wav\"" % \
+#                        {"path": self.GetOutputPath(),
+#                         "sep": os.sep}
+#        print cmd
+#        os.system(cmd)
+#        
+#        profs = ["VCD", "SVCD", "DVD"]
+#        cmd = "mplex \"%(path)s%(sep)soutput.m2v\" \"%(path)s%(sep)saudio.mp2\" -f %(profileIdx)d -o \"%(path)s%(sep)soutput.mpg\"" % \
+#                {"path": self.GetOutputPath(),
+#                 "sep": os.sep,
+#                 'profileIdx': profs.index(self.PProfile.PName) + 6}
+#        print cmd
+#        os.system(cmd)
 
 
 class MPEG4Renderer(MovieRenderer):
@@ -141,13 +168,27 @@ class MPEG4Renderer(MovieRenderer):
         else:
             framerate = "30000:1001"
             
+        if MPEG4Renderer.GetProperty("Bitrate") == MPEG4Renderer.GetDefaultProperty("Bitrate"):
+            bitrate = self.PProfile.PBitrate
+        else:
+            bitrate = MPEG4Renderer.GetProperty("Bitrate")
+
+        if self.PAudioFile is None:
+            audioArgs = ""
+        else:
+            audioArgs = "-oac copy -audiofile \"%s\"" % self.PAudioFile
+        
         cmd = "mencoder -cache 1024 " \
+              "%(audioArgs)s " \
               "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
-              "-o %(path)s%(sep)soutput.avi -" % {'path': self.GetOutputPath(),
-                                                  'sep': os.sep,
-                                                  'bitrate': self._bitrate}
+              "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
+                                                      'sep': os.sep,
+                                                      'bitrate': bitrate,
+                                                      'audioArgs': audioArgs}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
         self._procPpmIn = Popen(ppmCmd, stdin=PIPE, stdout=self._procEncoder.stdin, stderr=self._ppmErr, shell=True)
 
+    def Finalize(self):
+        self._CleanUp()

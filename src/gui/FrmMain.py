@@ -25,7 +25,7 @@ import wx
 from wx.lib.wordwrap import wordwrap
 
 from core.Picture import Picture
-from core.PhotoFilmStrip import PhotoFilmStrip
+from core.PhotoFilmStrip import PhotoFilmStrip, UserInteractionHandler
 
 from lib.Settings import Settings
 from lib.common.ObserverPattern import Observer
@@ -45,7 +45,7 @@ from res.license import licenseText
 ] = [wx.NewId() for _init_ctrls in range(9)]
 
 
-class FrmMain(wx.Frame, Observer):
+class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     
     _custom_classes = {"wx.Panel": ["ImageSectionEditor",
                                     "PnlEditPicture"],
@@ -445,12 +445,36 @@ class FrmMain(wx.Frame, Observer):
         self.__currentProject = ""
         self.UpdateStatusText()
         
+    def GetAltPath(self, imgPath):
+        """
+        overridden method from UserInteractionHandler
+        """
+        dlg = wx.MessageDialog(self,
+                               _(u"The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?") % imgPath, 
+                               _(u"Question"),
+                               wx.YES_NO | wx.ICON_QUESTION)
+        resp = dlg.ShowModal()
+        dlg.Destroy()
+        if resp == wx.ID_NO:
+            return imgPath
+        
+        dlg = wx.DirDialog(self, defaultPath=Settings().GetImagePath())
+        try:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                return path
+        finally:
+            dlg.Destroy()
+
+        return imgPath
+
     def LoadProject(self, filepath):
         self.NewProject(False)
         
         self.actionManager.AddFileToHistory(filepath)
         
         photoFilmStrip = PhotoFilmStrip()
+        photoFilmStrip.SetUserInteractionHandler(self)
         photoFilmStrip.Load(filepath)
         pics = photoFilmStrip.GetPictures()
         
@@ -480,6 +504,10 @@ class FrmMain(wx.Frame, Observer):
         if position is None:
             position = sys.maxint
         
+        dlg = wx.BusyInfo(_(u"Please wait..."))
+        self.actionManager.GetToolBar(self).Enable(False)
+        wx.Yield()
+        
         count = self.listView.GetItemCount()
         for idx, pic in enumerate(pics):
             path = pic.GetFilename()
@@ -491,9 +519,14 @@ class FrmMain(wx.Frame, Observer):
             self.listView.SetPyData(itm, pic)
 
             pic.AddObserver(self)
+            
+            wx.Yield()
         
         if self.listView.GetSelectedItemCount() == 0:
             self.listView.Select(0)
+            
+        dlg.Destroy()
+        self.actionManager.GetToolBar(self).Enable(True)
         
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)

@@ -511,9 +511,23 @@ class DlgRender(wx.Dialog, Observer):
                 return False
         
         return True
+
+    def __ValidateAudioFile(self):
+        if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
+            if not os.path.isfile(self.tcAudiofile.GetValue()):
+                dlg = wx.MessageDialog(self,
+                                       _(u"Audio file not!"), 
+                                       _(u"Error"),
+                                       wx.OK | wx.ICON_ERROR)
+                dlg.ShowModal()
+                dlg.Destroy()
+                return False
+        return True
     
     def OnCmdStartButton(self, event):
         if not self.__ValidateOutDir():
+            return
+        if not self.__ValidateAudioFile():
             return
         
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
@@ -521,14 +535,10 @@ class DlgRender(wx.Dialog, Observer):
         path = self.tcOutputDir.GetValue()
 
         rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
-        renderer = rendererClass()
-        renderer.Init(profile, path)
 
         propDict = {}
         for prop in rendererClass.GetProperties():
-            if prop == "Bitrate" and rendererClass.GetProperty(prop) == rendererClass.GetDefaultProperty(prop):
-                renderer.SetBitrate(profile.PBitrate)
-            else:
+            if rendererClass.GetProperty(prop) != rendererClass.GetDefaultProperty(prop):
                 propDict[prop] = rendererClass.GetProperty(prop)
 
         settings = Settings()
@@ -554,7 +564,12 @@ class DlgRender(wx.Dialog, Observer):
             totalLength += dateTime.GetMinute() * 60
             totalLength += dateTime.GetSecond()
         
+        renderer = rendererClass()
+        renderer.Init(profile, path)
+        if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
+            renderer.SetAudioFile(self.tcAudiofile.GetValue())
         self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
+        
         thread.start_new_thread(self.__renderEngine.Start, 
                                 (self.__photoFilmStrip.GetPictures(), totalLength))
 
@@ -659,7 +674,8 @@ class DlgRender(wx.Dialog, Observer):
     def OnCmdBrowseAudioButton(self, event):
         dlg = wx.FileDialog(self, _(u"Select music"), 
                             Settings().GetAudioPath(), "", 
-                            _(u"Audiofiles") + " (*.mp3, *.wav)|*.mp3; *.wav", 
+#                            _(u"Audiofiles") + " (*.mp3, *.wav)|*.mp3; *.wav", 
+                            _(u"Audiofiles") + " (*.mp3)|*.mp3", 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()

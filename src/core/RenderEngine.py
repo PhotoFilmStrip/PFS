@@ -33,6 +33,7 @@ class RenderEngine(object):
         self.__progressHandler = progressHandler
         self.__errorMsg = None
 
+        self.__audioFile = None
         self.__transDuration = 1.0
         self.__picCountFactor = 1.0
         
@@ -148,9 +149,16 @@ class RenderEngine(object):
             self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
             self.__aRenderer.ProcessFinalize(filename)
                     
+        if self.__audioFile:
+            self.__progressHandler.SetInfo(_(u"processing audiofile..."))
+            self.__aRenderer.ProcessAudio(self.__audioFile)
+        
         self.__progressHandler.SetInfo(_(u"creating output..."))
         self.__aRenderer.Finalize()
         
+    def SetAudioFile(self, audioFile):
+        self.__audioFile = audioFile
+    
     def Start(self, pics, targetLengthSecs=None):
         generateSubtitle = False
         
