@@ -621,15 +621,15 @@ class DlgRender(wx.Dialog, Observer):
             elif arg == 'done':
                 wx.CallAfter(self.__OnDone)
             elif arg == 'aborting':
-                wx.CallAfter(self.__OnDone)
+                wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
 
     def __OnDone(self):
-        if self.__progressHandler and self.__progressHandler.IsAborted():
+        if self.__progressHandler.IsAborted():
             self.stProgress.SetLabel(_(u"...aborted!"))
         else:
             self.stProgress.SetLabel(_(u"all done"))
 
-        if self.__renderEngine and self.__renderEngine.GetErrorMessage():
+        if self.__renderEngine.GetErrorMessage():
             dlg = wx.MessageDialog(self,
                                    self.__renderEngine.GetErrorMessage(),
                                    _(u"Error"),

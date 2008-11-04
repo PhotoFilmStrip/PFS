@@ -108,7 +108,6 @@ class RenderEngine(object):
             for idxRect, rect in enumerate(pathRects):
                 if self.__progressHandler.IsAborted():
                     self.__aRenderer.ProcessAbort()
-                    self.__progressHandler.Done()
                     return
 
                 self.__progressHandler.Step(u"%s - %s (%d/%d)" % (infoText, 

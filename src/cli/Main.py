@@ -61,7 +61,7 @@ class CliGui(Observer):
             elif arg == 'done':
                 self._info = _(u"all done")
             elif arg == 'aborting':
-                self._info = _(u"aborting...")
+                self._info = obj.GetInfo()
             else:
                 return
             self.__Output()

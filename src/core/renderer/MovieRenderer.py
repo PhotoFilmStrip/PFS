@@ -81,8 +81,8 @@ class MPEG2Renderer(MovieRenderer):
     
     def Prepare(self):
         self._ppmErr = open(os.path.join(self.GetOutputPath(), "ppmtoy4m_err.log"), 'w')
-        self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
-        self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
+        self._encOut = open(os.path.join(self.GetOutputPath(), "mpeg2enc_out.log"), 'w')
+        self._encErr = open(os.path.join(self.GetOutputPath(), "mpeg2enc_err.log"), 'w')
 
         if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25:1"
@@ -91,7 +91,7 @@ class MPEG2Renderer(MovieRenderer):
             framerate = "30000:1001"
             mode = "n"
             
-        profs = ["VCD", "SVCD", "DVD"]
+        profs = ["$$$", "VCD", "$$$", "$$$", "SVCD", "$$$", "$$$", "$$$", "DVD"]
         if not self.PProfile.PName in profs:
             raise RuntimeError('format not supported')
         
@@ -100,9 +100,9 @@ class MPEG2Renderer(MovieRenderer):
         else:
             bitrate = MPEG2Renderer.GetProperty("Bitrate")
 
-#                       '-4 1 -2 1 -P -g 6 -G 18 ' \
-        cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
-              'mpeg2enc -v 0 -M 3 ' \
+#        cmd = 'yuvscaler -v 0 -n %(mode)s -O %(profile)s |'\
+        cmd = 'mpeg2enc -v 0 -M 3 ' \
+                       '-4 1 -2 1 -P -g 6 -G 18 ' \
                        '-f %(profileIdx)d -a 3 ' \
                        '-n %(mode)s ' \
                        '-b %(bitrate)d ' \
@@ -110,8 +110,7 @@ class MPEG2Renderer(MovieRenderer):
                             {"path": self.GetOutputPath(),
                              "sep": os.sep,
                              "mode": mode,
-                             'profile': self.PProfile.PName,
-                             'profileIdx': profs.index(self.PProfile.PName) + 6,
+                             'profileIdx': profs.index(self.PProfile.PName),
                              "bitrate": bitrate}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
@@ -124,25 +123,39 @@ class MPEG2Renderer(MovieRenderer):
         if self.PAudioFile is None:
             return
         
-#        cmd = "mpg123 -s \"%s\"" % (self.PAudioFile)
-##        cmd = "mplayer -ao pcm:file=Zieldatei.wav Quelldatei.rm"
-##        cmd = "lame --decode Beispiel.mp3 Beispiel.wav" 
-#        print cmd
-#        os.system(cmd)
-#        
-#        cmd = "mp2enc -r 48000 -o \"%(path)s%(sep)saudio.mp2\" < \"%(path)s%(sep)saudio.wav\"" % \
-#                        {"path": self.GetOutputPath(),
-#                         "sep": os.sep}
-#        print cmd
-#        os.system(cmd)
-#        
-#        profs = ["VCD", "SVCD", "DVD"]
-#        cmd = "mplex \"%(path)s%(sep)soutput.m2v\" \"%(path)s%(sep)saudio.mp2\" -f %(profileIdx)d -o \"%(path)s%(sep)soutput.mpg\"" % \
-#                {"path": self.GetOutputPath(),
-#                 "sep": os.sep,
-#                 'profileIdx': profs.index(self.PProfile.PName) + 6}
-#        print cmd
-#        os.system(cmd)
+        audioLog = open(os.path.join(self.GetOutputPath(), "audio.log"), 'w')
+        
+#        cmd = "mplayer -ao pcm:file=Zieldatei.wav Quelldatei.rm"
+#        cmd = "lame --decode Beispiel.mp3 Beispiel.wav" 
+        cmd = "mpg123 -w \"%(path)s%(sep)saudio.wav\" \"%(audioFile)s\"" % \
+                        {"path": self.GetOutputPath(),
+                         "sep": os.sep,
+                         "audioFile": self.PAudioFile}
+        proc = Popen(cmd, stdout=audioLog, stderr=audioLog, shell=True)
+        exitCode = proc.wait() 
+        if exitCode != 0:
+            raise RuntimeError('MP3 to WAV failed')
+
+        cmd = "mp2enc -o \"%(path)s%(sep)saudio.mp2\" < \"%(path)s%(sep)saudio.wav\"" % \
+                        {"path": self.GetOutputPath(),
+                         "sep": os.sep}
+        proc = Popen(cmd, stdout=audioLog, stderr=audioLog, shell=True)
+        exitCode = proc.wait() 
+        if exitCode != 0:
+            raise RuntimeError('WAV to MP2 failed')
+        
+        profs = ["$$$", "VCD", "$$$", "$$$", "SVCD", "$$$", "$$$", "$$$", "DVD"]
+        cmd = "mplex \"%(path)s%(sep)soutput.m2v\" \"%(path)s%(sep)saudio.mp2\" " \
+                    "-v 0 -f %(profileIdx)d -o \"%(path)s%(sep)soutput.mpg\"" % \
+                        {"path": self.GetOutputPath(),
+                         "sep": os.sep,
+                         'profileIdx': profs.index(self.PProfile.PName)}
+        proc = Popen(cmd, stdout=audioLog, stderr=audioLog, shell=True)
+        exitCode = proc.wait() 
+        if exitCode != 0:
+            raise RuntimeError('mplex failed')
+        
+        audioLog.close()
 
 
 class MPEG4Renderer(MovieRenderer):

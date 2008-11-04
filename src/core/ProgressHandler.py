@@ -65,6 +65,7 @@ class ProgressHandler(Observable):
 
     def Abort(self):
         self.__isAborted = True
+        self.__info = _(u"aborting...")
         self.Notify('aborting')
         
     def IsAborted(self):
