@@ -162,6 +162,7 @@ class RenderEngine(object):
         generateSubtitle = False
         
         if targetLengthSecs is not None:
+            targetLengthSecs = max(targetLengthSecs - 1.0, len(pics))
             totalSecs = 0
             for pic in pics:
                 totalSecs += pic.GetDuration()

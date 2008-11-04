@@ -447,6 +447,7 @@ class DlgRender(wx.Dialog, Observer):
         
         self.cbTotalLength.SetValue(False)
         self.mediaCtrl = wx.media.MediaCtrl(self.pnlSettings, style=wx.SIMPLE_BORDER)
+        self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
         self.mediaLoaded = False
 
         self.__ControlStatusTotalLength()
@@ -557,11 +558,14 @@ class DlgRender(wx.Dialog, Observer):
         
         totalLength = None
         if self.cbTotalLength.GetValue():
-            totalLength = 0.0
-            dateTime = self.timeCtrlTotalLength.GetValue(as_wxDateTime=True)
-            totalLength += dateTime.GetHour() * 3600
-            totalLength += dateTime.GetMinute() * 60
-            totalLength += dateTime.GetSecond()
+            if self.rbManual.GetValue():
+                totalLength = 0
+                dateTime = self.timeCtrlTotalLength.GetValue(as_wxDateTime=True)
+                totalLength += dateTime.GetHour() * 3600
+                totalLength += dateTime.GetMinute() * 60
+                totalLength += dateTime.GetSecond()
+            else:
+                totalLength = self.mediaCtrl.Length() / 1000.0
         
         renderer = rendererClass()
         renderer.Init(profile, path)
@@ -593,6 +597,8 @@ class DlgRender(wx.Dialog, Observer):
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 value = eval(dlg.GetValue())
+            except NameError:
+                value = dlg.GetValue()
             except:
                 value = rendererClass.GetDefaultProperty(prop)
             rendererClass.SetProperty(prop, value)
@@ -681,16 +687,7 @@ class DlgRender(wx.Dialog, Observer):
             Settings().SetAudioPath(os.path.dirname(path))
             
             if self.mediaCtrl.Load(path):
-                millis = self.mediaCtrl.Length()
-                dateTime = wx.DateTime()
-                dateTime.SetHMS(0, int(millis / 60000.0), int(millis / 1000.0) % 60)
-                try:
-                    self.timeCtrlTotalLength.SetValue(dateTime)
-                except ValueError:
-                    print "invalid media length"
-
                 self.mediaLoaded = True
-
                 self.tcAudiofile.SetValue(path)
                 self.__ControlStatusTotalLength()
             else:
@@ -708,3 +705,14 @@ class DlgRender(wx.Dialog, Observer):
             self.mediaCtrl.Stop()
         else:
             self.mediaCtrl.Play()
+
+    def OnMediaLoaded(self, event):
+        millis = self.mediaCtrl.Length()
+        dateTime = wx.DateTime()
+        dateTime.SetHMS(0, int(millis / 60000.0), int(millis / 1000.0) % 60)
+        try:
+            self.timeCtrlTotalLength.SetValue(dateTime)
+        except ValueError:
+            print "invalid media length"
+
+        event.Skip()

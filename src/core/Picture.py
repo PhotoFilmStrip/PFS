@@ -25,8 +25,9 @@ from lib.common.ObserverPattern import Observable
 
 class Picture(Observable):
     
-    EFFECT_NONE = 0
+    EFFECT_NONE        = 0
     EFFECT_BLACK_WHITE = 1
+    EFFECT_SEPIA       = 2
     
     def __init__(self, filename):
         Observable.__init__(self)

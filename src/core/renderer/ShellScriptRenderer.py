@@ -21,6 +21,7 @@
 import os
 
 from core.BaseRenderer import BaseRenderer
+from core.Picture import Picture
 
 
 class ShellScriptRenderer(BaseRenderer):
@@ -31,28 +32,44 @@ class ShellScriptRenderer(BaseRenderer):
         self._commands = []
     
     @staticmethod
+    def CheckDependencies():
+        pass
+    
+    @staticmethod
     def GetName():
         return _(u"Single pictures (shellscript)")
     
     @staticmethod
-    def CheckDependencies():
-        pass
-    
+    def GetProperties():
+        return ["ResampleFilter"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "ResampleFilter":
+            return "Sinc"
+        return BaseRenderer.GetDefaultProperty(prop)
+
     def Prepare(self):
         pass
     
     def ProcessPrepare(self, filename, rotation, effect):
-        return "%s -depth 8 -rotate %d" % (filename, rotation * 90)
+        arg = "\"%s\" -depth 8 -rotate %d" % (filename, rotation * 90)
+        if effect == Picture.EFFECT_BLACK_WHITE:
+            arg += ""
+        if effect == Picture.EFFECT_SEPIA:
+            arg += " -sepia-tone 80% "
+        return arg
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):
         self._counter += 1
         
-        newFilename = '%s/%09d.pnm' % (self.GetOutputPath(), self._counter)
+        newFilename = os.path.join(self.GetOutputPath(), '%09d.pnm' % (self._counter))
         cmd = "convert %s -crop %dx%d+%d+%d " \
-              "-filter Sinc -resize %dx%d! " \
-              "%s" % (preparedResult,
-                      cropRect[2], cropRect[3], cropRect[0], cropRect[1],
-                      size[0], size[1], newFilename)
+              "-filter %s -resize %dx%d! " \
+              "\"%s\"" % (preparedResult,
+                          cropRect[2], cropRect[3], cropRect[0], cropRect[1],
+                          ShellScriptRenderer.GetProperty("ResampleFilter"),
+                          size[0], size[1], newFilename)
 
         self._commands.append(cmd)
         
@@ -65,9 +82,9 @@ class ShellScriptRenderer(BaseRenderer):
             f1 = fileListFrom[idx]
             f2 = fileListTo[idx]
             
-            cmd = "composite %s %s -depth 8 -quality 100 -dissolve %d %s" % (f2, f1, (100 / count) * idx, f1)
+            cmd = "composite \"%s\" \"%s\" -depth 8 -quality 100 -dissolve %d \"%s\"" % (f2, f1, (100 / count) * idx, f1)
             self._commands.append(cmd)
-            self._commands.append("rm %s" % f2)
+            self._commands.append("rm \"%s\"" % f2)
 
             files.append(f1)
         return files

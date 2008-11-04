@@ -82,6 +82,7 @@ def main():
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=3, type="int")
     parser.add_option("-l", "--length", help=_(u"total length of the PhotoFilmStrip (seconds)"), type="int", metavar="SECONDS")
+    parser.add_option("-a", "--audio", help=_(u"use audiofile as audiotrack (use --length to limit the movie length)"), metavar="MP3")
     
     options, args = parser.parse_args()
     
@@ -126,12 +127,18 @@ def main():
         parser.print_help()
         logging.error(_(u"invalid videonorm specified: %s") % options.videonorm)
         sys.exit(4)
+        
+
+    if options.audio and not os.path.isfile(options.audio):
+        parser.print_help()
+        logging.error(_(u"audio file does not exist: %s") % options.audio)
+        sys.exit(5)
 
     
     if options.format >= len(RENDERERS):
         parser.print_help()
         logging.error(_(u"invalid format specified: %s") % options.format)
-        sys.exit(5)
+        sys.exit(6)
     rendererClass = RENDERERS[options.format]
     
     savedProps = settings.GetRenderProperties(rendererClass.__name__)
@@ -141,6 +148,8 @@ def main():
     
     renderer = rendererClass()
     renderer.Init(profile, options.outputpath)
+    if options.audio:
+        renderer.SetAudioFile(options.audio)
         
     photoFilmStrip = PhotoFilmStrip()
     photoFilmStrip.Load(options.project) 
@@ -157,6 +166,8 @@ def main():
     print "http://photostoryx.sourceforge.net"
     print 
     print "%-20s: %s" % (_(u"processing project"), options.project)
+    if options.audio:
+        print "%-20s: %s" % (_(u"audio file"), options.audio)
     print "%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
     print "%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
     print "%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 

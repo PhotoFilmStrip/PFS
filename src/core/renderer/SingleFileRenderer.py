@@ -19,7 +19,7 @@
 #
 
 import os
-import logging
+from subprocess import Popen
 
 import wx
 
@@ -43,12 +43,14 @@ class SingleFileRenderer(BaseRenderer):
     
     @staticmethod
     def GetProperties():
-        return ["UseResample"]
+        return ["UseResample", "ResampleFilter"]
     
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "UseResample":
             return True
+        if prop == "ResampleFilter":
+            return "Sinc"
         return BaseRenderer.GetDefaultProperty(prop)
 
     def Prepare(self):
@@ -73,16 +75,24 @@ class SingleFileRenderer(BaseRenderer):
         if not self.GetProperty("UseResample"):
             subImg.Rescale(size[0], size[1], wx.IMAGE_QUALITY_HIGH)
 
-        newFilename = '%s/%09d.pnm' % (self.GetOutputPath(), self._counter)
+        newFilename = os.path.join(self.GetOutputPath(), '%09d.pnm' % self._counter)
         subImg.SaveFile(newFilename, wx.BITMAP_TYPE_PNM)
         
         if self.GetProperty("UseResample"):
-            os.system("convert %s -depth 8 -filter Sinc -resize %dx%d! %s" % (newFilename, 
-                                                                              size[0], size[1], 
-                                                                              newFilename))
+            cmd = "convert \"%(path)s\" -depth 8 " \
+                          "-filter %(filter)s " \
+                          "-resize %(width)dx%(height)d! \"%(path)s\"" % \
+                            {'path': newFilename,
+                             'filter': SingleFileRenderer.GetProperty("ResampleFilter"),
+                             'width': size[0], 
+                             'height': size[1]}
+            proc = Popen(cmd, shell=True)
+            exitCode = proc.wait()
+            if exitCode != 0:
+                raise RuntimeError("%s returned exitcode %d!" % (cmd, exitCode))
         
         if not os.path.exists(newFilename):
-            logging.getLogger('CropAndResize').warning("imagefile '%s' not created!", newFilename)
+            raise RuntimeError("imagefile '%s' not created!" % newFilename)
         
         return newFilename
 
@@ -93,12 +103,13 @@ class SingleFileRenderer(BaseRenderer):
             f1 = fileListFrom[idx]
             f2 = fileListTo[idx]
             
-            cmd = "composite %s %s -depth 8 -quality 100 -dissolve %d %s" % (f2, f1, (100 / count) * idx, f1)
-            logging.getLogger('Transition').debug("execute: %s", cmd)
-            os.system(cmd)
-            logging.getLogger('Transition').debug("delete: %s", f2)
+            cmd = "composite \"%s\" \"%s\" -depth 8 -quality 100 -dissolve %d \"%s\"" % (f2, f1, (100 / count) * idx, f1)
+            proc = Popen(cmd, shell=True)
+            exitCode = proc.wait()
+            if exitCode != 0:
+                raise RuntimeError("%s returned exitcode %d!" % (cmd, exitCode))
+            
             os.remove(f2)
-
             files.append(f1)
         return files
     
