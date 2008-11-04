@@ -516,7 +516,7 @@ class DlgRender(wx.Dialog, Observer):
         if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
             if not os.path.isfile(self.tcAudiofile.GetValue()):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Audio file not!"), 
+                                       _(u"Audio file does not exist!"), 
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()

@@ -1,5 +1,36 @@
 photofilmstrip (0.75-1) unstable; urgency=low
 
+    * 2009/11/05
+    added:
+     - audio file support in CLI (CLI cannot determine length of audio yet)
+     - audio file is processed in MPEG2Renderer now
+     - new CLI option for total length of photofilmstrip
+     - question dialog for selection of an alternative folder in case image files has moved
+     - Renderer gets audiofile name to mux into video stream
+     - MPEG4 Renderer process audio file
+     - ResampleFilter editable via property
+     - audio file is supported now (CLI cannot determine length of audio yet)
+     - total length adjustable in dialog
+     - specified total length applied when rendering a filmstrip
+     - drag and drop accepts images and project files
+     - GUI opens project from command line argument
+
+    changed:
+     - logfiles of mpeg2enc renamed
+     - yuvscaler in MPEG2Renderer not needed anymore
+     - exitcode are evaluated in calls of other command line tools
+     - Internationalization
+
+    bugfix:
+     - abortion of rendering works correctly
+     - VCD and SVCD arguments in mpeg2enc fixed
+     - CLI uses stored bitrate property from ini file if given, otherwise the default bitrate from profile definition
+     - quoted file paths in calls of other command line tools
+     - compatibility with MS Windows
+     - determination of length of an audio clip works under windows
+     - command line tools (ppmtoy4m, mencoder) sends output to logfiles, because pipe buffer is limited
+     - aborting processed correctly
+  
   * 2008/11/02
     added:
      - total length adjustable in dialog
@@ -80,5 +111,5 @@ photofilmstrip (0.75-1) unstable; urgency=low
   * 2008/10/11
     initial release
 
- -- Jens Göpfert <jens@sg-dev.de>  Sun, 02 Nov 2008 19:04:15 +0100
+ -- Jens Göpfert <jens@sg-dev.de>  Tue, 04 Nov 2008 22:34:17 +0100
 

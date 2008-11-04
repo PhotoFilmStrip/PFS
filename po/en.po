@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-01 17:23+CET\n"
-"PO-Revision-Date: 2008-11-01 17:23+0100\n"
+"POT-Creation-Date: 2008-11-04 21:48+CET\n"
+"PO-Revision-Date: 2008-11-04 21:55+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -18,13 +18,9 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: src/cli/Main.py:62
-#: src/cli/Main.py:174
-#: src/gui/DlgRender.py:607
+#: src/cli/Main.py:186
+#: src/gui/DlgRender.py:635
 msgid "all done"
-msgstr ""
-
-#: src/cli/Main.py:64
-msgid "aborting..."
 msgstr ""
 
 #: src/cli/Main.py:79
@@ -35,114 +31,143 @@ msgstr ""
 msgid "the path where to save the output files"
 msgstr ""
 
-#: src/cli/Main.py:91
+#: src/cli/Main.py:84
+msgid "total length of the PhotoFilmStrip (seconds)"
+msgstr ""
+
+#: src/cli/Main.py:85
+msgid "use audiofile as audiotrack (use --length to limit the movie length)"
+msgstr ""
+
+#: src/cli/Main.py:93
 msgid "projectfile does not exist: %s"
 msgstr ""
 
-#: src/cli/Main.py:95
+#: src/cli/Main.py:97
 msgid "no projectfile specified!"
 msgstr ""
 
-#: src/cli/Main.py:105
+#: src/cli/Main.py:107
 msgid "cannot create outputpath: %s"
 msgstr ""
 
-#: src/cli/Main.py:109
+#: src/cli/Main.py:111
 msgid "no outputpath specified!"
 msgstr ""
 
-#: src/cli/Main.py:115
+#: src/cli/Main.py:117
 msgid "invalid profile specified: %s"
 msgstr ""
 
-#: src/cli/Main.py:126
+#: src/cli/Main.py:128
 msgid "invalid videonorm specified: %s"
 msgstr ""
 
-#: src/cli/Main.py:132
+#: src/cli/Main.py:134
+msgid "audio file does not exist: %s"
+msgstr ""
+
+#: src/cli/Main.py:140
 msgid "invalid format specified: %s"
 msgstr ""
 
-#: src/cli/Main.py:158
+#: src/cli/Main.py:168
 msgid "processing project"
 msgstr ""
 
-#: src/cli/Main.py:159
+#: src/cli/Main.py:170
+msgid "audio file"
+msgstr ""
+
+#: src/cli/Main.py:171
 msgid "using renderer"
 msgstr ""
 
-#: src/cli/Main.py:160
+#: src/cli/Main.py:172
 msgid "output format"
 msgstr ""
 
-#: src/cli/Main.py:161
+#: src/cli/Main.py:173
 msgid "framerate"
 msgstr ""
 
-#: src/cli/Main.py:169
-#: src/gui/DlgRender.py:605
+#: src/cli/Main.py:181
+#: src/gui/DlgRender.py:633
 msgid "...aborted!"
 msgstr ""
 
-#: src/cli/Main.py:176
+#: src/cli/Main.py:188
 msgid "Error: %s"
 msgstr ""
 
-#: src/core/BaseRenderer.py:60
+#: src/core/BaseRenderer.py:61
 msgid "Unknown property: %s"
 msgstr ""
 
-#: src/core/BaseRenderer.py:68
+#: src/core/BaseRenderer.py:69
 msgid "<default>"
 msgstr ""
 
+#: src/core/PhotoFilmStrip.py:69
+msgid "Loading '%s' ..."
+msgstr ""
+
 #: src/core/ProgressHandler.py:31
+#: src/gui/FrmMain.py:506
 msgid "Please wait..."
 msgstr ""
 
-#: src/core/RenderEngine.py:80
-msgid "initialize renderer"
+#: src/core/ProgressHandler.py:68
+msgid "aborting..."
 msgstr ""
 
 #: src/core/RenderEngine.py:89
+msgid "initialize renderer"
+msgstr ""
+
+#: src/core/RenderEngine.py:98
 msgid "processing image '%s'"
 msgstr ""
 
-#: src/core/RenderEngine.py:92
+#: src/core/RenderEngine.py:101
 msgid "prepare"
 msgstr ""
 
-#: src/core/RenderEngine.py:106
+#: src/core/RenderEngine.py:114
 msgid "crop and resize"
 msgstr ""
 
-#: src/core/RenderEngine.py:127
-#: src/core/RenderEngine.py:134
-#: src/core/RenderEngine.py:140
+#: src/core/RenderEngine.py:135
+#: src/core/RenderEngine.py:142
+#: src/core/RenderEngine.py:148
 msgid "finalizing '%s'"
 msgstr ""
 
-#: src/core/RenderEngine.py:130
+#: src/core/RenderEngine.py:138
 msgid "calculating transition"
 msgstr ""
 
-#: src/core/RenderEngine.py:143
+#: src/core/RenderEngine.py:152
+msgid "processing audiofile..."
+msgstr ""
+
+#: src/core/RenderEngine.py:155
 msgid "creating output..."
 msgstr ""
 
-#: src/core/RenderEngine.py:165
+#: src/core/RenderEngine.py:188
 msgid "generating subtitle"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:84
+#: src/core/renderer/MovieRenderer.py:80
 msgid "MPEG2-Video"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:132
+#: src/core/renderer/MovieRenderer.py:172
 msgid "MPEG4-Video (XVid)"
 msgstr ""
 
-#: src/core/renderer/ShellScriptRenderer.py:35
+#: src/core/renderer/ShellScriptRenderer.py:40
 msgid "Single pictures (shellscript)"
 msgstr ""
 
@@ -284,7 +309,7 @@ msgid "&Start"
 msgstr ""
 
 #: src/gui/DlgRender.py:399
-#: src/gui/DlgRender.py:617
+#: src/gui/DlgRender.py:645
 msgid "&Close"
 msgstr ""
 
@@ -294,8 +319,9 @@ msgstr ""
 
 #: src/gui/DlgRender.py:482
 #: src/gui/DlgRender.py:506
-#: src/gui/DlgRender.py:557
-#: src/gui/FrmMain.py:400
+#: src/gui/DlgRender.py:583
+#: src/gui/FrmMain.py:399
+#: src/gui/FrmMain.py:453
 msgid "Question"
 msgstr ""
 
@@ -304,8 +330,9 @@ msgid "Cannot create direcotory: %s"
 msgstr ""
 
 #: src/gui/DlgRender.py:492
-#: src/gui/DlgRender.py:612
-#: src/gui/DlgRender.py:672
+#: src/gui/DlgRender.py:520
+#: src/gui/DlgRender.py:640
+#: src/gui/DlgRender.py:696
 msgid "Error"
 msgstr ""
 
@@ -313,73 +340,81 @@ msgstr ""
 msgid "Output path is not empty! Use it anyway?"
 msgstr ""
 
-#: src/gui/DlgRender.py:541
+#: src/gui/DlgRender.py:519
+msgid "Audio file does not exist!"
+msgstr ""
+
+#: src/gui/DlgRender.py:551
 msgid "&Cancel"
 msgstr ""
 
-#: src/gui/DlgRender.py:556
+#: src/gui/DlgRender.py:582
 msgid "Abort current process?"
 msgstr ""
 
-#: src/gui/DlgRender.py:570
+#: src/gui/DlgRender.py:596
 msgid "Edit property"
 msgstr ""
 
-#: src/gui/DlgRender.py:652
+#: src/gui/DlgRender.py:680
 msgid "Select music"
 msgstr ""
 
-#: src/gui/DlgRender.py:654
+#: src/gui/DlgRender.py:683
 msgid "Audiofiles"
 msgstr ""
 
-#: src/gui/DlgRender.py:671
+#: src/gui/DlgRender.py:695
 msgid "Invalid audio file!"
 msgstr ""
 
-#: src/gui/FrmMain.py:246
+#: src/gui/FrmMain.py:245
 msgid "Select %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:248
-#: src/gui/FrmMain.py:271
+#: src/gui/FrmMain.py:247
+#: src/gui/FrmMain.py:270
 msgid "Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:268
+#: src/gui/FrmMain.py:267
 msgid "Save %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:288
+#: src/gui/FrmMain.py:287
 msgid "Import images"
 msgstr ""
 
-#: src/gui/FrmMain.py:290
+#: src/gui/FrmMain.py:289
 msgid "Imagefiles"
 msgstr ""
 
-#: src/gui/FrmMain.py:390
+#: src/gui/FrmMain.py:389
 msgid "Help will be available soon."
 msgstr ""
 
-#: src/gui/FrmMain.py:390
+#: src/gui/FrmMain.py:389
 msgid "Information"
 msgstr ""
 
-#: src/gui/FrmMain.py:396
+#: src/gui/FrmMain.py:395
 msgid "Unnamed PhotoFilmStrip"
 msgstr ""
 
-#: src/gui/FrmMain.py:399
+#: src/gui/FrmMain.py:398
 msgid "'%s' has been modified. Save changes?"
 msgstr ""
 
-#: src/gui/FrmMain.py:415
+#: src/gui/FrmMain.py:414
 msgid "Images"
 msgstr ""
 
-#: src/gui/FrmMain.py:422
+#: src/gui/FrmMain.py:421
 msgid "Duration"
+msgstr ""
+
+#: src/gui/FrmMain.py:452
+msgid "The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?"
 msgstr ""
 
 #: src/gui/PnlEditPicture.py:114
