@@ -422,10 +422,9 @@ class DlgRender(wx.Dialog, Observer):
         self.tcAudiofile.SetMinSize(wx.Size(200, -1))
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
         
-        minTime = wx.DateTime()
         totalMinSecs = len(photoFilmStrip.GetPictures())
-        minTime.SetMinute(totalMinSecs / 60)
-        minTime.SetSecond(totalMinSecs % 60)
+        minTime = wx.DateTime()
+        minTime.SetHMS(0, totalMinSecs / 60, totalMinSecs % 60)
         maxTime = wx.DateTime()
         maxTime.SetHMS(1, 59, 59)
         self.timeCtrlTotalLength.SetValue(minTime)
@@ -680,15 +679,19 @@ class DlgRender(wx.Dialog, Observer):
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             Settings().SetAudioPath(os.path.dirname(path))
-            self.tcAudiofile.SetValue(path)
             
             if self.mediaCtrl.Load(path):
-                self.mediaLoaded = True
                 millis = self.mediaCtrl.Length()
                 dateTime = wx.DateTime()
                 dateTime.SetHMS(0, int(millis / 60000.0), int(millis / 1000.0) % 60)
-                self.timeCtrlTotalLength.SetValue(dateTime)
+                try:
+                    self.timeCtrlTotalLength.SetValue(dateTime)
+                except ValueError:
+                    print "invalid media length"
 
+                self.mediaLoaded = True
+
+                self.tcAudiofile.SetValue(path)
                 self.__ControlStatusTotalLength()
             else:
                 dlg2 = wx.MessageDialog(self,

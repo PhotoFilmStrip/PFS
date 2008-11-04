@@ -164,9 +164,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.listView.SetDropTarget(ImageDropTarget(self))
         
-        pdt = ProjectDropTarget(self)
-        self.bitmapLeft.SetDropTarget(pdt)
-        self.bitmapRight.SetDropTarget(pdt)
+        self.bitmapLeft.SetDropTarget(ProjectDropTarget(self))
+        self.bitmapRight.SetDropTarget(ProjectDropTarget(self))
         
         self.statusBar = wx.StatusBar(self)
         self.statusBar.SetFieldsCount(3)
