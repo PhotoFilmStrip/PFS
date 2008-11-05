@@ -97,10 +97,10 @@ class DlgRender(wx.Dialog, Observer):
         # generated method, don't edit
 
         parent.AddSizer(self.sizerSettingsHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerSettings, 0, border=0, flag=wx.EXPAND)
+        parent.AddSizer(self.sizerSettings, 0, border=4, flag=wx.EXPAND | wx.RIGHT)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
         parent.AddSizer(self.sizerOutputHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerOutput, 0, border=0, flag=wx.EXPAND)
+        parent.AddSizer(self.sizerOutput, 0, border=4, flag=wx.EXPAND | wx.RIGHT)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
         parent.AddSizer(self.sizerCmd, 0, border=4,
               flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
@@ -121,6 +121,7 @@ class DlgRender(wx.Dialog, Observer):
 
         parent.AddWindow(self.tcOutputDir, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdBrowseOutputDir, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
@@ -158,9 +159,9 @@ class DlgRender(wx.Dialog, Observer):
     def _init_coll_sizerAudio_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cmdBrowseAudio, 0, border=0, flag=0)
+        parent.AddWindow(self.cmdBrowseAudio, 0, border=0, flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdAudioPreview, 0, border=0, flag=0)
+        parent.AddWindow(self.cmdAudioPreview, 0, border=0, flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_sizerSettings_Items(self, parent):
         # generated method, don't edit
@@ -470,6 +471,7 @@ class DlgRender(wx.Dialog, Observer):
         self.tcOutputDir.SetValue(settings.GetLastOutputPath())
         
         self.SetInitialSize(self.GetEffectiveMinSize())
+        self.CentreOnParent()
 
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())

@@ -503,29 +503,30 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         if position is None:
             position = sys.maxint
         
-        dlg = wx.BusyInfo(_(u"Please wait..."))
-        self.actionManager.GetToolBar(self).Enable(False)
-        wx.Yield()
-        
+        dlg = wx.ProgressDialog(_(u"Please wait"),
+                                _(u"Loading pictures..."),
+                                maximum = len(pics),
+                                parent=self,
+                                style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
+
         count = self.listView.GetItemCount()
         for idx, pic in enumerate(pics):
             path = pic.GetFilename()
             imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
             itm = self.listView.InsertStringItem(position, 
                                                  os.path.basename(path))
-#            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 80, 10))
+#            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 120, 10))
             self.listView.SetItemImage(itm, imgIdx)
             self.listView.SetPyData(itm, pic)
 
             pic.AddObserver(self)
-            
-            wx.Yield()
+
+            dlg.Update(idx + 1)
         
         if self.listView.GetSelectedItemCount() == 0:
             self.listView.Select(0)
             
         dlg.Destroy()
-        self.actionManager.GetToolBar(self).Enable(True)
         
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
