@@ -28,10 +28,10 @@ def initLogging():
                         datefmt='%d.%m.%Y %H:%M:%S')
 
 def initI18N():
-    import os, gettext, locale
+    import os, gettext, locale, sys
     from lib.Settings import Settings
     curLang = locale.getdefaultlocale()[0]
-    localeDir = os.path.join(os.path.dirname(__file__), "../locale")
+    localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../locale")
     
     if not os.path.isdir(localeDir):
         gettext.install(Settings.APP_NAME)
