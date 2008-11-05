@@ -61,6 +61,7 @@ deb:
 	appver=`echo $(appname)-$(VER)`; \
 	releasedir=`echo release_\`date +"%Y_%m_%d"\``; \
 	targetdir=`echo $$releasedir/$$appver`; \
+	curdir=`pwd`; \
 	rm -rf $$releasedir; \
 	$(mkdir) "$$targetdir"; \
 	cp -R build/ "$$targetdir"; \
@@ -75,7 +76,17 @@ deb:
 	cp TODO "$$targetdir/"; \
 	rm -rf `find $$targetdir -name .svn -type d`; \
 	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
-	cd $$targetdir; \
+	cd "$$targetdir"; \
 	dh_make -e "jens@sg-dev.de" -c gpl -s -f "../$$appver.tar.gz"; \
 	rm debian/*.ex; \
-	rm debian/*.EX
+	rm debian/*.EX; \
+	cd $$curdir; \
+	cp build/debian/copyright "$$targetdir/debian/"; \
+	cp build/debian/control "$$targetdir/debian/"; \
+	cp build/debian/dirs "$$targetdir/debian/"; \
+	head -2 "$$targetdir/debian/changelog" > tmp; \
+	cat "$$curdir/CHANGES" >> tmp; \
+	tail -2 "$$targetdir/debian/changelog" >> tmp; \
+	mv tmp "$$targetdir/debian/changelog"; \
+	cd "$$targetdir"
+#	dpkg-buildpackage
