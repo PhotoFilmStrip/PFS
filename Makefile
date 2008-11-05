@@ -58,10 +58,13 @@ pot:
 
 
 deb:
-	appver=`echo $(appname)-$(VER)`; \
+	curdir=`pwd`; \
+	cd src; \
+	ver=`python -c "import lib.Settings;print lib.Settings.Settings.APP_VERSION"`; \
+	cd $$curdir; \
+	appver=`echo $(appname)-$$ver`; \
 	releasedir=`echo release_\`date +"%Y_%m_%d"\``; \
 	targetdir=`echo $$releasedir/$$appver`; \
-	curdir=`pwd`; \
 	rm -rf $$releasedir; \
 	$(mkdir) "$$targetdir"; \
 	cp -R build/ "$$targetdir"; \
