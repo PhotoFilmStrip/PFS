@@ -38,8 +38,7 @@ class ImageSectionEditor(wx.Panel):
     
     BORDER_TOLERANCE = 20
     
-    POSITION_OUTSIDE = 0x01
-    POSITION_INSIDE  = 0x02
+    POSITION_INSIDE = 0x01
     
     POSITION_TOP     = 0x10
     POSITION_BOTTOM  = 0x20
@@ -60,8 +59,9 @@ class ImageSectionEditor(wx.Panel):
         self._sectRect = wx.Rect(0, 0, 1280, 720)
         self._zoom     = 1
         
-        self._deltaX   = None
-        self._deltaY   = None 
+        self._action   = None
+        self._startX   = None
+        self._startY   = None 
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
@@ -190,55 +190,67 @@ class ImageSectionEditor(wx.Panel):
         elif self._sectRect.ContainsXY(cpx, cpy):
             return self.POSITION_INSIDE
         else:                
-            return self.POSITION_OUTSIDE
-    
+            return None
+
+    def __SelectCursor(self, position):
+        #the cornsers
+        if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
+        elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
+        
+        #the Borders
+        elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+        elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
+        
+        elif position == self.POSITION_INSIDE:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+        else:                
+            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            
     def OnLeftDown(self, event):
         px, py = event.GetPosition().Get()
         cpx, cpy = self.__ClientToImage(px, py)
 
-        if self._sectRect.ContainsXY(cpx, cpy):
-            self._deltaX = cpx - self._sectRect.GetLeft()
-            self._deltaY = cpy - self._sectRect.GetTop()
+        self._action = self.__FindPosition(cpx, cpy)
+        if self._action is not None:
+            self._startX = cpx - self._sectRect.GetLeft()
+            self._startY = cpy - self._sectRect.GetTop()
 
         event.Skip()
-
+    
     def OnMotion(self, event):
-        if self._image is not None:
-            px, py = event.GetPosition().Get()
-            cpx, cpy = self.__ClientToImage(px, py)
+        if self._image is None:
+            return
+        px, py = event.GetPosition().Get()
+        cpx, cpy = self.__ClientToImage(px, py)
+        if self._action is None:
             position = self.__FindPosition(cpx, cpy)
-            
-            #the cornsers
-            if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
-            elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
-            
-            #the Borders
-            elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
-            elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
-            
-            elif position == self.POSITION_INSIDE:
-                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
-            else:                
-                self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
-        
-            if event.LeftIsDown() and self._deltaX is not None:
-                left = cpx - self._deltaX
-                top = cpy - self._deltaY
+            self.__SelectCursor(position)
+        else:
+            if self._action == self.POSITION_INSIDE:
+                left = cpx - self._startX
+                top = cpy - self._startY
                 
                 self._sectRect.SetLeft(left)
                 self._sectRect.SetTop(top)
-                
-                self._SendRectChangedEvent()
-                
-                self.Refresh()
+            #TODO: andere Actions handhaben
+            
+            self._SendRectChangedEvent()
+            
+            self.Refresh()
 
     def OnLeftUp(self, event):
-        self._deltaX = None
-        self._deltaY = None
+        if self._action is not None:
+            px, py = event.GetPosition().Get()
+            cpx, cpy = self.__ClientToImage(px, py)
+            position = self.__FindPosition(cpx, cpy)
+            self.__SelectCursor(position)
+        self._action = None
+        self._startX = None
+        self._startY = None
         
         event.Skip()
             
