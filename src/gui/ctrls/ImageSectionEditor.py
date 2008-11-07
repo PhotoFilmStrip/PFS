@@ -36,6 +36,16 @@ class RectChangedEvent(wx.PyCommandEvent):
 
 class ImageSectionEditor(wx.Panel):
     
+    BORDER_TOLERANCE = 20
+    
+    POSITION_OUTSIDE = 0x01
+    POSITION_INSIDE  = 0x02
+    
+    POSITION_TOP     = 0x10
+    POSITION_BOTTOM  = 0x20
+    POSITION_LEFT    = 0x40
+    POSITION_RIGHT   = 0x80
+    
     def __init__(self, parent, id=wx.ID_ANY, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.TAB_TRAVERSAL, name='panel'):
@@ -145,6 +155,43 @@ class ImageSectionEditor(wx.Panel):
         ny = (py - bmpTop) / self._zoom
         return nx, ny
 
+    def __FindPosition(self, cpx, cpy):
+        tlx, tly = self._sectRect.GetTopLeft().Get()
+        brx, bry = self._sectRect.GetBottomRight().Get()
+            
+        #first Check the Corners
+        #topleft
+        if abs(cpx - tlx) < self.BORDER_TOLERANCE and abs(cpy - tly) < self.BORDER_TOLERANCE:
+            return self.POSITION_TOP | self.POSITION_LEFT
+        #topright
+        elif abs(cpx - brx) < self.BORDER_TOLERANCE and abs(cpy - tly) < self.BORDER_TOLERANCE:
+            return self.POSITION_TOP | self.POSITION_RIGHT
+        #bottom left
+        elif abs(cpx - tlx) < self.BORDER_TOLERANCE and abs(cpy - bry) < self.BORDER_TOLERANCE:
+            return self.POSITION_BOTTOM | self.POSITION_LEFT
+        #bottom right
+        elif abs(cpx - brx) < self.BORDER_TOLERANCE and abs(cpy - bry) < self.BORDER_TOLERANCE:
+            return self.POSITION_BOTTOM | self.POSITION_RIGHT
+        
+        #then the Borders
+        #left
+        elif abs(cpx - tlx) < self.BORDER_TOLERANCE and (tly < cpy < bry):
+            return self.POSITION_LEFT
+        #right
+        elif abs(cpx - brx) < self.BORDER_TOLERANCE and (tly < cpy < bry):
+            return self.POSITION_RIGHT
+        #top
+        elif abs(cpy - tly) < self.BORDER_TOLERANCE and (tlx < cpx < brx):
+            return self.POSITION_TOP
+        #bottom
+        elif abs(cpy - bry) < self.BORDER_TOLERANCE and (tlx < cpx < brx):
+            return self.POSITION_BOTTOM            
+        
+        elif self._sectRect.ContainsXY(cpx, cpy):
+            return self.POSITION_INSIDE
+        else:                
+            return self.POSITION_OUTSIDE
+    
     def OnLeftDown(self, event):
         px, py = event.GetPosition().Get()
         cpx, cpy = self.__ClientToImage(px, py)
@@ -159,9 +206,23 @@ class ImageSectionEditor(wx.Panel):
         if self._image is not None:
             px, py = event.GetPosition().Get()
             cpx, cpy = self.__ClientToImage(px, py)
-            if self._sectRect.ContainsXY(cpx, cpy):
-                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-            else:
+            position = self.__FindPosition(cpx, cpy)
+            
+            #the cornsers
+            if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
+            elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
+            
+            #the Borders
+            elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+            elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
+            
+            elif position == self.POSITION_INSIDE:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+            else:                
                 self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         
             if event.LeftIsDown() and self._deltaX is not None:
