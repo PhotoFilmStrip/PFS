@@ -19,7 +19,7 @@
 #
 
 import os
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 
 import wx
 
@@ -34,8 +34,18 @@ class SingleFileRenderer(BaseRenderer):
         self._counter = 0
     
     @staticmethod
-    def CheckDependencies():
-        pass
+    def CheckDependencies(msgList):
+        proc = Popen("convert -h", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.stdout.read()
+        if proc.wait() != 0:
+            msgList.append("convert (imagemagick) required!")
+            return False
+        proc = Popen("composite -h", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.stdout.read()
+        if proc.wait() != 0:
+            msgList.append("composite (imagemagick) required!")
+            return False
+        return True
     
     @staticmethod
     def GetName():

@@ -19,7 +19,7 @@
 #
 
 import os, logging
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 
 from core.OutputProfile import OutputProfile
 from core.renderer.SingleFileRenderer import SingleFileRenderer
@@ -38,8 +38,15 @@ class MovieRenderer(SingleFileRenderer):
         self._procEncoder = None
         
     @staticmethod
-    def CheckDependencies():
-        pass
+    def CheckDependencies(msgList):
+        if not SingleFileRenderer.CheckDependencies(msgList):
+            return False
+        proc = Popen("ppmtoy4m -h", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.stdout.read()
+        if proc.wait() != 0:
+            msgList.append("ppmtoy4m (mjpegtools) required!")
+            return False
+        return True
 
     @staticmethod
     def GetProperties():
@@ -72,8 +79,15 @@ class MPEG2Renderer(MovieRenderer):
         MovieRenderer.__init__(self)
         
     @staticmethod
-    def CheckDependencies():
-        pass
+    def CheckDependencies(msgList):
+        if not MovieRenderer.CheckDependencies(msgList):
+            return False
+        proc = Popen("mpeg2enc -h", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.stdout.read()
+        if proc.wait() != 0:
+            msgList.append("mpeg2enc (mjpegtools) required!")
+            return False
+        return True
 
     @staticmethod
     def GetName():
@@ -164,8 +178,15 @@ class MPEG4Renderer(MovieRenderer):
         MovieRenderer.__init__(self)
         
     @staticmethod
-    def CheckDependencies():
-        pass
+    def CheckDependencies(msgList):
+        if not MovieRenderer.CheckDependencies(msgList):
+            return False
+        proc = Popen("which mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.stdout.read()
+        if proc.wait() != 0:
+            msgList.append("mencoder (mencoder) required!")
+            return False
+        return True
 
     @staticmethod
     def GetName():

@@ -42,7 +42,7 @@ class BaseRenderer(object):
         self._profile = profile
         
     @staticmethod
-    def CheckDependencies():
+    def CheckDependencies(msgList):
         pass
 
     @staticmethod

@@ -192,7 +192,7 @@ class RenderEngine(object):
             
             self.__Start(pics)
             return True
-        except Exception, err:
+        except StandardError, err:
             self.__errorMsg = str(err)
             return False
         finally:

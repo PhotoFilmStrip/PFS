@@ -32,8 +32,8 @@ class ShellScriptRenderer(BaseRenderer):
         self._commands = []
     
     @staticmethod
-    def CheckDependencies():
-        pass
+    def CheckDependencies(msgList):
+        return True
     
     @staticmethod
     def GetName():
@@ -55,7 +55,7 @@ class ShellScriptRenderer(BaseRenderer):
     def ProcessPrepare(self, filename, rotation, effect):
         arg = "\"%s\" -depth 8 -rotate %d" % (filename, rotation * 90)
         if effect == Picture.EFFECT_BLACK_WHITE:
-            arg += ""
+            arg += " -type GrayScale "
         if effect == Picture.EFFECT_SEPIA:
             arg += " -sepia-tone 80% "
         return arg
