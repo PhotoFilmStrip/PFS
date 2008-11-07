@@ -42,6 +42,8 @@ class Picture(Observable):
         self._rotation = 0
         self._comment = u""
         self._effect = Picture.EFFECT_NONE
+        self._width = -1
+        self._height = -1
         
     def GetFilename(self):
         return self._filename
@@ -96,6 +98,16 @@ class Picture(Observable):
     def GetRotation(self):
         return self._rotation
     
+    def SetWidth(self, width):
+        self._width = width
+    def GetWidth(self):
+        return self._width
+    
+    def SetHeight(self, height):
+        self._height = height
+    def GetHeight(self):
+        return self._height
+    
     def __Rotate(self, clockwise=True):
         if clockwise:
             self._rotation += 1
@@ -115,6 +127,8 @@ class Picture(Observable):
     def GetImage(self):
         if self._img is None:
             self._img = wx.Image(self._filename)
+            self._width = self._img.GetWidth()
+            self._height = self._img.GetHeight()
             if self.GetEffect() == Picture.EFFECT_BLACK_WHITE:
                 self._img = self._img.ConvertToGreyscale()
         return self._img
@@ -156,18 +170,31 @@ class DummyPicture(Picture):
 
     def GetImage(self):
         if self._img is None:
-            w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
-            h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
-            w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
-            h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
-            img = wx.EmptyImage(max(w1, w2), max(h1, h2))
-            
-#            bmp2 = wx.ArtProvider_GetBitmap(wx.ART_OTHER, wx.ART_ERROR, (128, 128))
-#            bmp = wx.EmptyBitmap(max(w1, w2), max(h1, h2))
-#            dc = wx.MemoryDC()
-#            dc.SelectObjectAsSource(bmp)
-#            dc.DrawBitmap(bmp2, 0, 0)
-#            img = bmp.ConvertToImage()
+            if self.GetWidth() == -1:
+                w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
+                h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
+                w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
+                h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
+                width = max(w1, w2)
+                height = max(h1, h2)
+            else:
+                width = self.GetWidth()
+                height = self.GetHeight()
+
+            bmp2 = wx.ArtProvider_GetBitmap(wx.ART_MISSING_IMAGE, wx.ART_OTHER, (32, 32))
+            img = bmp2.ConvertToImage()
+            img.Rescale(height / 2, height / 2)
+            bmp2 = img.ConvertToBitmap()
+
+            bmp = wx.EmptyBitmap(width, height)
+            dc = wx.MemoryDC()
+            dc.SelectObject(bmp)
+            dc.SetBackground(wx.Brush(wx.Colour(100, 100, 100)))
+            dc.Clear()
+            dc.DrawImageLabel("", bmp2, wx.Rect(0, 0, width, height),
+                              wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 0)
+            dc.SelectObject(wx.NullBitmap)
+            img = bmp.ConvertToImage()
             
             self._img = img
         

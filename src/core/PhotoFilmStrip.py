@@ -91,25 +91,31 @@ class PhotoFilmStrip(Observable):
             pic.SetComment(row["comment"])
             pic.SetRotation(row['rotation'])
             
-            try:
-                pic.SetEffect(row['effect'])
-            except IndexError:
-                pass
+            pic.SetEffect(self.__LoadSafe(row, 'effect', Picture.EFFECT_NONE))
+            pic.SetWidth(self.__LoadSafe(row, 'width', -1))
+            pic.SetHeight(self.__LoadSafe(row, 'height', -1))
+
             picList.append(pic)
         
         cur.close()
         self.__pictures = picList
         
         return True
+    
+    def __LoadSafe(self, row, colName, default):
+        try:
+            return row[colName]
+        except IndexError:
+            return default
         
     def __PicToQuery(self, tableName, pic):
-        query = "INSERT INTO `%s` (filename, " \
+        query = "INSERT INTO `%s` (filename, width, height, " \
                                   "start_left, start_top, start_width, start_height, " \
                                   "target_left, target_top, target_width, target_height, " \
                                   "rotation, duration, comment, effect) " \
-                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
+                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
 
-        values =  (pic.GetFilename(), 
+        values =  (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
                    pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect())
@@ -118,6 +124,8 @@ class PhotoFilmStrip(Observable):
     def __CreateSchema(self, conn):
         query = "CREATE TABLE `picture` (picture_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                                         "filename TEXT," \
+                                        "width INTEGER," \
+                                        "height INTEGER," \
                                         "start_left INTEGER, " \
                                         "start_top INTEGER, " \
                                         "start_width INTEGER, " \
