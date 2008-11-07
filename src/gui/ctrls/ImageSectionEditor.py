@@ -36,8 +36,10 @@ class RectChangedEvent(wx.PyCommandEvent):
 
 class ImageSectionEditor(wx.Panel):
     
-    def __init__(self, parent, *args, **kwargs):
-        wx.Panel.__init__(self, parent, *args, **kwargs)
+    def __init__(self, parent, id=wx.ID_ANY, 
+                 pos=wx.DefaultPosition, size=wx.DefaultSize, 
+                 style=wx.TAB_TRAVERSAL, name='panel'):
+        wx.Panel.__init__(self, parent, id, pos, size, style, name)
         
         self.SetMinSize(wx.Size(400, 300))
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
@@ -47,9 +49,14 @@ class ImageSectionEditor(wx.Panel):
         self._bmpScaled= None
         self._sectRect = wx.Rect(0, 0, 1280, 720)
         self._zoom     = 1
+        
+        self._deltaX   = None
+        self._deltaY   = None 
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
         self.Bind(wx.EVT_SIZE, self.OnResize)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
@@ -103,31 +110,59 @@ class ImageSectionEditor(wx.Panel):
             return
         
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        dc.SetPen(wx.WHITE_PEN)
         
         left, top = self.__GetBmpTopLeft()
-        dc.DrawRectangle(left + (self._sectRect.GetLeft() * self._zoom),
-                         top + (self._sectRect.GetTop() * self._zoom),
-                         self._sectRect.GetWidth() * self._zoom,
-                         self._sectRect.GetHeight() * self._zoom,)
+        for i in range(5):
+            if i < 2:
+                dc.SetPen(wx.WHITE_PEN)
+            else:
+                dc.SetPen(wx.Pen(wx.Colour(0, 0, 0, 255 / i )))
 
-    def OnPaint(self, evt):
+            dc.DrawRectangle(left + (self._sectRect.GetLeft() * self._zoom) - i,
+                             top + (self._sectRect.GetTop() * self._zoom) - i,
+                             self._sectRect.GetWidth() * self._zoom + i*2,
+                             self._sectRect.GetHeight() * self._zoom + i*2)
+
+    def OnPaint(self, event):
         sz = self.GetClientSize()
 
-        dc = wx.AutoBufferedPaintDC(self)
+#        dc = wx.AutoBufferedPaintDC(self)
+        pdc = wx.PaintDC(self)
+        try:
+            dc = wx.GCDC(pdc)
+        except StandardError:
+            dc = pdc
+
         dc.SetBrush(wx.GREY_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
         self.__DrawBitmap(dc)
         self.__DrawSection(dc)
+        
+        event.Skip()
+        
+    def __ClientToImage(self, px, py):
+        bmpLeft, bmpTop = self.__GetBmpTopLeft()
+        nx = ((px - bmpLeft) / self._zoom) + bmpLeft
+        ny = ((py - bmpTop) / self._zoom) + bmpTop
+        return nx, ny
+
+    def OnLeftDown(self, event):
+        px, py = event.GetPosition().Get()
+        cpx, cpy = self.__ClientToImage(px, py)
+
+        if self._sectRect.ContainsXY(cpx, cpy):
+            self._deltaX = cpx - self._sectRect.GetLeft()
+            self._deltaY = cpy - self._sectRect.GetTop()
+
+        event.Skip()
 
     def OnMotion(self, event):
-        if self._image is not None and event.LeftIsDown():
+        if self._image is not None and event.LeftIsDown() and self._deltaX is not None:
             px, py = event.GetPosition().Get()
-            rw, rh = self._sectRect.GetSize().Get()
-            bmpLeft, bmpTop = self.__GetBmpTopLeft()
-
-            left = ((px - bmpLeft) / self._zoom) + bmpLeft - (rw / 2.0)
-            top = ((py - bmpTop) / self._zoom) + bmpTop - (rh / 2.0)
+            cpx, cpy = self.__ClientToImage(px, py)
+            
+            left = cpx - self._deltaX
+            top = cpy - self._deltaY
             
             self._sectRect.SetLeft(left)
             self._sectRect.SetTop(top)
@@ -135,6 +170,12 @@ class ImageSectionEditor(wx.Panel):
             self._SendRectChangedEvent()
             
             self.Refresh()
+        
+    def OnLeftUp(self, event):
+        self._deltaX = None
+        self._deltaY = None
+        
+        event.Skip()
             
     def _SendRectChangedEvent(self):
         if self._image is None:
@@ -158,6 +199,7 @@ class ImageSectionEditor(wx.Panel):
     def OnResize(self, event):
         self.__Scale()
         self.Refresh()
+        event.Skip()
 
     def OnKeyDown(self, event):
         key = event.GetKeyCode()
