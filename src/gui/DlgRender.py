@@ -421,6 +421,7 @@ class DlgRender(wx.Dialog, Observer):
         self.tcOutputDir.SetMinSize(wx.Size(400, -1))
         self.tcAudiofile.SetMinSize(wx.Size(200, -1))
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
+        self.spinButtonTransDur.SetMinSize(wx.Size(-1, self.tcTransDuration.GetSizeTuple()[1]))
         
         totalMinSecs = len(photoFilmStrip.GetPictures())
         minTime = wx.DateTime()
