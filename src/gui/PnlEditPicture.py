@@ -182,6 +182,7 @@ class PnlEditPicture(wx.Panel):
         
         self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
         self.choiceEffect.Append(_(u"Black and White"), Picture.EFFECT_BLACK_WHITE)
+        self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
         
         self._picture = None
