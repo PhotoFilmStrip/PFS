@@ -25,7 +25,6 @@ import thread
 import wx
 import wx.media
 import wx.lib.masked.timectrl
-import wx.lib.masked.textctrl
 
 
 from core.OutputProfile import OutputProfile
@@ -463,8 +462,12 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
         self.choiceType.SetSelection(settings.GetVideoType())
         
+        msgList = []
         for rend in RENDERERS:
-            self.choiceFormat.Append(rend.GetName(), rend)
+            if rend.CheckDependencies(msgList):
+                self.choiceFormat.Append(rend.GetName(), rend)
+        print '\n'.join(msgList)
+            
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormatChoice(None)
         
@@ -488,7 +491,7 @@ class DlgRender(wx.Dialog, Observer):
             if resp == wx.ID_YES:
                 try:
                     os.makedirs(path)
-                except Exception, err:
+                except StandardError, err:
                     dlg = wx.MessageDialog(self,
                                            _(u"Cannot create direcotory: %s") % str(err),
                                            _(u"Error"),
@@ -499,9 +502,20 @@ class DlgRender(wx.Dialog, Observer):
             else:
                 return False
         else:
-            # TODO: folder write test
-            pass
-    
+            try:
+                fd = open(os.path.join(path, 'test'), 'w')
+                fd.write(" ")
+                fd.close()
+                os.remove(os.path.join(path, 'test'))
+            except StandardError, err:
+                dlg = wx.MessageDialog(self,
+                                       _(u"Cannot write into direcotory: %s") % str(err),
+                                       _(u"Error"),
+                                       wx.OK | wx.ICON_ERROR)
+                dlg.ShowModal()
+                dlg.Destroy()
+                return False
+
         if len(os.listdir(path)) > 2:
             dlg = wx.MessageDialog(self,
                                    _(u"Output path is not empty! Use it anyway?"), 
@@ -610,6 +624,8 @@ class DlgRender(wx.Dialog, Observer):
     def OnChoiceFormatChoice(self, event):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
         self.lcProps.DeleteAllItems()
+        if data is None:
+            return
         savedProps = Settings().GetRenderProperties(data.__name__)
         for prop in data.GetProperties():
             value = savedProps.get(prop.lower(), data.GetProperty(prop))

@@ -84,7 +84,7 @@ def main():
     parser.add_option("-l", "--length", help=_(u"total length of the PhotoFilmStrip (seconds)"), type="int", metavar="SECONDS")
     parser.add_option("-a", "--audio", help=_(u"use audiofile as audiotrack (use --length to limit the movie length)"), metavar="MP3")
     
-    options, args = parser.parse_args()
+    options = parser.parse_args()[0]
     
 
     if options.project:
@@ -103,7 +103,7 @@ def main():
         if not os.path.exists(options.outputpath):
             try:
                 os.makedirs(options.outputpath)
-            except Exception, err:
+            except StandardError, err:
                 logging.error(_(u"cannot create outputpath: %s") % err)
                 sys.exit(2)
     else:
