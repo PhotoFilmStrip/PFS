@@ -22,20 +22,25 @@ import sys
 
 import wx
 
+from gui.ImageProvider  import ImageProvider
+from gui.FrmMain import FrmMain
+from gui.DlgBugReport import DlgBugReport
+
 
 class PhotoFilmStripApp(wx.App):
     
     def OnInit(self):
         wx.InitAllImageHandlers()
+#        loc = wx.Locale(wx.LANGUAGE_GERMAN)
 
-        from gui.ImageProvider  import ImageProvider
         ImageProvider.Init()
 
-        from gui.FrmMain import FrmMain
         frame = FrmMain()
         frame.Show()
         frame.Maximize()
         self.SetTopWindow(frame)
+        
+        DlgBugReport.Initialize(frame)
         
         if len(sys.argv) > 1:
             frame.LoadProject(sys.argv[1])
