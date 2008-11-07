@@ -103,7 +103,7 @@ class ImageSectionEditor(wx.Panel):
         iw, ih = self._bmpScaled.GetSize().Get()
         left = (cw - iw) / 2.0
         top = (ch - ih) / 2.0
-        return left, top
+        return int(left), int(top)
             
     def __DrawSection(self, dc):
         if self._image is None:
@@ -126,8 +126,7 @@ class ImageSectionEditor(wx.Panel):
     def OnPaint(self, event):
         sz = self.GetClientSize()
 
-#        dc = wx.AutoBufferedPaintDC(self)
-        pdc = wx.PaintDC(self)
+        pdc = wx.BufferedPaintDC(self)
         try:
             dc = wx.GCDC(pdc)
         except StandardError:
@@ -142,8 +141,8 @@ class ImageSectionEditor(wx.Panel):
         
     def __ClientToImage(self, px, py):
         bmpLeft, bmpTop = self.__GetBmpTopLeft()
-        nx = ((px - bmpLeft) / self._zoom) + bmpLeft
-        ny = ((py - bmpTop) / self._zoom) + bmpTop
+        nx = (px - bmpLeft) / self._zoom
+        ny = (py - bmpTop) / self._zoom
         return nx, ny
 
     def OnLeftDown(self, event):
@@ -157,20 +156,25 @@ class ImageSectionEditor(wx.Panel):
         event.Skip()
 
     def OnMotion(self, event):
-        if self._image is not None and event.LeftIsDown() and self._deltaX is not None:
+        if self._image is not None:
             px, py = event.GetPosition().Get()
             cpx, cpy = self.__ClientToImage(px, py)
-            
-            left = cpx - self._deltaX
-            top = cpy - self._deltaY
-            
-            self._sectRect.SetLeft(left)
-            self._sectRect.SetTop(top)
-            
-            self._SendRectChangedEvent()
-            
-            self.Refresh()
+            if self._sectRect.ContainsXY(cpx, cpy):
+                self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+            else:
+                self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         
+            if event.LeftIsDown() and self._deltaX is not None:
+                left = cpx - self._deltaX
+                top = cpy - self._deltaY
+                
+                self._sectRect.SetLeft(left)
+                self._sectRect.SetTop(top)
+                
+                self._SendRectChangedEvent()
+                
+                self.Refresh()
+
     def OnLeftUp(self, event):
         self._deltaX = None
         self._deltaY = None
