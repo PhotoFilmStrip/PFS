@@ -2,6 +2,7 @@
 import cStringIO
 import sys
 import traceback
+import urllib
 
 import wx
 from wx.lib.wordwrap import wordwrap
@@ -17,6 +18,7 @@ class DlgBugReport(wx.Dialog):
     def Initialize(cls, parent):
         cls.PARENT = parent
         def excepthook(etype, value, tb):
+            traceback.print_exception(etype, value, tb)
             output = cStringIO.StringIO()
             traceback.print_exception(etype, value, tb, file=output)
             dlg = DlgBugReport(cls.PARENT, output.getvalue()) 
@@ -39,18 +41,43 @@ class DlgBugReport(wx.Dialog):
         szTop.AddSpacer(16)
         szTop.Add(stMsg, 0)
         
-        tcMsg = wx.TextCtrl(self, -1, msg, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.tcMsg = wx.TextCtrl(self, -1, msg, style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_DONTWRAP)
         
         szCmd = self.CreateSeparatedButtonSizer(wx.YES | wx.NO)
 
         szMain = wx.BoxSizer(wx.VERTICAL)
         szMain.Add(szTop, 0, wx.ALL, 8)
-        szMain.Add(tcMsg, 1, wx.EXPAND | wx.ALL, 8)
+        szMain.Add(self.tcMsg, 1, wx.EXPAND | wx.ALL, 8)
         szMain.Add(szCmd, 0, wx.EXPAND)
         
         self.SetSizer(szMain)
         
+        self.Bind(wx.EVT_BUTTON, self.OnNo, id=wx.ID_NO)
         self.Bind(wx.EVT_BUTTON, self.OnYes, id=wx.ID_YES)
 
     def OnYes(self, event):
+        params = urllib.urlencode({'bugreport': u"%s-%s\n\n%s" % (Settings.APP_NAME, 
+                                                                  Settings.APP_VERSION,
+                                                                  self.tcMsg.GetValue())})
+        fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
+        result = fd.read()
+        if result and result.find("Result 1") != -1:
+            dlg = wx.MessageDialog(self,
+                                   _(u"Bug-Report send. Thank you for your support."), 
+                                   _(u"Information"),
+                                   wx.OK | wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+        else:
+            dlg = wx.MessageDialog(self,
+                                   _(u"Sorry, this function is temporary not available.."), 
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+        
+        self.EndModal(wx.ID_YES)
+
+    def OnNo(self, event):
+        self.EndModal(wx.ID_NO)
         event.Skip()
