@@ -230,12 +230,28 @@ class ImageSectionEditor(wx.Panel):
             position = self.__FindPosition(cpx, cpy)
             self.__SelectCursor(position)
         else:
+            ratio = 16.0 / 9.0
             if self._action == self.POSITION_INSIDE:
                 left = cpx - self._startX
                 top = cpy - self._startY
                 
                 self._sectRect.SetLeft(left)
                 self._sectRect.SetTop(top)
+                
+            elif self._action == self.POSITION_BOTTOM:
+                dh = cpy - self._sectRect.GetTop() - self._sectRect.GetHeight()
+                dw = dh * ratio
+                top = self._sectRect.GetTop()
+                self._sectRect.Inflate(dw, dh)
+                self._sectRect.SetTop(top)
+
+            elif elf._action == self.POSITION_RIGHT:
+                dw = cpx - self._sectRect.GetLeft() - self._sectRect.GetWidth()
+                dh = dw / ratio
+                left = self._sectRect.GetLeft()
+                self._sectRect.Inflate(dw, dh)
+                self._sectRect.SetLeft(left)
+
             #TODO: andere Actions handhaben
             
             self._SendRectChangedEvent()
