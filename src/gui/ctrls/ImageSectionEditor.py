@@ -245,7 +245,7 @@ class ImageSectionEditor(wx.Panel):
                 self._sectRect.Inflate(dw, dh)
                 self._sectRect.SetTop(top)
 
-            elif elf._action == self.POSITION_RIGHT:
+            elif self._action == self.POSITION_RIGHT:
                 dw = cpx - self._sectRect.GetLeft() - self._sectRect.GetWidth()
                 dh = dw / ratio
                 left = self._sectRect.GetLeft()
