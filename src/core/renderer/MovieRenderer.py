@@ -39,14 +39,12 @@ class MovieRenderer(SingleFileRenderer):
         
     @staticmethod
     def CheckDependencies(msgList):
-        if not SingleFileRenderer.CheckDependencies(msgList):
-            return False
+        SingleFileRenderer.CheckDependencies(msgList)
+        
         proc = Popen("ppmtoy4m -h", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.stdout.read()
         if proc.wait() != 0:
-            msgList.append("ppmtoy4m (mjpegtools) required!")
-            return False
-        return True
+            msgList.append(_(u"ppmtoy4m (mjpegtools) required!"))
 
     @staticmethod
     def GetProperties():
@@ -80,14 +78,12 @@ class MPEG2Renderer(MovieRenderer):
         
     @staticmethod
     def CheckDependencies(msgList):
-        if not MovieRenderer.CheckDependencies(msgList):
-            return False
+        MovieRenderer.CheckDependencies(msgList)
+
         proc = Popen("mpeg2enc -h", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.stdout.read()
         if proc.wait() != 0:
-            msgList.append("mpeg2enc (mjpegtools) required!")
-            return False
-        return True
+            msgList.append(_(u"mpeg2enc (mjpegtools) required!"))
 
     @staticmethod
     def GetName():
@@ -179,14 +175,22 @@ class MPEG4Renderer(MovieRenderer):
         
     @staticmethod
     def CheckDependencies(msgList):
-        if not MovieRenderer.CheckDependencies(msgList):
-            return False
+        MovieRenderer.CheckDependencies(msgList)
+
         proc = Popen("which mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.stdout.read()
         if proc.wait() != 0:
-            msgList.append("mencoder (mencoder) required!")
-            return False
-        return True
+            msgList.append(_(u"mencoder (mencoder) required!"))
+
+    @staticmethod
+    def GetProperties():
+        return MovieRenderer.GetProperties() + ["FFOURCC"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "FFOURCC":
+            return "XVID"
+        return MovieRenderer.GetDefaultProperty(prop)
 
     @staticmethod
     def GetName():
@@ -214,9 +218,10 @@ class MPEG4Renderer(MovieRenderer):
         
         cmd = "mencoder -cache 1024 " \
               "%(audioArgs)s " \
-              "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc XVID " \
+              "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
+                                                      'ffourcc': MPEG4Renderer.GetProperty('FFOURCC'),
                                                       'bitrate': bitrate,
                                                       'audioArgs': audioArgs}
 

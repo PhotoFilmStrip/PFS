@@ -23,6 +23,7 @@ import os
 import thread
 
 import wx
+import wx.combo
 import wx.media
 import wx.lib.masked.timectrl
 
@@ -56,6 +57,9 @@ from lib.Settings import Settings
 
 
 class DlgRender(wx.Dialog, Observer):
+    
+    _custom_classes = {"wx.Choice": ["FormatComboBox"]}
+    
     def _init_coll_sizerSettingsCtrls_Items(self, parent):
         # generated method, don't edit
 
@@ -359,10 +363,10 @@ class DlgRender(wx.Dialog, Observer):
               label=_(u'Format:'), name=u'stFormat', parent=self.pnlOutput,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.choiceFormat = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICEFORMAT,
+        self.choiceFormat = FormatComboBox(choices=[], id=wxID_DLGRENDERCHOICEFORMAT,
               name=u'choiceFormat', parent=self.pnlOutput, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-        self.choiceFormat.Bind(wx.EVT_CHOICE, self.OnChoiceFormatChoice,
+              size=wx.Size(-1, -1), style=wx.CB_READONLY)
+        self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormatChoice,
               id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERLCPROPS, name=u'lcProps',
@@ -463,12 +467,6 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
         self.choiceType.SetSelection(settings.GetVideoType())
         
-        msgList = []
-        for rend in RENDERERS:
-            if rend.CheckDependencies(msgList):
-                self.choiceFormat.Append(rend.GetName(), rend)
-        print '\n'.join(msgList)
-            
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormatChoice(None)
         
@@ -551,7 +549,7 @@ class DlgRender(wx.Dialog, Observer):
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
         path = self.tcOutputDir.GetValue()
 
-        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
 
         propDict = {}
         for prop in rendererClass.GetProperties():
@@ -607,7 +605,7 @@ class DlgRender(wx.Dialog, Observer):
             self.Destroy()
 
     def OnActivateProperty(self, event):
-        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat)
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
         idx = event.GetIndex()
         prop = self.lcProps.GetItemText(idx)
         dlg = wx.TextEntryDialog(self, _(u"Edit property"), prop, unicode(rendererClass.GetProperty(prop)))
@@ -624,15 +622,18 @@ class DlgRender(wx.Dialog, Observer):
     
     def OnChoiceFormatChoice(self, event):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
+        rendererClass = data.PRendererClass
         self.lcProps.DeleteAllItems()
         if data is None:
             return
-        savedProps = Settings().GetRenderProperties(data.__name__)
-        for prop in data.GetProperties():
-            value = savedProps.get(prop.lower(), data.GetProperty(prop))
+        savedProps = Settings().GetRenderProperties(rendererClass.__name__)
+        for prop in rendererClass.GetProperties():
+            value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
             self.lcProps.Append([prop, value])
             
-            data.SetProperty(prop, value)
+            rendererClass.SetProperty(prop, value)
+            
+        self.cmdStart.Enable(data.IsOk())
         
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, ProgressHandler):
@@ -735,3 +736,60 @@ class DlgRender(wx.Dialog, Observer):
             print "invalid media length"
 
         event.Skip()
+
+
+class FormatComboBox(wx.combo.OwnerDrawnComboBox):
+    
+    def __init__(self, *args, **kwargs):
+        wx.combo.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
+
+        for rend in RENDERERS:
+            msgList = []
+            rend.CheckDependencies(msgList)
+
+            self.Append(rend.GetName(), FormatData(rend, msgList))
+    
+    def OnDrawItem(self, dc, rect, item, flags):
+        if item == wx.NOT_FOUND:
+            return
+
+        data = self.GetClientData(item)
+        
+        rect2 = wx.Rect(*rect)
+        rect2.Deflate(5, 0)
+
+        if flags & wx.combo.ODCB_PAINTING_CONTROL:
+            if data.PMessages:
+                dc.SetTextForeground(wx.Color(127, 127, 127))
+            else:
+                dc.SetTextForeground(wx.BLACK)
+
+            dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL) 
+        
+        else:
+            if data.PMessages:
+                dc.SetTextForeground(wx.Color(127, 127, 127))
+                bmp = wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (16, 16))
+            else:
+                dc.SetTextForeground(wx.BLACK)
+                bmp = wx.NullBitmap
+
+            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.PMessages), 
+                              bmp, rect2, 
+                              wx.ALIGN_CENTER_VERTICAL) 
+
+    def OnMeasureItem(self, item):
+        data = self.GetClientData(item)
+        height = self.GetTextExtent(self.GetString(item))[1]
+        height += self.GetTextExtent("\n".join(data.PMessages))[1]
+        return height + 8
+
+
+class FormatData(object):
+    
+    def __init__(self, rendClass, msgList):
+        self.PRendererClass = rendClass
+        self.PMessages = msgList
+
+    def IsOk(self):
+        return len(self.PMessages) == 0

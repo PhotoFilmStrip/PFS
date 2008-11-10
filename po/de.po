@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-04 21:48+CET\n"
-"PO-Revision-Date: 2008-11-04 21:54+0100\n"
+"POT-Creation-Date: 2008-11-10 19:00+CET\n"
+"PO-Revision-Date: 2008-11-10 19:05+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/cli/Main.py:62
 #: src/cli/Main.py:186
-#: src/gui/DlgRender.py:635
+#: src/gui/DlgRender.py:655
 msgid "all done"
 msgstr "Fertig"
 
@@ -92,7 +92,7 @@ msgid "framerate"
 msgstr "Bildrate"
 
 #: src/cli/Main.py:181
-#: src/gui/DlgRender.py:633
+#: src/gui/DlgRender.py:653
 msgid "...aborted!"
 msgstr "...abgebrochen!"
 
@@ -113,7 +113,6 @@ msgid "Loading '%s' ..."
 msgstr "Lade '%s' ..."
 
 #: src/core/ProgressHandler.py:31
-#: src/gui/FrmMain.py:506
 msgid "Please wait..."
 msgstr "Bitte warten"
 
@@ -159,11 +158,23 @@ msgstr "Ausgabe erstellen..."
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
-#: src/core/renderer/MovieRenderer.py:80
+#: src/core/renderer/MovieRenderer.py:47
+msgid "ppmtoy4m (mjpegtools) required!"
+msgstr "ppmtoy4m (mjpegtools) nicht gefunden!"
+
+#: src/core/renderer/MovieRenderer.py:86
+msgid "mpeg2enc (mjpegtools) required!"
+msgstr "mpeg2enc (mjpegtools) nicht gefunden!"
+
+#: src/core/renderer/MovieRenderer.py:90
 msgid "MPEG2-Video"
 msgstr "MPEG2-Video"
 
-#: src/core/renderer/MovieRenderer.py:172
+#: src/core/renderer/MovieRenderer.py:183
+msgid "mencoder (mencoder) required!"
+msgstr "mencoder (mencoder) nicht gefunden!"
+
+#: src/core/renderer/MovieRenderer.py:187
 msgid "MPEG4-Video (XVid)"
 msgstr "MPEG4-Video (XVid)"
 
@@ -171,7 +182,15 @@ msgstr "MPEG4-Video (XVid)"
 msgid "Single pictures (shellscript)"
 msgstr "Einzelbilder (Shellscript)"
 
-#: src/core/renderer/SingleFileRenderer.py:42
+#: src/core/renderer/SingleFileRenderer.py:41
+msgid "convert (imagemagick) required!"
+msgstr "convert (imagemagick) nicht gefunden!"
+
+#: src/core/renderer/SingleFileRenderer.py:46
+msgid "composite (imagemagick) required!"
+msgstr "composite (imagemagick) nicht gefunden!"
+
+#: src/core/renderer/SingleFileRenderer.py:50
 msgid "Single pictures"
 msgstr "Einzelbilder"
 
@@ -212,7 +231,7 @@ msgid "Import Pictures"
 msgstr "Bilder importieren"
 
 #: src/gui/ActionManager.py:84
-#: src/gui/DlgRender.py:241
+#: src/gui/DlgRender.py:245
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
@@ -248,123 +267,150 @@ msgstr "Bilder &importieren"
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
-#: src/gui/DlgRender.py:188
+#: src/gui/DlgBugReport.py:31
+msgid "An unexpected error occured"
+msgstr "Ein unerwarteter Fehler ist aufgetretetn"
+
+#: src/gui/DlgBugReport.py:34
+msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
+msgstr "Ein unerwarteter Fehler ist aufgetreten. Wollen Sie einen Fehlerbericht an die Entwickler von %s senden?"
+
+#: src/gui/DlgBugReport.py:70
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
+
+#: src/gui/DlgBugReport.py:71
+#: src/gui/FrmMain.py:389
+msgid "Information"
+msgstr "Information"
+
+#: src/gui/DlgBugReport.py:77
+msgid "Sorry, this function is temporary not available.."
+msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
+
+#: src/gui/DlgBugReport.py:78
+#: src/gui/DlgRender.py:496
+#: src/gui/DlgRender.py:512
+#: src/gui/DlgRender.py:535
+#: src/gui/DlgRender.py:660
+#: src/gui/DlgRender.py:716
+msgid "Error"
+msgstr "Fehler"
+
+#: src/gui/DlgRender.py:192
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: src/gui/DlgRender.py:190
+#: src/gui/DlgRender.py:194
 msgid "Value"
 msgstr "Wert"
 
-#: src/gui/DlgRender.py:245
+#: src/gui/DlgRender.py:249
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/gui/DlgRender.py:257
+#: src/gui/DlgRender.py:261
 msgid "Profile:"
 msgstr "Profil:"
 
-#: src/gui/DlgRender.py:269
+#: src/gui/DlgRender.py:273
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/gui/DlgRender.py:282
+#: src/gui/DlgRender.py:286
 msgid "Transition speed:"
 msgstr "Bildübergangsdauer:"
 
-#: src/gui/DlgRender.py:295
+#: src/gui/DlgRender.py:299
 msgid "Sec."
 msgstr "Sek."
 
-#: src/gui/DlgRender.py:299
+#: src/gui/DlgRender.py:303
 msgid "Total length:"
 msgstr "Gesamtlänge:"
 
-#: src/gui/DlgRender.py:303
+#: src/gui/DlgRender.py:307
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgRender.py:315
+#: src/gui/DlgRender.py:319
 msgid "User defined:"
 msgstr "Manuell:"
 
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:327
 msgid "Audio file:"
 msgstr "Audiodatei:"
 
-#: src/gui/DlgRender.py:347
+#: src/gui/DlgRender.py:351
 msgid "Output"
 msgstr "Ausgabe"
 
-#: src/gui/DlgRender.py:359
+#: src/gui/DlgRender.py:363
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:376
+#: src/gui/DlgRender.py:380
 msgid "Output directory:"
 msgstr "Ausgabeordner:"
 
-#: src/gui/DlgRender.py:393
+#: src/gui/DlgRender.py:397
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:399
-#: src/gui/DlgRender.py:645
+#: src/gui/DlgRender.py:403
+#: src/gui/DlgRender.py:665
 msgid "&Close"
 msgstr "S&chließen"
 
-#: src/gui/DlgRender.py:481
+#: src/gui/DlgRender.py:485
 msgid "Output path does not exists! Do you want %s to create it?"
 msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgRender.py:482
-#: src/gui/DlgRender.py:506
-#: src/gui/DlgRender.py:583
+#: src/gui/DlgRender.py:486
+#: src/gui/DlgRender.py:521
+#: src/gui/DlgRender.py:598
 #: src/gui/FrmMain.py:399
 #: src/gui/FrmMain.py:453
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgRender.py:491
+#: src/gui/DlgRender.py:495
 msgid "Cannot create direcotory: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/gui/DlgRender.py:492
-#: src/gui/DlgRender.py:520
-#: src/gui/DlgRender.py:640
-#: src/gui/DlgRender.py:696
-msgid "Error"
-msgstr "Fehler"
+#: src/gui/DlgRender.py:511
+msgid "Cannot write into direcotory: %s"
+msgstr "Verzeichnis nicht beschreibbar: %s"
 
-#: src/gui/DlgRender.py:505
+#: src/gui/DlgRender.py:520
 msgid "Output path is not empty! Use it anyway?"
 msgstr "Ausgabeordner nicht leer. Dennoch verwenden?"
 
-#: src/gui/DlgRender.py:519
+#: src/gui/DlgRender.py:534
 msgid "Audio file does not exist!"
 msgstr "Audio-Datei nicht vorhanden!"
 
-#: src/gui/DlgRender.py:551
+#: src/gui/DlgRender.py:566
 msgid "&Cancel"
 msgstr "&Abbrechen"
 
-#: src/gui/DlgRender.py:582
+#: src/gui/DlgRender.py:597
 msgid "Abort current process?"
 msgstr "Aktuellen Vorgang abbrechen?"
 
-#: src/gui/DlgRender.py:596
+#: src/gui/DlgRender.py:611
 msgid "Edit property"
 msgstr "Eigenschaft bearbeiten"
 
-#: src/gui/DlgRender.py:680
+#: src/gui/DlgRender.py:700
 msgid "Select music"
 msgstr "Audiodatei auswählen"
 
-#: src/gui/DlgRender.py:683
+#: src/gui/DlgRender.py:703
 msgid "Audiofiles"
 msgstr "Audiodateien"
 
-#: src/gui/DlgRender.py:695
+#: src/gui/DlgRender.py:715
 msgid "Invalid audio file!"
 msgstr "Ungültige Audio-Datei"
 
@@ -393,10 +439,6 @@ msgstr "Bilddateien"
 msgid "Help will be available soon."
 msgstr "Hilfe bald verfügbar."
 
-#: src/gui/FrmMain.py:389
-msgid "Information"
-msgstr "Information"
-
 #: src/gui/FrmMain.py:395
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
@@ -416,6 +458,14 @@ msgstr "Dauer"
 #: src/gui/FrmMain.py:452
 msgid "The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?"
 msgstr "Ein im PhotoFilmStrip verwendeter Bild-Pfad '%s' existiert nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
+
+#: src/gui/FrmMain.py:506
+msgid "Please wait"
+msgstr "Bitte warten"
+
+#: src/gui/FrmMain.py:507
+msgid "Loading pictures..."
+msgstr "Bilder laden..."
 
 #: src/gui/PnlEditPicture.py:114
 msgid "Rotation:"
@@ -440,6 +490,10 @@ msgstr "Kein Effekt"
 #: src/gui/PnlEditPicture.py:184
 msgid "Black and White"
 msgstr "Schwarz-Weiss"
+
+#: src/gui/PnlEditPicture.py:185
+msgid "Sepia tone"
+msgstr "Sephia-Effekt"
 
 #, fuzzy
 #~ msgid "aborted"

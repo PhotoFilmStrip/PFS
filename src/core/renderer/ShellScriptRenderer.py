@@ -33,7 +33,7 @@ class ShellScriptRenderer(BaseRenderer):
     
     @staticmethod
     def CheckDependencies(msgList):
-        return True
+        pass
     
     @staticmethod
     def GetName():

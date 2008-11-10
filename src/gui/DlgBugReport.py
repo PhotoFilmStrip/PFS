@@ -59,8 +59,12 @@ class DlgBugReport(wx.Dialog):
         params = urllib.urlencode({'bugreport': u"%s-%s\n\n%s" % (Settings.APP_NAME, 
                                                                   Settings.APP_VERSION,
                                                                   self.tcMsg.GetValue())})
-        fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
-        result = fd.read()
+        try:
+            fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
+            result = fd.read()
+        except IOError:
+            result = None
+        
         if result and result.find("Result 1") != -1:
             dlg = wx.MessageDialog(self,
                                    _(u"Bug-Report send. Thank you for your support."), 

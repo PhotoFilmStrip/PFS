@@ -38,14 +38,12 @@ class SingleFileRenderer(BaseRenderer):
         proc = Popen("convert -h", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.stdout.read()
         if proc.wait() != 0:
-            msgList.append("convert (imagemagick) required!")
-            return False
+            msgList.append(_(u"convert (imagemagick) required!"))
+
         proc = Popen("composite -h", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.stdout.read()
         if proc.wait() != 0:
-            msgList.append("composite (imagemagick) required!")
-            return False
-        return True
+            msgList.append(_(u"composite (imagemagick) required!"))
     
     @staticmethod
     def GetName():
