@@ -68,7 +68,7 @@ class PhotoFilmStrip(Observable):
             imgPath = os.path.dirname(imgFile)
             self.__progressHandler.Step(_(u"Loading '%s' ...") % (os.path.basename(imgFile)))
             
-            picData = row['data']
+            picData = self.__LoadSafe(row, 'data', None)
             if picData is None:
                 if not (os.path.exists(imgPath) and os.path.isfile(imgFile)):
                     if altPaths.has_key(imgPath):
