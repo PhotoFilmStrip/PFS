@@ -28,14 +28,9 @@ class PyListView(wx.ListView):
                  style=wx.LC_ICON, validator=wx.DefaultValidator, 
                  name=wx.ListCtrlNameStr):
         wx.ListView.__init__(self, parent, id, pos, size, style, validator, name)
-        self.Bind(wx.EVT_LIST_INSERT_ITEM, self.OnInsertItem)
         
         self.__data = {}
         self.__key = 0
-        
-    def OnInsertItem(self, event):
-        self.__key += 1
-        event.Skip()
         
     def DeleteAllItems(self):
         self.__data.clear()
@@ -47,8 +42,13 @@ class PyListView(wx.ListView):
         wx.ListView.DeleteItem(self, item)
         
     def SetPyData(self, item, data):
-        self.SetItemData(item, self.__key)
-        self.__data[self.__key] = data
+        key = self.GetItemData(item)
+        if key == 0:
+            self.__key += 1
+            key = self.__key
+
+        self.SetItemData(item, key)
+        self.__data[key] = data
         
     def GetPyData(self, item):
         key = self.GetItemData(item)
