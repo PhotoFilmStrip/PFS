@@ -780,8 +780,7 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
 
     def OnMeasureItem(self, item):
         data = self.GetClientData(item)
-        height = self.GetTextExtent(self.GetString(item))[1]
-        height += self.GetTextExtent("\n".join(data.PMessages))[1]
+        height = self.GetTextExtent(self.GetString(item))[1] * (len(data.PMessages) + 1)
         return height + 8
 
 

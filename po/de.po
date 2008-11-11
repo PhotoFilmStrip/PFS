@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-10 19:00+CET\n"
-"PO-Revision-Date: 2008-11-10 19:05+0100\n"
+"POT-Creation-Date: 2008-11-11 19:12+CET\n"
+"PO-Revision-Date: 2008-11-11 20:46+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -174,7 +174,7 @@ msgstr "MPEG2-Video"
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) nicht gefunden!"
 
-#: src/core/renderer/MovieRenderer.py:187
+#: src/core/renderer/MovieRenderer.py:197
 msgid "MPEG4-Video (XVid)"
 msgstr "MPEG4-Video (XVid)"
 
@@ -194,76 +194,84 @@ msgstr "composite (imagemagick) nicht gefunden!"
 msgid "Single pictures"
 msgstr "Einzelbilder"
 
-#: src/gui/ActionManager.py:54
+#: src/gui/ActionManager.py:56
 msgid "&File"
 msgstr "&Datei"
 
-#: src/gui/ActionManager.py:55
+#: src/gui/ActionManager.py:57
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: src/gui/ActionManager.py:56
+#: src/gui/ActionManager.py:58
 msgid "&Tools"
 msgstr "&Extras"
 
-#: src/gui/ActionManager.py:57
+#: src/gui/ActionManager.py:59
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: src/gui/ActionManager.py:68
+#: src/gui/ActionManager.py:70
 msgid "New Project"
 msgstr "Neues Projekt"
 
-#: src/gui/ActionManager.py:71
+#: src/gui/ActionManager.py:73
 msgid "Load Project"
 msgstr "Projekt laden"
 
-#: src/gui/ActionManager.py:74
+#: src/gui/ActionManager.py:76
 msgid "Save Project"
 msgstr "Projekt speichern"
 
-#: src/gui/ActionManager.py:77
+#: src/gui/ActionManager.py:79
 msgid "Save Project as"
 msgstr "Projekt speichern unter"
 
-#: src/gui/ActionManager.py:81
+#: src/gui/ActionManager.py:83
 msgid "Import Pictures"
 msgstr "Bilder importieren"
 
-#: src/gui/ActionManager.py:84
+#: src/gui/ActionManager.py:86
 #: src/gui/DlgRender.py:245
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
-#: src/gui/ActionManager.py:119
+#: src/gui/ActionManager.py:121
 msgid "Open &recent"
 msgstr "Zuletzt &verwendet"
 
-#: src/gui/ActionManager.py:134
+#: src/gui/ActionManager.py:128
+msgid "&Import Project"
+msgstr "Projekt &importieren"
+
+#: src/gui/ActionManager.py:129
+msgid "&Export Project"
+msgstr "Projekt &exportieren"
+
+#: src/gui/ActionManager.py:138
 msgid "Move picture &left"
 msgstr "Bild nach &links"
 
-#: src/gui/ActionManager.py:138
+#: src/gui/ActionManager.py:142
 msgid "Move picture &right"
 msgstr "Bild nach re&chts"
 
-#: src/gui/ActionManager.py:143
+#: src/gui/ActionManager.py:147
 msgid "&Remove Picture"
 msgstr "Bild &entfernen"
 
-#: src/gui/ActionManager.py:148
+#: src/gui/ActionManager.py:152
 msgid "Rotate &clockwise"
 msgstr "Im Uhrzeigersinn d&rehen"
 
-#: src/gui/ActionManager.py:152
+#: src/gui/ActionManager.py:156
 msgid "Rotate counter clock&wise"
 msgstr "&Gegen Uhrzeigersinn drehen"
 
-#: src/gui/ActionManager.py:160
+#: src/gui/ActionManager.py:164
 msgid "&Import Pictures"
 msgstr "Bilder &importieren"
 
-#: src/gui/ActionManager.py:165
+#: src/gui/ActionManager.py:169
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
@@ -280,7 +288,7 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
 
 #: src/gui/DlgBugReport.py:71
-#: src/gui/FrmMain.py:389
+#: src/gui/FrmMain.py:466
 msgid "Information"
 msgstr "Information"
 
@@ -369,8 +377,10 @@ msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 #: src/gui/DlgRender.py:486
 #: src/gui/DlgRender.py:521
 #: src/gui/DlgRender.py:598
-#: src/gui/FrmMain.py:399
-#: src/gui/FrmMain.py:453
+#: src/gui/FrmMain.py:285
+#: src/gui/FrmMain.py:476
+#: src/gui/FrmMain.py:530
+#: src/gui/FrmMain.py:581
 msgid "Question"
 msgstr "Frage"
 
@@ -414,56 +424,88 @@ msgstr "Audiodateien"
 msgid "Invalid audio file!"
 msgstr "Ungültige Audio-Datei"
 
-#: src/gui/FrmMain.py:245
+#: src/gui/FrmMain.py:250
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:247
-#: src/gui/FrmMain.py:270
+#: src/gui/FrmMain.py:252
+#: src/gui/FrmMain.py:275
+#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:311
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:267
+#: src/gui/FrmMain.py:272
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:287
+#: src/gui/FrmMain.py:284
+msgid "Overwrite existing file '%s'?"
+msgstr "Bestehende Datei '%s' überschreiben?"
+
+#: src/gui/FrmMain.py:294
+msgid "Export %s-Project"
+msgstr "%s-Projekt exportieren"
+
+#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:311
+msgid "Portable"
+msgstr "Mitnehm"
+
+#: src/gui/FrmMain.py:309
+msgid "Import %s-Project"
+msgstr "%s-Projekt importieren"
+
+#: src/gui/FrmMain.py:324
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:326
+#: src/gui/FrmMain.py:386
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/FrmMain.py:389
+#: src/gui/FrmMain.py:377
+msgid "Browse"
+msgstr "Durchsuchen"
+
+#: src/gui/FrmMain.py:384
+msgid "Import image"
+msgstr "Bild importieren"
+
+#: src/gui/FrmMain.py:466
 msgid "Help will be available soon."
 msgstr "Hilfe bald verfügbar."
 
-#: src/gui/FrmMain.py:395
+#: src/gui/FrmMain.py:472
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/FrmMain.py:398
+#: src/gui/FrmMain.py:475
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:414
+#: src/gui/FrmMain.py:491
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:421
+#: src/gui/FrmMain.py:498
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:452
-msgid "The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?"
-msgstr "Ein im PhotoFilmStrip verwendeter Bild-Pfad '%s' existiert nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
+#: src/gui/FrmMain.py:529
+msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
+msgstr "Einige Bilder aus dem Ordner '%s' existieren nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
 
-#: src/gui/FrmMain.py:506
+#: src/gui/FrmMain.py:578
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
+
+#: src/gui/FrmMain.py:599
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: src/gui/FrmMain.py:507
+#: src/gui/FrmMain.py:600
 msgid "Loading pictures..."
 msgstr "Bilder laden..."
 

@@ -128,6 +128,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
               self.OnListViewListItemSelected, id=wxID_FRMMAINLISTVIEW)
         self.listView.Bind(wx.EVT_LIST_ITEM_DESELECTED,
               self.OnListViewListItemDeselected, id=wxID_FRMMAINLISTVIEW)
+        self.listView.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK,
+              self.OnListViewListItemRightClick, id=wxID_FRMMAINLISTVIEW)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
               wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_FRMMAINCMDMOVELEFT,
@@ -183,6 +185,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.Bind(wx.EVT_MENU_RANGE, self.OnProjectLoadFileHistory, id=wx.ID_FILE1, id2=wx.ID_FILE9)
         self.Bind(wx.EVT_MENU, self.OnProjectSave, id=wx.ID_SAVE)
         self.Bind(wx.EVT_MENU, self.OnProjectSaveAs, id=wx.ID_SAVEAS)
+        self.Bind(wx.EVT_MENU, self.OnProjectExport, id=ActionManager.ID_PROJECT_EXPORT)
+        self.Bind(wx.EVT_MENU, self.OnProjectImport, id=ActionManager.ID_PROJECT_IMPORT)
         self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
         
         self.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=self.actionManager.ID_PIC_MOVE_LEFT)
@@ -213,6 +217,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectReady(False)
 
         self.__currentProject = ""
+        self.__usedAltPath = False
         
         self.NewProject(False)
         
@@ -259,7 +264,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
     def OnProjectSave(self, event):
         if self.__currentProject:
-            return self.SaveProject(self.__currentProject)
+            return self.SaveProject(self.__currentProject, False)
         else:
             return self.OnProjectSaveAs(event)
 
@@ -273,8 +278,40 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             filepath = dlg.GetPath()
             if os.path.splitext(filepath)[1].lower() != ".pfs":
                 filepath += ".pfs"
-            return self.SaveProject(filepath)
+                
+            if os.path.isfile(filepath):
+                dlg2 = wx.MessageDialog(self,
+                                        _(u"Overwrite existing file '%s'?") % filepath, 
+                                        _(u"Question"),
+                                        wx.YES_NO | wx.ICON_QUESTION)
+                if dlg2.ShowModal() == wx.ID_NO:
+                    return False
+                
+            return self.SaveProject(filepath, False)
         return False
+    
+    def OnProjectExport(self, event):
+        dlg = wx.FileDialog(self, _(u"Export %s-Project") % Settings.APP_NAME, 
+                            Settings().GetProjectPath(), 
+                            "" if self.__currentProject else "photofilmstrip", 
+                            u"%s %s-%s %s" % (_(u"Portable"), Settings.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
+                            wx.SAVE)
+        if dlg.ShowModal() == wx.ID_OK:
+            filepath = dlg.GetPath()
+            if os.path.splitext(filepath)[1].lower() != ".ppfs":
+                filepath += ".ppfs"
+            self.SaveProject(filepath, True)
+
+    def OnProjectImport(self, event):
+        if not self.CheckAndAskSaving():
+            return
+
+        dlg = wx.FileDialog(self, _(u"Import %s-Project") % Settings.APP_NAME, 
+                            Settings().GetProjectPath(), "", 
+                            u"%s %s-%s %s" % (_(u"Portable"), Settings.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
+                            wx.OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.LoadProject(dlg.GetPath(), True)
 
     def OnRenderFilmstrip(self, event):
         photoFilmStrip = PhotoFilmStrip()
@@ -330,6 +367,46 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.cmdMoveRight.Enable(False)
         self.cmdRemove.Enable(False)
         self.actionManager.OnPictureSelected(False)
+        
+    def OnListViewListItemRightClick(self, event):
+        item = event.GetIndex()
+        pic = self.listView.GetPyData(item)
+        if pic:
+            menu = wx.Menu()
+            ident = wx.NewId()
+            item = wx.MenuItem(menu, ident, _(u"Browse"))
+            item.SetBitmap(wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize))
+            menu.AppendItem(item)
+            self.Bind(wx.EVT_MENU, self.OnBrowseImage, id=ident)
+            self.listView.PopupMenu(menu)
+
+    def OnBrowseImage(self, event):
+        dlg = wx.FileDialog(self, _(u"Import image"), 
+                            Settings().GetImagePath(), "", 
+                            _(u"Imagefiles") + " (*.*)|*.*", 
+                            wx.OPEN | wx.FD_PREVIEW)
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+
+            item = self.listView.GetFirstSelected()
+            orgPic = self.listView.GetPyData(item)
+            
+            pic = Picture(path)
+            pic.SetComment(orgPic.GetComment())
+            pic.SetDuration(orgPic.GetDuration())
+            pic.SetEffect(orgPic.GetEffect())
+            pic.SetRotation(orgPic.GetRotation())
+            pic.SetStartRect(orgPic.GetStartRect())
+            pic.SetTargetRect(orgPic.GetTargetRect())
+                        
+            self.listView.SetPyData(item, pic)
+            pic.AddObserver(self)
+            pic.Notify('bitmap')
+            
+            Settings().SetImagePath(os.path.dirname(path))
+            
+            self.actionManager.OnProjectChanged(True)
+        dlg.Destroy()
 
     def OnRectChanged(self, event):
         selItem = self.listView.GetFirstSelected()
@@ -449,7 +526,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         overridden method from UserInteractionHandler
         """
         dlg = wx.MessageDialog(self,
-                               _(u"The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?") % imgPath, 
+                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % imgPath, 
                                _(u"Question"),
                                wx.YES_NO | wx.ICON_QUESTION)
         resp = dlg.ShowModal()
@@ -461,17 +538,20 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         try:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
+                self.__usedAltPath = True
                 return path
         finally:
             dlg.Destroy()
 
         return imgPath
 
-    def LoadProject(self, filepath):
+    def LoadProject(self, filepath, skipHistory=False):
         self.NewProject(False)
         
-        self.actionManager.AddFileToHistory(filepath)
+        if not skipHistory:
+            self.actionManager.AddFileToHistory(filepath)
         
+        self.__usedAltPath = False
         photoFilmStrip = PhotoFilmStrip()
         photoFilmStrip.SetUserInteractionHandler(self)
         photoFilmStrip.Load(filepath)
@@ -481,18 +561,31 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         self.__currentProject = filepath
         self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
-        self.actionManager.OnProjectChanged(False)
+
+        self.actionManager.OnProjectChanged(self.__usedAltPath)
         self.actionManager.OnProjectReady(True)
         
         Settings().SetProjectPath(os.path.dirname(filepath))
     
-    def SaveProject(self, filepath):
+    def SaveProject(self, filepath, includePics):
         pics = self.listView.GetPyDataList()
         photoFilmStrip = PhotoFilmStrip()
         photoFilmStrip.SetPictures(pics)
-        photoFilmStrip.Save(filepath)
-        
-        self.actionManager.AddFileToHistory(filepath)
+        try:
+            photoFilmStrip.Save(filepath, includePics)
+        except StandardError, err:
+            dlg = wx.MessageDialog(self,
+                                   _(u"Could not save the file '%(file)s': %(errMsg)s") % \
+                                            {'file': filepath,
+                                             'errMsg': str(err)}, 
+                                   _(u"Question"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+            return False
+
+        if not includePics:
+            self.actionManager.AddFileToHistory(filepath)
         
         self.__currentProject = filepath
         self.SetTitle(Settings.APP_NAME + ' - ' + filepath)

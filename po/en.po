@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-10 19:00+CET\n"
-"PO-Revision-Date: 2008-11-10 19:06+0100\n"
+"POT-Creation-Date: 2008-11-11 19:12+CET\n"
+"PO-Revision-Date: 2008-11-11 20:45+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -174,7 +174,7 @@ msgstr ""
 msgid "mencoder (mencoder) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:187
+#: src/core/renderer/MovieRenderer.py:197
 msgid "MPEG4-Video (XVid)"
 msgstr ""
 
@@ -194,76 +194,84 @@ msgstr ""
 msgid "Single pictures"
 msgstr ""
 
-#: src/gui/ActionManager.py:54
+#: src/gui/ActionManager.py:56
 msgid "&File"
 msgstr ""
 
-#: src/gui/ActionManager.py:55
+#: src/gui/ActionManager.py:57
 msgid "&Edit"
 msgstr ""
 
-#: src/gui/ActionManager.py:56
+#: src/gui/ActionManager.py:58
 msgid "&Tools"
 msgstr ""
 
-#: src/gui/ActionManager.py:57
+#: src/gui/ActionManager.py:59
 msgid "&Help"
 msgstr ""
 
-#: src/gui/ActionManager.py:68
+#: src/gui/ActionManager.py:70
 msgid "New Project"
 msgstr ""
 
-#: src/gui/ActionManager.py:71
+#: src/gui/ActionManager.py:73
 msgid "Load Project"
 msgstr ""
 
-#: src/gui/ActionManager.py:74
+#: src/gui/ActionManager.py:76
 msgid "Save Project"
 msgstr ""
 
-#: src/gui/ActionManager.py:77
+#: src/gui/ActionManager.py:79
 msgid "Save Project as"
 msgstr ""
 
-#: src/gui/ActionManager.py:81
+#: src/gui/ActionManager.py:83
 msgid "Import Pictures"
 msgstr ""
 
-#: src/gui/ActionManager.py:84
+#: src/gui/ActionManager.py:86
 #: src/gui/DlgRender.py:245
 msgid "Render filmstrip"
 msgstr ""
 
-#: src/gui/ActionManager.py:119
+#: src/gui/ActionManager.py:121
 msgid "Open &recent"
 msgstr ""
 
-#: src/gui/ActionManager.py:134
-msgid "Move picture &left"
+#: src/gui/ActionManager.py:128
+msgid "&Import Project"
+msgstr ""
+
+#: src/gui/ActionManager.py:129
+msgid "&Export Project"
 msgstr ""
 
 #: src/gui/ActionManager.py:138
+msgid "Move picture &left"
+msgstr ""
+
+#: src/gui/ActionManager.py:142
 msgid "Move picture &right"
 msgstr ""
 
-#: src/gui/ActionManager.py:143
+#: src/gui/ActionManager.py:147
 msgid "&Remove Picture"
 msgstr ""
 
-#: src/gui/ActionManager.py:148
+#: src/gui/ActionManager.py:152
 msgid "Rotate &clockwise"
 msgstr ""
 
-#: src/gui/ActionManager.py:152
+#: src/gui/ActionManager.py:156
 msgid "Rotate counter clock&wise"
 msgstr ""
 
-#: src/gui/ActionManager.py:160
+#: src/gui/ActionManager.py:164
 msgid "&Import Pictures"
 msgstr ""
 
-#: src/gui/ActionManager.py:165
+#: src/gui/ActionManager.py:169
 msgid "&Render filmstrip"
 msgstr ""
 
@@ -280,7 +288,7 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr ""
 
 #: src/gui/DlgBugReport.py:71
-#: src/gui/FrmMain.py:389
+#: src/gui/FrmMain.py:466
 msgid "Information"
 msgstr ""
 
@@ -369,8 +377,10 @@ msgstr ""
 #: src/gui/DlgRender.py:486
 #: src/gui/DlgRender.py:521
 #: src/gui/DlgRender.py:598
-#: src/gui/FrmMain.py:399
-#: src/gui/FrmMain.py:453
+#: src/gui/FrmMain.py:285
+#: src/gui/FrmMain.py:476
+#: src/gui/FrmMain.py:530
+#: src/gui/FrmMain.py:581
 msgid "Question"
 msgstr ""
 
@@ -414,56 +424,88 @@ msgstr ""
 msgid "Invalid audio file!"
 msgstr ""
 
-#: src/gui/FrmMain.py:245
+#: src/gui/FrmMain.py:250
 msgid "Select %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:247
-#: src/gui/FrmMain.py:270
+#: src/gui/FrmMain.py:252
+#: src/gui/FrmMain.py:275
+#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:311
 msgid "Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:267
+#: src/gui/FrmMain.py:272
 msgid "Save %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:287
+#: src/gui/FrmMain.py:284
+msgid "Overwrite existing file '%s'?"
+msgstr ""
+
+#: src/gui/FrmMain.py:294
+msgid "Export %s-Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:311
+msgid "Portable"
+msgstr ""
+
+#: src/gui/FrmMain.py:309
+msgid "Import %s-Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:324
 msgid "Import images"
 msgstr ""
 
-#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:326
+#: src/gui/FrmMain.py:386
 msgid "Imagefiles"
 msgstr ""
 
-#: src/gui/FrmMain.py:389
+#: src/gui/FrmMain.py:377
+msgid "Browse"
+msgstr ""
+
+#: src/gui/FrmMain.py:384
+msgid "Import image"
+msgstr ""
+
+#: src/gui/FrmMain.py:466
 msgid "Help will be available soon."
 msgstr ""
 
-#: src/gui/FrmMain.py:395
+#: src/gui/FrmMain.py:472
 msgid "Unnamed PhotoFilmStrip"
 msgstr ""
 
-#: src/gui/FrmMain.py:398
+#: src/gui/FrmMain.py:475
 msgid "'%s' has been modified. Save changes?"
 msgstr ""
 
-#: src/gui/FrmMain.py:414
+#: src/gui/FrmMain.py:491
 msgid "Images"
 msgstr ""
 
-#: src/gui/FrmMain.py:421
+#: src/gui/FrmMain.py:498
 msgid "Duration"
 msgstr ""
 
-#: src/gui/FrmMain.py:452
-msgid "The path '%s' used in the PhotoFilmStrip does not exist. If the files has moved you can select the new path. Do you want to select an alternative path?"
+#: src/gui/FrmMain.py:529
+msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr ""
 
-#: src/gui/FrmMain.py:506
+#: src/gui/FrmMain.py:578
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr ""
+
+#: src/gui/FrmMain.py:599
 msgid "Please wait"
 msgstr ""
 
-#: src/gui/FrmMain.py:507
+#: src/gui/FrmMain.py:600
 msgid "Loading pictures..."
 msgstr ""
 

@@ -32,6 +32,8 @@ class ActionManager(object):
     ID_PIC_ROTATE_CCW    = wx.NewId()
     ID_PIC_IMPORT        = wx.NewId()
     ID_RENDER_FILMSTRIP  = wx.NewId()
+    ID_PROJECT_IMPORT    = wx.NewId()
+    ID_PROJECT_EXPORT    = wx.NewId()
 
     def __init__(self):
         self.filehistory = wx.FileHistory()
@@ -122,7 +124,9 @@ class ActionManager(object):
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, wx.ID_SAVE)#, _(u'&Save Project')
         self.__CreateMenuItem(menu, wx.ID_SAVEAS)#, _(u'Save Project &as')
-        
+        menu.AppendSeparator()
+        self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
+        self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, wx.ID_EXIT)#, _(u'E&xit')
         return menu
@@ -180,17 +184,15 @@ class ActionManager(object):
             return mb.IsEnabled(wx.ID_SAVE)
         else:
             return False
-    
+        
     def OnProjectChanged(self, value):
         mb = self.GetMenuBar()
         if mb:
             mb.Enable(wx.ID_SAVE, value)
-            mb.Enable(wx.ID_SAVEAS, value)
             
         tb = self.GetToolBar(None)
         if tb:
             tb.EnableTool(wx.ID_SAVE, value)
-            tb.EnableTool(wx.ID_SAVEAS, value)
 
     def OnPictureSelected(self, value, kind='any'):
         mb = self.GetMenuBar()
@@ -205,6 +207,7 @@ class ActionManager(object):
         mb = self.GetMenuBar()
         if mb:
             mb.Enable(self.ID_RENDER_FILMSTRIP, value)
+            mb.Enable(wx.ID_SAVEAS, value)
             
         tb = self.GetToolBar(None)
         if tb:
