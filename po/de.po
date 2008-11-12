@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-11 19:12+CET\n"
-"PO-Revision-Date: 2008-11-11 20:46+0100\n"
+"POT-Creation-Date: 2008-11-12 21:07+CET\n"
+"PO-Revision-Date: 2008-11-12 21:11+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: src/cli/Main.py:62
 #: src/cli/Main.py:186
-#: src/gui/DlgRender.py:655
+#: src/gui/DlgRender.py:687
 msgid "all done"
 msgstr "Fertig"
 
@@ -92,7 +92,7 @@ msgid "framerate"
 msgstr "Bildrate"
 
 #: src/cli/Main.py:181
-#: src/gui/DlgRender.py:653
+#: src/gui/DlgRender.py:685
 msgid "...aborted!"
 msgstr "...abgebrochen!"
 
@@ -108,7 +108,7 @@ msgstr "Unbekannte Eigenschaft: %s"
 msgid "<default>"
 msgstr "<standard>"
 
-#: src/core/PhotoFilmStrip.py:69
+#: src/core/PhotoFilmStrip.py:73
 msgid "Loading '%s' ..."
 msgstr "Lade '%s' ..."
 
@@ -231,7 +231,7 @@ msgid "Import Pictures"
 msgstr "Bilder importieren"
 
 #: src/gui/ActionManager.py:86
-#: src/gui/DlgRender.py:245
+#: src/gui/DlgRender.py:257
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
@@ -288,7 +288,6 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
 
 #: src/gui/DlgBugReport.py:71
-#: src/gui/FrmMain.py:466
 msgid "Information"
 msgstr "Information"
 
@@ -297,215 +296,225 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 
 #: src/gui/DlgBugReport.py:78
-#: src/gui/DlgRender.py:496
-#: src/gui/DlgRender.py:512
-#: src/gui/DlgRender.py:535
-#: src/gui/DlgRender.py:660
-#: src/gui/DlgRender.py:716
+#: src/gui/DlgRender.py:520
+#: src/gui/DlgRender.py:536
+#: src/gui/DlgRender.py:559
+#: src/gui/DlgRender.py:692
+#: src/gui/DlgRender.py:748
+#: src/gui/DlgRender.py:780
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gui/DlgRender.py:192
+#: src/gui/DlgRender.py:204
 msgid "Property"
 msgstr "Eigenschaft"
 
-#: src/gui/DlgRender.py:194
+#: src/gui/DlgRender.py:206
 msgid "Value"
 msgstr "Wert"
 
-#: src/gui/DlgRender.py:249
+#: src/gui/DlgRender.py:261
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/gui/DlgRender.py:261
+#: src/gui/DlgRender.py:273
 msgid "Profile:"
 msgstr "Profil:"
 
-#: src/gui/DlgRender.py:273
+#: src/gui/DlgRender.py:285
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/gui/DlgRender.py:286
+#: src/gui/DlgRender.py:298
 msgid "Transition speed:"
 msgstr "Bildübergangsdauer:"
 
-#: src/gui/DlgRender.py:299
+#: src/gui/DlgRender.py:311
 msgid "Sec."
 msgstr "Sek."
 
-#: src/gui/DlgRender.py:303
+#: src/gui/DlgRender.py:315
 msgid "Total length:"
 msgstr "Gesamtlänge:"
 
-#: src/gui/DlgRender.py:307
+#: src/gui/DlgRender.py:319
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgRender.py:319
+#: src/gui/DlgRender.py:331
 msgid "User defined:"
 msgstr "Manuell:"
 
-#: src/gui/DlgRender.py:327
+#: src/gui/DlgRender.py:339
 msgid "Audio file:"
 msgstr "Audiodatei:"
 
-#: src/gui/DlgRender.py:351
+#: src/gui/DlgRender.py:363
 msgid "Output"
 msgstr "Ausgabe"
 
-#: src/gui/DlgRender.py:363
+#: src/gui/DlgRender.py:375
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:380
+#: src/gui/DlgRender.py:393
 msgid "Output directory:"
 msgstr "Ausgabeordner:"
 
-#: src/gui/DlgRender.py:397
-msgid "&Start"
-msgstr "&Start"
-
-#: src/gui/DlgRender.py:403
-#: src/gui/DlgRender.py:665
+#: src/gui/DlgRender.py:415
+#: src/gui/DlgRender.py:697
 msgid "&Close"
 msgstr "S&chließen"
 
-#: src/gui/DlgRender.py:485
+#: src/gui/DlgRender.py:427
+msgid "&Start"
+msgstr "&Start"
+
+#: src/gui/DlgRender.py:509
 msgid "Output path does not exists! Do you want %s to create it?"
 msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgRender.py:486
-#: src/gui/DlgRender.py:521
-#: src/gui/DlgRender.py:598
-#: src/gui/FrmMain.py:285
-#: src/gui/FrmMain.py:476
-#: src/gui/FrmMain.py:530
-#: src/gui/FrmMain.py:581
+#: src/gui/DlgRender.py:510
+#: src/gui/DlgRender.py:545
+#: src/gui/DlgRender.py:630
+#: src/gui/FrmMain.py:286
+#: src/gui/FrmMain.py:478
+#: src/gui/FrmMain.py:532
+#: src/gui/FrmMain.py:583
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgRender.py:495
+#: src/gui/DlgRender.py:519
 msgid "Cannot create direcotory: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/gui/DlgRender.py:511
+#: src/gui/DlgRender.py:535
 msgid "Cannot write into direcotory: %s"
 msgstr "Verzeichnis nicht beschreibbar: %s"
 
-#: src/gui/DlgRender.py:520
+#: src/gui/DlgRender.py:544
 msgid "Output path is not empty! Use it anyway?"
 msgstr "Ausgabeordner nicht leer. Dennoch verwenden?"
 
-#: src/gui/DlgRender.py:534
+#: src/gui/DlgRender.py:558
 msgid "Audio file does not exist!"
 msgstr "Audio-Datei nicht vorhanden!"
 
-#: src/gui/DlgRender.py:566
+#: src/gui/DlgRender.py:605
 msgid "&Cancel"
 msgstr "&Abbrechen"
 
-#: src/gui/DlgRender.py:597
+#: src/gui/DlgRender.py:629
 msgid "Abort current process?"
 msgstr "Aktuellen Vorgang abbrechen?"
 
-#: src/gui/DlgRender.py:611
+#: src/gui/DlgRender.py:643
 msgid "Edit property"
 msgstr "Eigenschaft bearbeiten"
 
-#: src/gui/DlgRender.py:700
+#: src/gui/DlgRender.py:732
 msgid "Select music"
 msgstr "Audiodatei auswählen"
 
-#: src/gui/DlgRender.py:703
+#: src/gui/DlgRender.py:735
 msgid "Audiofiles"
 msgstr "Audiodateien"
 
-#: src/gui/DlgRender.py:715
+#: src/gui/DlgRender.py:747
 msgid "Invalid audio file!"
 msgstr "Ungültige Audio-Datei"
 
-#: src/gui/FrmMain.py:250
+#: src/gui/DlgRender.py:779
+msgid "Project not saved yet. Please save the project first to create a batch job!"
+msgstr "Projekt wurde noch nicht gespeichert. Zum Erstellen von Batch-Aufträgen bitte erst das Projekt speichern."
+
+#: src/gui/DlgRender.py:787
+#: src/gui/DlgRender.py:790
+msgid "Batch File"
+msgstr "Stapel-Datei"
+
+#: src/gui/DlgRender.py:793
+msgid "Select batch file"
+msgstr "Stapelverarbeitungsdatei wählen"
+
+#: src/gui/FrmMain.py:251
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:252
-#: src/gui/FrmMain.py:275
-#: src/gui/FrmMain.py:297
-#: src/gui/FrmMain.py:311
+#: src/gui/FrmMain.py:253
+#: src/gui/FrmMain.py:276
+#: src/gui/FrmMain.py:298
+#: src/gui/FrmMain.py:312
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:272
+#: src/gui/FrmMain.py:273
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:284
+#: src/gui/FrmMain.py:285
 msgid "Overwrite existing file '%s'?"
 msgstr "Bestehende Datei '%s' überschreiben?"
 
-#: src/gui/FrmMain.py:294
+#: src/gui/FrmMain.py:295
 msgid "Export %s-Project"
 msgstr "%s-Projekt exportieren"
 
-#: src/gui/FrmMain.py:297
-#: src/gui/FrmMain.py:311
+#: src/gui/FrmMain.py:298
+#: src/gui/FrmMain.py:312
 msgid "Portable"
 msgstr "Mitnehm"
 
-#: src/gui/FrmMain.py:309
+#: src/gui/FrmMain.py:310
 msgid "Import %s-Project"
 msgstr "%s-Projekt importieren"
 
-#: src/gui/FrmMain.py:324
+#: src/gui/FrmMain.py:325
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/FrmMain.py:326
-#: src/gui/FrmMain.py:386
+#: src/gui/FrmMain.py:327
+#: src/gui/FrmMain.py:387
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/FrmMain.py:377
+#: src/gui/FrmMain.py:378
 msgid "Browse"
 msgstr "Durchsuchen"
 
-#: src/gui/FrmMain.py:384
+#: src/gui/FrmMain.py:385
 msgid "Import image"
 msgstr "Bild importieren"
 
-#: src/gui/FrmMain.py:466
-msgid "Help will be available soon."
-msgstr "Hilfe bald verfügbar."
-
-#: src/gui/FrmMain.py:472
+#: src/gui/FrmMain.py:474
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/FrmMain.py:475
+#: src/gui/FrmMain.py:477
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:491
+#: src/gui/FrmMain.py:493
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:498
+#: src/gui/FrmMain.py:500
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:529
+#: src/gui/FrmMain.py:531
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr "Einige Bilder aus dem Ordner '%s' existieren nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
 
-#: src/gui/FrmMain.py:578
+#: src/gui/FrmMain.py:580
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
 
-#: src/gui/FrmMain.py:599
+#: src/gui/FrmMain.py:601
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: src/gui/FrmMain.py:600
+#: src/gui/FrmMain.py:602
 msgid "Loading pictures..."
 msgstr "Bilder laden..."
 
@@ -536,6 +545,9 @@ msgstr "Schwarz-Weiss"
 #: src/gui/PnlEditPicture.py:185
 msgid "Sepia tone"
 msgstr "Sephia-Effekt"
+
+#~ msgid "Help will be available soon."
+#~ msgstr "Hilfe bald verfügbar."
 
 #, fuzzy
 #~ msgid "aborted"

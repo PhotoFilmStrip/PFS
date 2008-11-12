@@ -30,13 +30,17 @@ from core.ProgressHandler import ProgressHandler
 
 class PhotoFilmStrip(Observable):
     
-    def __init__(self):
+    def __init__(self, filename=None):
         Observable.__init__(self)
         
         self.__pictures = []
         self.__uiHandler = UserInteractionHandler()
         self.__progressHandler = ProgressHandler()
+        self.__filename = filename
         
+    def GetFilename(self):
+        return self.__filename
+    
     def GetPictures(self):
         return self.__pictures
     
@@ -112,7 +116,7 @@ class PhotoFilmStrip(Observable):
         
         cur.close()
         self.__pictures = picList
-        
+        self.__filename = filename
         return True
     
     def __LoadSafe(self, row, colName, default):
@@ -175,6 +179,8 @@ class PhotoFilmStrip(Observable):
             cur.execute(query, values)
         conn.commit()
         cur.close()
+
+        self.__filename = filename
 
 
 class UserInteractionHandler(object):

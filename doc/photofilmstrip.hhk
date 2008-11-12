@@ -1,0 +1,23 @@
+<ul>
+  <li> <object type="text/sitemap">
+           <param name="Name" value="Contents">
+           <param name="Local" value="index.html">
+       </object>
+  <li> <object type="text/sitemap">
+           <param name="Name" value="Introduction">
+           <param name="Local" value="introduction.html">
+       </object>
+  <li> <object type="text/sitemap">
+           <param name="Name" value="Creating a new PhotoFilmStrip">
+           <param name="Local" value="createpfs.html">
+       </object>
+  <li> <object type="text/sitemap">
+           <param name="Name" value="Render a PhotoFilmStrip">
+           <param name="Local" value="renderpfs.html">
+       </object>
+  <li> <object type="text/sitemap">
+           <param name="Name" value="More functions">
+           <param name="Local" value="more.html">
+       </object>
+</ul>
+

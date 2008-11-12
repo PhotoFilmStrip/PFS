@@ -35,6 +35,7 @@ from gui.ctrls.PyListView import PyListView
 from gui.DlgRender import DlgRender
 from gui.PnlEditPicture import PnlEditPicture
 from gui.ActionManager import ActionManager
+from gui.HelpViewer import HelpViewer
 
 from res.license import licenseText
 
@@ -216,7 +217,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectChanged(False)
         self.actionManager.OnProjectReady(False)
 
-        self.__currentProject = ""
+        self.__currentProject = None
         self.__usedAltPath = False
         
         self.NewProject(False)
@@ -271,7 +272,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     def OnProjectSaveAs(self, event):
         dlg = wx.FileDialog(self, _(u"Save %s-Project") % Settings.APP_NAME, 
                             Settings().GetProjectPath(), 
-                            "" if self.__currentProject else "photofilmstrip", 
+                            self.__currentProject if self.__currentProject else "photofilmstrip", 
                             Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.SAVE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -293,7 +294,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     def OnProjectExport(self, event):
         dlg = wx.FileDialog(self, _(u"Export %s-Project") % Settings.APP_NAME, 
                             Settings().GetProjectPath(), 
-                            "" if self.__currentProject else "photofilmstrip", 
+                            self.__currentProject if self.__currentProject else "photofilmstrip", 
                             u"%s %s-%s %s" % (_(u"Portable"), Settings.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
                             wx.SAVE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -314,7 +315,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             self.LoadProject(dlg.GetPath(), True)
 
     def OnRenderFilmstrip(self, event):
-        photoFilmStrip = PhotoFilmStrip()
+        photoFilmStrip = PhotoFilmStrip(self.__currentProject)
         photoFilmStrip.SetPictures(self.listView.GetPyDataList())
         dlg = DlgRender(self, photoFilmStrip)
         dlg.ShowModal()
@@ -463,7 +464,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
 
     def OnHelp(self, event):
-        wx.MessageBox(_(u"Help will be available soon."), _(u"Information"))
+        HelpViewer().DisplayID(HelpViewer.ID_CREATE_PFS)
+        event.Skip()
 
     def CheckAndAskSaving(self):
         if self.actionManager.CanSave():
@@ -518,7 +520,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectReady(False)
 
         self.SetTitle(Settings.APP_NAME)
-        self.__currentProject = ""
+        self.__currentProject = None
         self.UpdateStatusText()
         
     def GetAltPath(self, imgPath):
