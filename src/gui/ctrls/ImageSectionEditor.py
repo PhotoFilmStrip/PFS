@@ -211,6 +211,8 @@ class ImageSectionEditor(wx.Panel):
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
             
     def OnLeftDown(self, event):
+        if self._image is None:
+            return
         px, py = event.GetPosition().Get()
         cpx, cpy = self.__ClientToImage(px, py)
 

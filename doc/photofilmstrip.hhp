@@ -1,4 +1,14 @@
+[OPTIONS]
 Contents file=photofilmstrip.hhc
 Index file=photofilmstrip.hhk
 Title=PhotoFilmStrip
 Default topic=index.html
+Language=0x409 Englisch (USA)
+
+[FILES]
+copyright.html
+createpfs.html
+index.html
+introduction.html
+more.html
+renderpfs.html

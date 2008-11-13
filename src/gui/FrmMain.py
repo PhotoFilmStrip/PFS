@@ -220,6 +220,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.__currentProject = None
         self.__usedAltPath = False
         
+        at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP)])
+        self.SetAcceleratorTable(at)
+        
         self.NewProject(False)
         
     def OnClose(self, event):

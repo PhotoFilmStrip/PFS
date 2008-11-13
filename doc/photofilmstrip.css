@@ -1,0 +1,58 @@
+
+body{
+        max-width: 800px;
+        margin: 20 20 auto;
+}
+
+h1  { 
+        font-size: 170%;
+}
+
+h2  { 
+        font-size: 150%;
+}
+
+h3  { 
+        font-size: 130%;
+}
+
+h4  { 
+        font-size: 120%;
+        text-align: center;
+}
+
+h5  { 
+        font-size: 100%;
+}
+
+
+p   { 
+        text-align: justify;
+}
+
+p.footer   {
+        margin: 80 0;
+        border-top: 1px dotted black;
+        text-align: right;
+        font-size: 70%;
+        color: #AAAAAA;
+}
+
+
+table { border: 1px solid black; 
+        border-collapse: collapse; 
+        width: 100%;
+}
+
+td {
+        padding: 5px; 
+        border-top: 1px dotted black; 
+        vertical-align: top;
+}
+
+th {
+        padding: 5px; 
+        border-bottom: 1px solid black; 
+        vertical-align: top;
+}
+
