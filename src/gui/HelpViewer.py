@@ -27,7 +27,7 @@ from lib.common.Singleton import Singleton
 
 class HelpViewer(Singleton):
     
-    ID_CONTENT    = 1
+    ID_INDEX      = 1
     ID_CREATE_PFS = 3
     ID_RENDER     = 4
     

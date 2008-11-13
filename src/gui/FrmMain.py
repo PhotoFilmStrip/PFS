@@ -200,7 +200,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.Bind(wx.EVT_MENU, self.OnImportPics, id=self.actionManager.ID_PIC_IMPORT)
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
-        self.Bind(wx.EVT_MENU, self.OnHelp, id=wx.ID_HELP)
+        self.Bind(wx.EVT_MENU, self.OnHelpIndex, id=wx.ID_HELP)
 
         self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=self.actionManager.ID_RENDER_FILMSTRIP)
         
@@ -220,8 +220,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.__currentProject = None
         self.__usedAltPath = False
         
-        at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP)])
+        at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP_CONTENTS)])
         self.SetAcceleratorTable(at)
+        self.Bind(wx.EVT_MENU, self.OnHelpContent, id=wx.ID_HELP_CONTENTS)
         
         self.NewProject(False)
         
@@ -466,7 +467,10 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectChanged(True)
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
 
-    def OnHelp(self, event):
+    def OnHelpIndex(self, event):
+        HelpViewer().DisplayID(HelpViewer.ID_INDEX)
+        event.Skip()
+    def OnHelpContent(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_CREATE_PFS)
         event.Skip()
 
