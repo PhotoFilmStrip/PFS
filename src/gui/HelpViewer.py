@@ -19,6 +19,7 @@
 #
 
 import os
+import sys
 
 import wx.html
 
@@ -33,7 +34,9 @@ class HelpViewer(Singleton):
     
     def Init(self):
         self.__htmlCtrl = wx.html.HtmlHelpController()
-        fn = os.path.abspath("../doc/photofilmstrip.hhp")
+        docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 
+                               "..", "doc", "photofilmstrip.hhp")
+        fn = os.path.abspath(docFile)
         self.__htmlCtrl.AddBook(fn)
         
     def DisplayID(self, ident):

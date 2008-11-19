@@ -51,13 +51,13 @@ class MovieRenderer(SingleFileRenderer):
         return SingleFileRenderer.GetProperties() + ["Bitrate"]
 
     def ProcessFinalize(self, filename):
-        cmd = 'convert ppm:"%s" - ' % (filename)
+        cmd = 'convert pnm:"%s" ppm:- ' % (filename)
         conv = Popen(cmd, stdout=self._procPpmIn.stdin, shell=True)
         exitCode = conv.wait() 
         if exitCode == 0:
             os.remove(filename)
         else:
-            logging.getLogger('MovieRenderer').error("command '%s' returned exitcode: %d", cmd, exitCode)
+            raise RuntimeError("command '%s' returned exitcode: %d" % (cmd, exitCode))
     
     def _CleanUp(self):
         self._procPpmIn.communicate()
@@ -177,9 +177,10 @@ class MPEG4Renderer(MovieRenderer):
     def CheckDependencies(msgList):
         MovieRenderer.CheckDependencies(msgList)
 
-        proc = Popen("which mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
-        proc.stdout.read()
-        if proc.wait() != 0:
+        proc = Popen("mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc.wait()
+        output = proc.stdout.read()
+        if not output.startswith("MEncoder"):
             msgList.append(_(u"mencoder (mencoder) required!"))
 
     @staticmethod
