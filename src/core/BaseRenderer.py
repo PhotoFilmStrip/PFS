@@ -91,9 +91,6 @@ class BaseRenderer(object):
     def ProcessCropAndResize(self, preparedResult, cropRect, size):
         raise NotImplementedError()
         
-    def ProcessTransition(self, fileListFrom, fileListTo):
-        raise NotImplementedError()
-    
     def ProcessFinalize(self, filename):
         raise NotImplementedError()
     

@@ -80,7 +80,7 @@ def main():
     parser.add_option("-o", "--outputpath", help=_(u"the path where to save the output files"), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=3, type="int")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
-    parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=3, type="int")
+    parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=2, type="int")
     parser.add_option("-l", "--length", help=_(u"total length of the PhotoFilmStrip (seconds)"), type="int", metavar="SECONDS")
     parser.add_option("-a", "--audio", help=_(u"use audiofile as audiotrack (use --length to limit the movie length)"), metavar="MP3")
     

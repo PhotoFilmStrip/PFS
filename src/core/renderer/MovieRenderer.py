@@ -18,7 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os, logging
+import os
+import cStringIO
 from subprocess import Popen, PIPE, STDOUT
 
 from core.OutputProfile import OutputProfile
@@ -50,14 +51,11 @@ class MovieRenderer(SingleFileRenderer):
     def GetProperties():
         return SingleFileRenderer.GetProperties() + ["Bitrate"]
 
-    def ProcessFinalize(self, filename):
-        cmd = 'convert pnm:"%s" ppm:- ' % (filename)
-        conv = Popen(cmd, stdout=self._procPpmIn.stdin, shell=True)
-        exitCode = conv.wait() 
-        if exitCode == 0:
-            os.remove(filename)
-        else:
-            raise RuntimeError("command '%s' returned exitcode: %d" % (cmd, exitCode))
+    def ProcessFinalize(self, image):
+        st = cStringIO.StringIO()
+        image.save(st, "PPM")
+
+        self._procPpmIn.stdin.write(st.getvalue())
     
     def _CleanUp(self):
         self._procPpmIn.communicate()

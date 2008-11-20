@@ -19,9 +19,8 @@
 #
 
 import os
-from subprocess import Popen, PIPE, STDOUT
 
-import wx
+import Image
 
 from core.BaseRenderer import BaseRenderer
 from core.Picture import Picture
@@ -34,18 +33,6 @@ class SingleFileRenderer(BaseRenderer):
         self._counter = 0
     
     @staticmethod
-    def CheckDependencies(msgList):
-        proc = Popen("convert -h", stdout=PIPE, stderr=STDOUT, shell=True)
-        proc.stdout.read()
-        if proc.wait() != 0:
-            msgList.append(_(u"convert (imagemagick) required!"))
-
-        proc = Popen("composite -h", stdout=PIPE, stderr=STDOUT, shell=True)
-        proc.stdout.read()
-        if proc.wait() != 0:
-            msgList.append(_(u"composite (imagemagick) required!"))
-    
-    @staticmethod
     def GetName():
         return _(u"Single pictures")
     
@@ -56,73 +43,43 @@ class SingleFileRenderer(BaseRenderer):
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "UseResample":
-            return True
+            return False
         if prop == "ResampleFilter":
-            return "Sinc"
+            return "Antialias"
         return BaseRenderer.GetDefaultProperty(prop)
 
     def Prepare(self):
         pass
     
     def ProcessPrepare(self, filename, rotation, effect):
-        img = wx.Image(filename)
+        img = Image.open(filename)
+        img.rotate(rotation * -90)
         
-        for i in range(abs(rotation)):
-            img = img.Rotate90(rotation > 0)
-            
-        if effect == Picture.EFFECT_BLACK_WHITE:
-            img = img.ConvertToGreyscale()
+#        if effect == Picture.EFFECT_BLACK_WHITE:
+#            img = img.convert("L")
 
         return img
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):
-        self._counter += 1
+        box = [cropRect[0], cropRect[1], 
+               cropRect[0] + cropRect[2], cropRect[1] + cropRect[3]]
+        subImg = preparedResult.crop(box)
         
-        subImg = preparedResult.GetSubImage(cropRect)
-        
-        if not self.GetProperty("UseResample"):
-            subImg.Rescale(size[0], size[1], wx.IMAGE_QUALITY_HIGH)
-
-        newFilename = os.path.join(self.GetOutputPath(), '%09d.pnm' % self._counter)
-        subImg.SaveFile(newFilename, wx.BITMAP_TYPE_PNM)
-        
+        filtr = Image.NEAREST
         if self.GetProperty("UseResample"):
-            cmd = "convert \"%(path)s\" -depth 8 " \
-                          "-filter %(filter)s " \
-                          "-resize %(width)dx%(height)d! \"%(path)s\"" % \
-                            {'path': newFilename,
-                             'filter': SingleFileRenderer.GetProperty("ResampleFilter"),
-                             'width': size[0], 
-                             'height': size[1]}
-            proc = Popen(cmd, shell=True)
-            exitCode = proc.wait()
-            if exitCode != 0:
-                raise RuntimeError("%s returned exitcode %d!" % (cmd, exitCode))
-        
-        if not os.path.exists(newFilename):
-            raise RuntimeError("imagefile '%s' not created!" % newFilename)
-        
-        return newFilename
+            filterStr = self.GetProperty("ResampleFilter").lower()
+            if filterStr == "bilinear":
+                filtr = Image.BILINEAR
+            elif filterStr == "bicubic":
+                filtr = Image.BICUBIC
+            elif filterStr == "antialias":
+                filtr = Image.ANTIALIAS
+        return subImg.resize(size, filtr)
 
-    def ProcessTransition(self, fileListFrom, fileListTo):
-        files = []
-        count = len(fileListFrom)
-        for idx in range(count):
-            f1 = fileListFrom[idx]
-            f2 = fileListTo[idx]
-            
-            cmd = "composite \"%s\" \"%s\" -depth 8 -quality 100 -dissolve %d \"%s\"" % (f2, f1, (100 / count) * idx, f1)
-            proc = Popen(cmd, shell=True)
-            exitCode = proc.wait()
-            if exitCode != 0:
-                raise RuntimeError("%s returned exitcode %d!" % (cmd, exitCode))
-            
-            os.remove(f2)
-            files.append(f1)
-        return files
-    
-    def ProcessFinalize(self, filename):
-        pass
+    def ProcessFinalize(self, image):
+        self._counter += 1
+        newFilename = os.path.join(self.GetOutputPath(), '%09d.jpg' % self._counter)
+        image.save(newFilename, "JPEG")
     
     def Finalize(self):
         pass

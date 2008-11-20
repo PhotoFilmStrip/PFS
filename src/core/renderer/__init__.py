@@ -19,8 +19,7 @@
 #
 
 from core.renderer.MovieRenderer import MPEG2Renderer, MPEG4Renderer
-from core.renderer.ShellScriptRenderer import ShellScriptRenderer
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
-RENDERERS = [SingleFileRenderer, ShellScriptRenderer, 
+RENDERERS = [SingleFileRenderer,  
              MPEG2Renderer, MPEG4Renderer]

@@ -18,9 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
-
-import wx
+import Image
 
 from core.Subtitle import SubtitleSrt
 
@@ -64,10 +62,10 @@ class RenderEngine(object):
             width = w1 + step * dw
             height = h1 + step * dh
             
-            rect = wx.Rect(px - width / 2.0, 
-                           py - height / 2.0, 
-                           width, 
-                           height)
+            rect = (px - width / 2.0, 
+                    py - height / 2.0, 
+                    width, 
+                    height)
             
             pathRects.append(rect)
         return pathRects
@@ -85,68 +83,79 @@ class RenderEngine(object):
         """
         return int(self.__transDuration * self.__profile.PFramerate)
 
+    def __ProcAndFinal(self, preparedResult, pathRects):
+        for rect in pathRects:
+            self.__progressHandler.Step()
+            image = self.__aRenderer.ProcessCropAndResize(preparedResult,
+                                                          rect, 
+                                                          self.__profile.PResolution)
+            self.__aRenderer.ProcessFinalize(image)
+
+    def __TransAndFinal(self, preparedFrom, preparedTo, pathRectsFrom, pathRectsTo):
+        if len(pathRectsFrom) != len(pathRectsTo):
+            raise RuntimeError
+        
+        COUNT = len(pathRectsFrom)
+        
+        for idx in range(COUNT):
+            self.__progressHandler.Step()
+            image1 = self.__aRenderer.ProcessCropAndResize(preparedFrom,
+                                                           pathRectsFrom[idx], 
+                                                           self.__profile.PResolution)
+            image2 = self.__aRenderer.ProcessCropAndResize(preparedTo,
+                                                           pathRectsTo[idx], 
+                                                           self.__profile.PResolution)
+
+            img = Image.blend(image1, image2, idx / float(COUNT))
+            self.__aRenderer.ProcessFinalize(img)
+    
     def __Start(self, pics):
         self.__progressHandler.SetInfo(_(u"initialize renderer"))
         self.__aRenderer.Prepare()
         
         TRANS_COUNT = self.__GetTransCount()
 
-        filesBefore = None
-        filesCurrent = None
+        pathRectsBefore = None
+        pathRectsCurrent = None
         
-        for pic in pics:
-            infoText = _(u"processing image '%s'") % os.path.basename(pic.GetFilename())
+        preparedResultBefore = None
+        preparedResultCurrent = None
+        
+        for idxPic, pic in enumerate(pics):
+            infoText = _(u"processing image %d/%d") % (idxPic, len(pics))
             self.__progressHandler.SetInfo(infoText)
 
-            self.__progressHandler.SetInfo(u"%s - %s" % (infoText, _(u"prepare")))
-            preparedResult = self.__aRenderer.ProcessPrepare(pic.GetFilename(),
-                                                             pic.GetRotation(),
-                                                             pic.GetEffect())
+            preparedResultCurrent = self.__aRenderer.ProcessPrepare(pic.GetFilename(),
+                                                                    pic.GetRotation(),
+                                                                    pic.GetEffect())
+            pathRectsCurrent = self.__ComputePath(pic)
 
-            filesCurrent = []
-            pathRects = self.__ComputePath(pic)
-            for idxRect, rect in enumerate(pathRects):
-                if self.__progressHandler.IsAborted():
-                    self.__aRenderer.ProcessAbort()
-                    return
+            if idxPic > 0:
+                if idxPic == 1:
+                    phase1 = pathRectsBefore[:-TRANS_COUNT]
+                    self.__ProcAndFinal(preparedResultBefore, phase1)
+                
+                infoText = _(u"processing transition %d/%d") % (idxPic, len(pics))
+                self.__progressHandler.SetInfo(infoText)
+                
+                phase2a = pathRectsBefore[-TRANS_COUNT:]
+                phase2b = pathRectsCurrent[:TRANS_COUNT]
+                self.__TransAndFinal(preparedResultBefore, preparedResultCurrent, 
+                                     phase2a, phase2b)
+                
+                infoText = _(u"processing image %d/%d") % (idxPic+1, len(pics))
+                self.__progressHandler.SetInfo(infoText)
 
-                self.__progressHandler.Step(u"%s - %s (%d/%d)" % (infoText, 
-                                                                  _(u"crop and resize"),
-                                                                  idxRect,
-                                                                  len(pathRects)))
-                filename = self.__aRenderer.ProcessCropAndResize(preparedResult,
-                                                                 rect, 
-                                                                 self.__profile.PResolution)
+                phase3 = pathRectsCurrent[TRANS_COUNT:-TRANS_COUNT]
+                self.__ProcAndFinal(preparedResultCurrent, phase3)
                 
-                if not isinstance(filename, basestring):
-                    raise RuntimeError("ProcessCropAndResize must return a filename")
-                
-                filesCurrent.append(filename)
-                
-            if filesBefore is None:
-                filesBefore = filesCurrent
-            else:
-                filesTransFrom = filesBefore[-TRANS_COUNT:]
-                del filesBefore[-TRANS_COUNT:]
-                filesTransTo = filesCurrent[:TRANS_COUNT]
-                del filesCurrent[:TRANS_COUNT]
-                
-                for filename in filesBefore:
-                    self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
-                    self.__aRenderer.ProcessFinalize(filename)
-                
-                self.__progressHandler.Step(_(u"calculating transition"))
-                files = self.__aRenderer.ProcessTransition(filesTransFrom, filesTransTo)
-                
-                for filename in files:
-                    self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
-                    self.__aRenderer.ProcessFinalize(filename)
+                if idxPic == len(pics) - 1:
+                    phase4 = pathRectsCurrent[-TRANS_COUNT:]
+                    self.__ProcAndFinal(preparedResultCurrent, phase4)
 
-                filesBefore = filesCurrent
-        
-        for filename in filesCurrent:
-            self.__progressHandler.Step(_(u"finalizing '%s'") % (os.path.basename(filename)))
-            self.__aRenderer.ProcessFinalize(filename)
+            preparedResultBefore = preparedResultCurrent
+            pathRectsBefore = pathRectsCurrent
+
                     
         if self.__audioFile:
             self.__progressHandler.SetInfo(_(u"processing audiofile..."))
@@ -172,11 +181,8 @@ class RenderEngine(object):
         for pic in pics:
             picCount = self.__GetPicCount(pic)
             # every single picture to process
-            count += int(picCount)
-            
-            # every single picture subtracted by half the pictures of the transition to finalize  
             count += int(picCount) - (self.__GetTransCount() / 2)
-
+            
             if pic.GetComment():
                 generateSubtitle = True
                 count += 1
@@ -193,6 +199,8 @@ class RenderEngine(object):
             self.__Start(pics)
             return True
         except StandardError, err:
+            import traceback
+            traceback.print_exc()
             self.__errorMsg = str(err)
             return False
         finally:
