@@ -19,11 +19,19 @@
 #
 
 import os
-import cStringIO
+import sys
 from subprocess import Popen, PIPE, STDOUT
 
 from core.OutputProfile import OutputProfile
 from core.renderer.SingleFileRenderer import SingleFileRenderer
+
+
+if sys.platform == "win32":
+    appDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
+    path = []
+    path.append(os.path.join(appDir, "extBin", "mjpegtools", "bin"))
+    path.append(os.path.join(appDir, "extBin", "mplayer"))
+    os.putenv("PATH", ";".join(path)) 
 
 
 class MovieRenderer(SingleFileRenderer):
@@ -52,10 +60,7 @@ class MovieRenderer(SingleFileRenderer):
         return SingleFileRenderer.GetProperties() + ["Bitrate"]
 
     def ProcessFinalize(self, image):
-        st = cStringIO.StringIO()
-        image.save(st, "PPM")
-
-        self._procPpmIn.stdin.write(st.getvalue())
+        image.save(self._procPpmIn.stdin, "PPM")
     
     def _CleanUp(self):
         self._procPpmIn.communicate()

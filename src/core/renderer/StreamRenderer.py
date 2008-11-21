@@ -18,29 +18,30 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
 import sys
 
-import wx.html
-
-from lib.common.Singleton import Singleton
+from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 
-class HelpViewer(Singleton):
+class StreamRenderer(SingleFileRenderer):
     
-    ID_INDEX      = 1
-    ID_CREATE_PFS = 3
-    ID_RENDER     = 4
+    def __init__(self):
+        SingleFileRenderer.__init__(self)
     
-    def Init(self):
-        self.__htmlCtrl = wx.html.HtmlHelpController()
-        docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 
-                               "..", "doc", "photofilmstrip", "photofilmstrip.hhp")
-        fn = os.path.abspath(docFile)
-        self.__htmlCtrl.AddBook(fn)
-        
-    def DisplayID(self, ident):
-        self.__htmlCtrl.DisplayID(ident)
+    @staticmethod
+    def GetName():
+        return u"Stream output"
+    
+    @staticmethod
+    def GetProperties():
+        return SingleFileRenderer.GetProperties() + ["Format"]
 
-    def Show(self):
-        self.__htmlCtrl.DisplayContents()
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "Format":
+            return "JPEG"
+        else:
+            return SingleFileRenderer.GetDefaultProperty(prop)
+
+    def ProcessFinalize(self, image):
+        image.save(sys.stdout, self.GetProperty("Format"))

@@ -201,7 +201,7 @@ class RenderEngine(object):
         except StandardError, err:
             import traceback
             traceback.print_exc()
-            self.__errorMsg = str(err)
+            self.__errorMsg = "%s: %s" % (err.__class__.__name__, err.message)
             return False
         finally:
             self.__progressHandler.Done()

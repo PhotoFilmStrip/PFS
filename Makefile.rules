@@ -13,6 +13,7 @@ appdir = $(datarootdir)/$(appname)
 bindir = $(prefix)/bin
 desktopdir = $(datarootdir)/applications
 localedir = $(datarootdir)/locale
+docdir = $(datarootdir)/doc/$(appname)
 
 mkdir = mkdir -p --
 

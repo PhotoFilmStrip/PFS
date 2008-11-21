@@ -44,9 +44,10 @@ class SingleFileRenderer(BaseRenderer):
     def GetDefaultProperty(prop):
         if prop == "UseResample":
             return False
-        if prop == "ResampleFilter":
+        elif prop == "ResampleFilter":
             return "Antialias"
-        return BaseRenderer.GetDefaultProperty(prop)
+        else:
+            return BaseRenderer.GetDefaultProperty(prop)
 
     def Prepare(self):
         pass
@@ -61,8 +62,8 @@ class SingleFileRenderer(BaseRenderer):
         return img
     
     def ProcessCropAndResize(self, preparedResult, cropRect, size):
-        box = [cropRect[0], cropRect[1], 
-               cropRect[0] + cropRect[2], cropRect[1] + cropRect[3]]
+        box = [int(cropRect[0]), int(cropRect[1]), 
+               int(cropRect[0] + cropRect[2]), int(cropRect[1] + cropRect[3])]
         subImg = preparedResult.crop(box)
         
         filtr = Image.NEAREST
@@ -78,8 +79,11 @@ class SingleFileRenderer(BaseRenderer):
 
     def ProcessFinalize(self, image):
         self._counter += 1
-        newFilename = os.path.join(self.GetOutputPath(), '%09d.jpg' % self._counter)
-        image.save(newFilename, "JPEG")
+        format = "JPEG"
+        newFilename = os.path.join(self.GetOutputPath(), 
+                                   '%09d.%s' % (self._counter, 
+                                                format.lower()))
+        image.save(newFilename, format)
     
     def Finalize(self):
         pass

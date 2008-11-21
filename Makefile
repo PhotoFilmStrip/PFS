@@ -36,6 +36,9 @@ install:
 	$(mkdir) "$(DESTDIR)$(pixmapdir)"
 	cp "$(srcdir)/build/$(appname).xpm" "$(DESTDIR)$(pixmapdir)/"
 	
+#	$(mkdir) "$(DESTDIR)$(docdir)"
+#	cp "$(srcdir)/doc/*" "$(DESTDIR)$(docdir)/"
+	
 	$(mkdir) "$(DESTDIR)$(bindir)"
 	cp "$(srcdir)/build/$(appname)" "$(DESTDIR)$(bindir)/"
 	cp "$(srcdir)/build/$(appname)-cli" "$(DESTDIR)$(bindir)/"
@@ -47,6 +50,7 @@ uninstall:
 	rm -Rf "$(DESTDIR)$(appdir)"
 	rm -f "$(DESTDIR)$(desktopdir)/$(appname).desktop"
 	rm -f "$(DESTDIR)$(pixmapdir)/$(appname).xpm"
+#	rm -Rf "$(DESTDIR)$(docdir)"
 	rm -f "$(DESTDIR)$(bindir)/$(appname)"
 	rm -f "$(DESTDIR)$(bindir)/$(appname)-cli"
 	
@@ -71,12 +75,16 @@ deb:
 	cp -R po/ "$$targetdir"; \
 	cp -R res/ "$$targetdir"; \
 	cp -R src/ "$$targetdir"; \
+	cp -R doc/ "$$targetdir"; \
+	cp -R win32ExtBin/ "$$targetdir"; \
 	cp CHANGES "$$targetdir/"; \
 	cp COPYING "$$targetdir/"; \
 	cp Makefile "$$targetdir/"; \
 	cp Makefile.rules "$$targetdir/"; \
 	cp README "$$targetdir/"; \
 	cp TODO "$$targetdir/"; \
+	cp setup.py "$$targetdir/"; \
+	cp photofilmstrip.iss "$$targetdir/"; \
 	rm -rf `find $$targetdir -name .svn -type d`; \
 	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
 	cd "$$targetdir"; \
@@ -87,6 +95,7 @@ deb:
 	cp build/debian/copyright "$$targetdir/debian/"; \
 	cp build/debian/control "$$targetdir/debian/"; \
 	cp build/debian/dirs "$$targetdir/debian/"; \
+	ls doc/* >>"$$targetdir/debian/docs"; \
 	head -2 "$$targetdir/debian/changelog" > tmp; \
 	cat "$$curdir/CHANGES" >> tmp; \
 	tail -2 "$$targetdir/debian/changelog" >> tmp; \

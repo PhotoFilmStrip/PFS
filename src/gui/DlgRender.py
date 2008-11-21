@@ -844,6 +844,11 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
 
             self.Append(rend.GetName(), FormatData(rend, msgList))
     
+    def SetSelection(self, index):
+        if index >= self.GetCount():
+            index = 0
+        wx.combo.OwnerDrawnComboBox.SetSelection(self, index)
+
     def OnDrawItem(self, dc, rect, item, flags):
         if item == wx.NOT_FOUND:
             return
@@ -853,22 +858,20 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
         rect2 = wx.Rect(*rect)
         rect2.Deflate(5, 0)
 
-        if flags & wx.combo.ODCB_PAINTING_CONTROL:
-            if data.PMessages:
-                dc.SetTextForeground(wx.Color(127, 127, 127))
+        if data.PMessages:
+            bmp = wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (16, 16))
+            dc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_GRAYTEXT))
+        else:
+            bmp = wx.NullBitmap
+            if flags & wx.combo.ODCB_PAINTING_SELECTED:
+                dc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
             else:
-                dc.SetTextForeground(wx.BLACK)
+                dc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
+        if flags & wx.combo.ODCB_PAINTING_CONTROL:
             dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL) 
         
         else:
-            if data.PMessages:
-                dc.SetTextForeground(wx.Color(127, 127, 127))
-                bmp = wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (16, 16))
-            else:
-                dc.SetTextForeground(wx.BLACK)
-                bmp = wx.NullBitmap
-
             dc.DrawImageLabel("\n".join([self.GetString(item)] + data.PMessages), 
                               bmp, rect2, 
                               wx.ALIGN_CENTER_VERTICAL) 

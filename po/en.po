@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-12 21:07+CET\n"
-"PO-Revision-Date: 2008-11-12 21:11+0100\n"
+"POT-Creation-Date: 2008-11-21 07:00+CET\n"
+"PO-Revision-Date: 2008-11-21 07:02+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -120,77 +120,52 @@ msgstr ""
 msgid "aborting..."
 msgstr ""
 
-#: src/core/RenderEngine.py:89
+#: src/core/RenderEngine.py:113
 msgid "initialize renderer"
 msgstr ""
 
-#: src/core/RenderEngine.py:98
-msgid "processing image '%s'"
-msgstr ""
-
-#: src/core/RenderEngine.py:101
-msgid "prepare"
-msgstr ""
-
-#: src/core/RenderEngine.py:114
-msgid "crop and resize"
-msgstr ""
-
-#: src/core/RenderEngine.py:135
-#: src/core/RenderEngine.py:142
-#: src/core/RenderEngine.py:148
-msgid "finalizing '%s'"
+#: src/core/RenderEngine.py:125
+#: src/core/RenderEngine.py:146
+msgid "processing image %d/%d"
 msgstr ""
 
 #: src/core/RenderEngine.py:138
-msgid "calculating transition"
+msgid "processing transition %d/%d"
 msgstr ""
 
-#: src/core/RenderEngine.py:152
+#: src/core/RenderEngine.py:161
 msgid "processing audiofile..."
 msgstr ""
 
-#: src/core/RenderEngine.py:155
+#: src/core/RenderEngine.py:164
 msgid "creating output..."
 msgstr ""
 
-#: src/core/RenderEngine.py:188
+#: src/core/RenderEngine.py:194
 msgid "generating subtitle"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:47
+#: src/core/renderer/MovieRenderer.py:48
 msgid "ppmtoy4m (mjpegtools) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:86
+#: src/core/renderer/MovieRenderer.py:84
 msgid "mpeg2enc (mjpegtools) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:90
+#: src/core/renderer/MovieRenderer.py:88
 msgid "MPEG2-Video"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:183
+#: src/core/renderer/MovieRenderer.py:182
 msgid "mencoder (mencoder) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:197
+#: src/core/renderer/MovieRenderer.py:196
 msgid "MPEG4-Video (XVid)"
 msgstr ""
 
-#: src/core/renderer/ShellScriptRenderer.py:40
-msgid "Single pictures (shellscript)"
-msgstr ""
-
-#: src/core/renderer/SingleFileRenderer.py:41
-msgid "convert (imagemagick) required!"
-msgstr ""
-
-#: src/core/renderer/SingleFileRenderer.py:46
-msgid "composite (imagemagick) required!"
-msgstr ""
-
-#: src/core/renderer/SingleFileRenderer.py:50
+#: src/core/renderer/SingleFileRenderer.py:37
 msgid "Single pictures"
 msgstr ""
 
@@ -377,10 +352,10 @@ msgstr ""
 #: src/gui/DlgRender.py:510
 #: src/gui/DlgRender.py:545
 #: src/gui/DlgRender.py:630
-#: src/gui/FrmMain.py:286
-#: src/gui/FrmMain.py:478
-#: src/gui/FrmMain.py:532
-#: src/gui/FrmMain.py:583
+#: src/gui/FrmMain.py:290
+#: src/gui/FrmMain.py:485
+#: src/gui/FrmMain.py:539
+#: src/gui/FrmMain.py:590
 msgid "Question"
 msgstr ""
 
@@ -437,84 +412,84 @@ msgstr ""
 msgid "Select batch file"
 msgstr ""
 
-#: src/gui/FrmMain.py:251
+#: src/gui/FrmMain.py:255
 msgid "Select %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:253
-#: src/gui/FrmMain.py:276
-#: src/gui/FrmMain.py:298
-#: src/gui/FrmMain.py:312
+#: src/gui/FrmMain.py:257
+#: src/gui/FrmMain.py:280
+#: src/gui/FrmMain.py:302
+#: src/gui/FrmMain.py:316
 msgid "Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:273
+#: src/gui/FrmMain.py:277
 msgid "Save %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:285
+#: src/gui/FrmMain.py:289
 msgid "Overwrite existing file '%s'?"
 msgstr ""
 
-#: src/gui/FrmMain.py:295
+#: src/gui/FrmMain.py:299
 msgid "Export %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:298
-#: src/gui/FrmMain.py:312
+#: src/gui/FrmMain.py:302
+#: src/gui/FrmMain.py:316
 msgid "Portable"
 msgstr ""
 
-#: src/gui/FrmMain.py:310
+#: src/gui/FrmMain.py:314
 msgid "Import %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:325
+#: src/gui/FrmMain.py:329
 msgid "Import images"
 msgstr ""
 
-#: src/gui/FrmMain.py:327
-#: src/gui/FrmMain.py:387
+#: src/gui/FrmMain.py:331
+#: src/gui/FrmMain.py:391
 msgid "Imagefiles"
 msgstr ""
 
-#: src/gui/FrmMain.py:378
+#: src/gui/FrmMain.py:382
 msgid "Browse"
 msgstr ""
 
-#: src/gui/FrmMain.py:385
+#: src/gui/FrmMain.py:389
 msgid "Import image"
 msgstr ""
 
-#: src/gui/FrmMain.py:474
+#: src/gui/FrmMain.py:481
 msgid "Unnamed PhotoFilmStrip"
 msgstr ""
 
-#: src/gui/FrmMain.py:477
+#: src/gui/FrmMain.py:484
 msgid "'%s' has been modified. Save changes?"
 msgstr ""
 
-#: src/gui/FrmMain.py:493
+#: src/gui/FrmMain.py:500
 msgid "Images"
 msgstr ""
 
-#: src/gui/FrmMain.py:500
+#: src/gui/FrmMain.py:507
 msgid "Duration"
 msgstr ""
 
-#: src/gui/FrmMain.py:531
+#: src/gui/FrmMain.py:538
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr ""
 
-#: src/gui/FrmMain.py:580
+#: src/gui/FrmMain.py:587
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr ""
 
-#: src/gui/FrmMain.py:601
+#: src/gui/FrmMain.py:608
 msgid "Please wait"
 msgstr ""
 
-#: src/gui/FrmMain.py:602
+#: src/gui/FrmMain.py:609
 msgid "Loading pictures..."
 msgstr ""
 
