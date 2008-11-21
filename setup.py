@@ -92,6 +92,7 @@ setup(
     console = [pfs_cli],
     windows = [pfs_gui],
     zipfile = "lib/modules",
-    data_files=[("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
-	        ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
+    data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
+                ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
+	            ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
     )

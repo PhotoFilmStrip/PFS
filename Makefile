@@ -81,6 +81,7 @@ deb:
 	cp TODO "$$targetdir/"; \
 	cp setup.py "$$targetdir/"; \
 	cp photofilmstrip.iss "$$targetdir/"; \
+	cp make.bat "$$targetdir/"; \
 	rm -rf `find $$targetdir -name .svn -type d`; \
 	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
 	cd "$$targetdir"; \
@@ -91,7 +92,7 @@ deb:
 	cp build/debian/copyright "$$targetdir/debian/"; \
 	cp build/debian/control "$$targetdir/debian/"; \
 	cp build/debian/dirs "$$targetdir/debian/"; \
-	ls doc/* >>"$$targetdir/debian/docs"; \
+	ls doc/photofilmstrip/* >>"$$targetdir/debian/docs"; \
 	head -2 "$$targetdir/debian/changelog" > tmp; \
 	cat "$$curdir/CHANGES" >> tmp; \
 	tail -2 "$$targetdir/debian/changelog" >> tmp; \
