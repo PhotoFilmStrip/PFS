@@ -36,9 +36,6 @@ install:
 	$(mkdir) "$(DESTDIR)$(pixmapdir)"
 	cp "$(srcdir)/build/$(appname).xpm" "$(DESTDIR)$(pixmapdir)/"
 	
-#	$(mkdir) "$(DESTDIR)$(docdir)"
-#	cp "$(srcdir)/doc/*" "$(DESTDIR)$(docdir)/"
-	
 	$(mkdir) "$(DESTDIR)$(bindir)"
 	cp "$(srcdir)/build/$(appname)" "$(DESTDIR)$(bindir)/"
 	cp "$(srcdir)/build/$(appname)-cli" "$(DESTDIR)$(bindir)/"
@@ -50,7 +47,6 @@ uninstall:
 	rm -Rf "$(DESTDIR)$(appdir)"
 	rm -f "$(DESTDIR)$(desktopdir)/$(appname).desktop"
 	rm -f "$(DESTDIR)$(pixmapdir)/$(appname).xpm"
-#	rm -Rf "$(DESTDIR)$(docdir)"
 	rm -f "$(DESTDIR)$(bindir)/$(appname)"
 	rm -f "$(DESTDIR)$(bindir)/$(appname)-cli"
 	
