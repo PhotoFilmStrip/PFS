@@ -39,7 +39,7 @@ class StreamRenderer(SingleFileRenderer):
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "Format":
-            return "JPEG"
+            return "PPM"
         else:
             return SingleFileRenderer.GetDefaultProperty(prop)
 

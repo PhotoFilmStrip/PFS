@@ -36,6 +36,8 @@ class SubtitleSrt(object):
         
     
     def Start(self, pics):
+        if self.__outputPath is None:
+            return
         fd = open(os.path.join(self.__outputPath, "output.srt"), 'w')
         for pic in pics:
             self.__index += 1

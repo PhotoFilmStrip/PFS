@@ -813,7 +813,7 @@ class DlgRender(wx.Dialog, Observer):
             cli.append("-t")
             cli.append(str(self.choiceProfile.GetSelection()))
             cli.append("-n")
-            cli.append(str(self.__GetChoiceDataSelected(self.choiceType)))
+            cli.append("p" if self.__GetChoiceDataSelected(self.choiceType) == OutputProfile.PAL else "n")
             cli.append("-f")
             cli.append(str(self.choiceFormat.GetSelection()))
             

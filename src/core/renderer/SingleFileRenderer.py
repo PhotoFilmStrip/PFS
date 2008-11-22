@@ -43,7 +43,7 @@ class SingleFileRenderer(BaseRenderer):
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "UseResample":
-            return False
+            return True
         elif prop == "ResampleFilter":
             return "Antialias"
         else:

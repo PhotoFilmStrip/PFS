@@ -31,6 +31,7 @@ from core.PhotoFilmStrip import PhotoFilmStrip
 from core.ProgressHandler import ProgressHandler
 from core.RenderEngine import RenderEngine
 from core.renderer import RENDERERS
+from core.renderer.StreamRenderer import StreamRenderer
 
 
 class CliGui(Observer):
@@ -65,6 +66,36 @@ class CliGui(Observer):
             else:
                 return
             self.__Output()
+            
+    def Info(self, options, rendererClass, profile):
+        print
+        print Settings.APP_NAME, Settings.APP_VERSION
+        print u"(C) 2008 Jens G\xf6pfert"
+        print "http://photostoryx.sourceforge.net"
+        print 
+        print "%-20s: %s" % (_(u"processing project"), options.project)
+        if options.audio:
+            print "%-20s: %s" % (_(u"audio file"), options.audio)
+        print "%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
+        print "%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
+        print "%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 
+        print
+        
+    def Write(self, text):
+        print text
+
+
+class DummyGui(Observer):
+
+    def __init__(self):
+        Observer.__init__(self)
+    def ObservableUpdate(self, obj, arg):
+        pass
+    def Info(self, options, rendererClass, profile):
+        pass
+    def Write(self, text):
+        pass
+
 
 def main():
     parser = OptionParser(prog="%s-cli" % Settings.APP_NAME.lower(), 
@@ -77,7 +108,7 @@ def main():
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
     parser.add_option("-p", "--project", help=_(u"specifies the project file"))
-    parser.add_option("-o", "--outputpath", help=_(u"the path where to save the output files"), metavar="PATH")
+    parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. If single file renderer is used, this option can be omitted to use stdout."), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=3, type="int")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=2, type="int")
@@ -98,6 +129,13 @@ def main():
         sys.exit(1)
             
 
+    if options.format not in range(len(RENDERERS)):
+        parser.print_help()
+        logging.error(_(u"invalid format specified: %s") % options.format)
+        sys.exit(6)
+    rendererClass = RENDERERS[options.format]
+
+    
     if options.outputpath:
         options.outputpath = os.path.abspath(options.outputpath)
         if not os.path.exists(options.outputpath):
@@ -106,10 +144,13 @@ def main():
             except StandardError, err:
                 logging.error(_(u"cannot create outputpath: %s") % err)
                 sys.exit(2)
-    else:
+    elif options.format > 0:
+        # format 0 with single pictures can output to stdout
         parser.print_help()
         logging.error(_(u"no outputpath specified!"))
         sys.exit(2)
+    elif options.format == 0:
+        rendererClass = StreamRenderer 
 
 
     if options.profile >= len(profiles):
@@ -135,12 +176,6 @@ def main():
         sys.exit(5)
 
     
-    if options.format >= len(RENDERERS):
-        parser.print_help()
-        logging.error(_(u"invalid format specified: %s") % options.format)
-        sys.exit(6)
-    rendererClass = RENDERERS[options.format]
-    
     savedProps = settings.GetRenderProperties(rendererClass.__name__)
     for prop in rendererClass.GetProperties():
         value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
@@ -154,35 +189,26 @@ def main():
     photoFilmStrip = PhotoFilmStrip()
     photoFilmStrip.Load(options.project) 
 
-    cliGui = CliGui()
+    if rendererClass is StreamRenderer:
+        cliGui = DummyGui()
+    else:
+        cliGui = CliGui()
+
+    cliGui.Info(options, rendererClass, profile)
+
     progressHandler = ProgressHandler()
     progressHandler.AddObserver(cliGui)
     
     renderEngine = RenderEngine(renderer, progressHandler)
 
-    print
-    print Settings.APP_NAME, Settings.APP_VERSION
-    print u"(C) 2008 Jens G\xf6pfert"
-    print "http://photostoryx.sourceforge.net"
-    print 
-    print "%-20s: %s" % (_(u"processing project"), options.project)
-    if options.audio:
-        print "%-20s: %s" % (_(u"audio file"), options.audio)
-    print "%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-    print "%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
-    print "%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 
-    print
-    
     try:
         result = renderEngine.Start(photoFilmStrip.GetPictures(), options.length)
     except KeyboardInterrupt:
         progressHandler.Abort()
-        print
-        print _(u"...aborted!")
+        cliGui.Write("\n" + _(u"...aborted!"))
         sys.exit(6)
         
-    print
     if result:
-        print _(u"all done")
+        cliGui.Write(_(u"all done"))
     else:
         logging.error(_(u"Error: %s"), renderEngine.GetErrorMessage())

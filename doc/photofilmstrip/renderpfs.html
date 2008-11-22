@@ -137,26 +137,16 @@
         Notice, with the videonorm NTSC (~30 fps) and a PhotoFilmStrip with a total length of 10 seconds results to 300 pictures. 
         Each with a size of approximatally 2 MB results to 600 MB. </td>
         <td>
-          <li>UseResample
-          <li>ResampleFilter
+          <li>UseResample (True or False, if False then filter Nearest is used)
+          <li>ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
         </td>
       </tr>  
-      <tr>
-        <td>Single pictures (shellscript)</td>
-        <td>The output is simply a shellscript which uses imagemagick to perform the real processing. 
-        This is useful if you use PhotoFilmStrip on a computer where no image processing tools are installed.
-        You can create and export your project to render it on another computer. You only need the project file and the shell script.
-        </td>
-        <td>
-          <li>ResampleFilter
-        </td>
-      </tr>
       <tr>
         <td>MPEG2-Video</td>
         <td>Creates MPEG-2 (actually MPEG-1 too, if VCD-Profile is selected) conform movie files.</td>
         <td>
-          <li>UseResample
-          <li>ResampleFilter
+          <li>UseResample (True or False, if False then filter Nearest is used)
+          <li>ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
           <li>Bitrate (overrides profile specific)
         </td>
       </tr>
@@ -164,8 +154,8 @@
         <td>MPEG4-Video</td>
         <td>Creates MPEG-4 videos in an AVI container.</td>
         <td>
-          <li>UseResample
-          <li>ResampleFilter
+          <li>UseResample (True or False, if False then filter Nearest is used)
+          <li>ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
           <li>Bitrate (overrides profile specific)
           <li>FFOURCC (XVid/DIVX)
         </td>
