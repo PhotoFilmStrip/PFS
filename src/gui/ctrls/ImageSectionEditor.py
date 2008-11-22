@@ -193,19 +193,19 @@ class ImageSectionEditor(wx.Panel):
             return None
 
     def __SelectCursor(self, position):
-        #the cornsers
-        if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
-        elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
+#        #the cornsers
+#        if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
+#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
+#        elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
+#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
+#        
+#        #the Borders
+#        elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
+#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+#        elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
+#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
         
-        #the Borders
-        elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
-        elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
-        
-        elif position == self.POSITION_INSIDE:
+        if position == self.POSITION_INSIDE:
             self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
         else:                
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
@@ -232,7 +232,7 @@ class ImageSectionEditor(wx.Panel):
             position = self.__FindPosition(cpx, cpy)
             self.__SelectCursor(position)
         else:
-            ratio = 16.0 / 9.0
+#            ratio = 16.0 / 9.0
             if self._action == self.POSITION_INSIDE:
                 left = cpx - self._startX
                 top = cpy - self._startY
@@ -240,19 +240,19 @@ class ImageSectionEditor(wx.Panel):
                 self._sectRect.SetLeft(left)
                 self._sectRect.SetTop(top)
                 
-            elif self._action == self.POSITION_BOTTOM:
-                dh = cpy - self._sectRect.GetTop() - self._sectRect.GetHeight()
-                dw = dh * ratio
-                top = self._sectRect.GetTop()
-                self._sectRect.Inflate(dw, dh)
-                self._sectRect.SetTop(top)
-
-            elif self._action == self.POSITION_RIGHT:
-                dw = cpx - self._sectRect.GetLeft() - self._sectRect.GetWidth()
-                dh = dw / ratio
-                left = self._sectRect.GetLeft()
-                self._sectRect.Inflate(dw, dh)
-                self._sectRect.SetLeft(left)
+#            elif self._action == self.POSITION_BOTTOM:
+#                dh = cpy - self._sectRect.GetTop() - self._sectRect.GetHeight()
+#                dw = dh * ratio
+#                top = self._sectRect.GetTop()
+#                self._sectRect.Inflate(dw, dh)
+#                self._sectRect.SetTop(top)
+#
+#            elif self._action == self.POSITION_RIGHT:
+#                dw = cpx - self._sectRect.GetLeft() - self._sectRect.GetWidth()
+#                dh = dw / ratio
+#                left = self._sectRect.GetLeft()
+#                self._sectRect.Inflate(dw, dh)
+#                self._sectRect.SetLeft(left)
 
             #TODO: andere Actions handhaben
             
