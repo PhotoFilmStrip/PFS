@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-21 07:00+CET\n"
-"PO-Revision-Date: 2008-11-21 07:02+0100\n"
+"POT-Creation-Date: 2008-11-22 15:44+CET\n"
+"PO-Revision-Date: 2008-11-22 15:47+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -17,86 +17,86 @@ msgstr ""
 "X-Poedit-Country: UNITED STATES\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/cli/Main.py:62
-#: src/cli/Main.py:186
-#: src/gui/DlgRender.py:687
+#: src/cli/Main.py:63
+#: src/cli/Main.py:212
+#: src/gui/DlgRender.py:688
 msgid "all done"
 msgstr ""
 
-#: src/cli/Main.py:79
-msgid "specifies the project file"
-msgstr ""
-
-#: src/cli/Main.py:80
-msgid "the path where to save the output files"
-msgstr ""
-
-#: src/cli/Main.py:84
-msgid "total length of the PhotoFilmStrip (seconds)"
-msgstr ""
-
-#: src/cli/Main.py:85
-msgid "use audiofile as audiotrack (use --length to limit the movie length)"
-msgstr ""
-
-#: src/cli/Main.py:93
-msgid "projectfile does not exist: %s"
-msgstr ""
-
-#: src/cli/Main.py:97
-msgid "no projectfile specified!"
-msgstr ""
-
-#: src/cli/Main.py:107
-msgid "cannot create outputpath: %s"
-msgstr ""
-
-#: src/cli/Main.py:111
-msgid "no outputpath specified!"
-msgstr ""
-
-#: src/cli/Main.py:117
-msgid "invalid profile specified: %s"
-msgstr ""
-
-#: src/cli/Main.py:128
-msgid "invalid videonorm specified: %s"
-msgstr ""
-
-#: src/cli/Main.py:134
-msgid "audio file does not exist: %s"
-msgstr ""
-
-#: src/cli/Main.py:140
-msgid "invalid format specified: %s"
-msgstr ""
-
-#: src/cli/Main.py:168
+#: src/cli/Main.py:76
 msgid "processing project"
 msgstr ""
 
-#: src/cli/Main.py:170
+#: src/cli/Main.py:78
 msgid "audio file"
 msgstr ""
 
-#: src/cli/Main.py:171
+#: src/cli/Main.py:79
 msgid "using renderer"
 msgstr ""
 
-#: src/cli/Main.py:172
+#: src/cli/Main.py:80
 msgid "output format"
 msgstr ""
 
-#: src/cli/Main.py:173
+#: src/cli/Main.py:81
 msgid "framerate"
 msgstr ""
 
-#: src/cli/Main.py:181
-#: src/gui/DlgRender.py:685
+#: src/cli/Main.py:110
+msgid "specifies the project file"
+msgstr ""
+
+#: src/cli/Main.py:111
+msgid "The path where to save the output files. If single file renderer is used, this option can be omitted to use stdout."
+msgstr ""
+
+#: src/cli/Main.py:115
+msgid "total length of the PhotoFilmStrip (seconds)"
+msgstr ""
+
+#: src/cli/Main.py:116
+msgid "use audiofile as audiotrack (use --length to limit the movie length)"
+msgstr ""
+
+#: src/cli/Main.py:124
+msgid "projectfile does not exist: %s"
+msgstr ""
+
+#: src/cli/Main.py:128
+msgid "no projectfile specified!"
+msgstr ""
+
+#: src/cli/Main.py:134
+msgid "invalid format specified: %s"
+msgstr ""
+
+#: src/cli/Main.py:145
+msgid "cannot create outputpath: %s"
+msgstr ""
+
+#: src/cli/Main.py:150
+msgid "no outputpath specified!"
+msgstr ""
+
+#: src/cli/Main.py:158
+msgid "invalid profile specified: %s"
+msgstr ""
+
+#: src/cli/Main.py:169
+msgid "invalid videonorm specified: %s"
+msgstr ""
+
+#: src/cli/Main.py:175
+msgid "audio file does not exist: %s"
+msgstr ""
+
+#: src/cli/Main.py:208
+#: src/gui/DlgRender.py:686
 msgid "...aborted!"
 msgstr ""
 
-#: src/cli/Main.py:188
+#: src/cli/Main.py:214
 msgid "Error: %s"
 msgstr ""
 
@@ -145,23 +145,23 @@ msgstr ""
 msgid "generating subtitle"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:48
+#: src/core/renderer/MovieRenderer.py:56
 msgid "ppmtoy4m (mjpegtools) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:84
+#: src/core/renderer/MovieRenderer.py:89
 msgid "mpeg2enc (mjpegtools) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:88
+#: src/core/renderer/MovieRenderer.py:93
 msgid "MPEG2-Video"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:182
+#: src/core/renderer/MovieRenderer.py:187
 msgid "mencoder (mencoder) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:196
+#: src/core/renderer/MovieRenderer.py:201
 msgid "MPEG4-Video (XVid)"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid "Import Pictures"
 msgstr ""
 
 #: src/gui/ActionManager.py:86
-#: src/gui/DlgRender.py:257
+#: src/gui/DlgRender.py:258
 msgid "Render filmstrip"
 msgstr ""
 
@@ -271,87 +271,87 @@ msgid "Sorry, this function is temporary not available.."
 msgstr ""
 
 #: src/gui/DlgBugReport.py:78
-#: src/gui/DlgRender.py:520
-#: src/gui/DlgRender.py:536
-#: src/gui/DlgRender.py:559
-#: src/gui/DlgRender.py:692
-#: src/gui/DlgRender.py:748
-#: src/gui/DlgRender.py:780
+#: src/gui/DlgRender.py:521
+#: src/gui/DlgRender.py:537
+#: src/gui/DlgRender.py:560
+#: src/gui/DlgRender.py:693
+#: src/gui/DlgRender.py:749
+#: src/gui/DlgRender.py:781
 msgid "Error"
 msgstr ""
 
-#: src/gui/DlgRender.py:204
+#: src/gui/DlgRender.py:205
 msgid "Property"
 msgstr ""
 
-#: src/gui/DlgRender.py:206
+#: src/gui/DlgRender.py:207
 msgid "Value"
 msgstr ""
 
-#: src/gui/DlgRender.py:261
+#: src/gui/DlgRender.py:262
 msgid "Settings"
 msgstr ""
 
-#: src/gui/DlgRender.py:273
+#: src/gui/DlgRender.py:274
 msgid "Profile:"
 msgstr ""
 
-#: src/gui/DlgRender.py:285
+#: src/gui/DlgRender.py:286
 msgid "Type:"
 msgstr ""
 
-#: src/gui/DlgRender.py:298
+#: src/gui/DlgRender.py:299
 msgid "Transition speed:"
 msgstr ""
 
-#: src/gui/DlgRender.py:311
+#: src/gui/DlgRender.py:312
 msgid "Sec."
 msgstr ""
 
-#: src/gui/DlgRender.py:315
+#: src/gui/DlgRender.py:316
 msgid "Total length:"
 msgstr ""
 
-#: src/gui/DlgRender.py:319
+#: src/gui/DlgRender.py:320
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr ""
 
-#: src/gui/DlgRender.py:331
+#: src/gui/DlgRender.py:332
 msgid "User defined:"
 msgstr ""
 
-#: src/gui/DlgRender.py:339
+#: src/gui/DlgRender.py:340
 msgid "Audio file:"
 msgstr ""
 
-#: src/gui/DlgRender.py:363
+#: src/gui/DlgRender.py:364
 msgid "Output"
 msgstr ""
 
-#: src/gui/DlgRender.py:375
+#: src/gui/DlgRender.py:376
 msgid "Format:"
 msgstr ""
 
-#: src/gui/DlgRender.py:393
+#: src/gui/DlgRender.py:394
 msgid "Output directory:"
 msgstr ""
 
-#: src/gui/DlgRender.py:415
-#: src/gui/DlgRender.py:697
+#: src/gui/DlgRender.py:416
+#: src/gui/DlgRender.py:698
 msgid "&Close"
 msgstr ""
 
-#: src/gui/DlgRender.py:427
+#: src/gui/DlgRender.py:428
 msgid "&Start"
 msgstr ""
 
-#: src/gui/DlgRender.py:509
+#: src/gui/DlgRender.py:510
 msgid "Output path does not exists! Do you want %s to create it?"
 msgstr ""
 
-#: src/gui/DlgRender.py:510
-#: src/gui/DlgRender.py:545
-#: src/gui/DlgRender.py:630
+#: src/gui/DlgRender.py:511
+#: src/gui/DlgRender.py:546
+#: src/gui/DlgRender.py:631
 #: src/gui/FrmMain.py:290
 #: src/gui/FrmMain.py:485
 #: src/gui/FrmMain.py:539
@@ -359,56 +359,56 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: src/gui/DlgRender.py:519
+#: src/gui/DlgRender.py:520
 msgid "Cannot create direcotory: %s"
 msgstr ""
 
-#: src/gui/DlgRender.py:535
+#: src/gui/DlgRender.py:536
 msgid "Cannot write into direcotory: %s"
 msgstr ""
 
-#: src/gui/DlgRender.py:544
+#: src/gui/DlgRender.py:545
 msgid "Output path is not empty! Use it anyway?"
 msgstr ""
 
-#: src/gui/DlgRender.py:558
+#: src/gui/DlgRender.py:559
 msgid "Audio file does not exist!"
 msgstr ""
 
-#: src/gui/DlgRender.py:605
+#: src/gui/DlgRender.py:606
 msgid "&Cancel"
 msgstr ""
 
-#: src/gui/DlgRender.py:629
+#: src/gui/DlgRender.py:630
 msgid "Abort current process?"
 msgstr ""
 
-#: src/gui/DlgRender.py:643
+#: src/gui/DlgRender.py:644
 msgid "Edit property"
 msgstr ""
 
-#: src/gui/DlgRender.py:732
+#: src/gui/DlgRender.py:733
 msgid "Select music"
 msgstr ""
 
-#: src/gui/DlgRender.py:735
+#: src/gui/DlgRender.py:736
 msgid "Audiofiles"
 msgstr ""
 
-#: src/gui/DlgRender.py:747
+#: src/gui/DlgRender.py:748
 msgid "Invalid audio file!"
 msgstr ""
 
-#: src/gui/DlgRender.py:779
+#: src/gui/DlgRender.py:780
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr ""
 
-#: src/gui/DlgRender.py:787
-#: src/gui/DlgRender.py:790
+#: src/gui/DlgRender.py:788
+#: src/gui/DlgRender.py:791
 msgid "Batch File"
 msgstr ""
 
-#: src/gui/DlgRender.py:793
+#: src/gui/DlgRender.py:794
 msgid "Select batch file"
 msgstr ""
 
