@@ -1,18 +1,18 @@
 
 [Setup]
 AppName           = PhotoFilmStrip
-AppVerName        = PhotoFilmStrip 0.95
-AppPublisher      = Jens Göpfert
+AppPublisher      = Jens Gï¿½pfert
 AppPublisherURL   = http://photostoryx.sourceforge.net
+AppCopyright      = Copyright (C) 2008 Jens Gï¿½pfert
+AppVerName        = PhotoFilmStrip 0.95
 AppVersion        = 0.95
-AppCopyright      = Copyright (C) 2008 Jens Göpfert
-DefaultDirName    = {pf}\PhotoFilmStrip-0.95
+VersionInfoVersion= 0.9.5.0
+DefaultDirName    = {pf}\PhotoFilmStrip
 DefaultGroupName  = PhotoFilmStrip
 UninstallDisplayIcon={app}\bin\PhotoFilmStrip.exe
 OutputDir=release
-OutputBaseFilename = setup_photofilmstrip-0.95
+OutputBaseFilename = setup_photofilmstrip
 LicenseFile       = copying
-VersionInfoVersion        = 0.9.5.0
 WizardSmallImageFile=res\icon\photofilmstrip.bmp
 WizardImageFile=compiler:WizModernImage-IS.bmp
 ;compression=none

@@ -1,22 +1,4 @@
-#
-# PhotoFilmStrip - Creates movies out of your pictures.
-#
-# Copyright (C) 2008 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
+# -*- coding: ISO-8859-1 -*-
 
 import sys, os
 
@@ -112,5 +94,5 @@ setup(
     zipfile = "lib/modules",
     data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
                 ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
-	            ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
+	        ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
     )
