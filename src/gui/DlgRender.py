@@ -20,6 +20,7 @@
 #
 
 import os
+import stat
 import sys
 import threading
 
@@ -829,6 +830,8 @@ class DlgRender(wx.Dialog, Observer):
             fd.write("\n")
             
             fd.close()
+            
+            os.chmod(path, stat.S_IREAD | stat.S_IEXEC | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
         dlg.Destroy()
 

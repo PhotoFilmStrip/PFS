@@ -29,6 +29,7 @@ import sys
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 PYTHON  = r"C:\Python25\python.exe"
 INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
+MSGFMT  = r"C:\Python25\Tools\i18n\msgfmt.py"
 
 
 
@@ -90,11 +91,24 @@ def clean():
 
     if os.path.exists(os.path.join(WORKDIR, "release")):
        os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "release"))
+
+    if os.path.exists(os.path.join(WORKDIR, "locale")):
+       os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "locale"))
     logging.info("    done.")
 
 def compile():
     clean()
     os.chdir(WORKDIR)
+
+    for filename in os.listdir("po"):
+        base, ext = os.path.splitext(filename)
+        if ext.lower() == ".po":
+            path = "locale\\%s\\LC_MESSAGES" % base
+            if not os.path.exists(path):
+                os.makedirs(path)
+            
+	    os.system(MSGFMT + " -o \"%s\\PhotoFilmStrip.mo\" \"po\\%s\"" %(path, base))
+
     logging.info("running py2exe...")
     os.system("%s setup.py py2exe" % PYTHON)
     logging.info("    done.")
