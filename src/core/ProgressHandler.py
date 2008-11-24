@@ -39,9 +39,6 @@ class ProgressHandler(Observable):
         
     def GetCurrentProgress(self):
         return self.__currProgress
-    def SetCurrentProgress(self, cp):
-        self.__currProgress = cp
-        self.Notify('currentProgress')
         
     def GetInfo(self):
         return self.__info    
@@ -57,6 +54,10 @@ class ProgressHandler(Observable):
         if info and not self.__isAborted:
             self.__info = info
             self.Notify('info')
+            
+    def Steps(self, steps, info=""):
+        self.__currProgress += steps - 1
+        self.Step(info)
         
     def Done(self):
         self.__currProgress = self.__maxProgress

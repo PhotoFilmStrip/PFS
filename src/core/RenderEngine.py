@@ -50,13 +50,13 @@ class RenderEngine(object):
         
         pics = self.__GetPicCount(pic)
         
-        dx = (cx2 - cx1) / pics
-        dy = (cy2 - cy1) / pics
-        dw = (w2 - w1) / pics
-        dh = (h2 - h1) / pics
+        dx = (cx2 - cx1) / (pics - 1)
+        dy = (cy2 - cy1) / (pics - 1)
+        dw = (w2 - w1) / (pics - 1)
+        dh = (h2 - h1) / (pics - 1)
         
         pathRects = []
-        for step in xrange(int(pics) + 1):
+        for step in xrange(int(pics)):
             px = cx1 + step * dx
             py = cy1 + step * dy
             width = w1 + step * dw
@@ -75,7 +75,7 @@ class RenderEngine(object):
         returns the number of pictures
         """
         return ((pic.GetDuration() * self.__profile.PFramerate) * self.__picCountFactor) + \
-               (self.__transDuration * self.__profile.PFramerate)
+               self.__GetTransCount()
     
     def __GetTransCount(self):
         """
@@ -115,14 +115,28 @@ class RenderEngine(object):
             image1 = self.__aRenderer.ProcessCropAndResize(preparedFrom,
                                                            pathRectsFrom[idx], 
                                                            self.__profile.PResolution)
+
+            self.__progressHandler.Step()
             image2 = self.__aRenderer.ProcessCropAndResize(preparedTo,
                                                            pathRectsTo[idx], 
                                                            self.__profile.PResolution)
 
             img = Image.blend(image1, image2, idx / float(COUNT))
+#            img = self.roll(image1, image2, idx / float(COUNT))
+            
             self.__aRenderer.ProcessFinalize(img)
         
         return True
+
+    def roll(self, img1, img2, proc):
+        xsize, ysize = img1.size
+        delta = int(xsize * proc)
+        part1 = img2.crop((0, 0, delta, ysize))
+        part2 = img1.crop((delta, 0, xsize, ysize))
+        image = img2.copy()
+        image.paste(part2, (0, 0, xsize-delta, ysize))
+        image.paste(part1, (xsize-delta, 0, xsize, ysize))
+        return image
     
     def __Start(self, pics):
         self.__progressHandler.SetInfo(_(u"initialize renderer"))
@@ -179,6 +193,7 @@ class RenderEngine(object):
         if self.__audioFile:
             self.__progressHandler.SetInfo(_(u"processing audiofile..."))
             self.__aRenderer.ProcessAudio(self.__audioFile)
+            self.__progressHandler.Steps(5)
         
         self.__progressHandler.SetInfo(_(u"creating output..."))
         self.__aRenderer.Finalize()
@@ -190,7 +205,7 @@ class RenderEngine(object):
         generateSubtitle = False
         
         if targetLengthSecs is not None:
-            targetLengthSecs = max(targetLengthSecs - 1.0, len(pics))
+            targetLengthSecs = max(targetLengthSecs - self.__transDuration, len(pics))
             totalSecs = 0
             for pic in pics:
                 totalSecs += pic.GetDuration()
@@ -198,14 +213,15 @@ class RenderEngine(object):
             
         count = 0
         for pic in pics:
-            picCount = self.__GetPicCount(pic)
-            # every single picture to process
-            count += int(picCount) - (self.__GetTransCount() / 2)
+            count += int(self.__GetPicCount(pic))
             
-            if pic.GetComment():
+            if pic.GetComment() and not generateSubtitle:
                 generateSubtitle = True
                 count += 1
 
+        if self.__audioFile:
+            count += 5
+        
         self.__progressHandler.SetMaxProgress(int(count))
         
         try:

@@ -54,10 +54,26 @@ class SingleFileRenderer(BaseRenderer):
     
     def ProcessPrepare(self, filename, rotation, effect):
         img = Image.open(filename)
-        img.rotate(rotation * -90)
+        img = img.rotate(rotation * -90)
         
-#        if effect == Picture.EFFECT_BLACK_WHITE:
-#            img = img.convert("L")
+        if effect == Picture.EFFECT_BLACK_WHITE:
+            img = img.convert("L")
+            img = img.convert("RGB")
+
+        elif effect == Picture.EFFECT_SEPIA:
+            def make_linear_ramp(white):
+                # putpalette expects [r,g,b,r,g,b,...]
+                ramp = []
+                r, g, b = white
+                for i in range(255):
+                    ramp.extend((r*i/255, g*i/255, b*i/255))
+                return ramp
+
+            # make sepia ramp (tweak color as necessary)
+            sepia = make_linear_ramp((255, 240, 192))
+            img = img.convert("L")
+            img.putpalette(sepia)
+            img = img.convert("RGB")
 
         return img
     
