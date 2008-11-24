@@ -54,15 +54,16 @@ class ImageSectionEditor(wx.Panel):
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
-        self._image    = None
-        self._bmpScaled= None
-        self._sectRect = wx.Rect(0, 0, 1280, 720)
-        self._zoom     = 1
+        self._image     = None
+        self._bmpScaled = None
+        self._sectRect  = wx.Rect(0, 0, 1280, 720)
+        self._zoom      = 1
         
-        self._action   = None
-        self._startX   = None
-        self._startY   = None 
-
+        self._action    = None
+        self._startX    = None
+        self._startY    = None
+        self._startRect = None
+        
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
@@ -193,19 +194,19 @@ class ImageSectionEditor(wx.Panel):
             return None
 
     def __SelectCursor(self, position):
-#        #the cornsers
+        #the cornsers
 #        if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
 #            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
 #        elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
 #            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
-#        
-#        #the Borders
-#        elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
-#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
-#        elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
-#            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
         
-        if position == self.POSITION_INSIDE:
+        #the Borders
+        if position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+        elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
+            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
+        
+        elif position == self.POSITION_INSIDE:
             self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
         else:                
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
@@ -218,8 +219,9 @@ class ImageSectionEditor(wx.Panel):
 
         self._action = self.__FindPosition(cpx, cpy)
         if self._action is not None:
-            self._startX = cpx - self._sectRect.GetLeft()
-            self._startY = cpy - self._sectRect.GetTop()
+            self._startX = cpx
+            self._startY = cpy
+            self._startRect = wx.Rect(*self._sectRect.Get())
 
         event.Skip()
     
@@ -232,28 +234,76 @@ class ImageSectionEditor(wx.Panel):
             position = self.__FindPosition(cpx, cpy)
             self.__SelectCursor(position)
         else:
-#            ratio = 16.0 / 9.0
+            ratio = 16.0 / 9.0
             if self._action == self.POSITION_INSIDE:
-                left = cpx - self._startX
-                top = cpy - self._startY
+                deltaX = cpx - self._startX
+                deltaY = cpy - self._startY
                 
-                self._sectRect.SetLeft(left)
-                self._sectRect.SetTop(top)
+                self._sectRect.SetX(self._startRect.GetX() + deltaX)
+                self._sectRect.SetY(self._startRect.GetY() + deltaY)
+                                
+            elif self._action == self.POSITION_TOP:
+#                minDelta = max(-self._startRect.GetTop(),
+#                               -self._startRect.GetLeft() * ratio / 2,
+#                               (self._startRect.GetRight() - self._image.GetWidth()) * ratio / 2)
+#                maxDelta = min(self._startRect.GetBottom() - self._startRect.GetTop(), 1000)#,
+#                               #self._startRect.GetWidth() / ratio)                
+                delta = cpy - self._startY
+#                if delta < minDelta:
+#                    delta = minDelta
+#                elif delta > maxDelta:
+#                    delta = maxDelta
                 
-#            elif self._action == self.POSITION_BOTTOM:
-#                dh = cpy - self._sectRect.GetTop() - self._sectRect.GetHeight()
-#                dw = dh * ratio
-#                top = self._sectRect.GetTop()
-#                self._sectRect.Inflate(dw, dh)
-#                self._sectRect.SetTop(top)
-#
-#            elif self._action == self.POSITION_RIGHT:
-#                dw = cpx - self._sectRect.GetLeft() - self._sectRect.GetWidth()
-#                dh = dw / ratio
-#                left = self._sectRect.GetLeft()
-#                self._sectRect.Inflate(dw, dh)
-#                self._sectRect.SetLeft(left)
+                #prevent top from getting lower then bottom
+                maxDelta = self._startRect.GetBottom() - self._startRect.GetTop() - 5
+                if delta > maxDelta:
+                    delta = maxDelta            
+                
+                self._sectRect.Set(self._startRect.GetLeft() + delta * ratio / 2,
+                                   self._startRect.GetTop() + delta,
+                                   self._startRect.GetWidth() - delta * ratio,
+                                   self._startRect.GetHeight() - delta)
 
+            elif self._action == self.POSITION_BOTTOM:
+                delta = cpy - self._startY
+                
+                #prevent bottom from getting higher then top
+                minDelta = self._startRect.GetTop() - self._startRect.GetBottom() + 5
+                if delta < minDelta:
+                    delta = minDelta
+                
+                self._sectRect.Set(self._startRect.GetLeft() - delta * ratio / 2,
+                                   self._startRect.GetTop(),
+                                   self._startRect.GetWidth() + delta * ratio,
+                                   self._startRect.GetHeight() + delta)
+                
+            elif self._action == self.POSITION_LEFT:
+                delta = cpx - self._startX
+                
+                #prevent left from getting more righter then right
+                maxDelta = self._startRect.GetRight() - self._startRect.GetLeft() - 5
+                if delta > maxDelta:
+                    delta = maxDelta
+                
+                self._sectRect.Set(self._startRect.GetLeft() + delta,
+                                   self._startRect.GetTop() + delta / ratio / 2,
+                                   self._startRect.GetWidth() - delta,
+                                   self._startRect.GetHeight() - delta / ratio)
+            elif self._action == self.POSITION_RIGHT:
+                delta = cpx - self._startX
+                
+                #prevent right from getting more left then left
+                minDelta = self._startRect.GetLeft() - self._startRect.GetRight() + 5
+                if delta < minDelta:
+                    delta = minDelta
+                
+                self._sectRect.Set(self._startRect.GetLeft(),
+                                   self._startRect.GetTop() - delta / ratio / 2,
+                                   self._startRect.GetWidth() + delta,
+                                   self._startRect.GetHeight() + delta / ratio)
+                
+
+#           
             #TODO: andere Actions handhaben
             
             self._SendRectChangedEvent()
