@@ -26,6 +26,23 @@ from lib.common.Singleton import Singleton
 from core.OutputProfile import DEFAULT_PROFILES
 
 
+def _Encode(value, coding="utf-8"):
+    if isinstance(value, unicode):
+        return value.encode(coding)
+    elif isinstance(value, str):
+        return value
+    else:
+        return str(value)
+
+def _Decode(value, coding="utf-8"):
+    if isinstance(value, unicode):
+        return value
+    elif isinstance(value, str):
+        return value.decode(coding)
+    else:
+        return unicode(value)
+    
+
 class Settings(Singleton):
     
     APP_NAME = u"PhotoFilmStrip"
@@ -39,6 +56,11 @@ class Settings(Singleton):
             self.Create()
             self.__isFirstStart = True
         self.Load()
+        
+        if not (self.cp.has_section("General") and \
+                self.cp.has_section("History") and \
+                self.cp.has_section("Profiles")):
+            self.Create() 
         
     def Create(self):
         self.cp = ConfigParser()
@@ -63,7 +85,7 @@ class Settings(Singleton):
         self.Load()
         for idx, filename in enumerate(fileList):
             if os.path.exists(filename):
-                self.cp.set("History", "%d" % idx, filename)
+                self.cp.set("History", "%d" % idx, _Encode(filename))
         self.Save()
         
     def GetFileHistory(self):
@@ -71,7 +93,7 @@ class Settings(Singleton):
         fileList = []
         for idx in range(9, -1, -1):
             if self.cp.has_option("History", str(idx)):
-                filename = self.cp.get("History", str(idx))
+                filename = _Decode(self.cp.get("History", str(idx)))
                 if os.path.exists(filename):
                     fileList.append(filename)
 
@@ -79,36 +101,36 @@ class Settings(Singleton):
     
     def SetProjectPath(self, path):
         self.Load()
-        self.cp.set("General", "ProjectPath", path)
+        self.cp.set("General", "ProjectPath", _Encode(path))
         self.Save()
 
     def GetProjectPath(self):
         self.Load()
         if self.cp.has_option("General", "ProjectPath"):
-            return self.cp.get("General", "ProjectPath")
-        return ""
+            return _Decode(self.cp.get("General", "ProjectPath"))
+        return u""
 
     def SetImagePath(self, path):
         self.Load()
-        self.cp.set("General", "ImagePath", path)
+        self.cp.set("General", "ImagePath", _Encode(path))
         self.Save()
 
     def GetImagePath(self):
         self.Load()
         if self.cp.has_option("General", "ImagePath"):
-            return self.cp.get("General", "ImagePath")
-        return ""
+            return _Decode(self.cp.get("General", "ImagePath"))
+        return u""
 
     def SetAudioPath(self, path):
         self.Load()
-        self.cp.set("General", "AudioPath", path)
+        self.cp.set("General", "AudioPath", _Encode(path))
         self.Save()
 
     def GetAudioPath(self):
         self.Load()
         if self.cp.has_option("General", "AudioPath"):
-            return self.cp.get("General", "AudioPath")
-        return ""
+            return _Decode(self.cp.get("General", "AudioPath"))
+        return u""
 
     def SetLastProfile(self, profile):
         self.Load()
@@ -145,14 +167,14 @@ class Settings(Singleton):
     
     def SetLastOutputPath(self, path):
         self.Load()
-        self.cp.set("General", "LastOutputPath", path)
+        self.cp.set("General", "LastOutputPath", _Encode(path))
         self.Save()
 
     def GetLastOutputPath(self):
         self.Load()
         if self.cp.has_option("General", "LastOutputPath"):
-            return self.cp.get("General", "LastOutputPath")
-        return os.getcwd()
+            return _Decode(self.cp.get("General", "LastOutputPath"))
+        return _Decode(os.getcwd())
     
     def SetRenderProperties(self, renderer, props):
         self.Load()
