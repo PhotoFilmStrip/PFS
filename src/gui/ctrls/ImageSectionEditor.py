@@ -18,6 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import time
+
 import wx
 
 
@@ -38,12 +40,14 @@ class ImageSectionEditor(wx.Panel):
     
     BORDER_TOLERANCE = 20
     
-    POSITION_INSIDE = 0x01
+    POSITION_INSIDE  = 0x01
     
     POSITION_TOP     = 0x10
     POSITION_BOTTOM  = 0x20
     POSITION_LEFT    = 0x40
     POSITION_RIGHT   = 0x80
+    
+    INFO_TIME_OUT    = 2.0
     
     def __init__(self, parent, id=wx.ID_ANY, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
@@ -58,6 +62,8 @@ class ImageSectionEditor(wx.Panel):
         self._bmpScaled = None
         self._sectRect  = wx.Rect(0, 0, 1280, 720)
         self._zoom      = 1
+        self._infoTimer = wx.Timer(self)
+        self._lastRectUpdate = 0
         
         self._action    = None
         self._startX    = None
@@ -71,6 +77,7 @@ class ImageSectionEditor(wx.Panel):
         self.Bind(wx.EVT_SIZE, self.OnResize)
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+        self.Bind(wx.EVT_TIMER, self.OnInfoTimer)
 
     def SetBitmap(self, bmp):
         if bmp is None:
@@ -115,24 +122,47 @@ class ImageSectionEditor(wx.Panel):
         left = (cw - iw) / 2.0
         top = (ch - ih) / 2.0
         return int(left), int(top)
+    
+    def __SectRectToClientRect(self):
+        left, top = self.__GetBmpTopLeft()
+        sectRect = wx.Rect(left + (self._sectRect.GetLeft() * self._zoom),
+                           top + (self._sectRect.GetTop() * self._zoom),
+                           self._sectRect.GetWidth() * self._zoom,
+                           self._sectRect.GetHeight() * self._zoom)
+        return sectRect
             
     def __DrawSection(self, dc):
         if self._image is None:
             return
         
-        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        sectRect = self.__SectRectToClientRect()
         
-        left, top = self.__GetBmpTopLeft()
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
+        iRect = wx.RectPS(sectRect.GetPosition(), sectRect.GetSize())
         for i in range(5):
             if i < 2:
                 dc.SetPen(wx.WHITE_PEN)
             else:
                 dc.SetPen(wx.Pen(wx.Colour(0, 0, 0, 255 / i )))
+            iRect.Inflate(1, 1)
+            dc.DrawRectangleRect(iRect)
 
-            dc.DrawRectangle(left + (self._sectRect.GetLeft() * self._zoom) - i,
-                             top + (self._sectRect.GetTop() * self._zoom) - i,
-                             self._sectRect.GetWidth() * self._zoom + i*2,
-                             self._sectRect.GetHeight() * self._zoom + i*2)
+        now = time.time()
+        alpha = 255
+        if now - self._lastRectUpdate > self.INFO_TIME_OUT / 2:
+            alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT / 2)) / (self.INFO_TIME_OUT / 2)) * 255
+        if alpha < 0:
+            alpha = 0
+        dc.SetTextForeground(wx.Colour(255, 255, 255, alpha))
+        font = wx.SystemSettings_GetFont(wx.SYS_SYSTEM_FIXED_FONT)
+        font.SetPointSize(16)
+        font.SetWeight(wx.BOLD)
+        dc.SetFont(font)
+        dc.SetPen(wx.WHITE_PEN)
+        dc.DrawRectangleRect(sectRect)
+        dc.DrawLabel("%d, %d - %d x %d" % tuple(self._sectRect), 
+                     sectRect,
+                     wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL)
 
     def OnPaint(self, event):
         sz = self.GetClientSize()
@@ -148,6 +178,21 @@ class ImageSectionEditor(wx.Panel):
         self.__DrawBitmap(dc)
         self.__DrawSection(dc)
         
+        event.Skip()
+        
+    def __UpdateSectRect(self):
+        self._lastRectUpdate = time.time()
+        if not self._infoTimer.IsRunning():
+            self._infoTimer.Start(50)
+        self.Refresh()
+        
+    def OnInfoTimer(self, event):
+        if (time.time() - self._lastRectUpdate) > self.INFO_TIME_OUT:
+            self._infoTimer.Stop()
+#        iRect = self.__SectRectToClientRect()
+#        iRect.Inflate((220 - iRect.GetWidth()) / 2, (50 - iRect.GetHeight()) / 2)
+#        self.RefreshRect(iRect)
+        self.Refresh()
         event.Skip()
         
     def __ClientToImage(self, px, py):
@@ -308,7 +353,7 @@ class ImageSectionEditor(wx.Panel):
             
             self._SendRectChangedEvent()
             
-            self.Refresh()
+            self.__UpdateSectRect()
 
     def OnLeftUp(self, event):
         if self._action is not None:
@@ -339,7 +384,7 @@ class ImageSectionEditor(wx.Panel):
             self._sectRect.Inflate(-16, -9)
         
         self._SendRectChangedEvent()
-        self.Refresh()
+        self.__UpdateSectRect()
             
     def OnResize(self, event):
         self.__Scale()
@@ -382,7 +427,7 @@ class ImageSectionEditor(wx.Panel):
             return
         
         self._SendRectChangedEvent()
-        self.Refresh()
+        self.__UpdateSectRect()
             
     def __KeepRectInImage(self):
         if self._image is None:
