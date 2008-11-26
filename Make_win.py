@@ -31,6 +31,8 @@ PYTHON  = r"C:\Python25\python.exe"
 INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
 MSGFMT  = r"C:\Python25\Tools\i18n\msgfmt.py"
 
+class Args:
+    PY2EXE = []
 
 
 def check():
@@ -45,10 +47,11 @@ def check():
     logging.info("checking for wxPython...")
     try:
         import wx
+        logging.info("    ok.")
     except ImportError:
+        Args.PY2EXE.append("nogui")
+        logging.warn("    not found! No GUI will be available.")
         logging.error("Please install wxPython - http://www.wxpython.org/")
-        sys.exit(1)
-    logging.info("    ok.")
 
     logging.info("checking for py2exe...")
     try:
@@ -110,7 +113,7 @@ def compile():
 	    os.system(MSGFMT + " -o \"%s\\PhotoFilmStrip.mo\" \"po\\%s\"" %(path, base))
 
     logging.info("running py2exe...")
-    os.system("%s setup.py py2exe" % PYTHON)
+    os.system("%s setup.py py2exe %s" % (PYTHON, " ".join(Args.PY2EXE)))
     logging.info("    done.")
 
 def install():

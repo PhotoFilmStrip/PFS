@@ -356,9 +356,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         pic = self.listView.GetPyData(item)
         bmp = pic.GetBitmap()
         self.bitmapLeft.SetBitmap(bmp)
-        self.bitmapLeft.SetSection(pic.GetStartRect())
+        self.bitmapLeft.SetSection(wx.Rect(*pic.GetStartRect()))
         self.bitmapRight.SetBitmap(bmp)
-        self.bitmapRight.SetSection(pic.GetTargetRect())
+        self.bitmapRight.SetSection(wx.Rect(*pic.GetTargetRect()))
 
         self.pnlEditPicture.SetPicture(pic)
         
@@ -417,9 +417,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         selItem = self.listView.GetFirstSelected()
         pic = self.listView.GetPyData(selItem)
         if event.GetEventObject() is self.bitmapLeft:
-            pic.SetStartRect(self.bitmapLeft.GetSection())
+            pic.SetStartRect(tuple(self.bitmapLeft.GetSection()))
         else:
-            pic.SetTargetRect(self.bitmapRight.GetSection())
+            pic.SetTargetRect(tuple(self.bitmapRight.GetSection()))
 
     def OnCmdMoveLeftButton(self, event):
         selItem = self.listView.GetFirstSelected()

@@ -36,11 +36,11 @@ class RenderEngine(object):
         self.__picCountFactor = 1.0
         
     def __ComputePath(self, pic):
-        px1, py1 = pic.GetStartRect().GetPosition().Get()
-        w1, h1 = pic.GetStartRect().GetSize().Get()
+        px1, py1 = pic.GetStartRect()[:2]
+        w1, h1 = pic.GetStartRect()[2:]
         
-        px2, py2 = pic.GetTargetRect().GetPosition().Get()
-        w2, h2 = pic.GetTargetRect().GetSize().Get()
+        px2, py2 = pic.GetTargetRect()[:2]
+        w2, h2 = pic.GetTargetRect()[2:]
         
         cx1 = (w1 / 2.0) + px1
         cy1 = (h1 / 2.0) + py1
@@ -89,19 +89,19 @@ class RenderEngine(object):
             return True
         return False
     
-    def __ProcAndFinal(self, preparedResult, pathRects):
+    def __ProcAndFinal(self, image, pathRects):
         for rect in pathRects:
             if self.__CheckAbort():
                 return False
             
             self.__progressHandler.Step()
-            image = self.__aRenderer.ProcessCropAndResize(preparedResult,
-                                                          rect, 
-                                                          self.__profile.PResolution)
-            self.__aRenderer.ProcessFinalize(image)
+            img = self.__aRenderer.ProcessCropAndResize(image,
+                                                        rect, 
+                                                        self.__profile.PResolution)
+            self.__aRenderer.ProcessFinalize(img)
         return True
 
-    def __TransAndFinal(self, preparedFrom, preparedTo, pathRectsFrom, pathRectsTo):
+    def __TransAndFinal(self, imgFrom, imgTo, pathRectsFrom, pathRectsTo):
         if len(pathRectsFrom) != len(pathRectsTo):
             raise RuntimeError
         
@@ -112,12 +112,12 @@ class RenderEngine(object):
                 return False
         
             self.__progressHandler.Step()
-            image1 = self.__aRenderer.ProcessCropAndResize(preparedFrom,
+            image1 = self.__aRenderer.ProcessCropAndResize(imgFrom,
                                                            pathRectsFrom[idx], 
                                                            self.__profile.PResolution)
 
             self.__progressHandler.Step()
-            image2 = self.__aRenderer.ProcessCropAndResize(preparedTo,
+            image2 = self.__aRenderer.ProcessCropAndResize(imgTo,
                                                            pathRectsTo[idx], 
                                                            self.__profile.PResolution)
 
@@ -147,22 +147,20 @@ class RenderEngine(object):
         pathRectsBefore = None
         pathRectsCurrent = None
         
-        preparedResultBefore = None
-        preparedResultCurrent = None
+        imgBefore = None
+        imgCurrent = None
         
         for idxPic, pic in enumerate(pics):
             infoText = _(u"processing image %d/%d") % (idxPic, len(pics))
             self.__progressHandler.SetInfo(infoText)
 
-            preparedResultCurrent = self.__aRenderer.ProcessPrepare(pic.GetFilename(),
-                                                                    pic.GetRotation(),
-                                                                    pic.GetEffect())
+            imgCurrent = pic.GetImage()
             pathRectsCurrent = self.__ComputePath(pic)
 
             if idxPic > 0:
                 if idxPic == 1:
                     phase1 = pathRectsBefore[:-TRANS_COUNT]
-                    if not self.__ProcAndFinal(preparedResultBefore, phase1):
+                    if not self.__ProcAndFinal(imgBefore, phase1):
                         return
                 
                 infoText = _(u"processing transition %d/%d") % (idxPic, len(pics))
@@ -170,7 +168,7 @@ class RenderEngine(object):
                 
                 phase2a = pathRectsBefore[-TRANS_COUNT:]
                 phase2b = pathRectsCurrent[:TRANS_COUNT]
-                if not self.__TransAndFinal(preparedResultBefore, preparedResultCurrent, 
+                if not self.__TransAndFinal(imgBefore, imgCurrent, 
                                             phase2a, phase2b):
                     return
                 
@@ -178,15 +176,15 @@ class RenderEngine(object):
                 self.__progressHandler.SetInfo(infoText)
 
                 phase3 = pathRectsCurrent[TRANS_COUNT:-TRANS_COUNT]
-                if not self.__ProcAndFinal(preparedResultCurrent, phase3):
+                if not self.__ProcAndFinal(imgCurrent, phase3):
                     return
                 
                 if idxPic == len(pics) - 1:
                     phase4 = pathRectsCurrent[-TRANS_COUNT:]
-                    if not self.__ProcAndFinal(preparedResultCurrent, phase4):
+                    if not self.__ProcAndFinal(imgCurrent, phase4):
                         return
 
-            preparedResultBefore = preparedResultCurrent
+            imgBefore = imgCurrent
             pathRectsBefore = pathRectsCurrent
 
                     

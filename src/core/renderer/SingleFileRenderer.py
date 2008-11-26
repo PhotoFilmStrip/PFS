@@ -23,7 +23,6 @@ import os
 import Image
 
 from core.BaseRenderer import BaseRenderer
-from core.Picture import Picture
 
 
 class SingleFileRenderer(BaseRenderer):
@@ -52,35 +51,10 @@ class SingleFileRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
-    def ProcessPrepare(self, filename, rotation, effect):
-        img = Image.open(filename)
-        img = img.rotate(rotation * -90)
-        
-        if effect == Picture.EFFECT_BLACK_WHITE:
-            img = img.convert("L")
-            img = img.convert("RGB")
-
-        elif effect == Picture.EFFECT_SEPIA:
-            def make_linear_ramp(white):
-                # putpalette expects [r,g,b,r,g,b,...]
-                ramp = []
-                r, g, b = white
-                for i in range(255):
-                    ramp.extend((r*i/255, g*i/255, b*i/255))
-                return ramp
-
-            # make sepia ramp (tweak color as necessary)
-            sepia = make_linear_ramp((255, 240, 192))
-            img = img.convert("L")
-            img.putpalette(sepia)
-            img = img.convert("RGB")
-
-        return img
-    
-    def ProcessCropAndResize(self, preparedResult, cropRect, size):
+    def ProcessCropAndResize(self, image, cropRect, size):
         box = [int(cropRect[0]), int(cropRect[1]), 
                int(cropRect[0] + cropRect[2]), int(cropRect[1] + cropRect[3])]
-        subImg = preparedResult.crop(box)
+        subImg = image.crop(box)
         
         filtr = Image.NEAREST
         if self.GetProperty("UseResample"):

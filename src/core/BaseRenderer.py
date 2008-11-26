@@ -85,13 +85,10 @@ class BaseRenderer(object):
     def Prepare(self):
         raise NotImplementedError()        
     
-    def ProcessPrepare(self, filename, rotation, effect):
-        raise NotImplementedError()
-    
-    def ProcessCropAndResize(self, preparedResult, cropRect, size):
+    def ProcessCropAndResize(self, image, cropRect, size):
         raise NotImplementedError()
         
-    def ProcessFinalize(self, filename):
+    def ProcessFinalize(self, image):
         raise NotImplementedError()
     
     def Finalize(self):

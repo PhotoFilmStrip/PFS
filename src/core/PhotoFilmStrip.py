@@ -64,7 +64,6 @@ class PhotoFilmStrip(Observable):
         
         self.__progressHandler.SetMaxProgress(len(resultSet))
         
-        import wx
         picList = []
         altPaths = {}
         for row in resultSet:
@@ -100,9 +99,9 @@ class PhotoFilmStrip(Observable):
                 fd.close()
                 pic = Picture(tmpImg)
             
-            rect = wx.Rect(row["start_left"], row["start_top"], row["start_width"], row["start_height"])
+            rect = (row["start_left"], row["start_top"], row["start_width"], row["start_height"])
             pic.SetStartRect(rect)
-            rect = wx.Rect(row["target_left"], row["target_top"], row["target_width"], row["target_height"])
+            rect = (row["target_left"], row["target_top"], row["target_width"], row["target_height"])
             pic.SetTargetRect(rect)
             pic.SetDuration(row["duration"])
             pic.SetComment(row["comment"])

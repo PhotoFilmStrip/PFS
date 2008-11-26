@@ -56,9 +56,13 @@ class DlgBugReport(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.OnYes, id=wx.ID_YES)
 
     def OnYes(self, event):
-        params = urllib.urlencode({'bugreport': u"%s-%s\n\n%s" % (Settings.APP_NAME, 
-                                                                  Settings.APP_VERSION,
-                                                                  self.tcMsg.GetValue())})
+        info = "\n".join([sys.platform, 
+                          sys.getdefaultencoding(), 
+                          sys.getfilesystemencoding()])
+        params = urllib.urlencode({'bugreport': u"%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
+                                                                        Settings.APP_VERSION,
+                                                                        self.tcMsg.GetValue(),
+                                                                        info)})
         try:
             fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
             result = fd.read()

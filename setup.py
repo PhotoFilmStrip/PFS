@@ -4,10 +4,6 @@ import sys, os
 
 sys.path.insert(0, "src")
 
-from distutils.core import setup
-import py2exe
-import glob
-
 from lib.Settings import Settings
 
 # If run without args, build executables, in quiet mode.
@@ -15,6 +11,17 @@ if len(sys.argv) == 1:
     sys.argv.append("py2exe")
 #    sys.argv.append("-q")
 #    sys.argv.append("-b 2")
+
+NO_GUI = False
+if "nogui" in sys.argv:
+    NO_GUI = True
+    sys.argv.remove("nogui")
+    print "nogui"
+
+
+from distutils.core import setup
+import py2exe
+import glob
 
 
 class Target:
@@ -59,7 +66,7 @@ RT_MANIFEST = 24
 
 pfs_gui = Target(
     # what to build
-    script = "src/photofilmstrip-gui.py",
+    script = "src/photofilmstrip-cli.py" if NO_GUI else "src/photofilmstrip-gui.py",
     other_resources = [(RT_MANIFEST, 1, manifest_template % dict(prog=Settings.APP_NAME))],
     icon_resources = [(1, logo)],
     dest_base = "bin/" + Settings.APP_NAME,
@@ -79,18 +86,18 @@ setup(
         "compressed": 2,
 #        "bundle_files":1,
         "dll_excludes": [
-            "PROPSYS.DLL", "w9xpopen.exe", "MSVCR71.dll", "MAPI.DLL", "MAPI32.DLL", "ACLUI.dll", "msvcm80.dll", "msvcp80.dll", "msvcr80.dll",
+            "PROPSYS.DLL", "w9xpopen.exe", "MAPI.DLL", "MAPI32.DLL", "ACLUI.dll", #"MSVCR71.dll", 
         ],
         "packages": [
-            "encodings",
-            "wx.lib",
+#            "encodings",
+#            "wx.lib",
         ],
         "excludes": [
         ],
         "optimize": 2
     }},
-    console = [pfs_cli],
-    windows = [pfs_gui],
+    console = [pfs_cli, pfs_gui] if NO_GUI else [pfs_cli],
+    windows = [] if NO_GUI else [pfs_gui],
     zipfile = "lib/modules",
     data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
                 ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),

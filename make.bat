@@ -1,3 +1,3 @@
 @echo off
 
-python.exe Make_win.py
+c:\python25\python.exe Make_win.py %1
