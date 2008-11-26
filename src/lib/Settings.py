@@ -46,7 +46,7 @@ def _Decode(value, coding="utf-8"):
 class Settings(Singleton):
     
     APP_NAME = u"PhotoFilmStrip"
-    APP_VERSION = "0.95"
+    APP_VERSION = "0.96"
     
     def Init(self):
         self.filename = os.path.join(os.path.expanduser("~"), '.%s' % Settings.APP_NAME)

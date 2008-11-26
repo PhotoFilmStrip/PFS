@@ -1,4 +1,22 @@
-# -*- coding: ISO-8859-1 -*-
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2008 Jens Goepfert
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
 
 import sys, os
 
@@ -65,7 +83,6 @@ logo = os.path.join("res","icon", "photofilmstrip.ico")
 RT_MANIFEST = 24
 
 pfs_gui = Target(
-    # what to build
     script = "src/photofilmstrip-cli.py" if NO_GUI else "src/photofilmstrip-gui.py",
     other_resources = [(RT_MANIFEST, 1, manifest_template % dict(prog=Settings.APP_NAME))],
     icon_resources = [(1, logo)],
@@ -73,7 +90,6 @@ pfs_gui = Target(
     )
 
 pfs_cli = Target(
-    # what to build
     script = "src/photofilmstrip-cli.py",
     other_resources = [(RT_MANIFEST, 1, manifest_template % dict(prog=Settings.APP_NAME))],
     icon_resources = [(1, logo)],
@@ -89,8 +105,6 @@ setup(
             "PROPSYS.DLL", "w9xpopen.exe", "MAPI.DLL", "MAPI32.DLL", "ACLUI.dll", #"MSVCR71.dll", 
         ],
         "packages": [
-#            "encodings",
-#            "wx.lib",
         ],
         "excludes": [
         ],
@@ -101,5 +115,5 @@ setup(
     zipfile = "lib/modules",
     data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
                 ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
-	        ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
+	            ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo"))]
     )

@@ -1,3 +1,17 @@
+  * 2009/11/27
+	added:
+	 - information about selected rectange are shown
+	changed:
+	 - core runs without wxPython ->CLI can be used without X-Server
+	 - bugreport sends platform infos
+	 - Resizing Borders has landed, Corners are next target
+	bugfix:
+	 - mutual vowels in pathnames
+	 - pictures in portrait-format are processed properly
+	 - effects with PIL
+	 - progress bar more precisely
+
+
   * 2009/11/22
     added:
      - windows release works properly
