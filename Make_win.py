@@ -97,6 +97,10 @@ def clean():
 
     if os.path.exists(os.path.join(WORKDIR, "locale")):
        os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "locale"))
+
+    if os.path.exists(os.path.join(WORKDIR, "version.info")):
+       os.remove(os.path.join(WORKDIR, "version.info"))
+
     logging.info("    done.")
 
 def compile():
@@ -117,7 +121,8 @@ def compile():
     logging.info("    done.")
 
 def install():
-    compile()
+    if not os.path.exists(os.path.join(WORKDIR, "dist")):
+        compile()
     ver = getVersion()
     logging.info("building installer...")
     os.system("\"%s\" /Q /F%s-%s photofilmstrip.iss" % (INNO, "setup_photofilmstrip", ver))
@@ -134,6 +139,8 @@ if __name__ == "__main__":
             clean()
         elif sys.argv[1] == "compile":
             compile()
+        elif sys.argv[1] == "install":
+            install()
         sys.exit(0)
 
     install()

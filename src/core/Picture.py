@@ -164,7 +164,9 @@ class Picture(Observable):
         img = self.GetImage()
         img = img.copy()
         img.thumbnail((width, height))
-        return img
+        newImg = Image.new(img.mode, (width, height), 0xFFFFFF)
+        newImg.paste(img, (0, 0))
+        return newImg
 
     def ImageToStream(self, img, format="JPEG"):
         fd = cStringIO.StringIO()

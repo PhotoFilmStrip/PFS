@@ -23,6 +23,7 @@ import sys, os
 sys.path.insert(0, "src")
 
 from lib.Settings import Settings
+open("version.info", "w").write(Settings.APP_VERSION)
 
 # If run without args, build executables, in quiet mode.
 if len(sys.argv) == 1:
@@ -34,7 +35,6 @@ NO_GUI = False
 if "nogui" in sys.argv:
     NO_GUI = True
     sys.argv.remove("nogui")
-    print "nogui"
 
 
 from distutils.core import setup
@@ -101,13 +101,6 @@ setup(
     options = {"py2exe": {
         "compressed": 2,
 #        "bundle_files":1,
-        "dll_excludes": [
-            "PROPSYS.DLL", "w9xpopen.exe", "MAPI.DLL", "MAPI32.DLL", "ACLUI.dll", #"MSVCR71.dll", 
-        ],
-        "packages": [
-        ],
-        "excludes": [
-        ],
         "optimize": 2
     }},
     console = [pfs_cli, pfs_gui] if NO_GUI else [pfs_cli],

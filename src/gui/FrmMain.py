@@ -210,7 +210,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.SetBackgroundColour(toolBar.GetBackgroundColour())
         self.SetInitialSize(self.GetEffectiveMinSize())
         
-        self._imageList = wx.ImageList(64, 64)
+        self._imageList = wx.ImageList(64, 48)
         self.listView.AssignImageList(self._imageList, wx.IMAGE_LIST_NORMAL)
         
         self.actionManager.OnPictureSelected(False)
@@ -426,7 +426,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         pic = self.listView.GetPyData(selItem)
         
         self.listView.DeleteItem(selItem)
-        imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
+        imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
         itm = self.listView.InsertStringItem(selItem - 1, 
                                              os.path.basename(pic.GetFilename()))
         self.listView.SetItemImage(itm, imgIdx)
@@ -441,7 +441,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         pic = self.listView.GetPyData(selItem)
         
         self.listView.DeleteItem(selItem)
-        imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
+        imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
         itm = self.listView.InsertStringItem(selItem + 1, 
                                              os.path.basename(pic.GetFilename()))
         self.listView.SetItemImage(itm, imgIdx)
@@ -614,7 +614,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         count = self.listView.GetItemCount()
         for idx, pic in enumerate(pics):
             path = pic.GetFilename()
-            imgIdx = self._imageList.AddWithColourMask(pic.GetScaledBitmap(64, 64), wx.CYAN)
+            imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
             itm = self.listView.InsertStringItem(position, 
                                                  os.path.basename(path))
 #            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 120, 10))
@@ -640,7 +640,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                 bmp = obj.GetBitmap()
                 self.bitmapLeft.SetBitmap(bmp)
                 self.bitmapRight.SetBitmap(bmp)
-                imgIdx = self._imageList.AddWithColourMask(obj.GetScaledBitmap(64, 64), wx.CYAN)
+                imgIdx = self._imageList.Add(obj.GetScaledBitmap(64, 48))
                 item = self.listView.FindItemPyData(obj)
                 self.listView.SetItemImage(item, imgIdx)
             

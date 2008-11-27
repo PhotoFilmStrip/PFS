@@ -1,12 +1,12 @@
 
 [Setup]
 AppName           = PhotoFilmStrip
-AppPublisher      = Jens Gï¿½pfert
+AppPublisher      = Jens Göpfert
 AppPublisherURL   = http://photostoryx.sourceforge.net
-AppCopyright      = Copyright (C) 2008 Jens Gï¿½pfert
-AppVerName        = PhotoFilmStrip 0.95
-AppVersion        = 0.95
-VersionInfoVersion= 0.9.5.0
+AppCopyright      = Copyright (C) 2008 Jens Göpfert
+AppVerName        = {code:getAppVerName}
+AppVersion        = {code:getAppVer}
+;VersionInfoVersion= {code:getVerInfo}
 DefaultDirName    = {pf}\PhotoFilmStrip
 DefaultGroupName  = PhotoFilmStrip
 UninstallDisplayIcon={app}\bin\PhotoFilmStrip.exe
@@ -20,7 +20,8 @@ WizardImageFile=compiler:WizModernImage-IS.bmp
 [Files]
 Source: "dist\*";                   DestDir: "{app}";                     Flags: recursesubdirs;  
 Source: "win32ExtBin\mjpegtools\*"; DestDir: "{app}\extBin\mjpegtools";   Flags: recursesubdirs;  
-Source: "win32ExtBin\mplayer\*";    DestDir: "{app}\extBin\mplayer";      Flags: recursesubdirs;  
+Source: "win32ExtBin\mplayer\*";    DestDir: "{app}\extBin\mplayer";      Flags: recursesubdirs;
+Source: "version.info";                                                   Flags: dontcopy;
 
 [Icons]
 Name: "{group}\PhotoFilmStrip"; Filename: "{app}\bin\PhotoFilmStrip.exe"
@@ -30,3 +31,20 @@ Name: "{group}\Uninstall";      Filename: "{app}\unins000.exe";       WorkingDir
 [Run]
 Filename: "{app}\bin\PhotoFilmStrip.exe"; Description: "Run PhotoFilmStrip"; Flags: postinstall skipifsilent nowait
 
+
+[Code]
+function getAppVer(Default: String) :String;
+var tmp, s: String;
+begin
+    ExtractTemporaryFile('version.info');
+    tmp := ExpandConstant('{tmp}\version.info');
+    if LoadStringFromFile(tmp, s) then
+        result := s
+    else
+        result := ''
+end;
+
+function getAppVerName(Default: String) :String;
+begin
+    result := ExpandConstant('PhotoFilmStrip ' + getAppVer(''))
+end;
