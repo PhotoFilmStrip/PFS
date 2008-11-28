@@ -49,6 +49,9 @@ class ImageSectionEditor(wx.Panel):
     
     INFO_TIME_OUT    = 2.0
     
+    RATIO = 16.0 / 9.0
+            
+    
     def __init__(self, parent, id=wx.ID_ANY, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.TAB_TRAVERSAL, name='panel'):
@@ -279,7 +282,6 @@ class ImageSectionEditor(wx.Panel):
             position = self.__FindPosition(cpx, cpy)
             self.__SelectCursor(position)
         else:
-            ratio = 16.0 / 9.0
             if self._action == self.POSITION_INSIDE:
                 deltaX = cpx - self._startX
                 deltaY = cpy - self._startY
@@ -293,35 +295,26 @@ class ImageSectionEditor(wx.Panel):
                 
                 if deltaX < deltaY:
                     self._sectRect.Set(self._startRect.GetLeft() + deltaX,
-                                   self._startRect.GetTop() + deltaX / ratio,
+                                   self._startRect.GetTop() + deltaX / RATIO,
                                    self._startRect.GetWidth() - deltaX,
-                                   self._startRect.GetHeight() - deltaX / ratio)
+                                   self._startRect.GetHeight() - deltaX / RATIO)
                 else:
-                    self._sectRect.Set(self._startRect.GetLeft() + deltaY * ratio,
+                    self._sectRect.Set(self._startRect.GetLeft() + deltaY * RATIO,
                                    self._startRect.GetTop() + deltaY,
-                                   self._startRect.GetWidth() - deltaY * ratio,
+                                   self._startRect.GetWidth() - deltaY * RATIO,
                                    self._startRect.GetHeight() - deltaY)
                                   
             elif self._action == self.POSITION_TOP:
-#                minDelta = max(-self._startRect.GetTop(),
-#                               -self._startRect.GetLeft() * ratio / 2,
-#                               (self._startRect.GetRight() - self._image.GetWidth()) * ratio / 2)
-#                maxDelta = min(self._startRect.GetBottom() - self._startRect.GetTop(), 1000)#,
-#                               #self._startRect.GetWidth() / ratio)                
                 delta = cpy - self._startY
-#                if delta < minDelta:
-#                    delta = minDelta
-#                elif delta > maxDelta:
-#                    delta = maxDelta
-                
+
                 #prevent top from getting lower then bottom
                 maxDelta = self._startRect.GetBottom() - self._startRect.GetTop() - 5
                 if delta > maxDelta:
                     delta = maxDelta            
                 
-                self._sectRect.Set(self._startRect.GetLeft() + delta * ratio / 2,
+                self._sectRect.Set(self._startRect.GetLeft() + delta * RATIO / 2,
                                    self._startRect.GetTop() + delta,
-                                   self._startRect.GetWidth() - delta * ratio,
+                                   self._startRect.GetWidth() - delta * RATIO,
                                    self._startRect.GetHeight() - delta)
 
             elif self._action == self.POSITION_BOTTOM:
@@ -332,9 +325,9 @@ class ImageSectionEditor(wx.Panel):
                 if delta < minDelta:
                     delta = minDelta
                 
-                self._sectRect.Set(self._startRect.GetLeft() - delta * ratio / 2,
+                self._sectRect.Set(self._startRect.GetLeft() - delta * RATIO / 2,
                                    self._startRect.GetTop(),
-                                   self._startRect.GetWidth() + delta * ratio,
+                                   self._startRect.GetWidth() + delta * RATIO,
                                    self._startRect.GetHeight() + delta)
                 
             elif self._action == self.POSITION_LEFT:
@@ -346,9 +339,9 @@ class ImageSectionEditor(wx.Panel):
                     delta = maxDelta
                 
                 self._sectRect.Set(self._startRect.GetLeft() + delta,
-                                   self._startRect.GetTop() + delta / ratio / 2,
+                                   self._startRect.GetTop() + delta / RATIO / 2,
                                    self._startRect.GetWidth() - delta,
-                                   self._startRect.GetHeight() - delta / ratio)
+                                   self._startRect.GetHeight() - delta / RATIO)
             elif self._action == self.POSITION_RIGHT:
                 delta = cpx - self._startX
                 
@@ -358,9 +351,9 @@ class ImageSectionEditor(wx.Panel):
                     delta = minDelta
                 
                 self._sectRect.Set(self._startRect.GetLeft(),
-                                   self._startRect.GetTop() - delta / ratio / 2,
+                                   self._startRect.GetTop() - delta / RATIO / 2,
                                    self._startRect.GetWidth() + delta,
-                                   self._startRect.GetHeight() + delta / ratio)
+                                   self._startRect.GetHeight() + delta / RATIO)
                 
 
 #           
@@ -416,7 +409,7 @@ class ImageSectionEditor(wx.Panel):
             self._sectRect.SetWidth(1280)
             self._sectRect.SetHeight(720)
         elif key == wx.WXK_NUMPAD_MULTIPLY:
-            self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / (16.0 / 9.0))
+            self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / RATIO)
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
                 self._sectRect.OffsetXY(-50, 0)
@@ -455,10 +448,10 @@ class ImageSectionEditor(wx.Panel):
         
         if width > self._image.GetWidth():
             width = self._image.GetWidth()
-            height = width / (16.0 / 9.0)
+            height = width / RATIO
         if height > self._image.GetHeight():
             height = self._image.GetHeight()
-            width = height / (16.0 / 9.0)
+            width = height / RATIO
 
         if left < 0:
             left = 0
