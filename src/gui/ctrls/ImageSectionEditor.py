@@ -295,13 +295,13 @@ class ImageSectionEditor(wx.Panel):
                 
                 if deltaX < deltaY:
                     self._sectRect.Set(self._startRect.GetLeft() + deltaX,
-                                   self._startRect.GetTop() + deltaX / RATIO,
+                                   self._startRect.GetTop() + deltaX / self.RATIO,
                                    self._startRect.GetWidth() - deltaX,
-                                   self._startRect.GetHeight() - deltaX / RATIO)
+                                   self._startRect.GetHeight() - deltaX / self.RATIO)
                 else:
-                    self._sectRect.Set(self._startRect.GetLeft() + deltaY * RATIO,
+                    self._sectRect.Set(self._startRect.GetLeft() + deltaY * self.RATIO,
                                    self._startRect.GetTop() + deltaY,
-                                   self._startRect.GetWidth() - deltaY * RATIO,
+                                   self._startRect.GetWidth() - deltaY * self.RATIO,
                                    self._startRect.GetHeight() - deltaY)
                                   
             elif self._action == self.POSITION_TOP:
@@ -312,9 +312,9 @@ class ImageSectionEditor(wx.Panel):
                 if delta > maxDelta:
                     delta = maxDelta            
                 
-                self._sectRect.Set(self._startRect.GetLeft() + delta * RATIO / 2,
+                self._sectRect.Set(self._startRect.GetLeft() + delta * self.RATIO / 2,
                                    self._startRect.GetTop() + delta,
-                                   self._startRect.GetWidth() - delta * RATIO,
+                                   self._startRect.GetWidth() - delta * self.RATIO,
                                    self._startRect.GetHeight() - delta)
 
             elif self._action == self.POSITION_BOTTOM:
@@ -325,9 +325,9 @@ class ImageSectionEditor(wx.Panel):
                 if delta < minDelta:
                     delta = minDelta
                 
-                self._sectRect.Set(self._startRect.GetLeft() - delta * RATIO / 2,
+                self._sectRect.Set(self._startRect.GetLeft() - delta * self.RATIO / 2,
                                    self._startRect.GetTop(),
-                                   self._startRect.GetWidth() + delta * RATIO,
+                                   self._startRect.GetWidth() + delta * self.RATIO,
                                    self._startRect.GetHeight() + delta)
                 
             elif self._action == self.POSITION_LEFT:
@@ -339,9 +339,9 @@ class ImageSectionEditor(wx.Panel):
                     delta = maxDelta
                 
                 self._sectRect.Set(self._startRect.GetLeft() + delta,
-                                   self._startRect.GetTop() + delta / RATIO / 2,
+                                   self._startRect.GetTop() + delta / self.RATIO / 2,
                                    self._startRect.GetWidth() - delta,
-                                   self._startRect.GetHeight() - delta / RATIO)
+                                   self._startRect.GetHeight() - delta / self.RATIO)
             elif self._action == self.POSITION_RIGHT:
                 delta = cpx - self._startX
                 
@@ -351,9 +351,9 @@ class ImageSectionEditor(wx.Panel):
                     delta = minDelta
                 
                 self._sectRect.Set(self._startRect.GetLeft(),
-                                   self._startRect.GetTop() - delta / RATIO / 2,
+                                   self._startRect.GetTop() - delta / self.RATIO / 2,
                                    self._startRect.GetWidth() + delta,
-                                   self._startRect.GetHeight() + delta / RATIO)
+                                   self._startRect.GetHeight() + delta / self.RATIO)
                 
 
 #           
@@ -409,7 +409,7 @@ class ImageSectionEditor(wx.Panel):
             self._sectRect.SetWidth(1280)
             self._sectRect.SetHeight(720)
         elif key == wx.WXK_NUMPAD_MULTIPLY:
-            self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / RATIO)
+            self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / self.RATIO)
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
                 self._sectRect.OffsetXY(-50, 0)
