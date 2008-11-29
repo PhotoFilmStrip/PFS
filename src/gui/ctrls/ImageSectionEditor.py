@@ -22,6 +22,8 @@ import time
 
 import wx
 
+import res.cursors as cursors 
+
 
 EVT_RECT_CHANGED_TYPE  = wx.NewEventType()
 EVT_RECT_CHANGED       = wx.PyEventBinder(EVT_RECT_CHANGED_TYPE, 1)
@@ -243,13 +245,17 @@ class ImageSectionEditor(wx.Panel):
 
     def __SelectCursor(self, position):
         #the cornsers
-        if position in [self.POSITION_TOP | self.POSITION_LEFT, self.POSITION_BOTTOM | self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENWSE))
-        elif position in [self.POSITION_BOTTOM | self.POSITION_LEFT, self.POSITION_TOP | self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENESW))
+        if position == self.POSITION_TOP | self.POSITION_LEFT:
+            self.SetCursor(cursors.GetNW())
+        elif position == self.POSITION_BOTTOM | self.POSITION_RIGHT:
+            self.SetCursor(cursors.GetSE())
+        elif position == self.POSITION_BOTTOM | self.POSITION_LEFT:
+            self.SetCursor(cursors.GetSW())
+        elif position == self.POSITION_TOP | self.POSITION_RIGHT:
+            self.SetCursor(cursors.GetNE())
         
         #the Borders
-        if position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
+        elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
             self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
         elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
             self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
@@ -448,10 +454,10 @@ class ImageSectionEditor(wx.Panel):
         
         if width > self._image.GetWidth():
             width = self._image.GetWidth()
-            height = width / RATIO
+            height = width / self.RATIO
         if height > self._image.GetHeight():
             height = self._image.GetHeight()
-            width = height / RATIO
+            width = height / self.RATIO
 
         if left < 0:
             left = 0
