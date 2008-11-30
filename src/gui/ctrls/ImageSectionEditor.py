@@ -323,15 +323,24 @@ class ImageSectionEditor(wx.Panel):
                     dx = dy * self.RATIO
                     
                 #check size
-                if width < 0:
-                    width = height = 0
+                recalcDelta = False
+                if width < 16:
+                    width = 16
+                    height = 9
+                    recalcDelta = True
                 else:
                     if width > self._image.GetWidth():
                         width = self._image.GetWidth()
                         height = width / self.RATIO
+                        recalcDelta = True
                     if height > self._image.GetHeight():
                         height = self._image.GetHeight()
                         width = height * self.RATIO
+                        recalcDelta = True
+                        
+                if recalcDelta:
+                    dx = width - self._startRect.GetWidth()
+                    dy = height - self._startRect.GetHeight()
                                             
                 #now that we have the width and height, find out the position
                 
