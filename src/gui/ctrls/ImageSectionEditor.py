@@ -295,76 +295,89 @@ class ImageSectionEditor(wx.Panel):
                 self._sectRect.SetX(self._startRect.GetX() + deltaX)
                 self._sectRect.SetY(self._startRect.GetY() + deltaY)
                                 
-            elif self._action == self.POSITION_TOP | self.POSITION_LEFT:
-                deltaX = cpx - self._startX
-                deltaY = cpy - self._startY
-                
-                if deltaX < deltaY:
-                    self._sectRect.Set(self._startRect.GetLeft() + deltaX,
-                                   self._startRect.GetTop() + deltaX / self.RATIO,
-                                   self._startRect.GetWidth() - deltaX,
-                                   self._startRect.GetHeight() - deltaX / self.RATIO)
+            else:
+                #calculate dx aka delta x
+                if self._action & self.POSITION_LEFT:
+                    dx = self._startX - cpx
+                elif self._action & self.POSITION_RIGHT:
+                    dx = cpx - self._startX
                 else:
-                    self._sectRect.Set(self._startRect.GetLeft() + deltaY * self.RATIO,
-                                   self._startRect.GetTop() + deltaY,
-                                   self._startRect.GetWidth() - deltaY * self.RATIO,
-                                   self._startRect.GetHeight() - deltaY)
-                                  
-            elif self._action == self.POSITION_TOP:
-                delta = cpy - self._startY
-
-                #prevent top from getting lower then bottom
-                maxDelta = self._startRect.GetBottom() - self._startRect.GetTop() - 5
-                if delta > maxDelta:
-                    delta = maxDelta            
+                    dx = None
                 
-                self._sectRect.Set(self._startRect.GetLeft() + delta * self.RATIO / 2,
-                                   self._startRect.GetTop() + delta,
-                                   self._startRect.GetWidth() - delta * self.RATIO,
-                                   self._startRect.GetHeight() - delta)
-
-            elif self._action == self.POSITION_BOTTOM:
-                delta = cpy - self._startY
+                #calculate dy aka delta y
+                if self._action & self.POSITION_TOP:
+                    dy = self._startY - cpy
+                elif self._action & self.POSITION_BOTTOM:
+                    dy = cpy - self._startY
+                else:
+                    dy = None
                 
-                #prevent bottom from getting higher then top
-                minDelta = self._startRect.GetTop() - self._startRect.GetBottom() + 5
-                if delta < minDelta:
-                    delta = minDelta
+                #choose which one to use
+                if dy is None or (dx is not None and dx > dy * self.RATIO):
+                    width = self._startRect.GetWidth() + dx
+                    height = width / self.RATIO
+                    dy = dx / self.RATIO
+                else:
+                    height = self._startRect.GetHeight() + dy
+                    width = height * self.RATIO
+                    dx = dy * self.RATIO
+                    
+                #check size
+                if width < 0:
+                    width = height = 0
+                else:
+                    if width > self._image.GetWidth():
+                        width = self._image.GetWidth()
+                        height = width / self.RATIO
+                    if height > self._image.GetHeight():
+                        height = self._image.GetHeight()
+                        width = height * self.RATIO
+                                            
+                #now that we have the width and height, find out the position
                 
-                self._sectRect.Set(self._startRect.GetLeft() - delta * self.RATIO / 2,
-                                   self._startRect.GetTop(),
-                                   self._startRect.GetWidth() + delta * self.RATIO,
-                                   self._startRect.GetHeight() + delta)
+                sx = self._startRect.GetX()
+                sy = self._startRect.GetY()
                 
-            elif self._action == self.POSITION_LEFT:
-                delta = cpx - self._startX
+                #we need an algorithm for this
+                if self._action == self.POSITION_TOP | self.POSITION_LEFT:
+                    nx = sx - dx
+                    ny = sy - dy
+                elif self._action == self.POSITION_TOP | self.POSITION_RIGHT:
+                    nx = sx
+                    ny = sy - dy
+                elif self._action == self.POSITION_BOTTOM | self.POSITION_RIGHT:
+                    nx = sx
+                    ny = sy
+                elif self._action == self.POSITION_BOTTOM | self.POSITION_LEFT:
+                    nx = sx - dx
+                    ny = sy
+                elif self._action == self.POSITION_LEFT:
+                    nx = sx - dx
+                    ny = sy - dy / 2
+                elif self._action == self.POSITION_RIGHT:
+                    nx = sx
+                    ny = sy - dy / 2
+                elif self._action == self.POSITION_TOP:
+                    nx = sx - dx / 2
+                    ny = sy - dy
+                elif self._action == self.POSITION_BOTTOM:
+                    nx = sx - dx / 2
+                    ny = sy
                 
-                #prevent left from getting more righter then right
-                maxDelta = self._startRect.GetRight() - self._startRect.GetLeft() - 5
-                if delta > maxDelta:
-                    delta = maxDelta
+                #check pos
+                if nx < 0:
+                    nx = 0
+                elif nx + width > self._image.GetWidth():
+                    nx = self._image.GetWidth() - width
                 
-                self._sectRect.Set(self._startRect.GetLeft() + delta,
-                                   self._startRect.GetTop() + delta / self.RATIO / 2,
-                                   self._startRect.GetWidth() - delta,
-                                   self._startRect.GetHeight() - delta / self.RATIO)
-            elif self._action == self.POSITION_RIGHT:
-                delta = cpx - self._startX
-                
-                #prevent right from getting more left then left
-                minDelta = self._startRect.GetLeft() - self._startRect.GetRight() + 5
-                if delta < minDelta:
-                    delta = minDelta
-                
-                self._sectRect.Set(self._startRect.GetLeft(),
-                                   self._startRect.GetTop() - delta / self.RATIO / 2,
-                                   self._startRect.GetWidth() + delta,
-                                   self._startRect.GetHeight() + delta / self.RATIO)
-                
-
+                if ny < 0:
+                    ny = 0
+                elif ny + height > self._image.GetHeight():
+                    ny = self._image.GetHeight()
+                    
+                #everything should be ok now
+                self._sectRect.Set(nx, ny, width, height)              
 #           
-            #TODO: andere Actions handhaben
-            
             self._SendRectChangedEvent()
             
             self.__UpdateSectRect()
