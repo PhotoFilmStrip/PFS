@@ -19,6 +19,7 @@
 #
 
 import os
+import tempfile
 
 from ConfigParser import ConfigParser
 from lib.common.Singleton import Singleton
@@ -45,13 +46,22 @@ def _Decode(value, coding="utf-8"):
 
 class Settings(Singleton):
     
-    APP_NAME = u"PhotoFilmStrip"
-    APP_VERSION = "0.96"
+    APP_NAME        = "PhotoFilmStrip"
+    APP_VERSION     = "0.97"
+    APP_DESCRIPTION = ""
+    APP_URL         = "http://photostoryx.sourceforge.net"
+    DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]
     
     def Init(self):
-        self.filename = os.path.join(os.path.expanduser("~"), '.%s' % Settings.APP_NAME)
+        Settings.APP_DESCRIPTION = _("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.")
         self.__isFirstStart = False
         self.cp = None
+        
+        userpath = os.path.expanduser("~")
+        if userpath == "~":
+            userpath = tempfile.gettempdir()
+
+        self.filename = os.path.join(userpath, '.%s' % Settings.APP_NAME)
         if not os.path.isfile(self.filename):
             self.Create()
             self.__isFirstStart = True

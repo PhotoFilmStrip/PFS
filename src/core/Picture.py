@@ -20,7 +20,7 @@
 
 import cStringIO
 
-import Image
+import Image, ImageDraw
 
 from lib.common.ObserverPattern import Observable
 
@@ -136,7 +136,10 @@ class Picture(Observable):
         if self._img is not None:
             return self._img
 
-        img = Image.open(self._filename)
+        try:
+            img = Image.open(self._filename)
+        except IOError, err:
+            img = self.__CreateDummyImage(str(err))
         img = img.rotate(self._rotation * -90)
         
         if self._effect == Picture.EFFECT_BLACK_WHITE:
@@ -191,61 +194,23 @@ class Picture(Observable):
         return self._bmpThumb
 
 
-class DummyPicture(Picture):
+    def __CreateDummyImage(self, message):
+        if self.GetWidth() == -1:
+            w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
+            h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
+            w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
+            h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
+            width = max(w1, w2)
+            height = max(h1, h2)
+        else:
+            width = self.GetWidth()
+            height = self.GetHeight()
     
-    def __init__(self, filename):
-        Picture.__init__(self, filename)
+        self._img = Image.new("RGB", (width, height))
         
-    def _GetSizeDeprecated(self):
-        w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
-        h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
-        w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
-        h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
-        width = max(w1, w2)
-        height = max(h1, h2)
-        return width, height
-    
-    def GetImage(self):
-        if self._img is None:
-            if self.GetWidth() == -1:
-                width, height = self._GetSizeDeprecated()
-            else:
-                width = self.GetWidth()
-                height = self.GetHeight()
-            
-            self._img = Image.new("RGB", (width, height))
+        draw = ImageDraw.Draw(self._img)
+#        draw.setfont(None, 36)
+        draw.text((0, 0), message)
+        del draw
+        
         return self._img
-
-    def GetBitmap(self):
-        import wx
-        if self._bmp is None:
-            if self.GetWidth() == -1:
-                width, height = self._GetSizeDeprecated()
-            else:
-                width = self.GetWidth()
-                height = self.GetHeight()
-
-            bmp2 = wx.ArtProvider_GetBitmap(wx.ART_MISSING_IMAGE, wx.ART_OTHER, (32, 32))
-            img = bmp2.ConvertToImage()
-            img.Rescale(height / 2, height / 2)
-            bmp2 = img.ConvertToBitmap()
-
-            bmp = wx.EmptyBitmap(width, height)
-            dc = wx.MemoryDC()
-            dc.SelectObject(bmp)
-            dc.SetBackground(wx.Brush(wx.Colour(100, 100, 100)))
-            dc.Clear()
-            dc.DrawImageLabel("", bmp2, wx.Rect(0, 0, width, height),
-                              wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, 0)
-            dc.SelectObject(wx.NullBitmap)
-            self._bmp = bmp
-
-        return self._bmp
-
-    def GetScaledBitmap(self, width, height):
-        if self._bmpThumb is None:
-            bmp = self.GetBitmap()
-            img = bmp.ConvertToImage()
-            img = img.Rescale(width, height)
-            self._bmpThumb = img.ConvertToBitmap()
-        return self._bmpThumb

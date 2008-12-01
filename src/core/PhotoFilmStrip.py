@@ -24,7 +24,7 @@ import sqlite3
 
 from lib.common.ObserverPattern import Observable
 
-from core.Picture import Picture, DummyPicture
+from core.Picture import Picture
 from core.ProgressHandler import ProgressHandler
 
 
@@ -82,11 +82,10 @@ class PhotoFilmStrip(Observable):
                         
                     imgFile = os.path.join(altPaths[imgPath], os.path.basename(imgFile))
                 
-                if os.path.isfile(imgFile):
-                    pic = Picture(imgFile)
-                else:
+                if not os.path.isfile(imgFile):
                     logging.warn("Imagefile '%s' not found:", imgFile)
-                    pic = DummyPicture(row["filename"])
+                
+                pic = Picture(imgFile)
             else:
                 if importPath is None:
                     importPath = os.path.dirname(filename)

@@ -102,7 +102,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         # generated method, don't edit
         wx.Frame.__init__(self, id=wxID_FRMMAIN, name=u'FrmMain', parent=prnt,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_FRAME_STYLE, title='PhotoFilmStrip')
+              style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL, title='PhotoFilmStrip')
         self.SetClientSize(wx.Size(400, 250))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
@@ -234,12 +234,10 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
         info.Version = Settings.APP_VERSION
-        info.Copyright = u"(C) 2008 Jens G\xf6pfert"
-        info.Description = wordwrap(
-            u"%s creates movies out of your pictures." % Settings.APP_NAME,
-            350, wx.ClientDC(self))
-        info.WebSite = (u"http://photostoryx.sourceforge.net", "%s home page" % Settings.APP_NAME)
-        info.Developers = [u"Jens G\xf6pfert"]
+        info.Copyright = u"(C) 2008 %s" % Settings.DEVELOPERS[0]
+        info.Description = wordwrap(Settings.APP_DESCRIPTION, 350, wx.ClientDC(self))
+        info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
+        info.Developers = Settings.DEVELOPERS
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
 
@@ -433,6 +431,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.listView.SetPyData(itm, pic)
         self.listView.Select(itm)
+        self._FixItemPositions()
         
         self.actionManager.OnProjectChanged(True)
 
@@ -447,7 +446,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.listView.SetItemImage(itm, imgIdx)
         self.listView.SetPyData(itm, pic)
         self.listView.Select(itm)
-        
+        self._FixItemPositions()
+
         self.actionManager.OnProjectChanged(True)
 
     def OnCmdRemoveButton(self, event):
@@ -457,6 +457,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         if selItem > self.listView.GetItemCount() - 1:
             selItem = self.listView.GetItemCount() - 1
         self.listView.Select(selItem)
+        self._FixItemPositions()
         
         if self.listView.GetItemCount() == 0:
             self.pnlEditPicture.SetPicture(None)
@@ -617,7 +618,6 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
             itm = self.listView.InsertStringItem(position, 
                                                  os.path.basename(path))
-#            self.listView.SetItemPosition(itm, wx.Point((idx + count) * 120, 10))
             self.listView.SetItemImage(itm, imgIdx)
             self.listView.SetPyData(itm, pic)
 
@@ -625,6 +625,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
             dlg.Update(idx + 1)
         
+        self._FixItemPositions() 
         if self.listView.GetSelectedItemCount() == 0:
             self.listView.Select(0)
             
@@ -633,6 +634,17 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
+
+    def _FixItemPositions(self):
+        if sys.platform != "win32":
+            return
+        self.listView.Freeze()
+        lst = self.listView.GetPyDataList()
+        count = self.listView.GetItemCount()
+        for itm in range(count):
+            idx = lst.index(self.listView.GetPyData(itm))
+            self.listView.SetItemPosition(itm, wx.Point(itm * 120, 10))
+        self.listView.Thaw()
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
