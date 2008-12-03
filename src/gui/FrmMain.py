@@ -127,10 +127,10 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
               style=wx.LC_ICON | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL)
         self.listView.Bind(wx.EVT_LIST_ITEM_SELECTED,
               self.OnListViewListItemSelected, id=wxID_FRMMAINLISTVIEW)
-        self.listView.Bind(wx.EVT_LIST_ITEM_DESELECTED,
-              self.OnListViewListItemDeselected, id=wxID_FRMMAINLISTVIEW)
-        self.listView.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK,
-              self.OnListViewListItemRightClick, id=wxID_FRMMAINLISTVIEW)
+        self.listView.Bind(wx.EVT_RIGHT_DOWN, self.OnListViewRightDown)
+        self.listView.Bind(wx.EVT_RIGHT_DCLICK, self.OnListViewIgnoreClick)
+        self.listView.Bind(wx.EVT_LEFT_DOWN, self.OnListViewIgnoreClick)
+        self.listView.Bind(wx.EVT_LEFT_DCLICK, self.OnListViewIgnoreClick)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
               wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_FRMMAINCMDMOVELEFT,
@@ -361,20 +361,24 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.pnlEditPicture.SetPicture(pic)
         
         self.actionManager.OnPictureSelected(True, kind)
+        self.pnlEditPicture.Enable(True)
+
         event.Skip()
 
-    def OnListViewListItemDeselected(self, event):
-        item = event.GetIndex()
+    def OnListViewIgnoreClick(self, event):
+        pos = event.GetPosition()
+        item = self.listView.HitTest(pos)[0]
+        if item != -1:
+            event.Skip()
         
-        self.cmdMoveLeft.Enable(False)
-        self.cmdMoveRight.Enable(False)
-        self.cmdRemove.Enable(False)
-        self.actionManager.OnPictureSelected(False)
-        
-    def OnListViewListItemRightClick(self, event):
-        item = event.GetIndex()
-        pic = self.listView.GetPyData(item)
-        if pic:
+    def OnListViewRightDown(self, event):
+        pos = event.GetPosition()
+        item = self.listView.HitTest(pos)[0]
+        if item != -1:
+            self.listView.Select(item)
+            
+            pic = self.listView.GetPyData(item)
+            
             menu = wx.Menu()
             ident = wx.NewId()
             item = wx.MenuItem(menu, ident, _(u"Browse"))
@@ -382,6 +386,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             menu.AppendItem(item)
             self.Bind(wx.EVT_MENU, self.OnBrowseImage, id=ident)
             self.listView.PopupMenu(menu)
+
+            event.Skip()
 
     def OnBrowseImage(self, event):
         dlg = wx.FileDialog(self, _(u"Import image"), 
@@ -414,6 +420,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     def OnRectChanged(self, event):
         selItem = self.listView.GetFirstSelected()
         pic = self.listView.GetPyData(selItem)
+        if pic is None:
+            return
         if event.GetEventObject() is self.bitmapLeft:
             pic.SetStartRect(tuple(self.bitmapLeft.GetSection()))
         else:
@@ -460,7 +468,14 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self._FixItemPositions()
         
         if self.listView.GetItemCount() == 0:
+            self.bitmapLeft.SetBitmap(None)
+            self.bitmapRight.SetBitmap(None)
             self.pnlEditPicture.SetPicture(None)
+            self.pnlEditPicture.Enable(False)
+            self.cmdMoveLeft.Enable(False)
+            self.cmdMoveRight.Enable(False)
+            self.cmdRemove.Enable(False)
+            self.actionManager.OnPictureSelected(False)
         
         self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
@@ -655,6 +670,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                 imgIdx = self._imageList.Add(obj.GetScaledBitmap(64, 48))
                 item = self.listView.FindItemPyData(obj)
                 self.listView.SetItemImage(item, imgIdx)
+                self.listView.SetItemText(item, os.path.basename(obj.GetFilename()))
             
             if arg == 'duration':
                 self.UpdateStatusText()

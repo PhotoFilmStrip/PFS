@@ -150,6 +150,9 @@ class PnlEditPicture(wx.Panel):
         self.tcDuration.Bind(wx.EVT_KILL_FOCUS,
               self.OnTextCtrlDurationKillFocus,
               id=wxID_PNLEDITPICTURETCDURATION)
+        self.tcDuration.Bind(wx.EVT_TEXT,
+              self.OnTextCtrlDurationText,
+              id=wxID_PNLEDITPICTURETCDURATION)
 
         self.spinButtonDuration = wx.SpinButton(id=wxID_PNLEDITPICTURESPINBUTTONDURATION,
               name=u'spinButtonDuration', parent=self, pos=wx.Point(-1, -1),
@@ -168,7 +171,7 @@ class PnlEditPicture(wx.Panel):
         self.tcComment = wx.TextCtrl(id=wxID_PNLEDITPICTURETCCOMMENT,
               name=u'tcComment', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TE_MULTILINE, value='')
-        self.tcComment.Bind(wx.EVT_KILL_FOCUS, self.OnTextCtrlCommentKillFocus,
+        self.tcComment.Bind(wx.EVT_TEXT, self.OnTextCtrlCommentText,
               id=wxID_PNLEDITPICTURETCCOMMENT)
 
         self._init_sizers()
@@ -212,21 +215,28 @@ class PnlEditPicture(wx.Panel):
         event.Skip()
     
     def OnTextCtrlDurationKillFocus(self, event):
+        duration = self.__GetDuration()
+        self.spinButtonDuration.SetValue(int(duration * 10))
+        self.tcDuration.SetValue("%.1f" % duration)
+        event.Skip()
+        
+    def OnTextCtrlDurationText(self, event):
+        duration = self.__GetDuration()
+        self._picture.SetDuration(duration)
+        event.Skip()
+        
+    def OnTextCtrlCommentText(self, event):
+        self._picture.SetComment(self.tcComment.GetValue())
+        event.Skip()
+        
+    def __GetDuration(self):
         val = self.tcDuration.GetValue()
         try:
             floatVal = max(float(val), 1.0)
         except ValueError:
             floatVal = 1.0
-        
-        self.spinButtonDuration.SetValue(int(floatVal * 10))
-        self.tcDuration.SetValue("%.1f" % floatVal)
-        self._picture.SetDuration(floatVal)
-        event.Skip()
-        
-    def OnTextCtrlCommentKillFocus(self, event):
-        self._picture.SetComment(self.tcComment.GetValue())
-        event.Skip()
-        
+        return floatVal
+    
     def SetPicture(self, picture):
         self.Enable(picture is not None)
 

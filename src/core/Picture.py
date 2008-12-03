@@ -18,9 +18,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
 import cStringIO
 
-import Image, ImageDraw
+import Image, ImageDraw, ImageFont
 
 from lib.common.ObserverPattern import Observable
 
@@ -33,11 +34,12 @@ class Picture(Observable):
     
     def __init__(self, filename):
         Observable.__init__(self)
-        self._filename = filename
-        self._startRect = (0, 0, 1280, 720)
+        self._filename   = filename
+        self._startRect  = (0, 0, 1280, 720)
         self._targetRect = (0, 0, 1280, 720)
+        self._isDummy    = False
         
-        self._img = None
+        self._img      = None
         
         # to buffer wx bitmaps
         self._bmp      = None
@@ -45,10 +47,10 @@ class Picture(Observable):
 
         self._duration = 7.0
         self._rotation = 0
-        self._comment = u""
-        self._effect = Picture.EFFECT_NONE
-        self._width = -1
-        self._height = -1
+        self._comment  = u""
+        self._effect   = Picture.EFFECT_NONE
+        self._width    = -1
+        self._height   = -1
         
     def __Reset(self):
         self._img = None
@@ -59,7 +61,7 @@ class Picture(Observable):
         return self._filename
     
     def SetStartRect(self, rect):
-        if rect == self._startRect:
+        if rect == self._startRect or self._isDummy:
             return
         self._startRect = rect
         self.Notify("start")
@@ -67,7 +69,7 @@ class Picture(Observable):
         return self._startRect
         
     def SetTargetRect(self, rect):
-        if rect == self._targetRect:
+        if rect == self._targetRect or self._isDummy:
             return
         self._targetRect = rect
         self.Notify("target")
@@ -138,8 +140,11 @@ class Picture(Observable):
 
         try:
             img = Image.open(self._filename)
+            self._isDummy = False
         except IOError, err:
             img = self.__CreateDummyImage(str(err))
+            self._isDummy = True
+        
         img = img.rotate(self._rotation * -90)
         
         if self._effect == Picture.EFFECT_BLACK_WHITE:
@@ -195,22 +200,25 @@ class Picture(Observable):
 
 
     def __CreateDummyImage(self, message):
-        if self.GetWidth() == -1:
-            w1 = self.GetStartRect()[0] + self.GetStartRect()[2]
-            h1 = self.GetStartRect()[1] + self.GetStartRect()[3]
-            w2 = self.GetTargetRect()[0] + self.GetTargetRect()[2]
-            h2 = self.GetTargetRect()[1] + self.GetTargetRect()[3]
-            width = max(w1, w2)
-            height = max(h1, h2)
-        else:
-            width = self.GetWidth()
-            height = self.GetHeight()
-    
-        self._img = Image.new("RGB", (width, height))
-        
-        draw = ImageDraw.Draw(self._img)
-#        draw.setfont(None, 36)
-        draw.text((0, 0), message)
+        width = 400
+        height = 300
+        img = Image.new("RGB", (width, height), (255, 255, 255))
+
+        draw = ImageDraw.Draw(img)
+        textWidth, textHeight = draw.textsize(message)
+        x = (width - textWidth) / 2
+        y = (height - textHeight * 2)
+        draw.text((x, y), message, fill=(0, 0, 0))
+
+        sz = width / 2
+        draw.ellipse(((width - sz) / 2, (height - sz) / 2, 
+                      (width + sz) / 2, (height + sz) / 2), 
+                      fill=(255, 0, 0))
+
+        sz = width / 7
+        draw.line((width / 2 - sz, height / 2 - sz, width / 2 + sz, height / 2 + sz), fill=(255, 255, 255), width=20)
+        draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
+
         del draw
         
-        return self._img
+        return img
