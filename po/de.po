@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-11-22 15:44+CET\n"
-"PO-Revision-Date: 2008-11-22 15:46+0100\n"
+"POT-Creation-Date: 2008-12-03 22:44+CET\n"
+"PO-Revision-Date: 2008-12-03 22:47+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -108,7 +108,7 @@ msgstr "Unbekannte Eigenschaft: %s"
 msgid "<default>"
 msgstr "<standard>"
 
-#: src/core/PhotoFilmStrip.py:73
+#: src/core/PhotoFilmStrip.py:72
 msgid "Loading '%s' ..."
 msgstr "Lade '%s' ..."
 
@@ -116,32 +116,32 @@ msgstr "Lade '%s' ..."
 msgid "Please wait..."
 msgstr "Bitte warten"
 
-#: src/core/ProgressHandler.py:68
+#: src/core/ProgressHandler.py:69
 msgid "aborting..."
 msgstr "abbrechen..."
 
-#: src/core/RenderEngine.py:113
+#: src/core/RenderEngine.py:142
 msgid "initialize renderer"
 msgstr "Initialisiere"
 
-#: src/core/RenderEngine.py:125
-#: src/core/RenderEngine.py:146
+#: src/core/RenderEngine.py:154
+#: src/core/RenderEngine.py:175
 msgid "processing image %d/%d"
 msgstr "Verarbeite Bild %d/%d"
 
-#: src/core/RenderEngine.py:138
+#: src/core/RenderEngine.py:166
 msgid "processing transition %d/%d"
 msgstr "Berechne Bildübergang %d/%d"
 
-#: src/core/RenderEngine.py:161
+#: src/core/RenderEngine.py:192
 msgid "processing audiofile..."
 msgstr "Verarbeite Audio-Datei..."
 
-#: src/core/RenderEngine.py:164
+#: src/core/RenderEngine.py:196
 msgid "creating output..."
 msgstr "Ausgabe erstellen..."
 
-#: src/core/RenderEngine.py:194
+#: src/core/RenderEngine.py:227
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
@@ -165,7 +165,7 @@ msgstr "mencoder (mencoder) nicht gefunden!"
 msgid "MPEG4-Video (XVid)"
 msgstr "MPEG4-Video (XVid)"
 
-#: src/core/renderer/SingleFileRenderer.py:37
+#: src/core/renderer/SingleFileRenderer.py:36
 msgid "Single pictures"
 msgstr "Einzelbilder"
 
@@ -258,19 +258,19 @@ msgstr "Ein unerwarteter Fehler ist aufgetretetn"
 msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Wollen Sie einen Fehlerbericht an die Entwickler von %s senden?"
 
-#: src/gui/DlgBugReport.py:70
+#: src/gui/DlgBugReport.py:74
 msgid "Bug-Report send. Thank you for your support."
 msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
 
-#: src/gui/DlgBugReport.py:71
+#: src/gui/DlgBugReport.py:75
 msgid "Information"
 msgstr "Information"
 
-#: src/gui/DlgBugReport.py:77
+#: src/gui/DlgBugReport.py:81
 msgid "Sorry, this function is temporary not available.."
 msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 
-#: src/gui/DlgBugReport.py:78
+#: src/gui/DlgBugReport.py:82
 #: src/gui/DlgRender.py:521
 #: src/gui/DlgRender.py:537
 #: src/gui/DlgRender.py:560
@@ -352,10 +352,10 @@ msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 #: src/gui/DlgRender.py:511
 #: src/gui/DlgRender.py:546
 #: src/gui/DlgRender.py:631
-#: src/gui/FrmMain.py:290
-#: src/gui/FrmMain.py:485
-#: src/gui/FrmMain.py:539
-#: src/gui/FrmMain.py:590
+#: src/gui/FrmMain.py:288
+#: src/gui/FrmMain.py:501
+#: src/gui/FrmMain.py:555
+#: src/gui/FrmMain.py:606
 msgid "Question"
 msgstr "Frage"
 
@@ -412,84 +412,88 @@ msgstr "Stapel-Datei"
 msgid "Select batch file"
 msgstr "Stapelverarbeitungsdatei wählen"
 
-#: src/gui/FrmMain.py:255
+#: src/gui/FrmMain.py:239
+msgid "online"
+msgstr "Online"
+
+#: src/gui/FrmMain.py:253
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:257
-#: src/gui/FrmMain.py:280
-#: src/gui/FrmMain.py:302
-#: src/gui/FrmMain.py:316
+#: src/gui/FrmMain.py:255
+#: src/gui/FrmMain.py:278
+#: src/gui/FrmMain.py:300
+#: src/gui/FrmMain.py:314
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:277
+#: src/gui/FrmMain.py:275
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:287
 msgid "Overwrite existing file '%s'?"
 msgstr "Bestehende Datei '%s' überschreiben?"
 
-#: src/gui/FrmMain.py:299
+#: src/gui/FrmMain.py:297
 msgid "Export %s-Project"
 msgstr "%s-Projekt exportieren"
 
-#: src/gui/FrmMain.py:302
-#: src/gui/FrmMain.py:316
+#: src/gui/FrmMain.py:300
+#: src/gui/FrmMain.py:314
 msgid "Portable"
 msgstr "Mitnehm"
 
-#: src/gui/FrmMain.py:314
+#: src/gui/FrmMain.py:312
 msgid "Import %s-Project"
 msgstr "%s-Projekt importieren"
 
-#: src/gui/FrmMain.py:329
+#: src/gui/FrmMain.py:327
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/FrmMain.py:331
-#: src/gui/FrmMain.py:391
+#: src/gui/FrmMain.py:329
+#: src/gui/FrmMain.py:395
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/FrmMain.py:382
+#: src/gui/FrmMain.py:384
 msgid "Browse"
 msgstr "Durchsuchen"
 
-#: src/gui/FrmMain.py:389
+#: src/gui/FrmMain.py:393
 msgid "Import image"
 msgstr "Bild importieren"
 
-#: src/gui/FrmMain.py:481
+#: src/gui/FrmMain.py:497
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/FrmMain.py:484
+#: src/gui/FrmMain.py:500
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:500
+#: src/gui/FrmMain.py:516
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:507
+#: src/gui/FrmMain.py:523
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:538
+#: src/gui/FrmMain.py:554
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr "Einige Bilder aus dem Ordner '%s' existieren nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
 
-#: src/gui/FrmMain.py:587
+#: src/gui/FrmMain.py:603
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
 
-#: src/gui/FrmMain.py:608
+#: src/gui/FrmMain.py:624
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: src/gui/FrmMain.py:609
+#: src/gui/FrmMain.py:625
 msgid "Loading pictures..."
 msgstr "Bilder laden..."
 
@@ -505,21 +509,25 @@ msgstr "Effekt:"
 msgid "Duartion (sec):"
 msgstr "Dauer (Sek):"
 
-#: src/gui/PnlEditPicture.py:165
+#: src/gui/PnlEditPicture.py:168
 msgid "Subtitle:"
 msgstr "Untertitel:"
 
-#: src/gui/PnlEditPicture.py:183
+#: src/gui/PnlEditPicture.py:186
 msgid "No effect"
 msgstr "Kein Effekt"
 
-#: src/gui/PnlEditPicture.py:184
+#: src/gui/PnlEditPicture.py:187
 msgid "Black and White"
 msgstr "Schwarz-Weiss"
 
-#: src/gui/PnlEditPicture.py:185
+#: src/gui/PnlEditPicture.py:188
 msgid "Sepia tone"
 msgstr "Sephia-Effekt"
+
+#: src/lib/Settings.py:56
+msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr "PhotoFilmStrip erstellt Videoclips aus Digitalfotos in nur 3 Schritten. Fotos auswählen, Bewegung anpassen und Video erstellen lassen. Verfügbar sind Formate für VCD, SVCD, DVD bis hin zu FULL-HD."
 
 #~ msgid "the path where to save the output files"
 #~ msgstr "Pfad, in dem die Ausgabe gespeichert wird"
@@ -541,8 +549,6 @@ msgstr "Sephia-Effekt"
 #, fuzzy
 #~ msgid "aborted"
 #~ msgstr "...abgebrochen!"
-#~ msgid "done"
-#~ msgstr "Fertig"
 #~ msgid "Render photo filmstrip"
 #~ msgstr "Filmstreifen erstellen"
 #~ msgid "one of: VCD, SVCD, DVD, Medium, HD, FULL-HD"

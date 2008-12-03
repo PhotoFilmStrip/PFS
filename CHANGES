@@ -1,3 +1,17 @@
+  * 2009/12/03
+    added:
+     - new mouse cursors for resizing the sections
+    changed:
+     - program description and properties moved to Setting module
+     - DummyPicture implementation optimized
+    bugfix:
+     - unexpected error (cannot identify image)
+     - select/deselect of images in list works properly
+     - mouse capturing (mainly for windows)
+     - position of thumbnails in imagelist is working properly under windows too
+     - settings file is saved in temp folder if no environment variable HOME is set under windows
+  
+
   * 2009/11/27
     added:
      - information about selected rectange are shown
