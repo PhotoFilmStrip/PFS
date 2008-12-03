@@ -83,6 +83,7 @@ class ImageSectionEditor(wx.Panel):
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_TIMER, self.OnInfoTimer)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
 
     def SetBitmap(self, bmp):
         if bmp is None:
@@ -265,6 +266,16 @@ class ImageSectionEditor(wx.Panel):
         else:                
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
             
+    def OnCaptureLost(self, event):
+        if self._action is not None:
+            px, py = event.GetPosition().Get()
+            cpx, cpy = self.__ClientToImage(px, py)
+            position = self.__FindPosition(cpx, cpy)
+            self.__SelectCursor(position)
+        self._action = None
+        self._startX = None
+        self._startY = None
+    
     def OnLeftDown(self, event):
         if self._image is None:
             return
@@ -273,6 +284,7 @@ class ImageSectionEditor(wx.Panel):
 
         self._action = self.__FindPosition(cpx, cpy)
         if self._action is not None:
+            self.CaptureMouse()
             self._startX = cpx
             self._startY = cpy
             self._startRect = wx.Rect(*self._sectRect.Get())
@@ -397,6 +409,8 @@ class ImageSectionEditor(wx.Panel):
             cpx, cpy = self.__ClientToImage(px, py)
             position = self.__FindPosition(cpx, cpy)
             self.__SelectCursor(position)
+            if self.HasCapture():
+                self.ReleaseMouse()        
         self._action = None
         self._startX = None
         self._startY = None
