@@ -31,7 +31,7 @@ from lib.Settings import Settings
 from lib.common.ObserverPattern import Observer
 
 from gui.ctrls.ImageSectionEditor import ImageSectionEditor, EVT_RECT_CHANGED
-from gui.ctrls.PyListView import PyListView
+from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList
 from gui.DlgRender import DlgRender
 from gui.PnlEditPicture import PnlEditPicture
 from gui.ActionManager import ActionManager
@@ -50,7 +50,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     
     _custom_classes = {"wx.Panel": ["ImageSectionEditor",
                                     "PnlEditPicture"],
-                       "wx.ListView": ["PyListView"]}
+                       "wx.ListView": ["PhotoFilmStripList"]}
     
     def _init_coll_sizerPictures_Items(self, parent):
         # generated method, don't edit
@@ -122,15 +122,13 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
               name=u'pnlEditPicture', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.listView = PyListView(id=wxID_FRMMAINLISTVIEW, name=u'listView',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, 120),
+        self.listView = PhotoFilmStripList(id=wxID_FRMMAINLISTVIEW, 
+              name=u'listView', parent=self, pos=wx.Point(-1, -1), 
+              size=wx.Size(-1, -1),
               style=wx.LC_ICON | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL)
         self.listView.Bind(wx.EVT_LIST_ITEM_SELECTED,
               self.OnListViewListItemSelected, id=wxID_FRMMAINLISTVIEW)
         self.listView.Bind(wx.EVT_RIGHT_DOWN, self.OnListViewRightDown)
-        self.listView.Bind(wx.EVT_RIGHT_DCLICK, self.OnListViewIgnoreClick)
-        self.listView.Bind(wx.EVT_LEFT_DOWN, self.OnListViewIgnoreClick)
-        self.listView.Bind(wx.EVT_LEFT_DCLICK, self.OnListViewIgnoreClick)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
               wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_FRMMAINCMDMOVELEFT,
@@ -209,9 +207,6 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         self.SetBackgroundColour(toolBar.GetBackgroundColour())
         self.SetInitialSize(self.GetEffectiveMinSize())
-        
-        self._imageList = wx.ImageList(64, 48)
-        self.listView.AssignImageList(self._imageList, wx.IMAGE_LIST_NORMAL)
         
         self.actionManager.OnPictureSelected(False)
         self.actionManager.OnProjectChanged(False)
@@ -318,7 +313,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
     def OnRenderFilmstrip(self, event):
         photoFilmStrip = PhotoFilmStrip(self.__currentProject)
-        photoFilmStrip.SetPictures(self.listView.GetPyDataList())
+        photoFilmStrip.SetPictures(self.listView.GetPictures())
         dlg = DlgRender(self, photoFilmStrip)
         dlg.ShowModal()
         dlg.Destroy()
@@ -351,7 +346,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.cmdMoveRight.Enable(item < self.listView.GetItemCount() - 1)
         self.cmdRemove.Enable(True)
         
-        pic = self.listView.GetPyData(item)
+        pic = self.listView.GetPicture(item)
         bmp = pic.GetBitmap()
         self.bitmapLeft.SetBitmap(bmp)
         self.bitmapLeft.SetSection(wx.Rect(*pic.GetStartRect()))
@@ -365,19 +360,13 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         event.Skip()
 
-    def OnListViewIgnoreClick(self, event):
-        pos = event.GetPosition()
-        item = self.listView.HitTest(pos)[0]
-        if item != -1:
-            event.Skip()
-        
     def OnListViewRightDown(self, event):
         pos = event.GetPosition()
-        item = self.listView.HitTest(pos)[0]
+        item = self.listView.HitTest(pos)
         if item != -1:
             self.listView.Select(item)
             
-            pic = self.listView.GetPyData(item)
+            pic = self.listView.GetPicture(item)
             
             menu = wx.Menu()
             ident = wx.NewId()
@@ -397,8 +386,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
 
-            item = self.listView.GetFirstSelected()
-            orgPic = self.listView.GetPyData(item)
+            item = self.listView.GetSelected()
+            orgPic = self.listView.GetPicture(item)
             
             pic = Picture(path)
             pic.SetComment(orgPic.GetComment())
@@ -408,7 +397,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             pic.SetStartRect(orgPic.GetStartRect())
             pic.SetTargetRect(orgPic.GetTargetRect())
                         
-            self.listView.SetPyData(item, pic)
+            self.listView.SetPicture(item, pic)
             pic.AddObserver(self)
             pic.Notify('bitmap')
             
@@ -418,8 +407,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         dlg.Destroy()
 
     def OnRectChanged(self, event):
-        selItem = self.listView.GetFirstSelected()
-        pic = self.listView.GetPyData(selItem)
+        selItem = self.listView.GetSelected()
+        pic = self.listView.GetPicture(selItem)
         if pic is None:
             return
         if event.GetEventObject() is self.bitmapLeft:
@@ -428,44 +417,26 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             pic.SetTargetRect(tuple(self.bitmapRight.GetSection()))
 
     def OnCmdMoveLeftButton(self, event):
-        selItem = self.listView.GetFirstSelected()
-        pic = self.listView.GetPyData(selItem)
-        
-        self.listView.DeleteItem(selItem)
-        imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
-        itm = self.listView.InsertStringItem(selItem - 1, 
-                                             os.path.basename(pic.GetFilename()))
-        self.listView.SetItemImage(itm, imgIdx)
-        
-        self.listView.SetPyData(itm, pic)
-        self.listView.Select(itm)
-        self._FixItemPositions()
+        selItem = self.listView.GetSelected()
+        self.listView.SwapPictures(selItem, selItem - 1)
+        self.listView.Select(selItem - 1)
         
         self.actionManager.OnProjectChanged(True)
 
     def OnCmdMoveRightButton(self, event):
-        selItem = self.listView.GetFirstSelected()
-        pic = self.listView.GetPyData(selItem)
-        
-        self.listView.DeleteItem(selItem)
-        imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
-        itm = self.listView.InsertStringItem(selItem + 1, 
-                                             os.path.basename(pic.GetFilename()))
-        self.listView.SetItemImage(itm, imgIdx)
-        self.listView.SetPyData(itm, pic)
-        self.listView.Select(itm)
-        self._FixItemPositions()
+        selItem = self.listView.GetSelected()
+        self.listView.SwapPictures(selItem, selItem + 1)
+        self.listView.Select(selItem + 1)
 
         self.actionManager.OnProjectChanged(True)
 
     def OnCmdRemoveButton(self, event):
-        selItem = self.listView.GetFirstSelected()
+        selItem = self.listView.GetSelected()
         self.listView.DeleteItem(selItem)
         
         if selItem > self.listView.GetItemCount() - 1:
             selItem = self.listView.GetItemCount() - 1
         self.listView.Select(selItem)
-        self._FixItemPositions()
         
         if self.listView.GetItemCount() == 0:
             self.bitmapLeft.SetBitmap(None)
@@ -479,7 +450,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
-        self.actionManager.OnPictureSelected(self.listView.GetSelectedItemCount() > 0)
+        self.actionManager.OnPictureSelected(self.listView.GetSelected() is not None)
         self.actionManager.OnProjectChanged(True)
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
 
@@ -510,7 +481,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         return True
 
     def UpdateStatusText(self):
-        pics = self.listView.GetPyDataList()
+        pics = self.listView.GetPictures()
 
         imgCount = len(pics)
         self.statusBar.SetStatusText("%s: %d" % (_(u"Images"), imgCount), 1)
@@ -528,7 +499,6 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         if askSaving and not self.CheckAndAskSaving():
             return
 
-        self._imageList.RemoveAll()
         self.listView.DeleteAllItems()
         self.bitmapLeft.SetBitmap(None)
         self.bitmapRight.SetBitmap(None)
@@ -593,7 +563,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         Settings().SetProjectPath(os.path.dirname(filepath))
     
     def SaveProject(self, filepath, includePics):
-        pics = self.listView.GetPyDataList()
+        pics = self.listView.GetPictures()
         photoFilmStrip = PhotoFilmStrip()
         photoFilmStrip.SetPictures(pics)
         try:
@@ -629,19 +599,13 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         count = self.listView.GetItemCount()
         for idx, pic in enumerate(pics):
-            path = pic.GetFilename()
-            imgIdx = self._imageList.Add(pic.GetScaledBitmap(64, 48))
-            itm = self.listView.InsertStringItem(position, 
-                                                 os.path.basename(path))
-            self.listView.SetItemImage(itm, imgIdx)
-            self.listView.SetPyData(itm, pic)
+            self.listView.InsertPicture(position, pic) 
 
             pic.AddObserver(self)
 
             dlg.Update(idx + 1)
         
-        self._FixItemPositions() 
-        if self.listView.GetSelectedItemCount() == 0:
+        if self.listView.GetSelected() == -1:
             self.listView.Select(0)
             
         dlg.Destroy()
@@ -650,27 +614,13 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
 
-    def _FixItemPositions(self):
-        if sys.platform != "win32":
-            return
-        self.listView.Freeze()
-        lst = self.listView.GetPyDataList()
-        count = self.listView.GetItemCount()
-        for itm in range(count):
-            idx = lst.index(self.listView.GetPyData(itm))
-            self.listView.SetItemPosition(itm, wx.Point(itm * 120, 10))
-        self.listView.Thaw()
-
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
             if arg == 'bitmap':
                 bmp = obj.GetBitmap()
                 self.bitmapLeft.SetBitmap(bmp)
                 self.bitmapRight.SetBitmap(bmp)
-                imgIdx = self._imageList.Add(obj.GetScaledBitmap(64, 48))
-                item = self.listView.FindItemPyData(obj)
-                self.listView.SetItemImage(item, imgIdx)
-                self.listView.SetItemText(item, os.path.basename(obj.GetFilename()))
+                self.listView.UpdatePictures()
             
             if arg == 'duration':
                 self.UpdateStatusText()

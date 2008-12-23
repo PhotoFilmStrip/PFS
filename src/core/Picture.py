@@ -18,10 +18,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
 import cStringIO
 
-import Image, ImageDraw, ImageFont
+import Image, ImageDraw
 
 from lib.common.ObserverPattern import Observable
 
@@ -112,11 +111,15 @@ class Picture(Observable):
     def SetWidth(self, width):
         self._width = width
     def GetWidth(self):
+        if self._width == -1:
+            self._width = self.GetImage().size[0]
         return self._width
     
     def SetHeight(self, height):
         self._height = height
     def GetHeight(self):
+        if self._height == -1:
+            self._height = self.GetImage().size[1]
         return self._height
     
     def __Rotate(self, clockwise=True):
@@ -149,7 +152,6 @@ class Picture(Observable):
         
         if self._effect == Picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
-            img = img.convert("RGB")
 
         elif self._effect == Picture.EFFECT_SEPIA:
             def make_linear_ramp(white):
@@ -164,15 +166,15 @@ class Picture(Observable):
             sepia = make_linear_ramp((255, 240, 192))
             img = img.convert("L")
             img.putpalette(sepia)
-            img = img.convert("RGB")
-        self._img = img
+
+        self._img = img.convert("RGB")
         return img
     
     def GetThumbnail(self, width, height):
         img = self.GetImage()
         img = img.copy()
         img.thumbnail((width, height))
-        newImg = Image.new(img.mode, (width, height), 0xFFFFFF)
+        newImg = Image.new("RGB", (width, height), 0)
         newImg.paste(img, (0, 0))
         return newImg
 

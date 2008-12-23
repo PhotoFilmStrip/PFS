@@ -82,10 +82,13 @@ class PhotoFilmStrip(Observable):
                         
                     imgFile = os.path.join(altPaths[imgPath], os.path.basename(imgFile))
                 
+                pic = Picture(imgFile)
+
                 if not os.path.isfile(imgFile):
                     logging.warn("Imagefile '%s' not found:", imgFile)
-                
-                pic = Picture(imgFile)
+                    pic.SetWidth(self.__LoadSafe(row, 'width', -1))
+                    pic.SetHeight(self.__LoadSafe(row, 'height', -1))
+
             else:
                 if importPath is None:
                     importPath = os.path.dirname(filename)
@@ -105,10 +108,7 @@ class PhotoFilmStrip(Observable):
             pic.SetDuration(row["duration"])
             pic.SetComment(row["comment"])
             pic.SetRotation(row['rotation'])
-            
             pic.SetEffect(self.__LoadSafe(row, 'effect', Picture.EFFECT_NONE))
-            pic.SetWidth(self.__LoadSafe(row, 'width', -1))
-            pic.SetHeight(self.__LoadSafe(row, 'height', -1))
 
             picList.append(pic)
         
