@@ -145,13 +145,21 @@ class ImageSectionEditor(wx.Panel):
         
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
         iRect = wx.RectPS(sectRect.GetPosition(), sectRect.GetSize())
-        for i in range(5):
-            if i < 2:
-                dc.SetPen(wx.WHITE_PEN)
-            else:
-                dc.SetPen(wx.Pen(wx.Colour(0, 0, 0, 255 / i )))
-            iRect.Inflate(1, 1)
-            dc.DrawRectangleRect(iRect)
+        dc.SetPen(wx.WHITE_PEN)
+        iRect.Inflate(1, 1)
+        dc.DrawRectangleRect(iRect)
+        
+        #draw background
+        color = wx.Colour(0, 0, 0, 153)
+        dc.SetBrush(wx.Brush(color))
+        dc.SetPen(wx.Pen(color))
+        #left
+        left, top = self.__GetBmpTopLeft()
+        dc.DrawRectangle(left, top, iRect.x, self._bmpScaled.GetHeight())
+        lWidth = left + self._bmpScaled.GetWidth() - iRect.GetWidth() - iRect.x
+        left = left + iRect.x + iRect.GetWidth()
+        dc.DrawRectangle(left, top, lWidth, self._bmpScaled.GetHeight())
+        
 
         now = time.time()
         alpha = 255
@@ -165,6 +173,7 @@ class ImageSectionEditor(wx.Panel):
         font.SetWeight(wx.BOLD)
         dc.SetFont(font)
         dc.SetPen(wx.WHITE_PEN)
+        dc.SetBrush(wx.TRANSPARENT_BRUSH)
         dc.DrawRectangleRect(sectRect)
         dc.DrawLabel("%d, %d - %d x %d" % tuple(self._sectRect), 
                      sectRect,
