@@ -152,14 +152,15 @@ class ImageSectionEditor(wx.Panel):
         #draw background
         color = wx.Colour(0, 0, 0, 153)
         dc.SetBrush(wx.Brush(color))
-        dc.SetPen(wx.Pen(color))
+        dc.SetPen(wx.TRANSPARENT_PEN)# wx.Pen(color))
         #left
         left, top = self.__GetBmpTopLeft()
-        dc.DrawRectangle(left, top, iRect.x, self._bmpScaled.GetHeight())
+        dc.DrawRectangle(left, top, iRect.x - left, self._bmpScaled.GetHeight())
         lWidth = left + self._bmpScaled.GetWidth() - iRect.GetWidth() - iRect.x
-        left = left + iRect.x + iRect.GetWidth()
+        left = iRect.x + iRect.GetWidth()
         dc.DrawRectangle(left, top, lWidth, self._bmpScaled.GetHeight())
-        
+        dc.DrawRectangle(iRect.x, top, iRect.GetWidth(), iRect.y - top)
+        dc.DrawRectangle(iRect.x, iRect.y + iRect.GetHeight(), iRect.GetWidth(), top+self._bmpScaled.GetHeight()-iRect.GetHeight()-iRect.y)
 
         now = time.time()
         alpha = 255
