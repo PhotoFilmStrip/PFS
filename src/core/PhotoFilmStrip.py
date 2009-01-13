@@ -19,7 +19,6 @@
 #
 
 import os
-import logging
 import sqlite3
 
 from lib.common.ObserverPattern import Observable
@@ -85,7 +84,6 @@ class PhotoFilmStrip(Observable):
                 pic = Picture(imgFile)
 
                 if not os.path.isfile(imgFile):
-                    logging.warn("Imagefile '%s' not found:", imgFile)
                     pic.SetWidth(self.__LoadSafe(row, 'width', -1))
                     pic.SetHeight(self.__LoadSafe(row, 'height', -1))
 
