@@ -88,7 +88,7 @@ class ImageSectionEditor(wx.Panel):
     def SetBitmap(self, bmp):
         if bmp is None:
             self._image = None
-        else:
+        elif bmp.IsOk():
             self._image = bmp.ConvertToImage()
             self.__Scale()
             self.__KeepRectInImage()
@@ -278,10 +278,7 @@ class ImageSectionEditor(wx.Panel):
             
     def OnCaptureLost(self, event):
         if self._action is not None:
-            px, py = event.GetPosition().Get()
-            cpx, cpy = self.__ClientToImage(px, py)
-            position = self.__FindPosition(cpx, cpy)
-            self.__SelectCursor(position)
+            self.__SelectCursor(None)
         self._action = None
         self._startX = None
         self._startY = None

@@ -135,6 +135,7 @@ class Picture(Observable):
     
     def Rotate(self, clockwise=True):
         self.__Rotate(clockwise)
+        self._width, self._height = self._height, self._width
         self.Notify("bitmap")
         
     def GetImage(self):
@@ -168,7 +169,7 @@ class Picture(Observable):
             img.putpalette(sepia)
 
         self._img = img.convert("RGB")
-        return img
+        return self._img
     
     def GetThumbnail(self, width, height):
         img = self.GetImage()
