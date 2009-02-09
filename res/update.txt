@@ -1,0 +1,7 @@
+1.2
+changes:
+ - nice photofilmstrip
+
+bugfixes: 
+ - cannot identify image file
+ - cannot write mode P as JPEG

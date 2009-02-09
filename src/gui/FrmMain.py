@@ -28,6 +28,7 @@ from core.Picture import Picture
 from core.PhotoFilmStrip import PhotoFilmStrip, UserInteractionHandler
 
 from lib.Settings import Settings
+from lib.UpdateChecker import UpdateChecker
 from lib.common.ObserverPattern import Observer
 
 from gui.ctrls.ImageSectionEditor import ImageSectionEditor, EVT_RECT_CHANGED
@@ -221,6 +222,26 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.NewProject(False)
         
+        self.__updateChecker = UpdateChecker()
+        wx.CallLater(500, self.__NotifyUpdate)
+        
+    def __NotifyUpdate(self):
+        if not self.__updateChecker.IsDone():
+            wx.CallLater(500, self.__NotifyUpdate)
+        if not self.__updateChecker.IsOk():
+            return
+        if not self.__updateChecker.IsNewer(Settings.APP_VERSION):
+            return
+        
+        info = wx.AboutDialogInfo()
+        info.Name = _("PhotoFilmStrip")
+        info.Version = self.__updateChecker.GetVersion()
+        intro = _(u"A new Version of PhotoFilmStrip is available:")
+        info.Description = wordwrap(intro + "\n\n" + self.__updateChecker.GetChanges(), 350, wx.ClientDC(self))
+        info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
+
+        wx.AboutBox(info)
+    
     def OnClose(self, event):
         if self.CheckAndAskSaving():
             self.Destroy()
@@ -549,7 +570,15 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.__usedAltPath = False
         photoFilmStrip = PhotoFilmStrip()
         photoFilmStrip.SetUserInteractionHandler(self)
-        photoFilmStrip.Load(filepath)
+        if not photoFilmStrip.Load(filepath):
+            dlg = wx.MessageDialog(self,
+                                   _(u"Invalid %(app)s-Project: %(file)s") % {"app": Settings.APP_NAME,
+                                                                              "file": filepath}, 
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+            return
         pics = photoFilmStrip.GetPictures()
         
         self.InsertPictures(pics)

@@ -19,6 +19,7 @@
 #
 
 import os
+import sys
 import tempfile
 
 from ConfigParser import ConfigParser
@@ -184,7 +185,7 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "LastOutputPath"):
             return _Decode(self.cp.get("General", "LastOutputPath"))
-        return _Decode(os.getcwd())
+        return _Decode(os.getcwd(), sys.getfilesystemencoding())
     
     def SetRenderProperties(self, renderer, props):
         self.Load()

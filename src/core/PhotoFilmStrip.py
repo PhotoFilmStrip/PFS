@@ -58,7 +58,10 @@ class PhotoFilmStrip(Observable):
         conn = sqlite3.connect(filename, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = conn.cursor()
         cur.row_factory = sqlite3.Row
-        cur.execute("select * from `picture`")
+        try:
+            cur.execute("select * from `picture`")
+        except sqlite3.DatabaseError:
+            return False
         resultSet = cur.fetchall()
         
         self.__progressHandler.SetMaxProgress(len(resultSet))

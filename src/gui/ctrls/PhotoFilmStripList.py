@@ -84,7 +84,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             elif mPos.x > self.GetClientSizeTuple()[0] - 10:
                 self.__Scroll(40)
             self.__dragX = unscrolledPos.x
-            if self.__dragPic is None:
+            if self.__dragPic is None and idx != -1:
                 self.__dragPic = idx
                 rect = self.GetThumbRect(idx)
                 self.__dragOffX = self.__dragX - rect.GetLeft()
@@ -96,9 +96,13 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if idx != -1 and idx != self.__selIdx:
                 self.Select(idx)
         if event.LeftUp() and self.__dragPic is not None:
-            self.MovePicture(self.__dragPic, idx)
-            self.__dragPic = None
-            self.Select(idx)
+            if idx == -1:
+                self.__dragPic = None
+                self.UpdateBuffer()
+            else:
+                self.MovePicture(self.__dragPic, idx)
+                self.__dragPic = None
+                self.Select(idx)
         event.Skip()
         
     def OnKeyDown(self, event):

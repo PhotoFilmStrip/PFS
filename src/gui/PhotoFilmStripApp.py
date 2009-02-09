@@ -43,7 +43,7 @@ class PhotoFilmStripApp(wx.App):
         DlgBugReport.Initialize(frame)
         
         if len(sys.argv) > 1:
-            frame.LoadProject(sys.argv[1])
+            frame.LoadProject(sys.argv[1].decode(sys.getfilesystemencoding()))
 
         return True
 
