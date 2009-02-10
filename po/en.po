@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2008-12-03 22:44+CET\n"
-"PO-Revision-Date: 2008-12-03 22:47+0100\n"
+"POT-Creation-Date: 2009-02-10 07:28+CET\n"
+"PO-Revision-Date: 2009-02-10 07:31+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -108,7 +108,7 @@ msgstr ""
 msgid "<default>"
 msgstr ""
 
-#: src/core/PhotoFilmStrip.py:72
+#: src/core/PhotoFilmStrip.py:74
 msgid "Loading '%s' ..."
 msgstr ""
 
@@ -277,6 +277,7 @@ msgstr ""
 #: src/gui/DlgRender.py:693
 #: src/gui/DlgRender.py:749
 #: src/gui/DlgRender.py:781
+#: src/gui/FrmMain.py:577
 msgid "Error"
 msgstr ""
 
@@ -352,10 +353,10 @@ msgstr ""
 #: src/gui/DlgRender.py:511
 #: src/gui/DlgRender.py:546
 #: src/gui/DlgRender.py:631
-#: src/gui/FrmMain.py:288
-#: src/gui/FrmMain.py:501
-#: src/gui/FrmMain.py:555
-#: src/gui/FrmMain.py:606
+#: src/gui/FrmMain.py:304
+#: src/gui/FrmMain.py:493
+#: src/gui/FrmMain.py:546
+#: src/gui/FrmMain.py:605
 msgid "Question"
 msgstr ""
 
@@ -412,88 +413,108 @@ msgstr ""
 msgid "Select batch file"
 msgstr ""
 
-#: src/gui/FrmMain.py:239
-msgid "online"
+#: src/gui/DlgUpdateInfo.py:46
+msgid "New version available"
 msgstr ""
 
-#: src/gui/FrmMain.py:253
-msgid "Select %s-Project"
+#: src/gui/DlgUpdateInfo.py:62
+msgid "Close"
+msgstr ""
+
+#: src/gui/DlgUpdateInfo.py:71
+msgid "Goto download site"
+msgstr ""
+
+#: src/gui/DlgUpdateInfo.py:91
+msgid "A new version is available online. The following changes has been made:"
 msgstr ""
 
 #: src/gui/FrmMain.py:255
-#: src/gui/FrmMain.py:278
-#: src/gui/FrmMain.py:300
-#: src/gui/FrmMain.py:314
+msgid "online"
+msgstr ""
+
+#: src/gui/FrmMain.py:269
+msgid "Select %s-Project"
+msgstr ""
+
+#: src/gui/FrmMain.py:271
+#: src/gui/FrmMain.py:294
+#: src/gui/FrmMain.py:316
+#: src/gui/FrmMain.py:330
 msgid "Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:275
+#: src/gui/FrmMain.py:291
 msgid "Save %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:287
+#: src/gui/FrmMain.py:303
 msgid "Overwrite existing file '%s'?"
 msgstr ""
 
-#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:313
 msgid "Export %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:300
-#: src/gui/FrmMain.py:314
+#: src/gui/FrmMain.py:316
+#: src/gui/FrmMain.py:330
 msgid "Portable"
 msgstr ""
 
-#: src/gui/FrmMain.py:312
+#: src/gui/FrmMain.py:328
 msgid "Import %s-Project"
 msgstr ""
 
-#: src/gui/FrmMain.py:327
+#: src/gui/FrmMain.py:343
 msgid "Import images"
 msgstr ""
 
-#: src/gui/FrmMain.py:329
-#: src/gui/FrmMain.py:395
+#: src/gui/FrmMain.py:345
+#: src/gui/FrmMain.py:405
 msgid "Imagefiles"
 msgstr ""
 
-#: src/gui/FrmMain.py:384
+#: src/gui/FrmMain.py:394
 msgid "Browse"
 msgstr ""
 
-#: src/gui/FrmMain.py:393
+#: src/gui/FrmMain.py:403
 msgid "Import image"
 msgstr ""
 
-#: src/gui/FrmMain.py:497
+#: src/gui/FrmMain.py:489
 msgid "Unnamed PhotoFilmStrip"
 msgstr ""
 
-#: src/gui/FrmMain.py:500
+#: src/gui/FrmMain.py:492
 msgid "'%s' has been modified. Save changes?"
 msgstr ""
 
-#: src/gui/FrmMain.py:516
+#: src/gui/FrmMain.py:508
 msgid "Images"
 msgstr ""
 
-#: src/gui/FrmMain.py:523
+#: src/gui/FrmMain.py:515
 msgid "Duration"
 msgstr ""
 
-#: src/gui/FrmMain.py:554
+#: src/gui/FrmMain.py:545
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr ""
 
-#: src/gui/FrmMain.py:603
+#: src/gui/FrmMain.py:575
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr ""
+
+#: src/gui/FrmMain.py:602
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr ""
 
-#: src/gui/FrmMain.py:624
+#: src/gui/FrmMain.py:623
 msgid "Please wait"
 msgstr ""
 
-#: src/gui/FrmMain.py:625
+#: src/gui/FrmMain.py:624
 msgid "Loading pictures..."
 msgstr ""
 
@@ -525,7 +546,7 @@ msgstr ""
 msgid "Sepia tone"
 msgstr ""
 
-#: src/lib/Settings.py:56
+#: src/lib/Settings.py:57
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr ""
 

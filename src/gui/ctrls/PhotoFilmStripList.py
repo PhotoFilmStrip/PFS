@@ -23,6 +23,15 @@ import os
 import wx
 
 
+EVT_CHANGED_TYPE  = wx.NewEventType()
+EVT_CHANGED       = wx.PyEventBinder(EVT_CHANGED_TYPE, 1)
+
+
+class ChangedEvent(wx.PyCommandEvent):
+    def __init__(self, wxId):
+        wx.PyCommandEvent.__init__(self, EVT_CHANGED_TYPE, wxId)
+
+
 class PhotoFilmStripList(wx.ScrolledWindow):
     
     HEIGHT = 200
@@ -35,6 +44,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.SetBackgroundColour(wx.BLACK)
         self.SetClientSizeWH(-1, self.HEIGHT+20)
 
+        self.__photoFilmStrip = None
+        
         self.__pictures = []
         self.__selIdx   = -1
         self.__hvrIdx   = -1
@@ -58,6 +69,11 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         wx.BufferedPaintDC(self, self.__buffer, wx.BUFFER_VIRTUAL_AREA)
         event.Skip()
             
+    def _SendChangedEvent(self):
+        evt = ChangedEvent(self.GetId())
+        evt.SetEventObject(self)
+        self.GetEventHandler().ProcessEvent(evt)        
+
     def __Scroll(self, value):
         sp = self.GetScrollPos(wx.HORIZONTAL)
         self.Scroll(sp + value, -1)
@@ -244,20 +260,24 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def AddPicture(self, pic):
         self.__pictures.append(pic)
         self.__UpdatePictures()
+        self._SendChangedEvent()
         
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
         self.__UpdatePictures()
+        self._SendChangedEvent()
         
     def DeleteItem(self, idx):
         self.__pictures.pop(idx)
         if self.__selIdx >= len(self.__pictures):
             self.__selIdx = len(self.__pictures) - 1
         self.__UpdatePictures()
+        self._SendChangedEvent()
         
     def DeleteAllItems(self):
         self.__pictures = []
         self.__UpdatePictures()
+        self._SendChangedEvent()
         
     def GetItemCount(self):
         return len(self.__pictures)
@@ -271,6 +291,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if idx in xrange(len(self.__pictures)):
             self.__pictures[idx] = pic
             self.__UpdatePictures()
+            
+    def SetPhotoFilmStrip(self, pfs):
+        self.__photoFilmStrip = pfs
         
     def GetPictures(self):
         return self.__pictures[:]
@@ -298,8 +321,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.__pictures[idxFrom] = picTo
         self.__pictures[idxTo] = picFrom
         self.__UpdatePictures()
+        self._SendChangedEvent()
 
     def MovePicture(self, idxFrom, idxTo):
         pic = self.__pictures.pop(idxFrom)
         self.__pictures.insert(idxTo, pic)
         self.__UpdatePictures()
+        self._SendChangedEvent()

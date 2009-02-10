@@ -1,7 +1,6 @@
 
 import threading
 import urllib
-import traceback
 
 
 class UpdateChecker(threading.Thread):
@@ -21,9 +20,10 @@ class UpdateChecker(threading.Thread):
     def run(self):
         try:
             fd = urllib.urlopen(self.URL)
+#            fd = open('/home/jens/Projects/Python/PhotoFilmStrip/res/update.txt', 'r')
+
             data = fd.read()
-        except:
-            traceback.print_exc()
+        except IOError:
             self._checkDone = True
             self._isOk = False
             return

@@ -32,8 +32,9 @@ from lib.UpdateChecker import UpdateChecker
 from lib.common.ObserverPattern import Observer
 
 from gui.ctrls.ImageSectionEditor import ImageSectionEditor, EVT_RECT_CHANGED
-from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList
+from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList, EVT_CHANGED
 from gui.DlgRender import DlgRender
+from gui.DlgUpdateInfo import DlgUpdateInfo
 from gui.PnlEditPicture import PnlEditPicture
 from gui.ActionManager import ActionManager
 from gui.HelpViewer import HelpViewer
@@ -205,6 +206,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.Bind(EVT_RECT_CHANGED, self.OnRectChanged, id=self.bitmapLeft.GetId())
         self.Bind(EVT_RECT_CHANGED, self.OnRectChanged, id=self.bitmapRight.GetId())
+        
+        self.Bind(EVT_CHANGED, self.OnPhotoFilmStripListChanged, id=self.listView.GetId())
 
         self.SetBackgroundColour(toolBar.GetBackgroundColour())
         self.SetInitialSize(self.GetEffectiveMinSize())
@@ -233,15 +236,14 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         if not self.__updateChecker.IsNewer(Settings.APP_VERSION):
             return
         
-        info = wx.AboutDialogInfo()
-        info.Name = _("PhotoFilmStrip")
-        info.Version = self.__updateChecker.GetVersion()
-        intro = _(u"A new Version of PhotoFilmStrip is available:")
-        info.Description = wordwrap(intro + "\n\n" + self.__updateChecker.GetChanges(), 350, wx.ClientDC(self))
-        info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
+        dlg = DlgUpdateInfo(self, 
+                            "%s %s" % (Settings.APP_NAME, self.__updateChecker.GetVersion()),
+                            wx.ArtProvider_GetBitmap("PFS_ICON_48", wx.ART_OTHER),
+                            Settings.APP_URL,
+                            self.__updateChecker.GetChanges())
+        dlg.ShowModal()
+        dlg.Destroy()
 
-        wx.AboutBox(info)
-    
     def OnClose(self, event):
         if self.CheckAndAskSaving():
             self.Destroy()
@@ -481,6 +483,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     def OnHelpContent(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_CREATE_PFS)
         event.Skip()
+        
+    def OnPhotoFilmStripListChanged(self, event):
+        self.actionManager.OnProjectChanged(True)
 
     def CheckAndAskSaving(self):
         if self.actionManager.CanSave():
