@@ -64,6 +64,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+        self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
         
     def OnPaint(self, event):
         wx.BufferedPaintDC(self, self.__buffer, wx.BUFFER_VIRTUAL_AREA)
@@ -104,6 +105,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 self.__dragPic = idx
                 rect = self.GetThumbRect(idx)
                 self.__dragOffX = self.__dragX - rect.GetLeft()
+                self.CaptureMouse()
             self.UpdateBuffer()
         if event.Leaving():
             self.__hvrIdx = -1
@@ -112,6 +114,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if idx != -1 and idx != self.__selIdx:
                 self.Select(idx)
         if event.LeftUp() and self.__dragPic is not None:
+            if self.HasCapture():
+                self.ReleaseMouse()        
             if idx == -1:
                 self.__dragPic = None
                 self.UpdateBuffer()
@@ -121,6 +125,11 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 self.Select(idx)
         event.Skip()
         
+    def OnCaptureLost(self, event):
+        self.__dragPic = None
+        self.UpdateBuffer()
+        event.Skip()
+    
     def OnKeyDown(self, event):
         key = event.GetKeyCode()
         sel = self.GetSelected()

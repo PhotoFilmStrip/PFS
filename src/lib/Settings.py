@@ -48,7 +48,7 @@ def _Decode(value, coding="utf-8"):
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.0"
+    APP_VERSION     = "1.1"
     APP_DESCRIPTION = ""
     APP_URL         = "http://photostoryx.sourceforge.net"
     DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]

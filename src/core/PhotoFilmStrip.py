@@ -86,10 +86,6 @@ class PhotoFilmStrip(Observable):
                 
                 pic = Picture(imgFile)
 
-                if not os.path.isfile(imgFile):
-                    pic.SetWidth(self.__LoadSafe(row, 'width', -1))
-                    pic.SetHeight(self.__LoadSafe(row, 'height', -1))
-
             else:
                 if importPath is None:
                     importPath = os.path.dirname(filename)
@@ -102,6 +98,8 @@ class PhotoFilmStrip(Observable):
                 fd.close()
                 pic = Picture(tmpImg)
             
+            pic.SetWidth(self.__LoadSafe(row, 'width', -1))
+            pic.SetHeight(self.__LoadSafe(row, 'height', -1))
             rect = (row["start_left"], row["start_top"], row["start_width"], row["start_height"])
             pic.SetStartRect(rect)
             rect = (row["target_left"], row["target_top"], row["target_width"], row["target_height"])

@@ -668,7 +668,7 @@ class ImageDropTarget(wx.FileDropTarget):
         self.frmMain = frmMain
 
     def OnDropFiles(self, x, y, filenames):
-        itm = self.frmMain.listView.HitTest((x, y))[0]
+        itm = self.frmMain.listView.HitTest((x, y))
         
         pics = [] 
         for path in filenames:

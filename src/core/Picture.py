@@ -38,8 +38,6 @@ class Picture(Observable):
         self._targetRect = (0, 0, 1280, 720)
         self._isDummy    = False
         
-        self._img      = None
-        
         # to buffer wx bitmaps
         self._bmp      = None
         self._bmpThumb = None
@@ -52,7 +50,6 @@ class Picture(Observable):
         self._height   = -1
         
     def __Reset(self):
-        self._img = None
         self._bmp = None
         self._bmpThumb = None
         
@@ -112,14 +109,14 @@ class Picture(Observable):
         self._width = width
     def GetWidth(self):
         if self._width == -1:
-            self._width = self.GetImage().size[0]
+            self.GetImage()
         return self._width
     
     def SetHeight(self, height):
         self._height = height
     def GetHeight(self):
         if self._height == -1:
-            self._height = self.GetImage().size[1]
+            self.GetImage()
         return self._height
     
     def __Rotate(self, clockwise=True):
@@ -131,17 +128,15 @@ class Picture(Observable):
             self._rotation = 0
         if self._rotation < -3:
             self._rotation = 0
+
+        self._width, self._height = self._height, self._width
         self.__Reset()
     
     def Rotate(self, clockwise=True):
         self.__Rotate(clockwise)
-        self._width, self._height = self._height, self._width
         self.Notify("bitmap")
         
     def GetImage(self):
-        if self._img is not None:
-            return self._img
-
         try:
             img = Image.open(self._filename)
             self._isDummy = False
@@ -150,7 +145,9 @@ class Picture(Observable):
             self._isDummy = True
         
         img = img.rotate(self._rotation * -90)
-        
+        self._width = img.size[0]
+        self._height = img.size[1]
+
         if self._effect == Picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
 
@@ -168,8 +165,7 @@ class Picture(Observable):
             img = img.convert("L")
             img.putpalette(sepia)
 
-        self._img = img.convert("RGB")
-        return self._img
+        return img.convert("RGB")
     
     def GetThumbnail(self, width, height):
         img = self.GetImage()

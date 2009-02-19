@@ -1,4 +1,21 @@
-  * 2009/12/03
+  * 2009/02/18
+    changed:
+     - memory consumption optimized. PhotoFilmStrip is now ready for large projects ;-)
+    bugfix:
+     - unexpected error when dropping images from an external application
+     - leaving move operation correctly when stopping DragNDrop outside the window 
+
+
+  * 2009/02/16 (Version 1.1-BETA)
+    added:
+     - new control for the image list (real photofilmstrip)
+    changed:
+     - invisible parts of the images are a kind of grayed out 
+    bugfix:
+     - a lot of bugfixes sent by the bug-report feature (many thanks to all users)
+
+
+  * 2008/12/03 (Version 1.0)
     added:
      - new mouse cursors for resizing the sections
     changed:
@@ -12,7 +29,7 @@
      - settings file is saved in temp folder if no environment variable HOME is set under windows
   
 
-  * 2009/11/27
+  * 2008/11/27
     added:
      - information about selected rectange are shown
     changed:
@@ -26,7 +43,7 @@
      - progress bar more precisely
 
 
-  * 2009/11/22
+  * 2008/11/22
     added:
      - windows release works properly
      - help system
@@ -47,7 +64,7 @@
      - minor bugfixes
 
 
-  * 2009/11/04
+  * 2008/11/04
     added:
      - Makefile (make deb) prepares everything for dpkg-buildpackage
      - py2exe build script
@@ -56,7 +73,7 @@
      - GUI optimizations
      
      
-  * 2009/11/04
+  * 2008/11/04
     added:
      - audio file support in CLI (CLI cannot determine length of audio yet)
      - audio file is processed in MPEG2Renderer now
