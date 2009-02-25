@@ -476,8 +476,13 @@ class DlgRender(wx.Dialog, Observer):
         self.stTransDurUnit.Enable(False)
         
         self.cbTotalLength.SetValue(False)
-        self.mediaCtrl = wx.media.MediaCtrl(self.pnlSettings, style=wx.SIMPLE_BORDER)
-        self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
+        
+        try:
+            self.mediaCtrl = wx.media.MediaCtrl(self.pnlSettings, style=wx.SIMPLE_BORDER)
+            self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
+        except NotImplementedError:
+            self.mediaCtrl = None
+
         self.mediaLoaded = False
 
         self.__ControlStatusTotalLength()
@@ -718,6 +723,16 @@ class DlgRender(wx.Dialog, Observer):
     def __ControlStatusTotalLength(self):
         active = self.cbTotalLength.GetValue()
         manual = self.rbManual.GetValue()
+        if not manual and self.mediaCtrl is None:
+            dlg = wx.MessageDialog(self,
+                                   _(u"No medis support found on this platform!"),  
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+            self.rbManual.SetValue(True)
+            return
+            
         self.rbAudio.Enable(active)
         self.rbManual.Enable(active)
         self.timeCtrlTotalLength.Enable(active and manual)

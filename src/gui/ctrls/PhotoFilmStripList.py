@@ -68,7 +68,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
     def OnPaint(self, event):
         wx.BufferedPaintDC(self, self.__buffer, wx.BUFFER_VIRTUAL_AREA)
-        event.Skip()
+#        event.Skip()
             
     def _SendChangedEvent(self):
         evt = ChangedEvent(self.GetId())
