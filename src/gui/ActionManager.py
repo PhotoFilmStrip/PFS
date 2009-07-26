@@ -197,8 +197,8 @@ class ActionManager(object):
     def OnPictureSelected(self, value, kind='any'):
         mb = self.GetMenuBar()
         if mb:
-            mb.Enable(self.ID_PIC_MOVE_LEFT, kind != 'first' and value)
-            mb.Enable(self.ID_PIC_MOVE_RIGHT, kind != 'last' and value)
+            mb.Enable(self.ID_PIC_MOVE_LEFT, kind not in ['first', 'none'] and value)
+            mb.Enable(self.ID_PIC_MOVE_RIGHT, kind not in ['last', 'none'] and value)
             mb.Enable(self.ID_PIC_REMOVE, value)
             mb.Enable(self.ID_PIC_ROTATE_CW, value)
             mb.Enable(self.ID_PIC_ROTATE_CCW, value)

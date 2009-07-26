@@ -143,7 +143,6 @@ class Picture(Observable):
             exif = img._getexif()
             if exif is not None:
                 rotation = exif[exifOrient]
-            print rotation
             if rotation == 2:
                 # flip horitontal
                 return img.transpose(Image.FLIP_LEFT_RIGHT)

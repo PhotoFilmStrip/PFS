@@ -36,6 +36,7 @@ from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList, EVT_CHANGED
 from gui.DlgRender import DlgRender
 from gui.DlgUpdateInfo import DlgUpdateInfo
 from gui.PnlEditPicture import PnlEditPicture
+from gui.PnlWelcome import PnlWelcome
 from gui.ActionManager import ActionManager
 from gui.HelpViewer import HelpViewer
 
@@ -170,6 +171,16 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.bitmapLeft.SetDropTarget(ProjectDropTarget(self))
         self.bitmapRight.SetDropTarget(ProjectDropTarget(self))
         
+        self.pnlWelcome = PnlWelcome(self.bitmapLeft)
+        self.pnlWelcome.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
+        self.pnlWelcome.stInfo.SetDropTarget(ImageDropTarget(self))
+        
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.AddStretchSpacer(1)
+        sizer.Add(self.pnlWelcome, 0, wx.ALIGN_CENTER)
+        sizer.AddStretchSpacer(1)
+        self.bitmapLeft.SetSizer(sizer)
+        
         self.statusBar = wx.StatusBar(self)
         self.statusBar.SetFieldsCount(3)
         self.SetStatusBar(self.statusBar)
@@ -190,19 +201,19 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.Bind(wx.EVT_MENU, self.OnProjectImport, id=ActionManager.ID_PROJECT_IMPORT)
         self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
         
-        self.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=self.actionManager.ID_PIC_MOVE_LEFT)
-        self.Bind(wx.EVT_MENU, self.OnCmdMoveRightButton, id=self.actionManager.ID_PIC_MOVE_RIGHT)
-        self.Bind(wx.EVT_MENU, self.OnCmdRemoveButton, id=self.actionManager.ID_PIC_REMOVE)
+        self.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=ActionManager.ID_PIC_MOVE_LEFT)
+        self.Bind(wx.EVT_MENU, self.OnCmdMoveRightButton, id=ActionManager.ID_PIC_MOVE_RIGHT)
+        self.Bind(wx.EVT_MENU, self.OnCmdRemoveButton, id=ActionManager.ID_PIC_REMOVE)
 
         self.Bind(wx.EVT_MENU, self.pnlEditPicture.OnCmdRotateLeftButton, id=ActionManager.ID_PIC_ROTATE_CCW)
         self.Bind(wx.EVT_MENU, self.pnlEditPicture.OnCmdRotateRightButton, id=ActionManager.ID_PIC_ROTATE_CW)
 
-        self.Bind(wx.EVT_MENU, self.OnImportPics, id=self.actionManager.ID_PIC_IMPORT)
+        self.Bind(wx.EVT_MENU, self.OnImportPics, id=ActionManager.ID_PIC_IMPORT)
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.OnHelpIndex, id=wx.ID_HELP)
 
-        self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=self.actionManager.ID_RENDER_FILMSTRIP)
+        self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ActionManager.ID_RENDER_FILMSTRIP)
         
         self.Bind(EVT_RECT_CHANGED, self.OnRectChanged, id=self.bitmapLeft.GetId())
         self.Bind(EVT_RECT_CHANGED, self.OnRectChanged, id=self.bitmapRight.GetId())
@@ -243,6 +254,20 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                             self.__updateChecker.GetChanges())
         dlg.ShowModal()
         dlg.Destroy()
+
+    def __GetMoveImageState(self):
+        item = self.listView.GetSelected()
+        if item == 0:
+            if self.listView.GetItemCount() == 1:
+                kind = 'none'
+            else:
+                kind = 'first'
+        elif item == self.listView.GetItemCount() - 1:
+            kind = 'last'
+        else:
+            kind = 'any'
+        
+        return kind
 
     def OnClose(self, event):
         if self.CheckAndAskSaving():
@@ -359,12 +384,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
     def OnListViewListItemSelected(self, event):
         item = event.GetIndex()
-        if item == 0:
-            kind = 'first'
-        elif item == self.listView.GetItemCount() - 1:
-            kind = 'last'
-        else:
-            kind = 'any'
+
         self.cmdMoveLeft.Enable(item > 0)
         self.cmdMoveRight.Enable(item < self.listView.GetItemCount() - 1)
         self.cmdRemove.Enable(True)
@@ -378,7 +398,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         self.pnlEditPicture.SetPicture(pic)
         
-        self.actionManager.OnPictureSelected(True, kind)
+        self.actionManager.OnPictureSelected(True, self.__GetMoveImageState())
         self.pnlEditPicture.Enable(True)
 
         event.Skip()
@@ -468,14 +488,14 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             self.pnlEditPicture.Enable(False)
             self.cmdMoveLeft.Enable(False)
             self.cmdMoveRight.Enable(False)
-            self.cmdRemove.Enable(False)
-            self.actionManager.OnPictureSelected(False)
+            self.pnlWelcome.Show(True)
         
         self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
-        self.actionManager.OnPictureSelected(self.listView.GetSelected() is not None)
-        self.actionManager.OnProjectChanged(True)
+        self.actionManager.OnPictureSelected(self.listView.GetItemCount() > 0,
+                                             self.__GetMoveImageState())
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
+        self.actionManager.OnProjectChanged(True)
 
     def OnHelpIndex(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_INDEX)
@@ -647,6 +667,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
+        self.pnlWelcome.Show(self.listView.GetItemCount() == 0)
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
