@@ -112,6 +112,10 @@ class ImageSectionEditor(wx.Panel):
             newWidth = iw * ry
             self._zoom = ry 
         
+        # wxPy for MS-Win raises an error if width or height is 0
+        newWidth  = max(1, newWidth)
+        newHeight = max(1, newHeight)
+
         img = self._image.Scale(newWidth, newHeight)
         self._bmpScaled = img.ConvertToBitmap()
         
