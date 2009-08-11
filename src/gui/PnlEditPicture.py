@@ -235,7 +235,7 @@ class PnlEditPicture(wx.Panel):
             floatVal = max(float(val), 1.0)
         except ValueError:
             floatVal = 1.0
-        return floatVal
+        return min(floatVal, 600.0)
     
     def SetPicture(self, picture):
         self.Enable(picture is not None)
