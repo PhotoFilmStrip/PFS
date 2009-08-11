@@ -41,6 +41,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.HSCROLL | wx.VSCROLL, name='PhotoFilmStripList'):
         wx.ScrolledWindow.__init__(self, parent, id, pos, size,  style, name)
+        self.SetBackgroundStyle(wx.BG_STYLE_COLOUR)
         self.SetBackgroundColour(wx.BLACK)
         self.SetClientSizeWH(-1, self.HEIGHT+20)
 
@@ -68,7 +69,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
     def OnPaint(self, event):
         wx.BufferedPaintDC(self, self.__buffer, wx.BUFFER_VIRTUAL_AREA)
-#        event.Skip()
             
     def _SendChangedEvent(self):
         evt = ChangedEvent(self.GetId())
