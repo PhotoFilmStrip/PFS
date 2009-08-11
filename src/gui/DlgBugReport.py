@@ -54,6 +54,9 @@ class DlgBugReport(wx.Dialog):
         
         self.Bind(wx.EVT_BUTTON, self.OnNo, id=wx.ID_NO)
         self.Bind(wx.EVT_BUTTON, self.OnYes, id=wx.ID_YES)
+        
+        self.SetAffirmativeId(wx.ID_YES)
+        self.SetEscapeId(wx.ID_NO)
 
     def OnYes(self, event):
         info = "\n".join([sys.platform, 
