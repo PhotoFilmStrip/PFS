@@ -399,7 +399,6 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.pnlEditPicture.SetPicture(pic)
         
         self.actionManager.OnPictureSelected(True, self.__GetMoveImageState())
-        self.pnlEditPicture.Enable(True)
 
         event.Skip()
 
