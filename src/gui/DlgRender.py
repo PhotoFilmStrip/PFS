@@ -638,7 +638,9 @@ class DlgRender(wx.Dialog, Observer):
             resp = dlg.ShowModal()
             dlg.Destroy()
             if resp == wx.ID_YES:
-                self.__progressHandler.Abort()
+                if self.__progressHandler:
+                    # maybe processing is done while showing this question
+                    self.__progressHandler.Abort()
         else:
             self.Destroy()
 
