@@ -25,6 +25,7 @@ from optparse import OptionParser
 from lib.common.ObserverPattern import Observer
 
 from lib.Settings import Settings
+from lib.util import Decode, Encode
 
 from core.OutputProfile import OutputProfile
 from core.PhotoFilmStrip import PhotoFilmStrip
@@ -40,16 +41,16 @@ class CliGui(Observer):
         Observer.__init__(self)
         self._maxProgress = 100
         self._curProgress = 0
-        self._info = ""
+        self._info = u""
         
     def __Output(self):
         percent = float(self._curProgress) / self._maxProgress
         width = 37
-        chars = "=" * int(width * percent)
+        chars = u"=" * int(width * percent)
         chars = chars[:width] 
-        line = "|%-3d%%%-37s| %s" % (int(percent * 100), chars, self._info)
+        line = u"|%-3d%%%-37s| %s" % (int(percent * 100), chars, self._info)
         line = line[:80]
-        print "%-80s\r" % (line),
+        print u"%-80s\r" % (line),
         
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, ProgressHandler):
@@ -71,14 +72,14 @@ class CliGui(Observer):
         print
         print Settings.APP_NAME, Settings.APP_VERSION
         print u"(C) 2008 Jens G\xf6pfert"
-        print "http://photostoryx.sourceforge.net"
+        print u"http://photostoryx.sourceforge.net"
         print 
-        print "%-20s: %s" % (_(u"processing project"), options.project)
+        print u"%-20s: %s" % (_(u"processing project"), options.project)
         if options.audio:
-            print "%-20s: %s" % (_(u"audio file"), options.audio)
-        print "%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-        print "%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
-        print "%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 
+            print u"%-20s: %s" % (_(u"audio file"), options.audio)
+        print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
+        print u"%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
+        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 
         print
         
     def Write(self, text):
@@ -119,6 +120,9 @@ def main():
     
 
     if options.project:
+#        print options.project, type(options.project)
+        options.project = Decode(options.project, sys.getfilesystemencoding())
+#        print options.project, type(options.project)
         options.project = os.path.abspath(options.project)
         if not os.path.isfile(options.project):
             logging.error(_(u"projectfile does not exist: %s") % options.project)
@@ -187,7 +191,9 @@ def main():
         renderer.SetAudioFile(options.audio)
         
     photoFilmStrip = PhotoFilmStrip()
-    photoFilmStrip.Load(options.project) 
+    if not photoFilmStrip.Load(options.project):
+        logging.error(_(u"cannot load photofilmstrip"))
+        sys.exit(6)
 
     if rendererClass is StreamRenderer:
         cliGui = DummyGui()

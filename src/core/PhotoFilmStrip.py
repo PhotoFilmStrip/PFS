@@ -22,6 +22,7 @@ import os
 import sqlite3
 
 from lib.common.ObserverPattern import Observable
+from lib.util import Encode
 
 from core.Picture import Picture
 from core.ProgressHandler import ProgressHandler
@@ -55,12 +56,12 @@ class PhotoFilmStrip(Observable):
     def Load(self, filename, importPath=None):
         if not os.path.isfile(filename):
             return False
-        conn = sqlite3.connect(filename, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = conn.cursor()
         cur.row_factory = sqlite3.Row
         try:
             cur.execute("select * from `picture`")
-        except sqlite3.DatabaseError:
+        except sqlite3.DatabaseError, dberr:
             return False
         resultSet = cur.fetchall()
         
@@ -167,7 +168,7 @@ class PhotoFilmStrip(Observable):
         if os.path.exists(filename):
             os.remove(filename)
         
-        conn = sqlite3.connect(filename, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         self.__CreateSchema(conn)
 
         cur = conn.cursor()

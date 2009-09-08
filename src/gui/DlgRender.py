@@ -38,6 +38,7 @@ from core.renderer import RENDERERS
 
 from lib.common.ObserverPattern import Observer
 from lib.Settings import Settings
+from lib.util import Encode
 
 from gui.HelpViewer import HelpViewer
 
@@ -823,11 +824,11 @@ class DlgRender(wx.Dialog, Observer):
                 fd.write("\n\n")
 
             cli = []
-            cli.append(os.path.splitext(sys.argv[0])[0] + "-cli")
+            cli.append(Encode(os.path.splitext(sys.argv[0])[0]) + "-cli")
             cli.append("-p")
-            cli.append("\"" + self.__photoFilmStrip.GetFilename() + "\"")
+            cli.append("\"" + Encode(self.__photoFilmStrip.GetFilename()) + "\"")
             cli.append("-o")
-            cli.append("\"" + self.tcOutputDir.GetValue() + "\"")
+            cli.append("\"" + Encode(self.tcOutputDir.GetValue()) + "\"")
             cli.append("-t")
             cli.append(str(self.choiceProfile.GetSelection()))
             cli.append("-n")
