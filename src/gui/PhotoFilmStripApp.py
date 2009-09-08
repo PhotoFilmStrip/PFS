@@ -35,6 +35,11 @@ class PhotoFilmStripApp(wx.App):
 
         ImageProvider.Init()
 
+        if hasattr(sys, 'frozen'):
+            self.SetAssertMode(wx.PYAPP_ASSERT_SUPPRESS)
+        else:
+            self.SetAssertMode(wx.PYAPP_ASSERT_EXCEPTION)
+
         frame = FrmMain()
         frame.Show()
         frame.Maximize()

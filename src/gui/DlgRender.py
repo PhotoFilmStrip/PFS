@@ -849,7 +849,10 @@ class DlgRender(wx.Dialog, Observer):
             
             fd.close()
             
-            os.chmod(path, stat.S_IREAD | stat.S_IEXEC | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+            try:
+                os.chmod(path, stat.S_IREAD | stat.S_IEXEC | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+            except OSError:
+                pass
 
         dlg.Destroy()
 
