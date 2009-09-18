@@ -47,7 +47,6 @@ class Settings(Singleton):
             userpath = tempfile.gettempdir()
 
         self.filename = os.path.join(userpath, '.%s' % Settings.APP_NAME)
-        self.filename = u"/home/jens/\xf6\xf6\xf6/.pho"
         if not os.path.isfile(self.filename):
             self.__isFirstStart = True
 
