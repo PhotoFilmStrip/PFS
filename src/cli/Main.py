@@ -120,9 +120,7 @@ def main():
     
 
     if options.project:
-#        print options.project, type(options.project)
         options.project = Decode(options.project, sys.getfilesystemencoding())
-#        print options.project, type(options.project)
         options.project = os.path.abspath(options.project)
         if not os.path.isfile(options.project):
             logging.error(_(u"projectfile does not exist: %s") % options.project)
@@ -174,10 +172,13 @@ def main():
         sys.exit(4)
         
 
-    if options.audio and not os.path.isfile(options.audio):
-        parser.print_help()
-        logging.error(_(u"audio file does not exist: %s") % options.audio)
-        sys.exit(5)
+    if options.audio:
+        options.audio = Decode(options.audio, sys.getfilesystemencoding())
+        options.audio = os.path.abspath(options.audio)
+        if not os.path.isfile(options.audio):
+            parser.print_help()
+            logging.error(_(u"audio file does not exist: %s") % options.audio)
+            sys.exit(5)
 
     
     savedProps = settings.GetRenderProperties(rendererClass.__name__)
@@ -188,7 +189,7 @@ def main():
     renderer = rendererClass()
     renderer.Init(profile, options.outputpath)
     if options.audio:
-        renderer.SetAudioFile(options.audio)
+        renderer.SetAudioFile(Encode(options.audio, sys.getfilesystemencoding()))
         
     photoFilmStrip = PhotoFilmStrip()
     if not photoFilmStrip.Load(options.project):

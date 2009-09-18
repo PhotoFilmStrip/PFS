@@ -593,7 +593,6 @@ class DlgRender(wx.Dialog, Observer):
         
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
-        path = self.tcOutputDir.GetValue()
 
         rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
 
@@ -620,9 +619,9 @@ class DlgRender(wx.Dialog, Observer):
         totalLength = self.__GetTotalLength()
         
         renderer = rendererClass()
-        renderer.Init(profile, path)
+        renderer.Init(profile, Encode(self.tcOutputDir.GetValue(), sys.getfilesystemencoding()))
         if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
-            renderer.SetAudioFile(self.tcAudiofile.GetValue())
+            renderer.SetAudioFile(Encode(self.tcAudiofile.GetValue(), sys.getfilesystemencoding()))
         self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
         
         renderThread = threading.Thread(target=self.__renderEngine.Start,
