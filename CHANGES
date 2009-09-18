@@ -1,4 +1,15 @@
-  * 2009/02/18
+  * 2009/09/18 (Version 1.2)
+    changed:
+     - quick start for importing images to a new PhotoFilmStrip
+
+    bugfixes: 
+     - GUI behavior
+     - UnicodeEncode errors
+     - wxPython assertions
+     - no section errors
+     - lots of minor bugs
+
+  * 2009/02/18 (Version 1.1)
     changed:
      - memory consumption optimized. PhotoFilmStrip is now ready for large projects ;-)
     bugfix:

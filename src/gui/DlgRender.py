@@ -728,7 +728,7 @@ class DlgRender(wx.Dialog, Observer):
         manual = self.rbManual.GetValue()
         if not manual and self.mediaCtrl is None:
             dlg = wx.MessageDialog(self,
-                                   _(u"No medis support found on this platform!"),  
+                                   _(u"No media support found on this platform!"),  
                                    _(u"Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
