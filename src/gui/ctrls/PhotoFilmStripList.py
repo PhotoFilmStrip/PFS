@@ -149,13 +149,17 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
     def UpdateBuffer(self):
         dc = wx.BufferedDC(None, self.__buffer)
-        dc.DrawBitmap(self.__picStrip, 0, 0)
+        if self.__picStrip.IsOk():
+            dc.DrawBitmap(self.__picStrip, 0, 0)
         gcdc = wx.GCDC(dc)
         self.__DrawHighlights(gcdc)
         
         if self.__dragPic is not None:
-            bmp = self.GetThumbBmp(self.__dragPic)
-            dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX, self.BORDER)
+            if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
+                bmp = self.GetThumbBmp(self.__dragPic)
+                dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX, self.BORDER)
+            else:
+                self.__dragPic = None
         
         self.Refresh()
         
@@ -213,6 +217,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                              labelRect, 
                              wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM)
 
+            # if the picture cannot be loaded GetWidth may return -1
             sx += bmp.GetWidth() + 10
             
         return sx

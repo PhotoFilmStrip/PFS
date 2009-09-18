@@ -177,7 +177,7 @@ class Picture(Observable):
             img = self.RotateExif(img)
             img = img.rotate(self._rotation * -90)
             self._isDummy = False
-        except IOError, err:
+        except StandardError, err:
             img = self.__CreateDummyImage(str(err))
             self._isDummy = True
         

@@ -112,15 +112,15 @@ class ImageSectionEditor(wx.Panel):
             newWidth = iw * ry
             self._zoom = ry 
         
-        # wxPy for MS-Win raises an error if width or height is 0
-        newWidth  = max(1, newWidth)
-        newHeight = max(1, newHeight)
+#        # wxPy for MS-Win raises an error if width or height is 0
+#        newWidth  = max(1, newWidth)
+#        newHeight = max(1, newHeight)
 
         img = self._image.Scale(newWidth, newHeight)
         self._bmpScaled = img.ConvertToBitmap()
         
     def __DrawBitmap(self, dc):
-        if self._image is not None:
+        if self._bmpScaled is not None:
             left, top = self.__GetBmpTopLeft()
             dc.DrawBitmap(self._bmpScaled, left, top)
             
@@ -142,7 +142,7 @@ class ImageSectionEditor(wx.Panel):
         return sectRect
             
     def __DrawSection(self, dc):
-        if self._image is None:
+        if self._bmpScaled is None:
             return
         
         sectRect = self.__SectRectToClientRect()
@@ -305,6 +305,7 @@ class ImageSectionEditor(wx.Panel):
     def OnMotion(self, event):
         if self._image is None:
             return
+        
         px, py = event.GetPosition().Get()
         cpx, cpy = self.__ClientToImage(px, py)
         if self._action is None:

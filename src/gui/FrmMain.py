@@ -588,9 +588,6 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     def LoadProject(self, filepath, skipHistory=False):
         self.NewProject(False)
         
-        if not skipHistory:
-            self.actionManager.AddFileToHistory(filepath)
-        
         self.__usedAltPath = False
         photoFilmStrip = PhotoFilmStrip()
         photoFilmStrip.SetUserInteractionHandler(self)
@@ -610,6 +607,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.__currentProject = filepath
         self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
 
+        if not skipHistory:
+            self.actionManager.AddFileToHistory(filepath)
+        
         self.actionManager.OnProjectChanged(self.__usedAltPath)
         self.actionManager.OnProjectReady(True)
         

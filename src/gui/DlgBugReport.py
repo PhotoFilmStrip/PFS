@@ -8,6 +8,7 @@ import wx
 from wx.lib.wordwrap import wordwrap
 
 from lib.Settings import Settings
+from lib.util import Encode
 
 
 class DlgBugReport(wx.Dialog):
@@ -62,10 +63,10 @@ class DlgBugReport(wx.Dialog):
         info = "\n".join([sys.platform, 
                           sys.getdefaultencoding(), 
                           sys.getfilesystemencoding()])
-        params = urllib.urlencode({'bugreport': u"%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
-                                                                        Settings.APP_VERSION,
-                                                                        self.tcMsg.GetValue(),
-                                                                        info)})
+        params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
+                                                                       Settings.APP_VERSION,
+                                                                       Encode(self.tcMsg.GetValue()),
+                                                                       info)})
         try:
             fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
             result = fd.read()

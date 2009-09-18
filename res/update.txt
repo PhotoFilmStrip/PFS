@@ -1,7 +1,10 @@
 1.2
 changes:
- - nice photofilmstrip
+ - quick start for importing images to a new PhotoFilmStrip
 
 bugfixes: 
- - cannot identify image file
- - cannot write mode P as JPEG
+ - GUI behavior
+ - UnicodeEncode errors
+ - wxPython assertions
+ - no section errors
+ - lots of minor bugs

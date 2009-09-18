@@ -32,7 +32,7 @@ from core.OutputProfile import DEFAULT_PROFILES
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.1"
+    APP_VERSION     = "1.2"
     APP_DESCRIPTION = ""
     APP_URL         = "http://photostoryx.sourceforge.net"
     DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]
@@ -47,50 +47,56 @@ class Settings(Singleton):
             userpath = tempfile.gettempdir()
 
         self.filename = os.path.join(userpath, '.%s' % Settings.APP_NAME)
+        self.filename = u"/home/jens/\xf6\xf6\xf6/.pho"
         if not os.path.isfile(self.filename):
-            self.Create()
             self.__isFirstStart = True
+
         self.Load()
         
-        if not (self.cp.has_section("General") and \
-                self.cp.has_section("History") and \
-                self.cp.has_section("Profiles")):
-            self.Create() 
-        
-    def Create(self):
-        self.cp = ConfigParser()
-        self.cp.add_section("General")
-        self.cp.add_section("History")
-        self.cp.add_section("Profiles")
-        self.Save()
-        
     def Load(self):
-        self.cp = ConfigParser()
-        self.cp.read(self.filename)
+        if self.cp is None:
+            self.cp = ConfigParser()
+
+        if os.path.isfile(self.filename):
+            self.cp.read(self.filename)
+
+        if not self.cp.has_section("General"):
+            self.cp.add_section("General")
+            
+        if not self.cp.has_section("History"):
+            self.cp.add_section("History")
+            
+        if not self.cp.has_section("Profiles"):
+            self.cp.add_section("Profiles")
         
     def Save(self):
-        fd = open(self.filename, 'w')
-        self.cp.write(fd)
-        fd.close()
+        try:
+            fd = open(self.filename, 'w')
+            self.cp.write(fd)
+            fd.close()
+        except IOError:
+            pass
 
     def IsFirstStart(self):
         return self.__isFirstStart
     
     def SetFileHistory(self, fileList):
         self.Load()
+        self.cp.remove_section("History")
+        self.cp.add_section("History")
         for idx, filename in enumerate(fileList):
-            if os.path.exists(filename):
-                self.cp.set("History", "%d" % idx, Encode(filename))
+            if idx < 10 and os.path.exists(filename):
+                self.cp.set("History", "%d" % idx, Encode(os.path.abspath(filename)))
         self.Save()
         
     def GetFileHistory(self):
         self.Load()
         fileList = []
-        for idx in range(9, -1, -1):
+        for idx in range(10):
             if self.cp.has_option("History", str(idx)):
                 filename = Decode(self.cp.get("History", str(idx)))
                 if os.path.exists(filename):
-                    fileList.append(filename)
+                    fileList.insert(0, filename)
 
         return fileList
     
@@ -129,7 +135,7 @@ class Settings(Singleton):
 
     def SetLastProfile(self, profile):
         self.Load()
-        self.cp.set("General", "LastProfile", profile)
+        self.cp.set("General", "LastProfile", str(profile))
         self.Save()
 
     def GetLastProfile(self):
@@ -140,7 +146,7 @@ class Settings(Singleton):
 
     def SetVideoType(self, typ):
         self.Load()
-        self.cp.set("General", "VideoType", typ)
+        self.cp.set("General", "VideoType", str(typ))
         self.Save()
 
     def GetVideoType(self):
@@ -151,7 +157,7 @@ class Settings(Singleton):
 
     def SetUsedRenderer(self, renderer):
         self.Load()
-        self.cp.set("General", "Renderer", renderer)
+        self.cp.set("General", "Renderer", str(renderer))
         self.Save()
 
     def GetUsedRenderer(self):
