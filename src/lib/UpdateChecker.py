@@ -49,6 +49,8 @@ class UpdateChecker(threading.Thread):
         
         lines = data.split('\n')
         self._onlineVersion = lines.pop(0)
+        if self._onlineVersion.find("error") != -1:
+            return
         self._changes = lines
         
         self._checkDone = True
