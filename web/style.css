@@ -1,0 +1,51 @@
+/*
+
+light: #FFF4D5
+back: #FFCC66
+font: #07007F
+
+*/
+
+
+body		{ background: #444444; padding: 10; margin: 0; color: #000000; text-align: center; font-family: Helvetica; font-size: 12px; }
+
+p, td,li	{ font-size: 12px; padding: 0px; margin: 0px; margin-bottom: 20px}
+
+a		{ color: #07007F; text-decoration: none; font-family: Helvetica; font-size: 12px;}
+a:hover		{ text-decoration: underline; }
+
+h1		{ color: #000000; font-family: Helvetica, sans-serif; font-size: 16px; text-align: left; margin: 0px; padding: 0px; margin-bottom: 10px;}
+h2		{ color: #000000; font-family: Helvetica, sans-serif; font-size: 14px; text-align: left; }
+h3		{ color: #000000; font-family: Helvetica, sans-serif; font-size: 12px; text-align: left; margin: 0px 0px; padding: 0px; }
+
+img		{ border: 0px; }
+
+
+table           { margin-bottom: 20px}
+table td        { padding: 5px }
+
+#spacer5		{ clear: both; height: 5px; }
+#spacer10		{ clear: both; height: 10px; }
+#spacer20		{ clear: both; height: 20px; }
+
+#display		{ width: 850px; margin: auto}
+
+#pnlLogo		{ width: 850px; height: 100px; background-image: url(./bg_pfs.png); margin: auto; padding: 10px}
+#pnlLogo h1     { color: #ed9c00; font-family: Helvetica, sans-serif; font-size: 36px; text-align: center; margin: 0px; padding: 26px; margin: 0px;}
+
+#logo		    { float: left; padding-right: 10px; padding-bottom: 10px}
+
+#main			{ background: #FFFFFF; width: 850px; text-align: left; border: 1px solid #000000; float: left; padding: 10px;}
+
+#navi		    { width: 850px; height: 20px; text-align: center; }
+#navi a		    { color: #9999FF; height: 20px; padding: 0px 40px; font-weight: bold; font-size: 20px}
+#navi a:hover	{ color: #ed9c00; text-decoration: none; }
+
+#pnlFooter		{ width: 850px; height: 40px; margin: auto; border: 10px}
+
+.priceTable		{ width: 400px; border: 0px; border-collapse: collapse;}
+.priceTable td		{ padding: 4px 0px; }
+.priceTable td.product	{ text-align: left; padding-left: 15px;}
+.priceTable td.price	{ text-align: right; }
+
+
