@@ -1,0 +1,4 @@
+<!-- http://www.youtube.com/crossdomain.xml -->
+<cross-domain-policy>
+  <allow-access-from domain="*.youtube.com"/>
+</cross-domain-policy>

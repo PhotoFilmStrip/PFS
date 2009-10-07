@@ -24,9 +24,9 @@ img		{ border: 0px; }
 table           { margin-bottom: 20px}
 table td        { padding: 5px }
 
-#spacer5		{ clear: both; height: 5px; }
-#spacer10		{ clear: both; height: 10px; }
-#spacer20		{ clear: both; height: 20px; }
+.spacer5		{ clear: both; height: 5px; }
+.spacer10		{ clear: both; height: 10px; }
+.spacer20		{ clear: both; height: 20px; }
 
 #display		{ width: 850px; margin: auto}
 
