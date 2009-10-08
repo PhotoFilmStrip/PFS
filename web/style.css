@@ -22,7 +22,7 @@ img		{ border: 0px; }
 
 
 table           { margin-bottom: 20px}
-table td        { padding: 5px }
+table td        { padding: 5px; vertical-align: top}
 
 .spacer5		{ clear: both; height: 5px; }
 .spacer10		{ clear: both; height: 10px; }
