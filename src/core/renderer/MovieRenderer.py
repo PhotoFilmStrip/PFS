@@ -188,12 +188,14 @@ class MPEG4Renderer(MovieRenderer):
 
     @staticmethod
     def GetProperties():
-        return MovieRenderer.GetProperties() + ["FFOURCC"]
+        return MovieRenderer.GetProperties() + ["FFOURCC", "RenderSubtitle"]
 
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "FFOURCC":
             return "XVID"
+        if prop == "RenderSubtitle":
+            return False
         return MovieRenderer.GetDefaultProperty(prop)
 
     @staticmethod
@@ -215,6 +217,11 @@ class MPEG4Renderer(MovieRenderer):
         else:
             bitrate = MPEG4Renderer.GetProperty("Bitrate")
 
+        if MPEG4Renderer.GetProperty("RenderSubtitle"):
+            subArgs = "-sub \"%s%soutput.srt\"" % (self.GetOutputPath(), os.sep)
+        else:
+            subArgs = ""
+
         if self.PAudioFile is None:
             audioArgs = ""
         else:
@@ -222,12 +229,14 @@ class MPEG4Renderer(MovieRenderer):
         
         cmd = "mencoder -cache 1024 " \
               "%(audioArgs)s " \
+              "%(subArgs)s " \
               "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'ffourcc': MPEG4Renderer.GetProperty('FFOURCC'),
                                                       'bitrate': bitrate,
-                                                      'audioArgs': audioArgs}
+                                                      'audioArgs': audioArgs,
+                                                      "subArgs": subArgs}
 
         ppmCmd = "ppmtoy4m -v 0 -F %(framerate)s -S 420mpeg2" % {'framerate': framerate}
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
@@ -235,3 +244,8 @@ class MPEG4Renderer(MovieRenderer):
 
     def Finalize(self):
         self._CleanUp()
+        
+        if MPEG4Renderer.GetProperty("RenderSubtitle"):
+            path = "%s%soutput.srt" % (self.GetOutputPath(), os.sep)
+            if os.path.exists(path):
+                os.remove(path)

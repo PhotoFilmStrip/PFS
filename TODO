@@ -8,3 +8,7 @@ FLV:
                               'name': os.path.basename(targetDir),
                               'fps': fps}
  
+
+Features:
+ - Bilder als fertig/geändert markieren
+ - Kurze Vollbildansicht
