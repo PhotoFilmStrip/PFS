@@ -19,14 +19,15 @@
 #
 
 
+class SingletonType(type):
+    def __init__(self, name, bases, dict):
+        type.__init__(self, name, bases, dict)
+        self.instance = None
+    def __call__(self):
+        if self.instance is None:
+            self.instance = type.__call__(self)
+        return self.instance
+
+
 class Singleton(object):
-    
-    def __new__(cls, *p, **k):
-        if not '_the_instance' in cls.__dict__:
-            cls._the_instance = object.__new__(cls)
-            cls._the_instance.Init()
-        return cls._the_instance
-    
-    def Init(self):
-        pass
-    
+    __metaclass__ = SingletonType

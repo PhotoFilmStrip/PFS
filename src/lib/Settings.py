@@ -37,7 +37,7 @@ class Settings(Singleton):
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]
     
-    def Init(self):
+    def __init__(self):
         Settings.APP_DESCRIPTION = _("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.")
         self.__isFirstStart = False
         self.cp = None
