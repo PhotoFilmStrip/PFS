@@ -141,7 +141,7 @@ class PnlEditPicture(wx.Panel):
               id=wxID_PNLEDITPICTURECHOICEEFFECT)
 
         self.stDuration = wx.StaticText(id=wxID_PNLEDITPICTURESTDURATION,
-              label=_(u'Duartion (sec):'), name=u'stDuration', parent=self,
+              label=_(u'Duration (sec):'), name=u'stDuration', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcDuration = wx.TextCtrl(id=wxID_PNLEDITPICTURETCDURATION,
