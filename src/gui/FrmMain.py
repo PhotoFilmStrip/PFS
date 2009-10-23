@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os, sys
+import os
 
 import wx
 from wx.lib.wordwrap import wordwrap
@@ -33,6 +33,10 @@ from lib.common.ObserverPattern import Observer
 
 from gui.ctrls.ImageSectionEditor import ImageSectionEditor, EVT_RECT_CHANGED
 from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList, EVT_CHANGED
+
+from gui.util.ImageCache import ImageCache
+from gui.util.ImageProxy import ImageProxy
+
 from gui.DlgRender import DlgRender
 from gui.DlgUpdateInfo import DlgUpdateInfo
 from gui.PnlEditPicture import PnlEditPicture
@@ -115,11 +119,11 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         self.bitmapLeft = ImageSectionEditor(id=wxID_FRMMAINBITMAPLEFT,
               name=u'bitmapLeft', parent=self.panelTop, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+              size=wx.Size(-1, -1), style=0)
 
         self.bitmapRight = ImageSectionEditor(id=wxID_FRMMAINBITMAPRIGHT,
               name=u'bitmapRight', parent=self.panelTop, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+              size=wx.Size(-1, -1), style=0)
 
         self.pnlEditPicture = PnlEditPicture(id=wxID_FRMMAINPNLEDITPICTURE,
               name=u'pnlEditPicture', parent=self, pos=wx.Point(-1, -1),
@@ -168,18 +172,25 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
         self.listView.SetDropTarget(ImageDropTarget(self))
         
+        self.imgProxy = ImageProxy()
+        self.imgProxy.AddObserver(self.bitmapLeft)
+        self.imgProxy.AddObserver(self.bitmapRight)
+        
         self.bitmapLeft.SetDropTarget(ProjectDropTarget(self))
+        self.bitmapLeft.SetImgProxy(self.imgProxy)
+
         self.bitmapRight.SetDropTarget(ProjectDropTarget(self))
+        self.bitmapRight.SetImgProxy(self.imgProxy)
         
-        self.pnlWelcome = PnlWelcome(self.bitmapLeft)
-        self.pnlWelcome.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
-        self.pnlWelcome.stInfo.SetDropTarget(ImageDropTarget(self))
+#        self.pnlWelcome = PnlWelcome(self.bitmapLeft)
+#        self.pnlWelcome.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
+#        self.pnlWelcome.stInfo.SetDropTarget(ImageDropTarget(self))
         
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.AddStretchSpacer(1)
-        sizer.Add(self.pnlWelcome, 0, wx.ALIGN_CENTER)
-        sizer.AddStretchSpacer(1)
-        self.bitmapLeft.SetSizer(sizer)
+#        sizer = wx.BoxSizer(wx.VERTICAL)
+#        sizer.AddStretchSpacer(1)
+#        sizer.Add(self.pnlWelcome, 0, wx.ALIGN_CENTER)
+#        sizer.AddStretchSpacer(1)
+#        self.bitmapLeft.SetSizer(sizer)
         
         self.statusBar = wx.StatusBar(self)
         self.statusBar.SetFieldsCount(3)
@@ -271,6 +282,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
     def OnClose(self, event):
         if self.CheckAndAskSaving():
+            self.imgProxy.Destroy()
             self.Destroy()
 
     def OnAbout(self, event):
@@ -390,10 +402,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.cmdRemove.Enable(True)
         
         pic = self.listView.GetPicture(item)
-        bmp = pic.GetBitmap()
-        self.bitmapLeft.SetBitmap(bmp)
+        self.imgProxy.SetPicture(pic)
+
         self.bitmapLeft.SetSection(wx.Rect(*pic.GetStartRect()))
-        self.bitmapRight.SetBitmap(bmp)
         self.bitmapRight.SetSection(wx.Rect(*pic.GetTargetRect()))
 
         self.pnlEditPicture.SetPicture(pic)
@@ -481,13 +492,12 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.listView.Select(selItem)
         
         if self.listView.GetItemCount() == 0:
-            self.bitmapLeft.SetBitmap(None)
-            self.bitmapRight.SetBitmap(None)
+            self.imgProxy.SetPicture(None)
             self.pnlEditPicture.SetPicture(None)
             self.pnlEditPicture.Enable(False)
             self.cmdMoveLeft.Enable(False)
             self.cmdMoveRight.Enable(False)
-            self.pnlWelcome.Show(True)
+#            self.pnlWelcome.Show(True)
         
         self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
@@ -545,8 +555,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             return
 
         self.listView.DeleteAllItems()
-        self.bitmapLeft.SetBitmap(None)
-        self.bitmapRight.SetBitmap(None)
+        self.imgProxy.SetPicture(None)
+        
+        ImageCache().ClearCache()
 
         self.cmdMoveLeft.Enable(False)
         self.cmdMoveRight.Enable(False)
@@ -642,7 +653,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     
     def InsertPictures(self, pics, position=None):
         if position is None:
-            position = sys.maxint
+            position = self.listView.GetItemCount()
         
         dlg = wx.ProgressDialog(_(u"Please wait"),
                                 _(u"Loading pictures..."),
@@ -650,9 +661,11 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                                 parent=self,
                                 style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
 
-        count = self.listView.GetItemCount()
         for idx, pic in enumerate(pics):
-            self.listView.InsertPicture(position, pic) 
+            ImageCache().RegisterPicture(pic)
+
+            self.listView.InsertPicture(position, pic)
+            position += 1 
 
             pic.AddObserver(self)
 
@@ -666,14 +679,13 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
-        self.pnlWelcome.Show(self.listView.GetItemCount() == 0)
+#        self.pnlWelcome.Show(self.listView.GetItemCount() == 0)
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
             if arg == 'bitmap':
-                bmp = obj.GetBitmap()
-                self.bitmapLeft.SetBitmap(bmp)
-                self.bitmapRight.SetBitmap(bmp)
+                ImageCache().UpdatePicture(obj)
+                self.imgProxy.SetPicture(obj)
                 self.listView.UpdatePictures()
             
             if arg == 'duration':

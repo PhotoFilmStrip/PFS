@@ -22,7 +22,10 @@ import time
 
 import wx
 
-import res.cursors as cursors 
+import res.cursors as cursors
+
+from lib.common.ObserverPattern import Observer
+ 
 
 
 EVT_RECT_CHANGED_TYPE  = wx.NewEventType()
@@ -38,7 +41,7 @@ class RectChangedEvent(wx.PyCommandEvent):
         return self._rect
 
 
-class ImageSectionEditor(wx.Panel):
+class ImageSectionEditor(wx.Panel, Observer):
     
     BORDER_TOLERANCE = 20
     
@@ -52,19 +55,20 @@ class ImageSectionEditor(wx.Panel):
     INFO_TIME_OUT    = 2.0
     
     RATIO = 16.0 / 9.0
+#    RATIO = 4.0 / 3.0
             
     
     def __init__(self, parent, id=wx.ID_ANY, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
-                 style=wx.TAB_TRAVERSAL, name='panel'):
+                 style=0, name='panel'):
         wx.Panel.__init__(self, parent, id, pos, size, style, name)
+        Observer.__init__(self)
         
         self.SetMinSize(wx.Size(400, 300))
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
-        self._image     = None
-        self._bmpScaled = None
+        self._imgProxy  = None
         self._sectRect  = wx.Rect(0, 0, 1280, 720)
         self._zoom      = 1
         self._infoTimer = wx.Timer(self)
@@ -85,21 +89,20 @@ class ImageSectionEditor(wx.Panel):
         self.Bind(wx.EVT_TIMER, self.OnInfoTimer)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
 
-    def SetBitmap(self, bmp):
-        if bmp is None:
-            self._image = None
-        elif bmp.IsOk():
-            self._image = bmp.ConvertToImage()
-            self.__Scale()
-            self.__KeepRectInImage()
+    def ObservableUpdate(self, obj, arg):
+        self.__Scale()
+        self.__KeepRectInImage()
         self.Refresh()
+
+    def SetImgProxy(self, imgProxy):
+        self._imgProxy = imgProxy
     
     def __Scale(self):
-        if self._image is None:
+        if not self._imgProxy.IsOk():
             return
 
         cw, ch = self.GetClientSize().Get()
-        iw, ih = self._image.GetSize().Get()
+        iw, ih = self._imgProxy.GetSize()
         rx = float(cw) / float(iw)
         ry = float(ch) / float(ih)
         
@@ -112,23 +115,18 @@ class ImageSectionEditor(wx.Panel):
             newWidth = iw * ry
             self._zoom = ry 
         
-#        # wxPy for MS-Win raises an error if width or height is 0
-#        newWidth  = max(1, newWidth)
-#        newHeight = max(1, newHeight)
-
-        img = self._image.Scale(newWidth, newHeight)
-        self._bmpScaled = img.ConvertToBitmap()
+        self._imgProxy.Scale(newWidth, newHeight)
         
     def __DrawBitmap(self, dc):
-        if self._bmpScaled is not None:
+        if self._imgProxy.IsOk():
             left, top = self.__GetBmpTopLeft()
-            dc.DrawBitmap(self._bmpScaled, left, top)
+            dc.DrawBitmap(self._imgProxy.GetBitmap(), left, top)
             
     def __GetBmpTopLeft(self):
-        if self._bmpScaled is None:
+        if not self._imgProxy.IsOk():
             return 0, 0
         cw, ch = self.GetClientSize().Get()
-        iw, ih = self._bmpScaled.GetSize().Get()
+        iw, ih = self._imgProxy.GetCurrentSize()
         left = (cw - iw) / 2.0
         top = (ch - ih) / 2.0
         return int(left), int(top)
@@ -142,7 +140,7 @@ class ImageSectionEditor(wx.Panel):
         return sectRect
             
     def __DrawSection(self, dc):
-        if self._bmpScaled is None:
+        if not self._imgProxy.IsOk():
             return
         
         sectRect = self.__SectRectToClientRect()
@@ -159,12 +157,15 @@ class ImageSectionEditor(wx.Panel):
         dc.SetPen(wx.TRANSPARENT_PEN)# wx.Pen(color))
         #left
         left, top = self.__GetBmpTopLeft()
-        dc.DrawRectangle(left, top, iRect.x - left, self._bmpScaled.GetHeight())
-        lWidth = left + self._bmpScaled.GetWidth() - iRect.GetWidth() - iRect.x
+        bmpWidth, bmpHeight = self._imgProxy.GetCurrentSize()
+        dc.DrawRectangle(left, top, iRect.x - left, bmpHeight)
+        lWidth = left + bmpWidth - iRect.GetWidth() - iRect.x
         left = iRect.x + iRect.GetWidth()
-        dc.DrawRectangle(left, top, lWidth, self._bmpScaled.GetHeight())
+        dc.DrawRectangle(left, top, lWidth, bmpHeight)
         dc.DrawRectangle(iRect.x, top, iRect.GetWidth(), iRect.y - top)
-        dc.DrawRectangle(iRect.x, iRect.y + iRect.GetHeight(), iRect.GetWidth(), top+self._bmpScaled.GetHeight()-iRect.GetHeight()-iRect.y)
+        dc.DrawRectangle(iRect.x, iRect.y + iRect.GetHeight(), 
+                         iRect.GetWidth(), 
+                         top + bmpHeight - iRect.GetHeight() - iRect.y)
 
         now = time.time()
         alpha = 255
@@ -195,8 +196,9 @@ class ImageSectionEditor(wx.Panel):
 
         dc.SetBrush(wx.GREY_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
-        self.__DrawBitmap(dc)
-        self.__DrawSection(dc)
+        if self._imgProxy is not None:
+            self.__DrawBitmap(dc)
+            self.__DrawSection(dc)
         
         event.Skip()
         
@@ -288,7 +290,7 @@ class ImageSectionEditor(wx.Panel):
         self._startY = None
     
     def OnLeftDown(self, event):
-        if self._image is None:
+        if not self._imgProxy.IsOk():
             return
         px, py = event.GetPosition().Get()
         cpx, cpy = self.__ClientToImage(px, py)
@@ -303,7 +305,7 @@ class ImageSectionEditor(wx.Panel):
         event.Skip()
     
     def OnMotion(self, event):
-        if self._image is None:
+        if not self._imgProxy.IsOk():
             return
         
         px, py = event.GetPosition().Get()
@@ -353,12 +355,12 @@ class ImageSectionEditor(wx.Panel):
                     height = 9
                     recalcDelta = True
                 else:
-                    if width > self._image.GetWidth():
-                        width = self._image.GetWidth()
+                    if width > self._imgProxy.GetWidth():
+                        width = self._imgProxy.GetWidth()
                         height = width / self.RATIO
                         recalcDelta = True
-                    if height > self._image.GetHeight():
-                        height = self._image.GetHeight()
+                    if height > self._imgProxy.GetHeight():
+                        height = self._imgProxy.GetHeight()
                         width = height * self.RATIO
                         recalcDelta = True
                         
@@ -400,13 +402,13 @@ class ImageSectionEditor(wx.Panel):
                 #check pos
                 if nx < 0:
                     nx = 0
-                elif nx + width > self._image.GetWidth():
-                    nx = self._image.GetWidth() - width
+                elif nx + width > self._imgProxy.GetWidth():
+                    nx = self._imgProxy.GetWidth() - width
                 
                 if ny < 0:
                     ny = 0
-                elif ny + height > self._image.GetHeight():
-                    ny = self._image.GetHeight()
+                elif ny + height > self._imgProxy.GetHeight():
+                    ny = self._imgProxy.GetHeight()
                     
                 #everything should be ok now
                 self._sectRect.Set(nx, ny, width, height)              
@@ -430,7 +432,7 @@ class ImageSectionEditor(wx.Panel):
         event.Skip()
             
     def _SendRectChangedEvent(self):
-        if self._image is None:
+        if not self._imgProxy.IsOk():
             return
         self.__KeepRectInImage()
         evt = RectChangedEvent(self.GetId(), self._sectRect)
@@ -449,8 +451,9 @@ class ImageSectionEditor(wx.Panel):
         self.__UpdateSectRect()
             
     def OnResize(self, event):
-        self.__Scale()
-        self.Refresh()
+        if self._imgProxy is not None:
+            self.__Scale()
+            self.Refresh()
         event.Skip()
 
     def OnKeyDown(self, event):
@@ -463,7 +466,7 @@ class ImageSectionEditor(wx.Panel):
             self._sectRect.SetWidth(1280)
             self._sectRect.SetHeight(720)
         elif key == wx.WXK_NUMPAD_MULTIPLY:
-            self._sectRect = wx.Rect(0, 0, self._image.GetWidth(), self._image.GetWidth() / self.RATIO)
+            self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), self._imgProxy.GetWidth() / self.RATIO)
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
                 self._sectRect.OffsetXY(-50, 0)
@@ -492,7 +495,7 @@ class ImageSectionEditor(wx.Panel):
         self.__UpdateSectRect()
             
     def __KeepRectInImage(self):
-        if self._image is None:
+        if not self._imgProxy.IsOk():
             return
         
         left = self._sectRect.GetLeft()
@@ -500,22 +503,22 @@ class ImageSectionEditor(wx.Panel):
         width = self._sectRect.GetWidth()
         height = self._sectRect.GetHeight()
         
-        if width > self._image.GetWidth():
-            width = self._image.GetWidth()
+        if width > self._imgProxy.GetWidth():
+            width = self._imgProxy.GetWidth()
             height = width / self.RATIO
-        if height > self._image.GetHeight():
-            height = self._image.GetHeight()
+        if height > self._imgProxy.GetHeight():
+            height = self._imgProxy.GetHeight()
             width = height / self.RATIO
 
         if left < 0:
             left = 0
-        if left + width > self._image.GetWidth():
-            left = self._image.GetWidth() - width
+        if left + width > self._imgProxy.GetWidth():
+            left = self._imgProxy.GetWidth() - width
 
         if top < 0:
             top = 0
-        if top + height > self._image.GetHeight():
-            top = self._image.GetHeight() - height
+        if top + height > self._imgProxy.GetHeight():
+            top = self._imgProxy.GetHeight() - height
             
         self._sectRect = wx.Rect(left, top, width, height)
         
@@ -528,8 +531,3 @@ class ImageSectionEditor(wx.Panel):
         self._sectRect = wx.RectPS(rect.GetPosition(), rect.GetSize())
         self._SendRectChangedEvent()
         self.Refresh()
-    
-    def GetImage(self):
-        return self._image
-    
-          

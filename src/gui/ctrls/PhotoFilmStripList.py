@@ -22,6 +22,8 @@ import os
 
 import wx
 
+from gui.util.ImageCache import ImageCache
+
 
 EVT_CHANGED_TYPE  = wx.NewEventType()
 EVT_CHANGED       = wx.PyEventBinder(EVT_CHANGED_TYPE, 1)
@@ -44,8 +46,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.SetBackgroundStyle(wx.BG_STYLE_COLOUR)
         self.SetBackgroundColour(wx.BLACK)
         self.SetClientSizeWH(-1, self.HEIGHT+20)
-
-        self.__photoFilmStrip = None
         
         self.__pictures = []
         self.__selIdx   = -1
@@ -156,7 +156,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
         if self.__dragPic is not None:
             if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
-                bmp = self.GetThumbBmp(self.__dragPic)
+                bmp = ImageCache().GetThumbBmp(self.__dragPic)
                 dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX, self.BORDER)
             else:
                 self.__dragPic = None
@@ -207,7 +207,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             dc.SetTextForeground(wx.Color(237, 156, 0))
         sx = 10
         for idx, pic in enumerate(self.__pictures):
-            bmp = self.GetThumbBmp(idx)
+            bmp = ImageCache().GetThumbBmp(pic)
 
             if dc is not None:
                 dc.DrawBitmap(bmp, sx, self.BORDER, True)
@@ -236,12 +236,16 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             dc.SetBrush(wx.Brush(color))
             dc.DrawRectangleRect(rect)
 
+    def GetThumbSize(self, pic):
+        pw, ph = float(pic.GetWidth()), float(pic.GetHeight())
+        thumbHeight = self.HEIGHT - (2 * self.BORDER)
+        thumbWidth = int(thumbHeight * (pw / ph))
+        return thumbWidth, thumbHeight
+    
     def GetThumbRect(self, idx):
         sx = 10
         for pidx, pic in enumerate(self.__pictures):
-            pw, ph = float(pic.GetWidth()), float(pic.GetHeight())
-            thumbHeight = self.HEIGHT - (2 * self.BORDER)
-            thumbWidth = int(thumbHeight * (pw / ph))
+            thumbWidth, thumbHeight = self.GetThumbSize(pic)
             
             if idx == pidx:
                 rect = wx.Rect(sx, 0, thumbWidth, self.HEIGHT)
@@ -249,20 +253,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
             sx += thumbWidth + 10
             
-    def GetThumbBmp(self, idx):
-        pic = self.__pictures[idx]
-        pw, ph = float(pic.GetWidth()), float(pic.GetHeight())
-        thumbHeight = self.HEIGHT - (2 * self.BORDER)
-        thumbWidth = int(thumbHeight * (pw / ph))
-        bmp = pic.GetScaledBitmap(thumbWidth, thumbHeight)
-        return bmp
- 
     def HitTest(self, pos):
         sx = 10
         for idx, pic in enumerate(self.__pictures):
-            pw, ph = float(pic.GetWidth()), float(pic.GetHeight())
-            thumbHeight = self.HEIGHT - (2 * self.BORDER)
-            thumbWidth = int(thumbHeight * (pw / ph))
+            thumbWidth, thumbHeight = self.GetThumbSize(pic)
             
             rect = wx.Rect(sx, 0, thumbWidth, self.HEIGHT)
             if rect.Contains(pos):
@@ -271,10 +265,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             sx += thumbWidth + 10
         return -1
     
-    def AddPicture(self, pic):
-        self.__pictures.append(pic)
-        self.__UpdatePictures()
-        self._SendChangedEvent()
+#    def AddPicture(self, pic):
+#        self.__pictures.append(pic)
+#        self.__UpdatePictures()
+#        self._SendChangedEvent()
         
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
@@ -306,9 +300,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self.__pictures[idx] = pic
             self.__UpdatePictures()
             
-    def SetPhotoFilmStrip(self, pfs):
-        self.__photoFilmStrip = pfs
-        
     def GetPictures(self):
         return self.__pictures[:]
         
@@ -342,3 +333,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.__pictures.insert(idxTo, pic)
         self.__UpdatePictures()
         self._SendChangedEvent()
+
+
+ImageCache.THUMB_SIZE = PhotoFilmStripList.HEIGHT - (2 * PhotoFilmStripList.BORDER)
+

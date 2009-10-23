@@ -38,10 +38,6 @@ class Picture(Observable):
         self._targetRect = (0, 0, 1280, 720)
         self._isDummy    = False
         
-        # to buffer wx bitmaps
-        self._bmp      = None
-        self._bmpThumb = None
-
         self._duration = 7.0
         self._rotation = 0
         self._comment  = u""
@@ -50,8 +46,7 @@ class Picture(Observable):
         self._height   = -1
         
     def __Reset(self):
-        self._bmp = None
-        self._bmpThumb = None
+        pass
         
     def GetFilename(self):
         return self._filename
@@ -166,9 +161,35 @@ class Picture(Observable):
             elif rotation == 8:
                 # rotate 270
                 return img.rotate(-270)
+        except AttributeError:
+            pass
         except:
             print "EXIF-Orientation rotation failed."
             
+        return img
+
+    def __CreateDummyImage(self, message):
+        width = 400
+        height = 300
+        img = Image.new("RGB", (width, height), (255, 255, 255))
+
+        draw = ImageDraw.Draw(img)
+        textWidth, textHeight = draw.textsize(message)
+        x = (width - textWidth) / 2
+        y = (height - textHeight * 2)
+        draw.text((x, y), message, fill=(0, 0, 0))
+
+        sz = width / 2
+        draw.ellipse(((width - sz) / 2, (height - sz) / 2, 
+                      (width + sz) / 2, (height + sz) / 2), 
+                      fill=(255, 0, 0))
+
+        sz = width / 7
+        draw.line((width / 2 - sz, height / 2 - sz, width / 2 + sz, height / 2 + sz), fill=(255, 255, 255), width=20)
+        draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
+
+        del draw
+        
         return img
 
     def GetImage(self):
@@ -203,57 +224,27 @@ class Picture(Observable):
 
         return img.convert("RGB")
     
-    def GetThumbnail(self, width, height):
+    def GetThumbnail(self, width=None, height=None):
+        pw, ph = float(self.GetWidth()), float(self.GetHeight())
+        if width is not None and height is not None:
+            thumbWidth = width
+            thumbHeight = height
+        elif width is not None:
+            thumbWidth = width
+            thumbHeight = int(thumbWidth / (pw / ph))
+        elif height is not None:
+            thumbHeight = height
+            thumbWidth = int(thumbHeight * (pw / ph))
+        
         img = self.GetImage()
         img = img.copy()
-        img.thumbnail((width, height))
-        newImg = Image.new("RGB", (width, height), 0)
+        img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
+        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
         newImg.paste(img, (0, 0))
         return newImg
 
-    def ImageToStream(self, img, format="JPEG"):
+    def ImageToStream(self, pilImg, format="JPEG"):
         fd = cStringIO.StringIO()
-        img.save(fd, format)
+        pilImg.save(fd, format)
         fd.seek(0)
         return fd
-
-    def GetBitmap(self):
-        import wx
-        if self._bmp is None:
-            img = self.GetImage()
-            wxImg = wx.ImageFromStream(self.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
-            self._bmp = wxImg.ConvertToBitmap() 
-        return  self._bmp
-    
-    def GetScaledBitmap(self, width, height):
-        import wx
-        if self._bmpThumb is None:
-            img = self.GetThumbnail(width, height)
-            wxImg = wx.ImageFromStream(self.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
-            self._bmpThumb = wxImg.ConvertToBitmap() 
-        return self._bmpThumb
-
-
-    def __CreateDummyImage(self, message):
-        width = 400
-        height = 300
-        img = Image.new("RGB", (width, height), (255, 255, 255))
-
-        draw = ImageDraw.Draw(img)
-        textWidth, textHeight = draw.textsize(message)
-        x = (width - textWidth) / 2
-        y = (height - textHeight * 2)
-        draw.text((x, y), message, fill=(0, 0, 0))
-
-        sz = width / 2
-        draw.ellipse(((width - sz) / 2, (height - sz) / 2, 
-                      (width + sz) / 2, (height + sz) / 2), 
-                      fill=(255, 0, 0))
-
-        sz = width / 7
-        draw.line((width / 2 - sz, height / 2 - sz, width / 2 + sz, height / 2 + sz), fill=(255, 255, 255), width=20)
-        draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
-
-        del draw
-        
-        return img
