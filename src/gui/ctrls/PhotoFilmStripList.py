@@ -156,7 +156,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
         if self.__dragPic is not None:
             if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
-                bmp = ImageCache().GetThumbBmp(self.__dragPic)
+                bmp = ImageCache().GetThumbBmp(self.__pictures[self.__dragPic])
                 dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX, self.BORDER)
             else:
                 self.__dragPic = None
