@@ -47,7 +47,7 @@ def __CreateDefaultProfiles():
     
     svcd = OutputProfile()
     svcd.PName = "SVCD"
-    svcd.PResPal = (576, 480)
+    svcd.PResPal = (480, 576)
     svcd.PResNtsc = (480, 480)
     svcd.PBitrate = 2500
 
