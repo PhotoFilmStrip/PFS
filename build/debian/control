@@ -8,7 +8,7 @@ Homepage: http://photostoryx.sourceforge.net
 
 Package: photofilmstrip
 Architecture: all
-Depends: python, python-wxgtk2.8, python-imaging, mjpegtools, mencoder
+Depends: python, python-wxgtk2.8, python-imaging, mencoder
 Description: PhotoFilmStrip creates movies out of your pictures in just 3 steps.
  PhotoFilmStrip creates movies out of your pictures in just 3 steps. 
  First select your photos, customize the motion path and render the video. 
