@@ -140,12 +140,16 @@ class MovieRenderer(SingleFileRenderer):
         else:
             audioArgs = "-audiofile \"%s\"" % self.PAudioFile
         
+#              "-vf scale=%(resx)d:%(resy)d,harddup " \
+#              "-of mpeg -mpegopts format=%(format)s " \
         cmd = "mencoder -cache 1024 -demuxer lavf -lavfdopts format=mjpeg "\
               "%(audioArgs)s " \
               "%(subArgs)s " \
-              "-oac lavc -ovc lavc -of mpeg -mpegopts format=%(format)s -vf " \
-              "scale=%(resx)d:%(resy)d,harddup -srate %(srate)s -af lavcresample=%(srate)s -lavcopts " \
-              "%(lavcopts)s -ofps %(framerate)s "\
+              "-oac lavc -ovc lavc " \
+              "-of lavf -lavfopts format=mpg " \
+              "-srate %(srate)s -af lavcresample=%(srate)s " \
+              "-lavcopts %(lavcopts)s " \
+              "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.mpg\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'audioArgs': audioArgs,

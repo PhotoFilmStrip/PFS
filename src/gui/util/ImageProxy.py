@@ -24,13 +24,14 @@ import threading
 import wx
 
 from lib.common.ObserverPattern import Observable
+from lib.util import Encode
 
 from gui.util.ImageCache import ImageCache
      
 
 class ScaleThread(threading.Thread):
     def __init__(self, picture, callbackOnDone):
-        threading.Thread.__init__(self, name="reload %s" % picture.GetFilename())
+        threading.Thread.__init__(self, name="reload %s" % Encode(picture.GetFilename()))
         self._picture = picture
         self._abort = False
         self._callbackOnDone = callbackOnDone
