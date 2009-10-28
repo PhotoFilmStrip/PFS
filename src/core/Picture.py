@@ -19,6 +19,7 @@
 #
 
 import cStringIO
+import random
 
 import Image, ImageDraw
 
@@ -113,6 +114,29 @@ class Picture(Observable):
         if self._height == -1:
             self.GetImage()
         return self._height
+    
+    def AutoPath(self, ratio=16.0/9.0):
+        width = self.GetWidth()
+        height = self.GetHeight()
+        if width < height:
+            # portrait
+            self._startRect = (0, 0, width, width / ratio)
+            self._targetRect = (0, height - (width / ratio), width, width / ratio)
+        else:
+            scaledWidth = width * 0.75
+            self._startRect = (0, 0, width, width / ratio)
+            d = random.randint(0, 3)
+            if d == 0:
+                self._targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
+            elif d == 1:
+                self._targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+            elif d == 2:
+                self._targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
+            elif d == 3:
+                self._targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+
+        if random.randint(0, 1):
+            self._targetRect, self._startRect = self._startRect, self._targetRect
     
     def __Rotate(self, clockwise=True):
         if clockwise:

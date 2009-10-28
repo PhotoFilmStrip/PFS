@@ -389,7 +389,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                 pic = Picture(path)
                 pics.append(pic)
             
-            self.InsertPictures(pics)
+            self.InsertPictures(pics, autopath=True)
             
             Settings().SetImagePath(os.path.dirname(path))
         dlg.Destroy()
@@ -651,7 +651,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.actionManager.OnProjectChanged(False)
         return True
     
-    def InsertPictures(self, pics, position=None):
+    def InsertPictures(self, pics, position=None, autopath=False):
         if position is None:
             position = self.listView.GetItemCount()
         
@@ -662,6 +662,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                                 style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
 
         for idx, pic in enumerate(pics):
+            if autopath:
+                pic.AutoPath()
+
             ImageCache().RegisterPicture(pic)
 
             self.listView.InsertPicture(position, pic)
@@ -710,7 +713,7 @@ class ImageDropTarget(wx.FileDropTarget):
                 pics.append(pic)
 
         if pics:
-            self.frmMain.InsertPictures(pics, itm + 1 if itm != wx.NOT_FOUND else None)
+            self.frmMain.InsertPictures(pics, itm + 1 if itm != wx.NOT_FOUND else None, True)
             return True
         return False
     
