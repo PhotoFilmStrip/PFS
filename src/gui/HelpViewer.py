@@ -32,7 +32,7 @@ class HelpViewer(Singleton):
     ID_CREATE_PFS = 3
     ID_RENDER     = 4
     
-    def Init(self):
+    def __init__(self):
         self.__htmlCtrl = wx.html.HtmlHelpController()
         docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 
                                "..", "doc", "photofilmstrip", "photofilmstrip.hhp")
