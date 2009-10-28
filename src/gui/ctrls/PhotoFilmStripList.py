@@ -136,16 +136,30 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if key == wx.WXK_LEFT:
             if sel > 0:
                 self.Select(sel - 1)
+                self.EnsureVisible(sel - 1)
         
         elif key == wx.WXK_RIGHT:
             if sel < self.GetItemCount() - 1:
                 self.Select(sel + 1)
+                self.EnsureVisible(sel + 1)
         
         elif key == wx.WXK_END:
             self.Select(self.GetItemCount() - 1)
+            self.EnsureVisible(self.GetItemCount() - 1)
             
         elif key == wx.WXK_HOME:
             self.Select(0)
+            self.EnsureVisible(0)
+
+    def EnsureVisible(self, idx):
+        rect = self.GetThumbRect(idx)
+        left = rect.GetLeft()
+        vs = self.GetViewStart()[0]
+        ch = self.GetClientSizeTuple()[0]
+        if left < vs:
+            self.Scroll(left, 0)
+        elif left > vs + ch:
+            self.Scroll(rect.GetRight() - ch, 0)
 
     def UpdateBuffer(self):
         dc = wx.BufferedDC(None, self.__buffer)
@@ -283,6 +297,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self._SendChangedEvent()
         
     def DeleteAllItems(self):
+        self.__selIdx   = -1
         self.__pictures = []
         self.__UpdatePictures()
         self._SendChangedEvent()
