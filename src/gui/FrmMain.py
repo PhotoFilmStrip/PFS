@@ -636,7 +636,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             dlg = wx.MessageDialog(self,
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
                                             {'file': filepath,
-                                             'errMsg': str(err)}, 
+                                             'errMsg': unicode(err)}, 
                                    _(u"Question"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()

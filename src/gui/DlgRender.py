@@ -523,7 +523,7 @@ class DlgRender(wx.Dialog, Observer):
                     os.makedirs(path)
                 except StandardError, err:
                     dlg = wx.MessageDialog(self,
-                                           _(u"Cannot create direcotory: %s") % str(err),
+                                           _(u"Cannot create direcotory: %s") % unicode(err),
                                            _(u"Error"),
                                            wx.OK | wx.ICON_ERROR)
                     dlg.ShowModal()
@@ -539,7 +539,7 @@ class DlgRender(wx.Dialog, Observer):
                 os.remove(os.path.join(path, 'test'))
             except StandardError, err:
                 dlg = wx.MessageDialog(self,
-                                       _(u"Cannot write into direcotory: %s") % str(err),
+                                       _(u"Cannot write into direcotory: %s") % unicode(err),
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
