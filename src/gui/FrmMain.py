@@ -289,7 +289,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
         info.Version = Settings.APP_VERSION
-        info.Copyright = u"(C) 2008 %s" % Settings.DEVELOPERS[0]
+        info.Copyright = u"(C) 2009 %s" % Settings.DEVELOPERS[0]
         info.Description = wordwrap(Settings.APP_DESCRIPTION, 350, wx.ClientDC(self))
         info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
         info.Developers = Settings.DEVELOPERS
