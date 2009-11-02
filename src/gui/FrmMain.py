@@ -449,6 +449,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             pic.SetRotation(orgPic.GetRotation())
             pic.SetStartRect(orgPic.GetStartRect())
             pic.SetTargetRect(orgPic.GetTargetRect())
+
+            ImageCache().RegisterPicture(pic)
                         
             self.listView.SetPicture(item, pic)
             pic.AddObserver(self)
