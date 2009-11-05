@@ -802,11 +802,18 @@ class DlgRender(wx.Dialog, Observer):
             return
         
         if sys.platform == 'win32':
-            batchFileMask = _(u"Batch File") + " (*.bat)|*.bat"
-            header = "@echo off"
+            batchFileMask = _(u"Batch file") + " (*.bat)|*.bat"
+            coding = sys.getfilesystemencoding()
+            header = "@echo off\n" \
+                     "chcp 1252\n\n" \
+                     "SET PFS_CLI=%s-cli" % Encode(os.path.splitext(sys.argv[0])[0], coding)
+            pfsCliCmd = "%PFS_CLI%"
         else:
-            batchFileMask = _(u"Batch File") + " (*.sh)|*.sh"
-            header = "#!/bin/sh"
+            batchFileMask = _(u"Shell script") + " (*.sh)|*.sh"
+            coding = "utf-8"
+            header = "#!/bin/sh\n\n" \
+                     "export PFS_CLI=/usr/bin/photofilmstrip-cli"
+            pfsCliCmd = "$PFS_CLI"
 
         dlg = wx.FileDialog(self, _(u"Select batch file"), 
                             "" , "", 
@@ -823,11 +830,11 @@ class DlgRender(wx.Dialog, Observer):
                 fd.write("\n\n")
 
             cli = []
-            cli.append(Encode(os.path.splitext(sys.argv[0])[0]) + "-cli")
+            cli.append(pfsCliCmd)
             cli.append("-p")
-            cli.append("\"" + Encode(self.__photoFilmStrip.GetFilename()) + "\"")
+            cli.append("\"" + Encode(self.__photoFilmStrip.GetFilename(), coding) + "\"")
             cli.append("-o")
-            cli.append("\"" + Encode(self.tcOutputDir.GetValue()) + "\"")
+            cli.append("\"" + Encode(self.tcOutputDir.GetValue(), coding) + "\"")
             cli.append("-t")
             cli.append(str(self.choiceProfile.GetSelection()))
             cli.append("-n")
@@ -841,7 +848,7 @@ class DlgRender(wx.Dialog, Observer):
                 
                 if self.rbAudio.GetValue():
                     cli.append("-a")
-                    cli.append(self.tcAudiofile.GetValue())
+                    cli.append("\"" + Encode(self.tcAudiofile.GetValue(), coding) + "\"")
                     
             fd.write(" ".join(cli))
             fd.write("\n")
