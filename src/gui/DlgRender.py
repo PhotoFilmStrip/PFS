@@ -694,9 +694,10 @@ class DlgRender(wx.Dialog, Observer):
         else:
             self.stProgress.SetLabel(_(u"all done"))
 
-        if self.__renderEngine.GetErrorMessage():
+        errMsg = self.__renderEngine.GetErrorMessage() 
+        if errMsg:
             dlg = wx.MessageDialog(self,
-                                   self.__renderEngine.GetErrorMessage(),
+                                   errMsg,
                                    _(u"Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
@@ -710,6 +711,9 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = None
         self.__renderEngine    = None
         self.Layout()
+        
+        if errMsg:
+            raise RuntimeError(errMsg)
         
     def __OnProgressInfo(self, info):
         self.stProgress.SetLabel(info)

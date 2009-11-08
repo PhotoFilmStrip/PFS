@@ -18,6 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import traceback, StringIO
+
 import Image
 
 from core.Subtitle import SubtitleSrt
@@ -232,9 +234,11 @@ class RenderEngine(object):
             self.__Start(pics)
             return True
         except StandardError, err:
-            import traceback
-            traceback.print_exc()
-            self.__errorMsg = "%s: %s" % (err.__class__.__name__, err.message)
+            tb = StringIO.StringIO()
+            traceback.print_exc(file=tb)
+            self.__errorMsg = u"%s: %s\n%s" % (err.__class__.__name__, 
+                                               unicode(err), 
+                                               tb.getvalue())
             return False
         finally:
             self.__progressHandler.Done()

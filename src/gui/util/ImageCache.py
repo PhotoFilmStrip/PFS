@@ -55,11 +55,15 @@ class ImageCache(Singleton):
     
     def GetImage(self, picture):
         key = picture.GetFilename()
+        if not self._wxImgCache.has_key(key):
+            self.RegisterPicture(picture)
         wxImg  = self._wxImgCache[key]
         return wxImg
     
     def GetThumbBmp(self, picture):
         key = picture.GetFilename()
+        if not self._wxBmpCache.has_key(key):
+            self.RegisterPicture(picture)
         wxBmp  = self._wxBmpCache[key]
         return wxBmp
 

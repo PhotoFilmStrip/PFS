@@ -1,3 +1,10 @@
+  * 2009/11/08 (Version 1.3.1)
+    bugfixes: 
+     - register picture in ImageCache after browsing for a single pic
+     - UnicodeEncodeError fixed when batch job is created
+     - cli arg for audio duration accepts float values
+     - HitTest for PhotoFilmStrip-list recognizes gap between pictures
+
   * 2009/11/01 (Version 1.3)
     changed:
      - pictures stored low-res in memory, hi-res is created delayed in background

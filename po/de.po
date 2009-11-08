@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2009-11-01 22:50+CET\n"
-"PO-Revision-Date: 2009-11-01 22:51+0100\n"
+"POT-Creation-Date: 2009-11-08 15:01+CET\n"
+"PO-Revision-Date: 2009-11-08 15:01+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -124,28 +124,28 @@ msgstr "Bitte warten"
 msgid "aborting..."
 msgstr "abbrechen..."
 
-#: src/core/RenderEngine.py:142
+#: src/core/RenderEngine.py:144
 msgid "initialize renderer"
 msgstr "Initialisiere"
 
-#: src/core/RenderEngine.py:154
-#: src/core/RenderEngine.py:175
+#: src/core/RenderEngine.py:156
+#: src/core/RenderEngine.py:177
 msgid "processing image %d/%d"
 msgstr "Verarbeite Bild %d/%d"
 
-#: src/core/RenderEngine.py:166
+#: src/core/RenderEngine.py:168
 msgid "processing transition %d/%d"
 msgstr "Berechne Bildübergang %d/%d"
 
-#: src/core/RenderEngine.py:192
+#: src/core/RenderEngine.py:194
 msgid "processing audiofile..."
 msgstr "Verarbeite Audio-Datei..."
 
-#: src/core/RenderEngine.py:196
+#: src/core/RenderEngine.py:198
 msgid "creating output..."
 msgstr "Ausgabe erstellen..."
 
-#: src/core/RenderEngine.py:227
+#: src/core/RenderEngine.py:229
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
@@ -266,11 +266,11 @@ msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 #: src/gui/DlgRender.py:527
 #: src/gui/DlgRender.py:543
 #: src/gui/DlgRender.py:566
-#: src/gui/DlgRender.py:700
-#: src/gui/DlgRender.py:731
-#: src/gui/DlgRender.py:766
-#: src/gui/DlgRender.py:798
-#: src/gui/FrmMain.py:609
+#: src/gui/DlgRender.py:701
+#: src/gui/DlgRender.py:735
+#: src/gui/DlgRender.py:770
+#: src/gui/DlgRender.py:802
+#: src/gui/FrmMain.py:611
 msgid "Error"
 msgstr "Fehler"
 
@@ -331,7 +331,7 @@ msgid "Output directory:"
 msgstr "Ausgabeordner:"
 
 #: src/gui/DlgRender.py:417
-#: src/gui/DlgRender.py:705
+#: src/gui/DlgRender.py:706
 msgid "&Close"
 msgstr "S&chließen"
 
@@ -347,9 +347,9 @@ msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 #: src/gui/DlgRender.py:552
 #: src/gui/DlgRender.py:636
 #: src/gui/FrmMain.py:343
-#: src/gui/FrmMain.py:527
-#: src/gui/FrmMain.py:581
-#: src/gui/FrmMain.py:640
+#: src/gui/FrmMain.py:529
+#: src/gui/FrmMain.py:583
+#: src/gui/FrmMain.py:642
 msgid "Question"
 msgstr "Frage"
 
@@ -381,32 +381,35 @@ msgstr "Aktuellen Vorgang abbrechen?"
 msgid "Edit property"
 msgstr "Eigenschaft bearbeiten"
 
-#: src/gui/DlgRender.py:730
+#: src/gui/DlgRender.py:734
 msgid "No media support found on this platform!"
 msgstr "Video-Unterstützung auf dieser Plattform nicht verfügbar!"
 
-#: src/gui/DlgRender.py:750
+#: src/gui/DlgRender.py:754
 msgid "Select music"
 msgstr "Audiodatei auswählen"
 
-#: src/gui/DlgRender.py:753
+#: src/gui/DlgRender.py:757
 msgid "Audiofiles"
 msgstr "Audiodateien"
 
-#: src/gui/DlgRender.py:765
+#: src/gui/DlgRender.py:769
 msgid "Invalid audio file!"
 msgstr "Ungültige Audio-Datei"
 
-#: src/gui/DlgRender.py:797
+#: src/gui/DlgRender.py:801
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "Projekt wurde noch nicht gespeichert. Zum Erstellen von Batch-Aufträgen bitte erst das Projekt speichern."
 
-#: src/gui/DlgRender.py:805
-#: src/gui/DlgRender.py:808
-msgid "Batch File"
+#: src/gui/DlgRender.py:809
+msgid "Batch file"
 msgstr "Stapel-Datei"
 
-#: src/gui/DlgRender.py:811
+#: src/gui/DlgRender.py:816
+msgid "Shell script"
+msgstr "Shell Script"
+
+#: src/gui/DlgRender.py:822
 msgid "Select batch file"
 msgstr "Stapelverarbeitungsdatei wählen"
 
@@ -479,39 +482,39 @@ msgstr "Durchsuchen"
 msgid "Import image"
 msgstr "Bild importieren"
 
-#: src/gui/FrmMain.py:523
+#: src/gui/FrmMain.py:525
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/FrmMain.py:526
+#: src/gui/FrmMain.py:528
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:542
+#: src/gui/FrmMain.py:544
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:549
+#: src/gui/FrmMain.py:551
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:580
+#: src/gui/FrmMain.py:582
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr "Einige Bilder aus dem Ordner '%s' existieren nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
 
-#: src/gui/FrmMain.py:607
+#: src/gui/FrmMain.py:609
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Kein gültiges %(app)s-Projekt: %(file)s"
 
-#: src/gui/FrmMain.py:637
+#: src/gui/FrmMain.py:639
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
 
-#: src/gui/FrmMain.py:658
+#: src/gui/FrmMain.py:660
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: src/gui/FrmMain.py:659
+#: src/gui/FrmMain.py:661
 msgid "Loading pictures..."
 msgstr "Bilder laden..."
 
