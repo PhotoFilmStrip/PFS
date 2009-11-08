@@ -272,7 +272,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         for idx, pic in enumerate(self.__pictures):
             thumbWidth, thumbHeight = self.GetThumbSize(pic)
             
-            rect = wx.Rect(sx, 0, thumbWidth, self.HEIGHT)
+            rect = wx.Rect(sx, 0, thumbWidth + 10, self.HEIGHT)
             if rect.Contains(pos):
                 return idx
         
