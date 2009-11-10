@@ -665,7 +665,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
 
         for idx, pic in enumerate(pics):
             if autopath:
-                pic.AutoPath()
+                pic.AutoPath(ImageSectionEditor.RATIO)
 
             ImageCache().RegisterPicture(pic)
 

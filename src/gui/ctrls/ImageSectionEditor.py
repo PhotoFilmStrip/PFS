@@ -350,9 +350,9 @@ class ImageSectionEditor(wx.Panel, Observer):
                     
                 #check size
                 recalcDelta = False
-                if width < 16:
-                    width = 16
-                    height = 9
+                if width < 100:
+                    width = 100
+                    height = width / self.RATIO
                     recalcDelta = True
                 else:
                     if width > self._imgProxy.GetWidth():
@@ -442,10 +442,11 @@ class ImageSectionEditor(wx.Panel, Observer):
     def OnMouseWheel(self, event):
         rotation = event.GetWheelRotation()
         
+        step = 20
         if rotation > 0: 
-            self._sectRect.Inflate(16, 9)
+            self._sectRect.Inflate(step, int(step / self.RATIO))
         else:
-            self._sectRect.Inflate(-16, -9)
+            self._sectRect.Inflate(-step, -int(step / self.RATIO))
         
         self._SendRectChangedEvent()
         self.__UpdateSectRect()
@@ -458,13 +459,15 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def OnKeyDown(self, event):
         key = event.GetKeyCode()
+        step = 20
         if key == wx.WXK_NUMPAD_ADD:
-            self._sectRect.Inflate(16, 9)
+            self._sectRect.Inflate(step, int(step / self.RATIO))
         elif key == wx.WXK_NUMPAD_SUBTRACT:
-            self._sectRect.Inflate(-16, -9)
+            self._sectRect.Inflate(-step, -int(step / self.RATIO))
         elif key == wx.WXK_NUMPAD_DIVIDE:
-            self._sectRect.SetWidth(1280)
-            self._sectRect.SetHeight(720)
+            width = 1280
+            self._sectRect.SetWidth(width)
+            self._sectRect.SetHeight(width / self.RATIO)
         elif key == wx.WXK_NUMPAD_MULTIPLY:
             self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), self._imgProxy.GetWidth() / self.RATIO)
         elif key == wx.WXK_LEFT:
@@ -508,7 +511,7 @@ class ImageSectionEditor(wx.Panel, Observer):
             height = width / self.RATIO
         if height > self._imgProxy.GetHeight():
             height = self._imgProxy.GetHeight()
-            width = height / self.RATIO
+            width = height * self.RATIO
 
         if left < 0:
             left = 0
