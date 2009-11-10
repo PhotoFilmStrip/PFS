@@ -32,7 +32,7 @@ from core.OutputProfile import DEFAULT_PROFILES
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.3.1"
+    APP_VERSION     = "1.3.2"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]
