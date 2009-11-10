@@ -1,4 +1,5 @@
 
+import codecs
 import os
 
 
@@ -24,13 +25,13 @@ class SubtitleSrt(object):
         start = self.__FormatTime(self.__curTime + 0.5)
         end   = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic) - 0.5)
         
-        result = "%(idx)d\n" \
-                 "%(start)s --> %(end)s\n" \
-                 "%(text)s\n" \
-                 "\n" % {'idx': self.__index,
-                         'start': start,
-                         'end': end,
-                         'text': pic.GetComment().strip()}
+        result = u"%(idx)d\n" \
+                 u"%(start)s --> %(end)s\n" \
+                 u"%(text)s\n" \
+                 u"\n" % {'idx': self.__index,
+                          'start': start,
+                          'end': end,
+                          'text': pic.GetComment().strip()}
                  
         return result
         
@@ -38,7 +39,8 @@ class SubtitleSrt(object):
     def Start(self, pics):
         if self.__outputPath is None:
             return
-        fd = open(os.path.join(self.__outputPath, "output.srt"), 'w')
+        fd = codecs.open(os.path.join(self.__outputPath, "output.srt"), 'w', "utf-8", "replace")
+        fd.write(codecs.BOM_UTF8.decode("utf-8"))
         for pic in pics:
             self.__index += 1
             
