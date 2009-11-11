@@ -10,6 +10,12 @@ class PnlWelcome(wx.Panel):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
+        parent.AddSizer(self.szCentered, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+
+    def _init_coll_szCentered_Items(self, parent):
+        # generated method, don't edit
+
         parent.AddWindow(self.stTitle, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
@@ -21,8 +27,11 @@ class PnlWelcome(wx.Panel):
 
     def _init_sizers(self):
         # generated method, don't edit
-        self.szMain = wx.BoxSizer(orient=wx.VERTICAL)
+        self.szCentered = wx.BoxSizer(orient=wx.VERTICAL)
 
+        self.szMain = wx.BoxSizer(orient=wx.HORIZONTAL)
+
+        self._init_coll_szCentered_Items(self.szCentered)
         self._init_coll_szMain_Items(self.szMain)
 
         self.SetSizer(self.szMain)
@@ -32,7 +41,6 @@ class PnlWelcome(wx.Panel):
         wx.Panel.__init__(self, id=wxID_PNLWELCOME, name=u'PnlWelcome',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(400, 250))
 
         self.stTitle = wx.StaticText(id=wxID_PNLWELCOMESTTITLE,
               label=u'staticText1', name=u'stTitle', parent=self,
@@ -50,7 +58,9 @@ class PnlWelcome(wx.Panel):
 
         self._init_sizers()
 
-    def __init__(self, parent):#, id, pos, size, style, name):
+    def __init__(self, parent, id=wx.ID_ANY, 
+                 pos=wx.DefaultPosition, size=wx.DefaultSize, 
+                 style=0, name='panel'):
         self._init_ctrls(parent)
         
         font = self.stTitle.GetFont()

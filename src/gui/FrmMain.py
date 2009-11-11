@@ -49,14 +49,23 @@ from res.license import licenseText
 
 [wxID_FRMMAIN, wxID_FRMMAINBITMAPLEFT, wxID_FRMMAINBITMAPRIGHT, 
  wxID_FRMMAINCMDMOVELEFT, wxID_FRMMAINCMDMOVERIGHT, wxID_FRMMAINCMDREMOVE, 
- wxID_FRMMAINLISTVIEW, wxID_FRMMAINPANELTOP, wxID_FRMMAINPNLEDITPICTURE, 
-] = [wx.NewId() for _init_ctrls in range(9)]
+ wxID_FRMMAINLISTVIEW, wxID_FRMMAINPANELTOP, wxID_FRMMAINPANELWELCOME, 
+ wxID_FRMMAINPNLEDITPICTURE, wxID_FRMMAINTOOLBARIMGSECT, 
+] = [wx.NewId() for _init_ctrls in range(11)]
 
+
+[wxID_FRMMAINTOOLBARIMGSECTTOOLAUTOPATH, 
+ wxID_FRMMAINTOOLBARIMGSECTTOOLFROMNEXT, 
+ wxID_FRMMAINTOOLBARIMGSECTTOOLFROMPREV, 
+ wxID_FRMMAINTOOLBARIMGSECTTOOLLEFTTORIGHT, 
+ wxID_FRMMAINTOOLBARIMGSECTTOOLRIGHTTOLEFT, 
+] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(5)]
 
 class FrmMain(wx.Frame, Observer, UserInteractionHandler):
     
     _custom_classes = {"wx.Panel": ["ImageSectionEditor",
-                                    "PnlEditPicture"],
+                                    "PnlEditPicture",
+                                    "PnlWelcome"],
                        "wx.ListView": ["PhotoFilmStripList"]}
     
     def _init_coll_sizerPictures_Items(self, parent):
@@ -78,6 +87,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         # generated method, don't edit
 
         parent.AddWindow(self.panelTop, 1, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.panelWelcome, 1, border=0,
+              flag=wx.ALIGN_CENTER_HORIZONTAL)
         parent.AddWindow(self.pnlEditPicture, 0, border=0, flag=wx.EXPAND)
         parent.AddSizer(self.sizerPictures, 0, border=0, flag=wx.EXPAND)
 
@@ -85,7 +96,48 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         # generated method, don't edit
 
         parent.AddWindow(self.bitmapLeft, 1, border=2, flag=wx.EXPAND | wx.ALL)
+        parent.AddWindow(self.toolBarImgSect, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.bitmapRight, 1, border=2, flag=wx.ALL | wx.EXPAND)
+
+    def _init_coll_toolBarImgSect_Tools(self, parent):
+        # generated method, don't edit
+
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLAUTOPATH, kind=wx.ITEM_NORMAL,
+              label=u'', longHelp=u'', shortHelp=_(u'Automatic motion path'))
+        parent.AddSeparator()
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLLEFTTORIGHT, kind=wx.ITEM_NORMAL,
+              label='', longHelp='', shortHelp=_(u'Set motion end to start'))
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLRIGHTTOLEFT, kind=wx.ITEM_NORMAL,
+              label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
+        parent.AddSeparator()
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLFROMPREV, kind=wx.ITEM_NORMAL,
+              label='', longHelp='',
+              shortHelp=_(u'Set motion path same as previous.'))
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLFROMNEXT, kind=wx.ITEM_NORMAL,
+              label='', longHelp='',
+              shortHelp=_(u'Set motion path same as next.'))
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLAUTOPATH)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLLEFTTORIGHT)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolRightToLeft,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLRIGHTTOLEFT)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolFromPrev,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLFROMPREV)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolFromNext,
+              id=wxID_FRMMAINTOOLBARIMGSECTTOOLFROMNEXT)
+
+        parent.Realize()
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -109,8 +161,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         # generated method, don't edit
         wx.Frame.__init__(self, id=wxID_FRMMAIN, name=u'FrmMain', parent=prnt,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL, title='PhotoFilmStrip')
-        self.SetClientSize(wx.Size(400, 250))
+              style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
+              title='PhotoFilmStrip')
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self.panelTop = wx.Panel(id=wxID_FRMMAINPANELTOP, name=u'panelTop',
@@ -121,16 +173,24 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
               name=u'bitmapLeft', parent=self.panelTop, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
+        self.toolBarImgSect = wx.ToolBar(id=wxID_FRMMAINTOOLBARIMGSECT,
+              name=u'toolBarImgSect', parent=self.panelTop, pos=wx.Point(-1,
+              -1), size=wx.Size(-1, -1), style=wx.TB_VERTICAL | wx.NO_BORDER)
+
         self.bitmapRight = ImageSectionEditor(id=wxID_FRMMAINBITMAPRIGHT,
               name=u'bitmapRight', parent=self.panelTop, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
+
+        self.panelWelcome = PnlWelcome(id=wxID_FRMMAINPANELWELCOME,
+              name=u'panelWelcome', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.pnlEditPicture = PnlEditPicture(id=wxID_FRMMAINPNLEDITPICTURE,
               name=u'pnlEditPicture', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.listView = PhotoFilmStripList(id=wxID_FRMMAINLISTVIEW, 
-              name=u'listView', parent=self, pos=wx.Point(-1, -1), 
+        self.listView = PhotoFilmStripList(id=wxID_FRMMAINLISTVIEW,
+              name=u'listView', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1),
               style=wx.LC_ICON | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL)
         self.listView.Bind(wx.EVT_LIST_ITEM_SELECTED,
@@ -158,6 +218,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.cmdRemove.Bind(wx.EVT_BUTTON, self.OnCmdRemoveButton,
               id=wxID_FRMMAINCMDREMOVE)
 
+        self._init_coll_toolBarImgSect_Tools(self.toolBarImgSect)
+
         self._init_sizers()
 
     def __init__(self):
@@ -182,15 +244,10 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.bitmapRight.SetDropTarget(ProjectDropTarget(self))
         self.bitmapRight.SetImgProxy(self.imgProxy)
         
-#        self.pnlWelcome = PnlWelcome(self.bitmapLeft)
-#        self.pnlWelcome.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
-#        self.pnlWelcome.stInfo.SetDropTarget(ImageDropTarget(self))
-        
-#        sizer = wx.BoxSizer(wx.VERTICAL)
-#        sizer.AddStretchSpacer(1)
-#        sizer.Add(self.pnlWelcome, 0, wx.ALIGN_CENTER)
-#        sizer.AddStretchSpacer(1)
-#        self.bitmapLeft.SetSizer(sizer)
+        self.panelWelcome.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
+        self.panelWelcome.stInfo.SetDropTarget(ImageDropTarget(self))
+
+        self.panelTop.Show(False)
         
         self.statusBar = wx.StatusBar(self)
         self.statusBar.SetFieldsCount(3)
@@ -499,7 +556,9 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             self.pnlEditPicture.Enable(False)
             self.cmdMoveLeft.Enable(False)
             self.cmdMoveRight.Enable(False)
-#            self.pnlWelcome.Show(True)
+            
+            self.panelWelcome.Show(True)
+            self.panelTop.Show(False)
         
         self.UpdateStatusText()
         self.cmdRemove.Enable(self.listView.GetItemCount() > 0)
@@ -507,6 +566,8 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
                                              self.__GetMoveImageState())
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
+        
+        self.Layout()
 
     def OnHelpIndex(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_INDEX)
@@ -517,6 +578,47 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         
     def OnPhotoFilmStripListChanged(self, event):
         self.actionManager.OnProjectChanged(True)
+
+    def OnToolBarImgSectToolAutoPath(self, event):
+        selItem = self.listView.GetSelected()
+        pic = self.listView.GetPicture(selItem)
+        if pic is None:
+            return
+        pic.AutoPath(ImageSectionEditor.RATIO)
+
+    def OnToolBarImgSectToolLeftToRight(self, event):
+        selItem = self.listView.GetSelected()
+        pic = self.listView.GetPicture(selItem)
+        if pic is None:
+            return
+        pic.SetTargetRect(pic.GetStartRect())
+
+    def OnToolBarImgSectToolRightToLeft(self, event):
+        selItem = self.listView.GetSelected()
+        pic = self.listView.GetPicture(selItem)
+        if pic is None:
+            return
+        pic.SetStartRect(pic.GetTargetRect())
+
+    def OnToolBarImgSectToolFromPrev(self, event):
+        selItem = self.listView.GetSelected()
+        selPic = self.listView.GetPicture(selItem)
+        prevPic = self.listView.GetPicture(selItem - 1)
+        if selPic is None or prevPic is None:
+            return
+
+        selPic.SetStartRect(prevPic.GetStartRect())
+        selPic.SetTargetRect(prevPic.GetTargetRect())
+
+    def OnToolBarImgSectToolFromNext(self, event):
+        selItem = self.listView.GetSelected()
+        selPic = self.listView.GetPicture(selItem)
+        nextPic = self.listView.GetPicture(selItem + 1)
+        if selPic is None or nextPic is None:
+            return
+
+        selPic.SetStartRect(nextPic.GetStartRect())
+        selPic.SetTargetRect(nextPic.GetTargetRect())
 
     def CheckAndAskSaving(self):
         if self.actionManager.CanSave():
@@ -684,7 +786,10 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         self.UpdateStatusText()
         self.actionManager.OnProjectReady(self.listView.GetItemCount() > 0)
         self.actionManager.OnProjectChanged(True)
-#        self.pnlWelcome.Show(self.listView.GetItemCount() == 0)
+
+        self.panelWelcome.Show(self.listView.GetItemCount() == 0)
+        self.panelTop.Show(self.listView.GetItemCount() != 0)
+        self.Layout()
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
@@ -695,6 +800,12 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
             
             if arg == 'duration':
                 self.UpdateStatusText()
+
+            if arg == 'start':
+                self.bitmapLeft.SetSection(wx.Rect(*obj.GetStartRect()))
+
+            if arg == 'target':
+                self.bitmapRight.SetSection(wx.Rect(*obj.GetTargetRect()))
              
             self.actionManager.OnProjectChanged(True)
 
