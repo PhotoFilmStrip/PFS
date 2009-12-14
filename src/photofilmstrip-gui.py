@@ -46,6 +46,9 @@ def initI18N():
 def main():
     initLogging()
     initI18N()
+
+    import wxversion
+    wxversion.select("2.8")
     
     from gui.PhotoFilmStripApp import main
     main()
