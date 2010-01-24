@@ -137,6 +137,9 @@ class Picture(Observable):
 
         if random.randint(0, 1):
             self._targetRect, self._startRect = self._startRect, self._targetRect
+
+        self.Notify("start")
+        self.Notify("target")
     
     def __Rotate(self, clockwise=True):
         if clockwise:
