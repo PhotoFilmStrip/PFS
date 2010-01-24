@@ -105,7 +105,7 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_FRMMAINTOOLBARIMGSECTTOOLAUTOPATH, kind=wx.ITEM_NORMAL,
-              label=u'', longHelp=u'', shortHelp=_(u'Automatic motion path'))
+              label=u'', longHelp=u'', shortHelp=_(u'Random motion path'))
         parent.AddSeparator()
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
