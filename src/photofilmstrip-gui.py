@@ -20,15 +20,16 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
+import os, gettext, locale, sys
+
 
 def initLogging():
-    import logging
     logging.basicConfig(level=logging.WARNING,
                         format='%(asctime)s (%(levelname)s): %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')
 
 def initI18N():
-    import os, gettext, locale, sys
     from lib.Settings import Settings
     curLang = locale.getdefaultlocale()[0]
     localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../locale")
