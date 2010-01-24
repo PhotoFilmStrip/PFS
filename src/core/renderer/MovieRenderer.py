@@ -20,6 +20,7 @@
 
 import os
 import sys
+import re
 from subprocess import Popen, PIPE, STDOUT
 
 from core.OutputProfile import OutputProfile
@@ -54,7 +55,7 @@ class MovieRenderer(SingleFileRenderer):
         proc = Popen("mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
         proc.wait()
         output = proc.stdout.read()
-        if not output.startswith("MEncoder"):
+        if not re.search("^(mplayer|mencoder)", output, re.I):
             msgList.append(_(u"mencoder (mencoder) required!"))
 
     @staticmethod
