@@ -1,3 +1,9 @@
+  * 2010/01/24 (Version 1.3.3)
+    bugfixes: 
+     - select wx-version for multiple wx installations
+     - check for mencoder
+     - incomplete portuguese translation removed
+
   * 2009/11/10 (Version 1.3.2)
     bugfixes: 
      - UnicodeEncodeError when generating subtitle (srt-file)
