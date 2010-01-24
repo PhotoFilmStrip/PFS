@@ -75,6 +75,12 @@ def __CreateDefaultProfiles():
     fullhd.PResNtsc = (1920, 1080) 
     fullhd.PBitrate = 12000
     
+    fullhd2 = OutputProfile()
+    fullhd2.PName = "FULL-HD 1440x1080"
+    fullhd2.PResPal = (1440, 1080)
+    fullhd2.PResNtsc = (1440, 1080) 
+    fullhd2.PBitrate = 12000
+
     return [vcd, svcd, dvd, medium, hd, fullhd]
 
 
