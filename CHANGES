@@ -1,7 +1,12 @@
-  * 2009/12/XX (Version 1.3.2)
-    changed:
- 	 - welcome message reactivated
- 	 - tool buttons to manipulate the motion path
+  * 2010/02/14 (Version 1.3.4)
+    added: 
+     - french translation (thanks to Teza)
+
+  * 2010/01/24 (Version 1.3.3)
+    bugfixes: 
+     - select wx-version for multiple wx installations
+     - check for mencoder
+     - incomplete portuguese translation removed
 
   * 2009/11/10 (Version 1.3.2)
     bugfixes: 
