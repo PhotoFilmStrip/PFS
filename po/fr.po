@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: 2010-02-12 21:11+CET\n"
-"PO-Revision-Date: 2010-02-13 19:53+0100\n"
-"Last-Translator: Thierry Saliou alias Teza <tsaliou75@orange.fr>\n"
+"PO-Revision-Date: 2010-02-14 17:24+0100\n"
+"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -524,7 +524,7 @@ msgstr "Rotation:"
 
 #: src/gui/PnlEditPicture.py:134
 msgid "Effect:"
-msgstr "Effets;"
+msgstr "Effets:"
 
 #: src/gui/PnlEditPicture.py:144
 msgid "Duration (sec):"
