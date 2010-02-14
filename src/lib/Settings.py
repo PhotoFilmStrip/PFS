@@ -32,10 +32,12 @@ from core.OutputProfile import DEFAULT_PROFILES
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.3.3"
+    APP_VERSION     = "1.3.4"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
-    DEVELOPERS      = [u"Jens G\xf6pfert", "Markus Wintermann"]
+    DEVELOPERS      = [u"Jens G\xf6pfert", 
+                       "Markus Wintermann", 
+                       "French translation: Teza Lprod - http://lprod.org"]
     
     def __init__(self):
         Settings.APP_DESCRIPTION = _("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.")
