@@ -18,6 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import locale
 import os
 import sys
 import tempfile
@@ -33,14 +34,12 @@ class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
     APP_VERSION     = "1.3.4"
-    APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens G\xf6pfert", 
                        "Markus Wintermann", 
                        "French translation: Teza Lprod - http://lprod.org"]
     
     def __init__(self):
-        Settings.APP_DESCRIPTION = _("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.")
         self.__isFirstStart = False
         self.cp = None
         
@@ -81,6 +80,19 @@ class Settings(Singleton):
     def IsFirstStart(self):
         return self.__isFirstStart
     
+    def SetLanguage(self, lang):
+        self.Load()
+        self.cp.set("General", "Language", Encode(lang))
+        self.Save()
+
+    def GetLanguage(self):
+        self.Load()
+        if self.cp.has_option("General", "Language"):
+            return Decode(self.cp.get("General", "Language"))
+        lang = locale.getdefaultlocale()[0]
+        self.SetLanguage(lang)
+        return lang
+
     def SetFileHistory(self, fileList):
         self.Load()
         self.cp.remove_section("History")
