@@ -409,7 +409,7 @@ class DlgRender(wx.Dialog, Observer):
               self.OnCmdBrowseOutputDirButton,
               id=wxID_DLGRENDERCMDBROWSEOUTPUTDIR)
 
-        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=u'&Help', name=u'cmdHelp',
+        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'), name=u'cmdHelp',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton,
               id=wx.ID_HELP)
@@ -420,7 +420,7 @@ class DlgRender(wx.Dialog, Observer):
         self.cmdClose.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
               id=wxID_DLGRENDERCMDCLOSE)
 
-        self.cmdBatch = wx.Button(id=wxID_DLGRENDERCMDBATCH, label=u'&Batch Job',
+        self.cmdBatch = wx.Button(id=wxID_DLGRENDERCMDBATCH, label=_(u'&Batch Job'),
               name=u'cmdBatch', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdBatch.Bind(wx.EVT_BUTTON, self.OnCmdBatchButton,
