@@ -292,12 +292,15 @@ class FrmMain(wx.Frame, Observer, UserInteractionHandler):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
         info.Version = Settings.APP_VERSION
-        info.Copyright = u"(C) 2009 %s" % Settings.DEVELOPERS[0]
+        info.Copyright = u"(C) 2010 %s" % Settings.DEVELOPERS[0]
         info.Description = wordwrap(_("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."), 
                                     350, 
                                     wx.ClientDC(self))
         info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
-        info.Developers = Settings.DEVELOPERS
+        info.Developers = Settings.DEVELOPERS + [
+                                "",
+                                _("Translations"),
+                                _("French:") + " Teza Lprod - http://lprod.org"]
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
 

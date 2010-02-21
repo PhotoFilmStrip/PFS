@@ -114,21 +114,36 @@ class ActionManager(object):
         
     def __MakeMenuFile(self):
         menu = wx.Menu()
-        self.__CreateMenuItem(menu, wx.ID_NEW)#, _(u'&New Project'))
-        self.__CreateMenuItem(menu, wx.ID_OPEN)#, _(u'&Open Project')
+        self.__CreateMenuItem(menu, 
+                              wx.ID_NEW, 
+                              _(u'&New Project') + '\tCtrl+N',
+                              wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_MENU, wx.DefaultSize))
+        self.__CreateMenuItem(menu, 
+                              wx.ID_OPEN, 
+                              _(u'&Open Project') + '\tCtrl+O',
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize))
 
         fileHistoryMenu = wx.Menu()
         menu.AppendSubMenu(fileHistoryMenu, _(u"Open &recent"))
         self.filehistory.UseMenu(fileHistoryMenu)
         self.filehistory.AddFilesToMenu()
         menu.AppendSeparator()
-        self.__CreateMenuItem(menu, wx.ID_SAVE)#, _(u'&Save Project')
-        self.__CreateMenuItem(menu, wx.ID_SAVEAS)#, _(u'Save Project &as')
+        self.__CreateMenuItem(menu, wx
+                              .ID_SAVE, 
+                              _(u'&Save Project') + '\tCtrl+S',
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, wx.DefaultSize))
+        self.__CreateMenuItem(menu, 
+                              wx.ID_SAVEAS, 
+                              _(u'Save Project &as'),
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
         self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))
         menu.AppendSeparator()
-        self.__CreateMenuItem(menu, wx.ID_EXIT)#, _(u'E&xit')
+        self.__CreateMenuItem(menu, 
+                              wx.ID_EXIT, 
+                              _(u'E&xit'),
+                              wx.ArtProvider.GetBitmap(wx.ART_QUIT, wx.ART_MENU, wx.DefaultSize))
         return menu
 
     def __MakeMenuEdit(self):
@@ -172,9 +187,15 @@ class ActionManager(object):
         
     def __MakeMenuHelp(self):
         menu = wx.Menu()
-        self.__CreateMenuItem(menu, wx.ID_HELP) 
+        self.__CreateMenuItem(menu, 
+                              wx.ID_HELP, 
+                              _(u'&Help') + '\tF1',
+                              wx.ArtProvider.GetBitmap(wx.ART_HELP, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
-        self.__CreateMenuItem(menu, wx.ID_ABOUT) 
+        self.__CreateMenuItem(menu, 
+                              wx.ID_ABOUT, 
+                              _(u'&About'),
+                              wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MENU, wx.DefaultSize))
         return menu
     
     

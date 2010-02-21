@@ -36,8 +36,7 @@ class Settings(Singleton):
     APP_VERSION     = "1.3.4"
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens G\xf6pfert", 
-                       "Markus Wintermann", 
-                       "French translation: Teza Lprod - http://lprod.org"]
+                       "Markus Wintermann"] 
     
     def __init__(self):
         self.__isFirstStart = False
@@ -89,9 +88,7 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "Language"):
             return Decode(self.cp.get("General", "Language"))
-        lang = locale.getdefaultlocale()[0]
-        self.SetLanguage(lang)
-        return lang
+        return locale.getdefaultlocale()[0]
 
     def SetFileHistory(self, fileList):
         self.Load()
