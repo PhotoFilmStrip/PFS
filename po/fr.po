@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-02-12 21:11+CET\n"
-"PO-Revision-Date: 2010-02-14 17:24+0100\n"
+"POT-Creation-Date: 2010-02-24 18:10+CET\n"
+"PO-Revision-Date: 2010-02-24 18:11+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: src/cli/Main.py:219
 #: src/gui/DlgRender.py:695
 msgid "all done"
-msgstr "Complété    "
+msgstr "Terminer "
 
 #: src/cli/Main.py:77
 msgid "processing project"
@@ -174,6 +174,8 @@ msgid "&Tools"
 msgstr "&Outils"
 
 #: src/gui/ActionManager.py:59
+#: src/gui/ActionManager.py:192
+#: src/gui/DlgRender.py:412
 msgid "&Help"
 msgstr "&Aide"
 
@@ -202,45 +204,69 @@ msgstr "Importer des images"
 msgid "Render filmstrip"
 msgstr "Rendu filmstrip "
 
-#: src/gui/ActionManager.py:121
+#: src/gui/ActionManager.py:119
+msgid "&New Project"
+msgstr "&Nouveau projet "
+
+#: src/gui/ActionManager.py:123
+msgid "&Open Project"
+msgstr "&Ouvrir Projet"
+
+#: src/gui/ActionManager.py:127
 msgid "Open &recent"
 msgstr "Ouvrir &récent "
 
-#: src/gui/ActionManager.py:128
+#: src/gui/ActionManager.py:133
+msgid "&Save Project"
+msgstr "&Enregistrer le projet "
+
+#: src/gui/ActionManager.py:137
+msgid "Save Project &as"
+msgstr "Enregistrer le projet &sous "
+
+#: src/gui/ActionManager.py:140
 msgid "&Import Project"
 msgstr "&Importer Projet "
 
-#: src/gui/ActionManager.py:129
+#: src/gui/ActionManager.py:141
 msgid "&Export Project"
 msgstr "&Exporter le projet "
 
-#: src/gui/ActionManager.py:138
+#: src/gui/ActionManager.py:145
+msgid "E&xit"
+msgstr "Q&uitter"
+
+#: src/gui/ActionManager.py:153
 msgid "Move picture &left"
 msgstr "Bouger l'image à&gauche "
 
-#: src/gui/ActionManager.py:142
+#: src/gui/ActionManager.py:157
 msgid "Move picture &right"
 msgstr "Bouger l'image à&droite "
 
-#: src/gui/ActionManager.py:147
+#: src/gui/ActionManager.py:162
 msgid "&Remove Picture"
 msgstr "&Retirer image"
 
-#: src/gui/ActionManager.py:152
+#: src/gui/ActionManager.py:167
 msgid "Rotate &clockwise"
 msgstr "Rotation &horaire "
 
-#: src/gui/ActionManager.py:156
+#: src/gui/ActionManager.py:171
 msgid "Rotate counter clock&wise"
 msgstr "Rotation sens anti&horaire "
 
-#: src/gui/ActionManager.py:164
+#: src/gui/ActionManager.py:179
 msgid "&Import Pictures"
 msgstr "&Importer des images "
 
-#: src/gui/ActionManager.py:169
+#: src/gui/ActionManager.py:184
 msgid "&Render filmstrip"
 msgstr "&Rendu filmstrip "
+
+#: src/gui/ActionManager.py:197
+msgid "&About"
+msgstr "&A propos"
 
 #: src/gui/DlgBugReport.py:32
 msgid "An unexpected error occured"
@@ -270,7 +296,7 @@ msgstr "Désolé cette fonction est temporairement indisponible.."
 #: src/gui/DlgRender.py:735
 #: src/gui/DlgRender.py:770
 #: src/gui/DlgRender.py:802
-#: src/gui/FrmMain.py:618
+#: src/gui/FrmMain.py:623
 msgid "Error"
 msgstr "Erreur"
 
@@ -288,7 +314,7 @@ msgstr "Configuration"
 
 #: src/gui/DlgRender.py:275
 msgid "Profile:"
-msgstr "Profile:"
+msgstr "Profil:"
 
 #: src/gui/DlgRender.py:287
 msgid "Type:"
@@ -335,6 +361,10 @@ msgstr "Dossier de destination: "
 msgid "&Close"
 msgstr "&Fermer"
 
+#: src/gui/DlgRender.py:423
+msgid "&Batch Job"
+msgstr "&Traitement par lots"
+
 #: src/gui/DlgRender.py:429
 msgid "&Start"
 msgstr "&Démarrer "
@@ -346,10 +376,10 @@ msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer? "
 #: src/gui/DlgRender.py:517
 #: src/gui/DlgRender.py:552
 #: src/gui/DlgRender.py:636
-#: src/gui/FrmMain.py:346
-#: src/gui/FrmMain.py:536
-#: src/gui/FrmMain.py:590
-#: src/gui/FrmMain.py:649
+#: src/gui/FrmMain.py:351
+#: src/gui/FrmMain.py:541
+#: src/gui/FrmMain.py:595
+#: src/gui/FrmMain.py:654
 msgid "Question"
 msgstr "Question"
 
@@ -429,92 +459,104 @@ msgstr "Aller au site de téléchargement "
 msgid "A new version is available online. The following changes has been made:"
 msgstr "Une nouvelle version est disponible en ligne. Les changements suivants on été fait: "
 
-#: src/gui/FrmMain.py:297
+#: src/gui/FrmMain.py:296
+msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr "PhotoFilmStrip réalise des films a partir des vos images en juste trois étapes. Premièrement sélectionnez vos photos, vos effets et le rendu vidéo. Il y a plusieurs possibilités de formats,  VCD, SVCD, DVD, jusqu'au FULL-HD."
+
+#: src/gui/FrmMain.py:299
 msgid "online"
 msgstr "en ligne "
 
-#: src/gui/FrmMain.py:311
+#: src/gui/FrmMain.py:302
+msgid "Translations"
+msgstr "Traduction"
+
+#: src/gui/FrmMain.py:303
+msgid "French:"
+msgstr "Français:"
+
+#: src/gui/FrmMain.py:316
 msgid "Select %s-Project"
 msgstr "Sélectionner %s-Projet"
 
-#: src/gui/FrmMain.py:313
-#: src/gui/FrmMain.py:336
-#: src/gui/FrmMain.py:358
-#: src/gui/FrmMain.py:372
+#: src/gui/FrmMain.py:318
+#: src/gui/FrmMain.py:341
+#: src/gui/FrmMain.py:363
+#: src/gui/FrmMain.py:377
 msgid "Project"
 msgstr "Projet "
 
-#: src/gui/FrmMain.py:333
+#: src/gui/FrmMain.py:338
 msgid "Save %s-Project"
 msgstr "Enregistrer %s-projet "
 
-#: src/gui/FrmMain.py:345
+#: src/gui/FrmMain.py:350
 msgid "Overwrite existing file '%s'?"
 msgstr "Écraser le fichier existant %s'? "
 
-#: src/gui/FrmMain.py:355
+#: src/gui/FrmMain.py:360
 msgid "Export %s-Project"
 msgstr "Exporter %s-Projet "
 
-#: src/gui/FrmMain.py:358
-#: src/gui/FrmMain.py:372
+#: src/gui/FrmMain.py:363
+#: src/gui/FrmMain.py:377
 msgid "Portable"
 msgstr "Portable"
 
-#: src/gui/FrmMain.py:370
+#: src/gui/FrmMain.py:375
 msgid "Import %s-Project"
 msgstr "Importer %s-Projet "
 
-#: src/gui/FrmMain.py:385
+#: src/gui/FrmMain.py:390
 msgid "Import images"
 msgstr "Importer des images "
 
-#: src/gui/FrmMain.py:387
-#: src/gui/FrmMain.py:440
+#: src/gui/FrmMain.py:392
+#: src/gui/FrmMain.py:445
 msgid "Imagefiles"
 msgstr "Fichiers image "
 
-#: src/gui/FrmMain.py:429
+#: src/gui/FrmMain.py:434
 msgid "Browse"
 msgstr "Chercher "
 
-#: src/gui/FrmMain.py:438
+#: src/gui/FrmMain.py:443
 msgid "Import image"
 msgstr "Importer une image "
 
-#: src/gui/FrmMain.py:532
+#: src/gui/FrmMain.py:537
 msgid "Unnamed PhotoFilmStrip"
 msgstr "PhotoFilmStrip sans nom "
 
-#: src/gui/FrmMain.py:535
+#: src/gui/FrmMain.py:540
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' a été modifié. Enregistrer les changements? "
 
-#: src/gui/FrmMain.py:551
+#: src/gui/FrmMain.py:556
 msgid "Images"
 msgstr "Images"
 
-#: src/gui/FrmMain.py:558
+#: src/gui/FrmMain.py:563
 msgid "Duration"
 msgstr "Durée "
 
-#: src/gui/FrmMain.py:589
+#: src/gui/FrmMain.py:594
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr "Certaines images dans ce dossier n'existent  '%s' plus. Si ces fichiers ont été déplacés vous pouvez sélectionner un nouveau chemin. Voulez vous sélectionner un nouveau chemin?"
 
-#: src/gui/FrmMain.py:616
+#: src/gui/FrmMain.py:621
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Projet %(app)s-invalide:  %(file)s "
 
-#: src/gui/FrmMain.py:646
+#: src/gui/FrmMain.py:651
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Ne peux enregistrer le fichier '%(file)s': %(errMsg)s"
 
-#: src/gui/FrmMain.py:667
+#: src/gui/FrmMain.py:672
 msgid "Please wait"
 msgstr "Attendez svp"
 
-#: src/gui/FrmMain.py:668
+#: src/gui/FrmMain.py:673
 msgid "Loading pictures..."
 msgstr "Chargement des images... "
 
@@ -558,10 +600,6 @@ msgid ""
 msgstr ""
 "Glissez des images sur ce texte ou\n"
 "cliquez sur le bouton ci-dessous"
-
-#: src/lib/Settings.py:41
-msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
-msgstr "PhotoFilmStrip réalise des films a partir des vos images en juste trois étapes. Premièrement sélectionnez vos photos, vos effets et le rendu vidéo. Il y a plusieurs possibilités de formats,  VCD, SVCD, DVD, jusqu'au FULL-HD."
 
 #~ msgid "ppmtoy4m (mjpegtools) required!"
 #~ msgstr "ppmtoy4m (mjpegtools) est requis!"
