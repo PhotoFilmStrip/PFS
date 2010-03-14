@@ -5,288 +5,288 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-03-14 13:56+CET\n"
-"PO-Revision-Date: 2010-03-14 13:57+0100\n"
-"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
+"POT-Creation-Date: 2010-03-14 10:11+CET\n"
+"PO-Revision-Date: 2010-03-14 11:07+0100\n"
+"Last-Translator: Tomáš Chaloupka <chalucha@gmail.com>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: src/cli/Main.py:64
 #: src/cli/Main.py:219
 #: src/gui/DlgRender.py:695
 msgid "all done"
-msgstr "Terminer "
+msgstr "dokončeno"
 
 #: src/cli/Main.py:77
 msgid "processing project"
-msgstr "Traitement du projet "
+msgstr "zpracovávám projekt"
 
 #: src/cli/Main.py:79
 msgid "audio file"
-msgstr "Fichier audio"
+msgstr "zvukový soubor"
 
 #: src/cli/Main.py:80
 msgid "using renderer"
-msgstr "utilisation du moteur de rendu "
+msgstr "používám renderer"
 
 #: src/cli/Main.py:81
 msgid "output format"
-msgstr "Format de sortie"
+msgstr "výstupní formát"
 
 #: src/cli/Main.py:82
 msgid "framerate"
-msgstr "Images par seconde    "
+msgstr "snímková frekvence"
 
 #: src/cli/Main.py:111
 msgid "specifies the project file"
-msgstr "spécifie le fichier projet "
+msgstr "specifikuje soubor projektu"
 
 #: src/cli/Main.py:112
 msgid "The path where to save the output files. If single file renderer is used, this option can be omitted to use stdout."
-msgstr "Le chemin où sauvegarder les fichiers de production. Si l'outil de restitution de fichier seul est utilisé, cette option peut être omise pour utiliser stdout."
+msgstr "Cesta, kam ukládat výstupní soubory. Pokud je použit jedno souborový renderer, lze parametr vynechat pro použití standardního výstupu."
 
 #: src/cli/Main.py:116
 msgid "total length of the PhotoFilmStrip (seconds)"
-msgstr "Longueur totale du PhotoFilmStrip (secondes) "
+msgstr "celková délka videa (v sekundách)"
 
 #: src/cli/Main.py:117
 msgid "use audiofile as audiotrack (use --length to limit the movie length)"
-msgstr "Utiliser un fichier audio comme piste son (utiliser --lenght pour limiter la longueur du film) "
+msgstr "použít audio soubor jako zvukovou stopu (použijte parametr --length k omezení délky videa)"
 
 #: src/cli/Main.py:126
 msgid "projectfile does not exist: %s"
-msgstr "Le fichier de projet n'existe pas:%s "
+msgstr "soubor s projektem neexistuje: %s"
 
 #: src/cli/Main.py:130
 msgid "no projectfile specified!"
-msgstr "pas de fichier projet définit!"
+msgstr "není specifikován projektový soubor!"
 
 #: src/cli/Main.py:136
 msgid "invalid format specified: %s"
-msgstr "Format invalide spécifié:%s "
+msgstr "specifikován špatný formát: %s"
 
 #: src/cli/Main.py:147
 msgid "cannot create outputpath: %s"
-msgstr "ne peux créer le chemin de sortie: %s "
+msgstr "nelze vytvořit výstupní cestu: %s"
 
 #: src/cli/Main.py:152
 msgid "no outputpath specified!"
-msgstr "pas de chemin de destination spécifié!"
+msgstr "není specifikovaná výstupní cesta!"
 
 #: src/cli/Main.py:160
 msgid "invalid profile specified: %s"
-msgstr "Profil spécifié invalide "
+msgstr "specifikován špatný profil: %s"
 
 #: src/cli/Main.py:171
 msgid "invalid videonorm specified: %s"
-msgstr "Norme vidéo spécifié invalide:%s "
+msgstr "specifikována špatná video norma: %s"
 
 #: src/cli/Main.py:180
 msgid "audio file does not exist: %s"
-msgstr "Le fichier audio n'existe pas:  %s"
+msgstr "zvukový soubor neexistuje: %s"
 
 #: src/cli/Main.py:196
 msgid "cannot load photofilmstrip"
-msgstr "ne peux charger PhotoFilmStrip "
+msgstr "nelze načíst projekt"
 
 #: src/cli/Main.py:215
 #: src/gui/DlgRender.py:693
 msgid "...aborted!"
-msgstr "...abandonner! "
+msgstr "...přerušeno!"
 
 #: src/cli/Main.py:221
 msgid "Error: %s"
-msgstr "Erreur: %s"
+msgstr "Chyba: %s"
 
 #: src/core/BaseRenderer.py:61
 msgid "Unknown property: %s"
-msgstr "Propriété inconnue "
+msgstr "Neznámý parametr: %s"
 
 #: src/core/BaseRenderer.py:69
 msgid "<default>"
-msgstr "<défaut>"
+msgstr "<výchozí>"
 
 #: src/core/PhotoFilmStrip.py:75
 msgid "Loading '%s' ..."
-msgstr "Chargement '%s' "
+msgstr "Načítám '%s' ..."
 
 #: src/core/ProgressHandler.py:31
 msgid "Please wait..."
-msgstr "Attendez s.v.p... "
+msgstr "Prosím čekejte..."
 
 #: src/core/ProgressHandler.py:69
 msgid "aborting..."
-msgstr "abandon..."
+msgstr "přerušuji..."
 
 #: src/core/RenderEngine.py:144
 msgid "initialize renderer"
-msgstr "Initialiser rendu     "
+msgstr "Iniciuji renderer"
 
 #: src/core/RenderEngine.py:156
 #: src/core/RenderEngine.py:177
 msgid "processing image %d/%d"
-msgstr "Traitement image %d/%d"
+msgstr "zpracovávám obraz %d/%d"
 
 #: src/core/RenderEngine.py:168
 msgid "processing transition %d/%d"
-msgstr "Traitement transition %d/%d"
+msgstr "zpracovávám přechod %d/%d"
 
 #: src/core/RenderEngine.py:194
 msgid "processing audiofile..."
-msgstr "Traitement fichier audio..."
+msgstr "zpracovávám zvukový soubor..."
 
 #: src/core/RenderEngine.py:198
 msgid "creating output..."
-msgstr "création sortie..."
+msgstr "vytvářím výstup..."
 
 #: src/core/RenderEngine.py:229
 msgid "generating subtitle"
-msgstr "Création des sous-titres "
+msgstr "generuji titulky"
 
 #: src/core/renderer/MovieRenderer.py:49
 msgid "Video clip"
-msgstr "Vidéo clip"
+msgstr "Vide klip"
 
 #: src/core/renderer/MovieRenderer.py:59
 msgid "mencoder (mencoder) required!"
-msgstr "mencoder (mencoder) requis!"
+msgstr "mencoder (mencoder) vyžadován!"
 
 #: src/core/renderer/SingleFileRenderer.py:36
 msgid "Single pictures"
-msgstr "Images fixes"
+msgstr "Samostatné obrázky"
 
 #: src/gui/ActionManager.py:56
 msgid "&File"
-msgstr "&Fichier"
+msgstr "&Soubor"
 
 #: src/gui/ActionManager.py:57
 msgid "&Edit"
-msgstr "&Editer"
+msgstr "&Úpravy"
 
 #: src/gui/ActionManager.py:58
 msgid "&Tools"
-msgstr "&Outils"
+msgstr "&Nástroje"
 
 #: src/gui/ActionManager.py:59
 #: src/gui/ActionManager.py:192
 #: src/gui/DlgRender.py:412
 msgid "&Help"
-msgstr "&Aide"
+msgstr "Nápo&věda"
 
 #: src/gui/ActionManager.py:70
 msgid "New Project"
-msgstr "Nouveau projet "
+msgstr "Nový projekt"
 
 #: src/gui/ActionManager.py:73
 msgid "Load Project"
-msgstr "Charger projet"
+msgstr "Načíst projekt"
 
 #: src/gui/ActionManager.py:76
 msgid "Save Project"
-msgstr "Enregistrer le projet "
+msgstr "Uložit projekt"
 
 #: src/gui/ActionManager.py:79
 msgid "Save Project as"
-msgstr "Enregistrer le projet sous "
+msgstr "Uložit projekt jako"
 
 #: src/gui/ActionManager.py:83
 msgid "Import Pictures"
-msgstr "Importer des images"
+msgstr "Importovat obrázky"
 
 #: src/gui/ActionManager.py:86
 #: src/gui/DlgRender.py:259
 msgid "Render filmstrip"
-msgstr "Rendu filmstrip "
+msgstr "Renderovat video"
 
 #: src/gui/ActionManager.py:119
 msgid "&New Project"
-msgstr "&Nouveau projet "
+msgstr "&Nový projekt"
 
 #: src/gui/ActionManager.py:123
 msgid "&Open Project"
-msgstr "&Ouvrir Projet"
+msgstr "&Otevřít projekt"
 
 #: src/gui/ActionManager.py:127
 msgid "Open &recent"
-msgstr "Ouvrir &récent "
+msgstr "Otevřít &nedávné"
 
 #: src/gui/ActionManager.py:133
 msgid "&Save Project"
-msgstr "&Enregistrer le projet "
+msgstr "&Uložit projekt"
 
 #: src/gui/ActionManager.py:137
 msgid "Save Project &as"
-msgstr "Enregistrer le projet &sous "
+msgstr "Uložit projekt &jako"
 
 #: src/gui/ActionManager.py:140
 msgid "&Import Project"
-msgstr "&Importer Projet "
+msgstr "&Importovat projekt"
 
 #: src/gui/ActionManager.py:141
 msgid "&Export Project"
-msgstr "&Exporter le projet "
+msgstr "&Exportovat projekt"
 
 #: src/gui/ActionManager.py:145
 msgid "E&xit"
-msgstr "Q&uitter"
+msgstr "U&končit"
 
 #: src/gui/ActionManager.py:153
 msgid "Move picture &left"
-msgstr "Bouger l'image à&gauche "
+msgstr "Posunout obrázek do&leva"
 
 #: src/gui/ActionManager.py:157
 msgid "Move picture &right"
-msgstr "Bouger l'image à&droite "
+msgstr "Posunout obrázek do&prava "
 
 #: src/gui/ActionManager.py:162
 msgid "&Remove Picture"
-msgstr "&Retirer image"
+msgstr "O&dstranit obrázek"
 
 #: src/gui/ActionManager.py:167
 msgid "Rotate &clockwise"
-msgstr "Rotation &horaire "
+msgstr "&Otočit obrázek vpravo"
 
 #: src/gui/ActionManager.py:171
 msgid "Rotate counter clock&wise"
-msgstr "Rotation sens anti&horaire "
+msgstr "O&točit obrázek vlevo"
 
 #: src/gui/ActionManager.py:179
 msgid "&Import Pictures"
-msgstr "&Importer des images "
+msgstr "&Importovat obrázky"
 
 #: src/gui/ActionManager.py:184
 msgid "&Render filmstrip"
-msgstr "&Rendu filmstrip "
+msgstr "&Renderovat video"
 
 #: src/gui/ActionManager.py:197
 msgid "&About"
-msgstr "&A propos"
+msgstr "&O programu"
 
 #: src/gui/DlgBugReport.py:32
 msgid "An unexpected error occured"
-msgstr "Une erreur imprévue est survenue"
+msgstr "Nastala neočekávaná chyba"
 
 #: src/gui/DlgBugReport.py:35
 msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
-msgstr "Une erreur imprévue est survenue. Vous vous envoyer le rapport d'incident au développeur %s?"
+msgstr "Nastala neočekávaná chyba. Chcete poslat zprávu o chybě vývojářům %s?"
 
 #: src/gui/DlgBugReport.py:78
 msgid "Bug-Report send. Thank you for your support."
-msgstr "Rapport de bug envoyé. Merci de votre soutien."
+msgstr "Zpráva o chybě odeslána. Děkuji za podporu."
 
 #: src/gui/DlgBugReport.py:79
 msgid "Information"
-msgstr "Information"
+msgstr "Informace"
 
 #: src/gui/DlgBugReport.py:85
 msgid "Sorry, this function is temporary not available.."
-msgstr "Désolé cette fonction est temporairement indisponible.."
+msgstr "Omlouvám se, tato funkce je dočasně nedostupná.."
 
 #: src/gui/DlgBugReport.py:86
 #: src/gui/DlgRender.py:527
@@ -298,19 +298,19 @@ msgstr "Désolé cette fonction est temporairement indisponible.."
 #: src/gui/DlgRender.py:802
 #: src/gui/FrmMain.py:623
 msgid "Error"
-msgstr "Erreur"
+msgstr "Chyba"
 
 #: src/gui/DlgRender.py:206
 msgid "Property"
-msgstr "Propriété"
+msgstr "Parametr"
 
 #: src/gui/DlgRender.py:208
 msgid "Value"
-msgstr "Valeur "
+msgstr "Hodnota"
 
 #: src/gui/DlgRender.py:263
 msgid "Settings"
-msgstr "Configuration"
+msgstr "Nastavení"
 
 #: src/gui/DlgRender.py:275
 msgid "Profile:"
@@ -318,60 +318,60 @@ msgstr "Profil:"
 
 #: src/gui/DlgRender.py:287
 msgid "Type:"
-msgstr "Type:"
+msgstr "Typ:"
 
 #: src/gui/DlgRender.py:300
 msgid "Transition speed:"
-msgstr "Vitesse de transition:"
+msgstr "Rychlost přechodu:"
 
 #: src/gui/DlgRender.py:313
 msgid "Sec."
-msgstr "Sec."
+msgstr "Sekund."
 
 #: src/gui/DlgRender.py:317
 msgid "Total length:"
-msgstr "Longueur total:"
+msgstr "Celková délka:"
 
 #: src/gui/DlgRender.py:321
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
-msgstr "Dépasser la durée des images fixes donne cette longueur totale au photofilmstrip "
+msgstr "Potlačí trvání jednotlivých obrázků a nastaví videu tuto celkovou délku."
 
 #: src/gui/DlgRender.py:333
 msgid "User defined:"
-msgstr "Défini par l'utilisateur:"
+msgstr "Uživatelsky definované:"
 
 #: src/gui/DlgRender.py:341
 msgid "Audio file:"
-msgstr "Fichier audio:"
+msgstr "Zvukový soubor:"
 
 #: src/gui/DlgRender.py:365
 msgid "Output"
-msgstr "Sortie "
+msgstr "Výstup"
 
 #: src/gui/DlgRender.py:377
 msgid "Format:"
-msgstr "Format:"
+msgstr "Formát:"
 
 #: src/gui/DlgRender.py:395
 msgid "Output directory:"
-msgstr "Dossier de destination: "
+msgstr "Výstupní adresář:"
 
 #: src/gui/DlgRender.py:417
 #: src/gui/DlgRender.py:706
 msgid "&Close"
-msgstr "&Fermer"
+msgstr "&Zavřít"
 
 #: src/gui/DlgRender.py:423
 msgid "&Batch Job"
-msgstr "&Traitement par lots"
+msgstr "&Dávka"
 
 #: src/gui/DlgRender.py:429
 msgid "&Start"
-msgstr "&Démarrer "
+msgstr "&Start"
 
 #: src/gui/DlgRender.py:516
 msgid "Output path does not exists! Do you want %s to create it?"
-msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer? "
+msgstr "Výstupní cesta neexistuje! Chcete aby ji %s vytvořil?"
 
 #: src/gui/DlgRender.py:517
 #: src/gui/DlgRender.py:552
@@ -381,212 +381,212 @@ msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer? "
 #: src/gui/FrmMain.py:595
 #: src/gui/FrmMain.py:654
 msgid "Question"
-msgstr "Question"
+msgstr "Otázka"
 
 #: src/gui/DlgRender.py:526
 msgid "Cannot create direcotory: %s"
-msgstr "Ne peux créer le dossier:  %s"
+msgstr "Nelze vytvořit adresář: %s"
 
 #: src/gui/DlgRender.py:542
 msgid "Cannot write into direcotory: %s"
-msgstr "Ne peux écrire dans le dossier: %s"
+msgstr "Nelze zapisovat do adresáře: %s"
 
 #: src/gui/DlgRender.py:551
 msgid "Output path is not empty! Use it anyway?"
-msgstr "Le chemin de destination n'est pas vide! Utiliser quand même?"
+msgstr "Výstupní cesta není prázdná! Přesto použít?"
 
 #: src/gui/DlgRender.py:565
 msgid "Audio file does not exist!"
-msgstr "Le fichier audio n'existe pas!"
+msgstr "Zvukový soubor neexistuje!"
 
 #: src/gui/DlgRender.py:611
 msgid "&Cancel"
-msgstr "&Annulé"
+msgstr "&Zrušit"
 
 #: src/gui/DlgRender.py:635
 msgid "Abort current process?"
-msgstr "Abandonner le processus en cour? "
+msgstr "Přerušit běžící proces?"
 
 #: src/gui/DlgRender.py:651
 msgid "Edit property"
-msgstr "Éditer propriétés"
+msgstr "Editovat parametr"
 
 #: src/gui/DlgRender.py:734
 msgid "No media support found on this platform!"
-msgstr "Aucun média trouver sur ce système "
+msgstr "Nenalezena mediální podpora na této platformě!"
 
 #: src/gui/DlgRender.py:754
 msgid "Select music"
-msgstr "Sélectionner la musique"
+msgstr "Vybrat hudbu"
 
 #: src/gui/DlgRender.py:757
 msgid "Audiofiles"
-msgstr "Fichiers audio"
+msgstr "Zvukové soubory"
 
 #: src/gui/DlgRender.py:769
 msgid "Invalid audio file!"
-msgstr "Fichier audio invalide! "
+msgstr "Špatný zvukový soubor!"
 
 #: src/gui/DlgRender.py:801
 msgid "Project not saved yet. Please save the project first to create a batch job!"
-msgstr "Le projet n'est pas encore sauvegardé. S.v.p sauvegardez le projet afin de créer un traitement par lot!"
+msgstr "Projekt není ještě uložen. Prosím uložte nejprve projekt pro vytvoření dávkové úlohy."
 
 #: src/gui/DlgRender.py:809
 msgid "Batch file"
-msgstr "Fichier batch "
+msgstr "Dávkový soubor"
 
 #: src/gui/DlgRender.py:816
 msgid "Shell script"
-msgstr "Script shell "
+msgstr "Skript"
 
 #: src/gui/DlgRender.py:822
 msgid "Select batch file"
-msgstr "Sélectionner fichier batch "
+msgstr "Vybrat dávkový soubor"
 
 #: src/gui/DlgUpdateInfo.py:65
 msgid "New version available"
-msgstr "Nouvelle version disponible "
+msgstr "Dostupná nová verze"
 
 #: src/gui/DlgUpdateInfo.py:81
 msgid "Close"
-msgstr "Fermer "
+msgstr "Zavřít"
 
 #: src/gui/DlgUpdateInfo.py:90
 msgid "Goto download site"
-msgstr "Aller au site de téléchargement "
+msgstr "Přejít na stránku ke stažení"
 
 #: src/gui/DlgUpdateInfo.py:110
 msgid "A new version is available online. The following changes has been made:"
-msgstr "Une nouvelle version est disponible en ligne. Les changements suivants on été fait: "
+msgstr "Nová verze je dostupná. Byly provedeny následující úpravy:"
 
 #: src/gui/FrmMain.py:296
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
-msgstr "PhotoFilmStrip réalise des films a partir des vos images en juste trois étapes. Premièrement sélectionnez vos photos, vos effets et le rendu vidéo. Il y a plusieurs possibilités de formats,  VCD, SVCD, DVD, jusqu'au FULL-HD."
+msgstr "PhotoFilmStrip vytváří videa z vašich fotek v pouhých 3 krocích. Nejprve vyberte vaše fotky, upravte cesty pohybu a vyrenderujte video. Lze použít mnoho výstupních možností pro VCD, SVCD, DVD až po FULL-HD."
 
 #: src/gui/FrmMain.py:299
 msgid "online"
-msgstr "en ligne "
+msgstr "online"
 
 #: src/gui/FrmMain.py:302
 msgid "Translators"
-msgstr "Traducteurs"
+msgstr "Překladatelé"
 
 #: src/gui/FrmMain.py:316
 msgid "Select %s-Project"
-msgstr "Sélectionner %s-Projet"
+msgstr "Vybrat %s-Projekt"
 
 #: src/gui/FrmMain.py:318
 #: src/gui/FrmMain.py:341
 #: src/gui/FrmMain.py:363
 #: src/gui/FrmMain.py:377
 msgid "Project"
-msgstr "Projet "
+msgstr "Projekt"
 
 #: src/gui/FrmMain.py:338
 msgid "Save %s-Project"
-msgstr "Enregistrer %s-projet "
+msgstr "Uložit %s-Projekt"
 
 #: src/gui/FrmMain.py:350
 msgid "Overwrite existing file '%s'?"
-msgstr "Écraser le fichier existant %s'? "
+msgstr "Přepsat existující soubor '%s'?"
 
 #: src/gui/FrmMain.py:360
 msgid "Export %s-Project"
-msgstr "Exporter %s-Projet "
+msgstr "Exportovat %s-Projekt"
 
 #: src/gui/FrmMain.py:363
 #: src/gui/FrmMain.py:377
 msgid "Portable"
-msgstr "Portable"
+msgstr "Přenositelný"
 
 #: src/gui/FrmMain.py:375
 msgid "Import %s-Project"
-msgstr "Importer %s-Projet "
+msgstr "Importovat %s-Projekt"
 
 #: src/gui/FrmMain.py:390
 msgid "Import images"
-msgstr "Importer des images "
+msgstr "Importovat obrázky"
 
 #: src/gui/FrmMain.py:392
 #: src/gui/FrmMain.py:445
 msgid "Imagefiles"
-msgstr "Fichiers image "
+msgstr "Soubory s obrázky"
 
 #: src/gui/FrmMain.py:434
 msgid "Browse"
-msgstr "Chercher "
+msgstr "Prohlížet"
 
 #: src/gui/FrmMain.py:443
 msgid "Import image"
-msgstr "Importer une image "
+msgstr "Importovat obrázek"
 
 #: src/gui/FrmMain.py:537
 msgid "Unnamed PhotoFilmStrip"
-msgstr "PhotoFilmStrip sans nom "
+msgstr "Nepojmenované video"
 
 #: src/gui/FrmMain.py:540
 msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' a été modifié. Enregistrer les changements? "
+msgstr "'%s' byl modifikován. Uložit změny?"
 
 #: src/gui/FrmMain.py:556
 msgid "Images"
-msgstr "Images"
+msgstr "Obrázky"
 
 #: src/gui/FrmMain.py:563
 msgid "Duration"
-msgstr "Durée "
+msgstr "Trvání"
 
 #: src/gui/FrmMain.py:594
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "Certaines images dans ce dossier n'existent  '%s' plus. Si ces fichiers ont été déplacés vous pouvez sélectionner un nouveau chemin. Voulez vous sélectionner un nouveau chemin?"
+msgstr "Některé obrázky v adresáři '%s' již neexistují. Pokud byly přesunuty, můžete vybrat novou cestu. Chcete vybrat novou cestu?"
 
 #: src/gui/FrmMain.py:621
 msgid "Invalid %(app)s-Project: %(file)s"
-msgstr "Projet %(app)s-invalide:  %(file)s "
+msgstr "Špatný %(app)s-Projekt: %(file)s"
 
 #: src/gui/FrmMain.py:651
 msgid "Could not save the file '%(file)s': %(errMsg)s"
-msgstr "Ne peux enregistrer le fichier '%(file)s': %(errMsg)s"
+msgstr "Nemohu uložit soubor '%(file)s': %(errMsg)s"
 
 #: src/gui/FrmMain.py:672
 msgid "Please wait"
-msgstr "Attendez svp"
+msgstr "Prosím čekejte"
 
 #: src/gui/FrmMain.py:673
 msgid "Loading pictures..."
-msgstr "Chargement des images... "
+msgstr "Nahrávám obrázky..."
 
 #: src/gui/PnlEditPicture.py:114
 msgid "Rotation:"
-msgstr "Rotation:"
+msgstr "Otočení:"
 
 #: src/gui/PnlEditPicture.py:134
 msgid "Effect:"
-msgstr "Effets:"
+msgstr "Efekt:"
 
 #: src/gui/PnlEditPicture.py:144
 msgid "Duration (sec):"
-msgstr "Durée (sec):"
+msgstr "Trvání (sekund):"
 
 #: src/gui/PnlEditPicture.py:168
 msgid "Subtitle:"
-msgstr "Sous-titres "
+msgstr "Titulky:"
 
 #: src/gui/PnlEditPicture.py:186
 msgid "No effect"
-msgstr "Pas d'effets"
+msgstr "Bez efektu"
 
 #: src/gui/PnlEditPicture.py:187
 msgid "Black and White"
-msgstr "Noir et blanc "
+msgstr "Černobílé"
 
 #: src/gui/PnlEditPicture.py:188
 msgid "Sepia tone"
-msgstr "Ton sépia"
+msgstr "Sépiové tónování"
 
 #: src/gui/PnlWelcome.py:70
 msgid "Welcome to PhotoFilmStrip"
-msgstr "Bienvenue dans PhotoFilmStrip"
+msgstr "Vítejte v PhotoFilmStrip"
 
 #: src/gui/PnlWelcome.py:71
 msgid ""
@@ -594,17 +594,16 @@ msgid ""
 "click the button below\n"
 "to add pictures to your new PhotoFilmStrip."
 msgstr ""
-"Glissez des images sur ce texte ou\n"
-"cliquez sur le bouton ci-dessous"
+"Na tento text přetáhněte obrázky nebo\n"
+"stiskněte tlačítko níže\n"
+"pro pro vytvoření nového videa PhotoFilmStrip."
 
-#~ msgid "French:"
-#~ msgstr "Français:"
 #~ msgid "ppmtoy4m (mjpegtools) required!"
-#~ msgstr "ppmtoy4m (mjpegtools) est requis!"
+#~ msgstr "ppmtoy4m (mjpegtools) vyžadován!"
 #~ msgid "mpeg2enc (mjpegtools) required!"
-#~ msgstr "mpeg2enc (mjpegtools) est requis!"
+#~ msgstr "mpeg2enc (mjpegtools) vyžadován!"
 #~ msgid "MPEG2-Video"
-#~ msgstr "Vidéo-MPEG2"
+#~ msgstr "MPEG2-Video"
 #~ msgid "MPEG4-Video (XVid)"
-#~ msgstr "Vidéo-MPEG4 (XVid)"
+#~ msgstr "MPEG4-Video (XVid)"
 
