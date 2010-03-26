@@ -23,28 +23,64 @@ import wx
 
 from core.Picture import Picture
 
-from gui.util.FloatValidator import FloatValidator
+from gui.ctrls.PnlFloatSpinCtrl import PnlFloatSpinCtrl, EVT_VALUE_CHANGED
 
 
 [wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT, 
+ wxID_PNLEDITPICTURECHOICETRANSIN, wxID_PNLEDITPICTURECHOICETRANSOUT, 
  wxID_PNLEDITPICTURECMDROTATELEFT, wxID_PNLEDITPICTURECMDROTATERIGHT, 
- wxID_PNLEDITPICTURESPINBUTTONDURATION, wxID_PNLEDITPICTURESTATICLINE1, 
- wxID_PNLEDITPICTURESTDURATION, wxID_PNLEDITPICTURESTEFFECT, 
- wxID_PNLEDITPICTURESTROTATION, wxID_PNLEDITPICTURESTSUBTITLE, 
- wxID_PNLEDITPICTURETCCOMMENT, wxID_PNLEDITPICTURETCDURATION, 
-] = [wx.NewId() for _init_ctrls in range(12)]
+ wxID_PNLEDITPICTUREPNLIMGDURATION, wxID_PNLEDITPICTUREPNLTRANSINDURATION, 
+ wxID_PNLEDITPICTUREPNLTRANSOUTDURATION, wxID_PNLEDITPICTURESTATICLINE1, 
+ wxID_PNLEDITPICTURESTATICLINE2, wxID_PNLEDITPICTURESTDURATION, 
+ wxID_PNLEDITPICTURESTEFFECT, wxID_PNLEDITPICTURESTROTATION, 
+ wxID_PNLEDITPICTURESTSUBTITLE, wxID_PNLEDITPICTURESTTRANSIN, 
+ wxID_PNLEDITPICTURESTTRANSINUNIT, wxID_PNLEDITPICTURESTTRANSOUT, 
+ wxID_PNLEDITPICTURESTTRANSOUTUNIT, wxID_PNLEDITPICTURETCCOMMENT, 
+] = [wx.NewId() for _init_ctrls in range(20)]
 
 
 class PnlEditPicture(wx.Panel):
     
+    _custom_classes = {"wx.Panel": ["PnlFloatSpinCtrl"]}
+    
+    def _init_coll_sizerSubtitle_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddWindow(self.tcComment, 1, border=0, flag=wx.EXPAND)
+
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSizer(self.sizerLeft, 0, border=4, flag=wx.ALL)
+        parent.AddSizer(self.sizerImgSettings, 0, border=4, flag=wx.ALL)
         parent.AddWindow(self.staticLine1, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSizer(self.sizerRight, 1, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.AddSizer(self.sizerTransSettings, 0, border=0, flag=0)
+        parent.AddWindow(self.staticLine2, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.AddSizer(self.sizerSubtitle, 1, border=4,
+              flag=wx.ALL | wx.EXPAND)
 
-    def _init_coll_sizerLeft_Items(self, parent):
+    def _init_coll_sizerTransSettings_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.stTransIn, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.choiceTransIn, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.pnlTransInDuration, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.stTransInUnit, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.stTransOut, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.choiceTransOut, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.pnlTransOutDuration, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.stTransOutUnit, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+
+    def _init_coll_sizerImgSettings_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.stRotation, 0, border=0,
@@ -55,25 +91,7 @@ class PnlEditPicture(wx.Panel):
         parent.AddWindow(self.choiceEffect, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.stDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSizer(self.spinSizer, 0, border=0, flag=wx.EXPAND)
-
-    def _init_coll_sizerLeft_Growables(self, parent):
-        # generated method, don't edit
-
-        parent.AddGrowableCol(1)
-
-    def _init_coll_spinSizer_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.tcDuration, 1, border=0, flag=0)
-        parent.AddWindow(self.spinButtonDuration, 0, border=0, flag=0)
-
-    def _init_coll_sizerRight_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.tcComment, 1, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.pnlImgDuration, 0, border=0, flag=0)
 
     def _init_coll_sizerRotationTools_Items(self, parent):
         # generated method, don't edit
@@ -82,24 +100,30 @@ class PnlEditPicture(wx.Panel):
         parent.AddStretchSpacer(1)
         parent.AddWindow(self.cmdRotateRight, 0, border=0, flag=0)
 
+    def _init_coll_sizerImgSettings_Growables(self, parent):
+        # generated method, don't edit
+
+        parent.AddGrowableCol(1)
+
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerLeft = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
+        self.sizerImgSettings = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
 
-        self.sizerRight = wx.BoxSizer(orient=wx.VERTICAL)
-
-        self.spinSizer = wx.BoxSizer(orient=wx.HORIZONTAL)
+        self.sizerSubtitle = wx.BoxSizer(orient=wx.VERTICAL)
 
         self.sizerRotationTools = wx.BoxSizer(orient=wx.HORIZONTAL)
 
+        self.sizerTransSettings = wx.FlexGridSizer(cols=4, hgap=8, rows=1,
+              vgap=8)
+
         self._init_coll_sizerMain_Items(self.sizerMain)
-        self._init_coll_sizerLeft_Items(self.sizerLeft)
-        self._init_coll_sizerLeft_Growables(self.sizerLeft)
-        self._init_coll_sizerRight_Items(self.sizerRight)
-        self._init_coll_spinSizer_Items(self.spinSizer)
+        self._init_coll_sizerImgSettings_Items(self.sizerImgSettings)
+        self._init_coll_sizerImgSettings_Growables(self.sizerImgSettings)
+        self._init_coll_sizerSubtitle_Items(self.sizerSubtitle)
         self._init_coll_sizerRotationTools_Items(self.sizerRotationTools)
+        self._init_coll_sizerTransSettings_Items(self.sizerTransSettings)
 
         self.SetSizer(self.sizerMain)
 
@@ -108,7 +132,7 @@ class PnlEditPicture(wx.Panel):
         wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name=u'PnlEditPicture',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(687, 192))
+        self.SetClientSize(wx.Size(827, 192))
 
         self.stRotation = wx.StaticText(id=wxID_PNLEDITPICTURESTROTATION,
               label=_(u'Rotation:'), name=u'stRotation', parent=self,
@@ -144,21 +168,9 @@ class PnlEditPicture(wx.Panel):
               label=_(u'Duration (sec):'), name=u'stDuration', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.tcDuration = wx.TextCtrl(id=wxID_PNLEDITPICTURETCDURATION,
-              name=u'tcDuration', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0, value=u'5.0')
-        self.tcDuration.Bind(wx.EVT_KILL_FOCUS,
-              self.OnTextCtrlDurationKillFocus,
-              id=wxID_PNLEDITPICTURETCDURATION)
-        self.tcDuration.Bind(wx.EVT_TEXT,
-              self.OnTextCtrlDurationText,
-              id=wxID_PNLEDITPICTURETCDURATION)
-
-        self.spinButtonDuration = wx.SpinButton(id=wxID_PNLEDITPICTURESPINBUTTONDURATION,
-              name=u'spinButtonDuration', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.SP_VERTICAL)
-        self.spinButtonDuration.Bind(wx.EVT_SPIN, self.OnSpinButtonDurationSpin,
-              id=wxID_PNLEDITPICTURESPINBUTTONDURATION)
+        self.pnlImgDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLIMGDURATION,
+              name=u'pnlImgDuration', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.staticLine1 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE1,
               name='staticLine1', parent=self, pos=wx.Point(-1, -1),
@@ -174,19 +186,60 @@ class PnlEditPicture(wx.Panel):
         self.tcComment.Bind(wx.EVT_TEXT, self.OnTextCtrlCommentText,
               id=wxID_PNLEDITPICTURETCCOMMENT)
 
+        self.staticLine2 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE2,
+              name='staticLine2', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
+
+        self.stTransIn = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSIN,
+              label=u'Transition (In):', name=u'stTransIn', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.choiceTransIn = wx.Choice(choices=[],
+              id=wxID_PNLEDITPICTURECHOICETRANSIN, name=u'choiceTransIn',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.stTransOut = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSOUT,
+              label=u'Transition (Out):', name=u'stTransOut', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.choiceTransOut = wx.Choice(choices=[],
+              id=wxID_PNLEDITPICTURECHOICETRANSOUT, name=u'choiceTransOut',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.stTransInUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSINUNIT,
+              label=u'sec', name=u'stTransInUnit', parent=self, pos=wx.Point(-1,
+              -1), size=wx.Size(-1, -1), style=0)
+
+        self.pnlTransInDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSINDURATION,
+              name=u'pnlTransInDuration', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+
+        self.pnlTransOutDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSOUTDURATION,
+              name=u'pnlTransOutDuration', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+
+        self.stTransOutUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSOUTUNIT,
+              label=u'sec', name=u'stTransOutUnit', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
         self._init_sizers()
 
     def __init__(self, parent, id, pos, size, style, name):
         self._init_ctrls(parent)
-        self.tcDuration.SetValidator(FloatValidator())
-        self.spinButtonDuration.SetMinSize(wx.Size(-1, self.tcDuration.GetSizeTuple()[1]))
-        self.spinButtonDuration.SetRange(10, 200)
-        self.spinButtonDuration.SetValue(50)
+        self.pnlImgDuration.SetRange(10, 200)
+        self.pnlImgDuration.SetValue(50)
+        self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
         
         self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
         self.choiceEffect.Append(_(u"Black and White"), Picture.EFFECT_BLACK_WHITE)
         self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
+        
+        for ctrl in [self.stTransIn, self.choiceTransIn, self.stTransInUnit,
+                     self.stTransOut, self.choiceTransOut, self.stTransOutUnit,
+                     self.pnlTransInDuration, self.pnlTransOutDuration, 
+                     self.staticLine2]:
+            ctrl.Show(False)
         
         self._picture = None
 
@@ -208,43 +261,21 @@ class PnlEditPicture(wx.Panel):
         self._picture.SetEffect(event.GetClientData())
         event.Skip()
 
-    def OnSpinButtonDurationSpin(self, event):
-        duration = event.GetPosition() / 10.0
-        self.tcDuration.SetValue("%.1f" % duration)
+    def OnImgDurationChanged(self, event):
+        duration = event.GetValue()
         self._picture.SetDuration(duration)
-        event.Skip()
-    
-    def OnTextCtrlDurationKillFocus(self, event):
-        duration = self.__GetDuration()
-        self.spinButtonDuration.SetValue(int(duration * 10))
-        self.tcDuration.SetValue("%.1f" % duration)
-        event.Skip()
-        
-    def OnTextCtrlDurationText(self, event):
-        duration = self.__GetDuration()
-        self._picture.SetDuration(duration)
-        event.Skip()
-        
+
     def OnTextCtrlCommentText(self, event):
         self._picture.SetComment(self.tcComment.GetValue())
         event.Skip()
         
-    def __GetDuration(self):
-        val = self.tcDuration.GetValue()
-        try:
-            floatVal = max(float(val), 1.0)
-        except ValueError:
-            floatVal = 1.0
-        return min(floatVal, 600.0)
-    
     def SetPicture(self, picture):
         self.Enable(picture is not None)
 
         self._picture = picture
         if self._picture is not None:
             duration = self._picture.GetDuration()
-            self.tcDuration.SetValue("%.1f" % duration)
-            self.spinButtonDuration.SetValue(int(duration * 10))
+            self.pnlImgDuration.SetValue(duration)
             self.tcComment.SetValue(self._picture.GetComment())
             self.__SetChoiceSelectionByData(self.choiceEffect, self._picture.GetEffect())
             

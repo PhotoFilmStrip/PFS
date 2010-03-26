@@ -18,12 +18,13 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import cStringIO
 import random
 
 import Image, ImageDraw
 
 from lib.common.ObserverPattern import Observable
+
+from core.util import RotateExif
 
 
 class Picture(Observable):
@@ -158,43 +159,6 @@ class Picture(Observable):
         self.__Rotate(clockwise)
         self.Notify("bitmap")
         
-    def RotateExif(self, img):
-        exifOrient = 274
-        rotation = 0 
-        try:
-            exif = img._getexif()
-            if exif is not None:
-                rotation = exif[exifOrient]
-            if rotation == 2:
-                # flip horitontal
-                return img.transpose(Image.FLIP_LEFT_RIGHT)
-            elif rotation == 3:
-                # rotate 180
-                return img.rotate(-180)
-            elif rotation == 4:
-                # flip vertical
-                return img.transpose(Image.FLIP_TOP_BOTTOM)
-            elif rotation == 5:
-                # transpose
-                img = img.rotate(-90)
-                return img.transpose(Image.FLIP_LEFT_RIGHT)
-            elif rotation == 6:
-                # rotate 90
-                return img.rotate(-90)
-            elif rotation == 7:
-                # transverse
-                img = img.rotate(-90)
-                return img.transpose(Image.FLIP_TOP_BOTTOM)
-            elif rotation == 8:
-                # rotate 270
-                return img.rotate(-270)
-        except AttributeError:
-            pass
-        except:
-            print "EXIF-Orientation rotation failed."
-            
-        return img
-
     def __CreateDummyImage(self, message):
         width = 400
         height = 300
@@ -222,7 +186,7 @@ class Picture(Observable):
     def GetImage(self):
         try:
             img = Image.open(self._filename)
-            img = self.RotateExif(img)
+            img = RotateExif(img)
             img = img.rotate(self._rotation * -90)
             self._isDummy = False
         except StandardError, err:
@@ -269,9 +233,3 @@ class Picture(Observable):
         newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
         newImg.paste(img, (0, 0))
         return newImg
-
-    def ImageToStream(self, pilImg, format="JPEG"):
-        fd = cStringIO.StringIO()
-        pilImg.save(fd, format)
-        fd.seek(0)
-        return fd

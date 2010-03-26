@@ -27,7 +27,6 @@ import threading
 import wx
 import wx.lib.masked.textctrl
 import wx.combo
-import wx.media
 import wx.lib.masked.timectrl
 
 
@@ -43,30 +42,28 @@ from lib.util import Encode
 from gui.HelpViewer import HelpViewer
 
 
-[wxID_DLGRENDER, wxID_DLGRENDERCBTOTALLENGTH, wxID_DLGRENDERCHOICEFORMAT, 
- wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
- wxID_DLGRENDERCMDAUDIOPREVIEW, wxID_DLGRENDERCMDBATCH, 
- wxID_DLGRENDERCMDBROWSEAUDIO, wxID_DLGRENDERCMDBROWSEOUTPUTDIR, 
- wxID_DLGRENDERCMDCLOSE, wxID_DLGRENDERCMDHELP, wxID_DLGRENDERCMDSTART, 
- wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERLCPROPS, wxID_DLGRENDERPNLOUTPUT, 
- wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERRBAUDIO, wxID_DLGRENDERRBMANUAL, 
- wxID_DLGRENDERSLOUTPUT, wxID_DLGRENDERSLSETTINGS, 
- wxID_DLGRENDERSPINBUTTONTRANSDUR, wxID_DLGRENDERSTATICLINE1, 
- wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTOUTPUTDIR, 
+[wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
+ wxID_DLGRENDERCHOICEMODE, wxID_DLGRENDERCHOICEPROFILE, 
+ wxID_DLGRENDERCHOICETYPE, wxID_DLGRENDERCMDBATCH, wxID_DLGRENDERCMDCLOSE, 
+ wxID_DLGRENDERCMDHELP, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, 
+ wxID_DLGRENDERLCPROPS, wxID_DLGRENDERPNLOUTPUT, wxID_DLGRENDERPNLSETTINGS, 
+ wxID_DLGRENDERPNLSTANDARD, wxID_DLGRENDERSLOUTPUT, wxID_DLGRENDERSLSETTINGS, 
+ wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTMODE, 
  wxID_DLGRENDERSTOUTPUTHEADER, wxID_DLGRENDERSTPROFILE, 
  wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTSETTINGSHEADER, 
- wxID_DLGRENDERSTSIZEDESCR, wxID_DLGRENDERSTTRANSDUR, 
- wxID_DLGRENDERSTTRANSDURUNIT, wxID_DLGRENDERSTTYPE, 
- wxID_DLGRENDERSTTYPEDESCR, wxID_DLGRENDERTCAUDIOFILE, 
- wxID_DLGRENDERTCOUTPUTDIR, wxID_DLGRENDERTCTRANSDURATION, 
- wxID_DLGRENDERTIMECTRLTOTALLENGTH, 
-] = [wx.NewId() for _init_ctrls in range(37)]
+ wxID_DLGRENDERSTTYPE, 
+] = [wx.NewId() for _init_ctrls in range(25)]
 
 
 class DlgRender(wx.Dialog, Observer):
     
     _custom_classes = {"wx.Choice": ["FormatComboBox"]}
     
+    def _init_coll_szDraft_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.cbDraft, 0, border=0, flag=0)
+
     def _init_coll_sizerSettingsCtrls_Items(self, parent):
         # generated method, don't edit
 
@@ -77,25 +74,6 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.stType, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceType, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.stTransDur, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSizer(self.sizerTransDuration, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stTransDurUnit, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.cbTotalLength, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.rbManual, 0, border=20,
-              flag=wx.LEFT | wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.timeCtrlTotalLength, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.rbAudio, 0, border=20,
-              flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT)
-        parent.AddWindow(self.tcAudiofile, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSizer(self.sizerAudio, 0, border=0, flag=0)
 
     def _init_coll_sizerOutput_Items(self, parent):
         # generated method, don't edit
@@ -127,15 +105,6 @@ class DlgRender(wx.Dialog, Observer):
 
         parent.AddGrowableCol(2)
 
-    def _init_coll_sizerOutputDir_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.tcOutputDir, 1, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdBrowseOutputDir, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-
     def _init_coll_sizerOutputHeader_Items(self, parent):
         # generated method, don't edit
 
@@ -160,37 +129,22 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.stFormat, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceFormat, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.lcProps, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stOutputDir, 0, border=0,
+        parent.AddWindow(self.stMode, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSizer(self.sizerOutputDir, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.choiceMode, 0, border=0, flag=wx.EXPAND)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
 
     def _init_coll_sizerOutputCtrls_Growables(self, parent):
         # generated method, don't edit
 
         parent.AddGrowableCol(1)
 
-    def _init_coll_sizerAudio_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.cmdBrowseAudio, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdAudioPreview, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-
     def _init_coll_sizerSettings_Items(self, parent):
         # generated method, don't edit
 
         parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
         parent.AddWindow(self.pnlSettings, 1, border=0, flag=0)
-
-    def _init_coll_sizerTransDuration_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.tcTransDuration, 1, border=0, flag=0)
-        parent.AddWindow(self.spinButtonTransDur, 0, border=0, flag=0)
 
     def _init_coll_sizerSettingsHeader_Items(self, parent):
         # generated method, don't edit
@@ -217,8 +171,6 @@ class DlgRender(wx.Dialog, Observer):
               vgap=8)
         self.sizerSettingsCtrls.SetFlexibleDirection(wx.BOTH)
 
-        self.sizerTransDuration = wx.BoxSizer(orient=wx.HORIZONTAL)
-
         self.sizerSettingsHeader = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self.sizerSettings = wx.BoxSizer(orient=wx.HORIZONTAL)
@@ -230,34 +182,31 @@ class DlgRender(wx.Dialog, Observer):
         self.sizerOutputCtrls = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
         self.sizerOutputCtrls.SetFlexibleDirection(wx.BOTH)
 
-        self.sizerOutputDir = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self.sizerAudio = wx.BoxSizer(orient=wx.HORIZONTAL)
+        self.szDraft = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self._init_coll_sizerMain_Items(self.sizerMain)
         self._init_coll_sizerCmd_Items(self.sizerCmd)
         self._init_coll_sizerSettingsCtrls_Items(self.sizerSettingsCtrls)
         self._init_coll_sizerSettingsCtrls_Growables(self.sizerSettingsCtrls)
-        self._init_coll_sizerTransDuration_Items(self.sizerTransDuration)
         self._init_coll_sizerSettingsHeader_Items(self.sizerSettingsHeader)
         self._init_coll_sizerSettings_Items(self.sizerSettings)
         self._init_coll_sizerOutputHeader_Items(self.sizerOutputHeader)
         self._init_coll_sizerOutput_Items(self.sizerOutput)
         self._init_coll_sizerOutputCtrls_Items(self.sizerOutputCtrls)
         self._init_coll_sizerOutputCtrls_Growables(self.sizerOutputCtrls)
-        self._init_coll_sizerOutputDir_Items(self.sizerOutputDir)
-        self._init_coll_sizerAudio_Items(self.sizerAudio)
+        self._init_coll_szDraft_Items(self.szDraft)
 
         self.SetSizer(self.sizerMain)
-        self.pnlOutput.SetSizer(self.sizerOutputCtrls)
         self.pnlSettings.SetSizer(self.sizerSettingsCtrls)
+        self.pnlStandard.SetSizer(self.szDraft)
+        self.pnlOutput.SetSizer(self.sizerOutputCtrls)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
-        self.SetClientSize(wx.Size(400, 250))
+              style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, title=_(u'Render filmstrip'))
+        self.SetClientSize(wx.Size(804, 580))
 
         self.stSettingsHeader = wx.StaticText(id=wxID_DLGRENDERSTSETTINGSHEADER,
               label=_(u'Settings'), name=u'stSettingsHeader', parent=self,
@@ -280,10 +229,6 @@ class DlgRender(wx.Dialog, Observer):
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=0)
 
-        self.stSizeDescr = wx.StaticText(id=wxID_DLGRENDERSTSIZEDESCR,
-              label=u'', name=u'stSizeDescr', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
         self.stType = wx.StaticText(id=wxID_DLGRENDERSTTYPE, label=_(u'Type:'),
               name=u'stType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -291,75 +236,6 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICETYPE,
               name=u'choiceType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
-
-        self.stTypeDescr = wx.StaticText(id=wxID_DLGRENDERSTTYPEDESCR,
-              label=u'', name=u'stTypeDescr', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.stTransDur = wx.StaticText(id=wxID_DLGRENDERSTTRANSDUR,
-              label=_(u'Transition speed:'), name=u'stTransDur',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0)
-
-        self.tcTransDuration = wx.TextCtrl(id=wxID_DLGRENDERTCTRANSDURATION,
-              name=u'tcTransDuration', parent=self.pnlSettings, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0, value=u'1.0')
-
-        self.spinButtonTransDur = wx.SpinButton(id=wxID_DLGRENDERSPINBUTTONTRANSDUR,
-              name=u'spinButtonTransDur', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.SP_VERTICAL)
-
-        self.stTransDurUnit = wx.StaticText(id=wxID_DLGRENDERSTTRANSDURUNIT,
-              label=_(u'Sec.'), name=u'stTransDurUnit', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.cbTotalLength = wx.CheckBox(id=wxID_DLGRENDERCBTOTALLENGTH,
-              label=_(u'Total length:'), name=u'cbTotalLength',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0)
-        self.cbTotalLength.SetValue(False)
-        self.cbTotalLength.SetToolTipString(_(u'Overrides the duration of single pictures and gives the photo filmstrip this total length.'))
-        self.cbTotalLength.Bind(wx.EVT_CHECKBOX,
-              self.OnControlStatusTotalLength, id=wxID_DLGRENDERCBTOTALLENGTH)
-
-        self.timeCtrlTotalLength = wx.lib.masked.timectrl.TimeCtrl(display_seconds=True,
-              fmt24hr=True, id=wxID_DLGRENDERTIMECTRLTOTALLENGTH,
-              name=u'timeCtrlTotalLength', oob_color=wx.NamedColour('Yellow'),
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0, useFixedWidthFont=True, value='12:00:00 AM')
-        self.timeCtrlTotalLength.Enable(False)
-
-        self.rbManual = wx.RadioButton(id=wxID_DLGRENDERRBMANUAL,
-              label=_(u'User defined:'), name=u'rbManual',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0)
-        self.rbManual.SetValue(True)
-        self.rbManual.Bind(wx.EVT_RADIOBUTTON, self.OnControlStatusTotalLength,
-              id=wxID_DLGRENDERRBMANUAL)
-
-        self.rbAudio = wx.RadioButton(id=wxID_DLGRENDERRBAUDIO,
-              label=_(u'Audio file:'), name=u'rbAudio', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-        self.rbAudio.Bind(wx.EVT_RADIOBUTTON, self.OnControlStatusTotalLength,
-              id=wxID_DLGRENDERRBAUDIO)
-
-        self.tcAudiofile = wx.TextCtrl(id=wxID_DLGRENDERTCAUDIOFILE,
-              name=u'tcAudiofile', parent=self.pnlSettings, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.TE_READONLY, value=u'')
-
-        self.cmdBrowseAudio = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_DLGRENDERCMDBROWSEAUDIO,
-              name=u'cmdBrowseAudio', parent=self.pnlSettings, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdBrowseAudio.Bind(wx.EVT_BUTTON, self.OnCmdBrowseAudioButton,
-              id=wxID_DLGRENDERCMDBROWSEAUDIO)
-
-        self.cmdAudioPreview = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_DLGRENDERCMDAUDIOPREVIEW,
-              name=u'cmdAudioPreview', parent=self.pnlSettings, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdAudioPreview.Bind(wx.EVT_BUTTON, self.OnCmdAudioPreviewButton,
-              id=wxID_DLGRENDERCMDAUDIOPREVIEW)
 
         self.stOutputHeader = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTHEADER,
               label=_(u'Output'), name=u'stOutputHeader', parent=self,
@@ -384,6 +260,16 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormatChoice,
               id=wxID_DLGRENDERCHOICEFORMAT)
 
+        self.stMode = wx.StaticText(id=wxID_DLGRENDERSTMODE, label=u'Mode:',
+              name=u'stMode', parent=self.pnlOutput, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+
+        self.choiceMode = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICEMODE,
+              name=u'choiceMode', parent=self.pnlOutput, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+        self.choiceMode.Bind(wx.EVT_CHOICE, self.OnChoiceModeChoice,
+              id=wxID_DLGRENDERCHOICEMODE)
+
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERLCPROPS, name=u'lcProps',
               parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.LC_REPORT | wx.SUNKEN_BORDER)
@@ -391,28 +277,19 @@ class DlgRender(wx.Dialog, Observer):
         self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
               id=wxID_DLGRENDERLCPROPS)
 
-        self.stOutputDir = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTDIR,
-              label=_(u'Output directory:'), name=u'stOutputDir',
-              parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=0)
+        self.pnlStandard = wx.Panel(id=wxID_DLGRENDERPNLSTANDARD,
+              name=u'pnlStandard', parent=self.pnlOutput, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.tcOutputDir = wx.TextCtrl(id=wxID_DLGRENDERTCOUTPUTDIR,
-              name=u'tcOutputDir', parent=self.pnlOutput, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0, value=u'')
+        self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=u'Draft',
+              name=u'cbDraft', parent=self.pnlStandard, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+        self.cbDraft.SetValue(False)
 
-        self.cmdBrowseOutputDir = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, wx.DefaultSize),
-              id=wxID_DLGRENDERCMDBROWSEOUTPUTDIR, name=u'cmdBrowseOutputDir',
-              parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdBrowseOutputDir.Bind(wx.EVT_BUTTON,
-              self.OnCmdBrowseOutputDirButton,
-              id=wxID_DLGRENDERCMDBROWSEOUTPUTDIR)
-
-        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'), name=u'cmdHelp',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-        self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton,
-              id=wx.ID_HELP)
+        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'),
+              name=u'cmdHelp', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+        self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton, id=wx.ID_HELP)
 
         self.cmdClose = wx.Button(id=wxID_DLGRENDERCMDCLOSE, label=_(u'&Close'),
               name=u'cmdClose', parent=self, pos=wx.Point(-1, -1),
@@ -420,9 +297,9 @@ class DlgRender(wx.Dialog, Observer):
         self.cmdClose.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
               id=wxID_DLGRENDERCMDCLOSE)
 
-        self.cmdBatch = wx.Button(id=wxID_DLGRENDERCMDBATCH, label=_(u'&Batch Job'),
-              name=u'cmdBatch', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+        self.cmdBatch = wx.Button(id=wxID_DLGRENDERCMDBATCH,
+              label=_(u'&Batch Job'), name=u'cmdBatch', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdBatch.Bind(wx.EVT_BUTTON, self.OnCmdBatchButton,
               id=wxID_DLGRENDERCMDBATCH)
 
@@ -448,45 +325,20 @@ class DlgRender(wx.Dialog, Observer):
 
     def __init__(self, parent, photoFilmStrip):
         self._init_ctrls(parent)
-        self.tcOutputDir.SetMinSize(wx.Size(400, -1))
-        self.tcAudiofile.SetMinSize(wx.Size(200, -1))
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
-        self.spinButtonTransDur.SetMinSize(wx.Size(-1, self.tcTransDuration.GetSizeTuple()[1]))
         
-        totalMinSecs = len(photoFilmStrip.GetPictures())
-        minTime = wx.DateTime()
-        minTime.SetHMS(0, totalMinSecs / 60, totalMinSecs % 60)
-        maxTime = wx.DateTime()
-        maxTime.SetHMS(1, 59, 59)
-        self.timeCtrlTotalLength.SetValue(minTime)
-        self.timeCtrlTotalLength.SetMin(minTime)
-        self.timeCtrlTotalLength.SetMax(maxTime)
-        self.timeCtrlTotalLength.SetLimited(True)
-
         font = self.stSettingsHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
         self.stSettingsHeader.SetFont(font)
         self.stOutputHeader.SetFont(font)
+        
+        self.lcProps.SetSizeHints(-1, 120, -1, -1)
+        
+        self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
         self.__photoFilmStrip = photoFilmStrip
         self.__progressHandler = None
         self.__renderEngine = None
-        
-        self.stTransDur.Enable(False)
-        self.tcTransDuration.Enable(False)
-        self.stTransDurUnit.Enable(False)
-        
-        self.cbTotalLength.SetValue(False)
-        
-        try:
-            self.mediaCtrl = wx.media.MediaCtrl(self.pnlSettings, style=wx.SIMPLE_BORDER)
-            self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
-        except NotImplementedError:
-            self.mediaCtrl = None
-
-        self.mediaLoaded = False
-
-        self.__ControlStatusTotalLength()
         
         settings = Settings()
         
@@ -501,99 +353,25 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormatChoice(None)
         
-        self.tcOutputDir.SetValue(settings.GetLastOutputPath())
-        
-        self.SetInitialSize(self.GetEffectiveMinSize())
-        self.CentreOnParent()
+        self.choiceMode.Append(_(u"Standard"), self.pnlStandard)
+        self.choiceMode.Append(_(u"Advanced"), self.lcProps)
+        self.choiceMode.Select(0)
+        self.__OnMode(0)
 
+        self.CentreOnParent()
+        
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
 
-    def __ValidateOutDir(self):
-        path = self.tcOutputDir.GetValue()
-        if not os.path.isdir(path):
-            dlg = wx.MessageDialog(self,
-                                   _(u"Output path does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
-                                   _(u"Question"),
-                                   wx.YES_NO | wx.ICON_QUESTION)
-            resp = dlg.ShowModal()
-            dlg.Destroy()
-            if resp == wx.ID_YES:
-                try:
-                    os.makedirs(path)
-                except StandardError, err:
-                    dlg = wx.MessageDialog(self,
-                                           _(u"Cannot create direcotory: %s") % unicode(err),
-                                           _(u"Error"),
-                                           wx.OK | wx.ICON_ERROR)
-                    dlg.ShowModal()
-                    dlg.Destroy()
-                    return False
-            else:
-                return False
-        else:
-            try:
-                fd = open(os.path.join(path, 'test'), 'w')
-                fd.write(" ")
-                fd.close()
-                os.remove(os.path.join(path, 'test'))
-            except StandardError, err:
-                dlg = wx.MessageDialog(self,
-                                       _(u"Cannot write into direcotory: %s") % unicode(err),
-                                       _(u"Error"),
-                                       wx.OK | wx.ICON_ERROR)
-                dlg.ShowModal()
-                dlg.Destroy()
-                return False
-
-        if len(os.listdir(path)) > 2:
-            dlg = wx.MessageDialog(self,
-                                   _(u"Output path is not empty! Use it anyway?"), 
-                                   _(u"Question"),
-                                   wx.YES_NO | wx.ICON_QUESTION)
-            resp = dlg.ShowModal()
-            dlg.Destroy()
-            if resp != wx.ID_YES:
-                return False
-        
-        return True
-
-    def __ValidateAudioFile(self):
-        if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
-            if not os.path.isfile(self.tcAudiofile.GetValue()):
-                dlg = wx.MessageDialog(self,
-                                       _(u"Audio file does not exist!"), 
-                                       _(u"Error"),
-                                       wx.OK | wx.ICON_ERROR)
-                dlg.ShowModal()
-                dlg.Destroy()
-                return False
-        return True
-    
-    def __GetTotalLength(self):
-        totalLength = None
-        
-        if self.cbTotalLength.GetValue():
-            if self.rbManual.GetValue():
-                totalLength = 0
-                dateTime = self.timeCtrlTotalLength.GetValue(as_wxDateTime=True)
-                totalLength += dateTime.GetHour() * 3600
-                totalLength += dateTime.GetMinute() * 60
-                totalLength += dateTime.GetSecond()
-            else:
-                totalLength = self.mediaCtrl.Length() / 1000.0
-            
-        return totalLength
-    
     def OnCmdStartButton(self, event):
-        if not self.__ValidateOutDir():
-            return
-        if not self.__ValidateAudioFile():
-            return
-        
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
 
+        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
+        outpath = os.path.join(outpath, profile.PName)
+        if not os.path.exists(outpath):
+            os.makedirs(outpath)
+        
         rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
 
         propDict = {}
@@ -605,7 +383,7 @@ class DlgRender(wx.Dialog, Observer):
         settings.SetLastProfile(self.choiceProfile.GetSelection())
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
-        settings.SetLastOutputPath(self.tcOutputDir.GetValue())
+#        settings.SetLastOutputPath(self.tcOutputDir.GetValue())
         settings.SetRenderProperties(rendererClass.__name__, propDict)
         
         self.cmdClose.SetLabel(_(u"&Cancel"))
@@ -616,12 +394,15 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = ProgressHandler()
         self.__progressHandler.AddObserver(self)
         
-        totalLength = self.__GetTotalLength()
+        totalLength = self.__photoFilmStrip.GetDuration()
         
         renderer = rendererClass()
-        renderer.Init(profile, Encode(self.tcOutputDir.GetValue(), sys.getfilesystemencoding()))
-        if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
-            renderer.SetAudioFile(Encode(self.tcAudiofile.GetValue(), sys.getfilesystemencoding()))
+        renderer.Init(profile, Encode(outpath, sys.getfilesystemencoding()))
+        
+        audioFile = self.__photoFilmStrip.GetAudioFile()
+        if audioFile:
+            renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
+
         self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
         
         renderThread = threading.Thread(target=self.__renderEngine.Start,
@@ -719,78 +500,6 @@ class DlgRender(wx.Dialog, Observer):
         self.stProgress.SetLabel(info)
         self.Layout()
 
-    def OnCmdBrowseOutputDirButton(self, event):
-        dlg = wx.DirDialog(self, defaultPath=self.tcOutputDir.GetValue())
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            self.tcOutputDir.SetValue(path)
-        dlg.Destroy()
-
-    def __ControlStatusTotalLength(self):
-        active = self.cbTotalLength.GetValue()
-        manual = self.rbManual.GetValue()
-        if not manual and self.mediaCtrl is None:
-            dlg = wx.MessageDialog(self,
-                                   _(u"No media support found on this platform!"),  
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
-            self.rbManual.SetValue(True)
-            return
-            
-        self.rbAudio.Enable(active)
-        self.rbManual.Enable(active)
-        self.timeCtrlTotalLength.Enable(active and manual)
-        self.tcAudiofile.Enable(active and not manual)
-        self.cmdBrowseAudio.Enable(active and not manual)
-        self.cmdAudioPreview.Enable(active and not manual and self.mediaLoaded)
-    
-    def OnControlStatusTotalLength(self, event):
-        self.__ControlStatusTotalLength()
-        event.Skip()
-        
-    def OnCmdBrowseAudioButton(self, event):
-        dlg = wx.FileDialog(self, _(u"Select music"), 
-                            Settings().GetAudioPath(), "", 
-#                            _(u"Audiofiles") + " (*.mp3, *.wav)|*.mp3; *.wav", 
-                            _(u"Audiofiles") + " (*.mp3)|*.mp3", 
-                            wx.OPEN)
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            Settings().SetAudioPath(os.path.dirname(path))
-            
-            if self.mediaCtrl.Load(path):
-                self.mediaLoaded = True
-                self.tcAudiofile.SetValue(path)
-                self.__ControlStatusTotalLength()
-            else:
-                dlg2 = wx.MessageDialog(self,
-                                        _(u"Invalid audio file!"), 
-                                        _(u"Error"),
-                                        wx.OK | wx.ICON_ERROR)
-                dlg2.ShowModal()
-                dlg2.Destroy()
-
-        dlg.Destroy()
-
-    def OnCmdAudioPreviewButton(self, event):
-        if self.mediaCtrl.GetState() == wx.media.MEDIASTATE_PLAYING:
-            self.mediaCtrl.Stop()
-        else:
-            self.mediaCtrl.Play()
-
-    def OnMediaLoaded(self, event):
-        millis = self.mediaCtrl.Length()
-        dateTime = wx.DateTime()
-        dateTime.SetHMS(0, int(millis / 60000.0), int(millis / 1000.0) % 60)
-        try:
-            self.timeCtrlTotalLength.SetValue(dateTime)
-        except ValueError:
-            print "invalid media length"
-
-        event.Skip()
-
     def OnCmdHelpButton(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_RENDER)
         event.Skip()
@@ -804,6 +513,10 @@ class DlgRender(wx.Dialog, Observer):
             dlg.ShowModal()
             dlg.Destroy()
             return
+
+        profile = self.__GetChoiceDataSelected(self.choiceProfile)
+        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
+        outpath = os.path.join(outpath, profile.PName)
         
         if sys.platform == 'win32':
             batchFileMask = _(u"Batch file") + " (*.bat)|*.bat"
@@ -838,7 +551,7 @@ class DlgRender(wx.Dialog, Observer):
             cli.append("-p")
             cli.append("\"" + Encode(self.__photoFilmStrip.GetFilename(), coding) + "\"")
             cli.append("-o")
-            cli.append("\"" + Encode(self.tcOutputDir.GetValue(), coding) + "\"")
+            cli.append("\"" + Encode(outpath, coding) + "\"")
             cli.append("-t")
             cli.append(str(self.choiceProfile.GetSelection()))
             cli.append("-n")
@@ -846,13 +559,12 @@ class DlgRender(wx.Dialog, Observer):
             cli.append("-f")
             cli.append(str(self.choiceFormat.GetSelection()))
             
-            if self.cbTotalLength.GetValue():
-                cli.append("-l")
-                cli.append(str(self.__GetTotalLength()))
+            cli.append("-l")
+            cli.append(str(self.__photoFilmStrip.GetDuration()))
                 
-                if self.rbAudio.GetValue():
-                    cli.append("-a")
-                    cli.append("\"" + Encode(self.tcAudiofile.GetValue(), coding) + "\"")
+            if self.__photoFilmStrip.GetAudioFile() is not None:
+                cli.append("-a")
+                cli.append("\"" + Encode(self.__photoFilmStrip.GetAudioFile(), coding) + "\"")
                     
             fd.write(" ".join(cli))
             fd.write("\n")
@@ -865,6 +577,27 @@ class DlgRender(wx.Dialog, Observer):
                 pass
 
         dlg.Destroy()
+
+    def __OnMode(self, mode):
+        self.SetSizeHints(-1, -1, -1, -1)
+
+        self.sizerOutputCtrls.Remove(5)
+        if mode == 0:
+            ctrl = self.pnlStandard
+        else:
+            ctrl = self.lcProps  
+        self.sizerOutputCtrls.AddWindow(ctrl, 0, border=0, flag=wx.EXPAND)
+
+        self.pnlStandard.Show(mode == 0)
+        self.lcProps.Show(mode == 1)
+        self.Layout()
+        
+        szMin = self.GetEffectiveMinSize()
+        self.SetSizeHints(500, szMin.GetHeight(), 500, szMin.GetHeight())
+    
+    def OnChoiceModeChoice(self, event):
+        self.__OnMode(event.GetSelection())
+        event.Skip()
 
 
 class FormatComboBox(wx.combo.OwnerDrawnComboBox):

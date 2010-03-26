@@ -19,24 +19,65 @@
 #
 
 import os
+import random
 import sqlite3
 
-from lib.common.ObserverPattern import Observable
+import Image
+
 from lib.util import Encode
 
+from core.util import RotateExif
 from core.Picture import Picture
 from core.ProgressHandler import ProgressHandler
 
 
-class PhotoFilmStrip(Observable):
+class PhotoFilmStrip(object):
     
-    def __init__(self, filename=None):
-        Observable.__init__(self)
+    REV = 2
+    
+    @staticmethod
+    def IsOk(filename):
+        conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
+        cur = conn.cursor()
         
+        try:
+            cur.execute("select * from `picture`")
+        except sqlite3.DatabaseError, dberr:
+            return False
+        return True
+    
+    @staticmethod
+    def QuickInfo(filename):
+        conn = sqlite3.connect(Encode(filename), 
+                               detect_types=sqlite3.PARSE_DECLTYPES)
+        cur = conn.cursor()
+        
+        cur.execute("select count(*) from `picture`")
+        imgCount = cur.fetchone()[0]
+        picIdx   = random.randint(0, imgCount - 1)
+        
+        cur.execute("select filename, rotation from `picture` limit ?,1", (picIdx, ))
+        imgFile, rotation = cur.fetchone()
+        
+        if os.path.exists(imgFile):
+            img = Image.open(imgFile)
+            img = RotateExif(img)
+            img = img.rotate(rotation * -90)
+            img.thumbnail((64, 64), Image.NEAREST)
+        else:
+            img = None
+
+        return imgCount, img
+        
+    def __init__(self, filename=None):
         self.__pictures = []
         self.__uiHandler = UserInteractionHandler()
         self.__progressHandler = ProgressHandler()
         self.__filename = filename
+        
+        self.__audioFile = None
+        self.__aspect = 16.0 / 9.0
+        self.__duration = None
         
     def GetFilename(self):
         return self.__filename
@@ -53,12 +94,35 @@ class PhotoFilmStrip(Observable):
     def SetProgressHandler(self, progressHandler):
         self.__progressHandler = progressHandler
     
+    def SetAudioFile(self, audioFile):
+        self.__audioFile = audioFile
+    def GetAudioFile(self):
+        return self.__audioFile
+    
+    def SetAspect(self, aspect):
+        self.__aspect = aspect
+    def GetAspect(self):
+        return self.__aspect
+    
+    def SetDuration(self, duration):
+        self.__duration = duration
+    def GetDuration(self):
+        if self.__duration is None:
+            totalTime = 0
+            for pic in self.__pictures:
+                totalTime += pic.GetDuration()
+        else:
+            totalTime = self.__duration
+        return totalTime
+    
     def Load(self, filename, importPath=None):
         if not os.path.isfile(filename):
             return False
+        
         conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = conn.cursor()
         cur.row_factory = sqlite3.Row
+        
         try:
             cur.execute("select * from `picture`")
         except sqlite3.DatabaseError, dberr:
@@ -111,6 +175,20 @@ class PhotoFilmStrip(Observable):
             pic.SetEffect(self.__LoadSafe(row, 'effect', Picture.EFFECT_NONE))
 
             picList.append(pic)
+
+        fileRev = 1
+        try:
+            cur.execute("select value from `property` where name=?", ("rev", ))
+            result = cur.fetchone()
+            if result:
+                fileRev = int(result[0])
+        except sqlite3.DatabaseError, dberr:
+            pass
+        
+        if fileRev >= 2:
+            self.__audioFile = self.__LoadProperty(cur, "audiofile", unicode)
+            self.__duration  = self.__LoadProperty(cur, "duration", unicode)
+            self.__aspect    = self.__LoadProperty(cur, "aspect", float, 16.0 / 9.0)
         
         cur.close()
         self.__pictures = picList
@@ -121,6 +199,14 @@ class PhotoFilmStrip(Observable):
         try:
             return row[colName]
         except IndexError:
+            return default
+        
+    def __LoadProperty(self, cur, propName, typ, default=None):
+        cur.execute("select value from `property` where name=?", (propName, ))
+        result = cur.fetchone()
+        if result:
+            return typ(result[0])
+        else:
             return default
         
     def __PicToQuery(self, tableName, pic, includePic):
@@ -160,11 +246,17 @@ class PhotoFilmStrip(Observable):
                                         "duration DOUBLE, " \
                                         "comment TEXT, " \
                                         "effect INTEGER, "\
-                                        "data BLOB);\n"
+                                        "data BLOB);\n" \
+                "CREATE TABLE `property` (property_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
+                                         "name TEXT," \
+                                         "value TEXT);\n"
         conn.executescript(query)
         
     
     def Save(self, filename, includePics=False):
+        dirname = os.path.dirname(filename)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         if os.path.exists(filename):
             os.remove(filename)
         
@@ -175,6 +267,15 @@ class PhotoFilmStrip(Observable):
         for pic in self.__pictures:
             query, values = self.__PicToQuery('picture', pic, includePics)
             cur.execute(query, values)
+        
+        query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
+        for name, value in [('rev', self.REV),
+                            ('audiofile', self.__audioFile),
+                            ('aspect', self.__aspect),
+                            ('duration', self.__duration)]:
+            if value is not None:
+                cur.execute(query, (name, value))
+        
         conn.commit()
         cur.close()
 

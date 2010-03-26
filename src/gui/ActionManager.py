@@ -20,8 +20,6 @@
 
 import wx
 
-from lib.Settings import Settings
-
 
 class ActionManager(object):
     
@@ -34,12 +32,9 @@ class ActionManager(object):
     ID_RENDER_FILMSTRIP  = wx.NewId()
     ID_PROJECT_IMPORT    = wx.NewId()
     ID_PROJECT_EXPORT    = wx.NewId()
+    ID_PROJECT_PROPS     = wx.NewId()
 
     def __init__(self):
-        self.filehistory = wx.FileHistory()
-        for filename in Settings().GetFileHistory():
-            self.filehistory.AddFileToHistory(filename)
-            
         self.__menuBar = None
         self.__toolBar = None
         
@@ -64,6 +59,9 @@ class ActionManager(object):
     def GetToolBar(self, parent):
         if self.__toolBar:
             return self.__toolBar
+        if parent is None:
+            return
+        
         toolBar = wx.ToolBar(parent)
         toolBar.AddSimpleTool(wx.ID_NEW, 
                               wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, wx.DefaultSize),
@@ -100,18 +98,6 @@ class ActionManager(object):
             item.SetBitmap(bmp)
         menu.AppendItem(item)
         
-    def AddFileToHistory(self, filename):
-        self.filehistory.AddFileToHistory(filename)
-        
-        fileList = Settings().GetFileHistory()
-        if filename in fileList:
-            fileList.remove(filename)
-        fileList.insert(0, filename)
-        Settings().SetFileHistory(fileList)
-        
-    def GetHistoryFile(self, fileNum):
-        return self.filehistory.GetHistoryFile(fileNum)
-        
     def __MakeMenuFile(self):
         menu = wx.Menu()
         self.__CreateMenuItem(menu, 
@@ -123,13 +109,9 @@ class ActionManager(object):
                               _(u'&Open Project') + '\tCtrl+O',
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize))
 
-        fileHistoryMenu = wx.Menu()
-        menu.AppendSubMenu(fileHistoryMenu, _(u"Open &recent"))
-        self.filehistory.UseMenu(fileHistoryMenu)
-        self.filehistory.AddFilesToMenu()
         menu.AppendSeparator()
-        self.__CreateMenuItem(menu, wx
-                              .ID_SAVE, 
+        self.__CreateMenuItem(menu, 
+                              wx.ID_SAVE, 
                               _(u'&Save Project') + '\tCtrl+S',
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, wx.DefaultSize))
         self.__CreateMenuItem(menu, 
@@ -137,8 +119,13 @@ class ActionManager(object):
                               _(u'Save Project &as'),
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
-        self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
-        self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))
+#        self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
+#        self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))
+#        menu.AppendSeparator()
+        self.__CreateMenuItem(menu, 
+                              self.ID_PROJECT_PROPS, 
+                              _("&Properties"), 
+                              wx.ArtProvider_GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               wx.ID_EXIT, 
@@ -197,40 +184,3 @@ class ActionManager(object):
                               _(u'&About'),
                               wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MENU, wx.DefaultSize))
         return menu
-    
-    
-    def CanSave(self):
-        mb = self.GetMenuBar()
-        if mb:
-            return mb.IsEnabled(wx.ID_SAVE)
-        else:
-            return False
-        
-    def OnProjectChanged(self, value):
-        mb = self.GetMenuBar()
-        if mb:
-            mb.Enable(wx.ID_SAVE, value)
-            
-        tb = self.GetToolBar(None)
-        if tb:
-            tb.EnableTool(wx.ID_SAVE, value)
-
-    def OnPictureSelected(self, value, kind='any'):
-        mb = self.GetMenuBar()
-        if mb:
-            mb.Enable(self.ID_PIC_MOVE_LEFT, kind not in ['first', 'none'] and value)
-            mb.Enable(self.ID_PIC_MOVE_RIGHT, kind not in ['last', 'none'] and value)
-            mb.Enable(self.ID_PIC_REMOVE, value)
-            mb.Enable(self.ID_PIC_ROTATE_CW, value)
-            mb.Enable(self.ID_PIC_ROTATE_CCW, value)
-
-    def OnProjectReady(self, value):
-        mb = self.GetMenuBar()
-        if mb:
-            mb.Enable(self.ID_RENDER_FILMSTRIP, value)
-            mb.Enable(wx.ID_SAVEAS, value)
-            
-        tb = self.GetToolBar(None)
-        if tb:
-            tb.EnableTool(self.ID_RENDER_FILMSTRIP, value)
-        

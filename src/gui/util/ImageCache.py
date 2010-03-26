@@ -22,6 +22,8 @@ import wx
 
 from lib.common.Singleton import Singleton
 
+from core.util import ImageToStream
+
 
 class ImageCache(Singleton):
     
@@ -40,11 +42,11 @@ class ImageCache(Singleton):
         key = picture.GetFilename()
         if not self._wxImgCache.has_key(key):
             img = picture.GetThumbnail(width=ImageCache.SIZE)
-            wxImg = wx.ImageFromStream(picture.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+            wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
             self._wxImgCache[key] = wxImg
             
             img = picture.GetThumbnail(height=ImageCache.THUMB_SIZE)
-            wxImg = wx.ImageFromStream(picture.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+            wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
             self._wxBmpCache[key] = wxImg.ConvertToBitmap()
 
     def UpdatePicture(self, picture):

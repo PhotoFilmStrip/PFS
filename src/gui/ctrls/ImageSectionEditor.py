@@ -54,9 +54,6 @@ class ImageSectionEditor(wx.Panel, Observer):
     
     INFO_TIME_OUT    = 2.0
     
-    RATIO = 16.0 / 9.0
-#    RATIO = 4.0 / 3.0
-            
     
     def __init__(self, parent, id=wx.ID_ANY, 
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
@@ -68,6 +65,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
+        self.RATIO = 16.0 / 9.0
         self._imgProxy  = None
         self._sectRect  = wx.Rect(0, 0, 1280, 720)
         self._zoom      = 1
@@ -94,6 +92,11 @@ class ImageSectionEditor(wx.Panel, Observer):
         self.__KeepRectInImage()
         self.Refresh()
 
+    def SetAspect(self, aspect):
+        self.RATIO = aspect
+        self.__KeepRectInImage()
+        self.Refresh()
+    
     def SetImgProxy(self, imgProxy):
         self._imgProxy = imgProxy
     
