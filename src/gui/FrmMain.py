@@ -201,8 +201,8 @@ class FrmMain(wx.Frame):
         info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
         info.Developers = Settings.DEVELOPERS + [
                                 "",
-                                _("Translations"),
-                                _("French:") + " Teza Lprod - http://lprod.org"]
+                                _("Translators"),
+                                "Teza Lprod - http://lprod.org"]
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
 
