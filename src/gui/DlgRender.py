@@ -397,7 +397,9 @@ class DlgRender(wx.Dialog, Observer):
         totalLength = self.__photoFilmStrip.GetDuration()
         
         renderer = rendererClass()
-        renderer.Init(profile, Encode(outpath, sys.getfilesystemencoding()))
+        renderer.Init(profile, 
+                      self.__photoFilmStrip.GetAspect(),
+                      Encode(outpath, sys.getfilesystemencoding()))
         
         audioFile = self.__photoFilmStrip.GetAudioFile()
         if audioFile:

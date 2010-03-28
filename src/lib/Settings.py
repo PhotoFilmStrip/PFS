@@ -106,7 +106,7 @@ class Settings(Singleton):
         for idx in range(10):
             if self.cp.has_option("History", str(idx)):
                 filename = Decode(self.cp.get("History", str(idx)))
-                if os.path.exists(filename):
+                if os.path.exists(filename) and filename not in fileList:
                     fileList.insert(0, filename)
 
         return fileList

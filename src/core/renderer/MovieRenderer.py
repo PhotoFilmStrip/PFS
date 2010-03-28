@@ -103,7 +103,7 @@ class MovieRenderer(SingleFileRenderer):
                 os.remove(path)
 
     def __ProcessMpegOutput(self):
-        aspect = "16/9"
+        aspect = "%.3f" % self._aspect
         if self.PProfile.PVideoNorm == OutputProfile.PAL:
             framerate = "25"
             keyint = 15

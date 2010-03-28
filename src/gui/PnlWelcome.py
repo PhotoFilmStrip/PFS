@@ -57,6 +57,10 @@ class PnlWelcome(wx.Panel):
                     </wxp>
                 </td>""" % recentFile
                 htmlParts.append(htmlPart)
+
+        breakAt = 4
+        for idx in xrange((len(htmlParts) - 1) / breakAt):
+            htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
         
         if htmlParts:
             self.htmlTitle = _(u"Recent projects")

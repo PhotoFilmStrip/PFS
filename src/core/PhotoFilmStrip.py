@@ -106,8 +106,10 @@ class PhotoFilmStrip(object):
     
     def SetDuration(self, duration):
         self.__duration = duration
-    def GetDuration(self):
+    def GetDuration(self, calc=True):
         if self.__duration is None:
+            if not calc:
+                return None
             totalTime = 0
             for pic in self.__pictures:
                 totalTime += pic.GetDuration()
@@ -187,7 +189,7 @@ class PhotoFilmStrip(object):
         
         if fileRev >= 2:
             self.__audioFile = self.__LoadProperty(cur, "audiofile", unicode)
-            self.__duration  = self.__LoadProperty(cur, "duration", unicode)
+            self.__duration  = self.__LoadProperty(cur, "duration", int)
             self.__aspect    = self.__LoadProperty(cur, "aspect", float, 16.0 / 9.0)
         
         cur.close()

@@ -271,8 +271,18 @@ class DlgProjectProps(wx.Dialog):
         self.tcFolder.SetMaxSize(wx.Size(-1, self.tcProject.GetSizeTuple()[1]))
         self.tcAudiofile.SetMaxSize(wx.Size(-1, self.tcProject.GetSizeTuple()[1]))
         self.tcAudiofile.SetMinSize(wx.Size(300, -1))
-        self.Layout()
         
+        minTime = wx.DateTime_Now()
+        minTime.SetHMS(0, 0, 3)
+        maxTime = wx.DateTime_Now()
+        maxTime.SetHMS(1, 59, 59)
+        self.timeCtrlTotalLength.SetValue(minTime)
+        self.timeCtrlTotalLength.SetMin(minTime)
+        self.timeCtrlTotalLength.SetMax(maxTime)
+        self.timeCtrlTotalLength.SetLimited(True)
+
+        self.Layout()
+
         self.__photoFilmStrip = photoFilmStrip
         
         if photoFilmStrip is None:
@@ -296,6 +306,14 @@ class DlgProjectProps(wx.Dialog):
             
             self.__SetChoiceSelectionByData(self.choiceAspect, photoFilmStrip.GetAspect())
             
+            pfsDur = photoFilmStrip.GetDuration()
+            dur = wx.DateTime_Now()
+            dur.SetHMS(0, pfsDur / 60, pfsDur % 60)
+            self.timeCtrlTotalLength.SetWxDateTime(dur)
+
+            if photoFilmStrip.GetDuration(calc=False):
+                self.cbTotalLength.SetValue(True)
+            
             audioFile = photoFilmStrip.GetAudioFile()
             if audioFile:
                 self.__LoadAudioFile(audioFile)
@@ -309,15 +327,6 @@ class DlgProjectProps(wx.Dialog):
             self.mediaCtrl = None
 
         self.mediaLoaded = False
-
-        minTime = wx.DateTime_Now()
-        minTime.SetHMS(0, 0, 3)
-        maxTime = wx.DateTime_Now()
-        maxTime.SetHMS(1, 59, 59)
-        self.timeCtrlTotalLength.SetValue(minTime)
-        self.timeCtrlTotalLength.SetMin(minTime)
-        self.timeCtrlTotalLength.SetMax(maxTime)
-        self.timeCtrlTotalLength.SetLimited(True)
 
         self.__ControlStatusTotalLength()
         
