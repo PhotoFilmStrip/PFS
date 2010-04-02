@@ -27,8 +27,6 @@ from ConfigParser import ConfigParser
 from lib.common.Singleton import Singleton
 from lib.util import Encode, Decode
 
-from core.OutputProfile import DEFAULT_PROFILES
-
 
 class Settings(Singleton):
     
@@ -209,6 +207,3 @@ class Settings(Singleton):
                 result[prop] = value
         
         return result
-    
-    def GetOutputProfiles(self):
-        return DEFAULT_PROFILES

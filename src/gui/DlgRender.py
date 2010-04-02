@@ -30,7 +30,7 @@ import wx.combo
 import wx.lib.masked.timectrl
 
 
-from core.OutputProfile import OutputProfile
+from core.OutputProfile import OutputProfile, GetOutputProfiles
 from core.ProgressHandler import ProgressHandler
 from core.RenderEngine import RenderEngine
 from core.renderer import RENDERERS
@@ -340,16 +340,15 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = None
         self.__renderEngine = None
         
-        settings = Settings()
-        
-        for profile in settings.GetOutputProfiles():
+        for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
             self.choiceProfile.Append(profile.PName, profile)
-        self.choiceProfile.SetSelection(settings.GetLastProfile())
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
+
+        settings = Settings()
+        self.choiceProfile.SetSelection(settings.GetLastProfile())
         self.choiceType.SetSelection(settings.GetVideoType())
-        
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormatChoice(None)
         

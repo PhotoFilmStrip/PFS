@@ -56,7 +56,11 @@ def __CreateDefaultProfiles():
     dvd.PResPal = (720, 576)
     dvd.PResNtsc = (720, 480)
     dvd.PBitrate = 8000
+    
+    return [vcd, svcd, dvd]
 
+    
+def __Create16_9Profiles():
     medium = OutputProfile()
     medium.PName = "Medium 640x360"
     medium.PResPal = (640, 360)
@@ -75,13 +79,55 @@ def __CreateDefaultProfiles():
     fullhd.PResNtsc = (1920, 1080) 
     fullhd.PBitrate = 12000
     
-    fullhd2 = OutputProfile()
-    fullhd2.PName = "FULL-HD 1440x1080"
-    fullhd2.PResPal = (1440, 1080)
-    fullhd2.PResNtsc = (1440, 1080) 
-    fullhd2.PBitrate = 12000
+    return [medium, hd, fullhd]
 
-    return [vcd, svcd, dvd, medium, hd, fullhd]
+def __Create4_3Profiles():
+    medium = OutputProfile()
+    medium.PName = "Medium 640x480"
+    medium.PResPal = (640, 480)
+    medium.PResNtsc = (640, 480) 
+    medium.PBitrate = 8000
+
+    hd = OutputProfile()
+    hd.PName = "HD 960x720"
+    hd.PResPal = (960, 720)
+    hd.PResNtsc = (960, 720) 
+    hd.PBitrate = 10000
+
+    fullhd = OutputProfile()
+    fullhd.PName = "FULL-HD 1440x1080"
+    fullhd.PResPal = (1440, 1080)
+    fullhd.PResNtsc = (1440, 1080) 
+    fullhd.PBitrate = 12000
+    
+    return [medium, hd, fullhd]
+
+def __Create3_2Profiles():
+    medium = OutputProfile()
+    medium.PName = "Medium 720x480"
+    medium.PResPal = (720, 480)
+    medium.PResNtsc = (720, 480) 
+    medium.PBitrate = 8000
+
+    hd = OutputProfile()
+    hd.PName = "HD 1080x720"
+    hd.PResPal = (1080, 720)
+    hd.PResNtsc = (1080, 720) 
+    hd.PBitrate = 10000
+
+    fullhd = OutputProfile()
+    fullhd.PName = "FULL-HD 1620x1080"
+    fullhd.PResPal = (1620, 1080)
+    fullhd.PResNtsc = (1620, 1080) 
+    fullhd.PBitrate = 12000
+    
+    return [medium, hd, fullhd]
 
 
-DEFAULT_PROFILES = __CreateDefaultProfiles()    
+def GetOutputProfiles(aspect):
+    if "%.3f" % aspect == "%.3f" % (4.0 / 3.0):
+        return __CreateDefaultProfiles() + __Create4_3Profiles()
+    elif "%.3f" % aspect == "%.3f" % (3.0 / 2.0):
+        return __Create3_2Profiles()
+    else:
+        return __CreateDefaultProfiles() + __Create16_9Profiles()

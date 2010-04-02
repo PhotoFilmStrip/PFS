@@ -189,7 +189,7 @@ class PhotoFilmStrip(object):
         
         if fileRev >= 2:
             self.__audioFile = self.__LoadProperty(cur, "audiofile", unicode)
-            self.__duration  = self.__LoadProperty(cur, "duration", int)
+            self.__duration  = self.__LoadProperty(cur, "duration", float)
             self.__aspect    = self.__LoadProperty(cur, "aspect", float, 16.0 / 9.0)
         
         cur.close()

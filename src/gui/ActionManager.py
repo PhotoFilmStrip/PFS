@@ -72,9 +72,9 @@ class ActionManager(object):
         toolBar.AddSimpleTool(wx.ID_SAVE, 
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR, wx.DefaultSize),
                               _(u'Save Project'), _(u'Save Project'))
-        toolBar.AddSimpleTool(wx.ID_SAVEAS, 
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR, wx.DefaultSize),
-                              _(u'Save Project as'), _(u'Save Project as'))
+#        toolBar.AddSimpleTool(wx.ID_SAVEAS, 
+#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR, wx.DefaultSize),
+#                              _(u'Save Project as'), _(u'Save Project as'))
         toolBar.AddSeparator()
         toolBar.AddSimpleTool(self.ID_PIC_IMPORT, 
                               wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_TOOLBAR, wx.DefaultSize),
@@ -114,10 +114,10 @@ class ActionManager(object):
                               wx.ID_SAVE, 
                               _(u'&Save Project') + '\tCtrl+S',
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, wx.DefaultSize))
-        self.__CreateMenuItem(menu, 
-                              wx.ID_SAVEAS, 
-                              _(u'Save Project &as'),
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, wx.DefaultSize))
+#        self.__CreateMenuItem(menu, 
+#                              wx.ID_SAVEAS, 
+#                              _(u'Save Project &as'),
+#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
 #        self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
 #        self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))

@@ -27,7 +27,7 @@ from lib.common.ObserverPattern import Observer
 from lib.Settings import Settings
 from lib.util import Decode, Encode
 
-from core.OutputProfile import OutputProfile
+from core.OutputProfile import OutputProfile, GetOutputProfiles
 from core.PhotoFilmStrip import PhotoFilmStrip
 from core.ProgressHandler import ProgressHandler
 from core.RenderEngine import RenderEngine
@@ -102,8 +102,7 @@ def main():
     parser = OptionParser(prog="%s-cli" % Settings.APP_NAME.lower(), 
                           version="%%prog %s" % Settings.APP_VERSION)
 
-    settings = Settings()
-    profiles = settings.GetOutputProfiles()
+    profiles = GetOutputProfiles(None)
     profStr = ", ".join(["%d=%s" % (idx, prof.PName) for idx, prof in enumerate(profiles)])
     
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
@@ -180,11 +179,11 @@ def main():
             logging.error(_(u"audio file does not exist: %s") % options.audio)
             sys.exit(5)
 
-    
-    savedProps = settings.GetRenderProperties(rendererClass.__name__)
-    for prop in rendererClass.GetProperties():
-        value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
-        rendererClass.SetProperty(prop, value)
+#    settings = Settings()
+#    savedProps = settings.GetRenderProperties(rendererClass.__name__)
+#    for prop in rendererClass.GetProperties():
+#        value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
+#        rendererClass.SetProperty(prop, value)
     
     renderer = rendererClass()
     renderer.Init(profile, options.outputpath)

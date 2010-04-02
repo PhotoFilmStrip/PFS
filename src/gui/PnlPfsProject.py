@@ -528,11 +528,12 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
             self.SetChanged(True)
 
     def UpdateProperties(self):
-        evt = UpdateStatusbarEvent(self.GetId())
-        self.GetEventHandler().ProcessEvent(evt)
-        print self.__photoFilmStrip.GetAspect()
         self.bitmapLeft.SetAspect(self.__photoFilmStrip.GetAspect())
         self.bitmapRight.SetAspect(self.__photoFilmStrip.GetAspect())
+        self.SetChanged(True)
+
+        evt = UpdateStatusbarEvent(self.GetId())
+        self.GetEventHandler().ProcessEvent(evt)
     
     def IsReady(self):
         return self.lvPics.GetItemCount() > 0

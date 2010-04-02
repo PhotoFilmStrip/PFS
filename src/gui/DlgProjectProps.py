@@ -283,6 +283,14 @@ class DlgProjectProps(wx.Dialog):
 
         self.Layout()
 
+        try:
+            self.mediaCtrl = wx.media.MediaCtrl(self, style=wx.SIMPLE_BORDER)
+            self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
+        except NotImplementedError:
+            self.mediaCtrl = None
+
+        self.mediaLoaded = False
+
         self.__photoFilmStrip = photoFilmStrip
         
         if photoFilmStrip is None:
@@ -305,6 +313,7 @@ class DlgProjectProps(wx.Dialog):
             self.cmdBrowseFolder.Enable(False)
             
             self.__SetChoiceSelectionByData(self.choiceAspect, photoFilmStrip.GetAspect())
+            self.choiceAspect.Enable(False)
             
             pfsDur = photoFilmStrip.GetDuration()
             dur = wx.DateTime_Now()
@@ -319,14 +328,7 @@ class DlgProjectProps(wx.Dialog):
                 self.__LoadAudioFile(audioFile)
                 self.tcAudiofile.SetValue(audioFile)
                 self.cbTotalLength.SetValue(True)
-
-        try:
-            self.mediaCtrl = wx.media.MediaCtrl(self, style=wx.SIMPLE_BORDER)
-            self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
-        except NotImplementedError:
-            self.mediaCtrl = None
-
-        self.mediaLoaded = False
+                self.rbAudio.SetValue(True)
 
         self.__ControlStatusTotalLength()
         
