@@ -21,7 +21,7 @@
 #
 
 import logging
-import os, gettext, sys
+import sys
 
 
 def initLogging():
@@ -31,17 +31,7 @@ def initLogging():
 
 def initI18N():
     from lib.Settings import Settings
-    curLang = Settings().GetLanguage()
-    localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../locale")
-    
-    if not os.path.isdir(localeDir):
-        gettext.install(Settings.APP_NAME)
-        return 
-
-    lang = gettext.translation(Settings.APP_NAME, 
-                               localeDir, 
-                               languages=[curLang, "en"])
-    lang.install(True)
+    Settings().InitLanguage()
 
 
 def main():

@@ -29,15 +29,15 @@ class IconLabelLink(wx.Panel):
                  label="label",
                  bmp=None,
                  descr="descr"):
-        wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, size, 0, "IconLabelLink")
+        wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, (150, 100), wx.SIMPLE_BORDER, "IconLabelLink")
         self.SetBackgroundColour(parent.GetBackgroundColour())
         stBmp = wx.StaticBitmap(self, -1, bmp)
         self.lbl = wx.StaticText(self, -1, label)
         
         sz = wx.BoxSizer(wx.VERTICAL)
+        sz.AddStretchSpacer(1)
         sz.Add(stBmp, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 4)
-        sz.Add(self.lbl, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.LEFT | wx.RIGHT, 25)
-        sz.AddSpacer(8)
+        sz.Add(self.lbl, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, 4)
         self.SetSizer(sz)
         
         self.SetToolTipString(descr)
@@ -45,8 +45,9 @@ class IconLabelLink(wx.Panel):
         self.lbl.SetToolTipString(descr)
 
         self.Layout()
-        self.SetInitialSize(self.GetEffectiveMinSize())
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        
+        stBmp.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.lbl.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvents)
         stBmp.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvents)

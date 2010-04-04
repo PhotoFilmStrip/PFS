@@ -95,6 +95,10 @@ class FrmMain(wx.Frame):
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.OnHelpIndex, id=wx.ID_HELP)
+        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_EN)
+        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_FR)
+        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_DE)
+        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_CS)
 
         self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ActionManager.ID_RENDER_FILMSTRIP)
         
@@ -115,6 +119,8 @@ class FrmMain(wx.Frame):
         at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP_CONTENTS)])
         self.SetAcceleratorTable(at)
         self.Bind(wx.EVT_MENU, self.OnHelpContent, id=wx.ID_HELP_CONTENTS)
+
+        self.actionManager.SelectLanguage(Settings().GetLanguage())
         
     def __GetCurrentPnlPfs(self):
         sel = self.notebook.GetSelection()
@@ -154,6 +160,17 @@ class FrmMain(wx.Frame):
             event.Enable(value)
         else:
             event.Enable(False)
+    
+    def OnChangeLanguage(self, event):
+        lang = ActionManager.LANG_MAP.get(event.GetId(), "en")
+        Settings().SetLanguage(lang)
+        
+        dlg = wx.MessageDialog(self,
+                               _(u"You must restart %s for your new language setting to take effect.") % Settings.APP_NAME,
+                               _(u"Information"),
+                               wx.ICON_INFORMATION | wx.OK)
+        dlg.ShowModal()
+        dlg.Destroy()
     
     def OnPageChanged(self, event):
         sel = event.GetSelection()

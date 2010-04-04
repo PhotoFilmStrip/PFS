@@ -18,6 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import gettext
 import locale
 import os
 import sys
@@ -207,3 +208,17 @@ class Settings(Singleton):
                 result[prop] = value
         
         return result
+
+    def InitLanguage(self):
+        curLang = self.GetLanguage()
+        localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../locale")
+        
+        if not os.path.isdir(localeDir):
+            gettext.install(self.APP_NAME)
+            return 
+    
+        lang = gettext.translation(self.APP_NAME, 
+                                   localeDir, 
+                                   languages=[curLang, "en"])
+        lang.install(True)
+        

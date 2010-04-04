@@ -183,7 +183,7 @@ class LinkOpenPfs(IconLabelLink):
         bmp, descr = LinkOpenPfs.BMP_MAP[filename]
         
         IconLabelLink.__init__(self, parent, size,
-                               os.path.basename(filename),
+                               os.path.splitext(os.path.basename(filename))[0],
                                bmp,
                                descr)
         

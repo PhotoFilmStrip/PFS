@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
@@ -33,6 +34,15 @@ class ActionManager(object):
     ID_PROJECT_IMPORT    = wx.NewId()
     ID_PROJECT_EXPORT    = wx.NewId()
     ID_PROJECT_PROPS     = wx.NewId()
+    ID_LANG_EN           = wx.NewId()
+    ID_LANG_FR           = wx.NewId()
+    ID_LANG_DE           = wx.NewId()
+    ID_LANG_CS           = wx.NewId()
+
+    LANG_MAP = {ID_LANG_EN: "en",
+                ID_LANG_FR: "fr",
+                ID_LANG_DE: "de",
+                ID_LANG_CS: "cs"}
 
     def __init__(self):
         self.__menuBar = None
@@ -179,8 +189,21 @@ class ActionManager(object):
                               _(u'&Help') + '\tF1',
                               wx.ArtProvider.GetBitmap(wx.ART_HELP, wx.ART_MENU, wx.DefaultSize))
         menu.AppendSeparator()
+        langMenu = wx.Menu()
+        langMenu.AppendRadioItem(self.ID_LANG_EN, u"English")
+        langMenu.AppendRadioItem(self.ID_LANG_FR, u"Français")
+        langMenu.AppendRadioItem(self.ID_LANG_DE, u"Deutsch")
+        langMenu.AppendRadioItem(self.ID_LANG_CS, u"Český")
+        menu.AppendMenu(wx.NewId(), _("Language"), langMenu)
+        menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               wx.ID_ABOUT, 
                               _(u'&About'),
                               wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MENU, wx.DefaultSize))
         return menu
+
+    def SelectLanguage(self, lang):
+        for ident, l in self.LANG_MAP.items():
+            if l == lang:
+                self.GetMenuBar().Check(ident, True)
+                
