@@ -164,7 +164,7 @@ class FrmMain(wx.Frame):
     def OnChangeLanguage(self, event):
         lang = ActionManager.LANG_MAP.get(event.GetId(), "en")
         Settings().SetLanguage(lang)
-        
+        Settings().InitLanguage()
         dlg = wx.MessageDialog(self,
                                _(u"You must restart %s for your new language setting to take effect.") % Settings.APP_NAME,
                                _(u"Information"),

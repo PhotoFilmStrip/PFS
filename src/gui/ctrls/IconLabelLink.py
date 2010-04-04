@@ -29,7 +29,7 @@ class IconLabelLink(wx.Panel):
                  label="label",
                  bmp=None,
                  descr="descr"):
-        wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, (150, 100), wx.SIMPLE_BORDER, "IconLabelLink")
+        wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, (150, 100), 0, "IconLabelLink")
         self.SetBackgroundColour(parent.GetBackgroundColour())
         stBmp = wx.StaticBitmap(self, -1, bmp)
         self.lbl = wx.StaticText(self, -1, label)
