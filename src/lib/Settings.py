@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
@@ -35,7 +36,7 @@ class Settings(Singleton):
     APP_VERSION     = "1.4.0"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
-    DEVELOPERS      = [u"Jens G\xf6pfert", 
+    DEVELOPERS      = [u"Jens Göpfert", 
                        "Markus Wintermann"] 
     
     def __init__(self):
