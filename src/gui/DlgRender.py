@@ -261,7 +261,7 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormatChoice,
               id=wxID_DLGRENDERCHOICEFORMAT)
 
-        self.stMode = wx.StaticText(id=wxID_DLGRENDERSTMODE, label=u'Mode:',
+        self.stMode = wx.StaticText(id=wxID_DLGRENDERSTMODE, label=_(u'Mode:'),
               name=u'stMode', parent=self.pnlOutput, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
@@ -282,7 +282,7 @@ class DlgRender(wx.Dialog, Observer):
               name=u'pnlStandard', parent=self.pnlOutput, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=u'Draft',
+        self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
               name=u'cbDraft', parent=self.pnlStandard, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cbDraft.SetValue(False)
@@ -342,7 +342,7 @@ class DlgRender(wx.Dialog, Observer):
         self.__renderEngine = None
         
         for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
-            self.choiceProfile.Append(profile.PName, profile)
+            self.choiceProfile.Append(profile.GetName(), profile)
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
@@ -368,7 +368,7 @@ class DlgRender(wx.Dialog, Observer):
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
 
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, profile.PName)
+        outpath = os.path.join(outpath, profile.GetName())
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         
@@ -394,12 +394,13 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = ProgressHandler()
         self.__progressHandler.AddObserver(self)
         
-        totalLength = self.__photoFilmStrip.GetDuration()
+        totalLength = self.__photoFilmStrip.GetDuration(False)
         
         renderer = rendererClass()
         renderer.Init(profile, 
                       self.__photoFilmStrip.GetAspect(),
-                      Encode(outpath, sys.getfilesystemencoding()))
+                      Encode(outpath, sys.getfilesystemencoding()),
+                      self.cbDraft.GetValue())
         
         audioFile = self.__photoFilmStrip.GetAudioFile()
         if audioFile:
@@ -518,7 +519,7 @@ class DlgRender(wx.Dialog, Observer):
 
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, profile.PName)
+        outpath = os.path.join(outpath, profile.GetName())
         
         if sys.platform == 'win32':
             batchFileMask = _(u"Batch file") + " (*.bat)|*.bat"

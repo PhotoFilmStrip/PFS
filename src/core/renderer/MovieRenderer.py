@@ -24,6 +24,7 @@ import sys
 import re
 from subprocess import Popen, PIPE, STDOUT
 
+from core.Aspect import Aspect
 from core.OutputProfile import OutputProfile
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
@@ -88,7 +89,7 @@ class MovieRenderer(SingleFileRenderer):
         self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
         self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
         
-        if self.PProfile.PName in ["VCD", "SVCD", "DVD"]:
+        if self.PProfile.GetName() in ["VCD", "SVCD", "DVD"]:
             cmd = self.__ProcessMpegOutput()
         else:
             cmd = self.__ProcessAviOutput()
@@ -104,27 +105,27 @@ class MovieRenderer(SingleFileRenderer):
                 os.remove(path)
 
     def __ProcessMpegOutput(self):
-        aspect = "%.3f" % self._aspect
-        if self.PProfile.PVideoNorm == OutputProfile.PAL:
+        aspect = "%.3f" % Aspect.ToFloat(self._aspect)
+        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
             framerate = "25"
             keyint = 15
-            res = self.PProfile.PResPal
+            res = self.PProfile.GetResolution()
         else:
             framerate = "30000/1001"
             keyint = 18
-            res = self.PProfile.PResNtsc
+            res = self.PProfile.GetResolution()
             
-        if self.PProfile.PName == "VCD":
+        if self.PProfile.GetName() == "VCD":
             format = "xvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg1video:keyint=%(keyint)s:vrc_buf_size=327:vrc_minrate=1152:vbitrate=1152:vrc_maxrate=1152:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                            "aspect": aspect}
-        elif self.PProfile.PName == "SVCD":
+        elif self.PProfile.GetName() == "SVCD":
             format = "xsvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg2video:mbd=2:keyint=%(keyint)s:vrc_buf_size=917:vrc_minrate=600:vbitrate=2500:vrc_maxrate=2500:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                                 "aspect": aspect}
-        elif self.PProfile.PName == "DVD":
+        elif self.PProfile.GetName() == "DVD":
             format = "dvd:tsaf"
             srate = "48000"
             lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
@@ -167,13 +168,13 @@ class MovieRenderer(SingleFileRenderer):
 
 
     def __ProcessAviOutput(self):
-        if self.PProfile.PVideoNorm == OutputProfile.PAL:
+        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
             framerate = "25:1"
         else:
             framerate = "30000:1001"
             
         if MovieRenderer.GetProperty("Bitrate") == MovieRenderer.GetDefaultProperty("Bitrate"):
-            bitrate = self.PProfile.PBitrate
+            bitrate = self.PProfile.GetBitrate()
         else:
             bitrate = MovieRenderer.GetProperty("Bitrate")
 

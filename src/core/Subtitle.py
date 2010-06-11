@@ -42,8 +42,8 @@ class SubtitleSrt(object):
         return pic.GetDuration() * self.__factor
     
     def __ProcessPic(self, pic):
-        start = self.__FormatTime(self.__curTime + 0.5)
-        end   = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic) - 0.5)
+        start = self.__FormatTime(self.__curTime)
+        end   = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic))
         
         result = u"%(idx)d\n" \
                  u"%(start)s --> %(end)s\n" \
@@ -67,7 +67,8 @@ class SubtitleSrt(object):
             data = self.__ProcessPic(pic)
             fd.write(data)
             
-            self.__curTime += self.__GetPicDuration(pic)
+            self.__curTime += self.__GetPicDuration(pic) + \
+                              (pic.GetTransitionDuration() * self.__factor)
             
         fd.close()
         

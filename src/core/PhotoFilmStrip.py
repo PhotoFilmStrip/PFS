@@ -28,6 +28,7 @@ import Image
 from lib.util import Encode
 
 from core.util import RotateExif
+from core.Aspect import Aspect
 from core.Picture import Picture
 from core.ProgressHandler import ProgressHandler
 
@@ -77,7 +78,7 @@ class PhotoFilmStrip(object):
         self.__filename = filename
         
         self.__audioFile = None
-        self.__aspect = 16.0 / 9.0
+        self.__aspect = Aspect.ASPECT_16_9
         self.__duration = None
         
     def GetFilename(self):
@@ -113,7 +114,7 @@ class PhotoFilmStrip(object):
                 return None
             totalTime = 0
             for pic in self.__pictures:
-                totalTime += pic.GetDuration()
+                totalTime += pic.GetDuration() + pic.GetTransitionDuration()
         else:
             totalTime = self.__duration
         return totalTime
@@ -177,6 +178,9 @@ class PhotoFilmStrip(object):
             pic.SetRotation(row['rotation'])
             pic.SetEffect(self.__LoadSafe(row, 'effect', Picture.EFFECT_NONE))
 
+            pic.SetTransition(self.__LoadSafe(row, 'transition', Picture.TRANS_FADE))
+            pic.SetTransitionDuration(self.__LoadSafe(row, 'transition_duration', 1.0))
+
             picList.append(pic)
 
         fileRev = 1
@@ -191,7 +195,7 @@ class PhotoFilmStrip(object):
         if fileRev >= 2:
             self.__audioFile = self.__LoadProperty(cur, "audiofile", unicode)
             self.__duration  = self.__LoadProperty(cur, "duration", float)
-            self.__aspect    = self.__LoadProperty(cur, "aspect", float, 16.0 / 9.0)
+            self.__aspect    = self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9)
         
         cur.close()
         self.__pictures = picList
@@ -223,13 +227,15 @@ class PhotoFilmStrip(object):
         query = "INSERT INTO `%s` (filename, width, height, " \
                                   "start_left, start_top, start_width, start_height, " \
                                   "target_left, target_top, target_width, target_height, " \
-                                  "rotation, duration, comment, effect, data) " \
-                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
+                                  "rotation, duration, comment, effect, " \
+                                  "transition, transition_duration, data) " \
+                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
 
         values =  (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
-                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect(), picData)
+                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect(), 
+                   pic.GetTransition(), pic.GetTransitionDuration(), picData)
         return query, values
 
     def __CreateSchema(self, conn):
@@ -249,6 +255,8 @@ class PhotoFilmStrip(object):
                                         "duration DOUBLE, " \
                                         "comment TEXT, " \
                                         "effect INTEGER, "\
+                                        "transition INTEGER, "\
+                                        "transition_duration DOUBLE, " \
                                         "data BLOB);\n" \
                 "CREATE TABLE `property` (property_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
                                          "name TEXT," \

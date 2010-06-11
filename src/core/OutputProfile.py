@@ -19,33 +19,43 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+from core.Aspect import Aspect
+
 
 class OutputProfile(object):
     
     PAL  = 1
     NTSC = 2
     
-    def __init__(self):
-        self.PName = ""
-        self.PResPal = 0
-        self.PResNtsc = 0
-        self.PBitrate = 0
-        self.__videoNorm = OutputProfile.PAL 
+    def __init__(self, name, bitrate, resPal, resNtsc=None):
+        self.__name = name
+        self.__resPal = resPal
+        if resNtsc is None:
+            self.__resNtsc = resPal
+        self.__bitrate = bitrate
         
-    def __Readonly(self, val):
-        raise RuntimeError("readonly property")
+        self.__videoNorm = OutputProfile.PAL
+        
+    def GetName(self, withRes=False):
+        if withRes:
+            return "%s (%dx%d)" % (self.__name, self.GetResolution()[0], self.GetResolution()[1])
+        else:
+            return self.__name
+        
+    def GetBitrate(self):
+        return self.__bitrate
     
-    def __GetResolution(self):
+    def GetResolution(self):
         if self.__videoNorm == OutputProfile.PAL:
-            return self.PResPal
-        return self.PResNtsc
-    PResolution = property(__GetResolution, __Readonly)
+            return self.__resPal
+        else:
+            return self.__resNtsc
     
-    def __GetFramerate(self):
+    def GetFramerate(self):
         if self.__videoNorm == OutputProfile.PAL:
             return 25.0
-        return 30000.0 / 1001.0
-    PFramerate = property(__GetFramerate, __Readonly)
+        else:
+            return 30000.0 / 1001.0
         
     
     def SetVideoNorm(self, norm):
@@ -54,100 +64,45 @@ class OutputProfile(object):
         self.__videoNorm = norm
     def GetVideoNorm(self):
         return self.__videoNorm
-    PVideoNorm = property(GetVideoNorm, SetVideoNorm)
+    
+            
         
 
 
 def __CreateDefaultProfiles():
-    vcd = OutputProfile()
-    vcd.PName = "VCD"
-    vcd.PResPal = (352, 288)
-    vcd.PResNtsc = (352, 240)
-    vcd.PBitrate = 1150
-    
-    svcd = OutputProfile()
-    svcd.PName = "SVCD"
-    svcd.PResPal = (480, 576)
-    svcd.PResNtsc = (480, 480)
-    svcd.PBitrate = 2500
-
-    dvd = OutputProfile()
-    dvd.PName = "DVD"
-    dvd.PResPal = (720, 576)
-    dvd.PResNtsc = (720, 480)
-    dvd.PBitrate = 8000
+    vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240))
+    svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480))
+    dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480))
     
     return [vcd, svcd, dvd]
 
     
 def __Create16_9Profiles():
-    medium = OutputProfile()
-    medium.PName = "Medium 640x360"
-    medium.PResPal = (640, 360)
-    medium.PResNtsc = (640, 360) 
-    medium.PBitrate = 8000
-
-    hd = OutputProfile()
-    hd.PName = "HD 1280x720"
-    hd.PResPal = (1280, 720)
-    hd.PResNtsc = (1280, 720) 
-    hd.PBitrate = 10000
-
-    fullhd = OutputProfile()
-    fullhd.PName = "FULL-HD 1920x1080"
-    fullhd.PResPal = (1920, 1080)
-    fullhd.PResNtsc = (1920, 1080) 
-    fullhd.PBitrate = 12000
+    medium = OutputProfile("Medium", 8000, (640, 360))
+    hd = OutputProfile("HD", 10000, (1280, 720))
+    fullhd = OutputProfile("FULL-HD", 12000, (1920, 1080))
     
     return [medium, hd, fullhd]
 
 def __Create4_3Profiles():
-    medium = OutputProfile()
-    medium.PName = "Medium 640x480"
-    medium.PResPal = (640, 480)
-    medium.PResNtsc = (640, 480) 
-    medium.PBitrate = 8000
-
-    hd = OutputProfile()
-    hd.PName = "HD 960x720"
-    hd.PResPal = (960, 720)
-    hd.PResNtsc = (960, 720) 
-    hd.PBitrate = 10000
-
-    fullhd = OutputProfile()
-    fullhd.PName = "FULL-HD 1440x1080"
-    fullhd.PResPal = (1440, 1080)
-    fullhd.PResNtsc = (1440, 1080) 
-    fullhd.PBitrate = 12000
+    medium = OutputProfile("Medium", 8000, (640, 480))
+    hd = OutputProfile("HD", 10000, (960, 720))
+    fullhd = OutputProfile("FULL-HD", 12000, (1440, 1080))
     
     return [medium, hd, fullhd]
 
 def __Create3_2Profiles():
-    medium = OutputProfile()
-    medium.PName = "Medium 720x480"
-    medium.PResPal = (720, 480)
-    medium.PResNtsc = (720, 480) 
-    medium.PBitrate = 8000
-
-    hd = OutputProfile()
-    hd.PName = "HD 1080x720"
-    hd.PResPal = (1080, 720)
-    hd.PResNtsc = (1080, 720) 
-    hd.PBitrate = 10000
-
-    fullhd = OutputProfile()
-    fullhd.PName = "FULL-HD 1620x1080"
-    fullhd.PResPal = (1620, 1080)
-    fullhd.PResNtsc = (1620, 1080) 
-    fullhd.PBitrate = 12000
+    medium = OutputProfile("Medium", 8000, (720, 480))
+    hd = OutputProfile("HD", 10000, (1080, 720))
+    fullhd = OutputProfile("FULL-HD", 12000, (1620, 1080))
     
     return [medium, hd, fullhd]
 
 
-def GetOutputProfiles(aspect):
-    if "%.3f" % aspect == "%.3f" % (4.0 / 3.0):
+def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
+    if aspect == Aspect.ASPECT_4_3:
         return __CreateDefaultProfiles() + __Create4_3Profiles()
-    elif "%.3f" % aspect == "%.3f" % (3.0 / 2.0):
+    elif aspect == Aspect.ASPECT_3_2:
         return __Create3_2Profiles()
     else:
         return __CreateDefaultProfiles() + __Create16_9Profiles()

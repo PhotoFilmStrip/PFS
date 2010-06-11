@@ -279,6 +279,11 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
             self.InsertPictures(pics, autopath=True)
             
             Settings().SetImagePath(os.path.dirname(path))
+            
+            selIdx = self.lvPics.GetSelected()
+            pic = self.lvPics.GetPicture(selIdx)
+            self.pnlEditPicture.SetPicture(pic, 
+                                           selIdx == self.lvPics.GetItemCount() - 1)
         dlg.Destroy()
 
     def OnLvPicsListItemSelected(self, event):
@@ -294,7 +299,8 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         self.bitmapLeft.SetSection(wx.Rect(*pic.GetStartRect()))
         self.bitmapRight.SetSection(wx.Rect(*pic.GetTargetRect()))
 
-        self.pnlEditPicture.SetPicture(pic)
+        self.pnlEditPicture.SetPicture(pic, 
+                                       item == self.lvPics.GetItemCount() - 1)
         
         event.Skip()
 

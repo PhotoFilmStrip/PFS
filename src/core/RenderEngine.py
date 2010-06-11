@@ -35,10 +35,9 @@ class RenderEngine(object):
         self.__errorMsg = None
 
         self.__audioFile = None
-        self.__transDuration = 1.0
         self.__picCountFactor = 1.0
         
-    def __ComputePath(self, pic):
+    def __ComputePath(self, pic, picCount):
         px1, py1 = pic.GetStartRect()[:2]
         w1, h1 = pic.GetStartRect()[2:]
         
@@ -51,15 +50,13 @@ class RenderEngine(object):
         cx2 = (w2 / 2.0) + px2
         cy2 = (h2 / 2.0) + py2
         
-        pics = self.__GetPicCount(pic)
-        
-        dx = (cx2 - cx1) / (pics - 1)
-        dy = (cy2 - cy1) / (pics - 1)
-        dw = (w2 - w1) / (pics - 1)
-        dh = (h2 - h1) / (pics - 1)
+        dx = (cx2 - cx1) / (picCount - 1)
+        dy = (cy2 - cy1) / (picCount - 1)
+        dw = (w2 - w1) / (picCount - 1)
+        dh = (h2 - h1) / (picCount - 1)
         
         pathRects = []
-        for step in xrange(int(pics)):
+        for step in xrange(int(picCount)):
             px = cx1 + step * dx
             py = cy1 + step * dy
             width = w1 + step * dw
@@ -77,14 +74,15 @@ class RenderEngine(object):
         """
         returns the number of pictures
         """
-        return ((pic.GetDuration() * self.__profile.PFramerate) * self.__picCountFactor) + \
-               self.__GetTransCount()
+        return ((pic.GetDuration() + pic.GetTransitionDuration()) * \
+                self.__profile.GetFramerate()) * \
+                self.__picCountFactor
     
-    def __GetTransCount(self):
+    def __GetTransCount(self, pic):
         """
         returns the number of pictures needed for the transition
         """
-        return int(self.__transDuration * self.__profile.PFramerate)
+        return int(pic.GetTransitionDuration() * self.__profile.GetFramerate())
 
     def __CheckAbort(self):
         if self.__progressHandler.IsAborted():
@@ -100,7 +98,7 @@ class RenderEngine(object):
             self.__progressHandler.Step()
             img = self.__aRenderer.ProcessCropAndResize(image,
                                                         rect, 
-                                                        self.__profile.PResolution)
+                                                        self.__profile.GetResolution())
             self.__aRenderer.ProcessFinalize(img)
         return True
 
@@ -117,12 +115,12 @@ class RenderEngine(object):
             self.__progressHandler.Step()
             image1 = self.__aRenderer.ProcessCropAndResize(imgFrom,
                                                            pathRectsFrom[idx], 
-                                                           self.__profile.PResolution)
+                                                           self.__profile.GetResolution())
 
             self.__progressHandler.Step()
             image2 = self.__aRenderer.ProcessCropAndResize(imgTo,
                                                            pathRectsTo[idx], 
-                                                           self.__profile.PResolution)
+                                                           self.__profile.GetResolution())
 
             img = Image.blend(image1, image2, idx / float(COUNT))
 #            img = self.roll(image1, image2, idx / float(COUNT))
@@ -145,50 +143,45 @@ class RenderEngine(object):
         self.__progressHandler.SetInfo(_(u"initialize renderer"))
         self.__aRenderer.Prepare()
         
-        TRANS_COUNT = self.__GetTransCount()
-
-        pathRectsBefore = None
-        pathRectsCurrent = None
+        pathRects = None
+        img = None
+        transCount = None
         
+        pathRectsBefore = None
         imgBefore = None
-        imgCurrent = None
+        transCountBefore = 0
         
         for idxPic, pic in enumerate(pics):
-            infoText = _(u"processing image %d/%d") % (idxPic, len(pics))
+            picCount = self.__GetPicCount(pic)
+            transCount = self.__GetTransCount(pic)
+
+            img = pic.GetImage()
+            pathRects = self.__ComputePath(pic, picCount + transCountBefore)
+
+            if idxPic > 0 and idxPic < len(pics):
+                infoText = _(u"processing transition %d/%d") % (idxPic + 1, len(pics))
+                self.__progressHandler.SetInfo(infoText)
+                
+                if transCountBefore > 0:
+                    phase2a = pathRectsBefore[-transCountBefore:]
+                    phase2b = pathRects[:transCountBefore]
+                    if not self.__TransAndFinal(imgBefore, img, 
+                                                phase2a, phase2b):
+                        return
+                
+            infoText = _(u"processing image %d/%d") % (idxPic + 1, len(pics))
             self.__progressHandler.SetInfo(infoText)
 
-            imgCurrent = pic.GetImage()
-            pathRectsCurrent = self.__ComputePath(pic)
-
-            if idxPic > 0:
-                if idxPic == 1:
-                    phase1 = pathRectsBefore[:-TRANS_COUNT]
-                    if not self.__ProcAndFinal(imgBefore, phase1):
-                        return
-                
-                infoText = _(u"processing transition %d/%d") % (idxPic, len(pics))
-                self.__progressHandler.SetInfo(infoText)
-                
-                phase2a = pathRectsBefore[-TRANS_COUNT:]
-                phase2b = pathRectsCurrent[:TRANS_COUNT]
-                if not self.__TransAndFinal(imgBefore, imgCurrent, 
-                                            phase2a, phase2b):
+            if transCount > 0:
+                if not self.__ProcAndFinal(img, pathRects[transCountBefore:-transCount]):
                     return
-                
-                infoText = _(u"processing image %d/%d") % (idxPic+1, len(pics))
-                self.__progressHandler.SetInfo(infoText)
-
-                phase3 = pathRectsCurrent[TRANS_COUNT:-TRANS_COUNT]
-                if not self.__ProcAndFinal(imgCurrent, phase3):
+            else:
+                if not self.__ProcAndFinal(img, pathRects[transCountBefore:]):
                     return
-                
-                if idxPic == len(pics) - 1:
-                    phase4 = pathRectsCurrent[-TRANS_COUNT:]
-                    if not self.__ProcAndFinal(imgCurrent, phase4):
-                        return
-
-            imgBefore = imgCurrent
-            pathRectsBefore = pathRectsCurrent
+            
+            imgBefore = img
+            pathRectsBefore = pathRects
+            transCountBefore = transCount
 
                     
         if self.__audioFile:
@@ -206,12 +199,15 @@ class RenderEngine(object):
         generateSubtitle = False
         
         if targetLengthSecs is not None:
-            targetLengthSecs = max(targetLengthSecs - self.__transDuration, len(pics))
+            # targetLength should be at least 1sec for each pic
+            targetLengthSecs = max(targetLengthSecs, len(pics))
             totalSecs = 0
             for pic in pics:
                 totalSecs += pic.GetDuration()
+                totalSecs += pic.GetTransitionDuration()
             self.__picCountFactor = targetLengthSecs / totalSecs
             
+        # determine step count for progressbar
         count = 0
         for pic in pics:
             count += int(self.__GetPicCount(pic))

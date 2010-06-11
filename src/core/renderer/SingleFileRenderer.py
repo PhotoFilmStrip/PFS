@@ -38,13 +38,11 @@ class SingleFileRenderer(BaseRenderer):
     
     @staticmethod
     def GetProperties():
-        return ["UseResample", "ResampleFilter"]
+        return ["ResampleFilter"]
     
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "UseResample":
-            return True
-        elif prop == "ResampleFilter":
+        if prop == "ResampleFilter":
             return "Antialias"
         else:
             return BaseRenderer.GetDefaultProperty(prop)
@@ -58,7 +56,7 @@ class SingleFileRenderer(BaseRenderer):
         subImg = image.crop(box)
         
         filtr = Image.NEAREST
-        if self.GetProperty("UseResample"):
+        if not self._draft:
             filterStr = self.GetProperty("ResampleFilter").lower()
             if filterStr == "bilinear":
                 filtr = Image.BILINEAR

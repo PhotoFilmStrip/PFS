@@ -27,6 +27,7 @@ import res.cursors as cursors
 
 from lib.common.ObserverPattern import Observer
  
+from core.Aspect import Aspect
 
 
 EVT_RECT_CHANGED_TYPE  = wx.NewEventType()
@@ -94,7 +95,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         self.Refresh()
 
     def SetAspect(self, aspect):
-        self.RATIO = aspect
+        self.RATIO = Aspect.ToFloat(aspect)
         self.__KeepRectInImage()
         self.Refresh()
     

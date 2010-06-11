@@ -29,6 +29,7 @@ import wx.lib.masked.textctrl
 
 from lib.Settings import Settings
 
+from core.Aspect import Aspect
 from core.PhotoFilmStrip import PhotoFilmStrip
 
 
@@ -264,9 +265,9 @@ class DlgProjectProps(wx.Dialog):
         font.SetWeight(wx.FONTWEIGHT_BOLD)
         self.stHeader.SetFont(font)
         
-        self.choiceAspect.Append("16:9", 16.0 / 9.0)
-        self.choiceAspect.Append("4:3", 4.0 / 3.0)
-        self.choiceAspect.Append("3:2", 3.0 / 2.0)
+        self.choiceAspect.Append(Aspect.ASPECT_16_9)
+        self.choiceAspect.Append(Aspect.ASPECT_4_3)
+        self.choiceAspect.Append(Aspect.ASPECT_3_2)
         self.choiceAspect.Select(0)
         
         self.tcFolder.SetMaxSize(wx.Size(-1, self.tcProject.GetSizeTuple()[1]))
@@ -301,7 +302,7 @@ class DlgProjectProps(wx.Dialog):
             self.tcProject.SetFocus()
 
             # TODO: Default aus Settings laden
-            self.tcFolder.SetValue(os.path.join(wx.GetHomeDir(), u"My PhotoFilmStrips"))
+            self.tcFolder.SetValue(os.path.join(wx.GetHomeDir(), _(u"My PhotoFilmStrips")))
             
             self.cbTotalLength.SetValue(False)
         else:
@@ -313,7 +314,7 @@ class DlgProjectProps(wx.Dialog):
             self.tcFolder.Enable(False)
             self.cmdBrowseFolder.Enable(False)
             
-            self.__SetChoiceSelectionByData(self.choiceAspect, photoFilmStrip.GetAspect())
+            self.choiceAspect.SetStringSelection(photoFilmStrip.GetAspect())
             self.choiceAspect.Enable(False)
             
             pfsDur = photoFilmStrip.GetDuration()
@@ -497,7 +498,7 @@ class DlgProjectProps(wx.Dialog):
             self.__photoFilmStrip = PhotoFilmStrip(self.__GetProjectPath())
         self.__photoFilmStrip.SetAudioFile(self.tcAudiofile.GetValue())
         self.__photoFilmStrip.SetDuration(self.__GetTotalLength())
-        self.__photoFilmStrip.SetAspect(self.GetChoiceDataSelected(self.choiceAspect))
+        self.__photoFilmStrip.SetAspect(self.choiceAspect.GetStringSelection())
         return self.__photoFilmStrip
 
     

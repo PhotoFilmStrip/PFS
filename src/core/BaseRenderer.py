@@ -38,11 +38,13 @@ class BaseRenderer(object):
         self._profile = None
         self._audioFile = None
         self._aspect = None
+        self._draft = False
 
-    def Init(self, profile, aspect, outputPath):
+    def Init(self, profile, aspect, outputPath, draft):
         self._outputPath = outputPath
         self._profile = profile
         self._aspect = aspect
+        self._draft = draft
         
     @staticmethod
     def CheckDependencies(msgList):

@@ -28,60 +28,78 @@ from gui.ctrls.PnlFloatSpinCtrl import PnlFloatSpinCtrl, EVT_VALUE_CHANGED
 
 
 [wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT, 
- wxID_PNLEDITPICTURECHOICETRANSIN, wxID_PNLEDITPICTURECHOICETRANSOUT, 
- wxID_PNLEDITPICTURECMDROTATELEFT, wxID_PNLEDITPICTURECMDROTATERIGHT, 
- wxID_PNLEDITPICTUREPNLIMGDURATION, wxID_PNLEDITPICTUREPNLTRANSINDURATION, 
- wxID_PNLEDITPICTUREPNLTRANSOUTDURATION, wxID_PNLEDITPICTURESTATICLINE1, 
+ wxID_PNLEDITPICTURECHOICETRANS, wxID_PNLEDITPICTURECMDROTATELEFT, 
+ wxID_PNLEDITPICTURECMDROTATERIGHT, wxID_PNLEDITPICTUREPNLIMGDURATION, 
+ wxID_PNLEDITPICTUREPNLTRANSDURATION, wxID_PNLEDITPICTURESTATICLINE1, 
  wxID_PNLEDITPICTURESTATICLINE2, wxID_PNLEDITPICTURESTDURATION, 
- wxID_PNLEDITPICTURESTEFFECT, wxID_PNLEDITPICTURESTROTATION, 
- wxID_PNLEDITPICTURESTSUBTITLE, wxID_PNLEDITPICTURESTTRANSIN, 
- wxID_PNLEDITPICTURESTTRANSINUNIT, wxID_PNLEDITPICTURESTTRANSOUT, 
- wxID_PNLEDITPICTURESTTRANSOUTUNIT, wxID_PNLEDITPICTURETCCOMMENT, 
-] = [wx.NewId() for _init_ctrls in range(20)]
+ wxID_PNLEDITPICTURESTDURATIONUNIT, wxID_PNLEDITPICTURESTEFFECT, 
+ wxID_PNLEDITPICTURESTPROCESS, wxID_PNLEDITPICTURESTROTATION, 
+ wxID_PNLEDITPICTURESTSETTINGS, wxID_PNLEDITPICTURESTSUBTITLE, 
+ wxID_PNLEDITPICTURESTTRANS, wxID_PNLEDITPICTURESTTRANSUNIT, 
+ wxID_PNLEDITPICTURETCCOMMENT, 
+] = [wx.NewId() for _init_ctrls in range(19)]
 
 
 class PnlEditPicture(wx.Panel):
     
     _custom_classes = {"wx.Panel": ["PnlFloatSpinCtrl"]}
     
-    def _init_coll_sizerSubtitle_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.tcComment, 1, border=0, flag=wx.EXPAND)
-
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSizer(self.sizerImgSettings, 0, border=4, flag=wx.ALL)
+        parent.AddSizer(self.szSettings, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.staticLine1, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSizer(self.sizerTransSettings, 0, border=0, flag=0)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddSizer(self.szTimes, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.staticLine2, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSizer(self.sizerSubtitle, 1, border=4,
-              flag=wx.ALL | wx.EXPAND)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddSizer(self.szSubtitle, 1, border=4, flag=wx.ALL | wx.EXPAND)
 
-    def _init_coll_sizerTransSettings_Items(self, parent):
+    def _init_coll_szTimes_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stTransIn, 0, border=0,
+        parent.AddWindow(self.stProcess, 0, border=0, flag=0)
+        parent.AddSizer(self.sizerTimesCtrls, 0, border=16, flag=wx.LEFT)
+
+    def _init_coll_szSubtitle_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
+        parent.AddWindow(self.tcComment, 1, border=16, flag=wx.LEFT | wx.EXPAND)
+
+    def _init_coll_sizerTimesCtrls_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.stDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceTransIn, 0, border=0,
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddWindow(self.pnlImgDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.pnlTransInDuration, 0, border=0,
+        parent.AddWindow(self.stDurationUnit, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stTransInUnit, 0, border=0,
+        parent.AddWindow(self.stTrans, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stTransOut, 0, border=0,
+        parent.AddWindow(self.choiceTrans, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceTransOut, 0, border=0,
+        parent.AddWindow(self.pnlTransDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.pnlTransOutDuration, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stTransOutUnit, 0, border=0,
+        parent.AddWindow(self.stTransUnit, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
-    def _init_coll_sizerImgSettings_Items(self, parent):
+    def _init_coll_szSettings_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.stSettings, 0, border=0, flag=0)
+        parent.AddSizer(self.szSettingsCtrls, 0, border=16, flag=wx.LEFT)
+
+    def _init_coll_szSettingsCtrls_Growables(self, parent):
+        # generated method, don't edit
+
+        parent.AddGrowableCol(1)
+
+    def _init_coll_szSettingsCtrls_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.stRotation, 0, border=0,
@@ -90,9 +108,6 @@ class PnlEditPicture(wx.Panel):
         parent.AddWindow(self.stEffect, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceEffect, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stDuration, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.pnlImgDuration, 0, border=0, flag=0)
 
     def _init_coll_sizerRotationTools_Items(self, parent):
         # generated method, don't edit
@@ -101,30 +116,30 @@ class PnlEditPicture(wx.Panel):
         parent.AddStretchSpacer(1)
         parent.AddWindow(self.cmdRotateRight, 0, border=0, flag=0)
 
-    def _init_coll_sizerImgSettings_Growables(self, parent):
-        # generated method, don't edit
-
-        parent.AddGrowableCol(1)
-
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerImgSettings = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
+        self.szSettingsCtrls = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
 
-        self.sizerSubtitle = wx.BoxSizer(orient=wx.VERTICAL)
+        self.szSubtitle = wx.BoxSizer(orient=wx.VERTICAL)
 
         self.sizerRotationTools = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerTransSettings = wx.FlexGridSizer(cols=4, hgap=8, rows=1,
-              vgap=8)
+        self.sizerTimesCtrls = wx.FlexGridSizer(cols=4, hgap=8, rows=1, vgap=8)
+
+        self.szTimes = wx.BoxSizer(orient=wx.VERTICAL)
+
+        self.szSettings = wx.BoxSizer(orient=wx.VERTICAL)
 
         self._init_coll_sizerMain_Items(self.sizerMain)
-        self._init_coll_sizerImgSettings_Items(self.sizerImgSettings)
-        self._init_coll_sizerImgSettings_Growables(self.sizerImgSettings)
-        self._init_coll_sizerSubtitle_Items(self.sizerSubtitle)
+        self._init_coll_szSettingsCtrls_Items(self.szSettingsCtrls)
+        self._init_coll_szSettingsCtrls_Growables(self.szSettingsCtrls)
+        self._init_coll_szSubtitle_Items(self.szSubtitle)
         self._init_coll_sizerRotationTools_Items(self.sizerRotationTools)
-        self._init_coll_sizerTransSettings_Items(self.sizerTransSettings)
+        self._init_coll_sizerTimesCtrls_Items(self.sizerTimesCtrls)
+        self._init_coll_szTimes_Items(self.szTimes)
+        self._init_coll_szSettings_Items(self.szSettings)
 
         self.SetSizer(self.sizerMain)
 
@@ -133,7 +148,11 @@ class PnlEditPicture(wx.Panel):
         wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name=u'PnlEditPicture',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(827, 192))
+        self.SetClientSize(wx.Size(827, 137))
+
+        self.stSettings = wx.StaticText(id=wxID_PNLEDITPICTURESTSETTINGS,
+              label=_(u'Settings'), name=u'stSettings', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRotation = wx.StaticText(id=wxID_PNLEDITPICTURESTROTATION,
               label=_(u'Rotation:'), name=u'stRotation', parent=self,
@@ -165,20 +184,48 @@ class PnlEditPicture(wx.Panel):
         self.choiceEffect.Bind(wx.EVT_CHOICE, self.OnChoiceEffectChoice,
               id=wxID_PNLEDITPICTURECHOICEEFFECT)
 
+        self.staticLine1 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE1,
+              name='staticLine1', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
+
+        self.stProcess = wx.StaticText(id=wxID_PNLEDITPICTURESTPROCESS,
+              label=_(u'Process'), name=u'stProcess', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.stTrans = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANS,
+              label=_(u'Transition:'), name=u'stTrans', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.choiceTrans = wx.Choice(choices=[],
+              id=wxID_PNLEDITPICTURECHOICETRANS, name=u'choiceTrans',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.pnlTransDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSDURATION,
+              name=u'pnlTransDuration', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+
+        self.stTransUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSUNIT,
+              label=_(u'sec'), name=u'stTransUnit', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
         self.stDuration = wx.StaticText(id=wxID_PNLEDITPICTURESTDURATION,
-              label=_(u'Duration (sec):'), name=u'stDuration', parent=self,
+              label=_(u'Duration:'), name=u'stDuration', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.pnlImgDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLIMGDURATION,
               name=u'pnlImgDuration', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
-        self.staticLine1 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE1,
-              name='staticLine1', parent=self, pos=wx.Point(-1, -1),
+        self.stDurationUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTDURATIONUNIT,
+              label=_(u'sec'), name=u'stDurationUnit', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+
+        self.staticLine2 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE2,
+              name='staticLine2', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
 
         self.stSubtitle = wx.StaticText(id=wxID_PNLEDITPICTURESTSUBTITLE,
-              label=_(u'Subtitle:'), name=u'stSubtitle', parent=self,
+              label=_(u'Subtitle'), name=u'stSubtitle', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcComment = wx.TextCtrl(id=wxID_PNLEDITPICTURETCCOMMENT,
@@ -187,48 +234,19 @@ class PnlEditPicture(wx.Panel):
         self.tcComment.Bind(wx.EVT_TEXT, self.OnTextCtrlCommentText,
               id=wxID_PNLEDITPICTURETCCOMMENT)
 
-        self.staticLine2 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE2,
-              name='staticLine2', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
-
-        self.stTransIn = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSIN,
-              label=u'Transition (In):', name=u'stTransIn', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.choiceTransIn = wx.Choice(choices=[],
-              id=wxID_PNLEDITPICTURECHOICETRANSIN, name=u'choiceTransIn',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.stTransOut = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSOUT,
-              label=u'Transition (Out):', name=u'stTransOut', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.choiceTransOut = wx.Choice(choices=[],
-              id=wxID_PNLEDITPICTURECHOICETRANSOUT, name=u'choiceTransOut',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.stTransInUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSINUNIT,
-              label=u'sec', name=u'stTransInUnit', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
-
-        self.pnlTransInDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSINDURATION,
-              name=u'pnlTransInDuration', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-
-        self.pnlTransOutDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSOUTDURATION,
-              name=u'pnlTransOutDuration', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-
-        self.stTransOutUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSOUTUNIT,
-              label=u'sec', name=u'stTransOutUnit', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
         self._init_sizers()
 
     def __init__(self, parent, id, pos, size, style, name):
         self._init_ctrls(parent)
+
+        font = self.stSettings.GetFont()
+        font.SetWeight(wx.FONTWEIGHT_BOLD)
+        self.stSettings.SetFont(font)
+        self.stProcess.SetFont(font)
+        self.stSubtitle.SetFont(font)
+        
         self.pnlImgDuration.SetRange(10, 200)
-        self.pnlImgDuration.SetValue(50)
+        self.pnlImgDuration.SetValue(7)
         self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
         
         self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
@@ -236,13 +254,16 @@ class PnlEditPicture(wx.Panel):
         self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
         
-        for ctrl in [self.stTransIn, self.choiceTransIn, self.stTransInUnit,
-                     self.stTransOut, self.choiceTransOut, self.stTransOutUnit,
-                     self.pnlTransInDuration, self.pnlTransOutDuration, 
-                     self.staticLine2]:
-            ctrl.Show(False)
-        
+        self.pnlTransDuration.SetRange(10, 200)
+        self.pnlTransDuration.SetValue(1)
+        self.pnlTransDuration.Bind(EVT_VALUE_CHANGED, self.OnTransDurationChanged)
+        self.choiceTrans.Append(_(u"None"), Picture.TRANS_NONE)
+        self.choiceTrans.Append(_(u"Fade"), Picture.TRANS_FADE)
+        self.choiceTrans.SetSelection(1)
+        self.choiceTrans.Bind(wx.EVT_CHOICE, self.OnChoiceTransChoice)
+
         self._picture = None
+        self.SetPicture(None)
 
     def __SetChoiceSelectionByData(self, choice, data):
         for idx in range(choice.GetCount()):
@@ -261,6 +282,15 @@ class PnlEditPicture(wx.Panel):
     def OnChoiceEffectChoice(self, event):
         self._picture.SetEffect(event.GetClientData())
         event.Skip()
+        
+    def OnChoiceTransChoice(self, event):
+        self._picture.SetTransition(event.GetClientData())
+        self.pnlTransDuration.Enable(self._picture.GetTransition() != Picture.TRANS_NONE)
+        event.Skip()
+    
+    def OnTransDurationChanged(self, event):
+        duration = event.GetValue()
+        self._picture.SetTransitionDuration(duration)
 
     def OnImgDurationChanged(self, event):
         duration = event.GetValue()
@@ -270,7 +300,7 @@ class PnlEditPicture(wx.Panel):
         self._picture.SetComment(self.tcComment.GetValue())
         event.Skip()
         
-    def SetPicture(self, picture):
+    def SetPicture(self, picture, isLast=False):
         self.Enable(picture is not None)
 
         self._picture = picture
@@ -280,3 +310,9 @@ class PnlEditPicture(wx.Panel):
             self.tcComment.SetValue(self._picture.GetComment())
             self.__SetChoiceSelectionByData(self.choiceEffect, self._picture.GetEffect())
             
+            self.__SetChoiceSelectionByData(self.choiceTrans, self._picture.GetTransition())
+            self.pnlTransDuration.SetValue(self._picture.GetTransitionDuration())
+            self.pnlTransDuration.Enable(self._picture.GetTransition() != Picture.TRANS_NONE and not isLast)
+            
+            for ctrl in [self.stTrans, self.choiceTrans, self.stTransUnit]:
+                ctrl.Enable(not isLast)

@@ -26,6 +26,7 @@ import Image, ImageDraw
 from lib.common.ObserverPattern import Observable
 
 from core.util import RotateExif
+from core.Aspect import Aspect
 
 
 class Picture(Observable):
@@ -33,6 +34,9 @@ class Picture(Observable):
     EFFECT_NONE        = 0
     EFFECT_BLACK_WHITE = 1
     EFFECT_SEPIA       = 2
+    
+    TRANS_NONE = 0
+    TRANS_FADE = 1
     
     def __init__(self, filename):
         Observable.__init__(self)
@@ -47,6 +51,9 @@ class Picture(Observable):
         self._effect   = Picture.EFFECT_NONE
         self._width    = -1
         self._height   = -1
+        
+        self._trans    = Picture.TRANS_FADE
+        self._transDur = 1.0
         
     def __Reset(self):
         pass
@@ -117,7 +124,26 @@ class Picture(Observable):
             self.GetImage()
         return self._height
     
-    def AutoPath(self, ratio=16.0/9.0):
+    def SetTransition(self, transition):
+        if transition == self._trans:
+            return
+        self._trans = transition
+        self.Notify('transition')
+    def GetTransition(self):
+        return self._trans
+    
+    def SetTransitionDuration(self, transDur):
+        if transDur == self._transDur:
+            return
+        self._transDur = transDur
+        self.Notify('duration')
+    def GetTransitionDuration(self):
+        if self._trans == Picture.TRANS_NONE:
+            return 0.0
+        return self._transDur
+    
+    def AutoPath(self, aspect):
+        ratio = Aspect.ToFloat(aspect)
         width = self.GetWidth()
         height = self.GetHeight()
         if width < height:

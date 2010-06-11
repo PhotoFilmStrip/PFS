@@ -79,8 +79,8 @@ class CliGui(Observer):
         if options.audio:
             print u"%-20s: %s" % (_(u"audio file"), options.audio)
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-        print u"%-20s: %s (%dx%d)" % (_(u"output format"), profile.PName, profile.PResolution[0], profile.PResolution[1])
-        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.PFramerate, "PAL" if profile.PVideoNorm == OutputProfile.PAL else "NTSC") 
+        print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
+        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC") 
         print
         
     def Write(self, text):
@@ -103,8 +103,8 @@ def main():
     parser = OptionParser(prog="%s-cli" % Settings.APP_NAME.lower(), 
                           version="%%prog %s" % Settings.APP_VERSION)
 
-    profiles = GetOutputProfiles(None)
-    profStr = ", ".join(["%d=%s" % (idx, prof.PName) for idx, prof in enumerate(profiles)])
+    profiles = GetOutputProfiles()
+    profStr = ", ".join(["%d=%s" % (idx, prof.GetName()) for idx, prof in enumerate(profiles)])
     
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
@@ -115,9 +115,9 @@ def main():
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=1, type="int")
     parser.add_option("-l", "--length", help=_(u"total length of the PhotoFilmStrip (seconds)"), type="float", metavar="SECONDS")
     parser.add_option("-a", "--audio", help=_(u"use audiofile as audiotrack (use --length to limit the movie length)"), metavar="MP3")
+    parser.add_option("-d", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
     
     options = parser.parse_args()[0]
-    
 
     if options.project:
         options.project = Decode(options.project, sys.getfilesystemencoding())
@@ -187,7 +187,7 @@ def main():
 #        rendererClass.SetProperty(prop, value)
     
     renderer = rendererClass()
-    renderer.Init(profile, options.outputpath)
+    renderer.Init(profile, options.outputpath, options.draft)
     if options.audio:
         renderer.SetAudioFile(Encode(options.audio, sys.getfilesystemencoding()))
         
