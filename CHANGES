@@ -1,3 +1,22 @@
+  * 2010/06/12 (Version 1.3.95 ALPHA)
+    added:
+     - Transition type and duration customizable
+     - Option for draft-mode (replaces UseResample option)
+     - sample music files (thanks to my dad)
+     - Portuguese translation started
+     - Req-ID 3006759 (4:3 Support)
+     - Req-ID 3002271 (Option for no transition)
+    changed:
+     - Handling of Aspect-Ratio data (internal)
+     - menu entry to change language
+     - aspect ratio for SVCD and DVD considered
+     - user interface simplified
+     - multi project capable
+     - aspect ratio, total duration and audiofile are now saved within project
+    bugfixes:
+     - Bug-ID 3003534 (Subtitles out of sync)
+     - Rendering with only 1 image does not fail anymore  
+
   * 2010/03/14 (Version 1.3.5)
     added: 
      - Czech translation (thanks to Tomas)
