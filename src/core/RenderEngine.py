@@ -24,6 +24,7 @@ import traceback, StringIO
 import Image
 
 from core.Subtitle import SubtitleSrt
+from core.Picture import Picture
 
 
 class RenderEngine(object):
@@ -102,7 +103,7 @@ class RenderEngine(object):
             self.__aRenderer.ProcessFinalize(img)
         return True
 
-    def __TransAndFinal(self, imgFrom, imgTo, pathRectsFrom, pathRectsTo):
+    def __TransAndFinal(self, trans, imgFrom, imgTo, pathRectsFrom, pathRectsTo):
         if len(pathRectsFrom) != len(pathRectsTo):
             raise RuntimeError
         
@@ -122,8 +123,10 @@ class RenderEngine(object):
                                                            pathRectsTo[idx], 
                                                            self.__profile.GetResolution())
 
-            img = Image.blend(image1, image2, idx / float(COUNT))
-#            img = self.roll(image1, image2, idx / float(COUNT))
+            if trans == Picture.TRANS_FADE:
+                img = Image.blend(image1, image2, idx / float(COUNT))
+            elif trans == Picture.TRANS_ROLL:
+                img = self.roll(image1, image2, idx / float(COUNT))
             
             self.__aRenderer.ProcessFinalize(img)
         
@@ -165,7 +168,8 @@ class RenderEngine(object):
                 if transCountBefore > 0:
                     phase2a = pathRectsBefore[-transCountBefore:]
                     phase2b = pathRects[:transCountBefore]
-                    if not self.__TransAndFinal(imgBefore, img, 
+                    if not self.__TransAndFinal(pics[idxPic-1].GetTransition(),
+                                                imgBefore, img, 
                                                 phase2a, phase2b):
                         return
                 
@@ -210,15 +214,12 @@ class RenderEngine(object):
         # determine step count for progressbar
         count = 0
         for pic in pics:
-            count += int(self.__GetPicCount(pic))
+            count += int(self.__GetPicCount(pic) + self.__GetTransCount(pic))
             
             if pic.GetComment() and not generateSubtitle:
                 generateSubtitle = True
                 count += 1
 
-        if self.__audioFile:
-            count += 5
-        
         self.__progressHandler.SetMaxProgress(int(count))
         
         try:

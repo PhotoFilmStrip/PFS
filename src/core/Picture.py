@@ -37,6 +37,7 @@ class Picture(Observable):
     
     TRANS_NONE = 0
     TRANS_FADE = 1
+    TRANS_ROLL = 2
     
     def __init__(self, filename):
         Observable.__init__(self)

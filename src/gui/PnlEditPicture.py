@@ -245,7 +245,7 @@ class PnlEditPicture(wx.Panel):
         self.stProcess.SetFont(font)
         self.stSubtitle.SetFont(font)
         
-        self.pnlImgDuration.SetRange(10, 200)
+        self.pnlImgDuration.SetRange(1, 200)
         self.pnlImgDuration.SetValue(7)
         self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
         
@@ -254,11 +254,12 @@ class PnlEditPicture(wx.Panel):
         self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
         
-        self.pnlTransDuration.SetRange(10, 200)
+        self.pnlTransDuration.SetRange(5, 200)
         self.pnlTransDuration.SetValue(1)
         self.pnlTransDuration.Bind(EVT_VALUE_CHANGED, self.OnTransDurationChanged)
         self.choiceTrans.Append(_(u"None"), Picture.TRANS_NONE)
         self.choiceTrans.Append(_(u"Fade"), Picture.TRANS_FADE)
+        self.choiceTrans.Append(_(u"Roll"), Picture.TRANS_ROLL)
         self.choiceTrans.SetSelection(1)
         self.choiceTrans.Bind(wx.EVT_CHOICE, self.OnChoiceTransChoice)
 
