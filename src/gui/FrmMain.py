@@ -201,10 +201,13 @@ class FrmMain(wx.Frame):
                 event.Veto()
     
     def OnClose(self, event):
-        for idx in range(1, self.notebook.GetPageCount()):
+        while self.notebook.GetPageCount() > 1:
+            idx = 1
+            self.notebook.SetSelection(idx)
             page = self.notebook.GetPage(idx)
             if self.CheckAndAskSaving(page):
                 page.Close()
+                self.notebook.DeletePage(idx)
             else:
                 return
         event.Skip()

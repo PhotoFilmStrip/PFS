@@ -32,6 +32,8 @@ class OutputProfile(object):
         self.__resPal = resPal
         if resNtsc is None:
             self.__resNtsc = resPal
+        else:
+            self.__resNtsc = resNtsc
         self.__bitrate = bitrate
         
         self.__videoNorm = OutputProfile.PAL
