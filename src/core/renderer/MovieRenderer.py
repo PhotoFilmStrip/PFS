@@ -99,7 +99,7 @@ class MovieRenderer(SingleFileRenderer):
     def Finalize(self):
         self._CleanUp()
         
-        if MovieRenderer.GetProperty("RenderSubtitle"):
+        if self.__class__.GetProperty("RenderSubtitle"):
             path = "%s%soutput.srt" % (self.GetOutputPath(), os.sep)
             if os.path.exists(path):
                 os.remove(path)
@@ -134,7 +134,7 @@ class MovieRenderer(SingleFileRenderer):
             raise RuntimeError('format not supported')
             
         if MovieRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\"" % (self.GetOutputPath(), os.sep)
+            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
         else:
             subArgs = ""
 
@@ -145,14 +145,15 @@ class MovieRenderer(SingleFileRenderer):
         
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
-        cmd = "mencoder -cache 1024 -demuxer lavf -lavfdopts format=mjpeg "\
+#              "-ofps %(framerate)s " \
+        cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg "\
               "%(audioArgs)s " \
               "%(subArgs)s " \
               "-oac lavc -ovc lavc " \
               "-of lavf -lavfopts format=mpg " \
               "-srate %(srate)s -af lavcresample=%(srate)s " \
               "-lavcopts %(lavcopts)s " \
-              "-ofps %(framerate)s " \
+              "-ofps 25 " \
               "-o \"%(path)s%(sep)soutput.mpg\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'audioArgs': audioArgs,
@@ -169,9 +170,9 @@ class MovieRenderer(SingleFileRenderer):
 
     def __ProcessAviOutput(self):
         if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25:1"
+            framerate = "25/1"
         else:
-            framerate = "30000:1001"
+            framerate = "30000/1001"
             
         if MovieRenderer.GetProperty("Bitrate") == MovieRenderer.GetDefaultProperty("Bitrate"):
             bitrate = self.PProfile.GetBitrate()
@@ -179,7 +180,7 @@ class MovieRenderer(SingleFileRenderer):
             bitrate = MovieRenderer.GetProperty("Bitrate")
 
         if MovieRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\"" % (self.GetOutputPath(), os.sep)
+            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
         else:
             subArgs = ""
 
@@ -188,13 +189,76 @@ class MovieRenderer(SingleFileRenderer):
         else:
             audioArgs = "-oac copy -audiofile \"%s\"" % self.PAudioFile
         
-        cmd = "mencoder -cache 1024 -demuxer lavf -lavfdopts format=mjpeg " \
+        cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
               "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
+              "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'ffourcc': MovieRenderer.GetProperty('FFOURCC'),
+                                                      'bitrate': bitrate,
+                                                      'audioArgs': audioArgs,
+                                                      "subArgs": subArgs,
+                                                      'framerate': framerate}
+        return cmd
+
+
+class FlashMovieRenderer(MovieRenderer):
+    
+    def __init__(self):
+        MovieRenderer.__init__(self)
+        
+    @staticmethod
+    def GetName():
+        return _(u"Flash-Video (FLV)")
+    
+    @staticmethod
+    def GetProperties():
+        return SingleFileRenderer.GetProperties() + ["Bitrate", "RenderSubtitle"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "RenderSubtitle":
+            return False
+        return SingleFileRenderer.GetDefaultProperty(prop)
+
+    def Prepare(self):
+        self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
+        self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
+        
+        cmd = self.__ProcessFlvOutput()
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        
+    def __ProcessFlvOutput(self):
+        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+            framerate = "25/1"
+        else:
+            framerate = "30000/1001"
+            
+        if FlashMovieRenderer.GetProperty("Bitrate") == FlashMovieRenderer.GetDefaultProperty("Bitrate"):
+            bitrate = self.PProfile.GetBitrate()
+        else:
+            bitrate = FlashMovieRenderer.GetProperty("Bitrate")
+
+        if FlashMovieRenderer.GetProperty("RenderSubtitle"):
+            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
+        else:
+            subArgs = ""
+
+        if self.PAudioFile is None:
+            audioArgs = ""
+        else:
+            audioArgs = "-oac mp3lame -audiofile \"%s\" -lameopts abr:br=56 -srate 22050" % self.PAudioFile
+        
+        cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
+              "%(audioArgs)s " \
+              "%(subArgs)s " \
+              "-ovc lavc -lavcopts vcodec=flv:vbitrate=%(bitrate)d:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 " \
+              "-of lavf " \
+              "-ofps %(framerate)s " \
+              "-o \"%(path)s%(sep)soutput.flv\" -" % {'path': self.GetOutputPath(),
+                                                      'sep': os.sep,
                                                       'bitrate': bitrate,
                                                       'audioArgs': audioArgs,
                                                       "subArgs": subArgs,

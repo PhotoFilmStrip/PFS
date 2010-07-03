@@ -51,13 +51,13 @@ class RenderEngine(object):
         cx2 = (w2 / 2.0) + px2
         cy2 = (h2 / 2.0) + py2
         
-        dx = (cx2 - cx1) / (picCount - 1)
-        dy = (cy2 - cy1) / (picCount - 1)
-        dw = (w2 - w1) / (picCount - 1)
-        dh = (h2 - h1) / (picCount - 1)
+        dx = (cx2 - cx1) / float(picCount - 1)
+        dy = (cy2 - cy1) / float(picCount - 1)
+        dw = (w2 - w1) / float(picCount - 1)
+        dh = (h2 - h1) / float(picCount - 1)
         
         pathRects = []
-        for step in xrange(int(picCount)):
+        for step in xrange(picCount):
             px = cx1 + step * dx
             py = cy1 + step * dy
             width = w1 + step * dw
@@ -75,15 +75,19 @@ class RenderEngine(object):
         """
         returns the number of pictures
         """
-        return ((pic.GetDuration() + pic.GetTransitionDuration()) * \
-                self.__profile.GetFramerate()) * \
-                self.__picCountFactor
+#                         self.__profile.GetFramerate() * \
+        return int(round(pic.GetDuration() * \
+                         25.0 * \
+                         self.__picCountFactor))
     
     def __GetTransCount(self, pic):
         """
         returns the number of pictures needed for the transition
         """
-        return int(pic.GetTransitionDuration() * self.__profile.GetFramerate())
+#                         self.__profile.GetFramerate() * \
+        return int(round(pic.GetTransitionDuration() * \
+                         25.0 * \
+                         self.__picCountFactor))
 
     def __CheckAbort(self):
         if self.__progressHandler.IsAborted():
@@ -118,7 +122,6 @@ class RenderEngine(object):
                                                            pathRectsFrom[idx], 
                                                            self.__profile.GetResolution())
 
-            self.__progressHandler.Step()
             image2 = self.__aRenderer.ProcessCropAndResize(imgTo,
                                                            pathRectsTo[idx], 
                                                            self.__profile.GetResolution())
@@ -156,10 +159,12 @@ class RenderEngine(object):
         
         for idxPic, pic in enumerate(pics):
             picCount = self.__GetPicCount(pic)
-            transCount = self.__GetTransCount(pic)
+            transCount = 0
+            if idxPic < (len(pics) - 1):
+                transCount = self.__GetTransCount(pic)
 
             img = pic.GetImage()
-            pathRects = self.__ComputePath(pic, picCount + transCountBefore)
+            pathRects = self.__ComputePath(pic, picCount + transCount + transCountBefore)
 
             if idxPic > 0 and idxPic < len(pics):
                 infoText = _(u"processing transition %d/%d") % (idxPic + 1, len(pics))
@@ -200,21 +205,23 @@ class RenderEngine(object):
         self.__audioFile = audioFile
     
     def Start(self, pics, targetLengthSecs=None):
-        generateSubtitle = False
-        
         if targetLengthSecs is not None:
             # targetLength should be at least 1sec for each pic
             targetLengthSecs = max(targetLengthSecs, len(pics))
             totalSecs = 0
-            for pic in pics:
+            for idxPic, pic in enumerate(pics):
                 totalSecs += pic.GetDuration()
-                totalSecs += pic.GetTransitionDuration()
+                if idxPic < (len(pics) - 1):
+                    totalSecs += pic.GetTransitionDuration()
             self.__picCountFactor = targetLengthSecs / totalSecs
             
         # determine step count for progressbar
         count = 0
-        for pic in pics:
-            count += int(self.__GetPicCount(pic) + self.__GetTransCount(pic))
+        generateSubtitle = False
+        for idxPic, pic in enumerate(pics):
+            count += round(self.__GetPicCount(pic))
+            if idxPic < (len(pics) - 1):
+                count += round(self.__GetTransCount(pic))
             
             if pic.GetComment() and not generateSubtitle:
                 generateSubtitle = True

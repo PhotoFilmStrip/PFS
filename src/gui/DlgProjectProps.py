@@ -496,7 +496,10 @@ class DlgProjectProps(wx.Dialog):
     def GetPhotoFilmStrip(self):
         if self.__photoFilmStrip is None:
             self.__photoFilmStrip = PhotoFilmStrip(self.__GetProjectPath())
-        self.__photoFilmStrip.SetAudioFile(self.tcAudiofile.GetValue())
+        if self.rbAudio.GetValue():
+            self.__photoFilmStrip.SetAudioFile(self.tcAudiofile.GetValue())
+        else:
+            self.__photoFilmStrip.SetAudioFile(None)
         self.__photoFilmStrip.SetDuration(self.__GetTotalLength())
         self.__photoFilmStrip.SetAspect(self.choiceAspect.GetStringSelection())
         return self.__photoFilmStrip
