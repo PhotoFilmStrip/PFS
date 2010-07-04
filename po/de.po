@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-06-12 13:20+CEST\n"
-"PO-Revision-Date: 2010-06-12 13:25+0100\n"
+"POT-Creation-Date: 2010-07-04 11:42+CEST\n"
+"PO-Revision-Date: 2010-07-04 11:46+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -133,27 +133,27 @@ msgstr "Bitte warten"
 msgid "aborting..."
 msgstr "abbrechen..."
 
-#: src/core/RenderEngine.py:143
+#: src/core/RenderEngine.py:149
 msgid "initialize renderer"
 msgstr "Initialisiere"
 
-#: src/core/RenderEngine.py:162
+#: src/core/RenderEngine.py:170
 msgid "processing transition %d/%d"
 msgstr "Berechne Bildübergang %d/%d"
 
-#: src/core/RenderEngine.py:172
+#: src/core/RenderEngine.py:181
 msgid "processing image %d/%d"
 msgstr "Verarbeite Bild %d/%d"
 
-#: src/core/RenderEngine.py:188
+#: src/core/RenderEngine.py:197
 msgid "processing audiofile..."
 msgstr "Verarbeite Audio-Datei..."
 
-#: src/core/RenderEngine.py:192
+#: src/core/RenderEngine.py:201
 msgid "creating output..."
 msgstr "Ausgabe erstellen..."
 
-#: src/core/RenderEngine.py:226
+#: src/core/RenderEngine.py:234
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
@@ -165,102 +165,106 @@ msgstr "Videodatei"
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) nicht gefunden!"
 
+#: src/core/renderer/MovieRenderer.py:214
+msgid "Flash-Video (FLV)"
+msgstr "Flash-Video (FLV)"
+
 #: src/core/renderer/SingleFileRenderer.py:37
 msgid "Single pictures"
 msgstr "Einzelbilder"
 
-#: src/gui/ActionManager.py:61
+#: src/gui/ActionManager.py:63
 msgid "&File"
 msgstr "&Datei"
 
-#: src/gui/ActionManager.py:62
+#: src/gui/ActionManager.py:64
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: src/gui/ActionManager.py:63
+#: src/gui/ActionManager.py:65
 msgid "&Tools"
 msgstr "&Extras"
 
-#: src/gui/ActionManager.py:64
-#: src/gui/ActionManager.py:189
+#: src/gui/ActionManager.py:66
+#: src/gui/ActionManager.py:191
 #: src/gui/DlgRender.py:290
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: src/gui/ActionManager.py:78
+#: src/gui/ActionManager.py:80
 msgid "New Project"
 msgstr "Neues Projekt"
 
-#: src/gui/ActionManager.py:81
+#: src/gui/ActionManager.py:83
 msgid "Load Project"
 msgstr "Projekt laden"
 
-#: src/gui/ActionManager.py:84
+#: src/gui/ActionManager.py:86
 msgid "Save Project"
 msgstr "Projekt speichern"
 
-#: src/gui/ActionManager.py:91
+#: src/gui/ActionManager.py:93
 msgid "Import Pictures"
 msgstr "Bilder importieren"
 
-#: src/gui/ActionManager.py:94
+#: src/gui/ActionManager.py:96
 #: src/gui/DlgRender.py:209
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
-#: src/gui/ActionManager.py:115
+#: src/gui/ActionManager.py:117
 msgid "&New Project"
 msgstr "&Neues Projekt"
 
-#: src/gui/ActionManager.py:119
+#: src/gui/ActionManager.py:121
 msgid "&Open Project"
 msgstr "Pr&ojekt öffnen"
 
-#: src/gui/ActionManager.py:125
+#: src/gui/ActionManager.py:127
 msgid "&Save Project"
 msgstr "Projekt &speichern"
 
-#: src/gui/ActionManager.py:137
+#: src/gui/ActionManager.py:139
 msgid "&Properties"
 msgstr "&Eigenschaften"
 
-#: src/gui/ActionManager.py:142
+#: src/gui/ActionManager.py:144
 msgid "E&xit"
 msgstr "B&eenden"
 
-#: src/gui/ActionManager.py:150
+#: src/gui/ActionManager.py:152
 msgid "Move picture &left"
 msgstr "Bild nach &links"
 
-#: src/gui/ActionManager.py:154
+#: src/gui/ActionManager.py:156
 msgid "Move picture &right"
 msgstr "Bild nach re&chts"
 
-#: src/gui/ActionManager.py:159
+#: src/gui/ActionManager.py:161
 msgid "&Remove Picture"
 msgstr "Bild &entfernen"
 
-#: src/gui/ActionManager.py:164
+#: src/gui/ActionManager.py:166
 msgid "Rotate &clockwise"
 msgstr "Im Uhrzeigersinn d&rehen"
 
-#: src/gui/ActionManager.py:168
+#: src/gui/ActionManager.py:170
 msgid "Rotate counter clock&wise"
 msgstr "&Gegen Uhrzeigersinn drehen"
 
-#: src/gui/ActionManager.py:176
+#: src/gui/ActionManager.py:178
 msgid "&Import Pictures"
 msgstr "Bilder &importieren"
 
-#: src/gui/ActionManager.py:181
+#: src/gui/ActionManager.py:183
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
-#: src/gui/ActionManager.py:197
+#: src/gui/ActionManager.py:200
 msgid "Language"
 msgstr "Sprache"
 
-#: src/gui/ActionManager.py:201
+#: src/gui/ActionManager.py:204
 msgid "&About"
 msgstr "&Info"
 
@@ -277,7 +281,7 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
 
 #: src/gui/DlgBugReport.py:99
-#: src/gui/FrmMain.py:171
+#: src/gui/FrmMain.py:172
 msgid "Information"
 msgstr "Information"
 
@@ -293,7 +297,7 @@ msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 #: src/gui/DlgProjectProps.py:481
 #: src/gui/DlgRender.py:485
 #: src/gui/DlgRender.py:514
-#: src/gui/FrmMain.py:426
+#: src/gui/FrmMain.py:430
 msgid "Error"
 msgstr "Fehler"
 
@@ -347,9 +351,9 @@ msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
 #: src/gui/DlgProjectProps.py:455
 #: src/gui/DlgRender.py:420
-#: src/gui/FrmMain.py:269
-#: src/gui/FrmMain.py:372
-#: src/gui/FrmMain.py:450
+#: src/gui/FrmMain.py:273
+#: src/gui/FrmMain.py:376
+#: src/gui/FrmMain.py:454
 #: src/gui/PnlPfsProject.py:463
 msgid "Question"
 msgstr "Frage"
@@ -452,71 +456,71 @@ msgstr "Stapelverarbeitungsdatei wählen"
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: src/gui/FrmMain.py:170
+#: src/gui/FrmMain.py:171
 msgid "You must restart %s for your new language setting to take effect."
 msgstr "Starte %s neu, damit die neuen Spracheinstellungen wirksam werden."
 
-#: src/gui/FrmMain.py:216
+#: src/gui/FrmMain.py:220
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr "PhotoFilmStrip erstellt Videoclips aus Digitalfotos in nur 3 Schritten. Fotos auswählen, Bewegung anpassen und Video erstellen lassen. Verfügbar sind Formate für VCD, SVCD, DVD bis hin zu FULL-HD."
 
-#: src/gui/FrmMain.py:219
+#: src/gui/FrmMain.py:223
 msgid "online"
 msgstr "Online"
 
-#: src/gui/FrmMain.py:222
+#: src/gui/FrmMain.py:226
 msgid "Translators"
 msgstr "Übersetzer"
 
-#: src/gui/FrmMain.py:237
+#: src/gui/FrmMain.py:241
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:239
-#: src/gui/FrmMain.py:259
-#: src/gui/FrmMain.py:285
-#: src/gui/FrmMain.py:296
+#: src/gui/FrmMain.py:243
+#: src/gui/FrmMain.py:263
+#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:300
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:256
+#: src/gui/FrmMain.py:260
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:268
+#: src/gui/FrmMain.py:272
 msgid "Overwrite existing file '%s'?"
 msgstr "Bestehende Datei '%s' überschreiben?"
 
-#: src/gui/FrmMain.py:282
+#: src/gui/FrmMain.py:286
 msgid "Export %s-Project"
 msgstr "%s-Projekt exportieren"
 
-#: src/gui/FrmMain.py:285
-#: src/gui/FrmMain.py:296
+#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:300
 msgid "Portable"
 msgstr "Mitnehm"
 
-#: src/gui/FrmMain.py:294
+#: src/gui/FrmMain.py:298
 msgid "Import %s-Project"
 msgstr "%s-Projekt importieren"
 
-#: src/gui/FrmMain.py:371
+#: src/gui/FrmMain.py:375
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:394
+#: src/gui/FrmMain.py:398
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:399
+#: src/gui/FrmMain.py:403
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:424
+#: src/gui/FrmMain.py:428
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Kein gültiges %(app)s-Projekt: %(file)s"
 
-#: src/gui/FrmMain.py:447
+#: src/gui/FrmMain.py:451
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
 
@@ -583,6 +587,10 @@ msgstr "Keiner"
 #: src/gui/PnlEditPicture.py:261
 msgid "Fade"
 msgstr "Überblenden"
+
+#: src/gui/PnlEditPicture.py:262
+msgid "Roll"
+msgstr "Rollen"
 
 #: src/gui/PnlPfsProject.py:103
 msgid "Random motion path"

@@ -1,14 +1,3 @@
-FLV:
-        cmd = "mencoder -cache 1024 -mf fps=%(fps)d " \
-              "-ovc lavc -lavcopts vcodec=flv:vbitrate=500:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 -of lavf " \
-              "-oac mp3lame -lameopts abr:br=56 -srate 22050 " \
-              "-o \"%(path)s%(sep)s%(name)s.flv\" " \
-              "mf://*.jpg" % {'path': targetDir,
-                              'sep': os.sep,
-                              'name': os.path.basename(targetDir),
-                              'fps': fps}
- 
-
 Features:
  - Bilder als fertig/geändert markieren
  - Kurze Vollbildansicht
