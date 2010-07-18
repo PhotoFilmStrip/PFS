@@ -237,6 +237,7 @@ class DlgPositionInput(wx.Dialog):
         
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)
+        self.__doOnChange = True
         
         self.__backupStart = self.__pic.GetStartRect()
         self.__backupEnd = self.__pic.GetTargetRect()
@@ -251,6 +252,7 @@ class DlgPositionInput(wx.Dialog):
         self.Fit()
         
     def _InitValues(self):
+        self.__doOnChange = False
         # Init ranges with max values
         self.spinStartX.SetRange(0, self.__pic.GetWidth())
         self.spinStartY.SetRange(0, self.__pic.GetHeight())
@@ -276,6 +278,8 @@ class DlgPositionInput(wx.Dialog):
         self.spinEndY.SetValue(self.__pic.GetTargetRect()[1])
         self.spinEndWidth.SetValue(self.__pic.GetTargetRect()[2])
         self.spinEndHeight.SetValue(self.__pic.GetTargetRect()[3])
+
+        self.__doOnChange = True
         
         self._SetupRanges()
         
@@ -290,6 +294,8 @@ class DlgPositionInput(wx.Dialog):
         self.spinEndY.SetRange(0, self.__pic.GetHeight() - self.spinEndHeight.GetValue())
         
     def _PreserveAspect(self, wxId):
+        self.__doOnChange = False
+
         if wxId == wxID_DLGPOSITIONINPUTSPINSTARTWIDTH:
             self.spinStartHeight.SetValue(int(round(self.spinStartWidth.GetValue() / self.__ratio)))
         if wxId == wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT:
@@ -299,8 +305,12 @@ class DlgPositionInput(wx.Dialog):
             self.spinEndHeight.SetValue(int(round(self.spinEndWidth.GetValue() / self.__ratio)))
         if wxId == wxID_DLGPOSITIONINPUTSPINENDHEIGHT:
             self.spinEndWidth.SetValue(int(round(self.spinEndHeight.GetValue() * self.__ratio)))
+
+        self.__doOnChange = True
         
     def OnSpinChange(self, event):
+        if not self.__doOnChange:
+            return
         self._PreserveAspect(event.GetId())
         
         startRect = (self.spinStartX.GetValue(), self.spinStartY.GetValue(),
