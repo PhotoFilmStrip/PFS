@@ -47,7 +47,6 @@ class FrmMain(wx.Frame):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
               title='PhotoFilmStrip')
-        self.SetClientSize(wx.Size(700, 431))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.SetTitle(Settings.APP_NAME)
         
@@ -116,7 +115,7 @@ class FrmMain(wx.Frame):
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOVE_LEFT)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOVE_RIGHT)
         
-        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.SetInitialSize((720, 680))
         
         at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP_CONTENTS)])
         self.SetAcceleratorTable(at)

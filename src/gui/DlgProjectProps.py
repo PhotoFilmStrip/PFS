@@ -138,7 +138,6 @@ class DlgProjectProps(wx.Dialog):
               name=u'DlgProjectProps', parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.DEFAULT_DIALOG_STYLE,
               title=u'Project properties')
-        self.SetClientSize(wx.Size(653, 437))
 
         self.stProject = wx.StaticText(id=wxID_DLGPROJECTPROPSSTPROJECT,
               label=u'Project name:', name=u'stProject', parent=self,
@@ -225,7 +224,7 @@ class DlgProjectProps(wx.Dialog):
               name=u'tcAudiofile', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TE_READONLY, value=u'')
 
-        self.cmdBrowseAudio = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
+        self.cmdBrowseAudio = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FILE_OPEN',
               wx.ART_TOOLBAR, wx.DefaultSize),
               id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO, name=u'cmdBrowseAudio',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
@@ -320,7 +319,11 @@ class DlgProjectProps(wx.Dialog):
             pfsDur = photoFilmStrip.GetDuration()
             dur = wx.DateTime_Now()
             dur.SetHMS(0, pfsDur / 60, pfsDur % 60)
-            self.timeCtrlTotalLength.SetWxDateTime(dur)
+            try:
+                self.timeCtrlTotalLength.SetWxDateTime(dur)
+            except ValueError:
+                # duration is invalid if there are no photos
+                pass
 
             if photoFilmStrip.GetDuration(calc=False):
                 self.cbTotalLength.SetValue(True)

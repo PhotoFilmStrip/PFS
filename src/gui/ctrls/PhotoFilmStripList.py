@@ -91,7 +91,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def OnMouseEvent(self, event):
         mPos = event.GetPosition()
         unscrolledPos = self.CalcUnscrolledPosition(mPos)
-        idx = self.HitTest(unscrolledPos)
+        idx = self.HitTest(mPos)
         if event.Moving():
             if idx != self.__hvrIdx:
                 self.__hvrIdx = idx
@@ -269,6 +269,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             sx += thumbWidth + 10
             
     def HitTest(self, pos):
+        pos = self.CalcUnscrolledPosition(pos)
         sx = 10
         for idx, pic in enumerate(self.__pictures):
             thumbWidth, thumbHeight = self.GetThumbSize(pic)

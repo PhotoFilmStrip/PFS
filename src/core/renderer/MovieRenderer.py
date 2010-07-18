@@ -227,10 +227,10 @@ class FlashMovieRenderer(MovieRenderer):
         self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
         self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
         
-        cmd = self.__ProcessFlvOutput()
+        cmd = self._GetCmd()
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
         
-    def __ProcessFlvOutput(self):
+    def _GetCmd(self):
         if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
             framerate = "25/1"
         else:
@@ -249,7 +249,7 @@ class FlashMovieRenderer(MovieRenderer):
         if self.PAudioFile is None:
             audioArgs = ""
         else:
-            audioArgs = "-oac mp3lame -audiofile \"%s\" -lameopts abr:br=56 -srate 22050" % self.PAudioFile
+            audioArgs = "-oac mp3lame -audiofile \"%s\" -lameopts abr:br=128 -srate 44100" % self.PAudioFile
         
         cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
@@ -260,6 +260,53 @@ class FlashMovieRenderer(MovieRenderer):
               "-o \"%(path)s%(sep)soutput.flv\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'bitrate': bitrate,
+                                                      'audioArgs': audioArgs,
+                                                      "subArgs": subArgs,
+                                                      'framerate': framerate}
+        return cmd
+
+
+class MJPEGRenderer(FlashMovieRenderer):
+    
+    def __init__(self):
+        FlashMovieRenderer.__init__(self)
+        
+    @staticmethod
+    def GetName():
+        return _(u"Motion-JPEG (MJPEG)")
+    
+    @staticmethod
+    def GetProperties():
+        return FlashMovieRenderer.GetProperties()
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        return FlashMovieRenderer.GetDefaultProperty(prop)
+
+    def _GetCmd(self):
+        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+            framerate = "25/1"
+        else:
+            framerate = "30000/1001"
+            
+        if MJPEGRenderer.GetProperty("RenderSubtitle"):
+            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
+        else:
+            subArgs = ""
+
+        if self.PAudioFile is None:
+            audioArgs = ""
+        else:
+            audioArgs = "-oac copy -audiofile \"%s\"" % self.PAudioFile
+        
+        cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
+              "%(audioArgs)s " \
+              "%(subArgs)s " \
+              "-ovc lavc -lavcopts vcodec=mjpeg " \
+              "-of lavf " \
+              "-ofps %(framerate)s " \
+              "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
+                                                      'sep': os.sep,
                                                       'audioArgs': audioArgs,
                                                       "subArgs": subArgs,
                                                       'framerate': framerate}

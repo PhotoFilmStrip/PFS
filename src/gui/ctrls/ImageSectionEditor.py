@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import re
 import time
 
 import wx
@@ -63,7 +64,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         wx.Panel.__init__(self, parent, id, pos, size, style, name)
         Observer.__init__(self)
         
-        self.SetMinSize(wx.Size(400, 300))
+        self.SetMinSize(wx.Size(200, 150))
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
@@ -495,6 +496,11 @@ class ImageSectionEditor(wx.Panel, Observer):
                 self._sectRect.OffsetXY(0, 50)
             else:
                 self._sectRect.OffsetXY(0, 10)
+        elif event.GetModifiers()  == wx.MOD_CONTROL:
+            if key == ord('C'):
+                self.OnCopy(event)
+            elif key == ord('V'):
+                self.OnPaste(event)
         else:
             event.Skip()
             return
@@ -529,6 +535,35 @@ class ImageSectionEditor(wx.Panel, Observer):
             top = self._imgProxy.GetHeight() - height
             
         self._sectRect = wx.Rect(left, top, width, height)
+        
+    def OnCopy(self, event):
+        data = "%d, %d - %d x %d" % tuple(self._sectRect)
+        if wx.TheClipboard.Open():
+            try:
+                do = wx.TextDataObject()
+                do.SetText(data)
+                wx.TheClipboard.SetData(do)
+            finally:
+                wx.TheClipboard.Close()
+            
+    def OnPaste(self, event):
+        if wx.TheClipboard.Open():
+            try:
+                do = wx.TextDataObject()
+                data = None
+                if wx.TheClipboard.GetData(do):
+                    data = do.GetText()
+                    sectData = re.findall("(\d+), (\d+) - (\d+) x (\d+)", data)
+                    if sectData:
+                        sectData = sectData[0]
+                        try:
+                            rect = wx.Rect(int(sectData[0]), int(sectData[1]),
+                                           int(sectData[2]), int(sectData[3]))
+                            self.SetSection(rect)
+                        except ValueError:
+                            pass
+            finally:
+                wx.TheClipboard.Close()        
         
 # ============================
 

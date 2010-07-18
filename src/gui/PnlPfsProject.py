@@ -38,6 +38,7 @@ from gui.util.ImageProxy import ImageProxy
 
 from gui.PnlEditPicture import PnlEditPicture
 from gui.PnlAddPics import PnlAddPics
+from gui.DlgPositionInput import DlgPositionInput
 
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT, 
@@ -51,10 +52,9 @@ from gui.PnlAddPics import PnlAddPics
 
 [wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, 
  wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, 
- wxID_PNLPFSPROJECTTOOLBARIMGSECTOMNEXT, 
- wxID_PNLPFSPROJECTTOOLBARIMGSECTOMPREV, 
+ wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, 
  wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
-] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(5)]
+] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(4)]
 
 class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
     
@@ -100,7 +100,7 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, kind=wx.ITEM_NORMAL,
-              label=u'', longHelp=u'', shortHelp=_(u'Random motion path'))
+              label=u'', longHelp=u'', shortHelp=_(u'Random motion'))
         parent.AddSeparator()
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
@@ -110,27 +110,20 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
-#        parent.AddSeparator()
-#        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
-#              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
-#              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTOMPREV, kind=wx.ITEM_NORMAL,
-#              label='', longHelp='',
-#              shortHelp=_(u'Set motion path same as previous.'))
-#        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
-#              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
-#              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTOMNEXT, kind=wx.ITEM_NORMAL,
-#              label='', longHelp='',
-#              shortHelp=_(u'Set motion path same as next.'))
+        parent.AddSeparator()
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, kind=wx.ITEM_NORMAL,
+              label='', longHelp='',
+              shortHelp=_(u'Adjust motion manual'))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolRightToLeft,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT)
-        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolFromPrev,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTOMPREV)
-        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolFromNext,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTOMNEXT)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAdjust,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST)
 
         parent.Realize()
 
@@ -235,6 +228,9 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         self.pnlAddPics.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
         self.pnlAddPics.stInfo.SetDropTarget(ImageDropTarget(self))
 
+        self.cmdMoveLeft.Enable(False)
+        self.cmdMoveRight.Enable(False)
+        self.cmdRemove.Enable(False)
         self.panelTop.Show(False)
         
         self.Bind(EVT_RECT_CHANGED, self.OnRectChanged, id=self.bitmapLeft.GetId())
@@ -276,7 +272,10 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
                 pic = Picture(path)
                 pics.append(pic)
             
-            self.InsertPictures(pics, autopath=True)
+            selItm = self.lvPics.GetSelected()
+            self.InsertPictures(pics, 
+                                selItm + 1 if selItm != wx.NOT_FOUND else None, 
+                                autopath=True)
             
             Settings().SetImagePath(os.path.dirname(path))
             
@@ -426,25 +425,13 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
             return
         pic.SetStartRect(pic.GetTargetRect())
 
-    def OnToolBarImgSectToolFromPrev(self, event):
+    def OnToolBarImgSectToolAdjust(self, event):
         selItem = self.lvPics.GetSelected()
         selPic = self.lvPics.GetPicture(selItem)
-        prevPic = self.lvPics.GetPicture(selItem - 1)
-        if selPic is None or prevPic is None:
-            return
-
-        selPic.SetStartRect(prevPic.GetStartRect())
-        selPic.SetTargetRect(prevPic.GetTargetRect())
-
-    def OnToolBarImgSectToolFromNext(self, event):
-        selItem = self.lvPics.GetSelected()
-        selPic = self.lvPics.GetPicture(selItem)
-        nextPic = self.lvPics.GetPicture(selItem + 1)
-        if selPic is None or nextPic is None:
-            return
-
-        selPic.SetStartRect(nextPic.GetStartRect())
-        selPic.SetTargetRect(nextPic.GetTargetRect())
+        
+        dlg = DlgPositionInput(self, selPic, self.__photoFilmStrip.GetAspect())
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def Close(self):
         self.imgProxy.RemoveObserver(self.bitmapLeft)
