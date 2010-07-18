@@ -1,3 +1,13 @@
+  * 2010/07/18 (Version 1.3.97 ALPHA)
+    added:
+     - MJPEG-Renderer
+     - Direct input for motion positions
+     - Copy and paste for motion positions (keyboard only)
+    bugfix:
+     - minimal size of mainframe specified
+     - property dialog could not open if no pics were added to the project
+     - ticket id 2890912: drop position determined correctly
+
   * 2010/07/04 (Version 1.3.96 ALPHA)
     added:
      - Flash-Video Renderer

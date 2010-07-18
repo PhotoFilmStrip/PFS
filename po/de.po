@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-07-04 11:42+CEST\n"
-"PO-Revision-Date: 2010-07-04 11:46+0100\n"
+"POT-Creation-Date: 2010-07-18 13:44+CEST\n"
+"PO-Revision-Date: 2010-07-18 13:49+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "MIME-Version: 1.0\n"
@@ -169,6 +169,10 @@ msgstr "mencoder (mencoder) nicht gefunden!"
 msgid "Flash-Video (FLV)"
 msgstr "Flash-Video (FLV)"
 
+#: src/core/renderer/MovieRenderer.py:276
+msgid "Motion-JPEG (MJPEG)"
+msgstr "Motion-JPEG (MJPEG)"
+
 #: src/core/renderer/SingleFileRenderer.py:37
 msgid "Single pictures"
 msgstr "Einzelbilder"
@@ -281,7 +285,7 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr "Fehlerbericht gesendet. Vielen Dank für die Unterstützung."
 
 #: src/gui/DlgBugReport.py:99
-#: src/gui/FrmMain.py:172
+#: src/gui/FrmMain.py:171
 msgid "Information"
 msgstr "Information"
 
@@ -290,79 +294,91 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 
 #: src/gui/DlgBugReport.py:106
-#: src/gui/DlgProjectProps.py:396
-#: src/gui/DlgProjectProps.py:418
-#: src/gui/DlgProjectProps.py:428
-#: src/gui/DlgProjectProps.py:465
-#: src/gui/DlgProjectProps.py:481
+#: src/gui/DlgProjectProps.py:399
+#: src/gui/DlgProjectProps.py:421
+#: src/gui/DlgProjectProps.py:431
+#: src/gui/DlgProjectProps.py:468
+#: src/gui/DlgProjectProps.py:484
 #: src/gui/DlgRender.py:485
 #: src/gui/DlgRender.py:514
-#: src/gui/FrmMain.py:430
+#: src/gui/FrmMain.py:429
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gui/DlgProjectProps.py:196
+#: src/gui/DlgPositionInput.py:128
+msgid "Adjust motion"
+msgstr "Bewegung anpassen"
+
+#: src/gui/DlgPositionInput.py:140
+msgid "Location:"
+msgstr "Position:"
+
+#: src/gui/DlgPositionInput.py:158
+msgid "Size:"
+msgstr "Größe:"
+
+#: src/gui/DlgProjectProps.py:195
 msgid "Total length:"
 msgstr "Gesamtlänge:"
 
-#: src/gui/DlgProjectProps.py:199
+#: src/gui/DlgProjectProps.py:198
 msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
 msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgProjectProps.py:205
+#: src/gui/DlgProjectProps.py:204
 msgid "User defined:"
 msgstr "Manuell:"
 
-#: src/gui/DlgProjectProps.py:219
+#: src/gui/DlgProjectProps.py:218
 msgid "Audio file:"
 msgstr "Audiodatei:"
 
-#: src/gui/DlgProjectProps.py:299
+#: src/gui/DlgProjectProps.py:298
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/DlgProjectProps.py:305
+#: src/gui/DlgProjectProps.py:304
 msgid "My PhotoFilmStrips"
 msgstr "Eigene PhotoFilmStrips"
 
-#: src/gui/DlgProjectProps.py:351
+#: src/gui/DlgProjectProps.py:354
 msgid "Select music"
 msgstr "Audiodatei auswählen"
 
-#: src/gui/DlgProjectProps.py:354
+#: src/gui/DlgProjectProps.py:357
 msgid "Audiofiles"
 msgstr "Audiodateien"
 
-#: src/gui/DlgProjectProps.py:395
+#: src/gui/DlgProjectProps.py:398
 msgid "No media support found on this platform!"
 msgstr "Video-Unterstützung auf dieser Plattform nicht verfügbar!"
 
-#: src/gui/DlgProjectProps.py:417
+#: src/gui/DlgProjectProps.py:420
 msgid "Invalid audio file!"
 msgstr "Ungültige Audio-Datei"
 
-#: src/gui/DlgProjectProps.py:427
+#: src/gui/DlgProjectProps.py:430
 msgid "Audio file does not exist!"
 msgstr "Audio-Datei nicht vorhanden!"
 
-#: src/gui/DlgProjectProps.py:454
+#: src/gui/DlgProjectProps.py:457
 msgid "Output path does not exists! Do you want %s to create it?"
 msgstr "Ausgabeordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgProjectProps.py:455
+#: src/gui/DlgProjectProps.py:458
 #: src/gui/DlgRender.py:420
-#: src/gui/FrmMain.py:273
-#: src/gui/FrmMain.py:376
-#: src/gui/FrmMain.py:454
-#: src/gui/PnlPfsProject.py:463
+#: src/gui/FrmMain.py:272
+#: src/gui/FrmMain.py:375
+#: src/gui/FrmMain.py:453
+#: src/gui/PnlPfsProject.py:450
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgProjectProps.py:464
+#: src/gui/DlgProjectProps.py:467
 msgid "Cannot create direcotory: %s"
 msgstr "Verzeichnis kann nicht erstellt werden: %s"
 
-#: src/gui/DlgProjectProps.py:480
+#: src/gui/DlgProjectProps.py:483
 msgid "Cannot write into direcotory: %s"
 msgstr "Verzeichnis nicht beschreibbar: %s"
 
@@ -452,75 +468,75 @@ msgstr "Shell Script"
 msgid "Select batch file"
 msgstr "Stapelverarbeitungsdatei wählen"
 
-#: src/gui/FrmMain.py:77
+#: src/gui/FrmMain.py:76
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: src/gui/FrmMain.py:171
+#: src/gui/FrmMain.py:170
 msgid "You must restart %s for your new language setting to take effect."
 msgstr "Starte %s neu, damit die neuen Spracheinstellungen wirksam werden."
 
-#: src/gui/FrmMain.py:220
+#: src/gui/FrmMain.py:219
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr "PhotoFilmStrip erstellt Videoclips aus Digitalfotos in nur 3 Schritten. Fotos auswählen, Bewegung anpassen und Video erstellen lassen. Verfügbar sind Formate für VCD, SVCD, DVD bis hin zu FULL-HD."
 
-#: src/gui/FrmMain.py:223
+#: src/gui/FrmMain.py:222
 msgid "online"
 msgstr "Online"
 
-#: src/gui/FrmMain.py:226
+#: src/gui/FrmMain.py:225
 msgid "Translators"
 msgstr "Übersetzer"
 
-#: src/gui/FrmMain.py:241
+#: src/gui/FrmMain.py:240
 msgid "Select %s-Project"
 msgstr "%s-Projekt auswählen"
 
-#: src/gui/FrmMain.py:243
-#: src/gui/FrmMain.py:263
-#: src/gui/FrmMain.py:289
-#: src/gui/FrmMain.py:300
+#: src/gui/FrmMain.py:242
+#: src/gui/FrmMain.py:262
+#: src/gui/FrmMain.py:288
+#: src/gui/FrmMain.py:299
 msgid "Project"
 msgstr "Projekt"
 
-#: src/gui/FrmMain.py:260
+#: src/gui/FrmMain.py:259
 msgid "Save %s-Project"
 msgstr "%s-Projekt speichern"
 
-#: src/gui/FrmMain.py:272
+#: src/gui/FrmMain.py:271
 msgid "Overwrite existing file '%s'?"
 msgstr "Bestehende Datei '%s' überschreiben?"
 
-#: src/gui/FrmMain.py:286
+#: src/gui/FrmMain.py:285
 msgid "Export %s-Project"
 msgstr "%s-Projekt exportieren"
 
-#: src/gui/FrmMain.py:289
-#: src/gui/FrmMain.py:300
+#: src/gui/FrmMain.py:288
+#: src/gui/FrmMain.py:299
 msgid "Portable"
 msgstr "Mitnehm"
 
-#: src/gui/FrmMain.py:298
+#: src/gui/FrmMain.py:297
 msgid "Import %s-Project"
 msgstr "%s-Projekt importieren"
 
-#: src/gui/FrmMain.py:375
+#: src/gui/FrmMain.py:374
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' wurde geändert. Änderungen speichern?"
 
-#: src/gui/FrmMain.py:398
+#: src/gui/FrmMain.py:397
 msgid "Images"
 msgstr "Bilder"
 
-#: src/gui/FrmMain.py:403
+#: src/gui/FrmMain.py:402
 msgid "Duration"
 msgstr "Dauer"
 
-#: src/gui/FrmMain.py:428
+#: src/gui/FrmMain.py:427
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Kein gültiges %(app)s-Projekt: %(file)s"
 
-#: src/gui/FrmMain.py:451
+#: src/gui/FrmMain.py:450
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Konnte Datei '%(file)s' nicht speichern: %(errMsg)s"
 
@@ -593,8 +609,8 @@ msgid "Roll"
 msgstr "Rollen"
 
 #: src/gui/PnlPfsProject.py:103
-msgid "Random motion path"
-msgstr "Zufälliger Bewegungspfad"
+msgid "Random motion"
+msgstr "Zufällige Bewegung"
 
 #: src/gui/PnlPfsProject.py:108
 msgid "Set motion end to start"
@@ -604,32 +620,36 @@ msgstr "Endauswahl zu Startauswahl"
 msgid "Set motion start to end"
 msgstr "Startauswahl zu Endauswahl"
 
-#: src/gui/PnlPfsProject.py:269
+#: src/gui/PnlPfsProject.py:118
+msgid "Adjust motion manual"
+msgstr "Bewegung manuell eingeben"
+
+#: src/gui/PnlPfsProject.py:265
 msgid "Import images"
 msgstr "Bilder importieren"
 
-#: src/gui/PnlPfsProject.py:271
-#: src/gui/PnlPfsProject.py:328
+#: src/gui/PnlPfsProject.py:267
+#: src/gui/PnlPfsProject.py:327
 msgid "Imagefiles"
 msgstr "Bilddateien"
 
-#: src/gui/PnlPfsProject.py:317
+#: src/gui/PnlPfsProject.py:316
 msgid "Browse"
 msgstr "Durchsuchen"
 
-#: src/gui/PnlPfsProject.py:326
+#: src/gui/PnlPfsProject.py:325
 msgid "Import image"
 msgstr "Bild importieren"
 
-#: src/gui/PnlPfsProject.py:462
+#: src/gui/PnlPfsProject.py:449
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
 msgstr "Einige Bilder aus dem Ordner '%s' existieren nicht mehr. Falls die Dateien verschoben wurden, kann jetzt der neue Pfad ausgewählt werden. Soll ein neuer Pfad gewählt werden?"
 
-#: src/gui/PnlPfsProject.py:485
+#: src/gui/PnlPfsProject.py:472
 msgid "Please wait"
 msgstr "Bitte warten"
 
-#: src/gui/PnlPfsProject.py:486
+#: src/gui/PnlPfsProject.py:473
 msgid "Loading pictures..."
 msgstr "Bilder laden..."
 
@@ -731,8 +751,6 @@ msgstr "Die folgenden Änderungen wurden vorgenommen:"
 #~ msgstr "MPEG-Video (schnell)"
 #~ msgid "MPEG-Video (HQ; slow)"
 #~ msgstr "MPEG-Video (HQ; langsam)"
-#~ msgid "Size:"
-#~ msgstr "Größe:"
 #~ msgid "Render slideshow"
 #~ msgstr "Slideshow erstellen"
 #~ msgid "&Render Slideshow"
