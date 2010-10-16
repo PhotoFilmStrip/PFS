@@ -1,21 +1,43 @@
 #Boa:Dialog:DlgPositionInput
+# encoding: UTF-8
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2010 Jens Goepfert
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
 
 import wx
 
 from core.Aspect import Aspect
 
 
-[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL, 
- wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET, 
- wxID_DLGPOSITIONINPUTSLENDPOS, wxID_DLGPOSITIONINPUTSLSTARTPOS, 
- wxID_DLGPOSITIONINPUTSPINENDHEIGHT, wxID_DLGPOSITIONINPUTSPINENDWIDTH, 
- wxID_DLGPOSITIONINPUTSPINENDX, wxID_DLGPOSITIONINPUTSPINENDY, 
- wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT, wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, 
- wxID_DLGPOSITIONINPUTSPINSTARTX, wxID_DLGPOSITIONINPUTSPINSTARTY, 
- wxID_DLGPOSITIONINPUTSTENDLOCATION, wxID_DLGPOSITIONINPUTSTENDPOS, 
- wxID_DLGPOSITIONINPUTSTENDSIZE, wxID_DLGPOSITIONINPUTSTSTARTLOCATION, 
+[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTBMPHDR, 
+ wxID_DLGPOSITIONINPUTCMDCANCEL, wxID_DLGPOSITIONINPUTCMDOK, 
+ wxID_DLGPOSITIONINPUTCMDRESET, wxID_DLGPOSITIONINPUTPNLHDR, 
+ wxID_DLGPOSITIONINPUTSLENDPOS, wxID_DLGPOSITIONINPUTSLHDR, 
+ wxID_DLGPOSITIONINPUTSLSTARTPOS, wxID_DLGPOSITIONINPUTSPINENDHEIGHT, 
+ wxID_DLGPOSITIONINPUTSPINENDWIDTH, wxID_DLGPOSITIONINPUTSPINENDX, 
+ wxID_DLGPOSITIONINPUTSPINENDY, wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT, 
+ wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, wxID_DLGPOSITIONINPUTSPINSTARTX, 
+ wxID_DLGPOSITIONINPUTSPINSTARTY, wxID_DLGPOSITIONINPUTSTENDLOCATION, 
+ wxID_DLGPOSITIONINPUTSTENDPOS, wxID_DLGPOSITIONINPUTSTENDSIZE, 
+ wxID_DLGPOSITIONINPUTSTHDR, wxID_DLGPOSITIONINPUTSTSTARTLOCATION, 
  wxID_DLGPOSITIONINPUTSTSTARTPOS, wxID_DLGPOSITIONINPUTSTSTARTSIZE, 
-] = [wx.NewId() for _init_ctrls in range(20)]
+] = [wx.NewId() for _init_ctrls in range(24)]
 
 
 class DlgPositionInput(wx.Dialog):
@@ -48,7 +70,7 @@ class DlgPositionInput(wx.Dialog):
     def _init_coll_szEnd_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stEndLocation, 0, border=0, 
+        parent.AddWindow(self.stEndLocation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.spinEndX, 0, border=0, flag=0)
         parent.AddWindow(self.spinEndY, 0, border=0, flag=0)
@@ -69,6 +91,8 @@ class DlgPositionInput(wx.Dialog):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
+        parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddSizer(self.szStartHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
         parent.AddSizer(self.szStartCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
@@ -76,6 +100,13 @@ class DlgPositionInput(wx.Dialog):
         parent.AddSizer(self.szEndCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
         parent.AddSizer(self.szCmds, 0, border=4, flag=wx.ALL | wx.ALIGN_RIGHT)
+
+    def _init_coll_szHdr_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.bmpHdr, 0, border=8, flag=wx.ALL)
+        parent.AddWindow(self.stHdr, 0, border=8,
+              flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
 
     def _init_coll_szStartCtrls_Items(self, parent):
         # generated method, don't edit
@@ -109,6 +140,8 @@ class DlgPositionInput(wx.Dialog):
 
         self.szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
 
+        self.szHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
+
         self._init_coll_szMain_Items(self.szMain)
         self._init_coll_szStart_Items(self.szStart)
         self._init_coll_szStartHdr_Items(self.szStartHdr)
@@ -117,16 +150,35 @@ class DlgPositionInput(wx.Dialog):
         self._init_coll_szEnd_Items(self.szEnd)
         self._init_coll_szEndCtrls_Items(self.szEndCtrls)
         self._init_coll_szCmds_Items(self.szCmds)
+        self._init_coll_szHdr_Items(self.szHdr)
 
         self.SetSizer(self.szMain)
+        self.pnlHdr.SetSizer(self.szHdr)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGPOSITIONINPUT,
               name=u'DlgPositionInput', parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.DEFAULT_DIALOG_STYLE,
-              title=_(u'Adjust motion'))
-        self.SetClientSize(wx.Size(299, 250))
+              title=_(u'Motion positions'))
+
+        self.pnlHdr = wx.Panel(id=wxID_DLGPOSITIONINPUTPNLHDR, name=u'pnlHdr',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=wx.TAB_TRAVERSAL)
+        self.pnlHdr.SetBackgroundColour(wx.Colour(255, 255, 255))
+
+        self.bmpHdr = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
+              wx.ART_TOOLBAR, (32, 32)), id=wxID_DLGPOSITIONINPUTBMPHDR,
+              name=u'bmpHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+
+        self.stHdr = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTHDR,
+              label=u'Adjust motion positions directly', name=u'stHdr',
+              parent=self.pnlHdr, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=0)
+
+        self.slHdr = wx.StaticLine(id=wxID_DLGPOSITIONINPUTSLHDR, name=u'slHdr',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stStartPos = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTSTARTPOS,
               label=u'Start position', name=u'stStartPos', parent=self,
@@ -233,7 +285,10 @@ class DlgPositionInput(wx.Dialog):
 
     def __init__(self, parent, pic, aspect):
         self._init_ctrls(parent)
-        self.CenterOnParent()
+
+        font = self.stHdr.GetFont()
+        font.SetWeight(wx.FONTWEIGHT_BOLD)
+        self.stHdr.SetFont(font)
         
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)
@@ -249,7 +304,8 @@ class DlgPositionInput(wx.Dialog):
         
         self._InitValues()
         
-        self.Fit()
+        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.CenterOnParent()        
         
     def _InitValues(self):
         self.__doOnChange = False

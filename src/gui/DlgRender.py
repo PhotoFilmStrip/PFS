@@ -26,9 +26,7 @@ import sys
 import threading
 
 import wx
-import wx.lib.masked.textctrl
 import wx.combo
-import wx.lib.masked.timectrl
 
 
 from core.OutputProfile import OutputProfile, GetOutputProfiles
@@ -41,31 +39,47 @@ from lib.Settings import Settings
 from lib.util import Encode
 
 from gui.HelpViewer import HelpViewer
+from gui.DlgRendererProps import DlgRendererProps
 
 
-[wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
- wxID_DLGRENDERCHOICEMODE, wxID_DLGRENDERCHOICEPROFILE, 
+[wxID_DLGRENDER, wxID_DLGRENDERBMPHDR, wxID_DLGRENDERCBDRAFT, 
+ wxID_DLGRENDERCHOICEFORMAT, wxID_DLGRENDERCHOICEPROFILE, 
  wxID_DLGRENDERCHOICETYPE, wxID_DLGRENDERCMDBATCH, wxID_DLGRENDERCMDCLOSE, 
- wxID_DLGRENDERCMDHELP, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, 
- wxID_DLGRENDERLCPROPS, wxID_DLGRENDERPNLOUTPUT, wxID_DLGRENDERPNLSETTINGS, 
- wxID_DLGRENDERPNLSTANDARD, wxID_DLGRENDERSLOUTPUT, wxID_DLGRENDERSLSETTINGS, 
- wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTMODE, 
- wxID_DLGRENDERSTOUTPUTHEADER, wxID_DLGRENDERSTPROFILE, 
- wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTSETTINGSHEADER, 
- wxID_DLGRENDERSTTYPE, 
-] = [wx.NewId() for _init_ctrls in range(25)]
+ wxID_DLGRENDERCMDHELP, wxID_DLGRENDERCMDRENDERERPROPS, 
+ wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERPNLHDR, 
+ wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSLHDR, wxID_DLGRENDERSTATICLINE1, 
+ wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTHDR, wxID_DLGRENDERSTPROFILE, 
+ wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTTYPE, 
+] = [wx.NewId() for _init_ctrls in range(21)]
 
 
 class DlgRender(wx.Dialog, Observer):
     
     _custom_classes = {"wx.Choice": ["FormatComboBox"]}
     
-    def _init_coll_szDraft_Items(self, parent):
+    def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cbDraft, 0, border=0, flag=0)
+        parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.pnlSettings, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddSizer(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.AddWindow(self.staticLine1, 0, border=4,
+              flag=wx.BOTTOM | wx.TOP | wx.EXPAND | wx.ALIGN_CENTER_HORIZONTAL)
+        parent.AddWindow(self.gaugeProgress, 0, border=4,
+              flag=wx.ALL | wx.EXPAND)
+        parent.AddWindow(self.stProgress, 0, border=4,
+              flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
-    def _init_coll_sizerSettingsCtrls_Items(self, parent):
+    def _init_coll_szHdr_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.bmpHdr, 0, border=8, flag=wx.ALL)
+        parent.AddWindow(self.stHdr, 0, border=8,
+              flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
+
+    def _init_coll_sizerSettings_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.stProfile, 0, border=0,
@@ -75,43 +89,19 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.stType, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceType, 0, border=0, flag=wx.EXPAND)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddWindow(self.stFormat, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.choiceFormat, 0, border=0,
+              flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.cmdRendererProps, 0, border=0, flag=0)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.cbDraft, 0, border=0, flag=0)
 
-    def _init_coll_sizerOutput_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
-        parent.AddWindow(self.pnlOutput, 1, border=0, flag=0)
-
-    def _init_coll_sizerMain_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddSizer(self.sizerSettingsHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerSettings, 0, border=4,
-              flag=wx.EXPAND | wx.RIGHT)
-        parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
-        parent.AddSizer(self.sizerOutputHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerOutput, 0, border=4,
-              flag=wx.EXPAND | wx.RIGHT)
-        parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
-        parent.AddSizer(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddWindow(self.staticLine1, 0, border=4,
-              flag=wx.BOTTOM | wx.TOP | wx.EXPAND | wx.ALIGN_CENTER_HORIZONTAL)
-        parent.AddWindow(self.gaugeProgress, 0, border=4,
-              flag=wx.ALL | wx.EXPAND)
-        parent.AddWindow(self.stProgress, 0, border=4,
-              flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
-
-    def _init_coll_sizerSettingsCtrls_Growables(self, parent):
+    def _init_coll_sizerSettings_Growables(self, parent):
         # generated method, don't edit
 
         parent.AddGrowableCol(2)
-
-    def _init_coll_sizerOutputHeader_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.stOutputHeader, 0, border=4, flag=wx.ALL)
-        parent.AddWindow(self.slOutput, 1, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
@@ -124,98 +114,50 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdStart, 0, border=0, flag=0)
 
-    def _init_coll_sizerOutputCtrls_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.stFormat, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceFormat, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stMode, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceMode, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-
-    def _init_coll_sizerOutputCtrls_Growables(self, parent):
-        # generated method, don't edit
-
-        parent.AddGrowableCol(1)
-
-    def _init_coll_sizerSettings_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
-        parent.AddWindow(self.pnlSettings, 1, border=0, flag=0)
-
-    def _init_coll_sizerSettingsHeader_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.stSettingsHeader, 0, border=4, flag=wx.ALL)
-        parent.AddWindow(self.slSettings, 1, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-
-    def _init_coll_lcProps_Columns(self, parent):
-        # generated method, don't edit
-
-        parent.InsertColumn(col=0, format=wx.LIST_FORMAT_LEFT,
-              heading=_(u'Property'), width=200)
-        parent.InsertColumn(col=1, format=wx.LIST_FORMAT_LEFT,
-              heading=_(u'Value'), width=200)
-
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.VERTICAL)
 
         self.sizerCmd = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerSettingsCtrls = wx.FlexGridSizer(cols=3, hgap=8, rows=5,
-              vgap=8)
-        self.sizerSettingsCtrls.SetFlexibleDirection(wx.BOTH)
+        self.sizerSettings = wx.FlexGridSizer(cols=3, hgap=8, rows=5, vgap=8)
+        self.sizerSettings.SetFlexibleDirection(wx.BOTH)
 
-        self.sizerSettingsHeader = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self.sizerSettings = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self.sizerOutputHeader = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self.sizerOutput = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self.sizerOutputCtrls = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
-        self.sizerOutputCtrls.SetFlexibleDirection(wx.BOTH)
-
-        self.szDraft = wx.BoxSizer(orient=wx.HORIZONTAL)
+        self.szHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self._init_coll_sizerMain_Items(self.sizerMain)
         self._init_coll_sizerCmd_Items(self.sizerCmd)
-        self._init_coll_sizerSettingsCtrls_Items(self.sizerSettingsCtrls)
-        self._init_coll_sizerSettingsCtrls_Growables(self.sizerSettingsCtrls)
-        self._init_coll_sizerSettingsHeader_Items(self.sizerSettingsHeader)
         self._init_coll_sizerSettings_Items(self.sizerSettings)
-        self._init_coll_sizerOutputHeader_Items(self.sizerOutputHeader)
-        self._init_coll_sizerOutput_Items(self.sizerOutput)
-        self._init_coll_sizerOutputCtrls_Items(self.sizerOutputCtrls)
-        self._init_coll_sizerOutputCtrls_Growables(self.sizerOutputCtrls)
-        self._init_coll_szDraft_Items(self.szDraft)
+        self._init_coll_sizerSettings_Growables(self.sizerSettings)
+        self._init_coll_szHdr_Items(self.szHdr)
 
         self.SetSizer(self.sizerMain)
-        self.pnlSettings.SetSizer(self.sizerSettingsCtrls)
-        self.pnlStandard.SetSizer(self.szDraft)
-        self.pnlOutput.SetSizer(self.sizerOutputCtrls)
+        self.pnlHdr.SetSizer(self.szHdr)
+        self.pnlSettings.SetSizer(self.sizerSettings)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER, title=_(u'Render filmstrip'))
-        self.SetClientSize(wx.Size(804, 580))
+              style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
 
-        self.stSettingsHeader = wx.StaticText(id=wxID_DLGRENDERSTSETTINGSHEADER,
-              label=_(u'Settings'), name=u'stSettingsHeader', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+        self.pnlHdr = wx.Panel(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=wx.TAB_TRAVERSAL)
+        self.pnlHdr.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        self.slSettings = wx.StaticLine(id=wxID_DLGRENDERSLSETTINGS,
-              name=u'slSettings', parent=self, pos=wx.Point(-1, -1),
+        self.bmpHdr = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK,
+              wx.ART_TOOLBAR, (32, 32)), id=wxID_DLGRENDERBMPHDR,
+              name=u'bmpHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
+
+        self.stHdr = wx.StaticText(id=wxID_DLGRENDERSTHDR,
+              label=_('Configure output and start render process'),
+              name=u'stHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
+
+        self.slHdr = wx.StaticLine(id=wxID_DLGRENDERSLHDR, name=u'slHdr',
+              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.pnlSettings = wx.Panel(id=wxID_DLGRENDERPNLSETTINGS,
               name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
@@ -229,6 +171,7 @@ class DlgRender(wx.Dialog, Observer):
               id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=0)
+        self.choiceProfile.SetMinSize(wx.Size(300, -1))
 
         self.stType = wx.StaticText(id=wxID_DLGRENDERSTTYPE, label=_(u'Type:'),
               name=u'stType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
@@ -237,53 +180,29 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICETYPE,
               name=u'choiceType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
-
-        self.stOutputHeader = wx.StaticText(id=wxID_DLGRENDERSTOUTPUTHEADER,
-              label=_(u'Output'), name=u'stOutputHeader', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.slOutput = wx.StaticLine(id=wxID_DLGRENDERSLOUTPUT,
-              name=u'slOutput', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.pnlOutput = wx.Panel(id=wxID_DLGRENDERPNLOUTPUT, name=u'pnlOutput',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
+        self.choiceType.SetMinSize(wx.Size(300, -1))
 
         self.stFormat = wx.StaticText(id=wxID_DLGRENDERSTFORMAT,
-              label=_(u'Format:'), name=u'stFormat', parent=self.pnlOutput,
+              label=_(u'Format:'), name=u'stFormat', parent=self.pnlSettings,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceFormat = FormatComboBox(choices=[],
               id=wxID_DLGRENDERCHOICEFORMAT, name=u'choiceFormat',
-              parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.CB_READONLY)
-        self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormatChoice,
-              id=wxID_DLGRENDERCHOICEFORMAT)
+              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
+              -1), style=wx.CB_READONLY)
+        self.choiceFormat.SetMinSize(wx.Size(300, -1))
 
-        self.stMode = wx.StaticText(id=wxID_DLGRENDERSTMODE, label=_(u'Mode:'),
-              name=u'stMode', parent=self.pnlOutput, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.choiceMode = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICEMODE,
-              name=u'choiceMode', parent=self.pnlOutput, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-        self.choiceMode.Bind(wx.EVT_CHOICE, self.OnChoiceModeChoice,
-              id=wxID_DLGRENDERCHOICEMODE)
-
-        self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERLCPROPS, name=u'lcProps',
-              parent=self.pnlOutput, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.LC_REPORT | wx.SUNKEN_BORDER)
-        self._init_coll_lcProps_Columns(self.lcProps)
-        self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
-              id=wxID_DLGRENDERLCPROPS)
-
-        self.pnlStandard = wx.Panel(id=wxID_DLGRENDERPNLSTANDARD,
-              name=u'pnlStandard', parent=self.pnlOutput, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
+              wx.ART_TOOLBAR, wx.DefaultSize),
+              id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
+              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
+              -1), style=wx.BU_AUTODRAW)
+        self.cmdRendererProps.SetToolTipString(_("Properties"))
+        self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
+              id=wxID_DLGRENDERCMDRENDERERPROPS)
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
-              name=u'cbDraft', parent=self.pnlStandard, pos=wx.Point(-1, -1),
+              name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cbDraft.SetValue(False)
 
@@ -328,12 +247,9 @@ class DlgRender(wx.Dialog, Observer):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
         
-        font = self.stSettingsHeader.GetFont()
+        font = self.stHdr.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
-        self.stSettingsHeader.SetFont(font)
-        self.stOutputHeader.SetFont(font)
-        
-        self.lcProps.SetSizeHints(-1, 120, -1, -1)
+        self.stHdr.SetFont(font)
         
         self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
@@ -351,13 +267,8 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceProfile.SetSelection(settings.GetLastProfile())
         self.choiceType.SetSelection(settings.GetVideoType())
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
-        self.OnChoiceFormatChoice(None)
         
-        self.choiceMode.Append(_(u"Standard"), self.pnlStandard)
-        self.choiceMode.Append(_(u"Advanced"), self.lcProps)
-        self.choiceMode.Select(0)
-        self.__OnMode(0)
-
+        self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         
     def __GetChoiceDataSelected(self, choice):
@@ -374,22 +285,15 @@ class DlgRender(wx.Dialog, Observer):
         
         rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
 
-        propDict = {}
-        for prop in rendererClass.GetProperties():
-            if rendererClass.GetProperty(prop) != rendererClass.GetDefaultProperty(prop):
-                propDict[prop] = rendererClass.GetProperty(prop)
-
         settings = Settings()
         settings.SetLastProfile(self.choiceProfile.GetSelection())
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
 #        settings.SetLastOutputPath(self.tcOutputDir.GetValue())
-        settings.SetRenderProperties(rendererClass.__name__, propDict)
         
         self.cmdClose.SetLabel(_(u"&Cancel"))
         self.cmdStart.Enable(False)
         self.pnlSettings.Enable(False)
-        self.pnlOutput.Enable(False)
         
         self.__progressHandler = ProgressHandler()
         self.__progressHandler.AddObserver(self)
@@ -428,36 +332,15 @@ class DlgRender(wx.Dialog, Observer):
         else:
             self.Destroy()
 
-    def OnActivateProperty(self, event):
-        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
-        idx = event.GetIndex()
-        prop = self.lcProps.GetItemText(idx)
-        dlg = wx.TextEntryDialog(self, _(u"Edit property"), prop, unicode(rendererClass.GetProperty(prop)))
-        if dlg.ShowModal() == wx.ID_OK:
-            try:
-                value = eval(dlg.GetValue())
-            except NameError:
-                value = dlg.GetValue()
-            except:
-                value = rendererClass.GetDefaultProperty(prop)
-            rendererClass.SetProperty(prop, value)
-            self.lcProps.SetStringItem(idx, 1, unicode(value))
-        dlg.Destroy()
-    
-    def OnChoiceFormatChoice(self, event):
+    def OnCmdRendererPropsButton(self, event):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
-        rendererClass = data.PRendererClass
-        self.lcProps.DeleteAllItems()
         if data is None:
             return
-        savedProps = Settings().GetRenderProperties(rendererClass.__name__)
-        for prop in rendererClass.GetProperties():
-            value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
-            self.lcProps.Append([prop, value])
-            
-            rendererClass.SetProperty(prop, value)
-            
-        self.cmdStart.Enable(data.IsOk())
+        rendererClass = data.PRendererClass
+        
+        dlg = DlgRendererProps(self, rendererClass)
+        dlg.ShowModal()
+        dlg.Destroy()
         
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, ProgressHandler):
@@ -490,7 +373,6 @@ class DlgRender(wx.Dialog, Observer):
         self.cmdClose.SetLabel(_(u"&Close"))
         self.cmdStart.Enable(True)
         self.pnlSettings.Enable(True)
-        self.pnlOutput.Enable(True)
 
         self.__progressHandler = None
         self.__renderEngine    = None
@@ -580,27 +462,6 @@ class DlgRender(wx.Dialog, Observer):
                 pass
 
         dlg.Destroy()
-
-    def __OnMode(self, mode):
-        self.SetSizeHints(-1, -1, -1, -1)
-
-        self.sizerOutputCtrls.Remove(5)
-        if mode == 0:
-            ctrl = self.pnlStandard
-        else:
-            ctrl = self.lcProps  
-        self.sizerOutputCtrls.AddWindow(ctrl, 0, border=0, flag=wx.EXPAND)
-
-        self.pnlStandard.Show(mode == 0)
-        self.lcProps.Show(mode == 1)
-        self.Layout()
-        
-        szMin = self.GetEffectiveMinSize()
-        self.SetSizeHints(500, szMin.GetHeight(), 500, szMin.GetHeight())
-    
-    def OnChoiceModeChoice(self, event):
-        self.__OnMode(event.GetSelection())
-        event.Skip()
 
 
 class FormatComboBox(wx.combo.OwnerDrawnComboBox):

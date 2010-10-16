@@ -70,30 +70,30 @@ class DlgProjectProps(wx.Dialog):
 
         parent.AddWindow(self.stProject, (0, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        parent.AddWindow(self.tcProject, (0, 1), border=0, flag=wx.EXPAND,
+        parent.AddWindow(self.tcProject, (0, 1), border=0, flag=0,
               span=(1, 1))
         parent.AddWindow(self.stFolder, (1, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.tcFolder, (1, 1), border=0,
-              flag=wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
+              flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.cmdBrowseFolder, (1, 2), border=0, flag=0,
               span=(1, 1))
-        parent.AddWindow(self.staticLine, (2, 0), border=0, flag=wx.EXPAND,
+        parent.AddWindow(self.staticLine, (2, 0), border=0, flag=0,
               span=(1, 4))
         parent.AddWindow(self.stAspect, (3, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        parent.AddWindow(self.choiceAspect, (3, 1), border=0, flag=wx.EXPAND,
+        parent.AddWindow(self.choiceAspect, (3, 1), border=0, flag=0,
               span=(1, 1))
         parent.AddWindow(self.cbTotalLength, (4, 0), border=0, flag=0, span=(1,
               1))
         parent.AddWindow(self.rbManual, (5, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
         parent.AddWindow(self.timeCtrlTotalLength, (5, 1), border=0,
-              flag=wx.EXPAND, span=(1, 1))
+              flag=0, span=(1, 1))
         parent.AddWindow(self.rbAudio, (6, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        parent.AddWindow(self.tcAudiofile, (6, 1), border=0, flag=wx.EXPAND,
-              span=(1, 1))
+        parent.AddWindow(self.tcAudiofile, (6, 1), border=0, 
+              flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.cmdBrowseAudio, (6, 2), border=0, flag=0, span=(1,
               1))
         parent.AddWindow(self.cmdAudioPreview, (6, 3), border=0, flag=0,
@@ -102,16 +102,10 @@ class DlgProjectProps(wx.Dialog):
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
+        parent.AddWindow(self.bmpLogo, 0, border=8,
+              flag=wx.ALL)
         parent.AddWindow(self.stHeader, 0, border=8,
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
-        parent.AddStretchSpacer(1)
-        parent.AddWindow(self.bmpLogo, 0, border=8,
-              flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
-
-    def _init_coll_szCtrls_Growables(self, parent):
-        # generated method, don't edit
-
-        parent.AddGrowableCol(1)
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -126,7 +120,6 @@ class DlgProjectProps(wx.Dialog):
         self._init_coll_szMain_Items(self.szMain)
         self._init_coll_szHeader_Items(self.szHeader)
         self._init_coll_szCtrls_Items(self.szCtrls)
-        self._init_coll_szCtrls_Growables(self.szCtrls)
         self._init_coll_szCmds_Items(self.szCmds)
 
         self.SetSizer(self.szMain)
@@ -175,7 +168,7 @@ class DlgProjectProps(wx.Dialog):
               size=wx.Size(-1, -1), style=0, value=u'')
 
         self.cmdBrowseFolder = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_DLGPROJECTPROPSCMDBROWSEFOLDER, name=u'cmdBrowseFolder',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
@@ -225,7 +218,7 @@ class DlgProjectProps(wx.Dialog):
               size=wx.Size(-1, -1), style=wx.TE_READONLY, value=u'')
 
         self.cmdBrowseAudio = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FILE_OPEN',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO, name=u'cmdBrowseAudio',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
@@ -233,7 +226,7 @@ class DlgProjectProps(wx.Dialog):
               id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO)
 
         self.cmdAudioPreview = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW, name=u'cmdAudioPreview',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
@@ -269,8 +262,10 @@ class DlgProjectProps(wx.Dialog):
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
         self.choiceAspect.Select(0)
         
-        self.tcFolder.SetMaxSize(wx.Size(-1, self.tcProject.GetSizeTuple()[1]))
-        self.tcAudiofile.SetMaxSize(wx.Size(-1, self.tcProject.GetSizeTuple()[1]))
+        self.tcProject.SetMinSize(wx.Size(300, -1))
+        self.tcFolder.SetMinSize(wx.Size(300, -1))
+        self.choiceAspect.SetMinSize(wx.Size(300, -1))
+        self.timeCtrlTotalLength.SetMinSize(wx.Size(300, -1))
         self.tcAudiofile.SetMinSize(wx.Size(300, -1))
         
         minTime = wx.DateTime_Now()

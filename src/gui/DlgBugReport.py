@@ -58,18 +58,17 @@ class DlgBugReport(wx.Dialog):
         stMsg = wx.StaticText(self, -1, wordwrap(text, 300, wx.ClientDC(self)))
         
         szTop = wx.BoxSizer(wx.HORIZONTAL)
-        szTop.Add(stBmp, 0, wx.ALIGN_CENTER_VERTICAL)
-        szTop.AddSpacer(16)
-        szTop.Add(stMsg, 0)
+        szTop.Add(stBmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 8)
+        szTop.Add(stMsg, 0, wx.ALL, 8)
         
         self.tcMsg = wx.TextCtrl(self, -1, msg, style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_DONTWRAP)
         
         szCmd = self.CreateSeparatedButtonSizer(wx.YES | wx.NO)
 
         szMain = wx.BoxSizer(wx.VERTICAL)
-        szMain.Add(szTop, 0, wx.ALL, 8)
-        szMain.Add(self.tcMsg, 1, wx.EXPAND | wx.ALL, 8)
-        szMain.Add(szCmd, 0, wx.EXPAND)
+        szMain.Add(szTop, 0)
+        szMain.Add(self.tcMsg, 1, wx.EXPAND | wx.ALL, 4)
+        szMain.Add(szCmd, 0, wx.EXPAND | wx.ALL, 4)
         
         self.SetSizer(szMain)
         

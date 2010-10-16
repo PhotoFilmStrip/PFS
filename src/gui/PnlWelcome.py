@@ -31,7 +31,6 @@ from lib.UpdateChecker import UpdateChecker
 from core.PhotoFilmStrip import PhotoFilmStrip
 from core.util import ImageToStream
 
-from gui.ctrls.BitmapButton import BitmapButton
 from gui.ctrls.IconLabelLink import IconLabelLink
 
 
@@ -77,15 +76,13 @@ class PnlWelcome(wx.Panel):
         self.htmlWin.SetPage(self.__GenerateHtml())
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
-        self.cmdNew = BitmapButton(self, wx.NewId(),
-                                   wx.ArtProvider_GetBitmap(wx.ART_NEW, wx.ART_OTHER, (64, 64)))
-        self.cmdNew.SetBitmapHover(wx.ArtProvider_GetBitmap(wx.ART_NEW, wx.ART_OTHER, (64, 64)))
+        self.cmdNew = wx.BitmapButton(self, -1,
+                                      wx.ArtProvider_GetBitmap(wx.ART_NEW, wx.ART_OTHER, (64, 64)))
         self.cmdNew.SetToolTipString(_(u"Create new project"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectNew)
         
-        self.cmdOpen = BitmapButton(self, wx.NewId(),
-                                   wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, (64, 64)))
-        self.cmdOpen.SetBitmapHover(wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, (64, 64)))
+        self.cmdOpen = wx.BitmapButton(self, -1,
+                                       wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, (64, 64)))
         self.cmdOpen.SetToolTipString(_(u"Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
         

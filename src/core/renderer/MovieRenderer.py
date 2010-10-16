@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2010 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ if sys.platform == "win32":
     os.putenv("PATH", ";".join(path)) 
 
 
-class MovieRenderer(SingleFileRenderer):
+class MEncoderRenderer(SingleFileRenderer):
     
     def __init__(self):
         SingleFileRenderer.__init__(self)
@@ -46,10 +46,6 @@ class MovieRenderer(SingleFileRenderer):
         
         self._procEncoder = None
         
-    @staticmethod
-    def GetName():
-        return _(u"Video clip")
-    
     @staticmethod
     def CheckDependencies(msgList):
         SingleFileRenderer.CheckDependencies(msgList)
@@ -62,12 +58,10 @@ class MovieRenderer(SingleFileRenderer):
 
     @staticmethod
     def GetProperties():
-        return SingleFileRenderer.GetProperties() + ["Bitrate", "FFOURCC", "RenderSubtitle"]
+        return SingleFileRenderer.GetProperties() + ["Bitrate", "RenderSubtitle"]
 
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "FFOURCC":
-            return "XVID"
         if prop == "RenderSubtitle":
             return False
         return SingleFileRenderer.GetDefaultProperty(prop)
@@ -75,7 +69,7 @@ class MovieRenderer(SingleFileRenderer):
     def ProcessFinalize(self, image):
         image.save(self._procEncoder.stdin, "JPEG")
     
-    def _CleanUp(self):
+    def __CleanUp(self):
         self._procEncoder.communicate()
 
         for log in [self._encOut, self._encErr]:
@@ -83,66 +77,109 @@ class MovieRenderer(SingleFileRenderer):
                 log.close()
         
     def ProcessAbort(self):
-        self._CleanUp()
+        self.__CleanUp()
 
     def Prepare(self):
         self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
         self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
         
+        cmd = self._GetCmd()
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        
+    def Finalize(self):
+        self.__CleanUp()
+        
+        if self.__class__.GetProperty("RenderSubtitle"):
+            # delete subtitle file, if subtitle is rendered in video
+            srtPath = os.path.join(self.GetOutputPath(), "output.srt")
+            if os.path.exists(srtPath):
+                os.remove(srtPath)
+
+    def _GetCmd(self):
+        raise NotImplementedError()
+    
+    def _GetSubArgs(self):
+        if self.__class__.GetProperty("RenderSubtitle"):
+            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8 -font \"%s\"" % (self.GetOutputPath(), os.sep, r"C:\Dokumente und Einstellungen\jens\Anwendungsdaten\PhotoFilmStrip\extBin\mplayer\mplayer\font.desc")
+        else:
+            subArgs = ""
+        return subArgs
+    
+    def _GetAudioArgs(self):
+        if self.PAudioFile is None:
+            audioArgs = ""
+        else:
+            audioArgs = "-audiofile \"%s\"" % self.PAudioFile
+        return audioArgs
+    
+    def _GetFrameRate(self):
+        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+            framerate = "25/1"
+        else:
+            framerate = "30000/1001"
+        return framerate
+    
+    def _GetBitrate(self):
+        if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
+            bitrate = self.PProfile.GetBitrate()
+        else:
+            bitrate = self.__class__.GetProperty("Bitrate")
+        return bitrate
+
+
+class MovieRenderer(MEncoderRenderer):
+    
+    def __init__(self):
+        MEncoderRenderer.__init__(self)
+        
+    @staticmethod
+    def GetName():
+        return _(u"Video clip (AVI)")
+    
+    @staticmethod
+    def GetProperties():
+        return MEncoderRenderer.GetProperties() + ["FFOURCC"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "FFOURCC":
+            return "XVID"
+        return MEncoderRenderer.GetDefaultProperty(prop)
+
+    def _GetCmd(self):
         if self.PProfile.GetName() in ["VCD", "SVCD", "DVD"]:
             cmd = self.__ProcessMpegOutput()
         else:
             cmd = self.__ProcessAviOutput()
-
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        return cmd
         
-    def Finalize(self):
-        self._CleanUp()
-        
-        if self.__class__.GetProperty("RenderSubtitle"):
-            path = "%s%soutput.srt" % (self.GetOutputPath(), os.sep)
-            if os.path.exists(path):
-                os.remove(path)
-
     def __ProcessMpegOutput(self):
         aspect = "%.3f" % Aspect.ToFloat(self._aspect)
         if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25"
             keyint = 15
             res = self.PProfile.GetResolution()
         else:
-            framerate = "30000/1001"
             keyint = 18
             res = self.PProfile.GetResolution()
             
         if self.PProfile.GetName() == "VCD":
-            format = "xvcd"
+            mpgFormat = "xvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg1video:keyint=%(keyint)s:vrc_buf_size=327:vrc_minrate=1152:vbitrate=1152:vrc_maxrate=1152:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                            "aspect": aspect}
         elif self.PProfile.GetName() == "SVCD":
-            format = "xsvcd"
+            mpgFormat = "xsvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg2video:mbd=2:keyint=%(keyint)s:vrc_buf_size=917:vrc_minrate=600:vbitrate=2500:vrc_maxrate=2500:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                                 "aspect": aspect}
         elif self.PProfile.GetName() == "DVD":
-            format = "dvd:tsaf"
+            mpgFormat = "dvd:tsaf"
             srate = "48000"
             lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                      "aspect": aspect}
         else:
             raise RuntimeError('format not supported')
             
-        if MovieRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
-        else:
-            subArgs = ""
-
-        if self.PAudioFile is None:
-            audioArgs = ""
-        else:
-            audioArgs = "-audiofile \"%s\"" % self.PAudioFile
-        
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
 #              "-ofps %(framerate)s " \
@@ -156,10 +193,10 @@ class MovieRenderer(SingleFileRenderer):
               "-ofps 25 " \
               "-o \"%(path)s%(sep)soutput.mpg\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
-                                                      'audioArgs': audioArgs,
-                                                      "subArgs": subArgs,
-                                                      'framerate': framerate,
-                                                      'format': format,
+                                                      'audioArgs': self._GetAudioArgs(),
+                                                      "subArgs": self._GetSubArgs(),
+                                                      'framerate': self._GetFrameRate(),
+                                                      'format': mpgFormat,
                                                       'resx': res[0],
                                                       'resy': res[1],
                                                       'srate': srate,
@@ -169,45 +206,26 @@ class MovieRenderer(SingleFileRenderer):
 
 
     def __ProcessAviOutput(self):
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25/1"
-        else:
-            framerate = "30000/1001"
-            
-        if MovieRenderer.GetProperty("Bitrate") == MovieRenderer.GetDefaultProperty("Bitrate"):
-            bitrate = self.PProfile.GetBitrate()
-        else:
-            bitrate = MovieRenderer.GetProperty("Bitrate")
-
-        if MovieRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
-        else:
-            subArgs = ""
-
-        if self.PAudioFile is None:
-            audioArgs = ""
-        else:
-            audioArgs = "-oac copy -audiofile \"%s\"" % self.PAudioFile
-        
         cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
+              "-oac copy " \
               "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
               "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
                                                       'ffourcc': MovieRenderer.GetProperty('FFOURCC'),
-                                                      'bitrate': bitrate,
-                                                      'audioArgs': audioArgs,
-                                                      "subArgs": subArgs,
-                                                      'framerate': framerate}
+                                                      'bitrate': self._GetBitrate(),
+                                                      'audioArgs': self._GetAudioArgs(),
+                                                      "subArgs": self._GetSubArgs(),
+                                                      'framerate': self._GetFrameRate()}
         return cmd
 
 
-class FlashMovieRenderer(MovieRenderer):
+class FlashMovieRenderer(MEncoderRenderer):
     
     def __init__(self):
-        MovieRenderer.__init__(self)
+        MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
@@ -215,61 +233,33 @@ class FlashMovieRenderer(MovieRenderer):
     
     @staticmethod
     def GetProperties():
-        return SingleFileRenderer.GetProperties() + ["Bitrate", "RenderSubtitle"]
+        return MEncoderRenderer.GetProperties()
 
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "RenderSubtitle":
-            return False
-        return SingleFileRenderer.GetDefaultProperty(prop)
+        return MEncoderRenderer.GetDefaultProperty(prop)
 
-    def Prepare(self):
-        self._encOut = open(os.path.join(self.GetOutputPath(), "mencoder_out.log"), 'w')
-        self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
-        
-        cmd = self._GetCmd()
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
-        
     def _GetCmd(self):
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25/1"
-        else:
-            framerate = "30000/1001"
-            
-        if FlashMovieRenderer.GetProperty("Bitrate") == FlashMovieRenderer.GetDefaultProperty("Bitrate"):
-            bitrate = self.PProfile.GetBitrate()
-        else:
-            bitrate = FlashMovieRenderer.GetProperty("Bitrate")
-
-        if FlashMovieRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
-        else:
-            subArgs = ""
-
-        if self.PAudioFile is None:
-            audioArgs = ""
-        else:
-            audioArgs = "-oac mp3lame -audiofile \"%s\" -lameopts abr:br=128 -srate 44100" % self.PAudioFile
-        
         cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
+              "-oac mp3lame -lameopts abr:br=128 -srate 44100 " \
               "-ovc lavc -lavcopts vcodec=flv:vbitrate=%(bitrate)d:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 " \
               "-of lavf " \
               "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.flv\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
-                                                      'bitrate': bitrate,
-                                                      'audioArgs': audioArgs,
-                                                      "subArgs": subArgs,
-                                                      'framerate': framerate}
+                                                      'bitrate': self._GetBitrate(),
+                                                      'audioArgs': self._GetAudioArgs(),
+                                                      "subArgs": self._GetSubArgs(),
+                                                      'framerate': self._GetFrameRate()}
         return cmd
 
 
-class MJPEGRenderer(FlashMovieRenderer):
+class MJPEGRenderer(MEncoderRenderer):
     
     def __init__(self):
-        FlashMovieRenderer.__init__(self)
+        MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
@@ -277,37 +267,23 @@ class MJPEGRenderer(FlashMovieRenderer):
     
     @staticmethod
     def GetProperties():
-        return FlashMovieRenderer.GetProperties()
+        return MEncoderRenderer.GetProperties()
 
     @staticmethod
     def GetDefaultProperty(prop):
-        return FlashMovieRenderer.GetDefaultProperty(prop)
+        return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25/1"
-        else:
-            framerate = "30000/1001"
-            
-        if MJPEGRenderer.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8" % (self.GetOutputPath(), os.sep)
-        else:
-            subArgs = ""
-
-        if self.PAudioFile is None:
-            audioArgs = ""
-        else:
-            audioArgs = "-oac copy -audiofile \"%s\"" % self.PAudioFile
-        
         cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
+              "-oac copy " \
               "-ovc lavc -lavcopts vcodec=mjpeg " \
               "-of lavf " \
               "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
                                                       'sep': os.sep,
-                                                      'audioArgs': audioArgs,
-                                                      "subArgs": subArgs,
-                                                      'framerate': framerate}
+                                                      'audioArgs': self._GetAudioArgs(),
+                                                      "subArgs": self._GetSubArgs(),
+                                                      'framerate': self._GetFrameRate()}
         return cmd

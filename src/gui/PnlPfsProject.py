@@ -97,21 +97,21 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
     def _init_coll_toolBarImgSect_Tools(self, parent):
         # generated method, don't edit
 
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Random motion'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_RIGHT',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, kind=wx.ITEM_NORMAL,
               label='', longHelp='', shortHelp=_(u'Set motion end to start'))
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_LEFT',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('wxART_FIND_AND_REPLACE',
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, kind=wx.ITEM_NORMAL,
               label='', longHelp='',

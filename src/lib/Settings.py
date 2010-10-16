@@ -33,7 +33,7 @@ from lib.util import Encode, Decode
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.3.97"
+    APP_VERSION     = "1.3.98"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 
