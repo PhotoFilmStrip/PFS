@@ -173,7 +173,7 @@ class DlgPositionInput(wx.Dialog):
               size=wx.Size(-1, -1), style=0)
 
         self.stHdr = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTHDR,
-              label=u'Adjust motion positions directly', name=u'stHdr',
+              label=_(u'Adjust motion positions directly'), name=u'stHdr',
               parent=self.pnlHdr, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=0)
 
@@ -181,7 +181,7 @@ class DlgPositionInput(wx.Dialog):
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stStartPos = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTSTARTPOS,
-              label=u'Start position', name=u'stStartPos', parent=self,
+              label=_(u'Start position'), name=u'stStartPos', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.slStartPos = wx.StaticLine(id=wxID_DLGPOSITIONINPUTSLSTARTPOS,
@@ -225,7 +225,7 @@ class DlgPositionInput(wx.Dialog):
               id=wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT)
 
         self.stEndPos = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTENDPOS,
-              label=u'End position', name=u'stEndPos', parent=self,
+              label=_(u'End position'), name=u'stEndPos', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.slEndPos = wx.StaticLine(id=wxID_DLGPOSITIONINPUTSLENDPOS,
@@ -233,7 +233,7 @@ class DlgPositionInput(wx.Dialog):
               size=wx.Size(-1, -1), style=0)
 
         self.stEndLocation = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTENDLOCATION,
-              label=u'Location:', name=u'stEndLocation', parent=self,
+              label=_(u'Location:'), name=u'stEndLocation', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.spinEndX = wx.SpinCtrl(id=wxID_DLGPOSITIONINPUTSPINENDX, initial=0,
@@ -249,7 +249,7 @@ class DlgPositionInput(wx.Dialog):
               id=wxID_DLGPOSITIONINPUTSPINENDY)
 
         self.stEndSize = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTENDSIZE,
-              label=u'Size:', name=u'stEndSize', parent=self, pos=wx.Point(-1,
+              label=_(u'Size:'), name=u'stEndSize', parent=self, pos=wx.Point(-1,
               -1), size=wx.Size(-1, -1), style=0)
 
         self.spinEndWidth = wx.SpinCtrl(id=wxID_DLGPOSITIONINPUTSPINENDWIDTH,
@@ -267,18 +267,18 @@ class DlgPositionInput(wx.Dialog):
               id=wxID_DLGPOSITIONINPUTSPINENDHEIGHT)
 
         self.cmdReset = wx.Button(id=wxID_DLGPOSITIONINPUTCMDRESET,
-              label=u'Reset', name=u'cmdReset', parent=self, pos=wx.Point(-1,
+              label=_(u'Reset'), name=u'cmdReset', parent=self, pos=wx.Point(-1,
               -1), size=wx.Size(-1, -1), style=0)
         self.cmdReset.Bind(wx.EVT_BUTTON, self.OnCmdResetButton,
               id=wxID_DLGPOSITIONINPUTCMDRESET)
 
-        self.cmdCancel = wx.Button(id=wx.ID_CANCEL, label=u'Cancel',
+        self.cmdCancel = wx.Button(id=wx.ID_CANCEL, label=_(u'&Cancel'),
               name=u'cmdCancel', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
               id=wx.ID_CANCEL)
 
-        self.cmdOk = wx.Button(id=wx.ID_OK, label=u'Ok', name=u'cmdOk',
+        self.cmdOk = wx.Button(id=wx.ID_OK, label=_(u'&Ok'), name=u'cmdOk',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()

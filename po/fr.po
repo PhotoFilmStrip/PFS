@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-10-16 07:38+CEST\n"
-"PO-Revision-Date: 2010-10-16 07:43+0100\n"
+"POT-Creation-Date: 2010-10-22 21:37+CEST\n"
+"PO-Revision-Date: 2010-10-22 21:46+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:219
-#: src/gui/DlgRender.py:362
+#: src/gui/DlgRender.py:361
 msgid "all done"
 msgstr "Terminer "
 
@@ -71,7 +71,7 @@ msgstr ""
 
 #: src/cli/Main.py:126
 msgid "projectfile does not exist: %s"
-msgstr "Le fichier de projet n'existe pas:%s "
+msgstr "Le fichier de projet n'existe pas: %s "
 
 #: src/cli/Main.py:130
 msgid "no projectfile specified!"
@@ -79,7 +79,7 @@ msgstr "pas de fichier projet définit!"
 
 #: src/cli/Main.py:136
 msgid "invalid format specified: %s"
-msgstr "Format invalide spécifié:%s "
+msgstr "Format invalide spécifié: %s "
 
 #: src/cli/Main.py:147
 msgid "cannot create outputpath: %s"
@@ -91,22 +91,22 @@ msgstr "pas de chemin de destination spécifié!"
 
 #: src/cli/Main.py:160
 msgid "invalid profile specified: %s"
-msgstr "Profil spécifié invalide "
+msgstr "Profil spécifié invalide: %s"
 
 #: src/cli/Main.py:171
 msgid "invalid videonorm specified: %s"
-msgstr "Norme vidéo spécifié invalide:%s "
+msgstr "Norme vidéo spécifié invalide: %s "
 
 #: src/cli/Main.py:180
 msgid "audio file does not exist: %s"
-msgstr "Le fichier audio n'existe pas:  %s"
+msgstr "Le fichier audio n'existe pas: %s"
 
 #: src/cli/Main.py:196
 msgid "cannot load photofilmstrip"
 msgstr "ne peux charger PhotoFilmStrip "
 
 #: src/cli/Main.py:215
-#: src/gui/DlgRender.py:360
+#: src/gui/DlgRender.py:359
 msgid "...aborted!"
 msgstr "...abandonner! "
 
@@ -116,7 +116,7 @@ msgstr "Erreur: %s"
 
 #: src/core/BaseRenderer.py:66
 msgid "Unknown property: %s"
-msgstr "Propriété inconnue "
+msgstr "Propriété inconnue: %s"
 
 #: src/core/BaseRenderer.py:74
 msgid "<default>"
@@ -124,7 +124,7 @@ msgstr "<défaut>"
 
 #: src/core/PhotoFilmStrip.py:143
 msgid "Loading '%s' ..."
-msgstr "Chargement '%s' "
+msgstr "Chargement '%s'"
 
 #: src/core/ProgressHandler.py:32
 msgid "Please wait..."
@@ -158,20 +158,20 @@ msgstr "création sortie..."
 msgid "generating subtitle"
 msgstr "Création des sous-titres "
 
-#: src/core/renderer/MovieRenderer.py:57
+#: src/core/renderer/MovieRenderer.py:50
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) requis!"
 
-#: src/core/renderer/MovieRenderer.py:137
+#: src/core/renderer/MovieRenderer.py:130
 #, fuzzy
 msgid "Video clip (AVI)"
 msgstr "Vidéo clip"
 
-#: src/core/renderer/MovieRenderer.py:232
+#: src/core/renderer/MovieRenderer.py:225
 msgid "Flash-Video (FLV)"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:266
+#: src/core/renderer/MovieRenderer.py:259
 msgid "Motion-JPEG (MJPEG)"
 msgstr ""
 
@@ -298,13 +298,12 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Désolé cette fonction est temporairement indisponible.."
 
 #: src/gui/DlgBugReport.py:105
-#: src/gui/DlgProjectProps.py:394
-#: src/gui/DlgProjectProps.py:416
-#: src/gui/DlgProjectProps.py:426
-#: src/gui/DlgProjectProps.py:463
-#: src/gui/DlgProjectProps.py:479
-#: src/gui/DlgRender.py:368
-#: src/gui/DlgRender.py:396
+#: src/gui/DlgProjectProps.py:420
+#: src/gui/DlgProjectProps.py:430
+#: src/gui/DlgProjectProps.py:471
+#: src/gui/DlgProjectProps.py:487
+#: src/gui/DlgRender.py:367
+#: src/gui/DlgRender.py:395
 #: src/gui/FrmMain.py:427
 msgid "Error"
 msgstr "Erreur"
@@ -313,66 +312,123 @@ msgstr "Erreur"
 msgid "Motion positions"
 msgstr ""
 
+#: src/gui/DlgPositionInput.py:176
+msgid "Adjust motion positions directly"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:184
+msgid "Start position"
+msgstr ""
+
 #: src/gui/DlgPositionInput.py:192
+#: src/gui/DlgPositionInput.py:236
 #, fuzzy
 msgid "Location:"
 msgstr "Rotation:"
 
 #: src/gui/DlgPositionInput.py:210
+#: src/gui/DlgPositionInput.py:252
 msgid "Size:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:188
+#: src/gui/DlgPositionInput.py:228
+#, fuzzy
+msgid "End position"
+msgstr "Vitesse de transition:"
+
+#: src/gui/DlgPositionInput.py:270
+msgid "Reset"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:275
+#: src/gui/DlgProjectProps.py:239
+#: src/gui/DlgRender.py:293
+#: src/gui/DlgRendererProps.py:132
+msgid "&Cancel"
+msgstr "&Annulé"
+
+#: src/gui/DlgPositionInput.py:281
+#: src/gui/DlgProjectProps.py:245
+#: src/gui/DlgRendererProps.py:137
+msgid "&Ok"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:130
+#, fuzzy
+msgid "Project properties"
+msgstr "Propriété"
+
+#: src/gui/DlgProjectProps.py:135
+#, fuzzy
+msgid "Project name:"
+msgstr "Projet "
+
+#: src/gui/DlgProjectProps.py:148
+#, fuzzy
+msgid "PhotoFilmStrip project"
+msgstr "PhotoFilmStrip sans nom "
+
+#: src/gui/DlgProjectProps.py:162
+msgid "Folder:"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:177
+msgid "Aspect ratio:"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:185
 msgid "Total length:"
 msgstr "Longueur total:"
 
-#: src/gui/DlgProjectProps.py:191
-msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
+#: src/gui/DlgProjectProps.py:188
+#, fuzzy
+msgid "Overrides the duration of single pictures and gives the project this total length."
 msgstr "Dépasser la durée des images fixes donne cette longueur totale au photofilmstrip "
 
-#: src/gui/DlgProjectProps.py:197
+#: src/gui/DlgProjectProps.py:194
 msgid "User defined:"
 msgstr "Défini par l'utilisateur:"
 
-#: src/gui/DlgProjectProps.py:211
+#: src/gui/DlgProjectProps.py:208
 msgid "Audio file:"
 msgstr "Fichier audio:"
 
-#: src/gui/DlgProjectProps.py:293
+#: src/gui/DlgProjectProps.py:288
 msgid "Unnamed PhotoFilmStrip"
 msgstr "PhotoFilmStrip sans nom "
 
-#: src/gui/DlgProjectProps.py:299
+#: src/gui/DlgProjectProps.py:294
 #, fuzzy
 msgid "My PhotoFilmStrips"
 msgstr "PhotoFilmStrip sans nom "
 
-#: src/gui/DlgProjectProps.py:349
+#: src/gui/DlgProjectProps.py:334
+msgid "Browse for folder"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:346
 msgid "Select music"
 msgstr "Sélectionner la musique"
 
-#: src/gui/DlgProjectProps.py:352
-msgid "Audiofiles"
+#: src/gui/DlgProjectProps.py:348
+#, fuzzy
+msgid "Audio files"
 msgstr "Fichiers audio"
 
-#: src/gui/DlgProjectProps.py:393
-msgid "No media support found on this platform!"
-msgstr "Aucun média trouver sur ce système "
-
-#: src/gui/DlgProjectProps.py:415
+#: src/gui/DlgProjectProps.py:419
 msgid "Invalid audio file!"
 msgstr "Fichier audio invalide! "
 
-#: src/gui/DlgProjectProps.py:425
+#: src/gui/DlgProjectProps.py:429
 msgid "Audio file does not exist!"
 msgstr "Le fichier audio n'existe pas!"
 
-#: src/gui/DlgProjectProps.py:452
-msgid "Output path does not exists! Do you want %s to create it?"
-msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer? "
+#: src/gui/DlgProjectProps.py:460
+msgid "Output folder does not exists! Do you want %s to create it?"
+msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer?"
 
-#: src/gui/DlgProjectProps.py:453
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgProjectProps.py:461
+#: src/gui/DlgRender.py:323
 #: src/gui/FrmMain.py:270
 #: src/gui/FrmMain.py:373
 #: src/gui/FrmMain.py:451
@@ -380,12 +436,12 @@ msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer? "
 msgid "Question"
 msgstr "Question"
 
-#: src/gui/DlgProjectProps.py:462
-msgid "Cannot create direcotory: %s"
-msgstr "Ne peux créer le dossier:  %s"
+#: src/gui/DlgProjectProps.py:470
+msgid "Cannot create folder: %s"
+msgstr "Ne peux créer le dossier: %s"
 
-#: src/gui/DlgProjectProps.py:478
-msgid "Cannot write into direcotory: %s"
+#: src/gui/DlgProjectProps.py:486
+msgid "Cannot write into folder: %s"
 msgstr "Ne peux écrire dans le dossier: %s"
 
 #: src/gui/DlgRender.py:155
@@ -415,7 +471,7 @@ msgid "Draft"
 msgstr "Durée "
 
 #: src/gui/DlgRender.py:214
-#: src/gui/DlgRender.py:373
+#: src/gui/DlgRender.py:372
 msgid "&Close"
 msgstr "&Fermer"
 
@@ -427,28 +483,23 @@ msgstr "&Traitement par lots"
 msgid "&Start"
 msgstr "&Démarrer "
 
-#: src/gui/DlgRender.py:294
-#: src/gui/DlgRendererProps.py:132
-msgid "&Cancel"
-msgstr "&Annulé"
-
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:322
 msgid "Abort current process?"
 msgstr "Abandonner le processus en cour? "
 
-#: src/gui/DlgRender.py:395
+#: src/gui/DlgRender.py:394
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "Le projet n'est pas encore sauvegardé. S.v.p sauvegardez le projet afin de créer un traitement par lot!"
 
-#: src/gui/DlgRender.py:407
+#: src/gui/DlgRender.py:406
 msgid "Batch file"
 msgstr "Fichier batch "
 
-#: src/gui/DlgRender.py:414
+#: src/gui/DlgRender.py:413
 msgid "Shell script"
 msgstr "Script shell "
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:419
 msgid "Select batch file"
 msgstr "Sélectionner fichier batch "
 
@@ -467,10 +518,6 @@ msgstr "Propriété"
 
 #: src/gui/DlgRendererProps.py:111
 msgid "Edit extended output properties"
-msgstr ""
-
-#: src/gui/DlgRendererProps.py:137
-msgid "&Ok"
 msgstr ""
 
 #: src/gui/DlgRendererProps.py:186
@@ -510,11 +557,11 @@ msgstr "Enregistrer %s-projet "
 
 #: src/gui/FrmMain.py:269
 msgid "Overwrite existing file '%s'?"
-msgstr "Écraser le fichier existant %s'? "
+msgstr "Écraser le fichier existant '%s'? "
 
 #: src/gui/FrmMain.py:283
 msgid "Export %s-Project"
-msgstr "Exporter %s-Projet "
+msgstr "Exporter %s-Projet"
 
 #: src/gui/FrmMain.py:286
 #: src/gui/FrmMain.py:297
@@ -523,11 +570,11 @@ msgstr "Portable"
 
 #: src/gui/FrmMain.py:295
 msgid "Import %s-Project"
-msgstr "Importer %s-Projet "
+msgstr "Importer %s-Projet"
 
 #: src/gui/FrmMain.py:372
 msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' a été modifié. Enregistrer les changements? "
+msgstr "'%s' a été modifié. Enregistrer les changements?"
 
 #: src/gui/FrmMain.py:395
 msgid "Images"
@@ -539,7 +586,7 @@ msgstr "Durée "
 
 #: src/gui/FrmMain.py:425
 msgid "Invalid %(app)s-Project: %(file)s"
-msgstr "Projet %(app)s-invalide:  %(file)s "
+msgstr "Projet %(app)s-invalide:  %(file)s"
 
 #: src/gui/FrmMain.py:448
 msgid "Could not save the file '%(file)s': %(errMsg)s"
@@ -655,7 +702,7 @@ msgstr "Importer une image "
 
 #: src/gui/PnlPfsProject.py:449
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "Certaines images dans ce dossier n'existent  '%s' plus. Si ces fichiers ont été déplacés vous pouvez sélectionner un nouveau chemin. Voulez vous sélectionner un nouveau chemin?"
+msgstr "Certaines images dans ce dossier n'existent '%s' plus. Si ces fichiers ont été déplacés vous pouvez sélectionner un nouveau chemin. Voulez vous sélectionner un nouveau chemin?"
 
 #: src/gui/PnlPfsProject.py:472
 msgid "Please wait"
@@ -697,6 +744,15 @@ msgstr ""
 msgid "The following changes has been made:"
 msgstr "Une nouvelle version est disponible en ligne. Les changements suivants on été fait: "
 
+#, fuzzy
+#~ msgid "Directory:"
+#~ msgstr "Dossier de destination: "
+
+#, fuzzy
+#~ msgid "Select a directory"
+#~ msgstr "Dossier de destination: "
+#~ msgid "No media support found on this platform!"
+#~ msgstr "Aucun média trouver sur ce système "
 #~ msgid "Output"
 #~ msgstr "Sortie "
 #~ msgid "Translators"
@@ -713,8 +769,6 @@ msgstr "Une nouvelle version est disponible en ligne. Les changements suivants o
 #~ msgstr "&Exporter le projet "
 #~ msgid "Sec."
 #~ msgstr "Sec."
-#~ msgid "Output directory:"
-#~ msgstr "Dossier de destination: "
 #~ msgid "Output path is not empty! Use it anyway?"
 #~ msgstr "Le chemin de destination n'est pas vide! Utiliser quand même?"
 #~ msgid "New version available"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2010-10-16 07:38+CEST\n"
+"POT-Creation-Date: 2010-10-22 21:37+CEST\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Gracielly <jens@sg-dev.de>\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:219
-#: src/gui/DlgRender.py:362
+#: src/gui/DlgRender.py:361
 msgid "all done"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgid "cannot load photofilmstrip"
 msgstr "nao baixar photofilmstrip"
 
 #: src/cli/Main.py:215
-#: src/gui/DlgRender.py:360
+#: src/gui/DlgRender.py:359
 msgid "...aborted!"
 msgstr "...cancelado!"
 
@@ -153,19 +153,19 @@ msgstr ""
 msgid "generating subtitle"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:57
+#: src/core/renderer/MovieRenderer.py:50
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder preciso!"
 
-#: src/core/renderer/MovieRenderer.py:137
+#: src/core/renderer/MovieRenderer.py:130
 msgid "Video clip (AVI)"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:232
+#: src/core/renderer/MovieRenderer.py:225
 msgid "Flash-Video (FLV)"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:266
+#: src/core/renderer/MovieRenderer.py:259
 msgid "Motion-JPEG (MJPEG)"
 msgstr ""
 
@@ -291,13 +291,12 @@ msgid "Sorry, this function is temporary not available.."
 msgstr ""
 
 #: src/gui/DlgBugReport.py:105
-#: src/gui/DlgProjectProps.py:394
-#: src/gui/DlgProjectProps.py:416
-#: src/gui/DlgProjectProps.py:426
-#: src/gui/DlgProjectProps.py:463
-#: src/gui/DlgProjectProps.py:479
-#: src/gui/DlgRender.py:368
-#: src/gui/DlgRender.py:396
+#: src/gui/DlgProjectProps.py:420
+#: src/gui/DlgProjectProps.py:430
+#: src/gui/DlgProjectProps.py:471
+#: src/gui/DlgProjectProps.py:487
+#: src/gui/DlgRender.py:367
+#: src/gui/DlgRender.py:395
 #: src/gui/FrmMain.py:427
 msgid "Error"
 msgstr "Erro"
@@ -306,65 +305,119 @@ msgstr "Erro"
 msgid "Motion positions"
 msgstr ""
 
+#: src/gui/DlgPositionInput.py:176
+msgid "Adjust motion positions directly"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:184
+msgid "Start position"
+msgstr ""
+
 #: src/gui/DlgPositionInput.py:192
+#: src/gui/DlgPositionInput.py:236
 #, fuzzy
 msgid "Location:"
 msgstr "Informação"
 
 #: src/gui/DlgPositionInput.py:210
+#: src/gui/DlgPositionInput.py:252
 msgid "Size:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:188
+#: src/gui/DlgPositionInput.py:228
+msgid "End position"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:270
+msgid "Reset"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:275
+#: src/gui/DlgProjectProps.py:239
+#: src/gui/DlgRender.py:293
+#: src/gui/DlgRendererProps.py:132
+msgid "&Cancel"
+msgstr ""
+
+#: src/gui/DlgPositionInput.py:281
+#: src/gui/DlgProjectProps.py:245
+#: src/gui/DlgRendererProps.py:137
+msgid "&Ok"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:130
+#, fuzzy
+msgid "Project properties"
+msgstr "&Propriedade"
+
+#: src/gui/DlgProjectProps.py:135
+#, fuzzy
+msgid "Project name:"
+msgstr "Projetar"
+
+#: src/gui/DlgProjectProps.py:148
+msgid "PhotoFilmStrip project"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:162
+msgid "Folder:"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:177
+msgid "Aspect ratio:"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:185
 msgid "Total length:"
 msgstr "Total das medidas:"
 
-#: src/gui/DlgProjectProps.py:191
-msgid "Overrides the duration of single pictures and gives the photo filmstrip this total length."
+#: src/gui/DlgProjectProps.py:188
+msgid "Overrides the duration of single pictures and gives the project this total length."
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:197
+#: src/gui/DlgProjectProps.py:194
 msgid "User defined:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:211
+#: src/gui/DlgProjectProps.py:208
 msgid "Audio file:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:293
+#: src/gui/DlgProjectProps.py:288
 msgid "Unnamed PhotoFilmStrip"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:299
+#: src/gui/DlgProjectProps.py:294
 msgid "My PhotoFilmStrips"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:349
+#: src/gui/DlgProjectProps.py:334
+msgid "Browse for folder"
+msgstr ""
+
+#: src/gui/DlgProjectProps.py:346
 msgid "Select music"
 msgstr "Selecionar musica"
 
-#: src/gui/DlgProjectProps.py:352
-msgid "Audiofiles"
+#: src/gui/DlgProjectProps.py:348
+#, fuzzy
+msgid "Audio files"
 msgstr "Audio arquivo"
 
-#: src/gui/DlgProjectProps.py:393
-msgid "No media support found on this platform!"
-msgstr ""
-
-#: src/gui/DlgProjectProps.py:415
+#: src/gui/DlgProjectProps.py:419
 msgid "Invalid audio file!"
 msgstr "Invalido audio arquivo!"
 
-#: src/gui/DlgProjectProps.py:425
+#: src/gui/DlgProjectProps.py:429
 msgid "Audio file does not exist!"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:452
-msgid "Output path does not exists! Do you want %s to create it?"
+#: src/gui/DlgProjectProps.py:460
+msgid "Output folder does not exists! Do you want %s to create it?"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:453
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgProjectProps.py:461
+#: src/gui/DlgRender.py:323
 #: src/gui/FrmMain.py:270
 #: src/gui/FrmMain.py:373
 #: src/gui/FrmMain.py:451
@@ -372,12 +425,12 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:462
-msgid "Cannot create direcotory: %s"
+#: src/gui/DlgProjectProps.py:470
+msgid "Cannot create folder: %s"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:478
-msgid "Cannot write into direcotory: %s"
+#: src/gui/DlgProjectProps.py:486
+msgid "Cannot write into folder: %s"
 msgstr ""
 
 #: src/gui/DlgRender.py:155
@@ -406,7 +459,7 @@ msgid "Draft"
 msgstr ""
 
 #: src/gui/DlgRender.py:214
-#: src/gui/DlgRender.py:373
+#: src/gui/DlgRender.py:372
 msgid "&Close"
 msgstr ""
 
@@ -418,28 +471,23 @@ msgstr ""
 msgid "&Start"
 msgstr ""
 
-#: src/gui/DlgRender.py:294
-#: src/gui/DlgRendererProps.py:132
-msgid "&Cancel"
-msgstr ""
-
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:322
 msgid "Abort current process?"
 msgstr ""
 
-#: src/gui/DlgRender.py:395
+#: src/gui/DlgRender.py:394
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr ""
 
-#: src/gui/DlgRender.py:407
+#: src/gui/DlgRender.py:406
 msgid "Batch file"
 msgstr ""
 
-#: src/gui/DlgRender.py:414
+#: src/gui/DlgRender.py:413
 msgid "Shell script"
 msgstr ""
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:419
 msgid "Select batch file"
 msgstr ""
 
@@ -458,10 +506,6 @@ msgstr "&Propriedade"
 
 #: src/gui/DlgRendererProps.py:111
 msgid "Edit extended output properties"
-msgstr ""
-
-#: src/gui/DlgRendererProps.py:137
-msgid "&Ok"
 msgstr ""
 
 #: src/gui/DlgRendererProps.py:186
@@ -678,6 +722,9 @@ msgstr ""
 msgid "The following changes has been made:"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Select a directory"
+#~ msgstr "Selecionar musica"
 #~ msgid "ppmtoy4m (mjpegtools) required!"
 #~ msgstr "ppmtoy4m preciso"
 #~ msgid "mpeg2enc (mjpegtools) required!"

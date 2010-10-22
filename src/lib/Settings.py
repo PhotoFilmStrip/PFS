@@ -30,6 +30,13 @@ from lib.common.Singleton import Singleton
 from lib.util import Encode, Decode
 
 
+if sys.platform == "win32":
+    appDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
+    _path = []
+    _path.append(os.path.join(appDir, "extBin", "mplayer"))
+    os.putenv("PATH", ";".join(_path)) 
+
+
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
@@ -177,16 +184,16 @@ class Settings(Singleton):
             return self.cp.getint("General", "Renderer")
         return 1
     
-    def SetLastOutputPath(self, path):
-        self.Load()
-        self.cp.set("General", "LastOutputPath", Encode(path))
-        self.Save()
-
-    def GetLastOutputPath(self):
-        self.Load()
-        if self.cp.has_option("General", "LastOutputPath"):
-            return Decode(self.cp.get("General", "LastOutputPath"))
-        return Decode(os.getcwd(), sys.getfilesystemencoding())
+#    def SetLastOutputPath(self, path):
+#        self.Load()
+#        self.cp.set("General", "LastOutputPath", Encode(path))
+#        self.Save()
+#
+#    def GetLastOutputPath(self):
+#        self.Load()
+#        if self.cp.has_option("General", "LastOutputPath"):
+#            return Decode(self.cp.get("General", "LastOutputPath"))
+#        return Decode(os.getcwd(), sys.getfilesystemencoding())
     
     def SetRenderProperties(self, renderer, props):
         self.Load()

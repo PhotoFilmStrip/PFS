@@ -23,14 +23,14 @@
 import os
 
 import wx
-import wx.media
-import wx.lib.masked.timectrl
 import wx.lib.masked.textctrl
+import wx.lib.masked.timectrl
 
 from lib.Settings import Settings
 
 from core.Aspect import Aspect
 from core.PhotoFilmStrip import PhotoFilmStrip
+from core.MPlayer import MPlayer
 
 
 [wxID_DLGPROJECTPROPS, wxID_DLGPROJECTPROPSBMPLOGO, 
@@ -70,29 +70,27 @@ class DlgProjectProps(wx.Dialog):
 
         parent.AddWindow(self.stProject, (0, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        parent.AddWindow(self.tcProject, (0, 1), border=0, flag=0,
-              span=(1, 1))
+        parent.AddWindow(self.tcProject, (0, 1), border=0, flag=0, span=(1, 1))
         parent.AddWindow(self.stFolder, (1, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.tcFolder, (1, 1), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.cmdBrowseFolder, (1, 2), border=0, flag=0,
               span=(1, 1))
-        parent.AddWindow(self.staticLine, (2, 0), border=0, flag=0,
-              span=(1, 4))
+        parent.AddWindow(self.staticLine, (2, 0), border=0, flag=0, span=(1, 4))
         parent.AddWindow(self.stAspect, (3, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        parent.AddWindow(self.choiceAspect, (3, 1), border=0, flag=0,
-              span=(1, 1))
+        parent.AddWindow(self.choiceAspect, (3, 1), border=0, flag=0, span=(1,
+              1))
         parent.AddWindow(self.cbTotalLength, (4, 0), border=0, flag=0, span=(1,
               1))
         parent.AddWindow(self.rbManual, (5, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        parent.AddWindow(self.timeCtrlTotalLength, (5, 1), border=0,
-              flag=0, span=(1, 1))
+        parent.AddWindow(self.timeCtrlTotalLength, (5, 1), border=0, flag=0,
+              span=(1, 1))
         parent.AddWindow(self.rbAudio, (6, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        parent.AddWindow(self.tcAudiofile, (6, 1), border=0, 
+        parent.AddWindow(self.tcAudiofile, (6, 1), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         parent.AddWindow(self.cmdBrowseAudio, (6, 2), border=0, flag=0, span=(1,
               1))
@@ -102,8 +100,7 @@ class DlgProjectProps(wx.Dialog):
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bmpLogo, 0, border=8,
-              flag=wx.ALL)
+        parent.AddWindow(self.bmpLogo, 0, border=8, flag=wx.ALL)
         parent.AddWindow(self.stHeader, 0, border=8,
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
 
@@ -130,10 +127,12 @@ class DlgProjectProps(wx.Dialog):
         wx.Dialog.__init__(self, id=wxID_DLGPROJECTPROPS,
               name=u'DlgProjectProps', parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.DEFAULT_DIALOG_STYLE,
-              title=u'Project properties')
+              title=_(u'Project properties'))
+        self.SetClientSize(wx.Size(400, 250))
+        self.Bind(wx.EVT_CLOSE, self.OnDlgProjectPropsClose)
 
         self.stProject = wx.StaticText(id=wxID_DLGPROJECTPROPSSTPROJECT,
-              label=u'Project name:', name=u'stProject', parent=self,
+              label=_(u'Project name:'), name=u'stProject', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcProject = wx.TextCtrl(id=wxID_DLGPROJECTPROPSTCPROJECT,
@@ -146,7 +145,7 @@ class DlgProjectProps(wx.Dialog):
         self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.stHeader = wx.StaticText(id=wxID_DLGPROJECTPROPSSTHEADER,
-              label=u'PhotoFilmStrip project', name=u'stHeader',
+              label=_(u'PhotoFilmStrip project'), name=u'stHeader',
               parent=self.pnlHeader, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=0)
 
@@ -160,7 +159,7 @@ class DlgProjectProps(wx.Dialog):
               size=wx.Size(-1, -1), style=0)
 
         self.stFolder = wx.StaticText(id=wxID_DLGPROJECTPROPSSTFOLDER,
-              label=u'Directory:', name=u'stFolder', parent=self,
+              label=_(u'Folder:'), name=u'stFolder', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcFolder = wx.TextCtrl(id=wxID_DLGPROJECTPROPSTCFOLDER,
@@ -168,16 +167,14 @@ class DlgProjectProps(wx.Dialog):
               size=wx.Size(-1, -1), style=0, value=u'')
 
         self.cmdBrowseFolder = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, (16, 16)),
-              id=wxID_DLGPROJECTPROPSCMDBROWSEFOLDER, name=u'cmdBrowseFolder',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
-        self.cmdBrowseFolder.Bind(wx.EVT_BUTTON,
-              self.OnCmdBrowseFolderButton,
+              wx.ART_TOOLBAR, (16, 16)), id=wxID_DLGPROJECTPROPSCMDBROWSEFOLDER,
+              name=u'cmdBrowseFolder', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
+        self.cmdBrowseFolder.Bind(wx.EVT_BUTTON, self.OnCmdBrowseFolderButton,
               id=wxID_DLGPROJECTPROPSCMDBROWSEFOLDER)
 
         self.stAspect = wx.StaticText(id=wxID_DLGPROJECTPROPSSTASPECT,
-              label=u'Aspect ratio:', name=u'stAspect', parent=self,
+              label=_(u'Aspect ratio:'), name=u'stAspect', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceAspect = wx.Choice(choices=[],
@@ -188,7 +185,7 @@ class DlgProjectProps(wx.Dialog):
               label=_(u'Total length:'), name=u'cbTotalLength', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cbTotalLength.SetValue(False)
-        self.cbTotalLength.SetToolTipString(_(u'Overrides the duration of single pictures and gives the photo filmstrip this total length.'))
+        self.cbTotalLength.SetToolTipString(_(u'Overrides the duration of single pictures and gives the project this total length.'))
         self.cbTotalLength.Bind(wx.EVT_CHECKBOX,
               self.OnControlStatusTotalLength,
               id=wxID_DLGPROJECTPROPSCBTOTALLENGTH)
@@ -218,18 +215,16 @@ class DlgProjectProps(wx.Dialog):
               size=wx.Size(-1, -1), style=wx.TE_READONLY, value=u'')
 
         self.cmdBrowseAudio = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FILE_OPEN',
-              wx.ART_TOOLBAR, (16, 16)),
-              id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO, name=u'cmdBrowseAudio',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
+              wx.ART_TOOLBAR, (16, 16)), id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO,
+              name=u'cmdBrowseAudio', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdBrowseAudio.Bind(wx.EVT_BUTTON, self.OnCmdBrowseAudioButton,
               id=wxID_DLGPROJECTPROPSCMDBROWSEAUDIO)
 
         self.cmdAudioPreview = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE',
-              wx.ART_TOOLBAR, (16, 16)),
-              id=wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW, name=u'cmdAudioPreview',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.BU_AUTODRAW)
+              wx.ART_TOOLBAR, (16, 16)), id=wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW,
+              name=u'cmdAudioPreview', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdAudioPreview.Bind(wx.EVT_BUTTON, self.OnCmdAudioPreviewButton,
               id=wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW)
 
@@ -241,12 +236,16 @@ class DlgProjectProps(wx.Dialog):
               name='staticLine1', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
-        self.cmdCancel = wx.Button(id=wx.ID_CANCEL, label=u'Cancel',
+        self.cmdCancel = wx.Button(id=wx.ID_CANCEL, label=_(u'&Cancel'),
               name=u'cmdCancel', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
+        self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
+              id=wx.ID_CANCEL)
 
-        self.cmdOk = wx.Button(id=wx.ID_OK, label=u'Ok', name=u'cmdOk',
+        self.cmdOk = wx.Button(id=wx.ID_OK, label=_(u'&Ok'), name=u'cmdOk',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+        self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton,
+              id=wx.ID_OK)
 
         self._init_sizers()
 
@@ -268,24 +267,20 @@ class DlgProjectProps(wx.Dialog):
         self.timeCtrlTotalLength.SetMinSize(wx.Size(300, -1))
         self.tcAudiofile.SetMinSize(wx.Size(300, -1))
         
+        defTime = wx.DateTime_Now()
+        defTime.SetHMS(0, 0, 30)
         minTime = wx.DateTime_Now()
-        minTime.SetHMS(0, 0, 3)
+        minTime.SetHMS(0, 0, 1)
         maxTime = wx.DateTime_Now()
         maxTime.SetHMS(1, 59, 59)
-        self.timeCtrlTotalLength.SetValue(minTime)
+        self.timeCtrlTotalLength.SetValue(defTime)
         self.timeCtrlTotalLength.SetMin(minTime)
         self.timeCtrlTotalLength.SetMax(maxTime)
         self.timeCtrlTotalLength.SetLimited(True)
 
         self.Layout()
 
-        try:
-            self.mediaCtrl = wx.media.MediaCtrl(self, style=wx.SIMPLE_BORDER)
-            self.Bind(wx.media.EVT_MEDIA_LOADED, self.OnMediaLoaded)
-        except NotImplementedError:
-            self.mediaCtrl = None
-
-        self.mediaLoaded = False
+        self.mediaCtrl = None
 
         self.__photoFilmStrip = photoFilmStrip
         
@@ -335,7 +330,9 @@ class DlgProjectProps(wx.Dialog):
         self.SetInitialSize(self.GetEffectiveMinSize())
         
     def OnCmdBrowseFolderButton(self, event):
-        dlg = wx.DirDialog(self, defaultPath=self.tcFolder.GetValue())
+        dlg = wx.DirDialog(self, 
+                           _(u"Browse for folder"), 
+                           defaultPath=self.tcFolder.GetValue())
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             self.tcFolder.SetValue(path)
@@ -348,8 +345,7 @@ class DlgProjectProps(wx.Dialog):
     def OnCmdBrowseAudioButton(self, event):
         dlg = wx.FileDialog(self, _(u"Select music"), 
                             Settings().GetAudioPath(), "", 
-#                            _(u"Audiofiles") + " (*.mp3, *.wav)|*.mp3; *.wav", 
-                            _(u"Audiofiles") + " (*.mp3)|*.mp3", 
+                            _(u"Audio files") + " (*.*)|*.*", 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -360,64 +356,72 @@ class DlgProjectProps(wx.Dialog):
         dlg.Destroy()
 
     def OnCmdAudioPreviewButton(self, event):
-        if self.mediaCtrl.GetState() == wx.media.MEDIASTATE_PLAYING:
+        if self.mediaCtrl.IsPlaying():
             self.mediaCtrl.Stop()
         else:
             self.mediaCtrl.Play()
-
-    def OnMediaLoaded(self, event):
-        millis = self.mediaCtrl.Length()
-        dateTime = wx.DateTime()
-        dateTime.SetHMS(0, int(millis / 60000.0), int(millis / 1000.0) % 60)
-        try:
-            self.timeCtrlTotalLength.SetValue(dateTime)
-        except ValueError, err:
-            print err, "invalid media length", dateTime
-
+    
+    def OnDlgProjectPropsClose(self, event):
+        self.__CloseMediaCtrl()
         event.Skip()
 
-    def GetChoiceDataSelected(self, choice):
-        return choice.GetClientData(choice.GetSelection())
-    
-    def __SetChoiceSelectionByData(self, choice, data):
-        for idx in range(choice.GetCount()):
-            if choice.GetClientData(idx) == data:
-                choice.Select(idx)
-                return
+    def OnCmdCancelButton(self, event):
+        self.__CloseMediaCtrl()
+        event.Skip()
+
+    def OnCmdOkButton(self, event):
+        self.__CloseMediaCtrl()
+        event.Skip()
+
+#    def __GetChoiceDataSelected(self, choice):
+#        return choice.GetClientData(choice.GetSelection())
+#    
+#    def __SetChoiceSelectionByData(self, choice, data):
+#        for idx in range(choice.GetCount()):
+#            if choice.GetClientData(idx) == data:
+#                choice.Select(idx)
+#                return
             
     def __ControlStatusTotalLength(self):
         active = self.cbTotalLength.GetValue()
         manual = self.rbManual.GetValue()
-        if not manual and self.mediaCtrl is None:
-            dlg = wx.MessageDialog(self,
-                                   _(u"No media support found on this platform!"),  
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
-            self.rbManual.SetValue(True)
-            return
             
         self.rbAudio.Enable(active)
         self.rbManual.Enable(active)
         self.timeCtrlTotalLength.Enable(active and manual)
         self.tcAudiofile.Enable(active and not manual)
         self.cmdBrowseAudio.Enable(active and not manual)
-        self.cmdAudioPreview.Enable(active and not manual and self.mediaLoaded)
+        self.cmdAudioPreview.Enable(active and not manual and self.mediaCtrl is not None)
     
     def __LoadAudioFile(self, path):
-        if self.mediaCtrl.Load(path):
-            self.mediaLoaded = True
+        if self.mediaCtrl is not None:
+            self.mediaCtrl.Close()
+            
+        mediaCtrl = MPlayer(path)
+        if mediaCtrl.IsOk():
             self.tcAudiofile.SetValue(path)
+            
+            secs = mediaCtrl.GetLength()
+            
+            dateTime = wx.DateTime()
+            dateTime.SetHMS(0, int(secs / 60.0), int(secs) % 60)
+            try:
+                self.timeCtrlTotalLength.SetValue(dateTime)
+            except ValueError, err:
+                print err, "invalid media length", dateTime
+
+            self.mediaCtrl = mediaCtrl
             self.__ControlStatusTotalLength()
+
         else:
+            mediaCtrl = None
             dlg = wx.MessageDialog(self,
                                    _(u"Invalid audio file!"), 
                                    _(u"Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
-
+            
     def __ValidateAudioFile(self):
         if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
             if not os.path.isfile(self.tcAudiofile.GetValue()):
@@ -430,6 +434,10 @@ class DlgProjectProps(wx.Dialog):
                 return False
         return True
 
+    def __CloseMediaCtrl(self):
+        if self.mediaCtrl is not None:
+            self.mediaCtrl.Close()
+            
     def __GetTotalLength(self):
         totalLength = None
         
@@ -441,7 +449,7 @@ class DlgProjectProps(wx.Dialog):
                 totalLength += dateTime.GetMinute() * 60
                 totalLength += dateTime.GetSecond()
             else:
-                totalLength = self.mediaCtrl.Length() / 1000.0
+                totalLength = self.mediaCtrl.GetLength()
             
         return totalLength
     
@@ -449,7 +457,7 @@ class DlgProjectProps(wx.Dialog):
         path = self.tcFolder.GetValue()
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Output path does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
+                                   _(u"Output folder does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
                                    _(u"Question"),
                                    wx.YES_NO | wx.ICON_QUESTION)
             resp = dlg.ShowModal()
@@ -459,7 +467,7 @@ class DlgProjectProps(wx.Dialog):
                     os.makedirs(path)
                 except StandardError, err:
                     dlg = wx.MessageDialog(self,
-                                           _(u"Cannot create direcotory: %s") % unicode(err),
+                                           _(u"Cannot create folder: %s") % unicode(err),
                                            _(u"Error"),
                                            wx.OK | wx.ICON_ERROR)
                     dlg.ShowModal()
@@ -475,7 +483,7 @@ class DlgProjectProps(wx.Dialog):
                 os.remove(os.path.join(path, 'test'))
             except StandardError, err:
                 dlg = wx.MessageDialog(self,
-                                       _(u"Cannot write into direcotory: %s") % unicode(err),
+                                       _(u"Cannot write into folder: %s") % unicode(err),
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
@@ -501,5 +509,3 @@ class DlgProjectProps(wx.Dialog):
         self.__photoFilmStrip.SetDuration(self.__GetTotalLength())
         self.__photoFilmStrip.SetAspect(self.choiceAspect.GetStringSelection())
         return self.__photoFilmStrip
-
-    

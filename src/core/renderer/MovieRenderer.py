@@ -29,13 +29,6 @@ from core.OutputProfile import OutputProfile
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 
-if sys.platform == "win32":
-    appDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
-    path = []
-    path.append(os.path.join(appDir, "extBin", "mplayer"))
-    os.putenv("PATH", ";".join(path)) 
-
-
 class MEncoderRenderer(SingleFileRenderer):
     
     def __init__(self):
@@ -209,7 +202,7 @@ class MovieRenderer(MEncoderRenderer):
         cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
-              "-oac copy " \
+              "-oac mp3lame -lameopts cbr:br=192 -srate 44100 " \
               "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
               "-ofps %(framerate)s " \
               "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
@@ -243,7 +236,7 @@ class FlashMovieRenderer(MEncoderRenderer):
         cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
-              "-oac mp3lame -lameopts abr:br=128 -srate 44100 " \
+              "-oac mp3lame -lameopts cbr:br=128 -srate 44100 " \
               "-ovc lavc -lavcopts vcodec=flv:vbitrate=%(bitrate)d:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 " \
               "-of lavf " \
               "-ofps %(framerate)s " \
@@ -277,7 +270,7 @@ class MJPEGRenderer(MEncoderRenderer):
         cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
               "%(audioArgs)s " \
               "%(subArgs)s " \
-              "-oac copy " \
+              "-oac mp3lame -lameopts cbr:br=192 -srate 44100 " \
               "-ovc lavc -lavcopts vcodec=mjpeg " \
               "-of lavf " \
               "-ofps %(framerate)s " \

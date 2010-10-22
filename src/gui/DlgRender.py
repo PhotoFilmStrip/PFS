@@ -289,7 +289,6 @@ class DlgRender(wx.Dialog, Observer):
         settings.SetLastProfile(self.choiceProfile.GetSelection())
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
-#        settings.SetLastOutputPath(self.tcOutputDir.GetValue())
         
         self.cmdClose.SetLabel(_(u"&Cancel"))
         self.cmdStart.Enable(False)
