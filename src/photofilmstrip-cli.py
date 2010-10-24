@@ -3,7 +3,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2010 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+
+import sys
 
 
 def initLogging():
@@ -38,9 +40,21 @@ def main():
     initI18N()
     
     from cli.Main import main
-    main()
+    return main()
 
+
+import hotshot, hotshot.stats
 
 if __name__ == "__main__":
-    main()
+#    prof = hotshot.Profile("pfs.prof")
+#    exitCode = prof.runcall(main)
+#    prof.close()
+#    
+#    stats = hotshot.stats.load("pfs.prof")
+#    stats.strip_dirs()
+#    stats.sort_stats('time', 'calls')
+#    stats.print_stats(50)
 
+    exitCode = main()
+
+    sys.exit(exitCode)

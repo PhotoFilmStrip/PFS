@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2010 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,12 +72,10 @@ class CliGui(Observer):
     def Info(self, options, rendererClass, profile):
         print
         print Settings.APP_NAME, Settings.APP_VERSION
-        print u"(C) 2008 Jens G\xf6pfert"
-        print u"http://photostoryx.sourceforge.net"
+        print u"(C) 2010 Jens G\xf6pfert"
+        print Settings.APP_URL
         print 
         print u"%-20s: %s" % (_(u"processing project"), options.project)
-        if options.audio:
-            print u"%-20s: %s" % (_(u"audio file"), options.audio)
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
         print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
         print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC") 
@@ -109,12 +107,10 @@ def main():
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
     parser.add_option("-p", "--project", help=_(u"specifies the project file"))
-    parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. If single file renderer is used, this option can be omitted to use stdout."), metavar="PATH")
+    parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. Use - for stdout."), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=3, type="int")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=1, type="int")
-    parser.add_option("-l", "--length", help=_(u"total length of the PhotoFilmStrip (seconds)"), type="float", metavar="SECONDS")
-    parser.add_option("-a", "--audio", help=_(u"use audiofile as audiotrack (use --length to limit the movie length)"), metavar="MP3")
     parser.add_option("-d", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
     
     options = parser.parse_args()[0]
@@ -123,42 +119,18 @@ def main():
         options.project = Decode(options.project, sys.getfilesystemencoding())
         options.project = os.path.abspath(options.project)
         if not os.path.isfile(options.project):
-            logging.error(_(u"projectfile does not exist: %s") % options.project)
-            sys.exit(1)
+            logging.error(_(u"project file does not exist: %s"), options.project)
+            return 1
     else:
         parser.print_help()
-        logging.error(_(u"no projectfile specified!"))
-        sys.exit(1)
-            
-
-    if options.format not in range(len(RENDERERS)):
-        parser.print_help()
-        logging.error(_(u"invalid format specified: %s") % options.format)
-        sys.exit(6)
-    rendererClass = RENDERERS[options.format]
-
-    
-    if options.outputpath:
-        options.outputpath = os.path.abspath(options.outputpath)
-        if not os.path.exists(options.outputpath):
-            try:
-                os.makedirs(options.outputpath)
-            except StandardError, err:
-                logging.error(_(u"cannot create outputpath: %s") % err)
-                sys.exit(2)
-    elif options.format > 0:
-        # format 0 with single pictures can output to stdout
-        parser.print_help()
-        logging.error(_(u"no outputpath specified!"))
-        sys.exit(2)
-    elif options.format == 0:
-        rendererClass = StreamRenderer 
+        logging.error(_(u"no project file specified!"))
+        return 2
 
 
     if options.profile >= len(profiles):
         parser.print_help()
-        logging.error(_(u"invalid profile specified: %s") % options.profile)
-        sys.exit(3)
+        logging.error(_(u"invalid profile specified: %s"), options.profile)
+        return 3
     profile = profiles[options.profile]
 
 
@@ -168,17 +140,41 @@ def main():
         profile.SetVideoNorm(OutputProfile.NTSC)
     else:
         parser.print_help()
-        logging.error(_(u"invalid videonorm specified: %s") % options.videonorm)
-        sys.exit(4)
+        logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)
+        return 4
         
 
-    if options.audio:
-        options.audio = Decode(options.audio, sys.getfilesystemencoding())
-        options.audio = os.path.abspath(options.audio)
-        if not os.path.isfile(options.audio):
-            parser.print_help()
-            logging.error(_(u"audio file does not exist: %s") % options.audio)
-            sys.exit(5)
+    if options.format not in range(len(RENDERERS)):
+        parser.print_help()
+        logging.error(_(u"invalid format specified: %s"), options.format)
+        return 5
+    rendererClass = RENDERERS[options.format]
+
+    
+    photoFilmStrip = PhotoFilmStrip()
+    if not photoFilmStrip.Load(options.project):
+        logging.error(_(u"cannot load photofilmstrip"))
+        return 6
+            
+
+    outpath = os.path.dirname(photoFilmStrip.GetFilename())
+    outpath = os.path.join(outpath, profile.GetName())
+    outpath = Encode(outpath, sys.getfilesystemencoding())
+
+    if options.outputpath:
+        if options.outputpath == "-":
+            outpath = "-"
+            rendererClass = StreamRenderer
+        else:  
+            outpath = os.path.abspath(options.outputpath)
+
+    if outpath != "-" and not os.path.exists(outpath):
+        try:
+            os.makedirs(outpath)
+        except StandardError, err:
+            logging.error(_(u"cannot create output path: %s"), err)
+            return 7
+        
 
 #    settings = Settings()
 #    savedProps = settings.GetRenderProperties(rendererClass.__name__)
@@ -187,15 +183,21 @@ def main():
 #        rendererClass.SetProperty(prop, value)
     
     renderer = rendererClass()
-    renderer.Init(profile, options.outputpath, options.draft)
-    if options.audio:
-        renderer.SetAudioFile(Encode(options.audio, sys.getfilesystemencoding()))
-        
-    photoFilmStrip = PhotoFilmStrip()
-    if not photoFilmStrip.Load(options.project):
-        logging.error(_(u"cannot load photofilmstrip"))
-        sys.exit(6)
+    renderer.Init(profile,
+                  photoFilmStrip.GetAspect(), 
+                  outpath, options.draft)
 
+    audioFile = photoFilmStrip.GetAudioFile()
+    if audioFile:
+        audioFile = Encode(audioFile, sys.getfilesystemencoding())
+        if not os.path.isfile(audioFile):
+            logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
+            return 8
+
+        renderer.SetAudioFile(audioFile)
+
+    totalLength = photoFilmStrip.GetDuration(False)
+    
     if rendererClass is StreamRenderer:
         cliGui = DummyGui()
     else:
@@ -209,11 +211,11 @@ def main():
     renderEngine = RenderEngine(renderer, progressHandler)
 
     try:
-        result = renderEngine.Start(photoFilmStrip.GetPictures(), options.length)
+        result = renderEngine.Start(photoFilmStrip.GetPictures(), totalLength)
     except KeyboardInterrupt:
         progressHandler.Abort()
         cliGui.Write("\n" + _(u"...aborted!"))
-        sys.exit(6)
+        return 10
         
     if result:
         cliGui.Write(_(u"all done"))

@@ -23,22 +23,22 @@
 import wx
 
 from lib.Settings import Settings
-from lib.util import Encode
 
 from gui.HelpViewer import HelpViewer
+from gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
-[wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSBMPHDR, 
- wxID_DLGRENDERERPROPSCMDCANCEL, wxID_DLGRENDERERPROPSCMDHELP, 
- wxID_DLGRENDERERPROPSCMDOK, wxID_DLGRENDERERPROPSLCPROPS, 
- wxID_DLGRENDERERPROPSPNLHDR, wxID_DLGRENDERERPROPSSLHDR, 
- wxID_DLGRENDERERPROPSSTATICLINE, wxID_DLGRENDERERPROPSSTHDR, 
-] = [wx.NewId() for _init_ctrls in range(10)]
+[wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSCMDCANCEL, 
+ wxID_DLGRENDERERPROPSCMDHELP, wxID_DLGRENDERERPROPSCMDOK, 
+ wxID_DLGRENDERERPROPSLCPROPS, wxID_DLGRENDERERPROPSPNLHDR, 
+ wxID_DLGRENDERERPROPSSTATICLINE, 
+] = [wx.NewId() for _init_ctrls in range(7)]
 
 
 class DlgRendererProps(wx.Dialog):
     
-    _custom_classes = {"wx.Choice": ["FormatComboBox"]}
+    _custom_classes = {"wx.Choice": ["FormatComboBox"],
+                       "wx.Panel": ["PnlDlgHeader"]}
     
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
@@ -49,18 +49,10 @@ class DlgRendererProps(wx.Dialog):
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdOk, 0, border=0, flag=0)
 
-    def _init_coll_szHdr_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.bmpHdr, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.stHdr, 0, border=8,
-              flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
-
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.lcProps, 1, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.staticLine, 0, border=8,
               flag=wx.TOP | wx.BOTTOM | wx.EXPAND)
@@ -80,14 +72,10 @@ class DlgRendererProps(wx.Dialog):
 
         self.sizerCmd = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.szHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
-
         self._init_coll_sizerMain_Items(self.sizerMain)
         self._init_coll_sizerCmd_Items(self.sizerCmd)
-        self._init_coll_szHdr_Items(self.szHdr)
 
         self.SetSizer(self.sizerMain)
-        self.pnlHdr.SetSizer(self.szHdr)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
@@ -96,24 +84,11 @@ class DlgRendererProps(wx.Dialog):
               size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
               title=_(u'Output properties'))
+        self.SetClientSize(wx.Size(400, 250))
 
-        self.pnlHdr = wx.Panel(id=wxID_DLGRENDERERPROPSPNLHDR, name=u'pnlHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
-        self.pnlHdr.SetBackgroundColour(wx.Colour(255, 255, 255))
-
-        self.bmpHdr = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, (32, 32)), id=wxID_DLGRENDERERPROPSBMPHDR,
-              name=u'bmpHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.stHdr = wx.StaticText(id=wxID_DLGRENDERERPROPSSTHDR,
-              label=_(u'Edit extended output properties'), name=u'stHdr',
-              parent=self.pnlHdr, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=0)
-
-        self.slHdr = wx.StaticLine(id=wxID_DLGRENDERERPROPSSLHDR, name=u'slHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+        self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERERPROPSPNLHDR,
+              name=u'pnlHdr', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERERPROPSLCPROPS,
               name=u'lcProps', parent=self, pos=wx.Point(-1, -1),
@@ -150,10 +125,10 @@ class DlgRendererProps(wx.Dialog):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
         
-        font = self.stHdr.GetFont()
-        font.SetWeight(wx.FONTWEIGHT_BOLD)
-        self.stHdr.SetFont(font)
-        
+        self.pnlHdr.SetTitle(_(u'Edit extended output properties'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
+              wx.ART_TOOLBAR, (32, 32)))
+              
         self.rendererClass = rendererClass
 
         self.lcProps.DeleteAllItems()

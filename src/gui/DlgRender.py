@@ -38,30 +38,30 @@ from lib.common.ObserverPattern import Observer
 from lib.Settings import Settings
 from lib.util import Encode
 
+from gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from gui.HelpViewer import HelpViewer
 from gui.DlgRendererProps import DlgRendererProps
 
 
-[wxID_DLGRENDER, wxID_DLGRENDERBMPHDR, wxID_DLGRENDERCBDRAFT, 
- wxID_DLGRENDERCHOICEFORMAT, wxID_DLGRENDERCHOICEPROFILE, 
- wxID_DLGRENDERCHOICETYPE, wxID_DLGRENDERCMDBATCH, wxID_DLGRENDERCMDCLOSE, 
- wxID_DLGRENDERCMDHELP, wxID_DLGRENDERCMDRENDERERPROPS, 
- wxID_DLGRENDERCMDSTART, wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERPNLHDR, 
- wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSLHDR, wxID_DLGRENDERSTATICLINE1, 
- wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTHDR, wxID_DLGRENDERSTPROFILE, 
+[wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
+ wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
+ wxID_DLGRENDERCMDBATCH, wxID_DLGRENDERCMDCLOSE, wxID_DLGRENDERCMDHELP, 
+ wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, 
+ wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERPNLHDR, wxID_DLGRENDERPNLSETTINGS, 
+ wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE, 
  wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTTYPE, 
-] = [wx.NewId() for _init_ctrls in range(21)]
+] = [wx.NewId() for _init_ctrls in range(18)]
 
 
 class DlgRender(wx.Dialog, Observer):
     
-    _custom_classes = {"wx.Choice": ["FormatComboBox"]}
+    _custom_classes = {"wx.Choice": ["FormatComboBox"],
+                       "wx.Panel": ["PnlDlgHeader"]}
     
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.pnlSettings, 0, border=4, flag=wx.ALL)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddSizer(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
@@ -72,12 +72,16 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.stProgress, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
-    def _init_coll_szHdr_Items(self, parent):
+    def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bmpHdr, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.stHdr, 0, border=8,
-              flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
+        parent.AddWindow(self.cmdHelp, 0, border=0, flag=0)
+        parent.AddStretchSpacer(1)
+        parent.AddWindow(self.cmdClose, 0, border=0, flag=0)
+        parent.AddSpacer(wx.Size(32, 8), border=0, flag=0)
+        parent.AddWindow(self.cmdBatch, 0, border=0, flag=0)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddWindow(self.cmdStart, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Items(self, parent):
         # generated method, don't edit
@@ -103,17 +107,6 @@ class DlgRender(wx.Dialog, Observer):
 
         parent.AddGrowableCol(2)
 
-    def _init_coll_sizerCmd_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.cmdHelp, 0, border=0, flag=0)
-        parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdClose, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(32, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdBatch, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdStart, 0, border=0, flag=0)
-
     def _init_sizers(self):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.VERTICAL)
@@ -123,16 +116,12 @@ class DlgRender(wx.Dialog, Observer):
         self.sizerSettings = wx.FlexGridSizer(cols=3, hgap=8, rows=5, vgap=8)
         self.sizerSettings.SetFlexibleDirection(wx.BOTH)
 
-        self.szHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
-
         self._init_coll_sizerMain_Items(self.sizerMain)
         self._init_coll_sizerCmd_Items(self.sizerCmd)
         self._init_coll_sizerSettings_Items(self.sizerSettings)
         self._init_coll_sizerSettings_Growables(self.sizerSettings)
-        self._init_coll_szHdr_Items(self.szHdr)
 
         self.SetSizer(self.sizerMain)
-        self.pnlHdr.SetSizer(self.szHdr)
         self.pnlSettings.SetSizer(self.sizerSettings)
 
     def _init_ctrls(self, prnt):
@@ -141,23 +130,9 @@ class DlgRender(wx.Dialog, Observer):
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
 
-        self.pnlHdr = wx.Panel(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
+        self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.pnlHdr.SetBackgroundColour(wx.Colour(255, 255, 255))
-
-        self.bmpHdr = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK,
-              wx.ART_TOOLBAR, (32, 32)), id=wxID_DLGRENDERBMPHDR,
-              name=u'bmpHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.stHdr = wx.StaticText(id=wxID_DLGRENDERSTHDR,
-              label=_('Configure output and start render process'),
-              name=u'stHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.slHdr = wx.StaticLine(id=wxID_DLGRENDERSLHDR, name=u'slHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.pnlSettings = wx.Panel(id=wxID_DLGRENDERPNLSETTINGS,
               name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
@@ -247,9 +222,9 @@ class DlgRender(wx.Dialog, Observer):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
         
-        font = self.stHdr.GetFont()
-        font.SetWeight(wx.FONTWEIGHT_BOLD)
-        self.stHdr.SetFont(font)
+        self.pnlHdr.SetTitle(_('Configure output and start render process'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK,
+              wx.ART_TOOLBAR, (32, 32)))
         
         self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
@@ -263,6 +238,10 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
 
+        audioFile = self.__photoFilmStrip.GetAudioFile()
+        if audioFile and not os.path.exists(audioFile):
+            self.pnlHdr.SetErrorMessage(_(u"Audio file '%s' does not exist!") % audioFile)
+
         settings = Settings()
         self.choiceProfile.SetSelection(settings.GetLastProfile())
         self.choiceType.SetSelection(settings.GetVideoType())
@@ -275,6 +254,19 @@ class DlgRender(wx.Dialog, Observer):
         return choice.GetClientData(choice.GetSelection())
 
     def OnCmdStartButton(self, event):
+        audioFile = self.__photoFilmStrip.GetAudioFile()
+        if audioFile and not os.path.exists(audioFile):
+            dlg = wx.MessageDialog(self,
+                                   _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile, 
+                                   _(u"Warning"),
+                                   wx.YES_NO | wx.ICON_WARNING)
+            modalResult = dlg.ShowModal()
+            dlg.Destroy()
+            
+            if modalResult == wx.ID_NO:
+                return
+            audioFile = None
+            
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
 
@@ -292,6 +284,7 @@ class DlgRender(wx.Dialog, Observer):
         
         self.cmdClose.SetLabel(_(u"&Cancel"))
         self.cmdStart.Enable(False)
+        self.cmdBatch.Enable(False)
         self.pnlSettings.Enable(False)
         
         self.__progressHandler = ProgressHandler()
@@ -305,7 +298,6 @@ class DlgRender(wx.Dialog, Observer):
                       Encode(outpath, sys.getfilesystemencoding()),
                       self.cbDraft.GetValue())
         
-        audioFile = self.__photoFilmStrip.GetAudioFile()
         if audioFile:
             renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
 
@@ -371,6 +363,7 @@ class DlgRender(wx.Dialog, Observer):
 
         self.cmdClose.SetLabel(_(u"&Close"))
         self.cmdStart.Enable(True)
+        self.cmdBatch.Enable(True)
         self.pnlSettings.Enable(True)
 
         self.__progressHandler = None

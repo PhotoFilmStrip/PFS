@@ -24,23 +24,27 @@ import wx
 
 from core.Aspect import Aspect
 
+from gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
-[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTBMPHDR, 
- wxID_DLGPOSITIONINPUTCMDCANCEL, wxID_DLGPOSITIONINPUTCMDOK, 
- wxID_DLGPOSITIONINPUTCMDRESET, wxID_DLGPOSITIONINPUTPNLHDR, 
- wxID_DLGPOSITIONINPUTSLENDPOS, wxID_DLGPOSITIONINPUTSLHDR, 
+
+[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL, 
+ wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET, 
+ wxID_DLGPOSITIONINPUTPNLHDR, wxID_DLGPOSITIONINPUTSLENDPOS, 
  wxID_DLGPOSITIONINPUTSLSTARTPOS, wxID_DLGPOSITIONINPUTSPINENDHEIGHT, 
  wxID_DLGPOSITIONINPUTSPINENDWIDTH, wxID_DLGPOSITIONINPUTSPINENDX, 
  wxID_DLGPOSITIONINPUTSPINENDY, wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT, 
  wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, wxID_DLGPOSITIONINPUTSPINSTARTX, 
  wxID_DLGPOSITIONINPUTSPINSTARTY, wxID_DLGPOSITIONINPUTSTENDLOCATION, 
  wxID_DLGPOSITIONINPUTSTENDPOS, wxID_DLGPOSITIONINPUTSTENDSIZE, 
- wxID_DLGPOSITIONINPUTSTHDR, wxID_DLGPOSITIONINPUTSTSTARTLOCATION, 
- wxID_DLGPOSITIONINPUTSTSTARTPOS, wxID_DLGPOSITIONINPUTSTSTARTSIZE, 
-] = [wx.NewId() for _init_ctrls in range(24)]
+ wxID_DLGPOSITIONINPUTSTSTARTLOCATION, wxID_DLGPOSITIONINPUTSTSTARTPOS, 
+ wxID_DLGPOSITIONINPUTSTSTARTSIZE, 
+] = [wx.NewId() for _init_ctrls in range(21)]
 
 
 class DlgPositionInput(wx.Dialog):
+
+    _custom_classes = {"wx.Panel": ["PnlDlgHeader"]}
+
     def _init_coll_szStart_Items(self, parent):
         # generated method, don't edit
 
@@ -92,7 +96,6 @@ class DlgPositionInput(wx.Dialog):
         # generated method, don't edit
 
         parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddSizer(self.szStartHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
         parent.AddSizer(self.szStartCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
@@ -100,13 +103,6 @@ class DlgPositionInput(wx.Dialog):
         parent.AddSizer(self.szEndCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
         parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
         parent.AddSizer(self.szCmds, 0, border=4, flag=wx.ALL | wx.ALIGN_RIGHT)
-
-    def _init_coll_szHdr_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.bmpHdr, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.stHdr, 0, border=8,
-              flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
 
     def _init_coll_szStartCtrls_Items(self, parent):
         # generated method, don't edit
@@ -140,8 +136,6 @@ class DlgPositionInput(wx.Dialog):
 
         self.szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.szHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
-
         self._init_coll_szMain_Items(self.szMain)
         self._init_coll_szStart_Items(self.szStart)
         self._init_coll_szStartHdr_Items(self.szStartHdr)
@@ -150,10 +144,8 @@ class DlgPositionInput(wx.Dialog):
         self._init_coll_szEnd_Items(self.szEnd)
         self._init_coll_szEndCtrls_Items(self.szEndCtrls)
         self._init_coll_szCmds_Items(self.szCmds)
-        self._init_coll_szHdr_Items(self.szHdr)
 
         self.SetSizer(self.szMain)
-        self.pnlHdr.SetSizer(self.szHdr)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
@@ -162,23 +154,9 @@ class DlgPositionInput(wx.Dialog):
               size=wx.Size(-1, -1), style=wx.DEFAULT_DIALOG_STYLE,
               title=_(u'Motion positions'))
 
-        self.pnlHdr = wx.Panel(id=wxID_DLGPOSITIONINPUTPNLHDR, name=u'pnlHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
-        self.pnlHdr.SetBackgroundColour(wx.Colour(255, 255, 255))
-
-        self.bmpHdr = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
-              wx.ART_TOOLBAR, (32, 32)), id=wxID_DLGPOSITIONINPUTBMPHDR,
-              name=u'bmpHdr', parent=self.pnlHdr, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.stHdr = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTHDR,
-              label=_(u'Adjust motion positions directly'), name=u'stHdr',
-              parent=self.pnlHdr, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=0)
-
-        self.slHdr = wx.StaticLine(id=wxID_DLGPOSITIONINPUTSLHDR, name=u'slHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+        self.pnlHdr = PnlDlgHeader(id=wxID_DLGPOSITIONINPUTPNLHDR,
+              name=u'pnlHdr', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.stStartPos = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTSTARTPOS,
               label=_(u'Start position'), name=u'stStartPos', parent=self,
@@ -249,8 +227,8 @@ class DlgPositionInput(wx.Dialog):
               id=wxID_DLGPOSITIONINPUTSPINENDY)
 
         self.stEndSize = wx.StaticText(id=wxID_DLGPOSITIONINPUTSTENDSIZE,
-              label=_(u'Size:'), name=u'stEndSize', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+              label=_(u'Size:'), name=u'stEndSize', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.spinEndWidth = wx.SpinCtrl(id=wxID_DLGPOSITIONINPUTSPINENDWIDTH,
               initial=0, max=100, min=0, name=u'spinEndWidth', parent=self,
@@ -286,9 +264,9 @@ class DlgPositionInput(wx.Dialog):
     def __init__(self, parent, pic, aspect):
         self._init_ctrls(parent)
 
-        font = self.stHdr.GetFont()
-        font.SetWeight(wx.FONTWEIGHT_BOLD)
-        self.stHdr.SetFont(font)
+        self.pnlHdr.SetTitle(_(u'Adjust motion positions directly'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
+              wx.ART_TOOLBAR, (32, 32)))
         
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)

@@ -32,28 +32,31 @@ from core.Aspect import Aspect
 from core.PhotoFilmStrip import PhotoFilmStrip
 from core.MPlayer import MPlayer
 
+from gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
-[wxID_DLGPROJECTPROPS, wxID_DLGPROJECTPROPSBMPLOGO, 
- wxID_DLGPROJECTPROPSCBTOTALLENGTH, wxID_DLGPROJECTPROPSCHOICEASPECT, 
- wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW, wxID_DLGPROJECTPROPSCMDBROWSEAUDIO, 
- wxID_DLGPROJECTPROPSCMDBROWSEFOLDER, wxID_DLGPROJECTPROPSCMDCANCEL, 
- wxID_DLGPROJECTPROPSCMDOK, wxID_DLGPROJECTPROPSPNLHEADER, 
- wxID_DLGPROJECTPROPSRBAUDIO, wxID_DLGPROJECTPROPSRBMANUAL, 
- wxID_DLGPROJECTPROPSSTASPECT, wxID_DLGPROJECTPROPSSTATICLINE, 
- wxID_DLGPROJECTPROPSSTATICLINE1, wxID_DLGPROJECTPROPSSTATICLINE2, 
- wxID_DLGPROJECTPROPSSTFOLDER, wxID_DLGPROJECTPROPSSTHEADER, 
+
+[wxID_DLGPROJECTPROPS, wxID_DLGPROJECTPROPSCBTOTALLENGTH, 
+ wxID_DLGPROJECTPROPSCHOICEASPECT, wxID_DLGPROJECTPROPSCMDAUDIOPREVIEW, 
+ wxID_DLGPROJECTPROPSCMDBROWSEAUDIO, wxID_DLGPROJECTPROPSCMDBROWSEFOLDER, 
+ wxID_DLGPROJECTPROPSCMDCANCEL, wxID_DLGPROJECTPROPSCMDOK, 
+ wxID_DLGPROJECTPROPSPNLHDR, wxID_DLGPROJECTPROPSRBAUDIO, 
+ wxID_DLGPROJECTPROPSRBMANUAL, wxID_DLGPROJECTPROPSSTASPECT, 
+ wxID_DLGPROJECTPROPSSTATICLINE, wxID_DLGPROJECTPROPSSTATICLINE1, 
+ wxID_DLGPROJECTPROPSSTATICLINE2, wxID_DLGPROJECTPROPSSTFOLDER, 
  wxID_DLGPROJECTPROPSSTPROJECT, wxID_DLGPROJECTPROPSTCAUDIOFILE, 
  wxID_DLGPROJECTPROPSTCFOLDER, wxID_DLGPROJECTPROPSTCPROJECT, 
  wxID_DLGPROJECTPROPSTIMECTRLTOTALLENGTH, 
-] = [wx.NewId() for _init_ctrls in range(23)]
+] = [wx.NewId() for _init_ctrls in range(21)]
 
 
 class DlgProjectProps(wx.Dialog):
+
+    _custom_classes = {"wx.Panel": ["PnlDlgHeader"]}
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.staticLine2, 0, border=0, flag=wx.EXPAND)
+        parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddSizer(self.szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
         parent.AddWindow(self.staticLine1, 0, border=0, flag=wx.EXPAND)
         parent.AddSizer(self.szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
@@ -97,30 +100,19 @@ class DlgProjectProps(wx.Dialog):
         parent.AddWindow(self.cmdAudioPreview, (6, 3), border=0, flag=0,
               span=(1, 1))
 
-    def _init_coll_szHeader_Items(self, parent):
-        # generated method, don't edit
-
-        parent.AddWindow(self.bmpLogo, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.stHeader, 0, border=8,
-              flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
-
     def _init_sizers(self):
         # generated method, don't edit
         self.szMain = wx.BoxSizer(orient=wx.VERTICAL)
-
-        self.szHeader = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self.szCtrls = wx.GridBagSizer(hgap=8, vgap=8)
 
         self.szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self._init_coll_szMain_Items(self.szMain)
-        self._init_coll_szHeader_Items(self.szHeader)
         self._init_coll_szCtrls_Items(self.szCtrls)
         self._init_coll_szCmds_Items(self.szCmds)
 
         self.SetSizer(self.szMain)
-        self.pnlHeader.SetSizer(self.szHeader)
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
@@ -131,6 +123,10 @@ class DlgProjectProps(wx.Dialog):
         self.SetClientSize(wx.Size(400, 250))
         self.Bind(wx.EVT_CLOSE, self.OnDlgProjectPropsClose)
 
+        self.pnlHdr = PnlDlgHeader(id=wxID_DLGPROJECTPROPSPNLHDR,
+              name=u'pnlHdr', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+
         self.stProject = wx.StaticText(id=wxID_DLGPROJECTPROPSSTPROJECT,
               label=_(u'Project name:'), name=u'stProject', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
@@ -138,21 +134,6 @@ class DlgProjectProps(wx.Dialog):
         self.tcProject = wx.TextCtrl(id=wxID_DLGPROJECTPROPSTCPROJECT,
               name=u'tcProject', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0, value=u'')
-
-        self.pnlHeader = wx.Panel(id=wxID_DLGPROJECTPROPSPNLHEADER,
-              name=u'pnlHeader', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-        self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
-
-        self.stHeader = wx.StaticText(id=wxID_DLGPROJECTPROPSSTHEADER,
-              label=_(u'PhotoFilmStrip project'), name=u'stHeader',
-              parent=self.pnlHeader, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=0)
-
-        self.bmpLogo = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_ICON_48',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_DLGPROJECTPROPSBMPLOGO,
-              name=u'bmpLogo', parent=self.pnlHeader, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
 
         self.staticLine2 = wx.StaticLine(id=wxID_DLGPROJECTPROPSSTATICLINE2,
               name='staticLine2', parent=self, pos=wx.Point(-1, -1),
@@ -244,18 +225,17 @@ class DlgProjectProps(wx.Dialog):
 
         self.cmdOk = wx.Button(id=wx.ID_OK, label=_(u'&Ok'), name=u'cmdOk',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-        self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton,
-              id=wx.ID_OK)
+        self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton, id=wx.ID_OK)
 
         self._init_sizers()
 
     def __init__(self, parent, photoFilmStrip=None):
         self._init_ctrls(parent)
 
-        font = self.stHeader.GetFont()
-        font.SetWeight(wx.FONTWEIGHT_BOLD)
-        self.stHeader.SetFont(font)
-        
+        self.pnlHdr.SetTitle(_(u'PhotoFilmStrip project'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON_48',
+              wx.ART_TOOLBAR, (32, 32)))
+              
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
         self.choiceAspect.Append(Aspect.ASPECT_4_3)
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
@@ -279,6 +259,8 @@ class DlgProjectProps(wx.Dialog):
         self.timeCtrlTotalLength.SetLimited(True)
 
         self.Layout()
+        self.SetInitialSize(self.GetEffectiveMinSize())
+        
 
         self.mediaCtrl = None
 
@@ -320,14 +302,12 @@ class DlgProjectProps(wx.Dialog):
             
             audioFile = photoFilmStrip.GetAudioFile()
             if audioFile:
-                self.__LoadAudioFile(audioFile)
+                self.__LoadAudioFile(audioFile, True)
                 self.tcAudiofile.SetValue(audioFile)
                 self.cbTotalLength.SetValue(True)
                 self.rbAudio.SetValue(True)
 
         self.__ControlStatusTotalLength()
-        
-        self.SetInitialSize(self.GetEffectiveMinSize())
         
     def OnCmdBrowseFolderButton(self, event):
         dlg = wx.DirDialog(self, 
@@ -335,7 +315,8 @@ class DlgProjectProps(wx.Dialog):
                            defaultPath=self.tcFolder.GetValue())
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            self.tcFolder.SetValue(path)
+            if self.__ValidateOutDir(path):
+                self.tcFolder.SetValue(path)
         dlg.Destroy()
 
     def OnControlStatusTotalLength(self, event):
@@ -370,8 +351,9 @@ class DlgProjectProps(wx.Dialog):
         event.Skip()
 
     def OnCmdOkButton(self, event):
-        self.__CloseMediaCtrl()
-        event.Skip()
+        if self.__ValidateAudioFile() and self.__ValidateOutDir():
+            self.__CloseMediaCtrl()
+            event.Skip()
 
 #    def __GetChoiceDataSelected(self, choice):
 #        return choice.GetClientData(choice.GetSelection())
@@ -393,10 +375,22 @@ class DlgProjectProps(wx.Dialog):
         self.cmdBrowseAudio.Enable(active and not manual)
         self.cmdAudioPreview.Enable(active and not manual and self.mediaCtrl is not None)
     
-    def __LoadAudioFile(self, path):
+    def __LoadAudioFile(self, path, silent=False):
         if self.mediaCtrl is not None:
             self.mediaCtrl.Close()
             
+        if not os.path.exists(path):
+            if silent:
+                self.pnlHdr.SetErrorMessage(_(u"Audio file '%s' does not exist!") % path)
+            else:
+                dlg = wx.MessageDialog(self,
+                                       _(u"Audio file '%s' does not exist!") % path, 
+                                       _(u"Error"),
+                                       wx.OK | wx.ICON_ERROR)
+                dlg.ShowModal()
+                dlg.Destroy()
+            return
+
         mediaCtrl = MPlayer(path)
         if mediaCtrl.IsOk():
             self.tcAudiofile.SetValue(path)
@@ -410,23 +404,27 @@ class DlgProjectProps(wx.Dialog):
             except ValueError, err:
                 print err, "invalid media length", dateTime
 
+            self.pnlHdr.SetErrorMessage(u"")
             self.mediaCtrl = mediaCtrl
             self.__ControlStatusTotalLength()
 
         else:
-            mediaCtrl = None
-            dlg = wx.MessageDialog(self,
-                                   _(u"Invalid audio file!"), 
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
+            if silent:
+                self.pnlHdr.SetErrorMessage(_(u"Invalid audio file!"))
+            else:
+                dlg = wx.MessageDialog(self,
+                                       _(u"Invalid audio file!"), 
+                                       _(u"Error"),
+                                       wx.OK | wx.ICON_ERROR)
+                dlg.ShowModal()
+                dlg.Destroy()
             
     def __ValidateAudioFile(self):
         if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
-            if not os.path.isfile(self.tcAudiofile.GetValue()):
+            path = self.tcAudiofile.GetValue()
+            if not os.path.exists(path):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Audio file does not exist!"), 
+                                       _(u"Audio file '%s' does not exist!") % path, 
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
@@ -448,13 +446,15 @@ class DlgProjectProps(wx.Dialog):
                 totalLength += dateTime.GetHour() * 3600
                 totalLength += dateTime.GetMinute() * 60
                 totalLength += dateTime.GetSecond()
-            else:
+            elif self.mediaCtrl:
                 totalLength = self.mediaCtrl.GetLength()
             
         return totalLength
     
-    def __ValidateOutDir(self):
-        path = self.tcFolder.GetValue()
+    def __ValidateOutDir(self, path=None):
+        if path is None:
+            path = self.tcFolder.GetValue()
+            
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
                                    _(u"Output folder does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
