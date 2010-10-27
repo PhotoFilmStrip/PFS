@@ -77,6 +77,9 @@ class DlgBugReport(wx.Dialog):
         
         self.SetAffirmativeId(wx.ID_YES)
         self.SetEscapeId(wx.ID_NO)
+        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.CenterOnParent()
+        self.SetFocus()
 
     def OnYes(self, event):
         info = "\n".join([sys.platform, 

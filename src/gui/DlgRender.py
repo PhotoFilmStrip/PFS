@@ -247,8 +247,10 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceType.SetSelection(settings.GetVideoType())
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         
+        self.SetEscapeId(wxID_DLGRENDERCMDCLOSE)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
+        self.SetFocus()
         
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())

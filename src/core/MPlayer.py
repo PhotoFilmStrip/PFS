@@ -20,29 +20,32 @@
 #
 
 import re
+import sys
 
 from subprocess import Popen, PIPE, STDOUT
+
+from lib.util import Encode
 
 
 class MPlayer(object):
     
     def __init__(self, filename):
-        self.filename = filename
+        self.filename = Encode(filename, sys.getfilesystemencoding())
         self.__proc = None
         self.__length = None
         
         self.__Identify()
 
     def __Identify(self):
+        cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", self.filename]
+        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=False)
+        proc.wait()
+        output = proc.stdout.read()
+        
+        reo = re.compile(".*ID_LENGTH=(\d+)[.](\d+)*", re.DOTALL | re.MULTILINE)
+        match = reo.match(output)
+            
         try:
-            cmd = "mplayer -identify -frames 0 -ao null -vo null \"%s\"" % self.filename
-            proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=True)
-            proc.wait()
-            output = proc.stdout.read()
-            
-            reo = re.compile(".*ID_LENGTH=(\d+)[.](\d+)*", re.DOTALL | re.MULTILINE)
-            match = reo.match(output)
-            
             if match is not None:
                 self.__length = float(match.group(1))
         except:
@@ -51,8 +54,8 @@ class MPlayer(object):
         
     def __Call(self):
         if self.__proc is None:
-            cmd = "mplayer \"%s\"" % self.filename
-            self.__proc = Popen(cmd, stdin=PIPE, stdout=None, stderr=None, shell=True)
+            cmd = ["mplayer", self.filename]
+            self.__proc = Popen(cmd, stdin=PIPE, stderr=STDOUT, shell=False)
         
     def IsOk(self):
         return self.__length is not None
@@ -68,7 +71,12 @@ class MPlayer(object):
     
     def Close(self):
         if self.__proc is not None:
-            self.__proc.communicate("q")
+            if sys.platform == "win32":
+                cmd = ["taskkill", "/PID", str(self.__proc.pid), "/F"]
+                kp = Popen(cmd, shell=False)
+                kp.wait()
+            else:
+                self.__proc.communicate("q")
             self.__proc = None
     
     def GetLength(self):

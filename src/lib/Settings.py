@@ -24,6 +24,7 @@ import locale
 import os
 import sys
 import tempfile
+import subprocess
 
 from ConfigParser import ConfigParser
 from lib.common.Singleton import Singleton
@@ -32,9 +33,13 @@ from lib.util import Encode, Decode
 
 if sys.platform == "win32":
     appDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
-    _path = []
+    _path = os.getenv("PATH", "").split(";")
     _path.append(os.path.join(appDir, "extBin", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
+
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    subprocess.STARTUPINFO = lambda: startupinfo
 
 
 class Settings(Singleton):
@@ -44,7 +49,7 @@ class Settings(Singleton):
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 
-                       "Markus Wintermann"] 
+                       u"Markus Wintermann"] 
     
     def __init__(self):
         self.__isFirstStart = False
@@ -184,16 +189,16 @@ class Settings(Singleton):
             return self.cp.getint("General", "Renderer")
         return 1
     
-#    def SetLastOutputPath(self, path):
-#        self.Load()
-#        self.cp.set("General", "LastOutputPath", Encode(path))
-#        self.Save()
-#
-#    def GetLastOutputPath(self):
-#        self.Load()
-#        if self.cp.has_option("General", "LastOutputPath"):
-#            return Decode(self.cp.get("General", "LastOutputPath"))
-#        return Decode(os.getcwd(), sys.getfilesystemencoding())
+    def SetLastKnownVersion(self, version):
+        self.Load()
+        self.cp.set("General", "LastKnownVersion", version)
+        self.Save()
+
+    def GetLastKnownVersion(self):
+        self.Load()
+        if self.cp.has_option("General", "LastKnownVersion"):
+            return self.cp.get("General", "LastKnownVersion")
+        return "0.0.0"
     
     def SetRenderProperties(self, renderer, props):
         self.Load()

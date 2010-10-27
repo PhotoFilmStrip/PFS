@@ -139,8 +139,11 @@ class DlgRendererProps(wx.Dialog):
             
             rendererClass.SetProperty(prop, value)
             
+        self.SetAffirmativeId(wxID_DLGRENDERERPROPSCMDOK)
+        self.SetEscapeId(wxID_DLGRENDERERPROPSCMDCANCEL)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
+        self.SetFocus()
         
     def OnCmdCancelButton(self, event):
         self.EndModal(wx.ID_CANCEL)

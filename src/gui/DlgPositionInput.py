@@ -284,6 +284,7 @@ class DlgPositionInput(wx.Dialog):
         
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CenterOnParent()        
+        self.SetFocus()
         
     def _InitValues(self):
         self.__doOnChange = False

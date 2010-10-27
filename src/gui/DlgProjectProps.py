@@ -258,10 +258,6 @@ class DlgProjectProps(wx.Dialog):
         self.timeCtrlTotalLength.SetMax(maxTime)
         self.timeCtrlTotalLength.SetLimited(True)
 
-        self.Layout()
-        self.SetInitialSize(self.GetEffectiveMinSize())
-        
-
         self.mediaCtrl = None
 
         self.__photoFilmStrip = photoFilmStrip
@@ -308,6 +304,10 @@ class DlgProjectProps(wx.Dialog):
                 self.rbAudio.SetValue(True)
 
         self.__ControlStatusTotalLength()
+
+        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.CenterOnParent()
+        self.SetFocus()
         
     def OnCmdBrowseFolderButton(self, event):
         dlg = wx.DirDialog(self, 

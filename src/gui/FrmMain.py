@@ -29,6 +29,7 @@ from wx.lib.wordwrap import wordwrap
 from core.PhotoFilmStrip import PhotoFilmStrip
 
 from lib.Settings import Settings
+from lib.util import Decode
 
 from gui.DlgRender import DlgRender
 from gui.PnlWelcome import PnlWelcome
@@ -182,7 +183,7 @@ class FrmMain(wx.Frame):
             page = self.notebook.GetPage(sel)
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
             filepath = page.GetPhotoFilmStrip().GetFilename()
-            self.SetTitle(Settings.APP_NAME + ' - ' + filepath)
+            self.SetTitle(Settings.APP_NAME + u' - ' + Decode(filepath))
             
         self.UpdateStatusText(None)
         
@@ -369,7 +370,7 @@ class FrmMain(wx.Frame):
             filepath = pnlPfs.GetPhotoFilmStrip().GetFilename()
                 
             dlg = wx.MessageDialog(self,
-                                   _(u"'%s' has been modified. Save changes?") % filepath, 
+                                   _(u"'%s' has been modified. Save changes?") % Decode(filepath), 
                                    _(u"Question"),
                                    wx.YES_NO | wx.CANCEL | wx.ICON_QUESTION)
             response = dlg.ShowModal()
@@ -446,7 +447,7 @@ class FrmMain(wx.Frame):
         except StandardError, err:
             dlg = wx.MessageDialog(self,
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
-                                            {'file': filepath,
+                                            {'file': Decode(filepath),
                                              'errMsg': unicode(err)}, 
                                    _(u"Question"),
                                    wx.OK | wx.ICON_ERROR)

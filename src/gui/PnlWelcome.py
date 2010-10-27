@@ -116,8 +116,12 @@ class PnlWelcome(wx.Panel):
             return
         if not self.__updateChecker.IsOk():
             return
+        if not self.__updateChecker.IsNewer(Settings().GetLastKnownVersion()):
+            return
         if not self.__updateChecker.IsNewer(Settings.APP_VERSION):
             return
+        
+        Settings().SetLastKnownVersion(self.__updateChecker.GetVersion())
 
         html = """<h3 align="center">%(title)s</h3>
   <center>

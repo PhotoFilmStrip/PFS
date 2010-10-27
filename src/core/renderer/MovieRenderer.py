@@ -20,7 +20,6 @@
 #
 
 import os
-import sys
 import re
 from subprocess import Popen, PIPE, STDOUT
 
@@ -43,7 +42,7 @@ class MEncoderRenderer(SingleFileRenderer):
     def CheckDependencies(msgList):
         SingleFileRenderer.CheckDependencies(msgList)
         
-        proc = Popen("mencoder", stdout=PIPE, stderr=STDOUT, shell=True)
+        proc = Popen(["mencoder"], stdout=PIPE, stderr=STDOUT, shell=False)
         proc.wait()
         output = proc.stdout.read()
         if not re.search("^(mplayer|mencoder)", output, re.I):
@@ -77,7 +76,7 @@ class MEncoderRenderer(SingleFileRenderer):
         self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
         
         cmd = self._GetCmd()
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=True)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=False)
         
     def Finalize(self):
         self.__CleanUp()
@@ -93,16 +92,17 @@ class MEncoderRenderer(SingleFileRenderer):
     
     def _GetSubArgs(self):
         if self.__class__.GetProperty("RenderSubtitle"):
-            subArgs = "-sub \"%s%soutput.srt\" -subcp utf8 -font \"%s\"" % (self.GetOutputPath(), os.sep, r"C:\Dokumente und Einstellungen\jens\Anwendungsdaten\PhotoFilmStrip\extBin\mplayer\mplayer\font.desc")
+            subArgs = ["-sub", os.path.join(self.GetOutputPath(), "output.srt"),
+                       "-subcp", "utf8"]
         else:
-            subArgs = ""
+            subArgs = []
         return subArgs
     
     def _GetAudioArgs(self):
         if self.PAudioFile is None:
-            audioArgs = ""
+            audioArgs = []
         else:
-            audioArgs = "-audiofile \"%s\"" % self.PAudioFile
+            audioArgs = ["-audiofile", self.PAudioFile]
         return audioArgs
     
     def _GetFrameRate(self):
@@ -176,42 +176,28 @@ class MovieRenderer(MEncoderRenderer):
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
 #              "-ofps %(framerate)s " \
-        cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg "\
-              "%(audioArgs)s " \
-              "%(subArgs)s " \
-              "-oac lavc -ovc lavc " \
-              "-of lavf -lavfopts format=mpg " \
-              "-srate %(srate)s -af lavcresample=%(srate)s " \
-              "-lavcopts %(lavcopts)s " \
-              "-ofps 25 " \
-              "-o \"%(path)s%(sep)soutput.mpg\" -" % {'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'audioArgs': self._GetAudioArgs(),
-                                                      "subArgs": self._GetSubArgs(),
-                                                      'framerate': self._GetFrameRate(),
-                                                      'format': mpgFormat,
-                                                      'resx': res[0],
-                                                      'resy': res[1],
-                                                      'srate': srate,
-                                                      'lavcopts': lavcopts}
-        
+        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd += self._GetAudioArgs()
+        cmd += self._GetSubArgs()
+        cmd += ["-oac", "lavc", "-ovc", "lavc",
+                "-of", "lavf", "-lavfopts", "format=mpg",
+                "-srate", srate, "-af", "lavcresample=%s" % srate,
+                "-lavcopts", lavcopts, 
+                "-ofps", "25",
+                "-o", os.path.join(self.GetOutputPath(), "output.mpg"),
+                "-"]        
         return cmd
 
-
     def __ProcessAviOutput(self):
-        cmd = "mencoder -cache 1024 -demuxer lavf -fps 25 -lavfdopts format=mjpeg " \
-              "%(audioArgs)s " \
-              "%(subArgs)s " \
-              "-oac mp3lame -lameopts cbr:br=192 -srate 44100 " \
-              "-ovc lavc -lavcopts vcodec=mpeg4:vbitrate=%(bitrate)d:vhq:autoaspect -ffourcc %(ffourcc)s " \
-              "-ofps %(framerate)s " \
-              "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'ffourcc': MovieRenderer.GetProperty('FFOURCC'),
-                                                      'bitrate': self._GetBitrate(),
-                                                      'audioArgs': self._GetAudioArgs(),
-                                                      "subArgs": self._GetSubArgs(),
-                                                      'framerate': self._GetFrameRate()}
+        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd += self._GetAudioArgs()
+        cmd += self._GetSubArgs()
+        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
+                "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect" % self._GetBitrate(), 
+                "-ffourcc", MovieRenderer.GetProperty('FFOURCC'),
+                "-ofps", self._GetFrameRate(),
+                "-o", os.path.join(self.GetOutputPath(), "output.avi"),
+                "-"]
         return cmd
 
 
@@ -233,19 +219,16 @@ class FlashMovieRenderer(MEncoderRenderer):
         return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
-              "%(audioArgs)s " \
-              "%(subArgs)s " \
-              "-oac mp3lame -lameopts cbr:br=128 -srate 44100 " \
-              "-ovc lavc -lavcopts vcodec=flv:vbitrate=%(bitrate)d:mbd=2:mv0:trell:v4mv:cbp:last_pred=3 " \
-              "-of lavf " \
-              "-ofps %(framerate)s " \
-              "-o \"%(path)s%(sep)soutput.flv\" -" % {'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'bitrate': self._GetBitrate(),
-                                                      'audioArgs': self._GetAudioArgs(),
-                                                      "subArgs": self._GetSubArgs(),
-                                                      'framerate': self._GetFrameRate()}
+        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd += self._GetAudioArgs()
+        cmd += self._GetSubArgs()
+        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=128", "-srate", "44100",
+                "-ovc", "lavc", 
+                "-lavcopts", "vcodec=flv:vbitrate=%d:mbd=2:mv0:trell:v4mv:cbp:last_pred=3" % self._GetBitrate(),
+                "-of", "lavf",
+                "-ofps", self._GetFrameRate(),
+                "-o", os.path.join(self.GetOutputPath(), "output.flv"),
+                "-"]
         return cmd
 
 
@@ -267,16 +250,13 @@ class MJPEGRenderer(MEncoderRenderer):
         return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = "mencoder -cache 1024 -fps 25 -demuxer lavf -lavfdopts format=mjpeg " \
-              "%(audioArgs)s " \
-              "%(subArgs)s " \
-              "-oac mp3lame -lameopts cbr:br=192 -srate 44100 " \
-              "-ovc lavc -lavcopts vcodec=mjpeg " \
-              "-of lavf " \
-              "-ofps %(framerate)s " \
-              "-o \"%(path)s%(sep)soutput.avi\" -" % {'path': self.GetOutputPath(),
-                                                      'sep': os.sep,
-                                                      'audioArgs': self._GetAudioArgs(),
-                                                      "subArgs": self._GetSubArgs(),
-                                                      'framerate': self._GetFrameRate()}
+        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd += self._GetAudioArgs()
+        cmd += self._GetSubArgs()
+        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
+                "-ovc", "lavc", "-lavcopts", "vcodec=mjpeg",
+                "-of", "lavf",
+                "-ofps", self._GetFrameRate(),
+                "-o", os.path.join(self.GetOutputPath(), "output.avi"),
+                "-"]
         return cmd
