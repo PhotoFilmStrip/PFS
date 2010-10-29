@@ -34,6 +34,7 @@ class ActionManager(object):
     ID_PROJECT_IMPORT    = wx.NewId()
     ID_PROJECT_EXPORT    = wx.NewId()
     ID_PROJECT_PROPS     = wx.NewId()
+    ID_PROJECT_CLOSE     = wx.NewId()
     ID_LANG_EN           = wx.NewId()
     ID_LANG_FR           = wx.NewId()
     ID_LANG_DE           = wx.NewId()
@@ -126,6 +127,10 @@ class ActionManager(object):
                               wx.ID_SAVE, 
                               _(u'&Save Project') + '\tCtrl+S',
                               wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, wx.DefaultSize))
+        self.__CreateMenuItem(menu, 
+                              self.ID_PROJECT_CLOSE, 
+                              _(u'&Close Project') + '\tCtrl+W',
+                              wx.ArtProvider.GetBitmap(wx.ART_REMOVABLE, wx.ART_MENU, wx.DefaultSize))
 #        self.__CreateMenuItem(menu, 
 #                              wx.ID_SAVEAS, 
 #                              _(u'Save Project &as'),
@@ -141,7 +146,7 @@ class ActionManager(object):
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               wx.ID_EXIT, 
-                              _(u'E&xit'),
+                              _(u'E&xit') + '\tCtrl+Q',
                               wx.ArtProvider.GetBitmap(wx.ART_QUIT, wx.ART_MENU, wx.DefaultSize))
         return menu
 

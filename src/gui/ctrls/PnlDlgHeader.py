@@ -22,6 +22,8 @@
 
 import wx
 
+from wx.lib.wordwrap import wordwrap
+
 
 [wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER, 
  wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER, 
@@ -104,6 +106,7 @@ class PnlDlgHeader(wx.Panel):
                 
     def SetErrorMessage(self, msg):
         if msg:
+            msg = wordwrap(msg, 350, wx.ClientDC(self.stErrMsg))
             self.stErrMsg.SetLabel(msg)
             self.stErrMsg.Show(True)
         else:

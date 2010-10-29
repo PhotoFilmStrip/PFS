@@ -19,6 +19,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
+import os
+import sys
+
 
 def Encode(value, coding="utf-8"):
     if isinstance(value, unicode):
@@ -36,4 +40,14 @@ def Decode(value, coding="utf-8"):
     else:
         return unicode(value)
     
-
+def IsPathWritable(path):
+    _path = Encode(path, sys.getfilesystemencoding())
+    try:
+        fd = open(os.path.join(_path, 'test'), 'w')
+        fd.write(" ")
+        fd.close()
+        os.remove(os.path.join(_path, 'test'))
+        return True
+    except StandardError, err:
+        logging.debug("IsPathWritable(%s): %s", path, err)
+        return False

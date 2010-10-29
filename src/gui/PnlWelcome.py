@@ -47,33 +47,14 @@ class PnlWelcome(wx.Panel):
         
         self.__frmMain = frmMain
 
-        htmlParts = []
-        fileHistory = Settings().GetFileHistory()
-        for recentFile in fileHistory:
-            if PhotoFilmStrip.IsOk(recentFile):
-                htmlPart = """<td align="center" valign="bottom">
-                    <wxp module="gui.PnlWelcome" class="LinkOpenPfs">
-                        <param name="filename" value="%s">
-                    </wxp>
-                </td>""" % recentFile
-                htmlParts.append(htmlPart)
-
-        breakAt = 4
-        for idx in xrange((len(htmlParts) - 1) / breakAt):
-            htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
-        
-        if htmlParts:
-            self.htmlTitle = _(u"Recent projects")
-            self.htmlText  = ""
-        else:
-            self.htmlTitle = _(u"How to start...")
-            self.htmlText  = _(u"Create a new project or load an existing one.")
-            
-        self.htmlRecentProjects = "".join(htmlParts)
+        self.htmlTitle = _(u"Recent projects")
+        self.htmlText  = u""
+        self.htmlRecentProjects = u""
+        self.htmlUpdate = u""
 
         self.htmlWin = wx.html.HtmlWindow(self, -1, style=wx.SIMPLE_BORDER)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
-        self.htmlWin.SetPage(self.__GenerateHtml())
+        self.RefreshPage()
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
         self.cmdNew = wx.BitmapButton(self, -1,
@@ -103,13 +84,39 @@ class PnlWelcome(wx.Panel):
         self.__updateChecker = UpdateChecker()
         wx.CallLater(500, self.__NotifyUpdate)
         
-    def __GenerateHtml(self, htmlUpdate=""):
-        return HTML_TEMPLATE  % {'title': self.htmlTitle,
+    def RefreshPage(self, withHistory=True):
+        if withHistory:
+            htmlParts = []
+            fileHistory = Settings().GetFileHistory()
+            for recentFile in fileHistory:
+                if PhotoFilmStrip.IsOk(recentFile):
+                    htmlPart = """<td align="center" valign="bottom">
+                        <wxp module="gui.PnlWelcome" class="LinkOpenPfs">
+                            <param name="filename" value="%s">
+                        </wxp>
+                    </td>""" % recentFile
+                    htmlParts.append(htmlPart)
+    
+            breakAt = 4
+            for idx in xrange((len(htmlParts) - 1) / breakAt):
+                htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
+            
+            if htmlParts:
+                self.htmlTitle = _(u"Recent projects")
+                self.htmlText  = ""
+            else:
+                self.htmlTitle = _(u"How to start...")
+                self.htmlText  = _(u"Create a new project or load an existing one.")
+                
+            self.htmlRecentProjects = "".join(htmlParts)
+        
+        html = HTML_TEMPLATE  % {'title': self.htmlTitle,
                                  'text': self.htmlText,
                                  'htmlRecentProjects': self.htmlRecentProjects,
-                                 'htmlUpdate': htmlUpdate}
-
+                                 'htmlUpdate': self.htmlUpdate}
         
+        self.htmlWin.SetPage(html)
+    
     def __NotifyUpdate(self):
         if not self.__updateChecker.IsDone():
             wx.CallLater(100, self.__NotifyUpdate)
@@ -137,7 +144,8 @@ class PnlWelcome(wx.Panel):
                                "changes": self.__updateChecker.GetChanges(),
                                "url": Settings.APP_URL}
         
-        self.htmlWin.SetPage(self.__GenerateHtml(html))
+        self.htmlUpdate = html
+        self.RefreshPage(withHistory=False)
 
     def OnSize(self, event):
         self.Refresh()
@@ -162,7 +170,7 @@ class PnlWelcome(wx.Panel):
         
     def OnLinkClicked(self, event):
         filename = event.GetFilename()
-        self.__frmMain.LoadProject(filename, True)
+        self.__frmMain.LoadProject(filename)
 
 
 class LinkOpenPfs(IconLabelLink):

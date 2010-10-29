@@ -21,6 +21,7 @@
 
 import gettext
 import locale
+import logging
 import os
 import sys
 import tempfile
@@ -28,13 +29,15 @@ import subprocess
 
 from ConfigParser import ConfigParser
 from lib.common.Singleton import Singleton
-from lib.util import Encode, Decode
+from lib.util import Encode, Decode, IsPathWritable
+
+
+APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
 
 if sys.platform == "win32":
-    appDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
     _path = os.getenv("PATH", "").split(";")
-    _path.append(os.path.join(appDir, "extBin", "mplayer"))
+    _path.append(os.path.join(APP_DIR, "extBin", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
 
     startupinfo = subprocess.STARTUPINFO()
@@ -55,13 +58,19 @@ class Settings(Singleton):
         self.__isFirstStart = False
         self.cp = None
         
-        userpath = os.path.expanduser("~")
-        if userpath == "~":
-            userpath = tempfile.gettempdir()
+        if IsPathWritable(APP_DIR):
+            setPath = APP_DIR
+        else:
+            userpath = os.path.expanduser("~")
+            if userpath == "~":
+                userpath = tempfile.gettempdir()
+            setPath = userpath
 
-        self.filename = os.path.join(userpath, '.%s' % Settings.APP_NAME)
+        self.filename = os.path.join(setPath, '.%s' % Settings.APP_NAME)
         if not os.path.isfile(self.filename):
             self.__isFirstStart = True
+
+        logging.debug("settings file: %s", self.filename)
 
         self.Load()
         
@@ -119,7 +128,7 @@ class Settings(Singleton):
             if self.cp.has_option("History", str(idx)):
                 filename = Decode(self.cp.get("History", str(idx)))
                 if os.path.exists(filename) and filename not in fileList:
-                    fileList.insert(0, filename)
+                    fileList.append(filename)
 
         return fileList
     

@@ -120,33 +120,24 @@ class MEncoderRenderer(SingleFileRenderer):
         return bitrate
 
 
-class MovieRenderer(MEncoderRenderer):
+class MPEGRenderer(MEncoderRenderer):
     
     def __init__(self):
         MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
-        return _(u"Video clip (AVI)")
+        return _(u"MPEG(1/2)-Video (MPG)")
     
     @staticmethod
     def GetProperties():
-        return MEncoderRenderer.GetProperties() + ["FFOURCC"]
+        return MEncoderRenderer.GetProperties()
 
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "FFOURCC":
-            return "XVID"
         return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        if self.PProfile.GetName() in ["VCD", "SVCD", "DVD"]:
-            cmd = self.__ProcessMpegOutput()
-        else:
-            cmd = self.__ProcessAviOutput()
-        return cmd
-        
-    def __ProcessMpegOutput(self):
         aspect = "%.3f" % Aspect.ToFloat(self._aspect)
         if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
             keyint = 15
@@ -171,7 +162,7 @@ class MovieRenderer(MEncoderRenderer):
             lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                      "aspect": aspect}
         else:
-            raise RuntimeError('format not supported')
+            raise RuntimeError('MPEG format supports only VCD, SVCD and DVD profile!')
             
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
@@ -188,13 +179,33 @@ class MovieRenderer(MEncoderRenderer):
                 "-"]        
         return cmd
 
-    def __ProcessAviOutput(self):
+
+class MPEG4Renderer(MEncoderRenderer):
+    
+    def __init__(self):
+        MEncoderRenderer.__init__(self)
+        
+    @staticmethod
+    def GetName():
+        return _(u"MPEG4-XVid (AVI)")
+
+    @staticmethod
+    def GetProperties():
+        return MEncoderRenderer.GetProperties() + ["FFOURCC"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "FFOURCC":
+            return "XVID"
+        return MEncoderRenderer.GetDefaultProperty(prop)
+
+    def _GetCmd(self):
         cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
                 "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect" % self._GetBitrate(), 
-                "-ffourcc", MovieRenderer.GetProperty('FFOURCC'),
+                "-ffourcc", AVIRenderer.GetProperty('FFOURCC'),
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),
                 "-"]
@@ -239,7 +250,7 @@ class MJPEGRenderer(MEncoderRenderer):
         
     @staticmethod
     def GetName():
-        return _(u"Motion-JPEG (MJPEG)")
+        return _(u"Motion-JPEG (AVI)")
     
     @staticmethod
     def GetProperties():

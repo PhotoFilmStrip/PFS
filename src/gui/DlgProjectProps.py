@@ -27,6 +27,7 @@ import wx.lib.masked.textctrl
 import wx.lib.masked.timectrl
 
 from lib.Settings import Settings
+from lib.util import IsPathWritable
 
 from core.Aspect import Aspect
 from core.PhotoFilmStrip import PhotoFilmStrip
@@ -268,8 +269,11 @@ class DlgProjectProps(wx.Dialog):
             self.tcProject.SelectAll()
             self.tcProject.SetFocus()
 
-            # TODO: Default aus Settings laden
-            self.tcFolder.SetValue(os.path.join(wx.GetHomeDir(), _(u"My PhotoFilmStrips")))
+            projPath = Settings().GetProjectPath()
+            if not projPath:
+                projPath = os.path.join(wx.GetHomeDir(), _(u"My PhotoFilmStrips"))
+                Settings().SetProjectPath(projPath)
+            self.tcFolder.SetValue(projPath)
             
             self.cbTotalLength.SetValue(False)
         else:
@@ -317,6 +321,7 @@ class DlgProjectProps(wx.Dialog):
             path = dlg.GetPath()
             if self.__ValidateOutDir(path):
                 self.tcFolder.SetValue(path)
+                Settings().SetProjectPath(path)
         dlg.Destroy()
 
     def OnControlStatusTotalLength(self, event):
@@ -457,7 +462,7 @@ class DlgProjectProps(wx.Dialog):
             
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Output folder does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
+                                   _(u"Folder does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
                                    _(u"Question"),
                                    wx.YES_NO | wx.ICON_QUESTION)
             resp = dlg.ShowModal()
@@ -476,14 +481,9 @@ class DlgProjectProps(wx.Dialog):
             else:
                 return False
         else:
-            try:
-                fd = open(os.path.join(path, 'test'), 'w')
-                fd.write(" ")
-                fd.close()
-                os.remove(os.path.join(path, 'test'))
-            except StandardError, err:
+            if not IsPathWritable(path):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Cannot write into folder: %s") % unicode(err),
+                                       _(u"Cannot write into folder!"),
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()

@@ -21,6 +21,7 @@
 #
 
 import os
+import logging
 
 import wx
 
@@ -238,14 +239,12 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         
         self.Bind(EVT_CHANGED, self.OnPhotoFilmStripListChanged, id=self.lvPics.GetId())
 
-        self.SetInitialSize(self.GetEffectiveMinSize())
-        
         self.__photoFilmStrip = photoFilmStrip
-
         self.__hasChanged = False
-        self.SetChanged(False)
-        
         self.__usedAltPath = False
+        
+        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.SetChanged(False)
         
     def GetSelectedImageState(self):
         item = self.lvPics.GetSelected()
@@ -466,6 +465,7 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         return imgPath
 
     def InsertPictures(self, pics, position=None, autopath=False):
+        logging.debug("InsertPictures(pos=%s)", position)
         if position is None:
             position = self.lvPics.GetItemCount()
         
@@ -501,6 +501,8 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         self.pnlAddPics.Show(self.lvPics.GetItemCount() == 0)
         self.panelTop.Show(self.lvPics.GetItemCount() != 0)
         self.Layout()
+        
+        self.lvPics.SetFocus()
 
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
@@ -550,6 +552,7 @@ class ImageDropTarget(wx.FileDropTarget):
 
     def OnDropFiles(self, x, y, filenames):
         itm = self.pnlPfs.lvPics.HitTest((x, y))
+        logging.debug("OnDropFiles(%d, %d, %s): %s", x, y, filenames, itm)
         
         pics = [] 
         for path in filenames:

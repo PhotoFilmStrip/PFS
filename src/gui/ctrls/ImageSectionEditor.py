@@ -496,11 +496,10 @@ class ImageSectionEditor(wx.Panel, Observer):
                 self._sectRect.OffsetXY(0, 50)
             else:
                 self._sectRect.OffsetXY(0, 10)
-        elif event.GetModifiers()  == wx.MOD_CONTROL:
-            if key == ord('C'):
-                self.OnCopy(event)
-            elif key == ord('V'):
-                self.OnPaste(event)
+        elif event.GetModifiers()  == wx.MOD_CONTROL and key == ord('C'):
+            self.OnCopy(event)
+        elif event.GetModifiers()  == wx.MOD_CONTROL and key == ord('V'):
+            self.OnPaste(event)
         else:
             event.Skip()
             return

@@ -19,12 +19,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from core.renderer.MovieRenderer import (MovieRenderer, 
+from core.renderer.MovieRenderer import (MPEGRenderer, 
+                                         MPEG4Renderer,
                                          FlashMovieRenderer, 
                                          MJPEGRenderer)
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 RENDERERS = [SingleFileRenderer,  
-             MovieRenderer,
+             MPEG4Renderer,
+             MPEGRenderer,
              FlashMovieRenderer,
              MJPEGRenderer]

@@ -79,11 +79,12 @@ class FrmMain(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnProjectNew, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnProjectLoad, id=wx.ID_OPEN)
         self.Bind(wx.EVT_MENU, self.OnProjectSave, id=wx.ID_SAVE)
+        self.Bind(wx.EVT_MENU, self.OnProjectClose, id=ActionManager.ID_PROJECT_CLOSE)
         self.Bind(wx.EVT_MENU, self.OnProjectSaveAs, id=wx.ID_SAVEAS)
         self.Bind(wx.EVT_MENU, self.OnProjectExport, id=ActionManager.ID_PROJECT_EXPORT)
         self.Bind(wx.EVT_MENU, self.OnProjectImport, id=ActionManager.ID_PROJECT_IMPORT)
         self.Bind(wx.EVT_MENU, self.OnProjectProps, id=ActionManager.ID_PROJECT_PROPS)
-        self.Bind(wx.EVT_MENU, self.OnClose, id=wx.ID_EXIT)
+        self.Bind(wx.EVT_MENU, self.OnExit, id=wx.ID_EXIT)
         
         self.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=ActionManager.ID_PIC_MOVE_LEFT)
         self.Bind(wx.EVT_MENU, self.OnCmdMoveRightButton, id=ActionManager.ID_PIC_MOVE_RIGHT)
@@ -109,6 +110,7 @@ class FrmMain(wx.Frame):
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectActive, id=ActionManager.ID_PIC_IMPORT)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectActive, id=ActionManager.ID_PROJECT_EXPORT)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectActive, id=ActionManager.ID_PROJECT_PROPS)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectActive, id=ActionManager.ID_PROJECT_CLOSE)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ActionManager.ID_RENDER_FILMSTRIP)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_REMOVE)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_ROTATE_CCW)
@@ -118,9 +120,15 @@ class FrmMain(wx.Frame):
         
         self.SetInitialSize((720, 680))
         
-        at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP_CONTENTS)])
+        id1 = wx.NewId()
+        id2 = wx.NewId()
+        at = wx.AcceleratorTable([(wx.ACCEL_NORMAL, wx.WXK_F1, wx.ID_HELP_CONTENTS),
+                                  (wx.ACCEL_CTRL, wx.WXK_PAGEDOWN, id1),
+                                  (wx.ACCEL_CTRL, wx.WXK_PAGEUP, id2)])
         self.SetAcceleratorTable(at)
         self.Bind(wx.EVT_MENU, self.OnHelpContent, id=wx.ID_HELP_CONTENTS)
+        self.Bind(wx.EVT_MENU, self.OnPageNext, id=id1)
+        self.Bind(wx.EVT_MENU, self.OnPagePrev, id=id2)
 
         self.actionManager.SelectLanguage(Settings().GetLanguage())
         
@@ -187,15 +195,25 @@ class FrmMain(wx.Frame):
             
         self.UpdateStatusText(None)
         
+    def OnPageNext(self, event):
+        idx = self.notebook.GetSelection()
+        idx += 1
+        if idx < self.notebook.GetPageCount():
+            self.notebook.SetSelection(idx)
+    
+    def OnPagePrev(self, event):
+        idx = self.notebook.GetSelection()
+        idx -= 1
+        if idx >=0:
+            self.notebook.SetSelection(idx)
+    
     def OnPageClose(self, event):
         sel = event.GetSelection()
         if sel == 0:
             event.Veto()
             return
         else:
-            page = self.notebook.GetPage(sel)
-            if self.CheckAndAskSaving(page):
-                page.Close()
+            if self.ClosePage(sel):
                 event.Skip()
             else:
                 event.Veto()
@@ -204,13 +222,14 @@ class FrmMain(wx.Frame):
         while self.notebook.GetPageCount() > 1:
             idx = 1
             self.notebook.SetSelection(idx)
-            page = self.notebook.GetPage(idx)
-            if self.CheckAndAskSaving(page):
-                page.Close()
+            if self.ClosePage(idx):
                 self.notebook.DeletePage(idx)
             else:
                 return
         event.Skip()
+
+    def OnExit(self, event):
+        self.Close()
 
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
@@ -275,6 +294,11 @@ class FrmMain(wx.Frame):
                 
             return self.SaveProject(filepath, False)
         return False
+    
+    def OnProjectClose(self, event):
+        sel = self.notebook.GetSelection()
+        if self.ClosePage(sel):
+            self.notebook.DeletePage(sel)
     
     def OnProjectExport(self, event):
         pfs = self.__GetCurrentPhotoFilmStrip()
@@ -357,6 +381,14 @@ class FrmMain(wx.Frame):
             dlg = DlgRender(self, photoFilmStrip)
             dlg.ShowModal()
             dlg.Destroy()
+            
+    def ClosePage(self, idx):
+        page = self.notebook.GetPage(idx)
+        if self.CheckAndAskSaving(page):
+            page.Close()
+            return True
+        else:
+            return False
 
     def AddFileToHistory(self, filename):
         fileList = Settings().GetFileHistory()
@@ -438,7 +470,8 @@ class FrmMain(wx.Frame):
         if not skipHistory:
             self.AddFileToHistory(filepath)
         
-        Settings().SetProjectPath(os.path.dirname(filepath))
+#        self.pnlWelcome.RefreshPage() # crashes on unix
+        wx.CallAfter(self.pnlWelcome.RefreshPage)
     
     def SaveProject(self, filepath, includePics):
         photoFilmStrip = self.__GetCurrentPhotoFilmStrip()

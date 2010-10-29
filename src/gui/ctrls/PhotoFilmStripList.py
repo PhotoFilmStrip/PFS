@@ -132,6 +132,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         event.Skip()
     
     def OnKeyDown(self, event):
+        if event.HasModifiers():
+            event.Skip()
+            return
+        
         key = event.GetKeyCode()
         sel = self.GetSelected()
         if key == wx.WXK_LEFT:
@@ -151,6 +155,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         elif key == wx.WXK_HOME:
             self.Select(0)
             self.EnsureVisible(0)
+        
+        else:
+            event.Skip()
 
     def EnsureVisible(self, idx):
         rect = self.GetThumbRect(idx)
