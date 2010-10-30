@@ -41,6 +41,7 @@ from lib.util import Encode
 from gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from gui.HelpViewer import HelpViewer
 from gui.DlgRendererProps import DlgRendererProps
+from gui.DlgFinalize import DlgFinalize
 
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
@@ -254,6 +255,12 @@ class DlgRender(wx.Dialog, Observer):
         
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
+    
+    def __GetOutputPath(self):
+        profile = self.__GetChoiceDataSelected(self.choiceProfile)
+        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
+        outpath = os.path.join(outpath, profile.GetName())
+        return outpath
 
     def OnCmdStartButton(self, event):
         audioFile = self.__photoFilmStrip.GetAudioFile()
@@ -272,8 +279,7 @@ class DlgRender(wx.Dialog, Observer):
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
 
-        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, profile.GetName())
+        outpath = self.__GetOutputPath()
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         
@@ -349,7 +355,8 @@ class DlgRender(wx.Dialog, Observer):
                 wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
 
     def __OnDone(self):
-        if self.__progressHandler.IsAborted():
+        isAborted = self.__progressHandler.IsAborted()
+        if isAborted:
             self.stProgress.SetLabel(_(u"...aborted!"))
         else:
             self.stProgress.SetLabel(_(u"all done"))
@@ -372,8 +379,15 @@ class DlgRender(wx.Dialog, Observer):
         self.__renderEngine    = None
         self.Layout()
         
-        if errMsg:
-            raise RuntimeError(errMsg)
+        dlg = DlgFinalize(self, 
+                          self.__GetOutputPath(),
+                          isAborted, 
+                          errMsg=errMsg)
+        dlg.ShowModal()
+        dlg.Destroy()
+        
+        if not isAborted and errMsg is None:
+            self.Destroy()
         
     def __OnProgressInfo(self, info):
         self.stProgress.SetLabel(info)

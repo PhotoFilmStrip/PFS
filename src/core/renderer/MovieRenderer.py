@@ -205,7 +205,7 @@ class MPEG4Renderer(MEncoderRenderer):
         cmd += self._GetSubArgs()
         cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
                 "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect" % self._GetBitrate(), 
-                "-ffourcc", AVIRenderer.GetProperty('FFOURCC'),
+                "-ffourcc", MPEG4Renderer.GetProperty('FFOURCC'),
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),
                 "-"]

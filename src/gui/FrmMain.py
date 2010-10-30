@@ -380,7 +380,7 @@ class FrmMain(wx.Frame):
             photoFilmStrip = page.GetPhotoFilmStrip()
             dlg = DlgRender(self, photoFilmStrip)
             dlg.ShowModal()
-            dlg.Destroy()
+#            dlg.Destroy()
             
     def ClosePage(self, idx):
         page = self.notebook.GetPage(idx)

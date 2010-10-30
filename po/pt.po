@@ -15,7 +15,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:221
-#: src/gui/DlgRender.py:355
+#: src/gui/DlgRender.py:362
 msgid "all done"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgid "enable draft mode"
 msgstr ""
 
 #: src/cli/Main.py:114
-#: src/gui/DlgRender.py:229
+#: src/gui/DlgRender.py:230
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr ""
 
@@ -86,13 +86,13 @@ msgstr ""
 #: src/gui/DlgProjectProps.py:389
 #: src/gui/DlgProjectProps.py:392
 #: src/gui/DlgProjectProps.py:432
-#: src/gui/DlgRender.py:243
+#: src/gui/DlgRender.py:244
 #, fuzzy
 msgid "Audio file '%s' does not exist!"
 msgstr "audio file nao existe: %s"
 
 #: src/cli/Main.py:217
-#: src/gui/DlgRender.py:353
+#: src/gui/DlgRender.py:360
 msgid "...aborted!"
 msgstr "...cancelado!"
 
@@ -183,7 +183,7 @@ msgstr "&Ferramenta"
 
 #: src/gui/ActionManager.py:67
 #: src/gui/ActionManager.py:196
-#: src/gui/DlgRender.py:184
+#: src/gui/DlgRender.py:185
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "&Ajuda"
@@ -205,7 +205,7 @@ msgid "Import Pictures"
 msgstr "Importar fotos"
 
 #: src/gui/ActionManager.py:97
-#: src/gui/DlgRender.py:131
+#: src/gui/DlgRender.py:132
 msgid "Render filmstrip"
 msgstr "Fazer filmstrip"
 
@@ -297,11 +297,57 @@ msgstr ""
 #: src/gui/DlgProjectProps.py:433
 #: src/gui/DlgProjectProps.py:476
 #: src/gui/DlgProjectProps.py:487
-#: src/gui/DlgRender.py:361
-#: src/gui/DlgRender.py:390
+#: src/gui/DlgRender.py:368
+#: src/gui/DlgRender.py:404
 #: src/gui/FrmMain.py:460
 msgid "Error"
 msgstr "Erro"
+
+#: src/gui/DlgFinalize.py:50
+msgid "Finalizing"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:59
+msgid "Choose your next action:"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:63
+msgid "Play video"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:68
+msgid "Open folder"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:72
+msgid "Delete unfinished result"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:76
+msgid "Do nothing"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:80
+#: src/gui/DlgRender.py:190
+#: src/gui/DlgRender.py:373
+msgid "&Close"
+msgstr ""
+
+#: src/gui/DlgFinalize.py:86
+msgid "Show error again and send to developer."
+msgstr ""
+
+#: src/gui/DlgFinalize.py:99
+msgid "The rendering process was aborted."
+msgstr ""
+
+#: src/gui/DlgFinalize.py:104
+msgid "The rendering process was interrupted."
+msgstr ""
+
+#: src/gui/DlgFinalize.py:114
+msgid "The rendering process has been finished."
+msgstr ""
 
 #: src/gui/DlgPositionInput.py:155
 msgid "Motion positions"
@@ -332,7 +378,7 @@ msgstr ""
 
 #: src/gui/DlgPositionInput.py:253
 #: src/gui/DlgProjectProps.py:221
-#: src/gui/DlgRender.py:287
+#: src/gui/DlgRender.py:293
 #: src/gui/DlgRendererProps.py:107
 msgid "&Cancel"
 msgstr ""
@@ -416,7 +462,7 @@ msgid "Folder does not exists! Do you want %s to create it?"
 msgstr ""
 
 #: src/gui/DlgProjectProps.py:466
-#: src/gui/DlgRender.py:317
+#: src/gui/DlgRender.py:323
 #: src/gui/FrmMain.py:290
 #: src/gui/FrmMain.py:406
 #: src/gui/FrmMain.py:485
@@ -432,70 +478,65 @@ msgstr ""
 msgid "Cannot write into folder!"
 msgstr ""
 
-#: src/gui/DlgRender.py:142
+#: src/gui/DlgRender.py:143
 msgid "Profile:"
 msgstr "Perfel:"
 
-#: src/gui/DlgRender.py:151
+#: src/gui/DlgRender.py:152
 msgid "Type:"
 msgstr "Tipo:"
 
-#: src/gui/DlgRender.py:161
+#: src/gui/DlgRender.py:162
 msgid "Format:"
 msgstr ""
 
-#: src/gui/DlgRender.py:175
+#: src/gui/DlgRender.py:176
 #, fuzzy
 msgid "Properties"
 msgstr "&Propriedade"
 
-#: src/gui/DlgRender.py:179
+#: src/gui/DlgRender.py:180
 msgid "Draft"
 msgstr ""
 
-#: src/gui/DlgRender.py:189
-#: src/gui/DlgRender.py:366
-msgid "&Close"
-msgstr ""
-
-#: src/gui/DlgRender.py:196
+#: src/gui/DlgRender.py:197
 msgid "&Batch Job"
 msgstr ""
 
-#: src/gui/DlgRender.py:201
+#: src/gui/DlgRender.py:202
 msgid "&Start"
 msgstr ""
 
-#: src/gui/DlgRender.py:225
+#: src/gui/DlgRender.py:226
 msgid "Configure output and start render process"
 msgstr ""
 
-#: src/gui/DlgRender.py:262
+#: src/gui/DlgRender.py:269
 #, fuzzy
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "audio file nao existe: %s"
 
-#: src/gui/DlgRender.py:263
+#: src/gui/DlgRender.py:270
 msgid "Warning"
 msgstr ""
 
-#: src/gui/DlgRender.py:316
+#: src/gui/DlgRender.py:322
 msgid "Abort current process?"
 msgstr ""
 
-#: src/gui/DlgRender.py:389
+#: src/gui/DlgRender.py:403
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr ""
 
-#: src/gui/DlgRender.py:401
+#: src/gui/DlgRender.py:415
 msgid "Batch file"
 msgstr ""
 
-#: src/gui/DlgRender.py:408
+#: src/gui/DlgRender.py:422
 msgid "Shell script"
 msgstr ""
 
-#: src/gui/DlgRender.py:414
+#: src/gui/DlgRender.py:428
 msgid "Select batch file"
 msgstr ""
 
