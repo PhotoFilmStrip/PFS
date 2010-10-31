@@ -35,7 +35,6 @@ class RenderEngine(object):
         self.__progressHandler = progressHandler
         self.__errorMsg = None
 
-        self.__audioFile = None
         self.__picCountFactor = 1.0
         
     def __ComputePath(self, pic, picCount):
@@ -192,18 +191,9 @@ class RenderEngine(object):
             pathRectsBefore = pathRects
             transCountBefore = transCount
 
-                    
-        if self.__audioFile:
-            self.__progressHandler.SetInfo(_(u"processing audiofile..."))
-            self.__aRenderer.ProcessAudio(self.__audioFile)
-            self.__progressHandler.Steps(5)
-        
         self.__progressHandler.SetInfo(_(u"creating output..."))
         self.__aRenderer.Finalize()
         
-    def SetAudioFile(self, audioFile):
-        self.__audioFile = audioFile
-    
     def Start(self, pics, targetLengthSecs=None):
         if targetLengthSecs is not None:
             # targetLength should be at least 1sec for each pic

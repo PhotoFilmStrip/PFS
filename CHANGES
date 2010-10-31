@@ -1,8 +1,13 @@
-  * 2010/07/18 (Version 1.3.98 ALPHA)
+  * 2010/10/31 (Version 1.3.98 ALPHA)
     changed:
-     - new icons for toolbuttons
-     - simplified render project dialog
-     - uniform dialogs
+     - better audio support
+     - simplified render settings
+     - UI optimizations
+     - keyboard shortcuts
+     - settings file saved in app dir (if possible) - portable version
+    bugfix:
+     - working CLI
+     - order of recently used projects fixed
   
   * 2010/07/18 (Version 1.3.97 ALPHA)
     added:

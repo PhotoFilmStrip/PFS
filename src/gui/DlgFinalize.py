@@ -1,4 +1,25 @@
 #Boa:Dialog:DlgFinalize
+# encoding: UTF-8
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2010 Jens Goepfert
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
 
 import os
 import shutil
@@ -27,9 +48,13 @@ class DlgFinalize(wx.Dialog):
         parent.AddWindow(self.stNextAction, 0, border=8, flag=wx.ALL)
         parent.AddWindow(self.rb1, 0, border=24,
               flag=wx.RIGHT | wx.LEFT | wx.ALIGN_LEFT)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.rb2, 0, border=24, flag=wx.RIGHT | wx.LEFT)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.rb3, 0, border=24, flag=wx.RIGHT | wx.LEFT)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.rb4, 0, border=24, flag=wx.RIGHT | wx.LEFT)
+        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cbSendErr, 0, border=8, flag=wx.ALL)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdClose, 0, border=8,
@@ -99,15 +124,16 @@ class DlgFinalize(wx.Dialog):
             msg = _("The rendering process was aborted.")
             self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_WARNING,
               wx.ART_TOOLBAR, (32, 32)))
+            self.rb3.SetValue(True)
         
         elif errMsg:
             msg = _("The rendering process was interrupted.")
+            self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_ERROR,
+              wx.ART_TOOLBAR, (32, 32)))
             self.rb3.SetValue(True)
             self.rb1.Show(False)
             self.cbSendErr.Show(True)
             
-            self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_ERROR,
-              wx.ART_TOOLBAR, (32, 32)))
             lines = errMsg.split("\n")
             errMsg = u"%s %s" % (lines[0], lines[-1])
         else:

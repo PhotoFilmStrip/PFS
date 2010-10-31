@@ -22,7 +22,7 @@
 import re
 import sys
 
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE
 
 from lib.util import Encode
 
@@ -38,7 +38,7 @@ class MPlayer(object):
 
     def __Identify(self):
         cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", self.filename]
-        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=False)
+        proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=False)
         proc.wait()
         output = proc.stdout.read()
         
@@ -49,13 +49,14 @@ class MPlayer(object):
             if match is not None:
                 self.__length = float(match.group(1))
         except:
-            import traceback
-            traceback.print_exc()
+            pass
+#            import traceback
+#            traceback.print_exc()
         
     def __Call(self):
         if self.__proc is None:
             cmd = ["mplayer", self.filename]
-            self.__proc = Popen(cmd, stdin=PIPE, stderr=STDOUT, shell=False)
+            self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, shell=False)
         
     def IsOk(self):
         return self.__length is not None

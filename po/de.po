@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2010-10-30 23:05+0100\n"
+"PO-Revision-Date: 2010-10-31 07:57+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: \n"
@@ -309,7 +309,7 @@ msgstr "Abschließen"
 
 #: src/gui/DlgFinalize.py:59
 msgid "Choose your next action:"
-msgstr "Wählen Sie ihre nächsten Schritt:"
+msgstr "Was möchten Sie tun:"
 
 #: src/gui/DlgFinalize.py:63
 msgid "Play video"
@@ -325,7 +325,7 @@ msgstr "Unfertige Dateien löschen"
 
 #: src/gui/DlgFinalize.py:76
 msgid "Do nothing"
-msgstr "Nichts tun"
+msgstr "Nichts"
 
 #: src/gui/DlgFinalize.py:80
 #: src/gui/DlgRender.py:190
