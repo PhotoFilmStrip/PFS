@@ -56,7 +56,7 @@ class MPlayer(object):
     def __Call(self):
         if self.__proc is None:
             cmd = ["mplayer", self.filename]
-            self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, shell=False)
+            self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, stdout=PIPE, shell=False)
         
     def IsOk(self):
         return self.__length is not None
