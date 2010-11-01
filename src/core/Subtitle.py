@@ -32,10 +32,10 @@ class SubtitleSrt(object):
         self.__factor = factor
         
     def __FormatTime(self, totalSecs):
-        minutes = int(round(totalSecs / 60.0))
-        hours = int(round(minutes / 60.0))
-        seconds = int(round(totalSecs)) % 60
-        frac = int((totalSecs - int(totalSecs)) * 1000)
+        minutes = int(totalSecs / 60.0)
+        hours = int(minutes / 60.0)
+        seconds = int(totalSecs) % 60
+        frac = int((totalSecs - int(totalSecs)) * 1000.0)
         return "%02d:%02d:%02d,%03d" % (hours, minutes, seconds, frac)
     
     def __GetPicDuration(self, pic):
