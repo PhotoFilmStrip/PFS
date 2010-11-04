@@ -21,11 +21,12 @@
 
 import threading
 import urllib
+import re
 
 
 class UpdateChecker(threading.Thread):
 
-    URL = "http://photostoryx.sourceforge.net/update.txt"
+    URL = "http://www.photofilmstrip.org/update.txt"
     
     def __init__(self):
         threading.Thread.__init__(self, name="UpdateCheck")
@@ -45,13 +46,16 @@ class UpdateChecker(threading.Thread):
             data = fd.read()
         except IOError:
             self._checkDone = True
-            self._isOk = False
             return
         
         lines = data.split('\n')
-        self._onlineVersion = lines.pop(0)
-        if self._onlineVersion.find("error") != -1:
+        
+        ovMatch = re.match("(\d+).(\d+).(\d+)?(.+)?", lines.pop(0))
+        if ovMatch:
+            self._onlineVersion = ".".join(ovMatch.groups()[:3])
+        else:
             return
+
         self._changes = lines
         
         self._checkDone = True

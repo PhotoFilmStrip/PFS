@@ -48,7 +48,7 @@ if sys.platform == "win32":
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.3.98"
+    APP_VERSION     = "1.3.99"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 

@@ -90,7 +90,7 @@ class DlgBugReport(wx.Dialog):
                                                                        Encode(self.tcMsg.GetValue()),
                                                                        info)})
         try:
-            fd = urllib.urlopen("http://www.sg-dev.de/bugreport.php", params)
+            fd = urllib.urlopen("http://www.photofilmstrip.org/bugreport.php", params)
             result = fd.read()
         except IOError:
             result = None
