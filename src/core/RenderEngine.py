@@ -23,6 +23,7 @@ import traceback, StringIO
 
 import Image
 
+from core.renderer.RendererException import RendererException
 from core.Subtitle import SubtitleSrt
 from core.Picture import Picture
 
@@ -34,6 +35,7 @@ class RenderEngine(object):
         self.__profile = aRenderer.GetProfile()
         self.__progressHandler = progressHandler
         self.__errorMsg = None
+        self.__errorCls = None
 
         self.__picCountFactor = 1.0
         
@@ -228,7 +230,11 @@ class RenderEngine(object):
             
             self.__Start(pics)
             return True
+        except RendererException, err:
+            self.__errorCls = err.__class__
+            self.__errorMsg = u"%s" % err
         except StandardError, err:
+            self.__errorCls = err.__class__
             tb = StringIO.StringIO()
             traceback.print_exc(file=tb)
             self.__errorMsg = u"%s: %s\n%s" % (err.__class__.__name__, 
@@ -240,3 +246,6 @@ class RenderEngine(object):
 
     def GetErrorMessage(self):
         return self.__errorMsg
+
+    def GetErrorClass(self):
+        return self.__errorCls

@@ -25,6 +25,7 @@ from subprocess import Popen, PIPE, STDOUT
 
 from core.Aspect import Aspect
 from core.OutputProfile import OutputProfile
+from core.renderer.RendererException import RendererException
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 
@@ -162,7 +163,7 @@ class MPEGRenderer(MEncoderRenderer):
             lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                      "aspect": aspect}
         else:
-            raise RuntimeError('MPEG format supports only VCD, SVCD and DVD profile!')
+            raise RendererException(_(u'MPEG format supports only VCD, SVCD and DVD profile!'))
             
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \

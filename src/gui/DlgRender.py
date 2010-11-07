@@ -33,6 +33,7 @@ from core.OutputProfile import OutputProfile, GetOutputProfiles
 from core.ProgressHandler import ProgressHandler
 from core.RenderEngine import RenderEngine
 from core.renderer import RENDERERS
+from core.renderer.RendererException import RendererException
 
 from lib.common.ObserverPattern import Observer
 from lib.Settings import Settings
@@ -361,7 +362,8 @@ class DlgRender(wx.Dialog, Observer):
         else:
             self.stProgress.SetLabel(_(u"all done"))
 
-        errMsg = self.__renderEngine.GetErrorMessage() 
+        errMsg = self.__renderEngine.GetErrorMessage()
+        errCls = self.__renderEngine.GetErrorClass()
         if errMsg:
             dlg = wx.MessageDialog(self,
                                    errMsg,
@@ -378,6 +380,9 @@ class DlgRender(wx.Dialog, Observer):
         self.__progressHandler = None
         self.__renderEngine    = None
         self.Layout()
+        
+        if errCls is RendererException:
+            return
         
         dlg = DlgFinalize(self, 
                           self.__GetOutputPath(),
