@@ -154,8 +154,13 @@ class DlgFinalize(wx.Dialog):
         try:
             if self.rb1.GetValue():
                 # Play video
-                mplayer = MPlayer(os.path.join(self.outpath, "output.avi"))
-                mplayer.Play()
+                videoFile = os.path.join(self.outpath, "output.avi")
+#                mplayer = MPlayer(videoFile)
+#                mplayer.Play()
+                if os.name == "nt":
+                    os.startfile(videoFile)
+                else:
+                    subprocess.Popen(["xdg-open", videoFile])
             elif self.rb2.GetValue():
                 # Open folder
                 if os.name == "nt":

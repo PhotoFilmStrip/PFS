@@ -146,7 +146,7 @@ class DlgProjectProps(wx.Dialog):
 
         self.tcFolder = wx.TextCtrl(id=wxID_DLGPROJECTPROPSTCFOLDER,
               name=u'tcFolder', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0, value=u'')
+              size=wx.Size(-1, -1), style=wx.TE_READONLY, value=u'')
 
         self.cmdBrowseFolder = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
               wx.ART_TOOLBAR, (16, 16)), id=wxID_DLGPROJECTPROPSCMDBROWSEFOLDER,
@@ -493,7 +493,7 @@ class DlgProjectProps(wx.Dialog):
         return True
 
     def __GetProjectPath(self):
-        projName = self.tcProject.GetValue()
+        projName = self.tcProject.GetValue().strip()
         filepath = os.path.join(self.tcFolder.GetValue(), 
                                 projName,
                                 "%s.pfs" % projName)
