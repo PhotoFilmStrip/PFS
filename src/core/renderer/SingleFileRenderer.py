@@ -58,6 +58,16 @@ class SingleFileRenderer(BaseRenderer):
         filtr = Image.NEAREST
         if not self._draft:
             filterStr = self.GetProperty("ResampleFilter").lower()
+
+            # Begin Optimizations
+            if cropRect[2] > size[0] * 3:
+                # downscale more than factor 3, prescaling
+                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
+            if cropRect[2] < size[0]:
+                # upscaling
+                filterStr = "bicubic"
+            # End Optimizations
+            
             if filterStr == "bilinear":
                 filtr = Image.BILINEAR
             elif filterStr == "bicubic":
@@ -72,7 +82,7 @@ class SingleFileRenderer(BaseRenderer):
         newFilename = os.path.join(self.GetOutputPath(), 
                                    '%09d.%s' % (self._counter, 
                                                 format.lower()))
-        image.save(newFilename, format)
+        image.save(newFilename, format, quality=90)
     
     def Finalize(self):
         pass
