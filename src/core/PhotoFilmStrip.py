@@ -56,10 +56,12 @@ class PhotoFilmStrip(object):
         
         cur.execute("select count(*) from `picture`")
         imgCount = cur.fetchone()[0]
-        picIdx   = random.randint(0, imgCount - 1)
-        
-        cur.execute("select filename, rotation from `picture` limit ?,1", (picIdx, ))
-        imgFile, rotation = cur.fetchone()
+        imgFile = ""
+        if imgCount > 0:
+            picIdx   = random.randint(0, imgCount - 1)
+            
+            cur.execute("select filename, rotation from `picture` limit ?,1", (picIdx, ))
+            imgFile, rotation = cur.fetchone()
         
         if os.path.exists(imgFile):
             img = Image.open(imgFile)
