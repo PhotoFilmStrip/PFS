@@ -470,8 +470,8 @@ class FrmMain(wx.Frame):
         if not skipHistory:
             self.AddFileToHistory(filepath)
         
-#        self.pnlWelcome.RefreshPage() # crashes on unix
-        wx.CallAfter(self.pnlWelcome.RefreshPage)
+#            self.pnlWelcome.RefreshPage() # crashes on unix
+            wx.CallAfter(self.pnlWelcome.RefreshPage)
     
     def SaveProject(self, filepath, includePics):
         photoFilmStrip = self.__GetCurrentPhotoFilmStrip()
@@ -490,6 +490,9 @@ class FrmMain(wx.Frame):
 
         if not includePics:
             self.AddFileToHistory(filepath)
+            
+#            self.pnlWelcome.RefreshPage() # crashes on unix
+            wx.CallAfter(self.pnlWelcome.RefreshPage)
         
         return True
     

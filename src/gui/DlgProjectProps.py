@@ -356,7 +356,7 @@ class DlgProjectProps(wx.Dialog):
         event.Skip()
 
     def OnCmdOkButton(self, event):
-        if self.__ValidateAudioFile() and self.__ValidateOutDir():
+        if self.__ValidateAudioFile() and self.__ValidateOutDir() and self.__ValidateProjName():
             self.__CloseMediaCtrl()
             event.Skip()
 
@@ -492,6 +492,15 @@ class DlgProjectProps(wx.Dialog):
 
         return True
 
+    def __ValidateProjName(self):
+        projName = self.tcProject.GetValue().strip()
+        if not projName:
+            self.pnlHdr.SetErrorMessage(_(u"The project name must be filled."))
+            return False
+        else:
+            self.pnlHdr.SetErrorMessage(u"")
+            return True
+    
     def __GetProjectPath(self):
         projName = self.tcProject.GetValue().strip()
         filepath = os.path.join(self.tcFolder.GetValue(), 
