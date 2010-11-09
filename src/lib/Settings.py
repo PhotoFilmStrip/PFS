@@ -173,7 +173,10 @@ class Settings(Singleton):
     def GetLastProfile(self):
         self.Load()
         if self.cp.has_option("General", "LastProfile"):
-            return self.cp.getint("General", "LastProfile")
+            try:
+                return self.cp.getint("General", "LastProfile")
+            except:
+                pass
         return 0
 
     def SetVideoType(self, typ):
@@ -184,7 +187,10 @@ class Settings(Singleton):
     def GetVideoType(self):
         self.Load()
         if self.cp.has_option("General", "VideoType"):
-            return self.cp.getint("General", "VideoType")
+            try:
+                return self.cp.getint("General", "VideoType")
+            except:
+                pass
         return 0
 
     def SetUsedRenderer(self, renderer):
@@ -195,7 +201,10 @@ class Settings(Singleton):
     def GetUsedRenderer(self):
         self.Load()
         if self.cp.has_option("General", "Renderer"):
-            return self.cp.getint("General", "Renderer")
+            try:
+                return self.cp.getint("General", "Renderer")
+            except:
+                pass
         return 1
     
     def SetLastKnownVersion(self, version):
@@ -215,7 +224,7 @@ class Settings(Singleton):
             self.cp.remove_section(renderer)
         self.cp.add_section(renderer)
         for prop, value in props.items():
-            self.cp.set(renderer, prop, value)
+            self.cp.set(renderer, prop, Encode(value))
         self.Save()
     
     def GetRenderProperties(self, renderer):
@@ -224,7 +233,7 @@ class Settings(Singleton):
         if not self.cp.has_section(renderer):
             return result
         for prop, value in self.cp.items(renderer):
-            result[prop] = value
+            result[prop] = Decode(value)
         
         return result
 
