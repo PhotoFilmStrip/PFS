@@ -56,7 +56,7 @@ class MEncoderRenderer(SingleFileRenderer):
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "RenderSubtitle":
-            return False
+            return "false"
         return SingleFileRenderer.GetDefaultProperty(prop)
 
     def ProcessFinalize(self, image):
@@ -82,7 +82,7 @@ class MEncoderRenderer(SingleFileRenderer):
     def Finalize(self):
         self.__CleanUp()
         
-        if self.__class__.GetProperty("RenderSubtitle"):
+        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
             # delete subtitle file, if subtitle is rendered in video
             srtPath = os.path.join(self.GetOutputPath(), "output.srt")
             if os.path.exists(srtPath):
@@ -92,7 +92,7 @@ class MEncoderRenderer(SingleFileRenderer):
         raise NotImplementedError()
     
     def _GetSubArgs(self):
-        if self.__class__.GetProperty("RenderSubtitle"):
+        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
             subArgs = ["-sub", os.path.join(self.GetOutputPath(), "output.srt"),
                        "-subcp", "utf8"]
         else:
@@ -117,7 +117,10 @@ class MEncoderRenderer(SingleFileRenderer):
         if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
             bitrate = self.PProfile.GetBitrate()
         else:
-            bitrate = self.__class__.GetProperty("Bitrate")
+            try:
+                bitrate = int(self.__class__.GetProperty("Bitrate"))
+            except:
+                raise RendererException(_(u"Bitrate must be a number!"))
         return bitrate
 
 

@@ -224,10 +224,7 @@ class Settings(Singleton):
         if not self.cp.has_section(renderer):
             return result
         for prop, value in self.cp.items(renderer):
-            try:
-                result[prop] = eval(value)
-            except:
-                result[prop] = value
+            result[prop] = value
         
         return result
 

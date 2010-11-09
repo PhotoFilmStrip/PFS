@@ -165,11 +165,8 @@ class DlgRendererProps(wx.Dialog):
                                  prop, 
                                  unicode(self.rendererClass.GetProperty(prop)))
         if dlg.ShowModal() == wx.ID_OK:
-            try:
-                value = eval(dlg.GetValue())
-            except NameError:
-                value = dlg.GetValue()
-            except:
+            value = dlg.GetValue()
+            if len(value) == 0:
                 value = self.rendererClass.GetDefaultProperty(prop)
             self.rendererClass.SetProperty(prop, value)
             self.lcProps.SetStringItem(idx, 1, unicode(value))
