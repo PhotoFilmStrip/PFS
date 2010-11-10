@@ -46,25 +46,28 @@ class DlgFinalize(wx.Dialog):
 
         parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
         parent.AddWindow(self.stNextAction, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.rb1, 0, border=24,
-              flag=wx.RIGHT | wx.LEFT | wx.ALIGN_LEFT)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.rb2, 0, border=24, flag=wx.RIGHT | wx.LEFT)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.rb3, 0, border=24, flag=wx.RIGHT | wx.LEFT)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.rb4, 0, border=24, flag=wx.RIGHT | wx.LEFT)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
+        parent.AddSizer(self.szRadios, 0, border=24, flag=wx.LEFT)
         parent.AddWindow(self.cbSendErr, 0, border=8, flag=wx.ALL)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdClose, 0, border=8,
               flag=wx.ALL | wx.ALIGN_RIGHT)
 
+    def _init_coll_szRadios_Items(self, parent):
+        # generated method, don't edit
+
+        parent.AddWindow(self.rb1, 0, border=4, flag=wx.TOP | wx.BOTTOM)
+        parent.AddWindow(self.rb2, 0, border=4, flag=wx.TOP | wx.BOTTOM)
+        parent.AddWindow(self.rb3, 0, border=4, flag=wx.TOP | wx.BOTTOM)
+        parent.AddWindow(self.rb4, 0, border=4, flag=wx.TOP | wx.BOTTOM)
+
     def _init_sizers(self):
         # generated method, don't edit
         self.szMain = wx.BoxSizer(orient=wx.VERTICAL)
 
+        self.szRadios = wx.BoxSizer(orient=wx.VERTICAL)
+
         self._init_coll_szMain_Items(self.szMain)
+        self._init_coll_szRadios_Items(self.szRadios)
 
         self.SetSizer(self.szMain)
 
@@ -108,8 +111,9 @@ class DlgFinalize(wx.Dialog):
               id=wxID_DLGFINALIZECMDCLOSE)
 
         self.cbSendErr = wx.CheckBox(id=wxID_DLGFINALIZECBSENDERR,
-              label=_(u'Show error again and send to developer.'), name=u'cbSendErr', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+              label=_(u'Show error again and send to developer.'),
+              name=u'cbSendErr', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
         self.cbSendErr.SetValue(True)
         self.cbSendErr.Show(False)
 
