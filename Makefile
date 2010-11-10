@@ -85,7 +85,9 @@ deb:
 	rm -rf `find $$targetdir -name .svn -type d`; \
 	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
 	cd "$$targetdir"; \
-	dh_make -e "jens@sg-dev.de" -c gpl -s -f "../$$appver.tar.gz"; \
+	echo \\n > newline.txt; \
+	dh_make -e "jens@sg-dev.de" -c gpl -s -f "../$$appver.tar.gz" < newline.txt; \
+	rm newline.txt; \
 	rm debian/*.ex; \
 	rm debian/*.EX; \
 	cd $$curdir; \
