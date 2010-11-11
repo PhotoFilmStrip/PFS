@@ -57,7 +57,7 @@ pot:
 	pygettext -o "$(displayname).pot" -v "$(srcdir)/src"
 
 
-deb:
+package:
 	curdir=`pwd`; \
 	cd src; \
 	ver=`python -c "import lib.Settings;print lib.Settings.Settings.APP_VERSION"`; \
@@ -86,7 +86,7 @@ deb:
 	tar -C "$$releasedir" -czf "$$releasedir/$$appver.tar.gz" $$appver; \
 	cd "$$targetdir"; \
 	echo \\n > ../newline.txt; \
-	dh_make -e "jens@sg-dev.de" -c gpl -s -f "../$$appver.tar.gz" < ../newline.txt; \
+	dh_make -e "info@photofilmstrip.org" -c gpl -s -f "../$$appver.tar.gz" < ../newline.txt; \
 	rm ../newline.txt; \
 	rm debian/*.ex; \
 	rm debian/*.EX; \

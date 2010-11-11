@@ -24,6 +24,7 @@ logging.basicConfig(level=logging.INFO,
 
 import os
 import sys
+import subprocess
 
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -87,16 +88,16 @@ def getVersion():
 def clean():
     logging.info("cleaning...")
     if os.path.exists(os.path.join(WORKDIR, "dist")):
-       os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "dist"))
+       subprocess.call(["rd", "/s", "/q", os.path.join(WORKDIR, "dist")])
        
     if os.path.exists(os.path.join(WORKDIR, "build", "bdist.win32")):
-       os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "build", "bdist.win32"))
+       subprocess.call(["rd", "/s", "/q", os.path.join(WORKDIR, "build", "bdist.win32")])
 
     if os.path.exists(os.path.join(WORKDIR, "release")):
-       os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "release"))
+       subprocess.call(["rd", "/s", "/q", os.path.join(WORKDIR, "release")])
 
     if os.path.exists(os.path.join(WORKDIR, "locale")):
-       os.system("rd /s /q \"%s\"" % os.path.join(WORKDIR, "locale"))
+       subprocess.call(["rd", "/s", "/q", os.path.join(WORKDIR, "locale")])
 
     if os.path.exists(os.path.join(WORKDIR, "version.info")):
        os.remove(os.path.join(WORKDIR, "version.info"))
@@ -114,18 +115,25 @@ def compile():
             if not os.path.exists(path):
                 os.makedirs(path)
             
-	    os.system(MSGFMT + " -o \"%s\\PhotoFilmStrip.mo\" \"po\\%s\"" %(path, base))
-
+        code = subprocess.call([MSGFMT, "-o",
+                                os.path.join(path, "PhotoFilmStrip.mo"),
+                                os.path.join("po", base)])
+        if code != 0:
+            sys.exit(code)
     logging.info("running py2exe...")
-    os.system("%s setup.py py2exe %s" % (PYTHON, " ".join(Args.PY2EXE)))
+    code = subprocess.call([PYTHON, "setup.py", "py2exe", " ".join(Args.PY2EXE)])
+    if code != 0:
+        sys.exit(code)
     logging.info("    done.")
 
-def install():
+def package():
     if not os.path.exists(os.path.join(WORKDIR, "dist")):
         compile()
     ver = getVersion()
     logging.info("building installer...")
-    os.system("\"%s\" /Q /F%s-%s photofilmstrip.iss" % (INNO, "setup_photofilmstrip", ver))
+    code = subprocess.call([INNO, "/Q", "/F%s-%s photofilmstrip.iss" % ("setup_photofilmstrip", ver)])
+    if code != 0:
+        sys.exit(code)
     logging.info("    done.")
 
 
@@ -139,9 +147,9 @@ if __name__ == "__main__":
             clean()
         elif sys.argv[1] == "compile":
             compile()
-        elif sys.argv[1] == "install":
-            install()
+        elif sys.argv[1] == "package":
+            package()
         sys.exit(0)
 
-    install()
+    package()
     logging.info("all done.")
