@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2010-10-30 23:06+0100\n"
+"PO-Revision-Date: 2010-11-12 23:04+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:221
-#: src/gui/DlgRender.py:362
+#: src/gui/DlgRender.py:363
 msgid "all done"
 msgstr "Terminer "
 
@@ -54,7 +54,7 @@ msgid "enable draft mode"
 msgstr ""
 
 #: src/cli/Main.py:114
-#: src/gui/DlgRender.py:230
+#: src/gui/DlgRender.py:231
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr ""
 
@@ -93,13 +93,13 @@ msgstr "ne peux créer le chemin de sortie: %s "
 #: src/gui/DlgProjectProps.py:389
 #: src/gui/DlgProjectProps.py:392
 #: src/gui/DlgProjectProps.py:432
-#: src/gui/DlgRender.py:244
+#: src/gui/DlgRender.py:245
 #, fuzzy
 msgid "Audio file '%s' does not exist!"
 msgstr "Le fichier audio n'existe pas!"
 
 #: src/cli/Main.py:217
-#: src/gui/DlgRender.py:360
+#: src/gui/DlgRender.py:361
 msgid "...aborted!"
 msgstr "...abandonner! "
 
@@ -115,7 +115,7 @@ msgstr "Propriété inconnue: %s"
 msgid "<default>"
 msgstr "<défaut>"
 
-#: src/core/PhotoFilmStrip.py:143
+#: src/core/PhotoFilmStrip.py:145
 msgid "Loading '%s' ..."
 msgstr "Chargement '%s'"
 
@@ -127,49 +127,58 @@ msgstr "Attendez s.v.p... "
 msgid "aborting..."
 msgstr "abandon..."
 
-#: src/core/RenderEngine.py:149
+#: src/core/RenderEngine.py:150
 msgid "initialize renderer"
 msgstr "Initialiser rendu     "
 
-#: src/core/RenderEngine.py:170
+#: src/core/RenderEngine.py:171
 msgid "processing transition %d/%d"
 msgstr "Traitement transition %d/%d"
 
-#: src/core/RenderEngine.py:181
+#: src/core/RenderEngine.py:182
 msgid "processing image %d/%d"
 msgstr "Traitement image %d/%d"
 
-#: src/core/RenderEngine.py:197
-msgid "processing audiofile..."
-msgstr "Traitement fichier audio..."
-
-#: src/core/RenderEngine.py:201
+#: src/core/RenderEngine.py:196
 msgid "creating output..."
 msgstr "création sortie..."
 
-#: src/core/RenderEngine.py:234
+#: src/core/RenderEngine.py:226
 msgid "generating subtitle"
 msgstr "Création des sous-titres "
 
-#: src/core/renderer/MovieRenderer.py:49
+#: src/core/renderer/MovieRenderer.py:50
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) requis!"
 
-#: src/core/renderer/MovieRenderer.py:130
+#: src/core/renderer/MovieRenderer.py:85
+#: src/core/renderer/MovieRenderer.py:95
+msgid "no"
+msgstr ""
+
+#: src/core/renderer/MovieRenderer.py:123
+msgid "Bitrate must be a number!"
+msgstr ""
+
+#: src/core/renderer/MovieRenderer.py:134
 #, fuzzy
 msgid "MPEG(1/2)-Video (MPG)"
 msgstr "Vidéo-MPEG2"
 
-#: src/core/renderer/MovieRenderer.py:190
+#: src/core/renderer/MovieRenderer.py:169
+msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+msgstr ""
+
+#: src/core/renderer/MovieRenderer.py:194
 #, fuzzy
 msgid "MPEG4-XVid (AVI)"
 msgstr "Vidéo-MPEG4 (XVid)"
 
-#: src/core/renderer/MovieRenderer.py:222
+#: src/core/renderer/MovieRenderer.py:226
 msgid "Flash-Video (FLV)"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:253
+#: src/core/renderer/MovieRenderer.py:257
 msgid "Motion-JPEG (AVI)"
 msgstr ""
 
@@ -191,7 +200,7 @@ msgstr "&Outils"
 
 #: src/gui/ActionManager.py:67
 #: src/gui/ActionManager.py:196
-#: src/gui/DlgRender.py:185
+#: src/gui/DlgRender.py:186
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "&Aide"
@@ -213,7 +222,7 @@ msgid "Import Pictures"
 msgstr "Importer des images"
 
 #: src/gui/ActionManager.py:97
-#: src/gui/DlgRender.py:132
+#: src/gui/DlgRender.py:133
 msgid "Render filmstrip"
 msgstr "Rendu filmstrip "
 
@@ -287,74 +296,74 @@ msgstr "Une erreur imprévue est survenue"
 msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
 msgstr "Une erreur imprévue est survenue. Vous vous envoyer le rapport d'incident au développeur %s?"
 
-#: src/gui/DlgBugReport.py:100
+#: src/gui/DlgBugReport.py:101
 msgid "Bug-Report send. Thank you for your support."
 msgstr "Rapport de bug envoyé. Merci de votre soutien."
 
-#: src/gui/DlgBugReport.py:101
+#: src/gui/DlgBugReport.py:102
 #: src/gui/FrmMain.py:180
 msgid "Information"
 msgstr "Information"
 
-#: src/gui/DlgBugReport.py:107
+#: src/gui/DlgBugReport.py:108
 msgid "Sorry, this function is temporary not available.."
 msgstr "Désolé cette fonction est temporairement indisponible.."
 
-#: src/gui/DlgBugReport.py:108
+#: src/gui/DlgBugReport.py:109
 #: src/gui/DlgProjectProps.py:393
 #: src/gui/DlgProjectProps.py:422
 #: src/gui/DlgProjectProps.py:433
 #: src/gui/DlgProjectProps.py:476
 #: src/gui/DlgProjectProps.py:487
-#: src/gui/DlgRender.py:368
-#: src/gui/DlgRender.py:404
+#: src/gui/DlgRender.py:370
+#: src/gui/DlgRender.py:409
 #: src/gui/FrmMain.py:460
 msgid "Error"
 msgstr "Erreur"
 
-#: src/gui/DlgFinalize.py:50
+#: src/gui/DlgFinalize.py:78
 msgid "Finalizing"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:59
+#: src/gui/DlgFinalize.py:87
 msgid "Choose your next action:"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:63
+#: src/gui/DlgFinalize.py:91
 msgid "Play video"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:68
+#: src/gui/DlgFinalize.py:96
 msgid "Open folder"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:72
+#: src/gui/DlgFinalize.py:100
 msgid "Delete unfinished result"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:76
+#: src/gui/DlgFinalize.py:104
 msgid "Do nothing"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:80
-#: src/gui/DlgRender.py:190
-#: src/gui/DlgRender.py:373
+#: src/gui/DlgFinalize.py:108
+#: src/gui/DlgRender.py:191
+#: src/gui/DlgRender.py:375
 msgid "&Close"
 msgstr "&Fermer"
 
-#: src/gui/DlgFinalize.py:86
+#: src/gui/DlgFinalize.py:114
 msgid "Show error again and send to developer."
 msgstr ""
 
-#: src/gui/DlgFinalize.py:99
+#: src/gui/DlgFinalize.py:128
 msgid "The rendering process was aborted."
 msgstr ""
 
-#: src/gui/DlgFinalize.py:104
+#: src/gui/DlgFinalize.py:134
 msgid "The rendering process was interrupted."
 msgstr ""
 
-#: src/gui/DlgFinalize.py:114
+#: src/gui/DlgFinalize.py:144
 msgid "The rendering process has been finished."
 msgstr ""
 
@@ -388,7 +397,7 @@ msgstr ""
 
 #: src/gui/DlgPositionInput.py:253
 #: src/gui/DlgProjectProps.py:221
-#: src/gui/DlgRender.py:293
+#: src/gui/DlgRender.py:294
 #: src/gui/DlgRendererProps.py:107
 msgid "&Cancel"
 msgstr "&Annulé"
@@ -476,7 +485,7 @@ msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "Le chemin de destination n'existe pas! Voulez vous %s le créer?"
 
 #: src/gui/DlgProjectProps.py:466
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:324
 #: src/gui/FrmMain.py:290
 #: src/gui/FrmMain.py:406
 #: src/gui/FrmMain.py:485
@@ -493,66 +502,70 @@ msgstr "Ne peux créer le dossier: %s"
 msgid "Cannot write into folder!"
 msgstr "Ne peux écrire dans le dossier: %s"
 
-#: src/gui/DlgRender.py:143
+#: src/gui/DlgProjectProps.py:498
+msgid "The project name must be filled."
+msgstr ""
+
+#: src/gui/DlgRender.py:144
 msgid "Profile:"
 msgstr "Profil:"
 
-#: src/gui/DlgRender.py:152
+#: src/gui/DlgRender.py:153
 msgid "Type:"
 msgstr "Type:"
 
-#: src/gui/DlgRender.py:162
+#: src/gui/DlgRender.py:163
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:176
+#: src/gui/DlgRender.py:177
 #, fuzzy
 msgid "Properties"
 msgstr "Propriété"
 
-#: src/gui/DlgRender.py:180
+#: src/gui/DlgRender.py:181
 #, fuzzy
 msgid "Draft"
 msgstr "Durée "
 
-#: src/gui/DlgRender.py:197
+#: src/gui/DlgRender.py:198
 msgid "&Batch Job"
 msgstr "&Traitement par lots"
 
-#: src/gui/DlgRender.py:202
+#: src/gui/DlgRender.py:203
 msgid "&Start"
 msgstr "&Démarrer "
 
-#: src/gui/DlgRender.py:226
+#: src/gui/DlgRender.py:227
 msgid "Configure output and start render process"
 msgstr ""
 
-#: src/gui/DlgRender.py:269
+#: src/gui/DlgRender.py:270
 #, fuzzy
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "Le fichier audio n'existe pas!"
 
-#: src/gui/DlgRender.py:270
+#: src/gui/DlgRender.py:271
 msgid "Warning"
 msgstr ""
 
-#: src/gui/DlgRender.py:322
+#: src/gui/DlgRender.py:323
 msgid "Abort current process?"
 msgstr "Abandonner le processus en cour? "
 
-#: src/gui/DlgRender.py:403
+#: src/gui/DlgRender.py:408
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "Le projet n'est pas encore sauvegardé. S.v.p sauvegardez le projet afin de créer un traitement par lot!"
 
-#: src/gui/DlgRender.py:415
+#: src/gui/DlgRender.py:420
 msgid "Batch file"
 msgstr "Fichier batch "
 
-#: src/gui/DlgRender.py:422
+#: src/gui/DlgRender.py:427
 msgid "Shell script"
 msgstr "Script shell "
 
-#: src/gui/DlgRender.py:428
+#: src/gui/DlgRender.py:433
 msgid "Select batch file"
 msgstr "Sélectionner fichier batch "
 
@@ -797,6 +810,9 @@ msgstr ""
 #, fuzzy
 msgid "The following changes has been made:"
 msgstr "Une nouvelle version est disponible en ligne. Les changements suivants on été fait: "
+
+#~ msgid "processing audiofile..."
+#~ msgstr "Traitement fichier audio..."
 
 #, fuzzy
 #~ msgid "Video clip (AVI)"

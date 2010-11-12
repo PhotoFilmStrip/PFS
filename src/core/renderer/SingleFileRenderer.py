@@ -59,14 +59,14 @@ class SingleFileRenderer(BaseRenderer):
         if not self._draft:
             filterStr = self.GetProperty("ResampleFilter").lower()
 
-            # Begin Optimizations
-            if cropRect[2] > size[0] * 3:
-                # downscale more than factor 3, prescaling
-                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
-            if cropRect[2] < size[0]:
-                # upscaling
-                filterStr = "bicubic"
-            # End Optimizations
+#            # Begin Optimizations
+#            if cropRect[2] > size[0] * 3:
+#                # downscale more than factor 3, prescaling
+#                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
+#            if cropRect[2] < size[0]:
+#                # upscaling
+#                filterStr = "bicubic"
+#            # End Optimizations
             
             if filterStr == "bilinear":
                 filtr = Image.BILINEAR
