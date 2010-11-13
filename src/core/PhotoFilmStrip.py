@@ -20,6 +20,7 @@
 #
 
 import os
+import logging
 import random
 import sqlite3
 
@@ -39,12 +40,15 @@ class PhotoFilmStrip(object):
     
     @staticmethod
     def IsOk(filename):
-        conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
-        cur = conn.cursor()
-        
         try:
+            conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
+            cur = conn.cursor()
             cur.execute("select * from `picture`")
-        except sqlite3.DatabaseError, dberr:
+        except sqlite3.DatabaseError, err:
+            logging.debug("IsOk(%s): %s", filename, err)
+            return False
+        except BaseException, err:
+            logging.debug("IsOk(%s): %s", filename, err)
             return False
         return True
     
@@ -64,10 +68,14 @@ class PhotoFilmStrip(object):
             imgFile, rotation = cur.fetchone()
         
         if os.path.exists(imgFile):
-            img = Image.open(imgFile)
-            img = RotateExif(img)
-            img = img.rotate(rotation * -90)
-            img.thumbnail((64, 64), Image.NEAREST)
+            try:
+                img = Image.open(imgFile)
+                img = RotateExif(img)
+                img = img.rotate(rotation * -90)
+                img.thumbnail((64, 64), Image.NEAREST)
+            except BaseException, err:
+                logging.debug("QuickInfo(%s) - %s: %s", filename, imgFile, err)
+                img = None
         else:
             img = None
 
@@ -131,7 +139,7 @@ class PhotoFilmStrip(object):
         
         try:
             cur.execute("select * from `picture`")
-        except sqlite3.DatabaseError, dberr:
+        except sqlite3.DatabaseError:
             return False
         resultSet = cur.fetchall()
         
@@ -191,7 +199,7 @@ class PhotoFilmStrip(object):
             result = cur.fetchone()
             if result:
                 fileRev = int(result[0])
-        except sqlite3.DatabaseError, dberr:
+        except sqlite3.DatabaseError:
             pass
         
         if fileRev >= 2:

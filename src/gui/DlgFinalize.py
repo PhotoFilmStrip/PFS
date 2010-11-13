@@ -159,14 +159,20 @@ class DlgFinalize(wx.Dialog):
             if self.rb1.GetValue():
                 # Play video
                 videoFile = os.path.join(self.outpath, "output.avi")
-#                mplayer = MPlayer(videoFile)
-#                mplayer.Play()
+                if not os.path.exists(videoFile):
+                    return
+                
                 if os.name == "nt":
                     os.startfile(videoFile)
                 else:
                     subprocess.Popen(["xdg-open", videoFile])
+#                mplayer = MPlayer(videoFile)
+#                mplayer.Play()
             elif self.rb2.GetValue():
                 # Open folder
+                if not os.path.exists(self.outpath):
+                    return
+                
                 if os.name == "nt":
                     os.startfile(self.outpath)
                 else:
@@ -177,6 +183,7 @@ class DlgFinalize(wx.Dialog):
             
             if self.cbSendErr.IsShown() and self.cbSendErr.GetValue():
                 raise RuntimeError(self.errMsg)
+            
         finally:
             self.Close()
 

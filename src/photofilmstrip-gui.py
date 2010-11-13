@@ -25,8 +25,12 @@ import sys
 
 
 def initLogging():
-    logging.basicConfig(level=logging.WARNING,
-                        format='%(asctime)s (%(levelname)s): %(message)s',
+    if "-d" in sys.argv:
+        lvl = logging.DEBUG
+    else:
+        lvl = logging.WARNING
+    logging.basicConfig(level=lvl,
+                        format='%(asctime)s (%(levelname)s) %(name)s: %(message)s',
                         datefmt='%d.%m.%Y %H:%M:%S')
 
 def initI18N():

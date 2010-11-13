@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
 import sys
 
 import wx
@@ -45,7 +46,10 @@ class PhotoFilmStripApp(wx.App):
         DlgBugReport.Initialize(frame)
         
         if len(sys.argv) > 1:
-            frame.LoadProject(sys.argv[1].decode(sys.getfilesystemencoding()))
+            for arg in sys.argv[1:]:
+                fname = arg.decode(sys.getfilesystemencoding())
+                if os.path.isfile(fname):
+                    frame.LoadProject(fname)
 
         return True
 
