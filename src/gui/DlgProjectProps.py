@@ -458,7 +458,7 @@ class DlgProjectProps(wx.Dialog):
     
     def __ValidateOutDir(self, path=None):
         if path is None:
-            path = self.tcFolder.GetValue()
+            path = self.tcFolder.GetValue().strip()
             
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
@@ -503,7 +503,7 @@ class DlgProjectProps(wx.Dialog):
     
     def __GetProjectPath(self):
         projName = self.tcProject.GetValue().strip()
-        filepath = os.path.join(self.tcFolder.GetValue(), 
+        filepath = os.path.join(self.tcFolder.GetValue().strip(), 
                                 projName,
                                 "%s.pfs" % projName)
         return filepath
