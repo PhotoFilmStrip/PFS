@@ -97,11 +97,8 @@ class FrmMain(wx.Frame):
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_MENU, self.OnHelpIndex, id=wx.ID_HELP)
-        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_EN)
-        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_FR)
-        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_DE)
-        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_PT)
-        self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=ActionManager.ID_LANG_CS)
+        for wxId in ActionManager.LANG_MAP.keys():
+            self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=wxId)
 
         self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ActionManager.ID_RENDER_FILMSTRIP)
         
