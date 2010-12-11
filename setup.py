@@ -113,6 +113,7 @@ setup(
                 ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo")),
                 ("locale\\cs\\LC_MESSAGES", glob.glob("locale\\cs\\LC_MESSAGES\\*.mo")),
                 ("locale\\pt\\LC_MESSAGES", glob.glob("locale\\pt\\LC_MESSAGES\\*.mo")),
+                ("locale\\it\\LC_MESSAGES", glob.glob("locale\\it\\LC_MESSAGES\\*.mo")),
                 ("lib", ["C:\\Python25\\lib\\site-packages\\wx-2.8-msw-unicode\\wx\MSVCP71.dll"]),
     ]
     )
