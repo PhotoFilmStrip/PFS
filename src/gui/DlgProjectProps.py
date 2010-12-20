@@ -381,8 +381,7 @@ class DlgProjectProps(wx.Dialog):
         self.cmdAudioPreview.Enable(active and not manual and self.mediaCtrl is not None)
     
     def __LoadAudioFile(self, path, silent=False):
-        if self.mediaCtrl is not None:
-            self.mediaCtrl.Close()
+        self.__CloseMediaCtrl()
             
         if not os.path.exists(path):
             if silent:
@@ -439,7 +438,11 @@ class DlgProjectProps(wx.Dialog):
 
     def __CloseMediaCtrl(self):
         if self.mediaCtrl is not None:
-            self.mediaCtrl.Close()
+            try:
+                self.mediaCtrl.Close()
+            except:
+                pass
+        self.mediaCtrl = None
             
     def __GetTotalLength(self):
         totalLength = None

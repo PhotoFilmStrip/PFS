@@ -163,11 +163,15 @@ class DlgFinalize(wx.Dialog):
                     return
                 
                 if os.name == "nt":
-                    os.startfile(videoFile)
+                    try:
+                        os.startfile(videoFile)
+                    except:
+                        pass
                 else:
                     subprocess.Popen(["xdg-open", videoFile])
 #                mplayer = MPlayer(videoFile)
 #                mplayer.Play()
+            
             elif self.rb2.GetValue():
                 # Open folder
                 if not os.path.exists(self.outpath):
@@ -177,6 +181,7 @@ class DlgFinalize(wx.Dialog):
                     os.startfile(self.outpath)
                 else:
                     subprocess.Popen(["xdg-open", self.outpath])
+            
             elif self.rb3.GetValue():
                 # Delete unfinished
                 shutil.rmtree(self.outpath, True)
