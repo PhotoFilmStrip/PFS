@@ -245,7 +245,7 @@ class PnlEditPicture(wx.Panel):
         self.stProcess.SetFont(font)
         self.stSubtitle.SetFont(font)
         
-        self.pnlImgDuration.SetRange(1, 200)
+        self.pnlImgDuration.SetRange(1, 6000)
         self.pnlImgDuration.SetValue(7)
         self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
         

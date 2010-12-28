@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2010-12-11 13:40+0100\n"
+"PO-Revision-Date: 2010-12-20 19:31+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Giacomo Zanobini <zanoprova[ad]email.it>\n"
 "Language: \n"
@@ -154,15 +154,15 @@ msgstr "mencoder richiesto!"
 #: src/core/renderer/MovieRenderer.py:85
 #: src/core/renderer/MovieRenderer.py:95
 msgid "no"
-msgstr ""
+msgstr "no"
 
 #: src/core/renderer/MovieRenderer.py:123
 msgid "Bitrate must be a number!"
-msgstr ""
+msgstr "Bitrate deve essere un numero!"
 
 #: src/core/renderer/MovieRenderer.py:134
 msgid "MPEG(1/2)-Video (MPG)"
-msgstr ""
+msgstr "MPEG(1/2)-Video (MPG)"
 
 #: src/core/renderer/MovieRenderer.py:169
 msgid "MPEG format supports only VCD, SVCD and DVD profile!"
@@ -170,15 +170,15 @@ msgstr ""
 
 #: src/core/renderer/MovieRenderer.py:194
 msgid "MPEG4-XVid (AVI)"
-msgstr ""
+msgstr "MPEG4-XVid (AVI)"
 
 #: src/core/renderer/MovieRenderer.py:226
 msgid "Flash-Video (FLV)"
-msgstr ""
+msgstr "video in Flash(FLV)"
 
 #: src/core/renderer/MovieRenderer.py:257
 msgid "Motion-JPEG (AVI)"
-msgstr ""
+msgstr "Motion-JPEG (AVI)"
 
 #: src/core/renderer/SingleFileRenderer.py:37
 msgid "Single pictures"
@@ -282,7 +282,7 @@ msgstr "Lingua"
 
 #: src/gui/ActionManager.py:212
 msgid "&About"
-msgstr ""
+msgstr "&About"
 
 #: src/gui/DlgBugReport.py:52
 msgid "An unexpected error occured"
@@ -339,7 +339,7 @@ msgstr "Rimuovi risultati non completati"
 
 #: src/gui/DlgFinalize.py:104
 msgid "Do nothing"
-msgstr "non fare niente"
+msgstr ""
 
 #: src/gui/DlgFinalize.py:108
 #: src/gui/DlgRender.py:191
@@ -400,11 +400,11 @@ msgstr "Annulla"
 #: src/gui/DlgProjectProps.py:227
 #: src/gui/DlgRendererProps.py:112
 msgid "&Ok"
-msgstr ""
+msgstr "&Ok"
 
 #: src/gui/DlgPositionInput.py:267
 msgid "Adjust motion positions directly"
-msgstr "&Ok"
+msgstr "Imposta manualmente le posizioni"
 
 #: src/gui/DlgProjectProps.py:123
 msgid "Project properties"
@@ -490,7 +490,7 @@ msgstr "Impossibile scrivere nella cartella!"
 
 #: src/gui/DlgProjectProps.py:498
 msgid "The project name must be filled."
-msgstr ""
+msgstr "Il nome del progetto deve essere specificato."
 
 #: src/gui/DlgRender.py:144
 msgid "Profile:"
@@ -634,7 +634,7 @@ msgstr "Durata"
 
 #: src/gui/FrmMain.py:455
 msgid "Invalid %(app)s-Project: %(file)s"
-msgstr ""
+msgstr "Progetto per %(app)s non valido: %(file)s"
 
 #: src/gui/FrmMain.py:479
 msgid "Could not save the file '%(file)s': %(errMsg)s"
