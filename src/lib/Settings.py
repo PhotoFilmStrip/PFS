@@ -110,7 +110,10 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "Language"):
             return Decode(self.cp.get("General", "Language"))
-        return locale.getdefaultlocale()[0]
+        defLang = locale.getdefaultlocale()[0]
+        if defLang is None:
+            defLang = ""
+        return defLang
 
     def SetFileHistory(self, fileList):
         self.Load()
@@ -245,8 +248,11 @@ class Settings(Singleton):
             gettext.install(self.APP_NAME)
             return 
     
-        lang = gettext.translation(self.APP_NAME, 
-                                   localeDir, 
-                                   languages=[curLang, "en"])
-        lang.install(True)
+        try:
+            lang = gettext.translation(self.APP_NAME, 
+                                       localeDir, 
+                                       languages=[curLang, "en"])
+            lang.install(True)
+        except IOError:
+            gettext.install(self.APP_NAME)
         
