@@ -101,7 +101,11 @@ setup(
     options = {"py2exe": {
         "compressed": 2,
 #        "bundle_files":1,
-        "optimize": 2
+        "optimize": 2,
+        "dll_excludes": ["msvcr90.dll", "msvcp90.dll"],
+        "excludes": ["Tkconstants", "Tkinter", "tcl", 
+                     "_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk", 
+                     "_ssl"]
     }},
     console = [pfs_cli, pfs_gui] if NO_GUI else [pfs_cli],
     windows = [] if NO_GUI else [pfs_gui],

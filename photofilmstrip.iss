@@ -20,7 +20,6 @@ PrivilegesRequired=none
 
 [Files]
 Source: "dist\*";                   DestDir: "{app}";                     Flags: recursesubdirs;  
-Source: "win32ExtBin\mplayer\*";    DestDir: "{app}\extBin\mplayer";      Flags: recursesubdirs;
 Source: "version.info";                                                   Flags: dontcopy;
 
 [Icons]
