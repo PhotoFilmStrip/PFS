@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2009 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ import wx
 
 from lib.common.Singleton import Singleton
 
-from core.util import ImageToStream
+from core.backend.PILBackend import PILBackend
 
 
 class ImageCache(Singleton):
@@ -43,11 +43,11 @@ class ImageCache(Singleton):
         key = picture.GetFilename()
         if not self._wxImgCache.has_key(key):
             img = picture.GetThumbnail(width=ImageCache.SIZE)
-            wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
             self._wxImgCache[key] = wxImg
             
             img = picture.GetThumbnail(height=ImageCache.THUMB_SIZE)
-            wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
             self._wxBmpCache[key] = wxImg.ConvertToBitmap()
 
     def UpdatePicture(self, picture):

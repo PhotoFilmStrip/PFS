@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2010 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@ from subprocess import Popen, PIPE, STDOUT
 from core.Aspect import Aspect
 from core.OutputProfile import OutputProfile
 from core.renderer.RendererException import RendererException
-from core.renderer.SingleFileRenderer import SingleFileRenderer
+from core.BaseRenderer import BaseRenderer
 
 
-class MEncoderRenderer(SingleFileRenderer):
+class MEncoderRenderer(BaseRenderer):
     
     def __init__(self):
-        SingleFileRenderer.__init__(self)
+        BaseRenderer.__init__(self)
         
         self._encOut = None
         self._encErr = None
@@ -41,8 +41,6 @@ class MEncoderRenderer(SingleFileRenderer):
         
     @staticmethod
     def CheckDependencies(msgList):
-        SingleFileRenderer.CheckDependencies(msgList)
-        
         proc = Popen(["mencoder"], stdout=PIPE, stderr=STDOUT, shell=False)
         proc.wait()
         output = proc.stdout.read()
@@ -51,16 +49,16 @@ class MEncoderRenderer(SingleFileRenderer):
 
     @staticmethod
     def GetProperties():
-        return SingleFileRenderer.GetProperties() + ["Bitrate", "RenderSubtitle"]
+        return ["Bitrate", "RenderSubtitle"]
 
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "RenderSubtitle":
             return "false"
-        return SingleFileRenderer.GetDefaultProperty(prop)
+        return BaseRenderer.GetDefaultProperty(prop)
 
-    def ProcessFinalize(self, image):
-        image.save(self._procEncoder.stdin, "JPEG")
+    def ProcessFinalize(self, backendCtx):
+        backendCtx.ToStream(self._procEncoder.stdin, 'JPEG')
     
     def __CleanUp(self):
         self._procEncoder.communicate()

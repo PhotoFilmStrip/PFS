@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2011 Jens Goepfert
+# Copyright (C) 2010 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,31 +18,3 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-
-import sys
-
-from core.renderer.SingleFileRenderer import SingleFileRenderer
-
-
-class StreamRenderer(SingleFileRenderer):
-    
-    def __init__(self):
-        SingleFileRenderer.__init__(self)
-    
-    @staticmethod
-    def GetName():
-        return u"Stream output"
-    
-    @staticmethod
-    def GetProperties():
-        return SingleFileRenderer.GetProperties() + ["Format"]
-
-    @staticmethod
-    def GetDefaultProperty(prop):
-        if prop == "Format":
-            return "PPM"
-        else:
-            return SingleFileRenderer.GetDefaultProperty(prop)
-
-    def ProcessFinalize(self, ctx):
-        ctx.ToStream(sys.stdout, self.GetProperty("Format"))

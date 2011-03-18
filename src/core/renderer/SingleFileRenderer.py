@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@
 #
 
 import os
-
-import Image
 
 from core.BaseRenderer import BaseRenderer
 
@@ -50,39 +48,16 @@ class SingleFileRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
-    def ProcessCropAndResize(self, image, cropRect, size):
-        box = [int(cropRect[0]), int(cropRect[1]), 
-               int(cropRect[0] + cropRect[2]), int(cropRect[1] + cropRect[3])]
-        subImg = image.crop(box)
-        
-        filtr = Image.NEAREST
-        if not self._draft:
-            filterStr = self.GetProperty("ResampleFilter").lower()
-
-#            # Begin Optimizations
-#            if cropRect[2] > size[0] * 3:
-#                # downscale more than factor 3, prescaling
-#                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
-#            if cropRect[2] < size[0]:
-#                # upscaling
-#                filterStr = "bicubic"
-#            # End Optimizations
-            
-            if filterStr == "bilinear":
-                filtr = Image.BILINEAR
-            elif filterStr == "bicubic":
-                filtr = Image.BICUBIC
-            elif filterStr == "antialias":
-                filtr = Image.ANTIALIAS
-        return subImg.resize(size, filtr)
-
-    def ProcessFinalize(self, image):
+    def ProcessFinalize(self, backendCtx):
         self._counter += 1
-        format = "JPEG"
+        imgFormat = "JPEG"
+        
         newFilename = os.path.join(self.GetOutputPath(), 
                                    '%09d.%s' % (self._counter, 
-                                                format.lower()))
-        image.save(newFilename, format, quality=90)
+                                                imgFormat.lower()))
+        fd = open(newFilename, "wb")
+        backendCtx.ToStream(fd, imgFormat, quality=90)
+        fd.close()
     
     def Finalize(self):
         pass

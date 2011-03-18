@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,8 +25,13 @@ from core.renderer.MovieRenderer import (MPEGRenderer,
                                          MJPEGRenderer)
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
+from core.renderer.PyGameRenderer import PyGameRenderer
+from core.renderer.CairoRenderer import CairoRenderer
+
 RENDERERS = [SingleFileRenderer,  
              MPEG4Renderer,
              MPEGRenderer,
              FlashMovieRenderer,
-             MJPEGRenderer]
+             MJPEGRenderer,
+             PyGameRenderer,
+             CairoRenderer]

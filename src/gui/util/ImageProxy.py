@@ -27,7 +27,7 @@ import wx
 from lib.common.ObserverPattern import Observable
 from lib.util import Encode
 
-from core.util import ImageToStream
+from core.backend.PILBackend import PILBackend
 
 from gui.util.ImageCache import ImageCache
      
@@ -50,7 +50,7 @@ class ScaleThread(threading.Thread):
                 return
         
         img = self._picture.GetImage()
-        wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
 
         if not self._abort:
             self._callbackOnDone(wxImg)

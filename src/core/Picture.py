@@ -21,11 +21,8 @@
 
 import random
 
-import Image, ImageDraw
-
 from lib.common.ObserverPattern import Observable
 
-from core.util import RotateExif
 from core.Aspect import Aspect
 
 
@@ -58,6 +55,21 @@ class Picture(Observable):
         
     def __Reset(self):
         pass
+    
+    def Copy(self):
+        clone = Picture(self._filename)
+        clone.SetStartRect(self._startRect[:])
+        clone.SetTargetRect(self._targetRect[:])
+        clone.SetDummy(self._isDummy)
+        clone.SetDuration(self._duration)
+        clone.SetRotation(self._rotation)
+        clone.SetComment(self._comment)
+        clone.SetEffect(self._effect)
+        clone.SetWidth(self._width)
+        clone.SetHeight(self._height)
+        clone.SetTransition(self._trans)
+        clone.SetTransitionDuration(self._transDur)
+        return clone
         
     def GetFilename(self):
         return self._filename
@@ -77,6 +89,11 @@ class Picture(Observable):
         self.Notify("target")
     def GetTargetRect(self):
         return self._targetRect
+    
+    def SetDummy(self, isDummy):
+        self._isDummy = isDummy
+    def IsDummy(self):
+        return self._isDummy
     
     def SetDuration(self, duration):
         if duration == self._duration:
@@ -187,77 +204,18 @@ class Picture(Observable):
         self.__Rotate(clockwise)
         self.Notify("bitmap")
         
-    def __CreateDummyImage(self, message):
-        width = 400
-        height = 300
-        img = Image.new("RGB", (width, height), (255, 255, 255))
-
-        draw = ImageDraw.Draw(img)
-        textWidth, textHeight = draw.textsize(message)
-        x = (width - textWidth) / 2
-        y = (height - textHeight * 2)
-        draw.text((x, y), message, fill=(0, 0, 0))
-
-        sz = width / 2
-        draw.ellipse(((width - sz) / 2, (height - sz) / 2, 
-                      (width + sz) / 2, (height + sz) / 2), 
-                      fill=(255, 0, 0))
-
-        sz = width / 7
-        draw.line((width / 2 - sz, height / 2 - sz, width / 2 + sz, height / 2 + sz), fill=(255, 255, 255), width=20)
-        draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
-
-        del draw
-        
-        return img
-
     def GetImage(self):
-        try:
-            img = Image.open(self._filename)
-            img = RotateExif(img)
-            img = img.rotate(self._rotation * -90)
-            self._isDummy = False
-        except StandardError, err:
-            img = self.__CreateDummyImage(str(err))
-            self._isDummy = True
-        
-        self._width = img.size[0]
-        self._height = img.size[1]
-
-        if self._effect == Picture.EFFECT_BLACK_WHITE:
-            img = img.convert("L")
-
-        elif self._effect == Picture.EFFECT_SEPIA:
-            def make_linear_ramp(white):
-                # putpalette expects [r,g,b,r,g,b,...]
-                ramp = []
-                r, g, b = white
-                for i in range(255):
-                    ramp.extend((r*i/255, g*i/255, b*i/255))
-                return ramp
-
-            # make sepia ramp (tweak color as necessary)
-            sepia = make_linear_ramp((255, 240, 192))
-            img = img.convert("L")
-            img.putpalette(sepia)
-
-        return img.convert("RGB")
+        '''
+        @deprecated: convenience
+        '''
+        from core.backend.PILBackend import PILBackend
+        img = PILBackend.GetImage(self)
+        self._width, self._height = PILBackend.GetImageSize(img)
+        return img
     
     def GetThumbnail(self, width=None, height=None):
-        pw, ph = float(self.GetWidth()), float(self.GetHeight())
-        if width is not None and height is not None:
-            thumbWidth = width
-            thumbHeight = height
-        elif width is not None:
-            thumbWidth = width
-            thumbHeight = int(thumbWidth / (pw / ph))
-        elif height is not None:
-            thumbHeight = height
-            thumbWidth = int(thumbHeight * (pw / ph))
-        
-        img = self.GetImage()
-        img = img.copy()
-        img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
-        newImg.paste(img, (0, 0))
-        return newImg
+        '''
+        @deprecated: convenience
+        '''
+        from core.backend.PILBackend import PILBackend
+        return PILBackend.GetThumbnail(self, width, height)

@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,13 +38,11 @@ class BaseRenderer(object):
         self._profile = None
         self._audioFile = None
         self._aspect = None
-        self._draft = False
 
-    def Init(self, profile, aspect, outputPath, draft):
+    def Init(self, profile, aspect, outputPath):
         self._outputPath = outputPath
         self._profile = profile
         self._aspect = aspect
-        self._draft = draft
         
     @staticmethod
     def CheckDependencies(msgList):
@@ -87,13 +85,13 @@ class BaseRenderer(object):
         return self._profile
     PProfile = property(GetProfile)
 
+    def EnsureFramerate(self):
+        return False
+    
     def Prepare(self):
         raise NotImplementedError()        
     
-    def ProcessCropAndResize(self, image, cropRect, size):
-        raise NotImplementedError()
-        
-    def ProcessFinalize(self, image):
+    def ProcessFinalize(self, backendCtx):
         raise NotImplementedError()
     
     def Finalize(self):

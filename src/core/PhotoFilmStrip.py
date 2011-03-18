@@ -24,14 +24,12 @@ import logging
 import random
 import sqlite3
 
-import Image
-
 from lib.util import Encode
 
-from core.util import RotateExif
 from core.Aspect import Aspect
 from core.Picture import Picture
 from core.ProgressHandler import ProgressHandler
+from core.backend.PILBackend import PILBackend
 
 
 class PhotoFilmStrip(object):
@@ -54,27 +52,16 @@ class PhotoFilmStrip(object):
     
     @staticmethod
     def QuickInfo(filename):
-        conn = sqlite3.connect(Encode(filename), 
-                               detect_types=sqlite3.PARSE_DECLTYPES)
-        cur = conn.cursor()
-        
-        cur.execute("select count(*) from `picture`")
-        imgCount = cur.fetchone()[0]
-        imgFile = ""
+        pfs = PhotoFilmStrip()
+        pfs.Load(filename)
+        imgCount = len(pfs.GetPictures())
         if imgCount > 0:
             picIdx   = random.randint(0, imgCount - 1)
-            
-            cur.execute("select filename, rotation from `picture` limit ?,1", (picIdx, ))
-            imgFile, rotation = cur.fetchone()
         
-        if os.path.exists(imgFile):
-            try:
-                img = Image.open(imgFile)
-                img = RotateExif(img)
-                img = img.rotate(rotation * -90)
-                img.thumbnail((64, 64), Image.NEAREST)
-            except BaseException, err:
-                logging.debug("QuickInfo(%s) - %s: %s", filename, imgFile, err)
+        pic = pfs.GetPictures()[picIdx]
+        if os.path.exists(pic.GetFilename()):
+            img = PILBackend.GetThumbnail(pic, 64, 64)
+            if pic.IsDummy():
                 img = None
         else:
             img = None

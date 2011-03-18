@@ -29,7 +29,7 @@ from lib.Settings import Settings
 from lib.UpdateChecker import UpdateChecker
 
 from core.PhotoFilmStrip import PhotoFilmStrip
-from core.util import ImageToStream
+from core.backend.PILBackend import PILBackend
 
 from gui.ctrls.IconLabelLink import IconLabelLink
 
@@ -183,7 +183,7 @@ class LinkOpenPfs(IconLabelLink):
         if not LinkOpenPfs.BMP_MAP.has_key(filename):
             imgCount, img = PhotoFilmStrip.QuickInfo(filename)
             if img is not None:
-                wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+                wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
             else:
                 bmp = wx.ArtProvider_GetBitmap("PFS_ICON_48", wx.ART_OTHER)

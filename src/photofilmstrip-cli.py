@@ -43,13 +43,14 @@ def main():
     return main()
 
 
-import hotshot, hotshot.stats
 
 if __name__ == "__main__":
+#    import hotshot    
 #    prof = hotshot.Profile("pfs.prof")
 #    exitCode = prof.runcall(main)
 #    prof.close()
-#    
+    
+#    import hotshot.stats
 #    stats = hotshot.stats.load("pfs.prof")
 #    stats.strip_dirs()
 #    stats.sort_stats('time', 'calls')

@@ -39,7 +39,8 @@ class DlgBugReport(wx.Dialog):
     def Initialize(cls, parent):
         cls.PARENT = parent
         def excepthook(etype, value, tb):
-#            traceback.print_exception(etype, value, tb)
+            if not hasattr(sys, "frozen"):
+                traceback.print_exception(etype, value, tb)
             output = cStringIO.StringIO()
             traceback.print_exception(etype, value, tb, file=output)
             dlg = DlgBugReport(cls.PARENT, output.getvalue()) 

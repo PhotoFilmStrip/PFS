@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,15 +40,16 @@ if sys.platform == "win32":
     _path.append(os.path.join(APP_DIR, "extBin", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
 
+    import _subprocess
     startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
     subprocess.STARTUPINFO = lambda: startupinfo
 
 
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.4.1"
+    APP_VERSION     = "1.4.95"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 

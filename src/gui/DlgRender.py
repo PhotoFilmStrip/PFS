@@ -304,13 +304,14 @@ class DlgRender(wx.Dialog, Observer):
         renderer = rendererClass()
         renderer.Init(profile, 
                       self.__photoFilmStrip.GetAspect(),
-                      Encode(outpath, sys.getfilesystemencoding()),
-                      self.cbDraft.GetValue())
+                      Encode(outpath, sys.getfilesystemencoding()))
         
         if audioFile:
             renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
 
-        self.__renderEngine = RenderEngine(renderer, self.__progressHandler)
+        self.__renderEngine = RenderEngine(renderer, 
+                                           self.__progressHandler, 
+                                           self.cbDraft.GetValue())
         
         renderThread = threading.Thread(target=self.__renderEngine.Start,
                                         args=(self.__photoFilmStrip.GetPictures(), totalLength),
