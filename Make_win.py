@@ -30,9 +30,9 @@ import zipfile
 
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-PYTHON  = r"C:\Python25\python.exe"
+PYTHON  = r"C:\Python27\python.exe"
 INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
-MSGFMT  = r"C:\Python25\Tools\i18n\msgfmt.py"
+MSGFMT  = r"C:\Python27\Tools\i18n\msgfmt.py"
 
 class Args:
     PY2EXE = []

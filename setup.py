@@ -48,35 +48,54 @@ class Target:
         self.version = Settings.APP_VERSION
         self.product_version = Settings.APP_VERSION
         self.company_name = ""
-        self.copyright = "(c) 2008"
+        self.copyright = "(c) 2011"
         self.name = "%s %s" % (Settings.APP_NAME, Settings.APP_VERSION)
         self.description = self.name
 
 
-manifest_template = '''
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-<assemblyIdentity
-    version="5.0.0.0"
+MANIFEST = '''<assembly xmlns="urn:schemas-microsoft-com:asm.v1"
+manifestVersion="1.0">
+  <assemblyIdentity
+    version="0.6.8.0"
     processorArchitecture="x86"
     name="%(prog)s"
     type="win32"
-/>
-<description>%(prog)s Program</description>
-<dependency>
-    <dependentAssembly>
-        <assemblyIdentity
-            type="win32"
-            name="Microsoft.Windows.Common-Controls"
-            version="6.0.0.0"
-            processorArchitecture="X86"
-            publicKeyToken="6595b64144ccf1df"
-            language="*"
+  />
+  <description>%(prog)s Program</description>
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel
+          level="asInvoker"
+          uiAccess="false"
         />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+        type="win32"
+        name="Microsoft.VC90.CRT"
+        version="9.0.21022.8"
+        processorArchitecture="x86"
+        publicKeyToken="1fc8b3b9a1e18e3b"
+      />
     </dependentAssembly>
-</dependency>
-</assembly>
-'''
+  </dependency>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+        type="win32"
+        name="Microsoft.Windows.Common-Controls"
+        version="6.0.0.0"
+        processorArchitecture="x86"
+        publicKeyToken="6595b64144ccf1df"
+        language="*"
+      />
+    </dependentAssembly>
+  </dependency>
+</assembly>'''
 
 logo = os.path.join("res","icon", "photofilmstrip.ico")
 
@@ -84,14 +103,14 @@ RT_MANIFEST = 24
 
 pfs_gui = Target(
     script = "src/photofilmstrip-cli.py" if NO_GUI else "src/photofilmstrip-gui.py",
-    other_resources = [(RT_MANIFEST, 1, manifest_template % dict(prog=Settings.APP_NAME))],
+    other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Settings.APP_NAME))],
     icon_resources = [(1, logo)],
     dest_base = "bin/" + Settings.APP_NAME,
     )
 
 pfs_cli = Target(
     script = "src/photofilmstrip-cli.py",
-    other_resources = [(RT_MANIFEST, 1, manifest_template % dict(prog=Settings.APP_NAME))],
+    other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Settings.APP_NAME))],
     icon_resources = [(1, logo)],
     dest_base = "bin/" + Settings.APP_NAME + "-cli",
     )
@@ -119,6 +138,6 @@ setup(
                 ("locale\\pt\\LC_MESSAGES", glob.glob("locale\\pt\\LC_MESSAGES\\*.mo")),
                 ("locale\\it\\LC_MESSAGES", glob.glob("locale\\it\\LC_MESSAGES\\*.mo")),
                 ("locale\\ko\\LC_MESSAGES", glob.glob("locale\\ko\\LC_MESSAGES\\*.mo")),
-                ("lib", ["C:\\Python25\\lib\\site-packages\\wx-2.8-msw-unicode\\wx\MSVCP71.dll"]),
+                ("lib", []),
     ]
     )

@@ -32,7 +32,6 @@ except ImportError:
 from core.OutputProfile import OutputProfile
 from core.BaseRenderer import BaseRenderer
 
-from core.backend.CairoBackend import CairoBackend
 from core.backend.Transformer import Transformer
 
 
@@ -40,7 +39,6 @@ class CairoRenderer(BaseRenderer):
     
     def __init__(self):
         BaseRenderer.__init__(self)
-        self._backend = CairoBackend()
         self._ctx = None
         self._mainClock = Clock()
         self._framerate = None

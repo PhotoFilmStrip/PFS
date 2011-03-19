@@ -24,14 +24,14 @@ import logging
 import multiprocessing
 from multiprocessing.queues import Queue, Full, Empty
 
-
 from core.renderer.RendererException import RendererException
 from core.Subtitle import SubtitleSrt
-#from core.backend.PILBackend import PILBackend
-from core.backend.CairoBackend import CairoBackend
 
-#BACKEND = PILBackend()
-BACKEND = CairoBackend()
+from core.backend.PILBackend import PILBackend
+#from core.backend.CairoBackend import CairoBackend
+
+BACKEND = PILBackend()
+#BACKEND = CairoBackend()
 
 
 class RenderEngine(object):

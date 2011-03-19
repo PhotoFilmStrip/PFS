@@ -20,6 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import multiprocessing
 import sys
 
 
@@ -45,6 +46,7 @@ def main():
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
 #    import hotshot    
 #    prof = hotshot.Profile("pfs.prof")
 #    exitCode = prof.runcall(main)

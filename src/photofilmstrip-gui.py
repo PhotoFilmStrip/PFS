@@ -22,6 +22,7 @@
 
 import logging
 import sys
+import multiprocessing
 
 
 def initLogging():
@@ -51,4 +52,5 @@ def main():
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
     main()

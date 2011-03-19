@@ -20,9 +20,21 @@
 #
 
 import array
-from core.backend.PILBackend import PILCtx
-from core.backend.CairoBackend import CairoCtx
-from core.backend.PyGameBackend import PyGameCtx
+
+try:
+    from core.backend.PILBackend import PILCtx
+except ImportError:
+    PILCtx = type
+
+try:
+    from core.backend.CairoBackend import CairoCtx
+except ImportError:
+    CairoCtx = type
+
+try:
+    from core.backend.PyGameBackend import PyGameCtx
+except ImportError:
+    PyGameCtx = type
 
 
 class Transformer(object):
