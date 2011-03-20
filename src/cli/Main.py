@@ -71,7 +71,7 @@ class CliGui(Observer):
             
     def Info(self, options, rendererClass, profile):
         print
-        print Settings.APP_NAME, Settings.APP_VERSION
+        print Settings.APP_NAME, Settings.APP_VERSION_EX
         print u"(C) 2010 Jens G\xf6pfert"
         print Settings.APP_URL
         print 
@@ -99,7 +99,7 @@ class DummyGui(Observer):
 
 def main():
     parser = OptionParser(prog="%s-cli" % Settings.APP_NAME.lower(), 
-                          version="%%prog %s" % Settings.APP_VERSION)
+                          version="%%prog %s" % Settings.APP_VERSION_EX)
 
     profiles = GetOutputProfiles()
     profStr = ", ".join(["%d=%s" % (idx, prof.GetName()) for idx, prof in enumerate(profiles)])

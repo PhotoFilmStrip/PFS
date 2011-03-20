@@ -31,6 +31,11 @@ from ConfigParser import ConfigParser
 from lib.common.Singleton import Singleton
 from lib.util import Encode, Decode, IsPathWritable
 
+try:
+    from _svnInfo import SVN_REV
+except ImportError:
+    SVN_REV = "trunk"
+
 
 APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
@@ -50,6 +55,7 @@ class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
     APP_VERSION     = "1.4.95"
+    APP_VERSION_EX  = "%s-%s" % (APP_VERSION, SVN_REV)
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 

@@ -88,7 +88,7 @@ class DlgBugReport(wx.Dialog):
                           sys.getfilesystemencoding(),
                           str(hasattr(sys, "frozen"))])
         params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
-                                                                       Settings.APP_VERSION,
+                                                                       Settings.APP_VERSION_EX,
                                                                        Encode(self.tcMsg.GetValue()),
                                                                        info)})
         try:

@@ -231,7 +231,7 @@ class FrmMain(wx.Frame):
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
-        info.Version = Settings.APP_VERSION
+        info.Version = Settings.APP_VERSION_EX
         info.Copyright = u"(C) 2010 %s" % Settings.DEVELOPERS[0]
         info.Description = wordwrap(_("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."), 
                                     350, 
