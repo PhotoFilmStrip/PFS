@@ -39,7 +39,7 @@ class DlgBugReport(wx.Dialog):
     def Initialize(cls, parent):
         cls.PARENT = parent
         def excepthook(etype, value, tb):
-            if not hasattr(sys, "frozen"):
+            if getattr(sys, 'frozen', False):
                 traceback.print_exception(etype, value, tb)
             output = cStringIO.StringIO()
             traceback.print_exception(etype, value, tb, file=output)
@@ -86,7 +86,7 @@ class DlgBugReport(wx.Dialog):
         info = "\n".join([sys.platform, 
                           sys.getdefaultencoding(), 
                           sys.getfilesystemencoding(),
-                          str(hasattr(sys, "frozen"))])
+                          str(getattr(sys, 'frozen', False))])
         params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
                                                                        Settings.APP_VERSION_EX,
                                                                        Encode(self.tcMsg.GetValue()),
