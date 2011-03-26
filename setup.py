@@ -23,9 +23,6 @@ import subprocess
 
 import zipfile
 
-if len(sys.argv) == 1:
-    sys.argv.append("Compile")
-
 from photofilmstrip.lib.Settings import Settings
 
 from distutils import log
@@ -96,12 +93,12 @@ class pfs_build(build):
     def finalize_options(self):
         build.finalize_options(self)
         
-        self.sub_commands.append(("Compile", None))
+        self.sub_commands.insert(0, ("Compile", None))
 
 
 class Compile(Command):
     user_options = []
-    sub_commands = [('Clean',   lambda x: True),
+    sub_commands = [
 #                    ('Test',    lambda x: True),
                    ]
     def initialize_options(self):
@@ -165,7 +162,8 @@ class Compile(Command):
                 moFile = os.path.join(moDir, "%s.mo" % Settings.APP_NAME)
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
-                code = subprocess.call([MSGFMT, "-o",
+                log.debug("create mo file (%s): %s -o %s, po/%s", lang, MSGFMT, moFile, lang)
+                code = subprocess.call([sys.executable, MSGFMT, "-o",
                                         moFile,
                                         os.path.join("po", lang)])
                 if code != 0:
@@ -179,8 +177,7 @@ class Compile(Command):
 
 class WinRelease(Command):
     user_options = []
-    sub_commands = [('Compile', lambda x: True),
-                    ('py2exe',  lambda x: True if py2exe else False)                    
+    sub_commands = [('py2exe',  lambda x: True if py2exe else False)                    
                    ]
 
     def initialize_options(self):
@@ -192,7 +189,7 @@ class WinRelease(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
             
-        targetDir = os.path.join("dist", "extBin", "mplayer")
+        targetDir = os.path.join("build", "dist", "lib", "mplayer")
         Unzip(os.path.join("windows", "MPlayer-mingw32-1.0rc2.zip"),
               targetDir, 
               stripFolders=1)
@@ -244,10 +241,10 @@ class WinPortable(Command):
         if not os.path.exists("release"):
             os.makedirs("release")
             
-        Zip(os.path.join("release", "photofilmstrip-%s.zip" % ver), 
-            "dist", 
+        Zip(os.path.join("dist", "photofilmstrip-%s.zip" % ver), 
+            "build/dist", 
             virtualFolder="PhotoFilmStrip-%s" % ver,
-            stripFolders=1)
+            stripFolders=2)
         log.info("    done.")
 
 
@@ -270,6 +267,9 @@ class Target:
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
+    if not os.path.isdir(os.path.dirname(zipFile)):
+        os.makedirs(os.path.dirname(zipFile))
+
     zf = zipfile.ZipFile(zipFile, "w", zipfile.ZIP_DEFLATED)
     for dirpath, dirnames, filenames in os.walk(srcDir):
         fldr = dirpath
@@ -375,33 +375,34 @@ PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select
 
 setup(
     cmdclass={
-                "Clean"      : Clean,
-                "Test"       : Test,
-                "build"      : pfs_build,
-                "Compile"    : Compile,
-                "WinRelease" : WinRelease,
-                "WinSetup"   : WinSetup,
-                "WinPortable": WinPortable,
+                "Clean"         : Clean,
+                "Test"          : Test,
+                "build"         : pfs_build,
+                "Compile"       : Compile,
+                "WinRelease"    : WinRelease,
+                "bdist_wininst" : WinSetup,
+                "bdist_win"     : WinPortable,
               },
     verbose=False,
     options = {"py2exe": {"compressed": 2,
 #                          "bundle_files":1,
                           "optimize": 2,
+                          "dist_dir": "build/dist",
                           "dll_excludes": ["msvcr90.dll", "msvcp90.dll"],
                           "excludes": ["Tkconstants", "Tkinter", "tcl", 
                                        "_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk", 
                                        "_ssl"]
                           }
     },
-    windows=[Target(script = "src/photofilmstrip-gui.py",
+    windows=[Target(script = "photofilmstrip/GUI.py",
                     dest_base = "bin/" + Settings.APP_NAME
                     ),
     ],
-    console=[Target(script = "src/photofilmstrip-cli.py",
+    console=[Target(script = "photofilmstrip/CLI.py",
                     dest_base = "bin/" + Settings.APP_NAME + "-cli"
                     )
     ],
-    zipfile = "lib/modules",
+    zipfile = "lib/photofilmstrip/modules",
     data_files=[(os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
                 (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
     ],

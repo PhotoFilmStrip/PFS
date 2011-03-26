@@ -10,15 +10,15 @@ if "%1"=="package" goto package
 goto end
 
 :compile
-%PYTHON setup.py WinRelease
+%PYTHON% setup.py build
 goto end
 
 :clean
-%PYTHON setup.py Clean
+%PYTHON% setup.py Clean
 goto end
 
 :package
-%PYTHON setup.py WinSetup WinPortable
+%PYTHON% setup.py bdist_win bdist_wininst
 goto end
 
 

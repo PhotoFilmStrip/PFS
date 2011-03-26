@@ -2,7 +2,7 @@
 [Setup]
 AppName           = PhotoFilmStrip
 AppPublisher      = Jens Göpfert
-AppPublisherURL   = http://photostoryx.sourceforge.net
+AppPublisherURL   = http://www.photofilmstrip.org
 AppCopyright      = Copyright (C) 2008 Jens Göpfert
 AppVerName        = {code:getAppVerName}
 AppVersion        = {code:getAppVer}
@@ -10,21 +10,21 @@ AppVersion        = {code:getAppVer}
 DefaultDirName    = {code:getInstallDir}
 DefaultGroupName  = PhotoFilmStrip
 UninstallDisplayIcon={app}\bin\PhotoFilmStrip.exe
-OutputDir=release
+OutputDir=..\dist
 OutputBaseFilename = setup_photofilmstrip
-LicenseFile       = copying
-WizardSmallImageFile=res\icon\photofilmstrip.bmp
+LicenseFile       = ..\copying
+WizardSmallImageFile=..\res\icon\photofilmstrip.bmp
 WizardImageFile=compiler:WizModernImage-IS.bmp
 PrivilegesRequired=none
 ;compression=none
 
 [Files]
-Source: "dist\*";                   DestDir: "{app}";                     Flags: recursesubdirs;  
-Source: "version.info";                                                   Flags: dontcopy;
+Source: "..\build\dist\*";          DestDir: "{app}";                     Flags: recursesubdirs;  
+Source: "..\version.info";                                                   Flags: dontcopy;
 
 [Icons]
 Name: "{group}\PhotoFilmStrip"; Filename: "{app}\bin\PhotoFilmStrip.exe"
-Name: "{group}\Help";           Filename: "{app}\doc\photofilmstrip\photofilmstrip.chm"
+Name: "{group}\Help";           Filename: "{app}\share\doc\photofilmstrip\photofilmstrip.chm"
 Name: "{group}\Uninstall";      Filename: "{app}\unins000.exe";       WorkingDir: "{app}";
 
 [Run]
