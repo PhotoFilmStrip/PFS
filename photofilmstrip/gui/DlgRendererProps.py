@@ -22,10 +22,10 @@
 
 import wx
 
-from lib.Settings import Settings
+from photofilmstrip.lib.Settings import Settings
 
-from gui.HelpViewer import HelpViewer
-from gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.gui.HelpViewer import HelpViewer
+from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
 [wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSCMDCANCEL, 

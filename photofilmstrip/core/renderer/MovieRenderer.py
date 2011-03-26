@@ -23,10 +23,10 @@ import os
 import re
 from subprocess import Popen, PIPE, STDOUT
 
-from core.Aspect import Aspect
-from core.OutputProfile import OutputProfile
-from core.renderer.RendererException import RendererException
-from core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.Aspect import Aspect
+from photofilmstrip.core.OutputProfile import OutputProfile
+from photofilmstrip.core.renderer.RendererException import RendererException
+from photofilmstrip.core.BaseRenderer import BaseRenderer
 
 
 class MEncoderRenderer(BaseRenderer):

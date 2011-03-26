@@ -24,12 +24,12 @@ import threading
 
 import wx
 
-from lib.common.ObserverPattern import Observable
-from lib.util import Encode
+from photofilmstrip.lib.common.ObserverPattern import Observable
+from photofilmstrip.lib.util import Encode
 
-from core.backend.PILBackend import PILBackend
+from photofilmstrip.core.backend.PILBackend import PILBackend
 
-from gui.util.ImageCache import ImageCache
+from photofilmstrip.gui.util.ImageCache import ImageCache
      
 
 class ScaleThread(threading.Thread):

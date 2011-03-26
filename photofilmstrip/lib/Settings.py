@@ -28,8 +28,8 @@ import tempfile
 import subprocess
 
 from ConfigParser import ConfigParser
-from lib.common.Singleton import Singleton
-from lib.util import Encode, Decode, IsPathWritable
+from photofilmstrip.lib.common.Singleton import Singleton
+from photofilmstrip.lib.util import Encode, Decode, IsPathWritable
 
 try:
     from _svnInfo import SVN_REV

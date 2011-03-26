@@ -23,7 +23,7 @@ import os
 
 import wx
 
-from gui.util.ImageCache import ImageCache
+from photofilmstrip.gui.util.ImageCache import ImageCache
 
 
 EVT_CHANGED_TYPE  = wx.NewEventType()

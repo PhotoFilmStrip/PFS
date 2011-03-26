@@ -26,19 +26,19 @@ import wx
 import wx.aui
 from wx.lib.wordwrap import wordwrap
 
-from core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
 
-from lib.Settings import Settings
-from lib.util import Decode
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import Decode
 
-from gui.DlgRender import DlgRender
-from gui.PnlWelcome import PnlWelcome
-from gui.ActionManager import ActionManager
-from gui.HelpViewer import HelpViewer
-from gui.DlgProjectProps import DlgProjectProps
-from gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
+from photofilmstrip.gui.DlgRender import DlgRender
+from photofilmstrip.gui.PnlWelcome import PnlWelcome
+from photofilmstrip.gui.ActionManager import ActionManager
+from photofilmstrip.gui.HelpViewer import HelpViewer
+from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
+from photofilmstrip.gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
 
-from res.license import licenseText
+from photofilmstrip.res.license import licenseText
 
 
 class FrmMain(wx.Frame):

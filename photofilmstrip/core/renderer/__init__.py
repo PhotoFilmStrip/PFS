@@ -19,14 +19,18 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from core.renderer.MovieRenderer import (MPEGRenderer, 
-                                         MPEG4Renderer,
-                                         FlashMovieRenderer, 
-                                         MJPEGRenderer)
-from core.renderer.SingleFileRenderer import SingleFileRenderer
+from photofilmstrip.core.renderer.MovieRenderer import (
+        MPEGRenderer, 
+        MPEG4Renderer,
+        FlashMovieRenderer, 
+        MJPEGRenderer)
+from photofilmstrip.core.renderer.SingleFileRenderer import (
+        SingleFileRenderer)
 
-from core.renderer.PyGameRenderer import PyGameRenderer
-from core.renderer.CairoRenderer import CairoRenderer
+from photofilmstrip.core.renderer.PyGameRenderer import (
+        PyGameRenderer)
+from photofilmstrip.core.renderer.CairoRenderer import (
+        CairoRenderer)
 
 RENDERERS = [SingleFileRenderer,  
              MPEG4Renderer,

@@ -21,9 +21,9 @@
 
 import wx
 
-from lib.common.Singleton import Singleton
+from photofilmstrip.lib.common.Singleton import Singleton
 
-from core.backend.PILBackend import PILBackend
+from photofilmstrip.core.backend.PILBackend import PILBackend
 
 
 class ImageCache(Singleton):

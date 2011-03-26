@@ -24,11 +24,11 @@ import time
 
 import wx
 
-import res.cursors as cursors
+import photofilmstrip.res.cursors as cursors
 
-from lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.common.ObserverPattern import Observer
  
-from core.Aspect import Aspect
+from photofilmstrip.core.Aspect import Aspect
 
 
 EVT_RECT_CHANGED_TYPE  = wx.NewEventType()

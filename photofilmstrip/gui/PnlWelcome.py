@@ -25,13 +25,13 @@ import wx.html
 import wx.lib.wxpTag
 import wx.lib.hyperlink
 
-from lib.Settings import Settings
-from lib.UpdateChecker import UpdateChecker
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.UpdateChecker import UpdateChecker
 
-from core.PhotoFilmStrip import PhotoFilmStrip
-from core.backend.PILBackend import PILBackend
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.backend.PILBackend import PILBackend
 
-from gui.ctrls.IconLabelLink import IconLabelLink
+from photofilmstrip.gui.ctrls.IconLabelLink import IconLabelLink
 
 
 class PnlWelcome(wx.Panel):
@@ -91,7 +91,7 @@ class PnlWelcome(wx.Panel):
             for recentFile in fileHistory:
                 if PhotoFilmStrip.IsOk(recentFile):
                     htmlPart = """<td align="center" valign="bottom">
-                        <wxp module="gui.PnlWelcome" class="LinkOpenPfs">
+                        <wxp module="photofilmstrip.gui.PnlWelcome" class="LinkOpenPfs">
                             <param name="filename" value="%s">
                         </wxp>
                     </td>""" % recentFile
@@ -132,7 +132,7 @@ class PnlWelcome(wx.Panel):
 
         html = """<h3 align="center">%(title)s</h3>
   <center>
-    <wxp module="gui.PnlWelcome" class="PfsHyperlink">
+    <wxp module="photofilmstrip.gui.PnlWelcome" class="PfsHyperlink">
         <param name="label" value="Download %(appname)s %(version)s">
     </wxp>
   </center>

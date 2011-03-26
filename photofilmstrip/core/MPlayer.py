@@ -24,7 +24,7 @@ import sys
 
 from subprocess import Popen, PIPE
 
-from lib.util import Encode
+from photofilmstrip.lib.util import Encode
 
 
 class MPlayer(object):

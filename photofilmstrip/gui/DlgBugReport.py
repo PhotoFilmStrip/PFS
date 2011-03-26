@@ -27,8 +27,8 @@ import urllib
 import wx
 from wx.lib.wordwrap import wordwrap
 
-from lib.Settings import Settings
-from lib.util import Encode
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import Encode
 
 
 class DlgBugReport(wx.Dialog):
@@ -39,7 +39,7 @@ class DlgBugReport(wx.Dialog):
     def Initialize(cls, parent):
         cls.PARENT = parent
         def excepthook(etype, value, tb):
-            if getattr(sys, 'frozen', False):
+            if not getattr(sys, 'frozen', False):
                 traceback.print_exception(etype, value, tb)
             output = cStringIO.StringIO()
             traceback.print_exception(etype, value, tb, file=output)

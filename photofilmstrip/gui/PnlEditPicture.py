@@ -22,9 +22,11 @@
 
 import wx
 
-from core.Picture import Picture
+from photofilmstrip.core.Picture import Picture
 
-from gui.ctrls.PnlFloatSpinCtrl import PnlFloatSpinCtrl, EVT_VALUE_CHANGED
+from photofilmstrip.gui.ctrls.PnlFloatSpinCtrl import (
+        PnlFloatSpinCtrl, 
+        EVT_VALUE_CHANGED)
 
 
 [wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT, 

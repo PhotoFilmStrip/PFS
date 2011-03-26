@@ -24,8 +24,8 @@ import cStringIO
 
 import Image, ImageDraw
 
-from core.BaseBackend import BaseBackend, BaseCtx
-from core.Picture import Picture
+from photofilmstrip.core.BaseBackend import BaseBackend, BaseCtx
+from photofilmstrip.core.Picture import Picture
 
 
 class PILBackend(BaseBackend):

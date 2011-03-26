@@ -21,8 +21,8 @@
 
 import pygame
 
-from core.BaseBackend import BaseBackend, BaseCtx
-from core.Picture import Picture
+from photofilmstrip.core.BaseBackend import BaseBackend, BaseCtx
+from photofilmstrip.core.Picture import Picture
 
 
 class PyGameBackend(BaseBackend):

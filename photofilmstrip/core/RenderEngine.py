@@ -24,11 +24,11 @@ import logging
 import multiprocessing
 from multiprocessing.queues import Queue, Full, Empty
 
-from core.renderer.RendererException import RendererException
-from core.Subtitle import SubtitleSrt
+from photofilmstrip.core.renderer.RendererException import RendererException
+from photofilmstrip.core.Subtitle import SubtitleSrt
 
-from core.backend.PILBackend import PILBackend
-#from core.backend.CairoBackend import CairoBackend
+from photofilmstrip.core.backend.PILBackend import PILBackend
+#from photofilmstrip.core.backend.CairoBackend import CairoBackend
 
 BACKEND = PILBackend()
 #BACKEND = CairoBackend()

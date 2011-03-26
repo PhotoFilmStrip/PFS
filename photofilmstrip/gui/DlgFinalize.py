@@ -23,12 +23,12 @@
 
 import os
 import shutil
+import subprocess
 
 import wx
 
-from gui.ctrls.PnlDlgHeader import PnlDlgHeader
-from core.MPlayer import MPlayer
-import subprocess
+from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.core.MPlayer import MPlayer
 
 
 [wxID_DLGFINALIZE, wxID_DLGFINALIZECBSENDERR, wxID_DLGFINALIZECMDCLOSE, 

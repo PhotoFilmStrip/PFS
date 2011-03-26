@@ -21,7 +21,7 @@
 
 import os
 
-from core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.BaseRenderer import BaseRenderer
 
 
 class SingleFileRenderer(BaseRenderer):

@@ -25,21 +25,23 @@ import logging
 
 import wx
 
-from core.Picture import Picture
-from core.PhotoFilmStrip import UserInteractionHandler
+from photofilmstrip.core.Picture import Picture
+from photofilmstrip.core.PhotoFilmStrip import UserInteractionHandler
 
-from lib.Settings import Settings
-from lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.common.ObserverPattern import Observer
 
-from gui.ctrls.ImageSectionEditor import ImageSectionEditor, EVT_RECT_CHANGED
-from gui.ctrls.PhotoFilmStripList import PhotoFilmStripList, EVT_CHANGED
+from photofilmstrip.gui.ctrls.ImageSectionEditor import (
+        ImageSectionEditor, EVT_RECT_CHANGED)
+from photofilmstrip.gui.ctrls.PhotoFilmStripList import (
+        PhotoFilmStripList, EVT_CHANGED)
 
-from gui.util.ImageCache import ImageCache
-from gui.util.ImageProxy import ImageProxy
+from photofilmstrip.gui.util.ImageCache import ImageCache
+from photofilmstrip.gui.util.ImageProxy import ImageProxy
 
-from gui.PnlEditPicture import PnlEditPicture
-from gui.PnlAddPics import PnlAddPics
-from gui.DlgPositionInput import DlgPositionInput
+from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
+from photofilmstrip.gui.PnlAddPics import PnlAddPics
+from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
 
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT, 

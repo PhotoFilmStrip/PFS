@@ -22,9 +22,9 @@
 
 import wx
 
-from core.Aspect import Aspect
+from photofilmstrip.core.Aspect import Aspect
 
-from gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
 [wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL, 

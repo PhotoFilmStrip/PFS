@@ -22,17 +22,17 @@
 import array
 
 try:
-    from core.backend.PILBackend import PILCtx
+    from photofilmstrip.core.backend.PILBackend import PILCtx
 except ImportError:
     PILCtx = type
 
 try:
-    from core.backend.CairoBackend import CairoCtx
+    from photofilmstrip.core.backend.CairoBackend import CairoCtx
 except ImportError:
     CairoCtx = type
 
 try:
-    from core.backend.PyGameBackend import PyGameCtx
+    from photofilmstrip.core.backend.PyGameBackend import PyGameCtx
 except ImportError:
     PyGameCtx = type
 

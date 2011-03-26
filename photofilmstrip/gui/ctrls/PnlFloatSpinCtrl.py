@@ -22,7 +22,7 @@
 
 import wx
 
-from gui.util.FloatValidator import FloatValidator
+from photofilmstrip.gui.util.FloatValidator import FloatValidator
 
 
 [wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE, 

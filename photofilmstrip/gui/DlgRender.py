@@ -29,20 +29,20 @@ import wx
 import wx.combo
 
 
-from core.OutputProfile import OutputProfile, GetOutputProfiles
-from core.ProgressHandler import ProgressHandler
-from core.RenderEngine import RenderEngine
-from core.renderer import RENDERERS
-from core.renderer.RendererException import RendererException
+from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
+from photofilmstrip.core.ProgressHandler import ProgressHandler
+from photofilmstrip.core.RenderEngine import RenderEngine
+from photofilmstrip.core.renderer import RENDERERS
+from photofilmstrip.core.renderer.RendererException import RendererException
 
-from lib.common.ObserverPattern import Observer
-from lib.Settings import Settings
-from lib.util import Encode
+from photofilmstrip.lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import Encode
 
-from gui.ctrls.PnlDlgHeader import PnlDlgHeader
-from gui.HelpViewer import HelpViewer
-from gui.DlgRendererProps import DlgRendererProps
-from gui.DlgFinalize import DlgFinalize
+from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.gui.HelpViewer import HelpViewer
+from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
+from photofilmstrip.gui.DlgFinalize import DlgFinalize
 
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 

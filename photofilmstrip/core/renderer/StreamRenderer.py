@@ -21,7 +21,7 @@
 
 import sys
 
-from core.renderer.SingleFileRenderer import SingleFileRenderer
+from photofilmstrip.core.renderer.SingleFileRenderer import SingleFileRenderer
 
 
 class StreamRenderer(SingleFileRenderer):

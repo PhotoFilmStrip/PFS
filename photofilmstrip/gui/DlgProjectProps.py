@@ -26,14 +26,14 @@ import wx
 import wx.lib.masked.textctrl
 import wx.lib.masked.timectrl
 
-from lib.Settings import Settings
-from lib.util import IsPathWritable
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import IsPathWritable
 
-from core.Aspect import Aspect
-from core.PhotoFilmStrip import PhotoFilmStrip
-from core.MPlayer import MPlayer
+from photofilmstrip.core.Aspect import Aspect
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.MPlayer import MPlayer
 
-from gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
 [wxID_DLGPROJECTPROPS, wxID_DLGPROJECTPROPSCBTOTALLENGTH, 

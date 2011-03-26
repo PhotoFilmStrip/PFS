@@ -24,7 +24,7 @@ import sys
 
 import wx.html
 
-from lib.common.Singleton import Singleton
+from photofilmstrip.lib.common.Singleton import Singleton
 
 
 class HelpViewer(Singleton):

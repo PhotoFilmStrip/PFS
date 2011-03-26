@@ -24,12 +24,12 @@ import logging
 import random
 import sqlite3
 
-from lib.util import Encode
+from photofilmstrip.lib.util import Encode
 
-from core.Aspect import Aspect
-from core.Picture import Picture
-from core.ProgressHandler import ProgressHandler
-from core.backend.PILBackend import PILBackend
+from photofilmstrip.core.Aspect import Aspect
+from photofilmstrip.core.Picture import Picture
+from photofilmstrip.core.ProgressHandler import ProgressHandler
+from photofilmstrip.core.backend.PILBackend import PILBackend
 
 
 class PhotoFilmStrip(object):

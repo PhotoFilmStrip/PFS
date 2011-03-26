@@ -21,9 +21,9 @@
 
 import random
 
-from lib.common.ObserverPattern import Observable
+from photofilmstrip.lib.common.ObserverPattern import Observable
 
-from core.Aspect import Aspect
+from photofilmstrip.core.Aspect import Aspect
 
 
 class Picture(Observable):
@@ -208,7 +208,7 @@ class Picture(Observable):
         '''
         @deprecated: convenience
         '''
-        from core.backend.PILBackend import PILBackend
+        from photofilmstrip.core.backend.PILBackend import PILBackend
         img = PILBackend.GetImage(self)
         self._width, self._height = PILBackend.GetImageSize(img)
         return img
@@ -217,5 +217,5 @@ class Picture(Observable):
         '''
         @deprecated: convenience
         '''
-        from core.backend.PILBackend import PILBackend
+        from photofilmstrip.core.backend.PILBackend import PILBackend
         return PILBackend.GetThumbnail(self, width, height)

@@ -24,9 +24,9 @@ import sys
 
 import wx
 
-from gui.ImageProvider  import ImageProvider
-from gui.FrmMain import FrmMain
-from gui.DlgBugReport import DlgBugReport
+from photofilmstrip.gui.ImageProvider  import ImageProvider
+from photofilmstrip.gui.FrmMain import FrmMain
+from photofilmstrip.gui.DlgBugReport import DlgBugReport
 
 
 class PhotoFilmStripApp(wx.App):

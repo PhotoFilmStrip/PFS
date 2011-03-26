@@ -24,9 +24,9 @@ try:
 except ImportError:
     pygame = None
 
-from core.OutputProfile import OutputProfile
-from core.BaseRenderer import BaseRenderer
-from core.backend.Transformer import Transformer
+from photofilmstrip.core.OutputProfile import OutputProfile
+from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.backend.Transformer import Transformer
 
 
 class PyGameRenderer(BaseRenderer):
