@@ -21,8 +21,8 @@
 #
 
 import logging
-import sys
 import multiprocessing
+import sys
 
 
 def initLogging():
@@ -35,7 +35,7 @@ def initLogging():
                         datefmt='%d.%m.%Y %H:%M:%S')
 
 def initI18N():
-    from lib.Settings import Settings
+    from photofilmstrip.lib.Settings import Settings
     Settings().InitLanguage()
 
 
@@ -43,11 +43,11 @@ def main():
     initLogging()
     initI18N()
 
-    if not hasattr(sys, 'frozen'):
+    if not getattr(sys, 'frozen', False):
         import wxversion
         wxversion.select("2.8")
     
-    from gui.PhotoFilmStripApp import main
+    from photofilmstrip.gui.PhotoFilmStripApp import main
     main()
 
 

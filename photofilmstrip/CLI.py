@@ -20,19 +20,22 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import multiprocessing
 import sys
 
 
 def initLogging():
-    import logging
-    from lib.Settings import Settings
-    logging.basicConfig(level=logging.WARNING,
+    if "-d" in sys.argv:
+        lvl = logging.DEBUG
+    else:
+        lvl = logging.WARNING
+    logging.basicConfig(level=lvl,
                         format='\n%(levelname)s: %(message)s',
                         datefmt='')
 
 def initI18N():
-    from lib.Settings import Settings
+    from photofilmstrip.lib.Settings import Settings
     Settings().InitLanguage()
 
 
@@ -40,7 +43,7 @@ def main():
     initLogging()
     initI18N()
     
-    from cli.Main import main
+    from photofilmstrip.cli.Main import main
     return main()
 
 
