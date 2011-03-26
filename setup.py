@@ -29,6 +29,7 @@ if len(sys.argv) == 1:
 from photofilmstrip.lib.Settings import Settings
 
 from distutils import log
+from distutils.command.build import build
 from distutils.core import setup
 from distutils.core import Command
 from distutils.errors import DistutilsExecError
@@ -44,6 +45,8 @@ WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
 MSGFMT  = os.path.join(os.path.dirname(sys.executable),
                        "Tools", "i18n", "msgfmt.py")
+if not os.path.isfile(MSGFMT):
+    MSGFMT = "msgfmt"
 
 
 class Clean(Command):
@@ -87,6 +90,14 @@ class Test(Command):
     def run(self):
         pass
 
+class pfs_build(build):
+    def initialize_options(self):
+        build.initialize_options(self)
+    def finalize_options(self):
+        build.finalize_options(self)
+        
+        self.sub_commands.append(("Compile", None))
+
 
 class Compile(Command):
     user_options = []
@@ -123,7 +134,7 @@ class Compile(Command):
     def _make_resources(self):
         from wx.tools.img2py import img2py
         imgDir = os.path.abspath(os.path.join("res", "icons"))
-        target = os.path.join("src", "res", "images.py")
+        target = os.path.join("photofilmstrip", "res", "images.py")
         
         idx = 0
         for imgName, imgFile in (
@@ -148,20 +159,21 @@ class Compile(Command):
             
     def _make_locale(self):
         for filename in os.listdir("po"):
-            base, ext = os.path.splitext(filename)
+            lang, ext = os.path.splitext(filename)
             if ext.lower() == ".po":
-                path = os.path.join("share", "locale", base, "LC_MESSAGES")
-                if not os.path.exists(path):
-                    os.makedirs(path)
-                
+                moDir =  os.path.join("build", "mo", lang, "LC_MESSAGES")
+                moFile = os.path.join(moDir, "%s.mo" % Settings.APP_NAME)
+                if not os.path.exists(moDir):
+                    os.makedirs(moDir)
                 code = subprocess.call([MSGFMT, "-o",
-                                        os.path.join(path, "%s.mo" % Settings.APP_NAME),
-                                        os.path.join("po", base)], shell=True)
+                                        moFile,
+                                        os.path.join("po", lang)])
                 if code != 0:
-                    raise RuntimeError("%s" % code)
+                    raise RuntimeError("msgfmt %s: %s" % (lang, code))
                 
+                targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
-                    (path, [os.path.join(path, "%s.mo" % Settings.APP_NAME)])
+                    (targetPath, (moFile,))
                 )
 
 
@@ -181,7 +193,7 @@ class WinRelease(Command):
             self.run_command(cmdName)
             
         targetDir = os.path.join("dist", "extBin", "mplayer")
-        Unzip(os.path.join("win32extBin", "MPlayer-mingw32-1.0rc2.zip"),
+        Unzip(os.path.join("windows", "MPlayer-mingw32-1.0rc2.zip"),
               targetDir, 
               stripFolders=1)
         
@@ -207,7 +219,7 @@ class WinSetup(Command):
         log.info("building installer...")
         code = subprocess.call([INNO, "/Q", 
                                 "/F%s-%s" % ("setup_photofilmstrip", ver), 
-                                "photofilmstrip.iss"])
+                                "windows\\photofilmstrip.iss"])
         if code != 0:
             raise DistutilsExecError("InnoSetup")
         log.info("    done.")
@@ -365,6 +377,7 @@ setup(
     cmdclass={
                 "Clean"      : Clean,
                 "Test"       : Test,
+                "build"      : pfs_build,
                 "Compile"    : Compile,
                 "WinRelease" : WinRelease,
                 "WinSetup"   : WinSetup,
