@@ -59,9 +59,8 @@ class Clean(Command):
         log.info("cleaning...")
 
         for directory in (os.path.join(WORKDIR, "dist"),
-                          os.path.join(WORKDIR, "build", "bdist.win32"),
+                          os.path.join(WORKDIR, "build"),
                           os.path.join(WORKDIR, "release"),
-                          os.path.join(WORKDIR, "locale"),
                           ):
             if os.path.exists(directory):
                 remove_tree(directory, 1)
@@ -163,9 +162,9 @@ class Compile(Command):
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
                 log.debug("create mo file (%s): %s -o %s, po/%s", lang, MSGFMT, moFile, lang)
-                code = subprocess.call([sys.executable, MSGFMT, "-o",
+                code = subprocess.call([MSGFMT, "-o",
                                         moFile,
-                                        os.path.join("po", lang)])
+                                        os.path.join("po", lang)], shell=True)
                 if code != 0:
                     raise RuntimeError("msgfmt %s: %s" % (lang, code))
                 
