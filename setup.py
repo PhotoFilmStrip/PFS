@@ -364,6 +364,12 @@ manifestVersion="1.0">
   </dependency>
 </assembly>'''
 
+
+DESCRIPTION = """\
+PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.
+"""
+
+
 setup(
     cmdclass={
                 "Clean"      : Clean,
@@ -394,5 +400,24 @@ setup(
     zipfile = "lib/modules",
     data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
                 ("share\\music", glob.glob("res\\audio\\*.mp3")),
-    ]
+    ],
+
+    name = Sett.Settings.APP_NAME,
+    version = Sett.Settings.APP_VERSION,
+    name = "PhotoFilmStrip",
+    version = GetVersion(),
+    license = "GPLv2",
+    description = "PhotoFilmStrip - Creates movies out of your pictures.",
+    long_description = DESCRIPTION,
+    author = "Jens Goepfert",
+    author_email = "info@photofilmstrip.org",
+    url = "http://www.photofilmstrip.org",
+       
+    packages = ['pfs', 
+                'pfs.cli', 
+                'pfs.core', 'pfs.core.backend', 'pfs.core.renderer',
+                'pfs.gui', 'pfs.gui.ctrls', 'pfs.gui.util',
+                'pfs.lib', 'pfs.lib.common',
+                'pfs.res'],
+    package_dir={'pfs': 'src'},
     )

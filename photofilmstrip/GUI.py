@@ -21,8 +21,8 @@
 #
 
 import logging
-import multiprocessing
 import sys
+import multiprocessing
 
 
 def initLogging():
@@ -43,7 +43,7 @@ def main():
     initLogging()
     initI18N()
 
-    if getattr(sys, 'frozen', False):
+    if not hasattr(sys, 'frozen'):
         import wxversion
         wxversion.select("2.8")
     
