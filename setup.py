@@ -25,9 +25,8 @@ import zipfile
 
 if len(sys.argv) == 1:
     sys.argv.append("Compile")
-sys.path.append("src")
 
-from lib.Settings import Settings
+from photofilmstrip.lib.Settings import Settings
 
 from distutils import log
 from distutils.core import setup
@@ -113,9 +112,9 @@ class Compile(Command):
         else:
             svnRev = 0
 
-        if hasattr(self.distribution, "windows"):
-            for target in self.distribution.windows + self.distribution.console:
-                target.Update(svnRev)
+        for target in getattr(self.distribution, "windows", []) + \
+                      getattr(self.distribution, "console", []):
+            target.Update(svnRev)
         
         fd = open("_svnInfo.py", "w")
         fd.write("SVN_REV = \"%s\"\n" % svnRev)
@@ -151,18 +150,18 @@ class Compile(Command):
         for filename in os.listdir("po"):
             base, ext = os.path.splitext(filename)
             if ext.lower() == ".po":
-                path = "locale\\%s\\LC_MESSAGES" % base
+                path = os.path.join("share", "locale", base, "LC_MESSAGES")
                 if not os.path.exists(path):
                     os.makedirs(path)
                 
                 code = subprocess.call([MSGFMT, "-o",
-                                        os.path.join(path, "PhotoFilmStrip.mo"),
+                                        os.path.join(path, "%s.mo" % Settings.APP_NAME),
                                         os.path.join("po", base)], shell=True)
                 if code != 0:
                     raise RuntimeError("%s" % code)
                 
                 self.distribution.data_files.append(
-                    (path, [os.path.join(path, "PhotoFilmStrip.mo")])
+                    (path, [os.path.join(path, "%s.mo" % Settings.APP_NAME)])
                 )
 
 
@@ -202,7 +201,7 @@ class WinSetup(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
     
-        ver = GetVersion()
+        ver = Settings.APP_VERSION
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
         
         log.info("building installer...")
@@ -228,7 +227,7 @@ class WinPortable(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
             
-        ver = GetVersion()
+        ver = Settings.APP_VERSION
         log.info("building portable zip...")
         if not os.path.exists("release"):
             os.makedirs("release")
@@ -256,14 +255,6 @@ class Target:
         
     def Update(self, svnVer):
         self.version = "%s.%s" % (self.product_version, svnVer)
-
-
-def GetVersion():
-    log.info("determine PhotoFilmStrip version...")
-    import lib.Settings
-    ver = lib.Settings.Settings.APP_VERSION
-    log.info("    found version: %s", ver)
-    return ver
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
@@ -402,22 +393,20 @@ setup(
                 ("share\\music", glob.glob("res\\audio\\*.mp3")),
     ],
 
-    name = Sett.Settings.APP_NAME,
-    version = Sett.Settings.APP_VERSION,
-    name = "PhotoFilmStrip",
-    version = GetVersion(),
+    name = Settings.APP_NAME,
+    version = Settings.APP_VERSION,
     license = "GPLv2",
     description = "PhotoFilmStrip - Creates movies out of your pictures.",
     long_description = DESCRIPTION,
     author = "Jens Goepfert",
     author_email = "info@photofilmstrip.org",
-    url = "http://www.photofilmstrip.org",
+    url = Settings.APP_URL,
        
-    packages = ['pfs', 
-                'pfs.cli', 
-                'pfs.core', 'pfs.core.backend', 'pfs.core.renderer',
-                'pfs.gui', 'pfs.gui.ctrls', 'pfs.gui.util',
-                'pfs.lib', 'pfs.lib.common',
-                'pfs.res'],
-    package_dir={'pfs': 'src'},
+    packages = ['photofilmstrip', 
+                'photofilmstrip.cli', 
+                'photofilmstrip.core', 'photofilmstrip.core.backend', 'photofilmstrip.core.renderer',
+                'photofilmstrip.gui', 'photofilmstrip.gui.ctrls', 'photofilmstrip.gui.util',
+                'photofilmstrip.lib', 'photofilmstrip.lib.common',
+                'photofilmstrip.res'],
+#    package_dir={'pfs': 'src'},
     )

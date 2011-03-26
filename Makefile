@@ -7,18 +7,14 @@ include Makefile.rules
 compile:
 	python -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
 	python -OO -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
-	
-	target=`echo $@`; \
-	make -C po $$target
+	python setup.py Compile
 
 clean:
 	if [ -e ./dist ] ; then rm -r ./dist ; fi
 	find . -name "*.pyc" -exec rm {} ';'
 	find . -name "*.pyo" -exec rm {} ';'
+	python setup.py Clean
 	
-	target=`echo $@`; \
-	make -C po $$target
-
 	rm -f "$(displayname).pot"
 
 install:
