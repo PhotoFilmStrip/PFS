@@ -7,7 +7,7 @@ include Makefile.rules
 compile:
 	python -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
 	python -OO -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
-	python setup.py Compile
+	python setup.py build
 
 clean:
 	if [ -e ./dist ] ; then rm -r ./dist ; fi

@@ -402,8 +402,8 @@ setup(
                     )
     ],
     zipfile = "lib/modules",
-    data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
-                ("share\\music", glob.glob("res\\audio\\*.mp3")),
+    data_files=[(os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
+                (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
     ],
 
     name = Settings.APP_NAME,
