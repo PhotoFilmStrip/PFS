@@ -23,17 +23,17 @@ import os, sys, logging
 
 from optparse import OptionParser
 
-from lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.common.ObserverPattern import Observer
 
-from lib.Settings import Settings
-from lib.util import Decode, Encode
+from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import Decode, Encode
 
-from core.OutputProfile import OutputProfile, GetOutputProfiles
-from core.PhotoFilmStrip import PhotoFilmStrip
-from core.ProgressHandler import ProgressHandler
-from core.RenderEngine import RenderEngine
-from core.renderer import RENDERERS
-from core.renderer.StreamRenderer import StreamRenderer
+from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.ProgressHandler import ProgressHandler
+from photofilmstrip.core.RenderEngine import RenderEngine
+from photofilmstrip.core.renderer import RENDERERS
+from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
 
 
 class CliGui(Observer):
