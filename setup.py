@@ -19,7 +19,6 @@
 #
 
 import sys, os
-import subprocess
 
 import zipfile
 
@@ -29,7 +28,6 @@ from distutils import log
 from distutils.command.build import build
 from distutils.core import setup
 from distutils.core import Command
-from distutils.errors import DistutilsExecError
 from distutils.dir_util import remove_tree
 
 import glob
@@ -42,8 +40,10 @@ WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
 MSGFMT  = os.path.join(os.path.dirname(sys.executable),
                        "Tools", "i18n", "msgfmt.py")
-if not os.path.isfile(MSGFMT):
-    MSGFMT = "msgfmt"
+if os.path.isfile(MSGFMT):
+    MSGFMT = [sys.executable, MSGFMT]
+else:
+    MSGFMT = ["msgfmt"]
 
 
 class Clean(Command):
@@ -70,7 +70,7 @@ class Clean(Command):
                       os.path.join(WORKDIR, "_svnInfo.pyc"),
                       os.path.join(WORKDIR, "_svnInfo.pyo")):
             if os.path.exists(fname):
-               os.remove(fname)
+                os.remove(fname)
            
         log.info("    done.")
 
@@ -131,27 +131,42 @@ class Compile(Command):
         from wx.tools.img2py import img2py
         imgDir = os.path.abspath(os.path.join("res", "icons"))
         target = os.path.join("photofilmstrip", "res", "images.py")
+        target_mtime = os.path.getmtime(target)
         
-        idx = 0
-        for imgName, imgFile in (
-#                                 ("ALIGN_BOTTOM", "align_bottom.png"),
-#                                 ("ALIGN_MIDDLE", "align_middle.png"),
-#                                 ("ALIGN_TOP", "align_top.png"),
-#                                 ("ALIGN_LEFT", "align_left.png"),
-#                                 ("ALIGN_CENTER", "align_center.png"),
-#                                 ("ALIGN_RIGHT", "align_right.png"),
-                                 ("PLAY_PAUSE", "play_pause_16.png"),
-                                 ("MOTION_RIGHT", "motion_right_24.png"),
-                                 ("MOTION_LEFT", "motion_left_24.png"),
-                                 ("MOTION_INPUT", "motion_input_24.png"),
-                                 ("MOTION_RANDOM", "motion_random_24.png"),
-                                 ("ICON_32", "photofilmstrip_32.png"),
-                                 ("ICON_48", "photofilmstrip_48.png")
-                                 ):
+        imgResources = (
+#                        ("ALIGN_BOTTOM", "align_bottom.png"),
+#                        ("ALIGN_MIDDLE", "align_middle.png"),
+#                        ("ALIGN_TOP", "align_top.png"),
+#                        ("ALIGN_LEFT", "align_left.png"),
+#                        ("ALIGN_CENTER", "align_center.png"),
+#                        ("ALIGN_RIGHT", "align_right.png"),
+                        ("PLAY_PAUSE", "play_pause_16.png"),
+                        ("MOTION_RIGHT", "motion_right_24.png"),
+                        ("MOTION_LEFT", "motion_left_24.png"),
+                        ("MOTION_INPUT", "motion_input_24.png"),
+                        ("MOTION_RANDOM", "motion_random_24.png"),
+                        ("ICON_32", "photofilmstrip_32.png"),
+                        ("ICON_48", "photofilmstrip_48.png")
+                       )
+        
+        update = False
+        for imgRes in imgResources:
+            img_mtime = os.path.getmtime(os.path.join(imgDir, imgRes[1]))
+            log.info("checking image resource %s: %s > %s", 
+                     imgRes[0], img_mtime, target_mtime)
             
-            img2py(os.path.join(imgDir, imgFile), 
-                   target, append=idx>0, imgName=imgName, icon=True, compressed=True, catalog=True)
-            idx += 1
+            if img_mtime > target_mtime:
+                update = True
+                break
+        
+        if update:
+            for idx, (imgName, imgFile) in enumerate(imgResources):
+                img2py(os.path.join(imgDir, imgFile), 
+                       target, append=idx>0, 
+                       imgName=imgName, 
+                       icon=True, 
+                       compressed=True, 
+                       catalog=True)
             
     def _make_locale(self):
         for filename in os.listdir("po"):
@@ -161,12 +176,10 @@ class Compile(Command):
                 moFile = os.path.join(moDir, "%s.mo" % Settings.APP_NAME)
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
-                log.debug("create mo file (%s): %s -o %s, po/%s", lang, MSGFMT, moFile, lang)
-                code = subprocess.call([MSGFMT, "-o",
-                                        moFile,
-                                        os.path.join("po", lang)], shell=True)
-                if code != 0:
-                    raise RuntimeError("msgfmt %s: %s" % (lang, code))
+
+                self.spawn(MSGFMT + ["-o",
+                                     moFile,
+                                     os.path.join("po", filename)])
                 
                 targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
@@ -213,11 +226,9 @@ class WinSetup(Command):
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
         
         log.info("building installer...")
-        code = subprocess.call([INNO, "/Q", 
-                                "/F%s-%s" % ("setup_photofilmstrip", ver), 
-                                "windows\\photofilmstrip.iss"])
-        if code != 0:
-            raise DistutilsExecError("InnoSetup")
+        self.spawn([INNO, "/Q",
+                    "/F%s-%s" % ("setup_photofilmstrip", ver), 
+                    os.path.join("windows", "photofilmstrip.iss")])
         log.info("    done.")
 
 
@@ -266,6 +277,7 @@ class Target:
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
+    log.info("zip %s to %s" % (srcDir, zipFile))
     if not os.path.isdir(os.path.dirname(zipFile)):
         os.makedirs(os.path.dirname(zipFile))
 
@@ -283,13 +295,13 @@ def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
                 zipTarget = os.path.join(fldr, fname)
             else:
                 zipTarget = os.path.join(virtualFolder, fldr, fname)
-            log.debug("  zipping %s" % zipTarget)
+            log.info("  deflate %s" % zipTarget)
             zf.write(os.path.join(dirpath, fname), zipTarget)
     zf.close()
 
 
 def Unzip(zipFile, targetDir, stripFolders=0):
-    log.info("extracting %s to %s" % (zipFile, targetDir))
+    log.info("unzip %s to %s" % (zipFile, targetDir))
     if not os.path.isdir(targetDir):
         os.makedirs(targetDir)
 
@@ -299,7 +311,7 @@ def Unzip(zipFile, targetDir, stripFolders=0):
         if eleInfo.file_size == 0:
             continue
 
-        log.debug("  extracting %s (%s)" % (ele, eleInfo.file_size))
+        log.info("  inflate %s (%s)" % (ele, eleInfo.file_size))
         fldr, fname = os.path.split(ele)
 
         if stripFolders > 0:
