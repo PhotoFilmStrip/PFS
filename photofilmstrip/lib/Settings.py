@@ -42,7 +42,7 @@ APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
 if sys.platform == "win32":
     _path = os.getenv("PATH", "").split(";")
-    _path.append(os.path.join(APP_DIR, "extBin", "mplayer"))
+    _path.append(os.path.join(APP_DIR, "lib", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
 
     import _subprocess

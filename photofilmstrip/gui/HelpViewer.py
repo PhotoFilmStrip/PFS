@@ -36,7 +36,7 @@ class HelpViewer(Singleton):
     def __init__(self):
         self.__htmlCtrl = wx.html.HtmlHelpController()
         docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 
-                               "..", "doc", "photofilmstrip", "photofilmstrip.hhp")
+                               "..", "share", "doc", "photofilmstrip", "photofilmstrip.hhp")
         fn = os.path.abspath(docFile)
         self.__htmlCtrl.AddBook(fn)
         
