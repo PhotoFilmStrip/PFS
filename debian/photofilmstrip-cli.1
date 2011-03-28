@@ -1,0 +1,76 @@
+.TH USAGE: "1" "November 2010" "Usage: photofilmstrip-cli [options]" "User Commands"
+.SH NAME
+photofilmstrip-cli \- Slideshow creator with Ken Burns effect
+.SH SYNOPSIS
+.B photofilmstrip-cli
+[\fIoptions\fR]
+.SH OPTIONS
+.TP
+\fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-p\fR PROJECT, \fB\-\-project\fR=\fIPROJECT\fR
+specifies the project file
+.TP
+\fB\-o\fR PATH, \fB\-\-outputpath\fR=\fIPATH\fR
+The path where to save the output files. Use \- for
+stdout.
+.TP
+\fB\-t\fR PROFILE, \fB\-\-profile\fR=\fIPROFILE\fR
+0=VCD, 1=SVCD, 2=DVD, 3=Medium, 4=HD, 5=FULL\-HD
+[default: 3]
+.TP
+\fB\-n\fR VIDEONORM, \fB\-\-videonorm\fR=\fIVIDEONORM\fR
+n=NTSC, p=PAL [default: p]
+.TP
+\fB\-f\fR FORMAT, \fB\-\-format\fR=\fIFORMAT\fR
+0=Single pictures, 1=MPEG4\-XVid (AVI),
+2=MPEG(1/2)\-Video (MPG), 3=Flash\-Video (FLV), 4
+=Motion\-JPEG (AVI) [default: 1]
+.TP
+\fB\-d\fR, \fB\-\-draft\fR
+enable draft mode \- Activate this option to generate a
+preview of your PhotoFilmStrip. The rendering process
+will speed up dramatically, but results in lower
+quality.
+.TP
+\fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-p\fR PROJECT, \fB\-\-project\fR=\fIPROJECT\fR
+specifies the project file
+.TP
+\fB\-o\fR PATH, \fB\-\-outputpath\fR=\fIPATH\fR
+The path where to save the output files. Use \- for
+stdout.
+.TP
+\fB\-t\fR PROFILE, \fB\-\-profile\fR=\fIPROFILE\fR
+0=VCD, 1=SVCD, 2=DVD, 3=Medium, 4=HD, 5=FULL\-HD
+[default: 3]
+.TP
+\fB\-n\fR VIDEONORM, \fB\-\-videonorm\fR=\fIVIDEONORM\fR
+n=NTSC, p=PAL [default: p]
+.TP
+\fB\-f\fR FORMAT, \fB\-\-format\fR=\fIFORMAT\fR
+0=Single pictures, 1=MPEG4\-XVid (AVI),
+2=MPEG(1/2)\-Video (MPG), 3=Flash\-Video (FLV), 4
+=Motion\-JPEG (AVI) [default: 1]
+.TP
+\fB\-d\fR, \fB\-\-draft\fR
+enable draft mode \- Activate this option to generate a
+preview of your PhotoFilmStrip. The rendering process
+will speed up dramatically, but results in lower
+quality.
+.SH "SEE ALSO"
+.BR mencoder (1).
+.SH AUTHOR
+photofilmstrip was written by Jens G\[:o]pfert.
+.PP
+This manual page was written by G\[:u]rkan Seng\[:u]n <gurkan@phys.ethz.ch>,
+for the Debian project (but may be used by others).

@@ -3,13 +3,15 @@
      - italian translation
     bugfix:
      - py2exe and PIL workaround
-  
+
+
   * 2010/11/12 (Version 1.3.99 BETA)
     changed:
      - internal optimizations
     bugfix:
      - a few
-  
+
+
   * 2010/10/31 (Version 1.3.98 ALPHA)
     changed:
      - better audio support
@@ -20,7 +22,8 @@
     bugfix:
      - working CLI
      - order of recently used projects fixed
-  
+
+
   * 2010/07/18 (Version 1.3.97 ALPHA)
     added:
      - MJPEG-Renderer
@@ -30,6 +33,7 @@
      - minimal size of mainframe specified
      - property dialog could not open if no pics were added to the project
      - ticket id 2890912: drop position determined correctly
+
 
   * 2010/07/04 (Version 1.3.96 ALPHA)
     added:
@@ -42,6 +46,7 @@
      - progress bar has correct max progress
      - RemoveObserver raises ValueError: list.remove(x): x not in list
      - OutputProfile raises AttributeError no attribute OutputProfile.__resNtsc
+
 
   * 2010/06/12 (Version 1.3.95 ALPHA)
     added:
@@ -62,13 +67,16 @@
      - Bug-ID 3003534 (Subtitles out of sync)
      - Rendering with only 1 image does not fail anymore  
 
+
   * 2010/03/14 (Version 1.3.5)
     added: 
      - Czech translation (thanks to Tomas)
 
+
   * 2010/02/14 (Version 1.3.4)
     added: 
      - french translation (thanks to Teza)
+
 
   * 2010/01/24 (Version 1.3.3)
     bugfixes: 
@@ -76,10 +84,12 @@
      - check for mencoder
      - incomplete portuguese translation removed
 
+
   * 2009/11/10 (Version 1.3.2)
     bugfixes: 
      - UnicodeEncodeError when generating subtitle (srt-file)
      - preparation for customizable aspect ratio
+
 
   * 2009/11/08 (Version 1.3.1)
     bugfixes: 
@@ -87,6 +97,7 @@
      - UnicodeEncodeError fixed when batch job is created
      - cli arg for audio duration accepts float values
      - HitTest for PhotoFilmStrip-list recognizes gap between pictures
+
 
   * 2009/11/01 (Version 1.3)
     changed:
@@ -113,6 +124,7 @@
      - wxPython assertions
      - no section errors
      - lots of minor bugs
+
 
   * 2009/02/18 (Version 1.1)
     changed:
@@ -143,7 +155,7 @@
      - mouse capturing (mainly for windows)
      - position of thumbnails in imagelist is working properly under windows too
      - settings file is saved in temp folder if no environment variable HOME is set under windows
-  
+
 
   * 2008/11/27
     added:
@@ -184,11 +196,11 @@
     added:
      - Makefile (make deb) prepares everything for dpkg-buildpackage
      - py2exe build script
-     
+
     changed:
      - GUI optimizations
-     
-     
+
+
   * 2008/11/04
     added:
      - audio file support in CLI (CLI cannot determine length of audio yet)
@@ -290,4 +302,3 @@
   * 2008/10/11
 
     initial release
-

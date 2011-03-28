@@ -86,6 +86,7 @@ class Test(Command):
     def run(self):
         pass
 
+
 class pfs_build(build):
     def initialize_options(self):
         build.initialize_options(self)
@@ -418,7 +419,7 @@ setup(
                 (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
     ],
 
-    name = Settings.APP_NAME,
+    name = Settings.APP_NAME.lower(),
     version = Settings.APP_VERSION,
     license = "GPLv2",
     description = "PhotoFilmStrip - Creates movies out of your pictures.",

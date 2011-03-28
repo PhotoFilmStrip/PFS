@@ -1,15 +1,17 @@
 This package was debianized by Jens Göpfert <jens@sg-dev.de> on
 Sun, 05 Oct 2008 17:31:35 +0200.
 
-It was downloaded from <http://www.sg-dev.de>
+It was downloaded from:
 
-Upstream Author(s):
+    http://www.photofilmstrip.org/
+
+Upstream Author:
 
     Jens Göpfert <jens@sg-dev.de>
 
 Copyright:
 
-    Copyright (C) 2008 Jens Göpfert
+    Copyright (C) 2008-2011 Jens Göpfert
 
 License:
 
@@ -30,9 +32,5 @@ License:
 On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.
 
-The Debian packaging is (C) 2008, Jens Göpfert <jens@sg-dev.de> and
+The Debian packaging is Copyright (C) 2011, Jens Göpfert <jens@sg-dev.de> and
 is licensed under the GPL, see above.
-
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.

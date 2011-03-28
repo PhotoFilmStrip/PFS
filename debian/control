@@ -1,15 +1,23 @@
 Source: photofilmstrip
-Section: graphics
-Priority: extra
-Maintainer: Jens Göpfert <jens@sg-dev.de>
-Build-Depends: debhelper (>= 7)
-Standards-Version: 3.7.3
-Homepage: http://photostoryx.sourceforge.net
+Section: video
+Priority: optional
+Maintainer: Jens Göpfert <mail@jensgoepfert.de>
+Uploaders: Jens Göpfert <mail@jensgoepfert.de>
+Build-Depends: debhelper (>= 7), python (>= 2.6), python-support, cdbs (>= 0.4.49)
+XS-Python-Version: >= 2.6
+Standards-Version: 3.8.4
+Homepage: http://www.photofilmstrip.org
 
 Package: photofilmstrip
 Architecture: all
-Depends: python, python-wxgtk2.8, python-imaging, mencoder, xdg-utils
-Description: PhotoFilmStrip creates movies out of your pictures in just 3 steps.
- PhotoFilmStrip creates movies out of your pictures in just 3 steps. 
- First select your photos, customize the motion path and render the video. 
- There are several output possibilities for VCD, SVCD, DVD up to FULL-HD. 
+Depends: ${misc:Depends}, mencoder, python-wxgtk2.8, python-imaging, ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: Slideshow creator with Ken Burns effect
+ This creates movies out of your pictures in just three steps.
+ First select your photos, customize the motion path and render the
+ video. There are several output possibilities for VCD, SVCD, DVD up to
+ FULL-HD.
+ .
+ The effect of the slideshow is known as "Ken Burns". Comments of the
+ pictures are generated into a subtitle file. Furthermore an audio file
+ can be specified to setup the background musice for the slide show.
