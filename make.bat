@@ -14,11 +14,11 @@ goto end
 goto end
 
 :clean
-%PYTHON% setup.py Clean
+%PYTHON% setup.py clean
 goto end
 
 :package
-%PYTHON% setup.py bdist_win bdist_wininst
+%PYTHON% setup.py bdist_winport bdist_wininst sdist
 goto end
 
 

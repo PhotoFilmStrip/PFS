@@ -26,6 +26,8 @@ from photofilmstrip.lib.Settings import Settings
 
 from distutils import log
 from distutils.command.build import build
+from distutils.command.check import check
+from distutils.command.clean import clean
 from distutils.core import setup
 from distutils.core import Command
 from distutils.dir_util import remove_tree
@@ -46,17 +48,10 @@ else:
     MSGFMT = ["msgfmt"]
 
 
-class Clean(Command):
+class pfs_clean(clean):
         
-    user_options = []
-
-    def initialize_options(self):
-        pass
-    def finalize_options(self):
-        pass
-    
     def run(self):
-        log.info("cleaning...")
+        clean.run(self)
 
         for directory in (os.path.join(WORKDIR, "dist"),
                           os.path.join(WORKDIR, "build"),
@@ -66,53 +61,30 @@ class Clean(Command):
                 remove_tree(directory, 1)
 
         for fname in (os.path.join(WORKDIR, "version.info"),
+                      os.path.join(WORKDIR, "MANIFEST"),
                       os.path.join(WORKDIR, "_svnInfo.py"),
                       os.path.join(WORKDIR, "_svnInfo.pyc"),
                       os.path.join(WORKDIR, "_svnInfo.pyo")):
             if os.path.exists(fname):
                 os.remove(fname)
            
-        log.info("    done.")
 
-
-class Test(Command):
+class pfs_check(check):
         
-    user_options = []
-
-    def initialize_options(self):
-        pass
-    def finalize_options(self):
-        pass
     def run(self):
-        pass
+        check.run(self)
 
 
 class pfs_build(build):
-    def initialize_options(self):
-        build.initialize_options(self)
     def finalize_options(self):
         build.finalize_options(self)
-        
-        self.sub_commands.insert(0, ("Compile", None))
 
-
-class Compile(Command):
-    user_options = []
-    sub_commands = [
-#                    ('Test',    lambda x: True),
-                   ]
-    def initialize_options(self):
-        pass
-    def finalize_options(self):
-        pass
     def run(self):
-        # Run all sub-commands (at least those that need to be run)
-        for cmdName in self.get_sub_commands():
-            self.run_command(cmdName)
-    
         self._make_svn_info()
         self._make_resources()
         self._make_locale()
+
+        build.run(self)
         
     def _make_svn_info(self):
         if os.path.isfile(".svn/entries"):
@@ -188,7 +160,10 @@ class Compile(Command):
                 )
 
 
-class WinRelease(Command):
+class pfs_exe(Command):
+    
+    description = "create an executable dist for MS Windows (py2exe)"
+
     user_options = []
     sub_commands = [('py2exe',  lambda x: True if py2exe else False)                    
                    ]
@@ -208,10 +183,12 @@ class WinRelease(Command):
               stripFolders=1)
         
 
-class WinSetup(Command):
+class pfs_win_setup(Command):
     
+    description = "create an executable installer for MS Windows (InnoSetup)"
+
     user_options = []
-    sub_commands = [('WinRelease', lambda x: True),
+    sub_commands = [('bdist_win', lambda x: True),
                    ]
 
     def initialize_options(self):
@@ -233,9 +210,12 @@ class WinSetup(Command):
         log.info("    done.")
 
 
-class WinPortable(Command):
+class pfs_win_portable(Command):
+
+    description = "create a portable executable for MS Windows"
+    
     user_options = []
-    sub_commands = [('WinRelease', lambda x: True),
+    sub_commands = [('bdist_win', lambda x: True),
                    ]
 
     def initialize_options(self):
@@ -387,13 +367,12 @@ PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select
 
 setup(
     cmdclass={
-                "Clean"         : Clean,
-                "Test"          : Test,
+                "clean"         : pfs_clean,
+                "check"         : pfs_check,
                 "build"         : pfs_build,
-                "Compile"       : Compile,
-                "WinRelease"    : WinRelease,
-                "bdist_wininst" : WinSetup,
-                "bdist_win"     : WinPortable,
+                "bdist_win"     : pfs_exe,
+                "bdist_wininst" : pfs_win_setup,
+                "bdist_winport" : pfs_win_portable,
               },
     verbose=False,
     options = {"py2exe": {"compressed": 2,
@@ -404,7 +383,8 @@ setup(
                           "excludes": ["Tkconstants", "Tkinter", "tcl", 
                                        "_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk", 
                                        "_ssl"]
-                          }
+                          },
+               "sdist": {"formats": ["gztar"]}
     },
     windows=[Target(script = "photofilmstrip/GUI.py",
                     dest_base = "bin/" + Settings.APP_NAME
@@ -415,7 +395,9 @@ setup(
                     )
     ],
     zipfile = "lib/photofilmstrip/modules",
-    data_files=[(os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
+    data_files=[
+                (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("docs/html/*.*")),
                 (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
     ],
 
