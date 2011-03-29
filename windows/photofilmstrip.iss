@@ -16,11 +16,12 @@ LicenseFile       = ..\copying
 WizardSmallImageFile=..\res\icon\photofilmstrip.bmp
 WizardImageFile=compiler:WizModernImage-IS.bmp
 PrivilegesRequired=none
-;compression=none
+compression=none
 
 [Files]
-Source: "..\build\dist\*";          DestDir: "{app}";                     Flags: recursesubdirs;  
-Source: "..\version.info";                                                   Flags: dontcopy;
+Source: "..\build\dist\*";             DestDir: "{app}"; Flags: recursesubdirs;
+Source: "..\version.info";                               Flags: dontcopy;
+Source: "..\windows\vcredist_x86.exe"; DestDir: "{tmp}";
 
 [Icons]
 Name: "{group}\PhotoFilmStrip"; Filename: "{app}\bin\PhotoFilmStrip.exe"
@@ -28,7 +29,8 @@ Name: "{group}\Help";           Filename: "{app}\share\doc\photofilmstrip\photof
 Name: "{group}\Uninstall";      Filename: "{app}\unins000.exe";       WorkingDir: "{app}";
 
 [Run]
-Filename: "{app}\bin\PhotoFilmStrip.exe"; Description: "Run PhotoFilmStrip"; Flags: postinstall skipifsilent nowait
+Filename: "{tmp}\vcredist_x86.exe"; WorkingDir: {tmp}; Parameters: "/q /l {tmp}\vcredist.log"; StatusMsg: Microsoft Visual C++ 2008 Redistributable Setup...; Flags: waituntilterminated; Check: VCRedistCheck
+Filename: "{app}\bin\PhotoFilmStrip.exe"; Description: "Run PhotoFilmStrip"; Flags: postinstall skipifsilent nowait;
 
 [Tasks]
 Name: associate;   Description: "Associate with PFS Files";     Check: IsAdminLoggedOn;
@@ -68,9 +70,19 @@ function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   case PageID of
     wpSelectTasks:
-      Result := not IsAdminLoggedOn();
+      result := not IsAdminLoggedOn();
   else
-    Result := False;
+    result := False;
   end;
+end;
+
+function VCRedistCheck(): Boolean;
+begin
+  if RegValueExists(HKEY_LOCAL_MACHINE, 
+                    'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4}', 
+                    'Version') then
+      result := False
+  else
+      result := True
 end;
 
