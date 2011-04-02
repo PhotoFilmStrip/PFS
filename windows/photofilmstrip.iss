@@ -29,11 +29,12 @@ Name: "{group}\Help";           Filename: "{app}\share\doc\photofilmstrip\photof
 Name: "{group}\Uninstall";      Filename: "{app}\unins000.exe";       WorkingDir: "{app}";
 
 [Run]
-Filename: "{tmp}\vcredist_x86.exe"; WorkingDir: {tmp}; Parameters: "/q /l {tmp}\vcredist.log"; StatusMsg: Microsoft Visual C++ 2008 Redistributable Setup...; Flags: waituntilterminated; Check: VCRedistCheck
+Filename: "{tmp}\vcredist_x86.exe"; WorkingDir: {tmp}; Parameters: "/q /l {tmp}\vcredist.log"; StatusMsg: Microsoft Visual C++ 2008 Redistributable Setup...; Flags: waituntilterminated; Tasks: vcredist;
 Filename: "{app}\bin\PhotoFilmStrip.exe"; Description: "Run PhotoFilmStrip"; Flags: postinstall skipifsilent nowait;
 
 [Tasks]
-Name: associate;   Description: "Associate with PFS Files";     Check: IsAdminLoggedOn;
+Name: associate;   Description: "Associate with PFS Files";                  Check: IsAdminLoggedOn;
+Name: vcredist;    Description: "Microsoft Visual C++ 2008 Redistributable"; Check: VCRedistCheck and IsAdminLoggedOn;
 
 [Registry]
 Root: HKCR; Subkey: ".pfs"; ValueType: string; ValueName: ""; ValueData: "pfsfile"; Flags: uninsdeletevalue; Check: IsAdminLoggedOn; Tasks: associate
@@ -66,23 +67,24 @@ begin
         result := ExpandConstant('{userappdata}\PhotoFilmStrip')
 end;
 
-function ShouldSkipPage(PageID: Integer): Boolean;
-begin
-  case PageID of
-    wpSelectTasks:
-      result := not IsAdminLoggedOn();
-  else
-    result := False;
-  end;
-end;
-
 function VCRedistCheck(): Boolean;
 begin
-  if RegValueExists(HKEY_LOCAL_MACHINE, 
-                    'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4}', 
+  if RegValueExists(HKEY_LOCAL_MACHINE,
+                    'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4}',
                     'Version') then
       result := False
   else
       result := True
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  if PageID=wpSelectTasks then
+  begin
+      if not VCRedistCheck() and not IsAdminLoggedOn() then
+        MsgBox('Microsoft Visual C++ 2008 Redistributable package is needed, but administrative privileges are required to install it. Please make sure to install it yourself before running the application.', mbInformation, MB_OK)
+      result := not IsAdminLoggedOn();
+  end else
+    result := False;
 end;
 

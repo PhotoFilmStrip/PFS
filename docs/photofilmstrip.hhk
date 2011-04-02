@@ -1,23 +1,23 @@
 <ul>
   <li> <object type="text/sitemap">
            <param name="Name" value="Contents">
-           <param name="Local" value="index.html">
+           <param name="Local" value="html/index.html">
        </object>
   <li> <object type="text/sitemap">
            <param name="Name" value="Introduction">
-           <param name="Local" value="introduction.html">
+           <param name="Local" value="html/introduction.html">
        </object>
   <li> <object type="text/sitemap">
            <param name="Name" value="Creating a new PhotoFilmStrip">
-           <param name="Local" value="createpfs.html">
+           <param name="Local" value="html/createpfs.html">
        </object>
   <li> <object type="text/sitemap">
            <param name="Name" value="Render a PhotoFilmStrip">
-           <param name="Local" value="renderpfs.html">
+           <param name="Local" value="html/renderpfs.html">
        </object>
   <li> <object type="text/sitemap">
            <param name="Name" value="More functions">
-           <param name="Local" value="more.html">
+           <param name="Local" value="html/more.html">
        </object>
 </ul>
 
