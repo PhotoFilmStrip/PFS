@@ -26,7 +26,6 @@ from photofilmstrip.lib.Settings import Settings
 
 from distutils import log
 from distutils.command.build import build
-from distutils.command.check import check
 from distutils.command.clean import clean
 from distutils.core import setup
 from distutils.core import Command
@@ -68,12 +67,6 @@ class pfs_clean(clean):
             if os.path.exists(fname):
                 os.remove(fname)
            
-
-class pfs_check(check):
-        
-    def run(self):
-        check.run(self)
-
 
 class pfs_build(build):
     def finalize_options(self):
@@ -368,7 +361,6 @@ PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select
 setup(
     cmdclass={
                 "clean"         : pfs_clean,
-                "check"         : pfs_check,
                 "build"         : pfs_build,
                 "bdist_win"     : pfs_exe,
                 "bdist_wininst" : pfs_win_setup,
