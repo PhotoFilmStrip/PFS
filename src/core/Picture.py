@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import random
 
 import Image, ImageDraw
@@ -212,17 +213,28 @@ class Picture(Observable):
         return img
 
     def GetImage(self):
-        try:
-            img = Image.open(self._filename)
-            img = RotateExif(img)
-            img = img.rotate(self._rotation * -90)
-            self._isDummy = False
-        except StandardError, err:
-            img = self.__CreateDummyImage(str(err))
-            self._isDummy = True
-        
+        img = self.__GetImage()
+        img = self.__ProcessImage(img)
+            
         self._width = img.size[0]
         self._height = img.size[1]
+        
+        return img
+        
+    def __GetImage(self):
+        try:
+            img = Image.open(self.GetFilename())
+            self._isDummy = False
+        except StandardError, err:
+            logging.debug("PILBackend.GetImage(%s): %s", self.GetFilename(), err, exc_info=1)
+            img = self.__CreateDummyImage(str(err))
+            self._isDummy = True
+        return img
+
+    def __ProcessImage(self, img):
+        if not self._isDummy:
+            img = RotateExif(img)
+            img = img.rotate(self.GetRotation() * -90)
 
         if self._effect == Picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
@@ -244,6 +256,8 @@ class Picture(Observable):
         return img.convert("RGB")
     
     def GetThumbnail(self, width=None, height=None):
+        img = self.__GetImage()
+        
         pw, ph = float(self.GetWidth()), float(self.GetHeight())
         if width is not None and height is not None:
             thumbWidth = width
@@ -255,9 +269,5 @@ class Picture(Observable):
             thumbHeight = height
             thumbWidth = int(thumbHeight * (pw / ph))
         
-        img = self.GetImage()
-        img = img.copy()
         img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
-        newImg.paste(img, (0, 0))
-        return newImg
+        return self.__ProcessImage(img)

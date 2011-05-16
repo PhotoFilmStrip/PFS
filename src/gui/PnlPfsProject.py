@@ -509,7 +509,7 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
             if arg == 'bitmap':
                 ImageCache().UpdatePicture(obj)
                 self.imgProxy.SetPicture(obj)
-                self.lvPics.UpdatePictures()
+                self.lvPics.Refresh()
             
             if arg == 'duration':
                 evt = UpdateStatusbarEvent(self.GetId())
