@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2009 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class ImageCache(Singleton):
         self._wxBmpCache.clear()
     
     def RegisterPicture(self, picture):
-        key = picture.GetFilename()
+        key = self.__GetPicKey(picture)
         if not self._wxImgCache.has_key(key):
             img = picture.GetThumbnail(width=ImageCache.SIZE)
             wxImg = wx.ImageFromStream(ImageToStream(img), wx.BITMAP_TYPE_JPEG)
@@ -51,22 +51,27 @@ class ImageCache(Singleton):
             self._wxBmpCache[key] = wxImg.ConvertToBitmap()
 
     def UpdatePicture(self, picture):
-        key = picture.GetFilename()
+        key = self.__GetPicKey(picture)
         if self._wxImgCache.has_key(key):
             del self._wxImgCache[key]
         self.RegisterPicture(picture)
     
     def GetImage(self, picture):
-        key = picture.GetFilename()
+        key = self.__GetPicKey(picture)
         if not self._wxImgCache.has_key(key):
             self.RegisterPicture(picture)
         wxImg  = self._wxImgCache[key]
         return wxImg
     
     def GetThumbBmp(self, picture):
-        key = picture.GetFilename()
+        key = self.__GetPicKey(picture)
         if not self._wxBmpCache.has_key(key):
             self.RegisterPicture(picture)
         wxBmp  = self._wxBmpCache[key]
         return wxBmp
-
+    
+    def __GetPicKey(self, picture):
+        key = "%s:%s:%s" % (picture.GetFilename(), 
+                            picture.GetRotation(), 
+                            picture.GetEffect())
+        return key
