@@ -73,8 +73,8 @@ class PILBackend(BaseBackend):
                 return img.rotate(-270)
         except AttributeError:
             pass
-        except:
-            print "EXIF-Orientation rotation failed."
+        except Exception, err:
+            logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
             
         return img
     
@@ -172,17 +172,22 @@ class PILBackend(BaseBackend):
         return img.size[0], img.size[1]
     
     @classmethod
-    def GetImage(cls, picture):
+    def __GetImage(cls, picture):
         try:
             img = Image.open(picture.GetFilename())
-            img = cls.RotateExif(img)
-            img = img.rotate(picture.GetRotation() * -90)
             picture.SetDummy(False)
         except StandardError, err:
             logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err)
             img = cls.__CreateDummyImage(str(err))
             picture.SetDummy(True)
-        
+        return img
+    
+    @classmethod
+    def __ProcessImage(cls, img, picture):
+        if not picture.IsDummy():
+            img = cls.RotateExif(img)
+            img = img.rotate(picture.GetRotation() * -90)
+
         if picture.GetEffect() == picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
 
@@ -203,8 +208,13 @@ class PILBackend(BaseBackend):
         return img.convert("RGB")
 
     @classmethod
+    def GetImage(cls, picture):
+        img = cls.__GetImage(picture)
+        return cls.__ProcessImage(img, picture)
+        
+    @classmethod
     def GetThumbnail(cls, picture, width=None, height=None):
-        img = cls.GetImage(picture)
+        img = cls.__GetImage(picture)
 
         pw, ph = float(img.size[0]), float(img.size[1])
         if width is not None and height is not None:
@@ -218,10 +228,8 @@ class PILBackend(BaseBackend):
             thumbWidth = int(thumbHeight * (pw / ph))
         
         img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-        return img
-#        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
-#        newImg.paste(img, (0, 0))
-#        return newImg
+        return cls.__ProcessImage(img, picture)
+
 
 class PILCtx(BaseCtx):
     
