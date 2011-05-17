@@ -253,9 +253,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Refresh()
 
     def GetThumbSize(self, pic):
-        pw, ph = float(pic.GetWidth()), float(pic.GetHeight())
+        aspect = float(pic.GetWidth()) / float(pic.GetHeight())
         thumbHeight = self.HEIGHT - (2 * self.BORDER)
-        thumbWidth = int(thumbHeight * (pw / ph))
+        thumbWidth = int(round(thumbHeight * aspect))
         return thumbWidth, thumbHeight
     
     def GetThumbRect(self, idx):

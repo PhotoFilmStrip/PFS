@@ -46,35 +46,37 @@ class PILBackend(BaseBackend):
         rotation = 0 
         try:
             exif = img._getexif()
-            if exif is not None:
+            if isinstance(exif, dict) and exif.has_key(exifOrient):
                 rotation = exif[exifOrient]
-            if rotation == 2:
-                # flip horitontal
-                return img.transpose(Image.FLIP_LEFT_RIGHT)
-            elif rotation == 3:
-                # rotate 180
-                return img.rotate(-180)
-            elif rotation == 4:
-                # flip vertical
-                return img.transpose(Image.FLIP_TOP_BOTTOM)
-            elif rotation == 5:
-                # transpose
-                img = img.rotate(-90)
-                return img.transpose(Image.FLIP_LEFT_RIGHT)
-            elif rotation == 6:
-                # rotate 90
-                return img.rotate(-90)
-            elif rotation == 7:
-                # transverse
-                img = img.rotate(-90)
-                return img.transpose(Image.FLIP_TOP_BOTTOM)
-            elif rotation == 8:
-                # rotate 270
-                return img.rotate(-270)
         except AttributeError:
             pass
         except Exception, err:
+            print exif, type(exif)
             logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
+                
+        if rotation == 2:
+            # flip horizontal
+            return img.transpose(Image.FLIP_LEFT_RIGHT)
+        elif rotation == 3:
+            # rotate 180
+            return img.rotate(-180)
+        elif rotation == 4:
+            # flip vertical
+            return img.transpose(Image.FLIP_TOP_BOTTOM)
+        elif rotation == 5:
+            # transpose
+            img = img.rotate(-90)
+            return img.transpose(Image.FLIP_LEFT_RIGHT)
+        elif rotation == 6:
+            # rotate 90
+            return img.rotate(-90)
+        elif rotation == 7:
+            # transverse
+            img = img.rotate(-90)
+            return img.transpose(Image.FLIP_TOP_BOTTOM)
+        elif rotation == 8:
+            # rotate 270
+            return img.rotate(-270)
             
         return img
     
@@ -177,7 +179,7 @@ class PILBackend(BaseBackend):
             img = Image.open(picture.GetFilename())
             picture.SetDummy(False)
         except StandardError, err:
-            logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err)
+            logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err, exc_info=1)
             img = cls.__CreateDummyImage(str(err))
             picture.SetDummy(True)
         return img
@@ -186,7 +188,9 @@ class PILBackend(BaseBackend):
     def __ProcessImage(cls, img, picture):
         if not picture.IsDummy():
             img = cls.RotateExif(img)
-            img = img.rotate(picture.GetRotation() * -90)
+            rotation = picture.GetRotation() * -90
+            if rotation != 0:
+                img = img.rotate(rotation)
 
         if picture.GetEffect() == picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
@@ -206,7 +210,7 @@ class PILBackend(BaseBackend):
             img.putpalette(sepia)
 
         return img.convert("RGB")
-
+    
     @classmethod
     def GetImage(cls, picture):
         img = cls.__GetImage(picture)
@@ -216,19 +220,30 @@ class PILBackend(BaseBackend):
     def GetThumbnail(cls, picture, width=None, height=None):
         img = cls.__GetImage(picture)
 
-        pw, ph = float(img.size[0]), float(img.size[1])
+        aspect = float(img.size[0]) / float(img.size[1])
         if width is not None and height is not None:
             thumbWidth = width
             thumbHeight = height
         elif width is not None:
             thumbWidth = width
-            thumbHeight = int(thumbWidth / (pw / ph))
+            thumbHeight = int(round(thumbWidth / aspect))
         elif height is not None:
             thumbHeight = height
-            thumbWidth = int(thumbHeight * (pw / ph))
+            thumbWidth = int(round(thumbHeight * aspect))
+            
+        # prescale image to speed up processing
+        img.thumbnail((max(thumbWidth, thumbHeight), max(thumbWidth, thumbHeight)), Image.NEAREST)
+        img = cls.__ProcessImage(img, picture)
         
+        # make the real thumbnail
         img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-        return cls.__ProcessImage(img, picture)
+        
+#        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
+#        newImg.paste(img, (abs(thumbWidth - img.size[0]) / 2, 
+#                           abs(thumbHeight - img.size[1]) / 2))
+#        img = newImg
+        
+        return img
 
 
 class PILCtx(BaseCtx):
