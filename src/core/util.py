@@ -20,6 +20,7 @@
 #
 
 import cStringIO
+import logging
 import Image
 
 
@@ -35,35 +36,37 @@ def RotateExif(img):
     rotation = 0 
     try:
         exif = img._getexif()
-        if exif is not None:
+        if isinstance(exif, dict) and exif.has_key(exifOrient):
             rotation = exif[exifOrient]
-        if rotation == 2:
-            # flip horitontal
-            return img.transpose(Image.FLIP_LEFT_RIGHT)
-        elif rotation == 3:
-            # rotate 180
-            return img.rotate(-180)
-        elif rotation == 4:
-            # flip vertical
-            return img.transpose(Image.FLIP_TOP_BOTTOM)
-        elif rotation == 5:
-            # transpose
-            img = img.rotate(-90)
-            return img.transpose(Image.FLIP_LEFT_RIGHT)
-        elif rotation == 6:
-            # rotate 90
-            return img.rotate(-90)
-        elif rotation == 7:
-            # transverse
-            img = img.rotate(-90)
-            return img.transpose(Image.FLIP_TOP_BOTTOM)
-        elif rotation == 8:
-            # rotate 270
-            return img.rotate(-270)
     except AttributeError:
         pass
-    except:
-        print "EXIF-Orientation rotation failed."
+    except Exception, err:
+        print exif, type(exif)
+        logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
+            
+    if rotation == 2:
+        # flip horizontal
+        return img.transpose(Image.FLIP_LEFT_RIGHT)
+    elif rotation == 3:
+        # rotate 180
+        return img.rotate(-180)
+    elif rotation == 4:
+        # flip vertical
+        return img.transpose(Image.FLIP_TOP_BOTTOM)
+    elif rotation == 5:
+        # transpose
+        img = img.rotate(-90)
+        return img.transpose(Image.FLIP_LEFT_RIGHT)
+    elif rotation == 6:
+        # rotate 90
+        return img.rotate(-90)
+    elif rotation == 7:
+        # transverse
+        img = img.rotate(-90)
+        return img.transpose(Image.FLIP_TOP_BOTTOM)
+    elif rotation == 8:
+        # rotate 270
+        return img.rotate(-270)
         
     return img
 

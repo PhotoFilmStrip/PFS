@@ -234,7 +234,9 @@ class Picture(Observable):
     def __ProcessImage(self, img):
         if not self._isDummy:
             img = RotateExif(img)
-            img = img.rotate(self.GetRotation() * -90)
+            rotation = self.GetRotation() * -90
+            if rotation != 0:
+                img = img.rotate(rotation)
 
         if self._effect == Picture.EFFECT_BLACK_WHITE:
             img = img.convert("L")
@@ -257,17 +259,28 @@ class Picture(Observable):
     
     def GetThumbnail(self, width=None, height=None):
         img = self.__GetImage()
-        
-        pw, ph = float(self.GetWidth()), float(self.GetHeight())
+
+        aspect = float(img.size[0]) / float(img.size[1])
         if width is not None and height is not None:
             thumbWidth = width
             thumbHeight = height
         elif width is not None:
             thumbWidth = width
-            thumbHeight = int(thumbWidth / (pw / ph))
+            thumbHeight = int(round(thumbWidth / aspect))
         elif height is not None:
             thumbHeight = height
-            thumbWidth = int(thumbHeight * (pw / ph))
+            thumbWidth = int(round(thumbHeight * aspect))
+            
+        # prescale image to speed up processing
+        img.thumbnail((max(thumbWidth, thumbHeight), max(thumbWidth, thumbHeight)), Image.NEAREST)
+        img = self.__ProcessImage(img)
         
+        # make the real thumbnail
         img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-        return self.__ProcessImage(img)
+        
+#        newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
+#        newImg.paste(img, (abs(thumbWidth - img.size[0]) / 2, 
+#                           abs(thumbHeight - img.size[1]) / 2))
+#        img = newImg
+        
+        return img
