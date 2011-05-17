@@ -45,7 +45,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                  pos=wx.DefaultPosition, size=wx.DefaultSize, 
                  style=wx.HSCROLL | wx.VSCROLL, name='PhotoFilmStripList'):
         wx.ScrolledWindow.__init__(self, parent, id, pos, size,  style, name)
-        self.SetBackgroundStyle(wx.BG_STYLE_COLOUR)
+        self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.BLACK)
         self.SetClientSizeWH(-1, self.HEIGHT+20)
         
@@ -76,8 +76,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
         self.PrepareDC(dc)
 
-        dc.BeginDrawing()
-        
         font = wx.SystemSettings_GetFont(wx.SYS_ANSI_FIXED_FONT)
         font.SetPointSize(9)
         dc.SetFont(font)
@@ -132,8 +130,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             else:
                 self.__dragPic = None
 
-        dc.EndDrawing()
-        
     def __DrawHighlights(self, dc):
         dc.SetPen(wx.TRANSPARENT_PEN)
         if self.__selIdx != -1:
