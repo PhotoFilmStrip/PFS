@@ -357,7 +357,6 @@ class DlgProjectProps(wx.Dialog):
 
     def OnCmdOkButton(self, event):
         if self.__ValidateAudioFile() and self.__ValidateOutDir() and self.__ValidateProjName():
-            self.__CloseMediaCtrl()
             event.Skip()
 
 #    def __GetChoiceDataSelected(self, choice):
@@ -511,10 +510,14 @@ class DlgProjectProps(wx.Dialog):
                                 "%s.pfs" % projName)
         return filepath
     
+    def Destroy(self):
+        self.__CloseMediaCtrl()
+        wx.Dialog.Destroy(self)
+    
     def GetPhotoFilmStrip(self):
         if self.__photoFilmStrip is None:
             self.__photoFilmStrip = PhotoFilmStrip(self.__GetProjectPath())
-        if self.rbAudio.GetValue():
+        if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
             self.__photoFilmStrip.SetAudioFile(self.tcAudiofile.GetValue())
         else:
             self.__photoFilmStrip.SetAudioFile(None)
