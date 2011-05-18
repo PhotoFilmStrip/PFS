@@ -135,7 +135,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         iw, ih = self._imgProxy.GetCurrentSize()
         left = (cw - iw) / 2.0
         top = (ch - ih) / 2.0
-        return int(left), int(top)
+        return int(round(left)), int(round(top))
     
     def __SectRectToClientRect(self):
         left, top = self.__GetBmpTopLeft()
@@ -450,9 +450,9 @@ class ImageSectionEditor(wx.Panel, Observer):
         
         step = 20
         if rotation > 0: 
-            self._sectRect.Inflate(step, int(step / self.RATIO))
+            self._sectRect.Inflate(step, int(round(step / self.RATIO)))
         else:
-            self._sectRect.Inflate(-step, -int(step / self.RATIO))
+            self._sectRect.Inflate(-step, -int(round(step / self.RATIO)))
         
         self._SendRectChangedEvent()
         self.__UpdateSectRect()
@@ -467,15 +467,15 @@ class ImageSectionEditor(wx.Panel, Observer):
         key = event.GetKeyCode()
         step = 20
         if key == wx.WXK_NUMPAD_ADD:
-            self._sectRect.Inflate(step, int(step / self.RATIO))
+            self._sectRect.Inflate(step, int(round(step / self.RATIO)))
         elif key == wx.WXK_NUMPAD_SUBTRACT:
-            self._sectRect.Inflate(-step, -int(step / self.RATIO))
+            self._sectRect.Inflate(-step, -int(round(step / self.RATIO)))
         elif key == wx.WXK_NUMPAD_DIVIDE:
             width = 1280
             self._sectRect.SetWidth(width)
-            self._sectRect.SetHeight(width / self.RATIO)
+            self._sectRect.SetHeight(int(round(width / self.RATIO)))
         elif key == wx.WXK_NUMPAD_MULTIPLY:
-            self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), self._imgProxy.GetWidth() / self.RATIO)
+            self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), int(round(self._imgProxy.GetWidth() / self.RATIO)))
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
                 self._sectRect.OffsetXY(-50, 0)
@@ -518,10 +518,10 @@ class ImageSectionEditor(wx.Panel, Observer):
         
         if width > self._imgProxy.GetWidth():
             width = self._imgProxy.GetWidth()
-            height = width / self.RATIO
+            height = int(round(width / self.RATIO))
         if height > self._imgProxy.GetHeight():
             height = self._imgProxy.GetHeight()
-            width = height * self.RATIO
+            width = int(round(height * self.RATIO))
 
         if left < 0:
             left = 0
