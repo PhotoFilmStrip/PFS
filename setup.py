@@ -48,7 +48,7 @@ class Target:
         self.version = Settings.APP_VERSION
         self.product_version = Settings.APP_VERSION
         self.company_name = ""
-        self.copyright = "(c) 2008"
+        self.copyright = "(c) 2011"
         self.name = "%s %s" % (Settings.APP_NAME, Settings.APP_VERSION)
         self.description = self.name
 
@@ -101,7 +101,10 @@ setup(
     options = {"py2exe": {
         "compressed": 2,
 #        "bundle_files":1,
-        "optimize": 2
+        "optimize": 2,
+        "excludes": ["Tkconstants", "Tkinter", "tcl", 
+                     "_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk", 
+                     "_ssl"]
     }},
     console = [pfs_cli, pfs_gui] if NO_GUI else [pfs_cli],
     windows = [] if NO_GUI else [pfs_gui],
