@@ -1,9 +1,9 @@
 
 [Setup]
 AppName           = PhotoFilmStrip
-AppPublisher      = Jens Göpfert
+AppPublisher      = Jens Gï¿½pfert
 AppPublisherURL   = http://www.photofilmstrip.org
-AppCopyright      = Copyright (C) 2008 Jens Göpfert
+AppCopyright      = Copyright (C) 2008 Jens Gï¿½pfert
 AppVerName        = {code:getAppVerName}
 AppVersion        = {code:getAppVer}
 ;VersionInfoVersion= {code:getVerInfo}
@@ -16,7 +16,7 @@ LicenseFile       = ..\copying
 WizardSmallImageFile=..\res\icon\photofilmstrip.bmp
 WizardImageFile=compiler:WizModernImage-IS.bmp
 PrivilegesRequired=none
-compression=none
+;compression=none
 
 [Files]
 Source: "..\build\dist\*";             DestDir: "{app}"; Flags: recursesubdirs;
