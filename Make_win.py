@@ -26,6 +26,7 @@ import os
 import sys
 import subprocess
 import shutil
+import zipfile
 
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -125,6 +126,12 @@ def compile():
     code = subprocess.call([PYTHON, "setup.py", "py2exe"] +Args.PY2EXE, shell=True)
     if code != 0:
         sys.exit(code)
+
+    targetDir = os.path.join("dist", "extBin", "mplayer")
+    Unzip(os.path.join("win32extBin", "MPlayer-mingw32-1.0rc2.zip"),
+          targetDir, 
+          stripFolders=1)
+
     logging.info("    done.")
 
 def package():
@@ -137,6 +144,66 @@ def package():
         sys.exit(code)
     logging.info("    done.")
 
+    logging.info("building portable zip...")
+    if not os.path.exists("release"):
+        os.makedirs("release")
+    Zip(os.path.join("release", "photofilmstrip-%s.zip" % ver), 
+        "dist", 
+        virtualFolder="PhotoFilmStrip-%s" % ver,
+        stripFolders=1)
+    logging.info("    done.")
+
+
+def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
+    zf = zipfile.ZipFile(zipFile, "w", zipfile.ZIP_DEFLATED)
+    for dirpath, dirnames, filenames in os.walk(srcDir):
+        fldr = dirpath
+        if stripFolders > 0:
+            fldrs = os.path.normpath(fldr).split(os.sep)[stripFolders:]
+            if fldrs:
+                fldr = os.path.join(*fldrs)
+            else:
+                fldr = ""
+        for fname in filenames:
+            if virtualFolder is None:
+                zipTarget = os.path.join(fldr, fname)
+            else:
+                zipTarget = os.path.join(virtualFolder, fldr, fname)
+            logging.debug("  zipping %s" % zipTarget)
+            zf.write(os.path.join(dirpath, fname), zipTarget)
+    zf.close()
+
+
+def Unzip(zipFile, targetDir, stripFolders=0):
+    logging.info("extracting %s to %s" % (zipFile, targetDir))
+    if not os.path.isdir(targetDir):
+        os.makedirs(targetDir)
+
+    zf = zipfile.ZipFile(zipFile, "r")
+    for ele in zf.namelist():
+        eleInfo = zf.getinfo(ele)
+        if eleInfo.file_size == 0:
+            continue
+
+        logging.debug("  extracting %s (%s)" % (ele, eleInfo.file_size))
+        fldr, fname = os.path.split(ele)
+
+        if stripFolders > 0:
+            fldrs = os.path.normpath(fldr).split(os.sep)[stripFolders:]
+            if fldrs:
+                fldr = os.path.join(*fldrs)
+            else:
+                fldr = ""
+
+
+        eleFldr = os.path.join(targetDir, fldr)
+        if not os.path.isdir(eleFldr):
+            os.makedirs(eleFldr)
+
+        data = zf.read(ele)
+        fd = open(os.path.join(eleFldr, fname), "wb")
+        fd.write(data)
+        fd.close()
 
 
 if __name__ == "__main__":
