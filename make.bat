@@ -23,7 +23,8 @@ goto end
 goto end
 
 :package
-%PYTHON% setup.py bdist_winport bdist_wininst sdist
+%PYTHON% setup.py bdist_winport bdist_wininst
+move dist\*.* release\
 goto end
 
 
