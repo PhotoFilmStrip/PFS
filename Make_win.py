@@ -78,31 +78,33 @@ def check():
     logging.info("    ok.")
 
 
-def getVersion():
-    logging.info("determine PhotoFilmStrip version...")
+def getVersion(silent=False):
+    if not silent:
+        logging.info("determine PhotoFilmStrip version...")
     sys.path.insert(0, os.path.abspath("src"))
     import lib.Settings
     ver = lib.Settings.Settings.APP_VERSION
     sys.path.pop(0)
-    logging.info("    found version: %s", ver)
+    if not silent:
+        logging.info("    found version: %s", ver)
     return ver
 
 def clean():
     logging.info("cleaning...")
     if os.path.exists(os.path.join(WORKDIR, "dist")):
-       shutil.rmtree(os.path.join(WORKDIR, "dist"), True)
+        shutil.rmtree(os.path.join(WORKDIR, "dist"), True)
        
     if os.path.exists(os.path.join(WORKDIR, "build", "bdist.win32")):
-       shutil.rmtree(os.path.join(WORKDIR, "build", "bdist.win32"), True)
+        shutil.rmtree(os.path.join(WORKDIR, "build", "bdist.win32"), True)
 
     if os.path.exists(os.path.join(WORKDIR, "release")):
-       shutil.rmtree(os.path.join(WORKDIR, "release"), True)
+        shutil.rmtree(os.path.join(WORKDIR, "release"), True)
 
     if os.path.exists(os.path.join(WORKDIR, "locale")):
-       shutil.rmtree(os.path.join(WORKDIR, "locale"), True)
+        shutil.rmtree(os.path.join(WORKDIR, "locale"), True)
 
     if os.path.exists(os.path.join(WORKDIR, "version.info")):
-       os.remove(os.path.join(WORKDIR, "version.info"))
+        os.remove(os.path.join(WORKDIR, "version.info"))
 
     logging.info("    done.")
 
@@ -207,6 +209,11 @@ def Unzip(zipFile, targetDir, stripFolders=0):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "versioninfo":
+            print getVersion(True)
+            sys.exit(0)
+
     logging.info("PhotoFilmStrip Microsoft Windows builder")
     check()
 

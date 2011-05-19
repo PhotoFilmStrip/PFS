@@ -57,6 +57,11 @@ pot:
 	pygettext -o "$(displayname).pot" -v "$(srcdir)/src"
 
 
+versioninfo:
+	cd src; \
+	python -c "import lib.Settings;print lib.Settings.Settings.APP_VERSION"; \
+
+
 package:
 	curdir=`pwd`; \
 	cd src; \
