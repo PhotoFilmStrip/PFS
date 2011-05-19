@@ -94,7 +94,11 @@ class pfs_build(build):
         fd.close()
         
     def _make_resources(self):
-        from wx.tools.img2py import img2py
+        try:
+            from wx.tools.img2py import img2py
+        except ImportError:
+            log.warn("Cannot update image resources! Using images.py from svn")
+            return 
         imgDir = os.path.abspath(os.path.join("res", "icons"))
         target = os.path.join("photofilmstrip", "res", "images.py")
         target_mtime = os.path.getmtime(target)
