@@ -25,6 +25,10 @@ pot:
 	pygettext -o "$(displayname).pot" -v "$(srcdir)/photofilmstrip"
 
 
+versioninfo:
+	python -c "import photofilmstrip.lib.Settings;print photofilmstrip.lib.Settings.Settings.APP_VERSION"; \
+
+
 package:
 	curdir=`pwd`; \
 	ver=`python -c "import photofilmstrip.lib.Settings;print photofilmstrip.lib.Settings.Settings.APP_VERSION"`; \

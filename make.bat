@@ -7,6 +7,7 @@ set PYTHON=C:\Python27\python.exe
 if "%1"=="compile" goto compile
 if "%1"=="clean" goto clean
 if "%1"=="package" goto package
+if "%1"=="versioninfo" goto versioninfo
 goto end
 
 :compile
@@ -15,6 +16,10 @@ goto end
 
 :clean
 %PYTHON% setup.py clean
+goto end
+
+:versioninfo
+%PYTHON% -c "import photofilmstrip.lib.Settings;print photofilmstrip.lib.Settings.Settings.APP_VERSION"
 goto end
 
 :package
@@ -26,6 +31,7 @@ goto end
 echo usage:
 echo   make clean
 echo   make compile
+echo   make versioninfo
 echo   make package
 
 :end
