@@ -70,9 +70,10 @@ class PhotoFilmStrip(object):
         if os.path.exists(imgFile):
             try:
                 img = Image.open(imgFile)
+                img.thumbnail((64, 64), Image.NEAREST)
                 img = RotateExif(img)
                 img = img.rotate(rotation * -90)
-                img.thumbnail((64, 64), Image.NEAREST)
+                img = img.convert("RGB")
             except BaseException, err:
                 logging.debug("QuickInfo(%s) - %s: %s", filename, imgFile, err)
                 img = None

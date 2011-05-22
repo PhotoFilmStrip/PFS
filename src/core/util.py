@@ -41,7 +41,6 @@ def RotateExif(img):
     except AttributeError:
         pass
     except Exception, err:
-        print exif, type(exif)
         logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
             
     if rotation == 2:
