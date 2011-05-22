@@ -125,13 +125,13 @@ class DlgFinalize(wx.Dialog):
         self.errMsg = errMsg
         
         if wasAborted:
-            msg = _("The rendering process was aborted.")
+            msg = _(u"The rendering process was aborted.")
             self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_WARNING,
               wx.ART_TOOLBAR, (32, 32)))
             self.rb3.SetValue(True)
         
         elif errMsg:
-            msg = _("The rendering process was interrupted.")
+            msg = _(u"The rendering process was interrupted.")
             self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_ERROR,
               wx.ART_TOOLBAR, (32, 32)))
             self.rb3.SetValue(True)
@@ -141,7 +141,7 @@ class DlgFinalize(wx.Dialog):
             lines = errMsg.split("\n")
             errMsg = u"%s %s" % (lines[0], lines[-1])
         else:
-            msg = _("The rendering process has been finished.")
+            msg = _(u"The rendering process has been finished.")
             self.rb3.Show(False)
             
             self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK,

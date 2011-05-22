@@ -20,4 +20,11 @@
 #
 
 class RendererException(Exception):
-    pass
+    
+    def __init__(self, msg):
+        if isinstance(msg, unicode):
+            self.message = msg.encode("utf-8")
+        self.msg = msg
+        
+    def GetMessage(self):
+        return self.msg
