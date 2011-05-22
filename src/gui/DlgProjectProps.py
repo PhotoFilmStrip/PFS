@@ -496,6 +496,7 @@ class DlgProjectProps(wx.Dialog):
 
     def __ValidateProjName(self):
         projName = self.tcProject.GetValue().strip()
+        projName = projName.strip(u".")
         projPath = os.path.join(self.tcFolder.GetValue().strip(), projName)
         if not projName:
             self.pnlHdr.SetErrorMessage(_(u"The project name must be filled."))
@@ -503,16 +504,18 @@ class DlgProjectProps(wx.Dialog):
         elif not os.path.exists(projPath):
             try:
                 os.makedirs(projPath)
-            except StandardError, err:
+            except StandardError:
                 self.pnlHdr.SetErrorMessage(_(u"The project name contains invalid characters."))
                 return False
             os.removedirs(projPath)
+            return True
         else:
             self.pnlHdr.SetErrorMessage(u"")
             return True
     
     def __GetProjectPath(self):
         projName = self.tcProject.GetValue().strip()
+        projName = projName.strip(u".")
         filepath = os.path.join(self.tcFolder.GetValue().strip(), 
                                 projName,
                                 "%s.pfs" % projName)
