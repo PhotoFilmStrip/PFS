@@ -168,6 +168,8 @@ class DlgRender(wx.Dialog, Observer):
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=wx.CB_READONLY)
         self.choiceFormat.SetMinSize(wx.Size(300, -1))
+        self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat, 
+              id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
               wx.ART_TOOLBAR, wx.DefaultSize),
@@ -248,6 +250,7 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceProfile.SetSelection(settings.GetLastProfile())
         self.choiceType.SetSelection(settings.GetVideoType())
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
+        self.OnChoiceFormat(None)
         
         self.SetEscapeId(wxID_DLGRENDERCMDCLOSE)
         self.SetInitialSize(self.GetEffectiveMinSize())
@@ -262,6 +265,14 @@ class DlgRender(wx.Dialog, Observer):
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
         outpath = os.path.join(outpath, profile.GetName())
         return outpath
+    
+    def OnChoiceFormat(self, event):
+        if event is None:
+            formatData = self.__GetChoiceDataSelected(self.choiceFormat)
+        else:
+            formatData = event.GetClientData()
+        if isinstance(formatData, FormatData):
+            self.cmdStart.Enable(formatData.IsOk())
 
     def OnCmdStartButton(self, event):
         audioFile = self.__photoFilmStrip.GetAudioFile()

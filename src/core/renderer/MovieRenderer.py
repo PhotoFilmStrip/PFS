@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2010 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -207,8 +207,8 @@ class MPEG4Renderer(MEncoderRenderer):
         cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
-        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
-                "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect" % self._GetBitrate(), 
+        cmd += ["-oac", "lavc", "-srate", "44100",
+                "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect:acodec=ac3" % self._GetBitrate(), 
                 "-ffourcc", MPEG4Renderer.GetProperty('FFOURCC'),
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),
@@ -221,6 +221,18 @@ class FlashMovieRenderer(MEncoderRenderer):
     def __init__(self):
         MEncoderRenderer.__init__(self)
         
+    @staticmethod
+    def CheckDependencies(msgList):
+        MEncoderRenderer.CheckDependencies(msgList)
+        if msgList:
+            return
+        
+        proc = Popen(["mencoder", "-oac", "help"], stdout=PIPE, stderr=STDOUT, shell=False)
+        proc.wait()
+        output = proc.stdout.read()
+        if output.find("mp3lame") == -1:
+            msgList.append(_(u"mencoder with MP3 support (mp3lame) required!"))
+
     @staticmethod
     def GetName():
         return _(u"Flash-Video (FLV)")
@@ -268,8 +280,8 @@ class MJPEGRenderer(MEncoderRenderer):
         cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
-        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
-                "-ovc", "lavc", "-lavcopts", "vcodec=mjpeg",
+        cmd += ["-oac", "lavc", "-srate", "44100",
+                "-ovc", "lavc", "-lavcopts", "vcodec=mjpeg:acodec=ac3",
                 "-of", "lavf",
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),

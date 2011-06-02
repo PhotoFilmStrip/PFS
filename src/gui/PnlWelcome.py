@@ -123,8 +123,8 @@ class PnlWelcome(wx.Panel):
             return
         if not self.__updateChecker.IsOk():
             return
-        if not self.__updateChecker.IsNewer(Settings().GetLastKnownVersion()):
-            return
+#        if not self.__updateChecker.IsNewer(Settings().GetLastKnownVersion()):
+#            return
         if not self.__updateChecker.IsNewer(Settings.APP_VERSION):
             return
         

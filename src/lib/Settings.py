@@ -48,7 +48,7 @@ if sys.platform == "win32":
 class Settings(Singleton):
     
     APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.4.3"
+    APP_VERSION     = "1.4.4"
     APP_DESCRIPTION = ""
     APP_URL         = "http://www.photofilmstrip.org"
     DEVELOPERS      = [u"Jens Göpfert", 
@@ -180,7 +180,7 @@ class Settings(Singleton):
                 return self.cp.getint("General", "LastProfile")
             except:
                 pass
-        return 0
+        return 3
 
     def SetVideoType(self, typ):
         self.Load()
