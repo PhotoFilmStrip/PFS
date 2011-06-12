@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import re
 import sys
 
@@ -38,9 +39,13 @@ class MPlayer(object):
 
     def __Identify(self):
         cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", self.filename]
-        proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=False)
-        proc.wait()
-        output = proc.stdout.read()
+        try:
+            proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=False)
+            proc.wait()
+            output = proc.stdout.read()
+        except Exception, err:
+            logging.debug("identify audio with mplayer failed: %s", err)
+            output = ""
         
         reo = re.compile(".*ID_LENGTH=(\d+)[.](\d+)*", re.DOTALL | re.MULTILINE)
         match = reo.match(output)
@@ -53,11 +58,6 @@ class MPlayer(object):
 #            import traceback
 #            traceback.print_exc()
         
-    def __Call(self):
-        if self.__proc is None:
-            cmd = ["mplayer", self.filename]
-            self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, stdout=PIPE, shell=False)
-        
     def IsOk(self):
         return self.__length is not None
     
@@ -65,7 +65,13 @@ class MPlayer(object):
         return self.__proc is not None
     
     def Play(self):
-        self.__Call()
+        if self.__proc is None:
+            cmd = ["mplayer", self.filename]
+            try:
+                self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, stdout=PIPE, shell=False)
+            except Exception, err:
+                logging.debug("playing audio with mplayer failed: %s", err)
+                self.__proc = None
     
     def Stop(self):
         self.Close()

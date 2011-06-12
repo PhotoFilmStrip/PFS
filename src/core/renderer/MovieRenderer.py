@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import os
 import re
 from subprocess import Popen, PIPE, STDOUT
@@ -43,9 +44,13 @@ class MEncoderRenderer(SingleFileRenderer):
     def CheckDependencies(msgList):
         SingleFileRenderer.CheckDependencies(msgList)
         
-        proc = Popen(["mencoder"], stdout=PIPE, stderr=STDOUT, shell=False)
-        proc.wait()
-        output = proc.stdout.read()
+        try:
+            proc = Popen(["mencoder"], stdout=PIPE, stderr=STDOUT, shell=False)
+            proc.wait()
+            output = proc.stdout.read()
+        except Exception, err:
+            logging.debug("checking for mencoder failed: %s", err)
+            output = ""
         if not re.search("^(mplayer|mencoder)", output, re.I):
             msgList.append(_(u"mencoder (mencoder) required!"))
 

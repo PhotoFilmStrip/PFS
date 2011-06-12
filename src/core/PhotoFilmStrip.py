@@ -172,7 +172,7 @@ class PhotoFilmStrip(object):
                     
                 tmpImg = os.path.join(importPath, os.path.basename(imgFile))
                 if os.path.isfile(tmpImg):
-                    print 'file exists', tmpImg
+                    logging.debug('file exists: %s', tmpImg)
                 fd = open(tmpImg, 'wb')
                 fd.write(picData)
                 fd.close()

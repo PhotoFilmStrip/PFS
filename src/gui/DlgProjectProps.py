@@ -20,6 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import os
 
 import wx
@@ -405,7 +406,7 @@ class DlgProjectProps(wx.Dialog):
             try:
                 self.timeCtrlTotalLength.SetValue(dateTime)
             except ValueError, err:
-                print err, "invalid media length", dateTime
+                logging.debug("invalid media length (%s): %s", dateTime, err)
 
             self.pnlHdr.SetErrorMessage(u"")
             self.mediaCtrl = mediaCtrl
@@ -413,10 +414,10 @@ class DlgProjectProps(wx.Dialog):
 
         else:
             if silent:
-                self.pnlHdr.SetErrorMessage(_(u"Invalid audio file!"))
+                self.pnlHdr.SetErrorMessage(_(u"Audio file not supported!"))
             else:
                 dlg = wx.MessageDialog(self,
-                                       _(u"Invalid audio file!"), 
+                                       _(u"Audio file not supported!"), 
                                        _(u"Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
