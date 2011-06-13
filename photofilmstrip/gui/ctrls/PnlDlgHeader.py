@@ -83,7 +83,7 @@ class PnlDlgHeader(wx.Panel):
               size=wx.Size(-1, -1), style=0)
 
         self.stHeader = wx.StaticText(id=wxID_PNLDLGHEADERSTHEADER,
-              label=_(u''), name=u'stHeader', parent=self.pnlHeader,
+              label=u'', name=u'stHeader', parent=self.pnlHeader,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stErrMsg = wx.StaticText(id=wxID_PNLDLGHEADERSTERRMSG, label=u'',
@@ -111,7 +111,7 @@ class PnlDlgHeader(wx.Panel):
             self.stErrMsg.Show(True)
         else:
             self.stErrMsg.Show(False)
-        self.Layout()
+        self.pnlHeader.Layout()
         
     def SetTitle(self, title):
         self.stHeader.SetLabel(title)

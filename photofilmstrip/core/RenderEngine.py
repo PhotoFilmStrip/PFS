@@ -284,7 +284,7 @@ class RenderEngine(object):
             return True
         except RendererException, err:
             self.__errorCls = err.__class__
-            self.__errorMsg = u"%s" % err
+            self.__errorMsg = err.GetMessage()
         except StandardError, err:
             self.__errorCls = err.__class__
             tb = StringIO.StringIO()
