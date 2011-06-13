@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2011-05-22 14:28+CEST\n"
-"PO-Revision-Date: 2011-05-22 14:29+0100\n"
+"POT-Creation-Date: 2011-06-12 21:31+CEST\n"
+"PO-Revision-Date: 2011-06-12 21:35+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:221
-#: src/gui/DlgRender.py:363
+#: src/gui/DlgRender.py:374
 msgid "all done"
 msgstr "Fertig"
 
@@ -53,7 +53,7 @@ msgid "enable draft mode"
 msgstr "Entwurfsmodus aktivieren"
 
 #: src/cli/Main.py:114
-#: src/gui/DlgRender.py:231
+#: src/gui/DlgRender.py:233
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr "Aktiviere diese Option, um eine Vorschau zu erstellen. Die Erstellung geht zu Lasten der Bildqualität wesentlich schneller."
 
@@ -86,15 +86,15 @@ msgid "cannot create output path: %s"
 msgstr "Ausgabe-Verzeichnis kann nicht erstellt werden: %s"
 
 #: src/cli/Main.py:194
-#: src/gui/DlgProjectProps.py:387
-#: src/gui/DlgProjectProps.py:390
-#: src/gui/DlgProjectProps.py:430
-#: src/gui/DlgRender.py:245
+#: src/gui/DlgProjectProps.py:388
+#: src/gui/DlgProjectProps.py:391
+#: src/gui/DlgProjectProps.py:431
+#: src/gui/DlgRender.py:247
 msgid "Audio file '%s' does not exist!"
 msgstr "Audio-Datei '%s' nicht vorhanden!"
 
 #: src/cli/Main.py:217
-#: src/gui/DlgRender.py:361
+#: src/gui/DlgRender.py:372
 msgid "...aborted!"
 msgstr "...abgebrochen!"
 
@@ -142,36 +142,40 @@ msgstr "Ausgabe erstellen..."
 msgid "generating subtitle"
 msgstr "generiere Untertitel"
 
-#: src/core/renderer/MovieRenderer.py:50
+#: src/core/renderer/MovieRenderer.py:55
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) nicht gefunden!"
 
-#: src/core/renderer/MovieRenderer.py:85
-#: src/core/renderer/MovieRenderer.py:95
+#: src/core/renderer/MovieRenderer.py:90
+#: src/core/renderer/MovieRenderer.py:100
 msgid "no"
 msgstr "nein"
 
-#: src/core/renderer/MovieRenderer.py:123
+#: src/core/renderer/MovieRenderer.py:128
 msgid "Bitrate must be a number!"
 msgstr "Bitrate muss eine Zahl sein!"
 
-#: src/core/renderer/MovieRenderer.py:134
+#: src/core/renderer/MovieRenderer.py:139
 msgid "MPEG(1/2)-Video (MPG)"
 msgstr "MPEG(1/2)-Video (MPG)"
 
-#: src/core/renderer/MovieRenderer.py:169
+#: src/core/renderer/MovieRenderer.py:174
 msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 msgstr "MPEG-Format unterstützt nur die Profile VCD, SVCD und DVD!"
 
-#: src/core/renderer/MovieRenderer.py:194
+#: src/core/renderer/MovieRenderer.py:199
 msgid "MPEG4-XVid (AVI)"
 msgstr "MPEG4-XVid (AVI)"
 
-#: src/core/renderer/MovieRenderer.py:226
+#: src/core/renderer/MovieRenderer.py:239
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "mencoder mit MP3-Unterstützung (mp3lame) erforderlich!"
+
+#: src/core/renderer/MovieRenderer.py:243
 msgid "Flash-Video (FLV)"
 msgstr "Flash-Video (FLV)"
 
-#: src/core/renderer/MovieRenderer.py:257
+#: src/core/renderer/MovieRenderer.py:274
 msgid "Motion-JPEG (AVI)"
 msgstr "Motion-JPEG (AVI)"
 
@@ -193,7 +197,7 @@ msgstr "&Extras"
 
 #: src/gui/ActionManager.py:71
 #: src/gui/ActionManager.py:200
-#: src/gui/DlgRender.py:186
+#: src/gui/DlgRender.py:188
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "&Hilfe"
@@ -301,13 +305,13 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 
 #: src/gui/DlgBugReport.py:109
-#: src/gui/DlgProjectProps.py:391
-#: src/gui/DlgProjectProps.py:420
-#: src/gui/DlgProjectProps.py:431
-#: src/gui/DlgProjectProps.py:478
-#: src/gui/DlgProjectProps.py:489
-#: src/gui/DlgRender.py:370
-#: src/gui/DlgRender.py:409
+#: src/gui/DlgProjectProps.py:392
+#: src/gui/DlgProjectProps.py:421
+#: src/gui/DlgProjectProps.py:432
+#: src/gui/DlgProjectProps.py:479
+#: src/gui/DlgProjectProps.py:490
+#: src/gui/DlgRender.py:381
+#: src/gui/DlgRender.py:420
 #: src/gui/FrmMain.py:457
 msgid "Error"
 msgstr "Fehler"
@@ -337,8 +341,8 @@ msgid "Do nothing"
 msgstr "Nichts"
 
 #: src/gui/DlgFinalize.py:108
-#: src/gui/DlgRender.py:191
-#: src/gui/DlgRender.py:375
+#: src/gui/DlgRender.py:193
+#: src/gui/DlgRender.py:386
 msgid "&Close"
 msgstr "S&chließen"
 
@@ -385,14 +389,14 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: src/gui/DlgPositionInput.py:253
-#: src/gui/DlgProjectProps.py:221
-#: src/gui/DlgRender.py:294
+#: src/gui/DlgProjectProps.py:222
+#: src/gui/DlgRender.py:305
 #: src/gui/DlgRendererProps.py:107
 msgid "&Cancel"
 msgstr "&Abbrechen"
 
 #: src/gui/DlgPositionInput.py:259
-#: src/gui/DlgProjectProps.py:227
+#: src/gui/DlgProjectProps.py:228
 #: src/gui/DlgRendererProps.py:112
 msgid "&Ok"
 msgstr "&Ok"
@@ -401,73 +405,73 @@ msgstr "&Ok"
 msgid "Adjust motion positions directly"
 msgstr "Bewegungspfad manuell anpassen"
 
-#: src/gui/DlgProjectProps.py:123
+#: src/gui/DlgProjectProps.py:124
 msgid "Project properties"
 msgstr "Projekteigenschaften"
 
-#: src/gui/DlgProjectProps.py:132
+#: src/gui/DlgProjectProps.py:133
 msgid "Project name:"
 msgstr "Projektname:"
 
-#: src/gui/DlgProjectProps.py:144
+#: src/gui/DlgProjectProps.py:145
 msgid "Folder:"
 msgstr "Ordner:"
 
-#: src/gui/DlgProjectProps.py:159
+#: src/gui/DlgProjectProps.py:160
 msgid "Aspect ratio:"
 msgstr "Seitenverhältnis:"
 
-#: src/gui/DlgProjectProps.py:167
+#: src/gui/DlgProjectProps.py:168
 msgid "Total length:"
 msgstr "Gesamtlänge:"
 
-#: src/gui/DlgProjectProps.py:170
+#: src/gui/DlgProjectProps.py:171
 msgid "Overrides the duration of single pictures and gives the project this total length."
 msgstr "Dauer der Einzelbilder durch diese Gesamtlänge überschreiben."
 
-#: src/gui/DlgProjectProps.py:176
+#: src/gui/DlgProjectProps.py:177
 msgid "User defined:"
 msgstr "Manuell:"
 
-#: src/gui/DlgProjectProps.py:190
+#: src/gui/DlgProjectProps.py:191
 msgid "Audio file:"
 msgstr "Audiodatei:"
 
-#: src/gui/DlgProjectProps.py:236
+#: src/gui/DlgProjectProps.py:237
 msgid "PhotoFilmStrip project"
 msgstr "PhotoFilmStrip Projekt"
 
-#: src/gui/DlgProjectProps.py:267
+#: src/gui/DlgProjectProps.py:268
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unbenannter PhotoFilmStrip"
 
-#: src/gui/DlgProjectProps.py:274
+#: src/gui/DlgProjectProps.py:275
 msgid "My PhotoFilmStrips"
 msgstr "Eigene PhotoFilmStrips"
 
-#: src/gui/DlgProjectProps.py:318
+#: src/gui/DlgProjectProps.py:319
 msgid "Browse for folder"
 msgstr "Ordner auswählen"
 
-#: src/gui/DlgProjectProps.py:332
+#: src/gui/DlgProjectProps.py:333
 msgid "Select music"
 msgstr "Audiodatei auswählen"
 
-#: src/gui/DlgProjectProps.py:334
+#: src/gui/DlgProjectProps.py:335
 msgid "Audio files"
 msgstr "Audiodateien"
 
-#: src/gui/DlgProjectProps.py:416
-#: src/gui/DlgProjectProps.py:419
-msgid "Invalid audio file!"
-msgstr "Ungültige Audio-Datei"
+#: src/gui/DlgProjectProps.py:417
+#: src/gui/DlgProjectProps.py:420
+msgid "Audio file not supported!"
+msgstr "Audio-Datei '%s' nicht unterstützt!"
 
-#: src/gui/DlgProjectProps.py:467
+#: src/gui/DlgProjectProps.py:468
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "Ordner existiert nicht. Soll %s ihn erstellen?"
 
-#: src/gui/DlgProjectProps.py:468
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgProjectProps.py:469
+#: src/gui/DlgRender.py:335
 #: src/gui/FrmMain.py:287
 #: src/gui/FrmMain.py:403
 #: src/gui/FrmMain.py:482
@@ -475,19 +479,19 @@ msgstr "Ordner existiert nicht. Soll %s ihn erstellen?"
 msgid "Question"
 msgstr "Frage"
 
-#: src/gui/DlgProjectProps.py:477
+#: src/gui/DlgProjectProps.py:478
 msgid "Cannot create folder: %s"
 msgstr "Ordner kann nicht erstellt werden: %s"
 
-#: src/gui/DlgProjectProps.py:488
+#: src/gui/DlgProjectProps.py:489
 msgid "Cannot write into folder!"
 msgstr "Ordner nicht beschreibbar!"
 
-#: src/gui/DlgProjectProps.py:501
+#: src/gui/DlgProjectProps.py:503
 msgid "The project name must be filled."
 msgstr "Bitte einen Projektnamen angeben."
 
-#: src/gui/DlgProjectProps.py:507
+#: src/gui/DlgProjectProps.py:509
 msgid "The project name contains invalid characters."
 msgstr "Der Projektname enthält ungültige Zeichen."
 
@@ -503,51 +507,51 @@ msgstr "Typ:"
 msgid "Format:"
 msgstr "Format:"
 
-#: src/gui/DlgRender.py:177
+#: src/gui/DlgRender.py:179
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: src/gui/DlgRender.py:181
+#: src/gui/DlgRender.py:183
 msgid "Draft"
 msgstr "Entwurf"
 
-#: src/gui/DlgRender.py:198
+#: src/gui/DlgRender.py:200
 msgid "&Batch Job"
 msgstr "&Batch Auftrag"
 
-#: src/gui/DlgRender.py:203
+#: src/gui/DlgRender.py:205
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:227
+#: src/gui/DlgRender.py:229
 msgid "Configure output and start render process"
 msgstr "Ausgabe konfigurieren und erzeugen"
 
-#: src/gui/DlgRender.py:270
+#: src/gui/DlgRender.py:281
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "Audio-Datei '%s' nicht vorhanden! Dennoch fortsetzen?"
 
-#: src/gui/DlgRender.py:271
+#: src/gui/DlgRender.py:282
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:334
 msgid "Abort current process?"
 msgstr "Aktuellen Vorgang abbrechen?"
 
-#: src/gui/DlgRender.py:408
+#: src/gui/DlgRender.py:419
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "Projekt wurde noch nicht gespeichert. Zum Erstellen von Batch-Aufträgen bitte erst das Projekt speichern."
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:431
 msgid "Batch file"
 msgstr "Stapel-Datei"
 
-#: src/gui/DlgRender.py:427
+#: src/gui/DlgRender.py:438
 msgid "Shell script"
 msgstr "Shell Script"
 
-#: src/gui/DlgRender.py:433
+#: src/gui/DlgRender.py:444
 msgid "Select batch file"
 msgstr "Stapelverarbeitungsdatei wählen"
 
@@ -784,6 +788,9 @@ msgstr "Neue Version verfügbar"
 #: src/gui/PnlWelcome.py:143
 msgid "The following changes has been made:"
 msgstr "Die folgenden Änderungen wurden vorgenommen:"
+
+#~ msgid "Invalid audio file!"
+#~ msgstr "Ungültige Audio-Datei"
 
 #~ msgid "processing audiofile..."
 #~ msgstr "Verarbeite Audio-Datei..."
