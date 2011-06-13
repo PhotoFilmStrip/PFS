@@ -187,7 +187,7 @@ class Settings(Singleton):
                 return self.cp.getint("General", "LastProfile")
             except:
                 pass
-        return 0
+        return 3
 
     def SetVideoType(self, typ):
         self.Load()
