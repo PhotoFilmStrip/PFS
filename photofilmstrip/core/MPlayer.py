@@ -73,9 +73,15 @@ class MPlayer(object):
     def Close(self):
         if self.__proc is not None:
             if sys.platform == "win32":
-                cmd = ["taskkill", "/PID", str(self.__proc.pid), "/F"]
-                kp = Popen(cmd, shell=False)
-                kp.wait()
+                import ctypes
+                PROCESS_TERMINATE = 1
+                handle = ctypes.windll.kernel32.OpenProcess(PROCESS_TERMINATE, False, self.__proc.pid)
+                ctypes.windll.kernel32.TerminateProcess(handle, -1)
+                ctypes.windll.kernel32.CloseHandle(handle)
+
+#                cmd = ["taskkill", "/PID", str(self.__proc.pid), "/F"]
+#                kp = Popen(cmd, shell=False)
+#                kp.wait()
             else:
                 self.__proc.communicate("q")
             self.__proc = None
