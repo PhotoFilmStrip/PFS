@@ -42,6 +42,7 @@ class ActionManager(object):
     ID_LANG_CS           = wx.NewId()
     ID_LANG_IT           = wx.NewId()
     ID_LANG_KO           = wx.NewId()
+    ID_LANG_NL           = wx.NewId()
 
     LANG_MAP = {ID_LANG_EN: "en",
                 ID_LANG_FR: "fr",
@@ -49,6 +50,7 @@ class ActionManager(object):
                 ID_LANG_CS: "cs",
                 ID_LANG_IT: "it",
                 ID_LANG_KO: "ko",
+                ID_LANG_NL: "nl",
                 ID_LANG_PT: "pt"}
 
     def __init__(self):
@@ -204,6 +206,7 @@ class ActionManager(object):
         langMenu.AppendRadioItem(self.ID_LANG_EN, u"English")
         langMenu.AppendRadioItem(self.ID_LANG_FR, u"Français")
         langMenu.AppendRadioItem(self.ID_LANG_DE, u"Deutsch")
+        langMenu.AppendRadioItem(self.ID_LANG_NL, u"Nederlands")
         langMenu.AppendRadioItem(self.ID_LANG_PT, u"Português")
         langMenu.AppendRadioItem(self.ID_LANG_CS, u"Český")
         langMenu.AppendRadioItem(self.ID_LANG_IT, u"Italiano")
