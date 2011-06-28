@@ -55,7 +55,7 @@ msgstr "Entwurfsmodus aktivieren"
 #: src/cli/Main.py:114
 #: src/gui/DlgRender.py:233
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
-msgstr "Aktiviere diese Option, um eine Vorschau zu erstellen. Die Erstellung geht zu Lasten der Bildqualität wesentlich schneller."
+msgstr "Aktivieren Sie diese Option, um eine Vorschau zu erstellen. Die Erstellung geht zu Lasten der Bildqualität wesentlich schneller."
 
 #: src/cli/Main.py:122
 msgid "project file does not exist: %s"
@@ -439,7 +439,7 @@ msgstr "Audiodatei:"
 
 #: src/gui/DlgProjectProps.py:237
 msgid "PhotoFilmStrip project"
-msgstr "PhotoFilmStrip Projekt"
+msgstr "PhotoFilmStrip-Projekt"
 
 #: src/gui/DlgProjectProps.py:268
 msgid "Unnamed PhotoFilmStrip"
@@ -549,7 +549,7 @@ msgstr "Stapel-Datei"
 
 #: src/gui/DlgRender.py:438
 msgid "Shell script"
-msgstr "Shell Script"
+msgstr "Shell-Script"
 
 #: src/gui/DlgRender.py:444
 msgid "Select batch file"
@@ -581,7 +581,7 @@ msgstr "Willkommen"
 
 #: src/gui/FrmMain.py:176
 msgid "You must restart %s for your new language setting to take effect."
-msgstr "Starte %s neu, damit die neuen Spracheinstellungen wirksam werden."
+msgstr "Starten Sie %s neu, damit die neuen Spracheinstellungen wirksam werden."
 
 #: src/gui/FrmMain.py:236
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
@@ -654,8 +654,8 @@ msgid ""
 "click the button below\n"
 "to add pictures to your new PhotoFilmStrip."
 msgstr ""
-"Ziehe Bilder auf diesen Text oder\n"
-"benutze die Schaltfläche unten, um\n"
+"Ziehen Sie Bilder auf diesen Text oder\n"
+"benutzen Sie die Schaltfläche unten, um\n"
 "Bilder zu Ihrem neuen PhotoFilmStrip hinzuzufügen."
 
 #: src/gui/PnlEditPicture.py:154
@@ -779,7 +779,7 @@ msgstr "Der Anfang..."
 
 #: src/gui/PnlWelcome.py:109
 msgid "Create a new project or load an existing one."
-msgstr "Erstelle ein neues Projekt oder lade ein bereits existierendes."
+msgstr "Erstellen Sie ein neues Projekt oder laden Sie ein bereits existierendes."
 
 #: src/gui/PnlWelcome.py:140
 msgid "Update available"
