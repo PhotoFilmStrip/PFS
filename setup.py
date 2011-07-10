@@ -111,13 +111,14 @@ setup(
     zipfile = "lib/modules",
     data_files=[("doc\\photofilmstrip", glob.glob("doc\\photofilmstrip\\*.*")),
                 ("share\\music", glob.glob("res\\audio\\*.mp3")),
-                ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
-                ("locale\\fr\\LC_MESSAGES", glob.glob("locale\\fr\\LC_MESSAGES\\*.mo")),
-                ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo")),
                 ("locale\\cs\\LC_MESSAGES", glob.glob("locale\\cs\\LC_MESSAGES\\*.mo")),
-                ("locale\\pt\\LC_MESSAGES", glob.glob("locale\\pt\\LC_MESSAGES\\*.mo")),
+                ("locale\\de\\LC_MESSAGES", glob.glob("locale\\de\\LC_MESSAGES\\*.mo")),
+                ("locale\\en\\LC_MESSAGES", glob.glob("locale\\en\\LC_MESSAGES\\*.mo")),
+                ("locale\\fr\\LC_MESSAGES", glob.glob("locale\\fr\\LC_MESSAGES\\*.mo")),
                 ("locale\\it\\LC_MESSAGES", glob.glob("locale\\it\\LC_MESSAGES\\*.mo")),
                 ("locale\\ko\\LC_MESSAGES", glob.glob("locale\\ko\\LC_MESSAGES\\*.mo")),
+                ("locale\\nl\\LC_MESSAGES", glob.glob("locale\\nl\\LC_MESSAGES\\*.mo")),
+                ("locale\\pt\\LC_MESSAGES", glob.glob("locale\\pt\\LC_MESSAGES\\*.mo")),
                 ("lib", ["C:\\Python25\\lib\\site-packages\\wx-2.8-msw-unicode\\wx\MSVCP71.dll"]),
     ]
     )
