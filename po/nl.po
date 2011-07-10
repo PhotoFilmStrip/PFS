@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2011-06-28 11:35+0100\n"
-"Last-Translator: Cees Stoltenkamp <cees@walchum.net>\n"
+"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"PO-Revision-Date: 2011-07-10 13:36+0100\n"
+"Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:221
-#: src/gui/DlgRender.py:363
+#: src/gui/DlgRender.py:374
 msgid "all done"
 msgstr "alles verwerkt"
 
@@ -53,7 +53,7 @@ msgid "enable draft mode"
 msgstr "ontwerp-modus toestaan"
 
 #: src/cli/Main.py:114
-#: src/gui/DlgRender.py:231
+#: src/gui/DlgRender.py:233
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr "Activeer deze optie om een voorbeeld van je PhotoFilmStrip te genereren. Het renderen zal drastisch versnellen, maar resulteert in een lagere kwaliteit."
 
@@ -86,15 +86,15 @@ msgid "cannot create output path: %s"
 msgstr "kan uitvoer niet opslaan in: %s "
 
 #: src/cli/Main.py:194
-#: src/gui/DlgProjectProps.py:389
-#: src/gui/DlgProjectProps.py:392
-#: src/gui/DlgProjectProps.py:432
-#: src/gui/DlgRender.py:245
+#: src/gui/DlgProjectProps.py:388
+#: src/gui/DlgProjectProps.py:391
+#: src/gui/DlgProjectProps.py:431
+#: src/gui/DlgRender.py:247
 msgid "Audio file '%s' does not exist!"
 msgstr "Geluidsbestand '%s' bestaat niet!"
 
 #: src/cli/Main.py:217
-#: src/gui/DlgRender.py:361
+#: src/gui/DlgRender.py:372
 msgid "...aborted!"
 msgstr "...onderbroken!"
 
@@ -110,7 +110,7 @@ msgstr "Onbekende eigenschap: %s"
 msgid "<default>"
 msgstr "<standaard>"
 
-#: src/core/PhotoFilmStrip.py:145
+#: src/core/PhotoFilmStrip.py:154
 msgid "Loading '%s' ..."
 msgstr "Aan het laden '%s' ..."
 
@@ -142,36 +142,45 @@ msgstr "uitvoer opslaan ..."
 msgid "generating subtitle"
 msgstr "genereren ondertiteling"
 
-#: src/core/renderer/MovieRenderer.py:50
+#: src/core/renderer/MovieRenderer.py:55
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) verplicht!"
 
-#: src/core/renderer/MovieRenderer.py:85
-#: src/core/renderer/MovieRenderer.py:95
+#: src/core/renderer/MovieRenderer.py:90
+#: src/core/renderer/MovieRenderer.py:100
 msgid "no"
 msgstr "nee"
 
-#: src/core/renderer/MovieRenderer.py:123
+#: src/core/renderer/MovieRenderer.py:128
 msgid "Bitrate must be a number!"
 msgstr "Bitrate moet een getal zijn!"
 
-#: src/core/renderer/MovieRenderer.py:134
+#: src/core/renderer/MovieRenderer.py:139
 msgid "MPEG(1/2)-Video (MPG)"
 msgstr "MPEG(1/2)-Video (MPG)"
 
-#: src/core/renderer/MovieRenderer.py:169
+#: src/core/renderer/MovieRenderer.py:174
 msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 msgstr "MPEG-formaat ondersteunt alleen VCD, SVCD en DVD profiel!"
 
-#: src/core/renderer/MovieRenderer.py:194
-msgid "MPEG4-XVid (AVI)"
-msgstr "MPEG4-XVid (AVI)"
+#: src/core/renderer/MovieRenderer.py:199
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
 
-#: src/core/renderer/MovieRenderer.py:226
+#: src/core/renderer/MovieRenderer.py:245
+#, fuzzy
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "mencoder (mencoder) verplicht!"
+
+#: src/core/renderer/MovieRenderer.py:255
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:288
 msgid "Flash-Video (FLV)"
 msgstr "Flash-Video (FLV)"
 
-#: src/core/renderer/MovieRenderer.py:257
+#: src/core/renderer/MovieRenderer.py:319
 msgid "Motion-JPEG (AVI)"
 msgstr "Motion-JPEG (AVI)"
 
@@ -179,103 +188,103 @@ msgstr "Motion-JPEG (AVI)"
 msgid "Single pictures"
 msgstr "per stuk foto's"
 
-#: src/gui/ActionManager.py:64
+#: src/gui/ActionManager.py:70
 msgid "&File"
 msgstr "&Bestand"
 
-#: src/gui/ActionManager.py:65
+#: src/gui/ActionManager.py:71
 msgid "&Edit"
 msgstr "&Wijzig"
 
-#: src/gui/ActionManager.py:66
+#: src/gui/ActionManager.py:72
 msgid "&Tools"
 msgstr "&Hulpmiddelen"
 
-#: src/gui/ActionManager.py:67
-#: src/gui/ActionManager.py:196
-#: src/gui/DlgRender.py:186
+#: src/gui/ActionManager.py:73
+#: src/gui/ActionManager.py:202
+#: src/gui/DlgRender.py:188
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "&Help"
 
-#: src/gui/ActionManager.py:81
+#: src/gui/ActionManager.py:87
 msgid "New Project"
 msgstr "Nieuw Project"
 
-#: src/gui/ActionManager.py:84
+#: src/gui/ActionManager.py:90
 msgid "Load Project"
 msgstr "Laad Project"
 
-#: src/gui/ActionManager.py:87
+#: src/gui/ActionManager.py:93
 msgid "Save Project"
 msgstr "Bewaar Project"
 
-#: src/gui/ActionManager.py:94
+#: src/gui/ActionManager.py:100
 msgid "Import Pictures"
 msgstr "Importeer Foto's"
 
-#: src/gui/ActionManager.py:97
+#: src/gui/ActionManager.py:103
 #: src/gui/DlgRender.py:133
 msgid "Render filmstrip"
 msgstr "Render filmstrip"
 
-#: src/gui/ActionManager.py:118
+#: src/gui/ActionManager.py:124
 msgid "&New Project"
 msgstr "&Nieuw Project"
 
-#: src/gui/ActionManager.py:122
+#: src/gui/ActionManager.py:128
 msgid "&Open Project"
 msgstr "&Open Project"
 
-#: src/gui/ActionManager.py:128
+#: src/gui/ActionManager.py:134
 msgid "&Save Project"
 msgstr "&Project opslaan"
 
-#: src/gui/ActionManager.py:132
+#: src/gui/ActionManager.py:138
 msgid "&Close Project"
 msgstr "$Sluit Project"
 
-#: src/gui/ActionManager.py:144
+#: src/gui/ActionManager.py:150
 msgid "&Properties"
 msgstr "&Eigenschappen"
 
-#: src/gui/ActionManager.py:149
+#: src/gui/ActionManager.py:155
 msgid "E&xit"
 msgstr "&Afsluiten"
 
-#: src/gui/ActionManager.py:157
+#: src/gui/ActionManager.py:163
 msgid "Move picture &left"
 msgstr "Verplaats foto & links"
 
-#: src/gui/ActionManager.py:161
+#: src/gui/ActionManager.py:167
 msgid "Move picture &right"
 msgstr "Verplaats foto & rechts"
 
-#: src/gui/ActionManager.py:166
+#: src/gui/ActionManager.py:172
 msgid "&Remove Picture"
 msgstr "&Verwijder foto"
 
-#: src/gui/ActionManager.py:171
+#: src/gui/ActionManager.py:177
 msgid "Rotate &clockwise"
 msgstr "Roteer &Rechtsom"
 
-#: src/gui/ActionManager.py:175
+#: src/gui/ActionManager.py:181
 msgid "Rotate counter clock&wise"
 msgstr "Roteer &Linksom"
 
-#: src/gui/ActionManager.py:183
+#: src/gui/ActionManager.py:189
 msgid "&Import Pictures"
 msgstr "&Importeer foto's"
 
-#: src/gui/ActionManager.py:188
+#: src/gui/ActionManager.py:194
 msgid "&Render filmstrip"
 msgstr "&Render filmstrip"
 
-#: src/gui/ActionManager.py:205
+#: src/gui/ActionManager.py:214
 msgid "Language"
 msgstr "Taal"
 
-#: src/gui/ActionManager.py:209
+#: src/gui/ActionManager.py:218
 msgid "&About"
 msgstr "&Over"
 
@@ -292,7 +301,7 @@ msgid "Bug-Report send. Thank you for your support."
 msgstr "Foutreport verstuurd. Dank voor uw steun."
 
 #: src/gui/DlgBugReport.py:102
-#: src/gui/FrmMain.py:180
+#: src/gui/FrmMain.py:177
 msgid "Information"
 msgstr "Informatie"
 
@@ -301,14 +310,14 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Sorry, deze functie is tijdelijk niet beschikbaar ..."
 
 #: src/gui/DlgBugReport.py:109
-#: src/gui/DlgProjectProps.py:393
-#: src/gui/DlgProjectProps.py:422
-#: src/gui/DlgProjectProps.py:433
-#: src/gui/DlgProjectProps.py:476
-#: src/gui/DlgProjectProps.py:487
-#: src/gui/DlgRender.py:370
-#: src/gui/DlgRender.py:409
-#: src/gui/FrmMain.py:460
+#: src/gui/DlgProjectProps.py:392
+#: src/gui/DlgProjectProps.py:421
+#: src/gui/DlgProjectProps.py:432
+#: src/gui/DlgProjectProps.py:479
+#: src/gui/DlgProjectProps.py:490
+#: src/gui/DlgRender.py:381
+#: src/gui/DlgRender.py:420
+#: src/gui/FrmMain.py:457
 msgid "Error"
 msgstr "Fout"
 
@@ -337,8 +346,8 @@ msgid "Do nothing"
 msgstr "Doe niets"
 
 #: src/gui/DlgFinalize.py:108
-#: src/gui/DlgRender.py:191
-#: src/gui/DlgRender.py:375
+#: src/gui/DlgRender.py:193
+#: src/gui/DlgRender.py:386
 msgid "&Close"
 msgstr "&Afsluiten"
 
@@ -385,14 +394,14 @@ msgid "Reset"
 msgstr "Hertsel"
 
 #: src/gui/DlgPositionInput.py:253
-#: src/gui/DlgProjectProps.py:221
-#: src/gui/DlgRender.py:294
+#: src/gui/DlgProjectProps.py:222
+#: src/gui/DlgRender.py:305
 #: src/gui/DlgRendererProps.py:107
 msgid "&Cancel"
 msgstr "&Onderbreek"
 
 #: src/gui/DlgPositionInput.py:259
-#: src/gui/DlgProjectProps.py:227
+#: src/gui/DlgProjectProps.py:228
 #: src/gui/DlgRendererProps.py:112
 msgid "&Ok"
 msgstr "&Ok"
@@ -401,91 +410,96 @@ msgstr "&Ok"
 msgid "Adjust motion positions directly"
 msgstr "Pas beweging posities direct aan"
 
-#: src/gui/DlgProjectProps.py:123
+#: src/gui/DlgProjectProps.py:124
 msgid "Project properties"
 msgstr "Project eigenschappen"
 
-#: src/gui/DlgProjectProps.py:132
+#: src/gui/DlgProjectProps.py:133
 msgid "Project name:"
 msgstr "Project naam:"
 
-#: src/gui/DlgProjectProps.py:144
+#: src/gui/DlgProjectProps.py:145
 msgid "Folder:"
 msgstr "Map:"
 
-#: src/gui/DlgProjectProps.py:159
+#: src/gui/DlgProjectProps.py:160
 msgid "Aspect ratio:"
 msgstr "Aspect ratio:"
 
-#: src/gui/DlgProjectProps.py:167
+#: src/gui/DlgProjectProps.py:168
 msgid "Total length:"
 msgstr "Totale lengte:"
 
-#: src/gui/DlgProjectProps.py:170
+#: src/gui/DlgProjectProps.py:171
 msgid "Overrides the duration of single pictures and gives the project this total length."
 msgstr "Overschrijft de duur van enkele foto's en geeft het project dit totale lengte."
 
-#: src/gui/DlgProjectProps.py:176
+#: src/gui/DlgProjectProps.py:177
 msgid "User defined:"
 msgstr "Door gebruiker gedefinieerd:"
 
-#: src/gui/DlgProjectProps.py:190
+#: src/gui/DlgProjectProps.py:191
 msgid "Audio file:"
 msgstr "Geluidsbestand"
 
-#: src/gui/DlgProjectProps.py:236
+#: src/gui/DlgProjectProps.py:237
 msgid "PhotoFilmStrip project"
 msgstr "Fotofilmstrip project"
 
-#: src/gui/DlgProjectProps.py:267
+#: src/gui/DlgProjectProps.py:268
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Naamloos Fotofilmstrip"
 
-#: src/gui/DlgProjectProps.py:274
+#: src/gui/DlgProjectProps.py:275
 msgid "My PhotoFilmStrips"
 msgstr "Mijn Fotofilmstrip"
 
-#: src/gui/DlgProjectProps.py:318
+#: src/gui/DlgProjectProps.py:319
 msgid "Browse for folder"
 msgstr "Blader naar de map"
 
-#: src/gui/DlgProjectProps.py:332
+#: src/gui/DlgProjectProps.py:333
 msgid "Select music"
 msgstr "Selecteer muziek"
 
-#: src/gui/DlgProjectProps.py:334
+#: src/gui/DlgProjectProps.py:335
 msgid "Audio files"
 msgstr "Audio bestanden"
 
-#: src/gui/DlgProjectProps.py:418
-#: src/gui/DlgProjectProps.py:421
-msgid "Invalid audio file!"
-msgstr "Ongeldige geluids  bestand!"
+#: src/gui/DlgProjectProps.py:417
+#: src/gui/DlgProjectProps.py:420
+#, fuzzy
+msgid "Audio file not supported!"
+msgstr "Geluidsbestand '%s' bestaat niet!"
 
-#: src/gui/DlgProjectProps.py:465
+#: src/gui/DlgProjectProps.py:468
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "Map bestaat niet! Wilt u% s deze aanmaken?"
 
-#: src/gui/DlgProjectProps.py:466
-#: src/gui/DlgRender.py:324
-#: src/gui/FrmMain.py:290
-#: src/gui/FrmMain.py:406
-#: src/gui/FrmMain.py:485
+#: src/gui/DlgProjectProps.py:469
+#: src/gui/DlgRender.py:335
+#: src/gui/FrmMain.py:287
+#: src/gui/FrmMain.py:403
+#: src/gui/FrmMain.py:482
 #: src/gui/PnlPfsProject.py:449
 msgid "Question"
 msgstr "Vraag"
 
-#: src/gui/DlgProjectProps.py:475
+#: src/gui/DlgProjectProps.py:478
 msgid "Cannot create folder: %s"
 msgstr "Kan map '%s' niet maken"
 
-#: src/gui/DlgProjectProps.py:486
+#: src/gui/DlgProjectProps.py:489
 msgid "Cannot write into folder!"
 msgstr "Kan niet opslaan in de map!"
 
-#: src/gui/DlgProjectProps.py:498
+#: src/gui/DlgProjectProps.py:503
 msgid "The project name must be filled."
 msgstr "De naam van het project moet worden ingevuld."
+
+#: src/gui/DlgProjectProps.py:509
+msgid "The project name contains invalid characters."
+msgstr ""
 
 #: src/gui/DlgRender.py:144
 msgid "Profile:"
@@ -499,51 +513,51 @@ msgstr "Type:"
 msgid "Format:"
 msgstr "Formaat:"
 
-#: src/gui/DlgRender.py:177
+#: src/gui/DlgRender.py:179
 msgid "Properties"
 msgstr "Eigenschappen"
 
-#: src/gui/DlgRender.py:181
+#: src/gui/DlgRender.py:183
 msgid "Draft"
 msgstr "Voorbeeld"
 
-#: src/gui/DlgRender.py:198
+#: src/gui/DlgRender.py:200
 msgid "&Batch Job"
 msgstr "&Partij verwerking"
 
-#: src/gui/DlgRender.py:203
+#: src/gui/DlgRender.py:205
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:227
+#: src/gui/DlgRender.py:229
 msgid "Configure output and start render process"
 msgstr "Configureer uitvoer en start bewerkingsproces"
 
-#: src/gui/DlgRender.py:270
+#: src/gui/DlgRender.py:281
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "Geluid-bestand '% s' bestaat niet! Toch doorgaan?"
 
-#: src/gui/DlgRender.py:271
+#: src/gui/DlgRender.py:282
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:334
 msgid "Abort current process?"
 msgstr "Onderbreek huidige bewerking?"
 
-#: src/gui/DlgRender.py:408
+#: src/gui/DlgRender.py:419
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "Project is nog niet opgeslagen. Bewaar eerst het project voor partij verwerking op te starten!"
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:431
 msgid "Batch file"
 msgstr "Partij verwerkingsbestand"
 
-#: src/gui/DlgRender.py:427
+#: src/gui/DlgRender.py:438
 msgid "Shell script"
 msgstr "Shell script"
 
-#: src/gui/DlgRender.py:433
+#: src/gui/DlgRender.py:444
 msgid "Select batch file"
 msgstr "Kies partijverwerkings-bestand"
 
@@ -571,67 +585,67 @@ msgstr "Wijzig eigenschap"
 msgid "Welcome"
 msgstr "Welkom"
 
-#: src/gui/FrmMain.py:179
+#: src/gui/FrmMain.py:176
 msgid "You must restart %s for your new language setting to take effect."
 msgstr "U moet opnieuw starten% s voor de nieuwe taalinstelling van kracht wordt."
 
-#: src/gui/FrmMain.py:239
+#: src/gui/FrmMain.py:236
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr "Fotofilmstrip creëert films van uw foto's in slechts 3 stappen. Selecteer eerst uw foto's, aanpassen van de beweging pad en maak de video. Er zijn verschillende output mogelijkheden voor VCD, SVCD, DVD tot FULL-HD."
 
-#: src/gui/FrmMain.py:242
+#: src/gui/FrmMain.py:239
 msgid "online"
 msgstr "online"
 
-#: src/gui/FrmMain.py:258
+#: src/gui/FrmMain.py:255
 msgid "Select %s-Project"
 msgstr "Selecteer %s-Project"
 
-#: src/gui/FrmMain.py:260
-#: src/gui/FrmMain.py:280
-#: src/gui/FrmMain.py:311
-#: src/gui/FrmMain.py:322
+#: src/gui/FrmMain.py:257
+#: src/gui/FrmMain.py:277
+#: src/gui/FrmMain.py:308
+#: src/gui/FrmMain.py:319
 msgid "Project"
 msgstr "Project"
 
-#: src/gui/FrmMain.py:277
+#: src/gui/FrmMain.py:274
 msgid "Save %s-Project"
 msgstr "Opslaan '%s'-Project"
 
-#: src/gui/FrmMain.py:289
+#: src/gui/FrmMain.py:286
 msgid "Overwrite existing file '%s'?"
 msgstr "Overschrijf bestaand bestand '%s'?"
 
-#: src/gui/FrmMain.py:308
+#: src/gui/FrmMain.py:305
 msgid "Export %s-Project"
 msgstr "Exporteer '%s'-Project"
 
-#: src/gui/FrmMain.py:311
-#: src/gui/FrmMain.py:322
+#: src/gui/FrmMain.py:308
+#: src/gui/FrmMain.py:319
 msgid "Portable"
 msgstr "Portable"
 
-#: src/gui/FrmMain.py:320
+#: src/gui/FrmMain.py:317
 msgid "Import %s-Project"
 msgstr "Importeer '%s'-Project"
 
-#: src/gui/FrmMain.py:405
+#: src/gui/FrmMain.py:402
 msgid "'%s' has been modified. Save changes?"
 msgstr "'% s' is gewijzigd. Wijzigingen opslaan?"
 
-#: src/gui/FrmMain.py:428
+#: src/gui/FrmMain.py:425
 msgid "Images"
 msgstr "Foto's"
 
-#: src/gui/FrmMain.py:433
+#: src/gui/FrmMain.py:430
 msgid "Duration"
 msgstr "Tijdsduur"
 
-#: src/gui/FrmMain.py:458
+#: src/gui/FrmMain.py:455
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Ongeldige% (app) s-Project:% (file) s"
 
-#: src/gui/FrmMain.py:482
+#: src/gui/FrmMain.py:479
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "Kon bestand '% (file) s' niet opslaan:% (Foutbericht) s"
 
@@ -781,3 +795,5 @@ msgstr "Update beschikbaar"
 msgid "The following changes has been made:"
 msgstr "De volgende wijzigingen zijn gemaakt"
 
+#~ msgid "Invalid audio file!"
+#~ msgstr "Ongeldige geluids  bestand!"
