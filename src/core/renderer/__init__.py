@@ -20,13 +20,15 @@
 #
 
 from core.renderer.MovieRenderer import (MPEGRenderer, 
-                                         MPEG4Renderer,
+                                         MPEG4MP3Renderer,
+                                         MPEG4AC3Renderer,
                                          FlashMovieRenderer, 
                                          MJPEGRenderer)
 from core.renderer.SingleFileRenderer import SingleFileRenderer
 
 RENDERERS = [SingleFileRenderer,  
-             MPEG4Renderer,
+             MPEG4MP3Renderer,
+             MPEG4AC3Renderer,
              MPEGRenderer,
              FlashMovieRenderer,
              MJPEGRenderer]
