@@ -21,7 +21,8 @@
 
 from photofilmstrip.core.renderer.MovieRenderer import (
         MPEGRenderer, 
-        MPEG4Renderer,
+        MPEG4MP3Renderer,
+        MPEG4AC3Renderer,
         FlashMovieRenderer, 
         MJPEGRenderer)
 from photofilmstrip.core.renderer.SingleFileRenderer import (
@@ -33,7 +34,8 @@ from photofilmstrip.core.renderer.CairoRenderer import (
         CairoRenderer)
 
 RENDERERS = [SingleFileRenderer,  
-             MPEG4Renderer,
+             MPEG4MP3Renderer,
+             MPEG4AC3Renderer,
              MPEGRenderer,
              FlashMovieRenderer,
              MJPEGRenderer,

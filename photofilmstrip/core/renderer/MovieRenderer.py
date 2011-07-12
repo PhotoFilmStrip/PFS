@@ -187,14 +187,14 @@ class MPEGRenderer(MEncoderRenderer):
         return cmd
 
 
-class MPEG4Renderer(MEncoderRenderer):
+class MPEG4AC3Renderer(MEncoderRenderer):
     
     def __init__(self):
         MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
-        return _(u"MPEG4-XVid (AVI)")
+        return _(u"MPEG4-XVid/AC3 (AVI)")
 
     @staticmethod
     def GetProperties():
@@ -211,15 +211,16 @@ class MPEG4Renderer(MEncoderRenderer):
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "lavc", "-srate", "44100",
-                "-ovc", "lavc", "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect:acodec=ac3" % self._GetBitrate(), 
-                "-ffourcc", MPEG4Renderer.GetProperty('FFOURCC'),
+                "-ovc", "lavc", 
+                "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect:acodec=ac3" % self._GetBitrate(), 
+                "-ffourcc", MPEG4AC3Renderer.GetProperty('FFOURCC'),
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),
                 "-"]
         return cmd
 
 
-class FlashMovieRenderer(MEncoderRenderer):
+class MEncoderMP3Renderer(MEncoderRenderer):
     
     def __init__(self):
         MEncoderRenderer.__init__(self)
@@ -230,23 +231,67 @@ class FlashMovieRenderer(MEncoderRenderer):
         if msgList:
             return
         
-        proc = Popen(["mencoder", "-oac", "help"], stdout=PIPE, stderr=STDOUT, shell=False)
-        proc.wait()
-        output = proc.stdout.read()
+        try:
+            proc = Popen(["mencoder", "-oac", "help"], stdout=PIPE, stderr=STDOUT, shell=False)
+            proc.wait()
+            output = proc.stdout.read()
+        except Exception, err:
+            logging.debug("checking for mencoder (mp3support) failed: %s", err)
+            output = ""
+        
         if output.find("mp3lame") == -1:
             msgList.append(_(u"mencoder with MP3 support (mp3lame) required!"))
 
+
+class MPEG4MP3Renderer(MEncoderMP3Renderer):
+    
+    def __init__(self):
+        MEncoderMP3Renderer.__init__(self)
+        
+    @staticmethod
+    def GetName():
+        return _(u"MPEG4-XVid/MP3 (AVI)")
+
+    @staticmethod
+    def GetProperties():
+        return MEncoderMP3Renderer.GetProperties() + ["FFOURCC"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "FFOURCC":
+            return "XVID"
+        return MEncoderMP3Renderer.GetDefaultProperty(prop)
+
+    def _GetCmd(self):
+        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd += self._GetAudioArgs()
+        cmd += self._GetSubArgs()
+        cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
+                "-ovc", "lavc", 
+                "-lavcopts", "vcodec=mpeg4:vbitrate=%d:vhq:autoaspect" % self._GetBitrate(), 
+                "-ffourcc", MPEG4MP3Renderer.GetProperty('FFOURCC'),
+                "-ofps", self._GetFrameRate(),
+                "-o", os.path.join(self.GetOutputPath(), "output.avi"),
+                "-"]
+        return cmd
+
+
+class FlashMovieRenderer(MEncoderMP3Renderer):
+    
+    def __init__(self):
+        MEncoderMP3Renderer.__init__(self)
+        
     @staticmethod
     def GetName():
         return _(u"Flash-Video (FLV)")
     
     @staticmethod
     def GetProperties():
-        return MEncoderRenderer.GetProperties()
+        return MEncoderMP3Renderer.GetProperties()
 
     @staticmethod
     def GetDefaultProperty(prop):
-        return MEncoderRenderer.GetDefaultProperty(prop)
+        return MEncoderMP3Renderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
         cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
@@ -283,8 +328,9 @@ class MJPEGRenderer(MEncoderRenderer):
         cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
-        cmd += ["-oac", "lavc", "-srate", "44100",
-                "-ovc", "lavc", "-lavcopts", "vcodec=mjpeg:acodec=ac3",
+        cmd += ["-oac", "pcm", "-srate", "44100",
+                "-ovc", "lavc", 
+                "-lavcopts", "vcodec=mjpeg",
                 "-of", "lavf",
                 "-ofps", self._GetFrameRate(),
                 "-o", os.path.join(self.GetOutputPath(), "output.avi"),

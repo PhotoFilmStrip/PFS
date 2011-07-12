@@ -160,8 +160,10 @@ class DlgFinalize(wx.Dialog):
                 # Play video
                 videoFile = os.path.join(self.outpath, "output.avi")
                 if not os.path.exists(videoFile):
-                    return
-                
+                    videoFile = os.path.join(self.outpath, "output.flv")
+                    if not os.path.exists(videoFile):
+                        return
+
                 if os.name == "nt":
                     try:
                         os.startfile(videoFile)
