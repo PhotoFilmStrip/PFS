@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2011-02-01 21:24+0100\n"
+"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"PO-Revision-Date: 2011-07-10 13:36+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Choi Youn-Soo <korea3d@gmail.com>\n"
 "Language: \n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: src/cli/Main.py:65
 #: src/cli/Main.py:221
-#: src/gui/DlgRender.py:363
+#: src/gui/DlgRender.py:374
 msgid "all done"
 msgstr "모두 완성"
 
@@ -49,7 +49,7 @@ msgid "enable draft mode"
 msgstr "초안 모드 사용"
 
 #: src/cli/Main.py:114
-#: src/gui/DlgRender.py:231
+#: src/gui/DlgRender.py:233
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr "PhotoFilmStrip의 미리보기를 위해 이 옵션을 활성화하십시오. 렌더링 결과는 낮은 품질이지만, 속도는 매우 빠릅니다."
 
@@ -85,12 +85,12 @@ msgstr "출력 경로를 만들 수 없습니다: %s"
 #: src/gui/DlgProjectProps.py:388
 #: src/gui/DlgProjectProps.py:391
 #: src/gui/DlgProjectProps.py:431
-#: src/gui/DlgRender.py:245
+#: src/gui/DlgRender.py:247
 msgid "Audio file '%s' does not exist!"
 msgstr "'%s' 오디오 파일은 존재하지 않습니다!"
 
 #: src/cli/Main.py:217
-#: src/gui/DlgRender.py:361
+#: src/gui/DlgRender.py:372
 msgid "...aborted!"
 msgstr "...중지되었습니다!"
 
@@ -106,7 +106,7 @@ msgstr "알 수없는 속성: %s"
 msgid "<default>"
 msgstr "<기본값>"
 
-#: src/core/PhotoFilmStrip.py:153
+#: src/core/PhotoFilmStrip.py:154
 msgid "Loading '%s' ..."
 msgstr "'%s' 불러오기..."
 
@@ -138,36 +138,45 @@ msgstr "출력 만들기..."
 msgid "generating subtitle"
 msgstr "자막 만들기"
 
-#: src/core/renderer/MovieRenderer.py:50
+#: src/core/renderer/MovieRenderer.py:55
 msgid "mencoder (mencoder) required!"
 msgstr "mencoder (mencoder) 가 필요합니다!"
 
-#: src/core/renderer/MovieRenderer.py:85
-#: src/core/renderer/MovieRenderer.py:95
+#: src/core/renderer/MovieRenderer.py:90
+#: src/core/renderer/MovieRenderer.py:100
 msgid "no"
 msgstr "아니오"
 
-#: src/core/renderer/MovieRenderer.py:123
+#: src/core/renderer/MovieRenderer.py:128
 msgid "Bitrate must be a number!"
 msgstr "비트 전송률은 숫자여야 합니다!"
 
-#: src/core/renderer/MovieRenderer.py:134
+#: src/core/renderer/MovieRenderer.py:139
 msgid "MPEG(1/2)-Video (MPG)"
 msgstr "MPEG(1/2)-비디오 (MPG)"
 
-#: src/core/renderer/MovieRenderer.py:169
+#: src/core/renderer/MovieRenderer.py:174
 msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 msgstr "MPEG 포맷은 VCD, SVCD와 DVD 프로필만 지원합니다!"
 
-#: src/core/renderer/MovieRenderer.py:194
-msgid "MPEG4-XVid (AVI)"
-msgstr "MPEG4-XVid (AVI)"
+#: src/core/renderer/MovieRenderer.py:199
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
 
-#: src/core/renderer/MovieRenderer.py:226
+#: src/core/renderer/MovieRenderer.py:245
+#, fuzzy
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "mencoder (mencoder) 가 필요합니다!"
+
+#: src/core/renderer/MovieRenderer.py:255
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:288
 msgid "Flash-Video (FLV)"
 msgstr "플래시 비디오 (FLV)"
 
-#: src/core/renderer/MovieRenderer.py:257
+#: src/core/renderer/MovieRenderer.py:319
 msgid "Motion-JPEG (AVI)"
 msgstr "모션-JPEG (AVI)"
 
@@ -175,103 +184,103 @@ msgstr "모션-JPEG (AVI)"
 msgid "Single pictures"
 msgstr "단일 사진"
 
-#: src/gui/ActionManager.py:66
+#: src/gui/ActionManager.py:70
 msgid "&File"
 msgstr "파일(&E)"
 
-#: src/gui/ActionManager.py:67
+#: src/gui/ActionManager.py:71
 msgid "&Edit"
 msgstr "편집(&E)"
 
-#: src/gui/ActionManager.py:68
+#: src/gui/ActionManager.py:72
 msgid "&Tools"
 msgstr "도구(&T)"
 
-#: src/gui/ActionManager.py:69
-#: src/gui/ActionManager.py:198
-#: src/gui/DlgRender.py:186
+#: src/gui/ActionManager.py:73
+#: src/gui/ActionManager.py:202
+#: src/gui/DlgRender.py:188
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "도움말(&H)"
 
-#: src/gui/ActionManager.py:83
+#: src/gui/ActionManager.py:87
 msgid "New Project"
 msgstr "새 프로젝트"
 
-#: src/gui/ActionManager.py:86
+#: src/gui/ActionManager.py:90
 msgid "Load Project"
 msgstr "프로젝트 불러오기"
 
-#: src/gui/ActionManager.py:89
+#: src/gui/ActionManager.py:93
 msgid "Save Project"
 msgstr "프로젝트 저장"
 
-#: src/gui/ActionManager.py:96
+#: src/gui/ActionManager.py:100
 msgid "Import Pictures"
 msgstr "사진 수입"
 
-#: src/gui/ActionManager.py:99
+#: src/gui/ActionManager.py:103
 #: src/gui/DlgRender.py:133
 msgid "Render filmstrip"
 msgstr "Filmstrip 렌더"
 
-#: src/gui/ActionManager.py:120
+#: src/gui/ActionManager.py:124
 msgid "&New Project"
 msgstr "새 프로젝트(&N)"
 
-#: src/gui/ActionManager.py:124
+#: src/gui/ActionManager.py:128
 msgid "&Open Project"
 msgstr "프로젝트 열기(&O)"
 
-#: src/gui/ActionManager.py:130
+#: src/gui/ActionManager.py:134
 msgid "&Save Project"
 msgstr "프로젝트 저장(&S)"
 
-#: src/gui/ActionManager.py:134
+#: src/gui/ActionManager.py:138
 msgid "&Close Project"
 msgstr "프로젝트 닫기(&C)"
 
-#: src/gui/ActionManager.py:146
+#: src/gui/ActionManager.py:150
 msgid "&Properties"
 msgstr "환경 설정(&P)"
 
-#: src/gui/ActionManager.py:151
+#: src/gui/ActionManager.py:155
 msgid "E&xit"
 msgstr "종료(&x)"
 
-#: src/gui/ActionManager.py:159
+#: src/gui/ActionManager.py:163
 msgid "Move picture &left"
 msgstr "왼쪽으로 사진 이동(&l)"
 
-#: src/gui/ActionManager.py:163
+#: src/gui/ActionManager.py:167
 msgid "Move picture &right"
 msgstr "오른쪽으로 사진 이동(&r)"
 
-#: src/gui/ActionManager.py:168
+#: src/gui/ActionManager.py:172
 msgid "&Remove Picture"
 msgstr "이미지 제거(&R)"
 
-#: src/gui/ActionManager.py:173
+#: src/gui/ActionManager.py:177
 msgid "Rotate &clockwise"
 msgstr "오른쪽으로 회전(&c)"
 
-#: src/gui/ActionManager.py:177
+#: src/gui/ActionManager.py:181
 msgid "Rotate counter clock&wise"
 msgstr "왼쪽으로 회전(&w)"
 
-#: src/gui/ActionManager.py:185
+#: src/gui/ActionManager.py:189
 msgid "&Import Pictures"
 msgstr "이미지 수입(&I)"
 
-#: src/gui/ActionManager.py:190
+#: src/gui/ActionManager.py:194
 msgid "&Render filmstrip"
 msgstr "Filmstrip 렌더(&R)"
 
-#: src/gui/ActionManager.py:208
+#: src/gui/ActionManager.py:214
 msgid "Language"
 msgstr "언어"
 
-#: src/gui/ActionManager.py:212
+#: src/gui/ActionManager.py:218
 msgid "&About"
 msgstr "정보(&A)"
 
@@ -302,8 +311,8 @@ msgstr "죄송합니다. 이 기능은 일시적으로 사용할 수 없습니�
 #: src/gui/DlgProjectProps.py:432
 #: src/gui/DlgProjectProps.py:479
 #: src/gui/DlgProjectProps.py:490
-#: src/gui/DlgRender.py:370
-#: src/gui/DlgRender.py:409
+#: src/gui/DlgRender.py:381
+#: src/gui/DlgRender.py:420
 #: src/gui/FrmMain.py:457
 msgid "Error"
 msgstr "오류"
@@ -333,8 +342,8 @@ msgid "Do nothing"
 msgstr "아무것도 하지 않음"
 
 #: src/gui/DlgFinalize.py:108
-#: src/gui/DlgRender.py:191
-#: src/gui/DlgRender.py:375
+#: src/gui/DlgRender.py:193
+#: src/gui/DlgRender.py:386
 msgid "&Close"
 msgstr "닫기(&C)"
 
@@ -381,14 +390,14 @@ msgid "Reset"
 msgstr "재설정"
 
 #: src/gui/DlgPositionInput.py:253
-#: src/gui/DlgProjectProps.py:221
-#: src/gui/DlgRender.py:294
+#: src/gui/DlgProjectProps.py:222
+#: src/gui/DlgRender.py:305
 #: src/gui/DlgRendererProps.py:107
 msgid "&Cancel"
 msgstr "취소(&C)"
 
 #: src/gui/DlgPositionInput.py:259
-#: src/gui/DlgProjectProps.py:227
+#: src/gui/DlgProjectProps.py:228
 #: src/gui/DlgRendererProps.py:112
 msgid "&Ok"
 msgstr "확인(&O)"
@@ -397,73 +406,74 @@ msgstr "확인(&O)"
 msgid "Adjust motion positions directly"
 msgstr "직접 모션 위치 조정"
 
-#: src/gui/DlgProjectProps.py:123
+#: src/gui/DlgProjectProps.py:124
 msgid "Project properties"
 msgstr "프로젝트 속성"
 
-#: src/gui/DlgProjectProps.py:132
+#: src/gui/DlgProjectProps.py:133
 msgid "Project name:"
 msgstr "프로젝트명:"
 
-#: src/gui/DlgProjectProps.py:144
+#: src/gui/DlgProjectProps.py:145
 msgid "Folder:"
 msgstr "폴더:"
 
-#: src/gui/DlgProjectProps.py:159
+#: src/gui/DlgProjectProps.py:160
 msgid "Aspect ratio:"
 msgstr "화면 비율:"
 
-#: src/gui/DlgProjectProps.py:167
+#: src/gui/DlgProjectProps.py:168
 msgid "Total length:"
 msgstr "총 길이:"
 
-#: src/gui/DlgProjectProps.py:170
+#: src/gui/DlgProjectProps.py:171
 msgid "Overrides the duration of single pictures and gives the project this total length."
 msgstr "총 길이는 단일 사진의 지속기간과 프로젝트에 우선합니다."
 
-#: src/gui/DlgProjectProps.py:176
+#: src/gui/DlgProjectProps.py:177
 msgid "User defined:"
 msgstr "사용자 정의:"
 
-#: src/gui/DlgProjectProps.py:190
+#: src/gui/DlgProjectProps.py:191
 msgid "Audio file:"
 msgstr "오디오 파일:"
 
-#: src/gui/DlgProjectProps.py:236
+#: src/gui/DlgProjectProps.py:237
 msgid "PhotoFilmStrip project"
 msgstr "PhotoFilmStrip 프로젝트"
 
-#: src/gui/DlgProjectProps.py:267
+#: src/gui/DlgProjectProps.py:268
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Unnamed PhotoFilmStrip"
 
-#: src/gui/DlgProjectProps.py:274
+#: src/gui/DlgProjectProps.py:275
 msgid "My PhotoFilmStrips"
 msgstr "내 PhotoFilmStrips"
 
-#: src/gui/DlgProjectProps.py:318
+#: src/gui/DlgProjectProps.py:319
 msgid "Browse for folder"
 msgstr "폴더 찾기"
 
-#: src/gui/DlgProjectProps.py:332
+#: src/gui/DlgProjectProps.py:333
 msgid "Select music"
 msgstr "음악 선택"
 
-#: src/gui/DlgProjectProps.py:334
+#: src/gui/DlgProjectProps.py:335
 msgid "Audio files"
 msgstr "오디오 파일"
 
 #: src/gui/DlgProjectProps.py:417
 #: src/gui/DlgProjectProps.py:420
-msgid "Invalid audio file!"
-msgstr "잘못된 오디오 파일입니다!"
+#, fuzzy
+msgid "Audio file not supported!"
+msgstr "'%s' 오디오 파일은 존재하지 않습니다!"
 
 #: src/gui/DlgProjectProps.py:468
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "폴더가 존재하지 않습니다! %s 폴더를 만드시겠습니까?"
 
 #: src/gui/DlgProjectProps.py:469
-#: src/gui/DlgRender.py:324
+#: src/gui/DlgRender.py:335
 #: src/gui/FrmMain.py:287
 #: src/gui/FrmMain.py:403
 #: src/gui/FrmMain.py:482
@@ -479,9 +489,13 @@ msgstr "폴더를 만들 수 없습니다: %s"
 msgid "Cannot write into folder!"
 msgstr "폴더에 쓰기 권한이 없습니다!"
 
-#: src/gui/DlgProjectProps.py:501
+#: src/gui/DlgProjectProps.py:503
 msgid "The project name must be filled."
 msgstr "프로젝트명을 입력해야 합니다."
+
+#: src/gui/DlgProjectProps.py:509
+msgid "The project name contains invalid characters."
+msgstr ""
 
 #: src/gui/DlgRender.py:144
 msgid "Profile:"
@@ -495,51 +509,51 @@ msgstr "종류:"
 msgid "Format:"
 msgstr "포맷:"
 
-#: src/gui/DlgRender.py:177
+#: src/gui/DlgRender.py:179
 msgid "Properties"
 msgstr "속성"
 
-#: src/gui/DlgRender.py:181
+#: src/gui/DlgRender.py:183
 msgid "Draft"
 msgstr "초안"
 
-#: src/gui/DlgRender.py:198
+#: src/gui/DlgRender.py:200
 msgid "&Batch Job"
 msgstr "일괄 작업(&B)"
 
-#: src/gui/DlgRender.py:203
+#: src/gui/DlgRender.py:205
 msgid "&Start"
 msgstr "시작(&S)"
 
-#: src/gui/DlgRender.py:227
+#: src/gui/DlgRender.py:229
 msgid "Configure output and start render process"
 msgstr "구성 출력 및 렌더링 과정 시작"
 
-#: src/gui/DlgRender.py:270
+#: src/gui/DlgRender.py:281
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "'%s' 오디오 파일이 존재하지 않습니다! 계속하시겠습니까?"
 
-#: src/gui/DlgRender.py:271
+#: src/gui/DlgRender.py:282
 msgid "Warning"
 msgstr "경고"
 
-#: src/gui/DlgRender.py:323
+#: src/gui/DlgRender.py:334
 msgid "Abort current process?"
 msgstr "현재 과정을 중지시키겠습니까?"
 
-#: src/gui/DlgRender.py:408
+#: src/gui/DlgRender.py:419
 msgid "Project not saved yet. Please save the project first to create a batch job!"
 msgstr "프로젝트가 저장되지 않았습니다. 일괄 작업을 만들 프로젝트를 처음으로 저장하십시오!"
 
-#: src/gui/DlgRender.py:420
+#: src/gui/DlgRender.py:431
 msgid "Batch file"
 msgstr "배치 파일"
 
-#: src/gui/DlgRender.py:427
+#: src/gui/DlgRender.py:438
 msgid "Shell script"
 msgstr "쉘 스크립트"
 
-#: src/gui/DlgRender.py:433
+#: src/gui/DlgRender.py:444
 msgid "Select batch file"
 msgstr "배치 파일 선택"
 
@@ -777,3 +791,5 @@ msgstr "사용 가능한 업데이트"
 msgid "The following changes has been made:"
 msgstr "다음과 같이 변경되습니다:"
 
+#~ msgid "Invalid audio file!"
+#~ msgstr "잘못된 오디오 파일입니다!"

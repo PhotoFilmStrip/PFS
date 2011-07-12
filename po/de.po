@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2011-06-12 21:31+CEST\n"
-"PO-Revision-Date: 2011-06-12 21:35+0100\n"
+"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"PO-Revision-Date: 2011-07-10 13:30+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: \n"
@@ -164,18 +164,22 @@ msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 msgstr "MPEG-Format unterstützt nur die Profile VCD, SVCD und DVD!"
 
 #: src/core/renderer/MovieRenderer.py:199
-msgid "MPEG4-XVid (AVI)"
-msgstr "MPEG4-XVid (AVI)"
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
 
-#: src/core/renderer/MovieRenderer.py:239
+#: src/core/renderer/MovieRenderer.py:245
 msgid "mencoder with MP3 support (mp3lame) required!"
 msgstr "mencoder mit MP3-Unterstützung (mp3lame) erforderlich!"
 
-#: src/core/renderer/MovieRenderer.py:243
+#: src/core/renderer/MovieRenderer.py:255
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:288
 msgid "Flash-Video (FLV)"
 msgstr "Flash-Video (FLV)"
 
-#: src/core/renderer/MovieRenderer.py:274
+#: src/core/renderer/MovieRenderer.py:319
 msgid "Motion-JPEG (AVI)"
 msgstr "Motion-JPEG (AVI)"
 
@@ -183,103 +187,103 @@ msgstr "Motion-JPEG (AVI)"
 msgid "Single pictures"
 msgstr "Einzelbilder"
 
-#: src/gui/ActionManager.py:68
+#: src/gui/ActionManager.py:70
 msgid "&File"
 msgstr "&Datei"
 
-#: src/gui/ActionManager.py:69
+#: src/gui/ActionManager.py:71
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: src/gui/ActionManager.py:70
+#: src/gui/ActionManager.py:72
 msgid "&Tools"
 msgstr "&Extras"
 
-#: src/gui/ActionManager.py:71
-#: src/gui/ActionManager.py:200
+#: src/gui/ActionManager.py:73
+#: src/gui/ActionManager.py:202
 #: src/gui/DlgRender.py:188
 #: src/gui/DlgRendererProps.py:101
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: src/gui/ActionManager.py:85
+#: src/gui/ActionManager.py:87
 msgid "New Project"
 msgstr "Neues Projekt"
 
-#: src/gui/ActionManager.py:88
+#: src/gui/ActionManager.py:90
 msgid "Load Project"
 msgstr "Projekt laden"
 
-#: src/gui/ActionManager.py:91
+#: src/gui/ActionManager.py:93
 msgid "Save Project"
 msgstr "Projekt speichern"
 
-#: src/gui/ActionManager.py:98
+#: src/gui/ActionManager.py:100
 msgid "Import Pictures"
 msgstr "Bilder importieren"
 
-#: src/gui/ActionManager.py:101
+#: src/gui/ActionManager.py:103
 #: src/gui/DlgRender.py:133
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
-#: src/gui/ActionManager.py:122
+#: src/gui/ActionManager.py:124
 msgid "&New Project"
 msgstr "&Neues Projekt"
 
-#: src/gui/ActionManager.py:126
+#: src/gui/ActionManager.py:128
 msgid "&Open Project"
 msgstr "Pr&ojekt öffnen"
 
-#: src/gui/ActionManager.py:132
+#: src/gui/ActionManager.py:134
 msgid "&Save Project"
 msgstr "Projekt &speichern"
 
-#: src/gui/ActionManager.py:136
+#: src/gui/ActionManager.py:138
 msgid "&Close Project"
 msgstr "Projekt s&chließen"
 
-#: src/gui/ActionManager.py:148
+#: src/gui/ActionManager.py:150
 msgid "&Properties"
 msgstr "&Eigenschaften"
 
-#: src/gui/ActionManager.py:153
+#: src/gui/ActionManager.py:155
 msgid "E&xit"
 msgstr "B&eenden"
 
-#: src/gui/ActionManager.py:161
+#: src/gui/ActionManager.py:163
 msgid "Move picture &left"
 msgstr "Bild nach &links"
 
-#: src/gui/ActionManager.py:165
+#: src/gui/ActionManager.py:167
 msgid "Move picture &right"
 msgstr "Bild nach re&chts"
 
-#: src/gui/ActionManager.py:170
+#: src/gui/ActionManager.py:172
 msgid "&Remove Picture"
 msgstr "Bild &entfernen"
 
-#: src/gui/ActionManager.py:175
+#: src/gui/ActionManager.py:177
 msgid "Rotate &clockwise"
 msgstr "Im Uhrzeigersinn d&rehen"
 
-#: src/gui/ActionManager.py:179
+#: src/gui/ActionManager.py:181
 msgid "Rotate counter clock&wise"
 msgstr "&Gegen Uhrzeigersinn drehen"
 
-#: src/gui/ActionManager.py:187
+#: src/gui/ActionManager.py:189
 msgid "&Import Pictures"
 msgstr "Bilder &importieren"
 
-#: src/gui/ActionManager.py:192
+#: src/gui/ActionManager.py:194
 msgid "&Render filmstrip"
 msgstr "&Filmstreifen erstellen"
 
-#: src/gui/ActionManager.py:211
+#: src/gui/ActionManager.py:214
 msgid "Language"
 msgstr "Sprache"
 
-#: src/gui/ActionManager.py:215
+#: src/gui/ActionManager.py:218
 msgid "&About"
 msgstr "&Info"
 
