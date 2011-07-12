@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2010 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,9 @@ class Aspect(object):
     def ToFloat(cls, aspect):
         if aspect == cls.ASPECT_16_9:
             return 16.0 / 9.0
-        if aspect == cls.ASPECT_4_3:
+        elif aspect == cls.ASPECT_4_3:
             return 4.0 / 3.0
-        if aspect == cls.ASPECT_3_2:
+        elif aspect == cls.ASPECT_3_2:
             return 3.0 / 2.0
+        else:
+            raise ValueError("unsupported aspect")

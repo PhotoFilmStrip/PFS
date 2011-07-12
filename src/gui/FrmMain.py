@@ -3,7 +3,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2008 Jens Goepfert
+# Copyright (C) 2011 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -460,7 +460,7 @@ class FrmMain(wx.Frame):
             dlg.Destroy()
             return
         pics = photoFilmStrip.GetPictures()
-        
+        pnl.UpdateProperties()
         pnl.InsertPictures(pics)
         pnl.SetChanged(False)
 
