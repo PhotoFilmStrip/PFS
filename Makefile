@@ -43,4 +43,5 @@ package:
 	tar -xzf "$$appver.tar.gz"; \
 	cd "$$appver"; \
 	dch -d Makefile packaging; \
-	debuild --no-tgz-check; \
+	debuild --no-tgz-check -us -uc;
+
