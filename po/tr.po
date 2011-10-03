@@ -1,0 +1,794 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"PO-Revision-Date: 2011-09-04 03:13+0200\n"
+"Last-Translator: Alattin <byalattin@gmail.com>\n"
+"Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: src/cli/Main.py:65
+#: src/cli/Main.py:221
+#: src/gui/DlgRender.py:374
+msgid "all done"
+msgstr "Bitti"
+
+#: src/cli/Main.py:78
+msgid "processing project"
+msgstr "proje işleniyor"
+
+#: src/cli/Main.py:79
+msgid "using renderer"
+msgstr "çevirici kullanılıyor"
+
+#: src/cli/Main.py:80
+msgid "output format"
+msgstr "Çıkış formatı"
+
+#: src/cli/Main.py:81
+msgid "framerate"
+msgstr "framerate"
+
+#: src/cli/Main.py:109
+msgid "specifies the project file"
+msgstr "Belirtilen proje dosyası"
+
+#: src/cli/Main.py:110
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "Çıktı dosyalarını kaydetmek için yol.Stdout için - kullanın."
+
+#: src/cli/Main.py:114
+msgid "enable draft mode"
+msgstr "taslak mod seç"
+
+#: src/cli/Main.py:114
+#: src/gui/DlgRender.py:233
+msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
+msgstr "PhotoFilmStrip'te bir önizleme oluşturmak için bu seçeneği etkinleştirin.Oluşturma sürecini önemli ölçüde hızlandırır, ancak sonuçlar daha düşük kalitede olur . "
+
+#: src/cli/Main.py:122
+msgid "project file does not exist: %s"
+msgstr "proje dosyası yok: %s"
+
+#: src/cli/Main.py:126
+msgid "no project file specified!"
+msgstr "Belirtilen proje dosyası yok!"
+
+#: src/cli/Main.py:132
+msgid "invalid profile specified: %s"
+msgstr "Hatalı profil belirtilmiş: %s"
+
+#: src/cli/Main.py:143
+msgid "invalid videonorm specified: %s"
+msgstr "Hatalı vidyonorm belirtilmiş: %s"
+
+#: src/cli/Main.py:149
+msgid "invalid format specified: %s"
+msgstr "Hatalı format belirtilmiş: %s"
+
+#: src/cli/Main.py:156
+msgid "cannot load photofilmstrip"
+msgstr "photofilmstrip yüklenemedi"
+
+#: src/cli/Main.py:175
+msgid "cannot create output path: %s"
+msgstr "Çıkış yolu yaratılamıyor: %s"
+
+#: src/cli/Main.py:194
+#: src/gui/DlgProjectProps.py:388
+#: src/gui/DlgProjectProps.py:391
+#: src/gui/DlgProjectProps.py:431
+#: src/gui/DlgRender.py:247
+msgid "Audio file '%s' does not exist!"
+msgstr "Ses dosyası '%s' yok!"
+
+#: src/cli/Main.py:217
+#: src/gui/DlgRender.py:372
+msgid "...aborted!"
+msgstr "...iptal edildi!"
+
+#: src/cli/Main.py:223
+msgid "Error: %s"
+msgstr "Hata: %s"
+
+#: src/core/BaseRenderer.py:66
+msgid "Unknown property: %s"
+msgstr "Bilinmeyen özellik: %s"
+
+#: src/core/BaseRenderer.py:74
+msgid "<default>"
+msgstr "<ön tanımlı>"
+
+#: src/core/PhotoFilmStrip.py:154
+msgid "Loading '%s' ..."
+msgstr "Yükleniyor '%s' ..."
+
+#: src/core/ProgressHandler.py:32
+msgid "Please wait..."
+msgstr "Lütfen bekleyin..."
+
+#: src/core/ProgressHandler.py:70
+msgid "aborting..."
+msgstr "vazgeçildi..."
+
+#: src/core/RenderEngine.py:150
+msgid "initialize renderer"
+msgstr "çeviriciyi başlat"
+
+#: src/core/RenderEngine.py:171
+msgid "processing transition %d/%d"
+msgstr "İşlenen geçiş  %d/%d"
+
+#: src/core/RenderEngine.py:182
+msgid "processing image %d/%d"
+msgstr "İşlenen resim %d/%d"
+
+#: src/core/RenderEngine.py:196
+msgid "creating output..."
+msgstr "çıkış yaratılıyor..."
+
+#: src/core/RenderEngine.py:226
+msgid "generating subtitle"
+msgstr "Altyazı hazırlanıyor"
+
+#: src/core/renderer/MovieRenderer.py:55
+msgid "mencoder (mencoder) required!"
+msgstr "mencoder (mencoder) gerekli!"
+
+#: src/core/renderer/MovieRenderer.py:90
+#: src/core/renderer/MovieRenderer.py:100
+msgid "no"
+msgstr "hayır"
+
+#: src/core/renderer/MovieRenderer.py:128
+msgid "Bitrate must be a number!"
+msgstr "Bitrate bir sayı olmalıdır!"
+
+#: src/core/renderer/MovieRenderer.py:139
+msgid "MPEG(1/2)-Video (MPG)"
+msgstr "MPEG(1/2)-Video (MPG)"
+
+#: src/core/renderer/MovieRenderer.py:174
+msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+msgstr "MPEG format sadece VCD, SVCD ve DVD profilini destekler!"
+
+#: src/core/renderer/MovieRenderer.py:199
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:245
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "mencoder ile MP3 destekler (mp3lame gerekli)!"
+
+#: src/core/renderer/MovieRenderer.py:255
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:288
+msgid "Flash-Video (FLV)"
+msgstr "Flash-Video (FLV)"
+
+#: src/core/renderer/MovieRenderer.py:319
+msgid "Motion-JPEG (AVI)"
+msgstr "Motion-JPEG (AVI)"
+
+#: src/core/renderer/SingleFileRenderer.py:37
+msgid "Single pictures"
+msgstr "Ufak resimler"
+
+#: src/gui/ActionManager.py:70
+msgid "&File"
+msgstr "&Dosya"
+
+#: src/gui/ActionManager.py:71
+msgid "&Edit"
+msgstr "&Düzenle"
+
+#: src/gui/ActionManager.py:72
+msgid "&Tools"
+msgstr "&Araçlar"
+
+#: src/gui/ActionManager.py:73
+#: src/gui/ActionManager.py:202
+#: src/gui/DlgRender.py:188
+#: src/gui/DlgRendererProps.py:101
+msgid "&Help"
+msgstr "&Yardım"
+
+#: src/gui/ActionManager.py:87
+msgid "New Project"
+msgstr "Yeni proje"
+
+#: src/gui/ActionManager.py:90
+msgid "Load Project"
+msgstr "Projeyi yükle"
+
+#: src/gui/ActionManager.py:93
+msgid "Save Project"
+msgstr "Projeyi kaydet"
+
+#: src/gui/ActionManager.py:100
+msgid "Import Pictures"
+msgstr "Resimleri al"
+
+#: src/gui/ActionManager.py:103
+#: src/gui/DlgRender.py:133
+msgid "Render filmstrip"
+msgstr "Film yap"
+
+#: src/gui/ActionManager.py:124
+msgid "&New Project"
+msgstr "&Yeni proje"
+
+#: src/gui/ActionManager.py:128
+msgid "&Open Project"
+msgstr "&Proje aç"
+
+#: src/gui/ActionManager.py:134
+msgid "&Save Project"
+msgstr "&Projeyi kaydet"
+
+#: src/gui/ActionManager.py:138
+msgid "&Close Project"
+msgstr "&Projeyi kapat"
+
+#: src/gui/ActionManager.py:150
+msgid "&Properties"
+msgstr "&Özellikler"
+
+#: src/gui/ActionManager.py:155
+msgid "E&xit"
+msgstr "Ç&kış"
+
+#: src/gui/ActionManager.py:163
+msgid "Move picture &left"
+msgstr "Resmi &sola taşı"
+
+#: src/gui/ActionManager.py:167
+msgid "Move picture &right"
+msgstr "Resmi &sağa taşı"
+
+#: src/gui/ActionManager.py:172
+msgid "&Remove Picture"
+msgstr "&Resmi sil"
+
+#: src/gui/ActionManager.py:177
+msgid "Rotate &clockwise"
+msgstr "Saat yönüne &çevir"
+
+#: src/gui/ActionManager.py:181
+msgid "Rotate counter clock&wise"
+msgstr "Saat&yönü tersine çevir"
+
+#: src/gui/ActionManager.py:189
+msgid "&Import Pictures"
+msgstr "&Resimleri al"
+
+#: src/gui/ActionManager.py:194
+msgid "&Render filmstrip"
+msgstr "&Film yap"
+
+#: src/gui/ActionManager.py:214
+msgid "Language"
+msgstr "Dil"
+
+#: src/gui/ActionManager.py:218
+msgid "&About"
+msgstr "&Hakkında"
+
+#: src/gui/DlgBugReport.py:52
+msgid "An unexpected error occured"
+msgstr "Beklenmeyen hata oluştu"
+
+#: src/gui/DlgBugReport.py:55
+msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
+msgstr "Beklenmeyen hata oluştu.Bu hatayı %s geliştiricilerine göndermek istermisiniz?"
+
+#: src/gui/DlgBugReport.py:101
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Hata gönderildi. Desteğiniz için teşekkür ederiz."
+
+#: src/gui/DlgBugReport.py:102
+#: src/gui/FrmMain.py:177
+msgid "Information"
+msgstr "Bilgi"
+
+#: src/gui/DlgBugReport.py:108
+msgid "Sorry, this function is temporary not available.."
+msgstr "Üzgünüm,bu fonksiyona ulaşılamıyor.."
+
+#: src/gui/DlgBugReport.py:109
+#: src/gui/DlgProjectProps.py:392
+#: src/gui/DlgProjectProps.py:421
+#: src/gui/DlgProjectProps.py:432
+#: src/gui/DlgProjectProps.py:479
+#: src/gui/DlgProjectProps.py:490
+#: src/gui/DlgRender.py:381
+#: src/gui/DlgRender.py:420
+#: src/gui/FrmMain.py:457
+msgid "Error"
+msgstr "Hata"
+
+#: src/gui/DlgFinalize.py:78
+msgid "Finalizing"
+msgstr "Final"
+
+#: src/gui/DlgFinalize.py:87
+msgid "Choose your next action:"
+msgstr "Diğer adımı seçin:"
+
+#: src/gui/DlgFinalize.py:91
+msgid "Play video"
+msgstr "Videoyu oynat"
+
+#: src/gui/DlgFinalize.py:96
+msgid "Open folder"
+msgstr "Dosya aç"
+
+#: src/gui/DlgFinalize.py:100
+msgid "Delete unfinished result"
+msgstr "Bitmemiş sonuçları silin"
+
+#: src/gui/DlgFinalize.py:104
+msgid "Do nothing"
+msgstr "Birşey yapma"
+
+#: src/gui/DlgFinalize.py:108
+#: src/gui/DlgRender.py:193
+#: src/gui/DlgRender.py:386
+msgid "&Close"
+msgstr "&Kapat"
+
+#: src/gui/DlgFinalize.py:114
+msgid "Show error again and send to developer."
+msgstr "Hatayı tekrar göster ve geliştiricilere gönder."
+
+#: src/gui/DlgFinalize.py:128
+msgid "The rendering process was aborted."
+msgstr "Çevrilme işinden vazgeçildi."
+
+#: src/gui/DlgFinalize.py:134
+msgid "The rendering process was interrupted."
+msgstr "Çevirme işlemi kesildi."
+
+#: src/gui/DlgFinalize.py:144
+msgid "The rendering process has been finished."
+msgstr "Çevrilme işi bitti."
+
+#: src/gui/DlgPositionInput.py:155
+msgid "Motion positions"
+msgstr "Hareket pozisyonları"
+
+#: src/gui/DlgPositionInput.py:162
+msgid "Start position"
+msgstr "İlk pozisyon"
+
+#: src/gui/DlgPositionInput.py:170
+#: src/gui/DlgPositionInput.py:214
+msgid "Location:"
+msgstr "Yer:"
+
+#: src/gui/DlgPositionInput.py:188
+#: src/gui/DlgPositionInput.py:230
+msgid "Size:"
+msgstr "Boyut:"
+
+#: src/gui/DlgPositionInput.py:206
+msgid "End position"
+msgstr "Son pozisyon"
+
+#: src/gui/DlgPositionInput.py:248
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: src/gui/DlgPositionInput.py:253
+#: src/gui/DlgProjectProps.py:222
+#: src/gui/DlgRender.py:305
+#: src/gui/DlgRendererProps.py:107
+msgid "&Cancel"
+msgstr "&Vazgeç"
+
+#: src/gui/DlgPositionInput.py:259
+#: src/gui/DlgProjectProps.py:228
+#: src/gui/DlgRendererProps.py:112
+msgid "&Ok"
+msgstr "&Tamam"
+
+#: src/gui/DlgPositionInput.py:267
+msgid "Adjust motion positions directly"
+msgstr "Hareket pozisyonunu ayarlama"
+
+#: src/gui/DlgProjectProps.py:124
+msgid "Project properties"
+msgstr "Proje özellikleri"
+
+#: src/gui/DlgProjectProps.py:133
+msgid "Project name:"
+msgstr "Proje ismi:"
+
+#: src/gui/DlgProjectProps.py:145
+msgid "Folder:"
+msgstr "Dosya:"
+
+#: src/gui/DlgProjectProps.py:160
+msgid "Aspect ratio:"
+msgstr "En-boy oranı:"
+
+#: src/gui/DlgProjectProps.py:168
+msgid "Total length:"
+msgstr "Toplam uzunluk:"
+
+#: src/gui/DlgProjectProps.py:171
+msgid "Overrides the duration of single pictures and gives the project this total length."
+msgstr "Tek resim süresini geçersiz kılar ve projenin toplam uzunluğunu verir."
+
+#: src/gui/DlgProjectProps.py:177
+msgid "User defined:"
+msgstr "Kullanıcı tanımlı:"
+
+#: src/gui/DlgProjectProps.py:191
+msgid "Audio file:"
+msgstr "Ses dosyası:"
+
+#: src/gui/DlgProjectProps.py:237
+msgid "PhotoFilmStrip project"
+msgstr "PhotoFilmStrip proje"
+
+#: src/gui/DlgProjectProps.py:268
+msgid "Unnamed PhotoFilmStrip"
+msgstr "PhotoFilmStrip için bir isim verin"
+
+#: src/gui/DlgProjectProps.py:275
+msgid "My PhotoFilmStrips"
+msgstr "PhotoFilmStrips"
+
+#: src/gui/DlgProjectProps.py:319
+msgid "Browse for folder"
+msgstr "Dosya için gözat"
+
+#: src/gui/DlgProjectProps.py:333
+msgid "Select music"
+msgstr "Müzik seçin"
+
+#: src/gui/DlgProjectProps.py:335
+msgid "Audio files"
+msgstr "Ses dosyaları"
+
+#: src/gui/DlgProjectProps.py:417
+#: src/gui/DlgProjectProps.py:420
+msgid "Audio file not supported!"
+msgstr "Ses dosyası desteklenmiyor!"
+
+#: src/gui/DlgProjectProps.py:468
+msgid "Folder does not exists! Do you want %s to create it?"
+msgstr "Klasör yok! %s klasörü yaratılsın mı?"
+
+#: src/gui/DlgProjectProps.py:469
+#: src/gui/DlgRender.py:335
+#: src/gui/FrmMain.py:287
+#: src/gui/FrmMain.py:403
+#: src/gui/FrmMain.py:482
+#: src/gui/PnlPfsProject.py:449
+msgid "Question"
+msgstr "Soru"
+
+#: src/gui/DlgProjectProps.py:478
+msgid "Cannot create folder: %s"
+msgstr "Dosya yaratılamadı: %s"
+
+#: src/gui/DlgProjectProps.py:489
+msgid "Cannot write into folder!"
+msgstr "Dosya içine yazılamadı!"
+
+#: src/gui/DlgProjectProps.py:503
+msgid "The project name must be filled."
+msgstr "Proje adı doldurulması zorunludur."
+
+#: src/gui/DlgProjectProps.py:509
+msgid "The project name contains invalid characters."
+msgstr "Proje isminde hatalı karakterler var."
+
+#: src/gui/DlgRender.py:144
+msgid "Profile:"
+msgstr "Profil:"
+
+#: src/gui/DlgRender.py:153
+msgid "Type:"
+msgstr "Tip:"
+
+#: src/gui/DlgRender.py:163
+msgid "Format:"
+msgstr "Format:"
+
+#: src/gui/DlgRender.py:179
+msgid "Properties"
+msgstr "Özellikler"
+
+#: src/gui/DlgRender.py:183
+msgid "Draft"
+msgstr "Taslak"
+
+#: src/gui/DlgRender.py:200
+msgid "&Batch Job"
+msgstr "&İş yığını"
+
+#: src/gui/DlgRender.py:205
+msgid "&Start"
+msgstr "&Başlat"
+
+#: src/gui/DlgRender.py:229
+msgid "Configure output and start render process"
+msgstr "Düzenlemeleri yapın ve başlat tıklayın."
+
+#: src/gui/DlgRender.py:281
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "Ses dosyası '%s' yok! Devam etmek istermisin?"
+
+#: src/gui/DlgRender.py:282
+msgid "Warning"
+msgstr "Dikkat"
+
+#: src/gui/DlgRender.py:334
+msgid "Abort current process?"
+msgstr "Proje iptal edilsin mi?"
+
+#: src/gui/DlgRender.py:419
+msgid "Project not saved yet. Please save the project first to create a batch job!"
+msgstr "Proje henüz kaydedilmedi.İş yığınını kaydetmek için önce projeyi kaydedin!"
+
+#: src/gui/DlgRender.py:431
+msgid "Batch file"
+msgstr "Yığın dosyası"
+
+#: src/gui/DlgRender.py:438
+msgid "Shell script"
+msgstr "kabuk betiği "
+
+#: src/gui/DlgRender.py:444
+msgid "Select batch file"
+msgstr "Yığın dosyası seç"
+
+#: src/gui/DlgRendererProps.py:65
+msgid "Property"
+msgstr "Özellik"
+
+#: src/gui/DlgRendererProps.py:67
+msgid "Value"
+msgstr "Değer"
+
+#: src/gui/DlgRendererProps.py:86
+msgid "Output properties"
+msgstr "Çıkış özellikleri"
+
+#: src/gui/DlgRendererProps.py:128
+msgid "Edit extended output properties"
+msgstr "Geniş çıkış özelliklerini ayarla"
+
+#: src/gui/DlgRendererProps.py:164
+msgid "Edit property"
+msgstr "Özellikleri düzenle"
+
+#: src/gui/FrmMain.py:77
+msgid "Welcome"
+msgstr "Hoşgeldin"
+
+#: src/gui/FrmMain.py:176
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "Yeni dilin aktif olması için %s programını tekrar başlatın."
+
+#: src/gui/FrmMain.py:236
+msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr "PhotoFilmStrip ile sadece 3 adımda resimlerinizden film yaratın.Önce resimleri seçin,dosyanızı ayarlayın  ve filminizi yaratın.VCD, SVCD, DVD ve FULL-HD için birçok seçenek mevcuttur."
+
+#: src/gui/FrmMain.py:239
+msgid "online"
+msgstr "Bağlı"
+
+#: src/gui/FrmMain.py:255
+msgid "Select %s-Project"
+msgstr "%s-Projesini seçin"
+
+#: src/gui/FrmMain.py:257
+#: src/gui/FrmMain.py:277
+#: src/gui/FrmMain.py:308
+#: src/gui/FrmMain.py:319
+msgid "Project"
+msgstr "Proje"
+
+#: src/gui/FrmMain.py:274
+msgid "Save %s-Project"
+msgstr "%s-Projesini kaydet"
+
+#: src/gui/FrmMain.py:286
+msgid "Overwrite existing file '%s'?"
+msgstr "Var olan '%s' üzerine yazılsın mı?"
+
+#: src/gui/FrmMain.py:305
+msgid "Export %s-Project"
+msgstr "%s-Projesini dışa aktar"
+
+#: src/gui/FrmMain.py:308
+#: src/gui/FrmMain.py:319
+msgid "Portable"
+msgstr "Portatif"
+
+#: src/gui/FrmMain.py:317
+msgid "Import %s-Project"
+msgstr "%s-Projesini içe aktar"
+
+#: src/gui/FrmMain.py:402
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' modifiye edildi. Değişiklikler kaydedilsinmi?"
+
+#: src/gui/FrmMain.py:425
+msgid "Images"
+msgstr "Resimler"
+
+#: src/gui/FrmMain.py:430
+msgid "Duration"
+msgstr "Süre"
+
+#: src/gui/FrmMain.py:455
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr "Hatalı %(app)s-Proje: %(file)s"
+
+#: src/gui/FrmMain.py:479
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "'%(file)' dosyası kaydedilmedi: %(errMsg)s"
+
+#: src/gui/PnlAddPics.py:91
+#: src/gui/PnlWelcome.py:43
+msgid "Welcome to PhotoFilmStrip"
+msgstr "PhotoFilmStrip'e hoşgeldiniz"
+
+#: src/gui/PnlAddPics.py:92
+msgid ""
+"Drag some pictures onto this text or\n"
+"click the button below\n"
+"to add pictures to your new PhotoFilmStrip."
+msgstr ""
+"Resimleri bu yazıya taşıyın veya\n"
+"butona tıklayıp resimleri ekleyin."
+
+#: src/gui/PnlEditPicture.py:154
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: src/gui/PnlEditPicture.py:158
+msgid "Rotation:"
+msgstr "Rotasyon:"
+
+#: src/gui/PnlEditPicture.py:178
+msgid "Effect:"
+msgstr "Efekt:"
+
+#: src/gui/PnlEditPicture.py:192
+msgid "Process"
+msgstr "İşlem"
+
+#: src/gui/PnlEditPicture.py:196
+msgid "Transition:"
+msgstr "Dönüşüm:"
+
+#: src/gui/PnlEditPicture.py:208
+#: src/gui/PnlEditPicture.py:220
+msgid "sec"
+msgstr "san."
+
+#: src/gui/PnlEditPicture.py:212
+msgid "Duration:"
+msgstr "Süre:"
+
+#: src/gui/PnlEditPicture.py:228
+msgid "Subtitle"
+msgstr "Altyazı"
+
+#: src/gui/PnlEditPicture.py:252
+msgid "No effect"
+msgstr "Efekt yok"
+
+#: src/gui/PnlEditPicture.py:253
+msgid "Black and White"
+msgstr "Siyah ve beyaz"
+
+#: src/gui/PnlEditPicture.py:254
+msgid "Sepia tone"
+msgstr "Sepya tonu"
+
+#: src/gui/PnlEditPicture.py:260
+msgid "None"
+msgstr "Yok"
+
+#: src/gui/PnlEditPicture.py:261
+msgid "Fade"
+msgstr "Fade"
+
+#: src/gui/PnlEditPicture.py:262
+msgid "Roll"
+msgstr "Roll"
+
+#: src/gui/PnlPfsProject.py:104
+msgid "Random motion"
+msgstr "Rastgele hareket"
+
+#: src/gui/PnlPfsProject.py:109
+msgid "Set motion end to start"
+msgstr "Hareketi sondan başa ayarla"
+
+#: src/gui/PnlPfsProject.py:113
+msgid "Set motion start to end"
+msgstr "Hareketi baştan sona ayarla"
+
+#: src/gui/PnlPfsProject.py:119
+msgid "Adjust motion manual"
+msgstr "Hareket pozisyonu elle ayarlama"
+
+#: src/gui/PnlPfsProject.py:264
+msgid "Import images"
+msgstr "Resimleri al"
+
+#: src/gui/PnlPfsProject.py:266
+#: src/gui/PnlPfsProject.py:326
+msgid "Imagefiles"
+msgstr "Resim dosyaları"
+
+#: src/gui/PnlPfsProject.py:315
+msgid "Browse"
+msgstr "Gözat"
+
+#: src/gui/PnlPfsProject.py:324
+msgid "Import image"
+msgstr "Resim al"
+
+#: src/gui/PnlPfsProject.py:448
+msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
+msgstr "Bazı görüntüler artık '% s' klasöründe yok.Eğer dosyalar taşındıysa  yeni bir yol seçebilirsiniz. Yeni bir yol seçmek istiyor musunuz?"
+
+#: src/gui/PnlPfsProject.py:472
+msgid "Please wait"
+msgstr "Lütfen bekleyin"
+
+#: src/gui/PnlPfsProject.py:473
+msgid "Loading pictures..."
+msgstr "Resimler yükleniyor..."
+
+#: src/gui/PnlWelcome.py:50
+#: src/gui/PnlWelcome.py:105
+msgid "Recent projects"
+msgstr "Proje geçmişi"
+
+#: src/gui/PnlWelcome.py:62
+msgid "Create new project"
+msgstr "Yeni proje yarat"
+
+#: src/gui/PnlWelcome.py:67
+msgid "Open existing project"
+msgstr "Önceki projeyi aç"
+
+#: src/gui/PnlWelcome.py:108
+msgid "How to start..."
+msgstr "Nasıl başlar..."
+
+#: src/gui/PnlWelcome.py:109
+msgid "Create a new project or load an existing one."
+msgstr "Yeni proje yarat veya önceki projeyi aç tıklayın."
+
+#: src/gui/PnlWelcome.py:140
+msgid "Update available"
+msgstr "Yükseltme bulundu"
+
+#: src/gui/PnlWelcome.py:143
+msgid "The following changes has been made:"
+msgstr "Yapılan değişiklikler :"
+
