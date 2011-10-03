@@ -20,37 +20,24 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import logging
 import multiprocessing
 import sys
+from photofilmstrip.AppMixin import AppMixin
 
 
-def initLogging():
-    if "-d" in sys.argv:
-        lvl = logging.DEBUG
-    else:
-        lvl = logging.WARNING
-    logging.basicConfig(level=lvl,
-                        format='%(asctime)s (%(levelname)s) %(name)s: %(message)s',
-                        datefmt='%d.%m.%Y %H:%M:%S')
-
-def initI18N():
-    from photofilmstrip.lib.Settings import Settings
-    Settings().InitLanguage()
-
-
-def main():
-    initLogging()
-    initI18N()
-
-    if not getattr(sys, 'frozen', False):
-        import wxversion
-        wxversion.select("2.8")
+class GuiApp(AppMixin):
     
-    from photofilmstrip.gui.PhotoFilmStripApp import main
-    main()
+    def _OnStart(self):
+        if not getattr(sys, 'frozen', False):
+            import wxversion
+            wxversion.select("2.8")
+    
+        from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
+        app = PhotoFilmStripApp(0)
+        app.MainLoop()
 
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
-    main()
+    guiApp = GuiApp()
+    guiApp.Start()

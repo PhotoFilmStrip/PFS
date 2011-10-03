@@ -20,39 +20,30 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import logging
 import multiprocessing
 import sys
+from photofilmstrip.AppMixin import AppMixin
 
 
-def initLogging():
-    if "-d" in sys.argv:
-        lvl = logging.DEBUG
-    else:
-        lvl = logging.WARNING
-    logging.basicConfig(level=lvl,
-                        format='\n%(levelname)s: %(message)s',
-                        datefmt='')
-
-def initI18N():
-    from photofilmstrip.lib.Settings import Settings
-    Settings().InitLanguage()
-
-
-def main():
-    initLogging()
-    initI18N()
+class CliApp(AppMixin):
     
-    from photofilmstrip.cli.Main import main
-    return main()
+    def _GetLogFormat(self):
+        return '\n%(levelname)s: %(message)s'
+    
+    def _OnStart(self):
+        from photofilmstrip.cli.Main import main
+        return main()
 
 
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
+    
+    cliApp = CliApp()
+    
 #    import hotshot    
 #    prof = hotshot.Profile("pfs.prof")
-#    exitCode = prof.runcall(main)
+#    exitCode = prof.runcall(cliApp.Start)
 #    prof.close()
     
 #    import hotshot.stats
@@ -61,6 +52,6 @@ if __name__ == "__main__":
 #    stats.sort_stats('time', 'calls')
 #    stats.print_stats(50)
 
-    exitCode = main()
+    exitCode = cliApp.Start()
 
     sys.exit(exitCode)
