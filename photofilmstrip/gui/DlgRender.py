@@ -35,7 +35,6 @@ from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
 from photofilmstrip.core.renderer.RendererException import RendererException
 
-from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Encode
 
@@ -47,15 +46,14 @@ from photofilmstrip.gui.DlgFinalize import DlgFinalize
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
  wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
- wxID_DLGRENDERCMDBATCH, wxID_DLGRENDERCMDCLOSE, wxID_DLGRENDERCMDHELP, 
- wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, 
- wxID_DLGRENDERGAUGEPROGRESS, wxID_DLGRENDERPNLHDR, wxID_DLGRENDERPNLSETTINGS, 
- wxID_DLGRENDERSTATICLINE1, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE, 
- wxID_DLGRENDERSTPROGRESS, wxID_DLGRENDERSTTYPE, 
-] = [wx.NewId() for _init_ctrls in range(18)]
+ wxID_DLGRENDERCMDCANCEL, wxID_DLGRENDERCMDHELP, 
+ wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERPNLHDR, 
+ wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE, 
+ wxID_DLGRENDERSTTYPE, 
+] = [wx.NewId() for _init_ctrls in range(14)]
 
 
-class DlgRender(wx.Dialog, Observer):
+class DlgRender(wx.Dialog):
     
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
@@ -67,21 +65,13 @@ class DlgRender(wx.Dialog, Observer):
         parent.AddWindow(self.pnlSettings, 0, border=4, flag=wx.ALL)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddSizer(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddWindow(self.staticLine1, 0, border=4,
-              flag=wx.BOTTOM | wx.TOP | wx.EXPAND | wx.ALIGN_CENTER_HORIZONTAL)
-        parent.AddWindow(self.gaugeProgress, 0, border=4,
-              flag=wx.ALL | wx.EXPAND)
-        parent.AddWindow(self.stProgress, 0, border=4,
-              flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
 
         parent.AddWindow(self.cmdHelp, 0, border=0, flag=0)
         parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdClose, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(32, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdBatch, 0, border=0, flag=0)
+        parent.AddWindow(self.cmdCancel, 0, border=0, flag=0)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
         parent.AddWindow(self.cmdStart, 0, border=0, flag=0)
 
@@ -131,6 +121,7 @@ class DlgRender(wx.Dialog, Observer):
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
+        self.SetClientSize(wx.Size(400, 250))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
@@ -168,7 +159,7 @@ class DlgRender(wx.Dialog, Observer):
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=wx.CB_READONLY)
         self.choiceFormat.SetMinSize(wx.Size(300, -1))
-        self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat, 
+        self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
               id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
@@ -190,35 +181,17 @@ class DlgRender(wx.Dialog, Observer):
               size=wx.Size(-1, -1), style=0)
         self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton, id=wx.ID_HELP)
 
-        self.cmdClose = wx.Button(id=wxID_DLGRENDERCMDCLOSE, label=_(u'&Close'),
-              name=u'cmdClose', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-        self.cmdClose.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
-              id=wxID_DLGRENDERCMDCLOSE)
-
-        self.cmdBatch = wx.Button(id=wxID_DLGRENDERCMDBATCH,
-              label=_(u'&Batch Job'), name=u'cmdBatch', parent=self,
+        self.cmdCancel = wx.Button(id=wxID_DLGRENDERCMDCANCEL,
+              label=_(u'&Cancel'), name=u'cmdCancel', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-        self.cmdBatch.Bind(wx.EVT_BUTTON, self.OnCmdBatchButton,
-              id=wxID_DLGRENDERCMDBATCH)
+        self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
+              id=wxID_DLGRENDERCMDCANCEL)
 
         self.cmdStart = wx.Button(id=wxID_DLGRENDERCMDSTART, label=_(u'&Start'),
               name=u'cmdStart', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdStart.Bind(wx.EVT_BUTTON, self.OnCmdStartButton,
               id=wxID_DLGRENDERCMDSTART)
-
-        self.staticLine1 = wx.StaticLine(id=wxID_DLGRENDERSTATICLINE1,
-              name='staticLine1', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
-
-        self.gaugeProgress = wx.Gauge(id=wxID_DLGRENDERGAUGEPROGRESS,
-              name=u'gaugeProgress', parent=self, pos=wx.Point(-1, -1),
-              range=100, size=wx.Size(-1, -1), style=wx.GA_HORIZONTAL)
-
-        self.stProgress = wx.StaticText(id=wxID_DLGRENDERSTPROGRESS, label=u'',
-              name=u'stProgress', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()
 
@@ -233,7 +206,6 @@ class DlgRender(wx.Dialog, Observer):
         self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
         self.__photoFilmStrip = photoFilmStrip
-        self.__progressHandler = None
         self.__renderEngine = None
         
         for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
@@ -252,7 +224,7 @@ class DlgRender(wx.Dialog, Observer):
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
         
-        self.SetEscapeId(wxID_DLGRENDERCMDCLOSE)
+        self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         self.SetFocus()
@@ -302,14 +274,6 @@ class DlgRender(wx.Dialog, Observer):
         settings.SetVideoType(self.choiceType.GetSelection())
         settings.SetUsedRenderer(self.choiceFormat.GetSelection())
         
-        self.cmdClose.SetLabel(_(u"&Cancel"))
-        self.cmdStart.Enable(False)
-        self.cmdBatch.Enable(False)
-        self.pnlSettings.Enable(False)
-        
-        self.__progressHandler = ProgressHandler()
-        self.__progressHandler.AddObserver(self)
-        
         totalLength = self.__photoFilmStrip.GetDuration(False)
         
         renderer = rendererClass()
@@ -320,29 +284,18 @@ class DlgRender(wx.Dialog, Observer):
         if audioFile:
             renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
 
-        self.__renderEngine = RenderEngine(renderer, 
-                                           self.__progressHandler, 
-                                           self.cbDraft.GetValue())
+        name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
+                            profile.GetName())
         
-        renderThread = threading.Thread(target=self.__renderEngine.Start,
-                                        args=(self.__photoFilmStrip.GetPictures(), totalLength),
-                                        name="RenderThread")
-        renderThread.start()
+        renderEngine = RenderEngine(name,
+                                    renderer,
+                                    self.cbDraft.GetValue())
+        renderEngine.Start(self.__photoFilmStrip.GetPictures(), totalLength)
+        
+        self.EndModal(wx.ID_OK)
 
     def OnCmdCancelButton(self, event):
-        if self.__progressHandler:
-            dlg = wx.MessageDialog(self,
-                                   _(u"Abort current process?"), 
-                                   _(u"Question"),
-                                   wx.YES_NO | wx.ICON_EXCLAMATION)
-            resp = dlg.ShowModal()
-            dlg.Destroy()
-            if resp == wx.ID_YES:
-                if self.__progressHandler:
-                    # maybe processing is done while showing this question
-                    self.__progressHandler.Abort()
-        else:
-            self.Destroy()
+        self.EndModal(wx.ID_CANCEL)
 
     def OnCmdRendererPropsButton(self, event):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
@@ -354,139 +307,9 @@ class DlgRender(wx.Dialog, Observer):
         dlg.ShowModal()
         dlg.Destroy()
         
-    def ObservableUpdate(self, obj, arg):
-        if isinstance(obj, ProgressHandler):
-            if arg == 'maxProgress':
-                wx.CallAfter(self.gaugeProgress.SetRange, obj.GetMaxProgress())
-            elif arg == 'currentProgress':
-                wx.CallAfter(self.gaugeProgress.SetValue, obj.GetCurrentProgress())
-            elif arg == 'info':
-                wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
-            elif arg == 'done':
-                wx.CallAfter(self.__OnDone)
-            elif arg == 'aborting':
-                wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
-
-    def __OnDone(self):
-        isAborted = self.__progressHandler.IsAborted()
-        if isAborted:
-            self.stProgress.SetLabel(_(u"...aborted!"))
-        else:
-            self.stProgress.SetLabel(_(u"all done"))
-
-        errMsg = self.__renderEngine.GetErrorMessage()
-        errCls = self.__renderEngine.GetErrorClass()
-        if errMsg:
-            dlg = wx.MessageDialog(self,
-                                   errMsg,
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
-
-        self.cmdClose.SetLabel(_(u"&Close"))
-        self.cmdStart.Enable(True)
-        self.cmdBatch.Enable(True)
-        self.pnlSettings.Enable(True)
-
-        self.__progressHandler = None
-        self.__renderEngine    = None
-        self.Layout()
-        
-        if errCls is RendererException:
-            return
-        
-        dlg = DlgFinalize(self, 
-                          self.__GetOutputPath(),
-                          isAborted, 
-                          errMsg=errMsg)
-        dlg.ShowModal()
-        dlg.Destroy()
-        
-        if not isAborted and errMsg is None:
-            self.Destroy()
-        
-    def __OnProgressInfo(self, info):
-        self.stProgress.SetLabel(info)
-        self.Layout()
-
     def OnCmdHelpButton(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_RENDER)
         event.Skip()
-
-    def OnCmdBatchButton(self, event):
-        if self.__photoFilmStrip.GetFilename() is None:
-            dlg = wx.MessageDialog(self,
-                                   _(u"Project not saved yet. Please save the project first to create a batch job!"), 
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
-            return
-
-        profile = self.__GetChoiceDataSelected(self.choiceProfile)
-        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, profile.GetName())
-        
-        if sys.platform == 'win32':
-            batchFileMask = _(u"Batch file") + " (*.bat)|*.bat"
-            coding = sys.getfilesystemencoding()
-            header = "@echo off\n" \
-                     "chcp 1252\n\n" \
-                     "SET PFS_CLI=%s-cli" % Encode(os.path.splitext(sys.argv[0])[0], coding)
-            pfsCliCmd = "%PFS_CLI%"
-        else:
-            batchFileMask = _(u"Shell script") + " (*.sh)|*.sh"
-            coding = "utf-8"
-            header = "#!/bin/sh\n\n" \
-                     "export PFS_CLI=/usr/bin/photofilmstrip-cli"
-            pfsCliCmd = "$PFS_CLI"
-
-        dlg = wx.FileDialog(self, _(u"Select batch file"), 
-                            "" , "", 
-                            batchFileMask, 
-                            wx.SAVE)
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            
-            if os.path.isfile(path):
-                fd = open(path, 'a')
-            else:
-                fd = open(path, 'w')
-                fd.write(header)
-                fd.write("\n\n")
-
-            cli = []
-            cli.append(pfsCliCmd)
-            cli.append("-p")
-            cli.append("\"" + Encode(self.__photoFilmStrip.GetFilename(), coding) + "\"")
-            cli.append("-o")
-            cli.append("\"" + Encode(outpath, coding) + "\"")
-            cli.append("-t")
-            cli.append(str(self.choiceProfile.GetSelection()))
-            cli.append("-n")
-            cli.append("p" if self.__GetChoiceDataSelected(self.choiceType) == OutputProfile.PAL else "n")
-            cli.append("-f")
-            cli.append(str(self.choiceFormat.GetSelection()))
-            
-            cli.append("-l")
-            cli.append(str(self.__photoFilmStrip.GetDuration()))
-                
-            if self.__photoFilmStrip.GetAudioFile() is not None:
-                cli.append("-a")
-                cli.append("\"" + Encode(self.__photoFilmStrip.GetAudioFile(), coding) + "\"")
-                    
-            fd.write(" ".join(cli))
-            fd.write("\n")
-            
-            fd.close()
-            
-            try:
-                os.chmod(path, stat.S_IREAD | stat.S_IEXEC | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
-            except OSError:
-                pass
-
-        dlg.Destroy()
 
 
 class FormatComboBox(wx.combo.OwnerDrawnComboBox):

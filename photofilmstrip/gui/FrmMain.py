@@ -39,6 +39,7 @@ from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
 from photofilmstrip.gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
 
 from photofilmstrip.res.license import licenseText
+from photofilmstrip.gui.PnlJobManager import PnlJobManager
 
 
 class FrmMain(wx.Frame):
@@ -75,6 +76,9 @@ class FrmMain(wx.Frame):
         self.pnlWelcome.SetDropTarget(ProjectDropTarget(self))
         
         self.notebook.AddPage(self.pnlWelcome, _(u"Welcome"), True)
+        
+        self.pnlJobManager = PnlJobManager(self)
+        self.notebook.AddPage(self.pnlJobManager, _(u"Job queue"))
         
         self.Bind(wx.EVT_MENU, self.OnProjectNew, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnProjectLoad, id=wx.ID_OPEN)
@@ -131,7 +135,7 @@ class FrmMain(wx.Frame):
         
     def __GetCurrentPnlPfs(self):
         sel = self.notebook.GetSelection()
-        if sel > 0:
+        if sel > 1:
             return self.notebook.GetPage(sel)
     
     def __GetCurrentPhotoFilmStrip(self):
@@ -181,7 +185,7 @@ class FrmMain(wx.Frame):
     
     def OnPageChanged(self, event):
         sel = event.GetSelection()
-        if sel == 0:
+        if sel in (0, 1):
             self.notebook.SetWindowStyleFlag(0)
             self.SetTitle(Settings.APP_NAME)
         else:
@@ -216,8 +220,8 @@ class FrmMain(wx.Frame):
                 event.Veto()
     
     def OnClose(self, event):
-        while self.notebook.GetPageCount() > 1:
-            idx = 1
+        while self.notebook.GetPageCount() > 2:
+            idx = 2
             self.notebook.SetSelection(idx)
             if self.ClosePage(idx):
                 self.notebook.DeletePage(idx)
@@ -439,7 +443,7 @@ class FrmMain(wx.Frame):
         return pnl
 #
     def LoadProject(self, filepath, skipHistory=False):
-        for idx in range(1, self.notebook.GetPageCount()):
+        for idx in range(2, self.notebook.GetPageCount()):
             page = self.notebook.GetPage(idx)
             if page.GetPhotoFilmStrip().GetFilename() == filepath:
                 self.notebook.SetSelection(idx)

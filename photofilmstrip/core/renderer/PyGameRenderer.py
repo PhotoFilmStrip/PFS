@@ -59,7 +59,7 @@ class PyGameRenderer(BaseRenderer):
         return BaseRenderer.GetDefaultProperty(prop)
 
     def _GetFrameRate(self):
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = 25.0
         else:
             framerate = 30000.0 / 1001.0

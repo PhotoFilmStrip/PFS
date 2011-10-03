@@ -75,27 +75,27 @@ class BaseRenderer(object):
         self._audioFile = audioFile
     def GetAudioFile(self):
         return self._audioFile
-    PAudioFile = property(GetAudioFile, SetAudioFile)
         
     def GetOutputPath(self):
         return self._outputPath
-    POutputPath = property(GetOutputPath)
         
     def GetProfile(self):
         return self._profile
-    PProfile = property(GetProfile)
 
     def EnsureFramerate(self):
         return False
     
-    def Prepare(self):
+    def PreData(self):
         raise NotImplementedError()        
     
-    def ProcessFinalize(self, backendCtx):
+    def PostData(self):
         raise NotImplementedError()
     
     def Finalize(self):
         raise NotImplementedError()
     
-    def ProcessAbort(self):
+    def GetSink(self):
+        raise NotImplementedError()
+    
+    def Abort(self):
         raise NotImplementedError()

@@ -52,8 +52,3 @@ class PhotoFilmStripApp(wx.App):
                     frame.LoadProject(fname)
 
         return True
-
-
-def main():
-    app = PhotoFilmStripApp(0)
-    app.MainLoop()

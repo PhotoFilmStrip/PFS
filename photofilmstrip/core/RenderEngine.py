@@ -20,9 +20,6 @@
 #
 
 import traceback, StringIO
-import logging
-import multiprocessing
-from multiprocessing.queues import Queue, Full, Empty
 
 from photofilmstrip.core.renderer.RendererException import RendererException
 from photofilmstrip.core.Subtitle import SubtitleSrt
@@ -30,16 +27,19 @@ from photofilmstrip.core.Subtitle import SubtitleSrt
 from photofilmstrip.core.backend.PILBackend import PILBackend
 #from photofilmstrip.core.backend.CairoBackend import CairoBackend
 
+from photofilmstrip.core.tasks import TaskCropResize, TaskTrans
+from photofilmstrip.core.JobManager import JobManager
+
 BACKEND = PILBackend()
 #BACKEND = CairoBackend()
 
 
 class RenderEngine(object):
     
-    def __init__(self, aRenderer, progressHandler, draftMode):
+    def __init__(self, name, aRenderer, draftMode):
+        self.__name = name
         self.__aRenderer = aRenderer
         self.__profile = aRenderer.GetProfile()
-        self.__progressHandler = progressHandler
         self.__errorMsg = None
         self.__errorCls = None
         self.__tasks = []
@@ -98,12 +98,6 @@ class RenderEngine(object):
                          25.0 * \
                          self.__picCountFactor))
 
-    def __CheckAbort(self):
-        if self.__progressHandler.IsAborted():
-            self.__aRenderer.ProcessAbort()
-            return True
-        return False
-    
     def __TransAndFinal(self, infoText, trans, 
                         picFrom, picTo, 
                         pathRectsFrom, pathRectsTo):
@@ -176,83 +170,6 @@ class RenderEngine(object):
                 return True
         return False
     
-    def __Process(self):
-        self.__progressHandler.SetInfo(_(u"initialize renderer"))
-        self.__aRenderer.Prepare()
-        BACKEND.EnableDraftMode(self.__draftMode)
-
-        self.__progressHandler.SetInfo(_(u"creating output..."))
-        
-        taskQueue = Queue()
-        cpuCount = multiprocessing.cpu_count()
-        doneQueue = Queue(cpuCount * 3)
-
-        # prepare task queue
-        idx = 0
-        for idx, task in enumerate(self.__tasks):
-            task.SetIdx(idx)
-            taskQueue.put(task, False)
-            
-        # prepare workers
-        workers = []
-        for num in range(cpuCount):
-            tw = TaskWorker("TaskWorker_%d" % num,
-                            taskQueue,
-                            doneQueue)
-            workers.append(tw)
-            tw.start()
-            
-        resultBuffer = {}
-        curResult = 0
-        while not self.__progressHandler.IsAborted() and curResult <= idx:
-            result = None
-            try:
-#                if not self.__aRenderer.EnsureFramerate():
-#                    taskQueue.get(True, 1.0)
-                
-                result = doneQueue.get(True, 1.0)
-            except Empty:
-                print "doneQueue empty"
-                
-            if result is not None:
-                resIdx, resCtx = result
-                resultBuffer[resIdx] = resCtx
-            
-            while resultBuffer.has_key(curResult):
-                resCtx = resultBuffer[curResult]
-                resCtx.Unserialize(None)
-                self.__aRenderer.ProcessFinalize(resCtx)
-                
-                del resultBuffer[curResult]
-                curResult += 1
-                self.__progressHandler.Step()
-                
-        # empty all queues, so that workers will finish their main loop
-        while 1:
-            logging.debug("emptying task queue")
-            try:
-                taskQueue.get(True, 0.05)
-            except Empty:
-                logging.debug("task queue empty")
-                break
-        while 1:
-            logging.debug("emptying result queue")
-            try:
-                doneQueue.get(True, 0.05)
-            except Empty:
-                logging.debug("result queue empty")
-                break
-            
-        # wait for workers to terminate
-        for tw in workers:
-            logging.debug("joining worker: %s", tw)
-            tw.join(3.0)
-            if tw.is_alive():
-                logging.debug("killing worker: %s", tw)
-                tw.terminate()
-            
-        self.__aRenderer.Finalize()
-
     def Start(self, pics, targetLengthSecs=None):
         if targetLengthSecs is not None:
             # targetLength should be at least 1sec for each pic
@@ -271,16 +188,16 @@ class RenderEngine(object):
         if generateSubtitle:
             count += 1
 
-        self.__progressHandler.SetMaxProgress(int(count))
-        
         try:
             if generateSubtitle:
-                self.__progressHandler.SetInfo(_(u"generating subtitle"))
-                st = SubtitleSrt(self.__aRenderer.POutputPath, self.__picCountFactor)
+#                self.__progressHandler.SetInfo(_(u"generating subtitle"))
+                st = SubtitleSrt(self.__aRenderer.GetOutputPath(), 
+                                 self.__picCountFactor)
                 st.Start(pics)
-                self.__progressHandler.Step()
+#                self.__progressHandler.Step()
+                
+            JobManager().Register(self.__name, self.__aRenderer, self.GetTasks())
             
-            self.__Process()
             return True
         except RendererException, err:
             self.__errorCls = err.__class__
@@ -294,138 +211,14 @@ class RenderEngine(object):
                                                tb.getvalue())
             return False
         finally:
-            self.__progressHandler.Done()
+            pass
+#            self.__progressHandler.Done()
 
     def GetErrorMessage(self):
         return self.__errorMsg
 
     def GetErrorClass(self):
         return self.__errorCls
-
-
-class TaskWorker(multiprocessing.Process):
-#class TaskWorker(threading.Thread):
     
-    def __init__(self, name, taskQueue, doneQueue):
-        multiprocessing.Process.__init__(self, name=name)#, verbose=1)
-#        threading.Thread.__init__(self, name=name)#, verbose=1)
-        self.taskQueue = taskQueue
-        self.doneQueue = doneQueue
-        self.imgCache = {}
-        self.imgKeyStack = []
-        
-    def FetchImage(self, pic):
-        if not self.imgCache.has_key(pic.GetFilename()):
-            logging.debug("%s: GetImage(%s)", self.name, pic.GetFilename())
-            if len(self.imgKeyStack) > 1:
-                key = self.imgKeyStack.pop(0)
-                logging.debug("%s: Pop cache (%s)", self.name, key)
-                self.imgCache[key] = None
-                                
-            # TODO: gleiches bild mit unterschiedlicher rotation
-            self.imgCache[pic.GetFilename()] = BACKEND.CreateCtx(pic)
-            self.imgKeyStack.append(pic.GetFilename())
-        return self.imgCache[pic.GetFilename()]
-        
-    def run(self):
-        logging.debug("%s: worker started", self.name)
-        
-#        import hotshot, hotshot.stats
-#        prof = hotshot.Profile("pfs_%s.prof" % self.name)
-#        prof.runcall(self._run)
-#        prof.close()
-#        
-#    def _run(self):
-        while 1:
-            logging.debug("%s: task queue size %s", self.name, self.taskQueue.qsize())
-            
-            task = None
-            try:
-                task = self.taskQueue.get(True, 0.1)
-            except Empty:
-                logging.debug("%s: task queue empty", self.name)
-                break
-            
-            logging.debug("%s: %s - start", self.name, task.GetIdx())
-            result = task.Run(self)
-            logging.debug("%s: %s - done", self.name, task.GetIdx())
-            
-            result.Serialize()
-            
-            while 1:
-                logging.debug("%s: queuing result: %s", self.name, task.GetIdx())
-                try:
-                    self.doneQueue.put((task.GetIdx(), result), True, 1.0)
-                    break
-                except Full:
-                    logging.debug("%s: result queue full", self.name)
-            logging.debug("%s: result queued: %s", self.name, task.GetIdx())
-        
-        logging.debug("%s: joining done queue", self.name)
-        self.doneQueue.close()
-        self.doneQueue.join_thread()
-        
-        logging.debug("%s: worker finished", self.name)
-
-
-class Task(object):
-    def __init__(self, backend, resolution):
-        self.backend = backend
-        self.resolution = resolution
-        self.idx = None
-        self.info = ""
-        
-    def GetInfo(self):
-        return self.info
-    def SetInfo(self, info):
-        self.info = info
-        
-    def GetIdx(self):
-        return self.idx
-    def SetIdx(self, idx):
-        self.idx = idx
-        
-    def Run(self, procCtx):
-        try:
-            img = self._Run(procCtx)
-        except Exception:
-            img = None
-            traceback.print_exc()
-        return img
-            
-    def _Run(self, procCtx):
-        raise NotImplementedError()
-
-
-class TaskCropResize(Task):
-    def __init__(self, backend, picture, rect, resolution):
-        Task.__init__(self, backend, resolution)
-        self.picture = picture
-        self.rect = rect
-        
-    def _Run(self, procCtx):
-        image = procCtx.FetchImage(self.picture)
-        img = self.backend.CropAndResize(image,
-                                         self.rect,
-                                         self.resolution)
-        return img
-    
-
-class TaskTrans(Task):
-    def __init__(self, backend, kind, percentage,
-                 pic1, rect1, pic2, rect2, resolution):
-        Task.__init__(self, backend, resolution)
-        self.kind = kind
-        self.percentage = percentage
-        self.taskPic1 = TaskCropResize(backend, pic1, rect1, resolution)
-        self.taskPic2 = TaskCropResize(backend, pic2, rect2, resolution)
-        
-    def _Run(self, procCtx):
-        image1 = self.taskPic1.Run(procCtx)
-        image2 = self.taskPic2.Run(procCtx)
-        
-        img = self.backend.Transition(self.kind, 
-                                      image1, image2, 
-                                      self.percentage)
-        
-        return img
+    def GetTasks(self):
+        return self.__tasks

@@ -78,6 +78,12 @@ class PhotoFilmStrip(object):
         self.__aspect = Aspect.ASPECT_16_9
         self.__duration = None
         
+    def GetName(self):
+        if self.__filename is None:
+            return u""
+        fname = os.path.splitext(self.__filename)[0]
+        return os.path.basename(fname)
+    
     def GetFilename(self):
         return self.__filename
     

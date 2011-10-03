@@ -82,6 +82,9 @@ class MEncoderRenderer(BaseRenderer):
         cmd = self._GetCmd()
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=False)
         
+    def GetSink(self):
+        return self._procEncoder.stdin
+    
     def Finalize(self):
         self.__CleanUp()
         
@@ -103,14 +106,14 @@ class MEncoderRenderer(BaseRenderer):
         return subArgs
     
     def _GetAudioArgs(self):
-        if self.PAudioFile is None:
+        if self.GetAudioFile() is None:
             audioArgs = []
         else:
-            audioArgs = ["-audiofile", self.PAudioFile]
+            audioArgs = ["-audiofile", self.GetAudioFile()]
         return audioArgs
     
     def _GetFrameRate(self):
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = "25/1"
         else:
             framerate = "30000/1001"
@@ -118,7 +121,7 @@ class MEncoderRenderer(BaseRenderer):
     
     def _GetBitrate(self):
         if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
-            bitrate = self.PProfile.GetBitrate()
+            bitrate = self.GetProfile().GetBitrate()
         else:
             try:
                 bitrate = int(self.__class__.GetProperty("Bitrate"))
@@ -146,24 +149,25 @@ class MPEGRenderer(MEncoderRenderer):
 
     def _GetCmd(self):
         aspect = "%.3f" % Aspect.ToFloat(self._aspect)
-        if self.PProfile.GetVideoNorm() == OutputProfile.PAL:
+        profile = self.GetProfile()
+        if profile.GetVideoNorm() == OutputProfile.PAL:
             keyint = 15
-            res = self.PProfile.GetResolution()
+            res = profile.GetResolution()
         else:
             keyint = 18
-            res = self.PProfile.GetResolution()
+            res = profile.GetResolution()
             
-        if self.PProfile.GetName() == "VCD":
+        if profile.GetName() == "VCD":
             mpgFormat = "xvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg1video:keyint=%(keyint)s:vrc_buf_size=327:vrc_minrate=1152:vbitrate=1152:vrc_maxrate=1152:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                            "aspect": aspect}
-        elif self.PProfile.GetName() == "SVCD":
+        elif profile.GetName() == "SVCD":
             mpgFormat = "xsvcd"
             srate = "44100"
             lavcopts = "vcodec=mpeg2video:mbd=2:keyint=%(keyint)s:vrc_buf_size=917:vrc_minrate=600:vbitrate=2500:vrc_maxrate=2500:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
                                                                                                                                                                                 "aspect": aspect}
-        elif self.PProfile.GetName() == "DVD":
+        elif profile.GetName() == "DVD":
             mpgFormat = "dvd:tsaf"
             srate = "48000"
             lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
