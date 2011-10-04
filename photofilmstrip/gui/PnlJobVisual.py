@@ -87,9 +87,9 @@ class PnlJobVisual(wx.Panel):
             txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:
             bgCol = wx.WHITE
-            txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_CAPTIONTEXT)
-            
+            txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_LISTBOXTEXT)
         self.SetBackgroundColour(bgCol)
         self.stJobName.SetForegroundColour(txtCol)
         self.stJobInfo.SetForegroundColour(txtCol)
+        
         self.Refresh()

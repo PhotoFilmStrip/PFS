@@ -144,7 +144,7 @@ class JobManager(Singleton, threading.Thread, Observable):
         
         # prepare workers
         cpuCount = multiprocessing.cpu_count()
-        cpuCount = 1
+#        cpuCount = 1
         for num in range(cpuCount):
             tw = TaskWorker("%d" % num,
                             jc.GetRunFlag(),
@@ -214,12 +214,12 @@ class JobManager(Singleton, threading.Thread, Observable):
         self.__logger.debug("destroyed")
             
 
-class TaskWorker(multiprocessing.Process):
-#class TaskWorker(threading.Thread):
+#class TaskWorker(multiprocessing.Process):
+class TaskWorker(threading.Thread):
     
     def __init__(self, name, runFlag, taskQueue, infoQueue, resultToFetch, sink):
-        multiprocessing.Process.__init__(self, name=name)#, verbose=1)
-#        threading.Thread.__init__(self, name=name)#, verbose=1)
+#        multiprocessing.Process.__init__(self, name=name)#, verbose=1)
+        threading.Thread.__init__(self, name=name)#, verbose=1)
         
         self.runFlag = runFlag
         self.taskQueue = taskQueue
@@ -231,14 +231,15 @@ class TaskWorker(multiprocessing.Process):
         self.imgKeyStack = []
         self.results = {}
         
-        self.__logger = logging.getLogger("TaskWorker")
+    def _GetLogger(self):
+        return logging.getLogger("TaskWorker")
         
     def FetchImage(self, backend, pic):
         if not self.imgCache.has_key(pic.GetFilename()):
-            self.__logger.debug("%s: GetImage(%s)", self.name, pic.GetFilename())
+            self._GetLogger().debug("%s: GetImage(%s)", self.name, pic.GetFilename())
             if len(self.imgKeyStack) > 1:
                 key = self.imgKeyStack.pop(0)
-                self.__logger.debug("%s: Pop cache (%s)", self.name, key)
+                self._GetLogger().debug("%s: Pop cache (%s)", self.name, key)
                 self.imgCache[key] = None
                                 
             # TODO: gleiches bild mit unterschiedlicher rotation
@@ -247,7 +248,7 @@ class TaskWorker(multiprocessing.Process):
         return self.imgCache[pic.GetFilename()]
         
     def run(self):
-        self.__logger.debug("%s: worker started", self.name)
+        self._GetLogger().debug("%s: worker started", self.name)
         active = True
         while active:
             task = None
@@ -259,22 +260,22 @@ class TaskWorker(multiprocessing.Process):
             try:
                 task = self.taskQueue.get(True, 0.1)
             except multiprocessing.queues.Empty:
-                self.__logger.debug("%s: Queue empty", self.name)
+                self._GetLogger().debug("%s: Queue empty", self.name)
                 active = False
             
             if task:
-                self.__logger.debug("%s: %s - start", self.name, task)
+                self._GetLogger().debug("%s: %s - start", self.name, task)
                 
                 self.infoQueue.put(task.GetInfo())
                 
                 task.Run(self)
                 if task.IsOk():
-                    self.__logger.debug("%s: %s - done", self.name, task)
+                    self._GetLogger().debug("%s: %s - done", self.name, task)
                     self.results[task.idx] = task
                 else:
-                    self.__logger.error("shit")
+                    self._GetLogger().error("shit")
                 
-            self.__logger.debug("%s: resultToFetch: %s", self.name, self.resultToFetch.value)
+            self._GetLogger().debug("%s: resultToFetch: %s", self.name, self.resultToFetch.value)
             while self.results.has_key(self.resultToFetch.value):
                 idx = self.resultToFetch.value
                 task = self.results[idx]
@@ -282,5 +283,5 @@ class TaskWorker(multiprocessing.Process):
                 del self.results[idx]
                 self.resultToFetch.value += 1
         
-        self.__logger.debug("%s: worker finished", self.name)
+        self._GetLogger().debug("%s: worker finished", self.name)
         self.runFlag.value = 3

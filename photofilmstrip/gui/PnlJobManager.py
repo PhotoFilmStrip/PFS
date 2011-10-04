@@ -118,7 +118,7 @@ class PnlJobManager(wx.Panel, Observer):
         
         pjv = PnlJobVisual(self.pnlJobs, jobContext)
         self.szJobs.Add(pjv, 0, wx.EXPAND)
-        self.Layout()
+        self.szJobs.Layout()
         
         self.pnlJobVisuals.append(pjv)
         
