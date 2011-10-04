@@ -26,6 +26,9 @@ class JobContext(ProgressHandler):
         self._taskQueue = Queue()
         
         self._workers = []
+
+        # the number of active workers
+        self._activeWorkers = Value('i', 0)
         
         # the index of the result to process
         self._resultFlag = Value('i', 0)
@@ -33,8 +36,6 @@ class JobContext(ProgressHandler):
         # a flag to control the workers
         # 0 .. normal run mode
         # 1 .. pause the workers
-        # 2 .. aborted
-        # 3 .. workers are done
         self._runFlag = Value('i', 0)
         
         # a queue containing strings about the current processing info
@@ -47,6 +48,8 @@ class JobContext(ProgressHandler):
         self._workers.append(worker)
     def GetWorkers(self):
         return self._workers
+    def GetActiveWorkers(self):
+        return self._activeWorkers
     
     def GetTaskQueue(self):
         return self._taskQueue
@@ -82,7 +85,7 @@ class JobContext(ProgressHandler):
         return self._jobName
     
     def GetWorkerCount(self):
-        return len(self._workers)
+        return self._activeWorkers.value
     
     def Pause(self):
         if self._runFlag.value == 0:
@@ -123,7 +126,7 @@ class JobManager(Singleton, threading.Thread, Observable):
                 jcIdx = 0
                 while jcIdx < len(self._jobCtxs):
                     jc = self._jobCtxs[jcIdx]
-                    if jc.GetRunFlag().value >= 2:
+                    if jc.GetActiveWorkers().value == 0:
                         self.__logger.debug("JobContext %s finished", jc.GetName())
                         self._jobCtxs.remove(jc)
                         jc.GetRenderer().Finalize()
@@ -147,6 +150,7 @@ class JobManager(Singleton, threading.Thread, Observable):
 #        cpuCount = 1
         for num in range(cpuCount):
             tw = TaskWorker("%d" % num,
+                            jc.GetActiveWorkers(),
                             jc.GetRunFlag(),
                             jc.GetTaskQueue(),
                             jc.GetInfoQueue(),
@@ -163,6 +167,10 @@ class JobManager(Singleton, threading.Thread, Observable):
 
         for tw in jc.GetWorkers():            
             tw.start()
+            
+        # wait that at least one worker has started
+        while jc.GetActiveWorkers().value == 0:
+            time.sleep(0.05)
 
         with self._jobCtxLock:
             self._jobCtxs.append(jc)
@@ -197,9 +205,6 @@ class JobManager(Singleton, threading.Thread, Observable):
                 self.__logger.debug("%s: killing worker: %s", jobContext.GetName(), tw)
                 tw.terminate()
                 
-        # set the run flag to aborted
-        jobContext.GetRunFlag().value = 2
-        
     def Destroy(self):
         self.__logger.debug("start destroying")
         with self._jobCtxLock:
@@ -217,10 +222,14 @@ class JobManager(Singleton, threading.Thread, Observable):
 #class TaskWorker(multiprocessing.Process):
 class TaskWorker(threading.Thread):
     
-    def __init__(self, name, runFlag, taskQueue, infoQueue, resultToFetch, sink):
+    def __init__(self, name,
+                 activeWorkers, runFlag, 
+                 taskQueue, infoQueue, 
+                 resultToFetch, sink):
 #        multiprocessing.Process.__init__(self, name=name)#, verbose=1)
         threading.Thread.__init__(self, name=name)#, verbose=1)
         
+        self.activeWorkers = activeWorkers
         self.runFlag = runFlag
         self.taskQueue = taskQueue
         self.infoQueue = infoQueue
@@ -249,8 +258,17 @@ class TaskWorker(threading.Thread):
         
     def run(self):
         self._GetLogger().debug("%s: worker started", self.name)
+        
+        self.activeWorkers.value += 1
+        try:
+            self.__MainLoop()
+        finally:
+            self._GetLogger().debug("%s: worker finished", self.name)
+            self.activeWorkers.value -= 1
+        
+    def __MainLoop(self):
         active = True
-        while active:
+        while active or self.results:
             task = None
 
             # check the pause state
@@ -275,13 +293,14 @@ class TaskWorker(threading.Thread):
                 else:
                     self._GetLogger().error("shit")
                 
-            self._GetLogger().debug("%s: resultToFetch: %s", self.name, self.resultToFetch.value)
             while self.results.has_key(self.resultToFetch.value):
                 idx = self.resultToFetch.value
+                
+                self._GetLogger().debug("%s: resultToFetch: %s",
+                                        self.name,
+                                        idx)
+                
                 task = self.results[idx]
                 task.ToSink(self.sink)
                 del self.results[idx]
                 self.resultToFetch.value += 1
-        
-        self._GetLogger().debug("%s: worker finished", self.name)
-        self.runFlag.value = 3
