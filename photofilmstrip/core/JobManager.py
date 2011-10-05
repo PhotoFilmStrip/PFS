@@ -6,12 +6,11 @@ Created on 15.08.2011
 
 import logging
 import multiprocessing
+import Queue
 import time
-
-from multiprocessing.queues import Queue, Full, Empty
-from multiprocessing.sharedctypes import Value
-
 import threading
+
+from multiprocessing.sharedctypes import Value
 
 from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.common.ObserverPattern import Observable
@@ -23,13 +22,13 @@ class JobContext(ProgressHandler):
     def __init__(self, jobName, renderer):
         ProgressHandler.__init__(self)
         self._jobName = jobName
-        self._taskQueue = Queue()
+        self._taskQueue = Queue.Queue()
         
         self._workers = []
 
         # the number of active workers
         self._activeWorkers = Value('i', 0)
-        
+
         # the index of the result to process
         self._resultFlag = Value('i', 0)
         
@@ -39,7 +38,7 @@ class JobContext(ProgressHandler):
         self._runFlag = Value('i', 0)
         
         # a queue containing strings about the current processing info
-        self._taskInfo = Queue()
+        self._taskInfo = Queue.Queue()
         
         # the sink pipe, only needed to start new workers
         self._renderer = renderer
@@ -77,7 +76,7 @@ class JobContext(ProgressHandler):
             try:
                 info = self._taskInfo.get(False)
                 self._SetInfo(info)
-            except multiprocessing.queues.Empty:
+            except Queue.Empty:
                 break
         return info
     
@@ -190,7 +189,7 @@ class JobManager(Singleton, threading.Thread, Observable):
             self.__logger.debug("%s: emptying task queue", jobContext.GetName())
             try:
                 jobContext.GetTaskQueue().get(True, 0.05)
-            except Empty:
+            except Queue.Empty:
                 self.__logger.debug("%s: task queue empty", jobContext.GetName())
                 break
             
@@ -277,7 +276,7 @@ class TaskWorker(threading.Thread):
             
             try:
                 task = self.taskQueue.get(True, 0.1)
-            except multiprocessing.queues.Empty:
+            except Queue.Empty:
                 self._GetLogger().debug("%s: Queue empty", self.name)
                 active = False
             
