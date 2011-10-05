@@ -41,8 +41,7 @@ class MPlayer(object):
         cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", self.filename]
         try:
             proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=False)
-            proc.wait()
-            output = proc.stdout.read()
+            output = proc.communicate()[0]
         except Exception, err:
             logging.debug("identify audio with mplayer failed: %s", err)
             output = ""
@@ -79,15 +78,12 @@ class MPlayer(object):
     def Close(self):
         if self.__proc is not None:
             if sys.platform == "win32":
-                import ctypes
-                PROCESS_TERMINATE = 1
-                handle = ctypes.windll.kernel32.OpenProcess(PROCESS_TERMINATE, False, self.__proc.pid)
-                ctypes.windll.kernel32.TerminateProcess(handle, -1)
-                ctypes.windll.kernel32.CloseHandle(handle)
-
-#                cmd = ["taskkill", "/PID", str(self.__proc.pid), "/F"]
-#                kp = Popen(cmd, shell=False)
-#                kp.wait()
+                self.__proc.terminate()
+#                import ctypes
+#                PROCESS_TERMINATE = 1
+#                handle = ctypes.windll.kernel32.OpenProcess(PROCESS_TERMINATE, False, self.__proc.pid)
+#                ctypes.windll.kernel32.TerminateProcess(handle, -1)
+#                ctypes.windll.kernel32.CloseHandle(handle)
             else:
                 self.__proc.communicate("q")
             self.__proc = None

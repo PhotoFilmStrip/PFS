@@ -126,10 +126,11 @@ class JobManager(Singleton, threading.Thread, Observable):
                 while jcIdx < len(self._jobCtxs):
                     jc = self._jobCtxs[jcIdx]
                     if jc.GetActiveWorkers().value == 0:
-                        self.__logger.debug("JobContext %s finished", jc.GetName())
+                        self.__logger.debug("%s: no more workers", jc.GetName())
                         self._jobCtxs.remove(jc)
                         jc.GetRenderer().Finalize()
                         jc.Done()
+                        self.__logger.debug("%s: finished", jc.GetName())
                     else:
                         jcIdx += 1
                 

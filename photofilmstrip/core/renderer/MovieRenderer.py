@@ -44,8 +44,7 @@ class MEncoderRenderer(BaseRenderer):
     def CheckDependencies(msgList):
         try:
             proc = Popen(["mencoder"], stdout=PIPE, stderr=STDOUT, shell=False)
-            proc.wait()
-            output = proc.stdout.read()
+            output = proc.communicate()[0]
         except Exception, err:
             logging.debug("checking for mencoder failed: %s", err)
             output = ""
@@ -80,7 +79,7 @@ class MEncoderRenderer(BaseRenderer):
         self._encErr = open(os.path.join(self.GetOutputPath(), "mencoder_err.log"), 'w')
         
         cmd = self._GetCmd()
-        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=False)
+        self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=False)#, bufsize=-1)
         
     def GetSink(self):
         return self._procEncoder.stdin
@@ -178,7 +177,7 @@ class MPEGRenderer(MEncoderRenderer):
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
 #              "-ofps %(framerate)s " \
-        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "lavc", "-ovc", "lavc",
@@ -211,7 +210,7 @@ class MPEG4AC3Renderer(MEncoderRenderer):
         return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "lavc", "-srate", "44100",
@@ -237,8 +236,7 @@ class MEncoderMP3Renderer(MEncoderRenderer):
         
         try:
             proc = Popen(["mencoder", "-oac", "help"], stdout=PIPE, stderr=STDOUT, shell=False)
-            proc.wait()
-            output = proc.stdout.read()
+            output = proc.communicate()[0]
         except Exception, err:
             logging.debug("checking for mencoder (mp3support) failed: %s", err)
             output = ""
@@ -267,7 +265,7 @@ class MPEG4MP3Renderer(MEncoderMP3Renderer):
         return MEncoderMP3Renderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=192", "-srate", "44100",
@@ -298,7 +296,7 @@ class FlashMovieRenderer(MEncoderMP3Renderer):
         return MEncoderMP3Renderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "mp3lame", "-lameopts", "cbr:br=128", "-srate", "44100",
@@ -329,7 +327,7 @@ class MJPEGRenderer(MEncoderRenderer):
         return MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
-        cmd = ["mencoder", "-cache", "1024", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
+        cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
         cmd += self._GetSubArgs()
         cmd += ["-oac", "pcm", "-srate", "44100",
