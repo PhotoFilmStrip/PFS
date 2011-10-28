@@ -21,14 +21,13 @@
 #
 
 
-import os
 import shutil
-import subprocess
 
 import wx
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
-from photofilmstrip.core.MPlayer import MPlayer
+from photofilmstrip.action.ActionPlayVideo import ActionPlayVideo
+from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
 
 
 [wxID_DLGFINALIZE, wxID_DLGFINALIZECBSENDERR, wxID_DLGFINALIZECMDCLOSE, 
@@ -158,31 +157,11 @@ class DlgFinalize(wx.Dialog):
         try:
             if self.rb1.GetValue():
                 # Play video
-                videoFile = os.path.join(self.outpath, "output.avi")
-                if not os.path.exists(videoFile):
-                    videoFile = os.path.join(self.outpath, "output.flv")
-                    if not os.path.exists(videoFile):
-                        return
-
-                if os.name == "nt":
-                    try:
-                        os.startfile(videoFile)
-                    except:
-                        pass
-                else:
-                    subprocess.Popen(["xdg-open", videoFile])
-#                mplayer = MPlayer(videoFile)
-#                mplayer.Play()
+                ActionPlayVideo(self.outpath).Execute()
             
             elif self.rb2.GetValue():
                 # Open folder
-                if not os.path.exists(self.outpath):
-                    return
-                
-                if os.name == "nt":
-                    os.startfile(self.outpath)
-                else:
-                    subprocess.Popen(["xdg-open", self.outpath])
+                ActionOpenFolder(self.outpath).Execute()
             
             elif self.rb3.GetValue():
                 # Delete unfinished

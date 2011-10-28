@@ -31,6 +31,7 @@ class ProgressHandler(Observable):
         self.__currProgress = 0
         self.__info = _(u"Please wait...")
         self.__isAborted = False
+        self.__isDone = False
     
     def GetMaxProgress(self):
         return self.__maxProgress
@@ -68,6 +69,7 @@ class ProgressHandler(Observable):
         else:
             self.__currProgress = self.__maxProgress
             self.__info = _(u"all done")
+        self.__isDone = True
         self.Notify('currentProgress')
         self.Notify('done')
 
@@ -78,3 +80,6 @@ class ProgressHandler(Observable):
         
     def IsAborted(self):
         return self.__isAborted
+
+    def IsDone(self):
+        return self.__isDone
