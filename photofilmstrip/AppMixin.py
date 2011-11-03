@@ -30,7 +30,7 @@ class AppMixin(object):
         self.InitLogging()
         self.InitI18N()
         
-        from photofilmstrip.core.JobManager import JobManager
+        from photofilmstrip.lib.jobimpl.JobManager import JobManager
         JobManager()
         
         try:

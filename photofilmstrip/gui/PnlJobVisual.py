@@ -1,8 +1,10 @@
 #Boa:FramePanel:PnlJobVisual
 
 import wx
+
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
+
 from photofilmstrip.action.DynamicAction import DynamicAction
-from photofilmstrip.core.JobManager import JobManager
 from photofilmstrip.action.ActionPlayVideo import ActionPlayVideo
 from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
 
@@ -61,7 +63,8 @@ class PnlJobVisual(wx.Panel):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name=u'PnlJobVisual',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), 
+              style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpJob = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
@@ -157,15 +160,12 @@ class PnlJobVisual(wx.Panel):
     def __OnLeftDown(self, event):
         evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
         evt.SetEventObject(self)
-#        evt.m_itemIndex = idx
-#        evt.m_oldItemIndex = self.__selIdx
-
-#        self.__selIdx = idx
-        
         self.GetEventHandler().ProcessEvent(evt)
 
     def Select(self, value):
         if value:
+            if self.IsShownOnScreen():
+                self.SetFocus()
             bgCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:

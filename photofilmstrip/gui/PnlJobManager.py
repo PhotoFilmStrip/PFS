@@ -3,15 +3,16 @@
 import wx
 import wx.lib.scrolledpanel
 
-from photofilmstrip.lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
+
 from photofilmstrip.gui.PnlJobVisual import PnlJobVisual
-from photofilmstrip.core.JobManager import JobManager
 
 
 [wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS, 
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
-class PnlJobManager(wx.Panel, Observer):
+class PnlJobManager(wx.Panel, IVisualJobManager):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -60,7 +61,7 @@ class PnlJobManager(wx.Panel, Observer):
 
         self.pnlJobVisuals = []
         
-        JobManager().AddObserver(self)
+        JobManager().Init(visual=self)
         
         self.timerUpdate = wx.Timer(self)
         self.timerUpdate.Start(100)
@@ -70,10 +71,10 @@ class PnlJobManager(wx.Panel, Observer):
                                   DummyRenderer(), 
                                   [])
 
-    def ObservableUpdate(self, obj, arg):
-        jobContext = arg
-        
+    def RegisterJob(self, jobContext):
         pjv = PnlJobVisual(self.pnlJobs, self, jobContext)
+        pjv.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+
         self.szJobs.Add(pjv, 0, wx.EXPAND)
         self.szJobs.Layout()
         
@@ -94,21 +95,22 @@ class PnlJobManager(wx.Panel, Observer):
         if pnl != self._selected:
             if self._selected is not None:
                 self._selected.Select(False)
-            pnl.Select(True)
             self._selected = pnl
-    
+        self._selected.Select(True)
+
     def OnKeyDown(self, event):
-        print "OnKeyDown", event
         key = event.GetKeyCode()
-        if key == wx.WXK_UP:
+        try:
             idx = self.pnlJobVisuals.index(self._selected)
-            if len(self.pnlJobVisuals) > idx:
+        except ValueError:
+            idx = -1    
+        if key == wx.WXK_DOWN:
+            if self._selected is not None and len(self.pnlJobVisuals) > idx + 1:
                 self._selected.Select(False)
                 self._selected = self.pnlJobVisuals[idx + 1]
                 self._selected.Select(True)
-        elif key == wx.WXK_DOWN:
-            idx = self.pnlJobVisuals.index(self._selected)
-            if idx > 0:
+        elif key == wx.WXK_UP:
+            if self._selected is not None and idx > 0:
                 self._selected.Select(False)
                 self._selected = self.pnlJobVisuals[idx - 1]
                 self._selected.Select(True)

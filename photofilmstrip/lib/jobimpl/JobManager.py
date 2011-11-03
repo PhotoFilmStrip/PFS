@@ -15,6 +15,8 @@ from multiprocessing.sharedctypes import Value
 from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.common.ObserverPattern import Observable
 from photofilmstrip.core.ProgressHandler import ProgressHandler
+from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
+from photofilmstrip.lib.jobimpl.LogVisualJobManager import LogVisualJobManager
 
 
 class JobContext(ProgressHandler):
@@ -116,11 +118,12 @@ class JobContext(ProgressHandler):
             self._runFlag.value = 0
 
 
-class JobManager(Singleton, threading.Thread, Observable):
+class JobManager(Singleton, threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self, name="JobManager")
-        Observable.__init__(self)
+        self._visuals = []
+        
         self._active = True
         self._jobCtxs = []
         self._jobCtxLock = threading.Lock()
@@ -128,6 +131,17 @@ class JobManager(Singleton, threading.Thread, Observable):
         self.__logger = logging.getLogger("JobManager")
         
         self.start()
+        
+    def Init(self, workerCount=None, visual=None):
+        if workerCount is None:
+            workerCount = multiprocessing.cpu_count()
+            
+        if visual is None:
+            visual = LogVisualJobManager()
+        assert isinstance(visual, IVisualJobManager)
+        self._visuals.append(visual)
+        
+        
         
     def run(self):
         self.__logger.debug("started")
@@ -149,6 +163,8 @@ class JobManager(Singleton, threading.Thread, Observable):
             time.sleep(0.1)
         
     def Register(self, jobName, renderer, tasks):
+        assert isinstance(threading.current_thread(), threading._MainThread)
+
         self.__logger.debug("%s: register job", jobName)
         
         # prepare the renderer, creates the sink pipe 
@@ -187,7 +203,8 @@ class JobManager(Singleton, threading.Thread, Observable):
         with self._jobCtxLock:
             self._jobCtxs.append(jc)
 
-        self.Notify(jc)
+        for visual in self._visuals:
+            visual.RegisterJob(jc)
         
     def Abort(self, jobContext):
         self.__logger.debug("%s: aborting...", jobContext.GetName())

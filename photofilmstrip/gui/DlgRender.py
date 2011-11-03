@@ -21,16 +21,13 @@
 #
 
 import os
-import stat
 import sys
-import threading
 
 import wx
 import wx.combo
 
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
-from photofilmstrip.core.ProgressHandler import ProgressHandler
 from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
 from photofilmstrip.core.renderer.RendererException import RendererException
@@ -41,7 +38,6 @@ from photofilmstrip.lib.util import Encode
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
-from photofilmstrip.gui.DlgFinalize import DlgFinalize
 
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 

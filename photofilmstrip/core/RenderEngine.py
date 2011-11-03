@@ -28,7 +28,7 @@ from photofilmstrip.core.backend.PILBackend import PILBackend
 #from photofilmstrip.core.backend.CairoBackend import CairoBackend
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans
-from photofilmstrip.core.JobManager import JobManager
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 BACKEND = PILBackend()
 #BACKEND = CairoBackend()
