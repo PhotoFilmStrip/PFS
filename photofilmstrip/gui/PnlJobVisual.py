@@ -151,7 +151,7 @@ class PnlJobVisual(wx.Panel):
         self.curAction = None
         
     def OnTimer(self):
-        progress = self.jobContext.GetCurrentProgress()
+        progress = self.jobContext.GetProgress()
         self.stJobInfo.SetLabel(self.jobContext.GetInfo())
         self.gaugeProgress.SetValue(progress)
         
@@ -186,9 +186,10 @@ class PnlJobVisual(wx.Panel):
         id2 = wx.NewId()
         id3 = wx.NewId()
 
-        if self.jobContext.IsPaused():
+        if self.jobContext.IsIdle():
             self._actResume.ToMenu(self, menu)
-        elif self.jobContext.IsRunning():
+#        elif self.jobContext.IsRunning():
+        else:
             self._actPause.ToMenu(self, menu)
         
         if self.jobContext.IsDone() or self.jobContext.IsAborted():
@@ -207,9 +208,9 @@ class PnlJobVisual(wx.Panel):
         self.cmdMenu.PopupMenu(menu)
         
     def _SetupAction(self):
-        if self.jobContext.IsRunning():
+        if not self.jobContext.IsIdle():
             self.curAction = self._actPause
-        elif self.jobContext.IsPaused():
+        elif self.jobContext.IsIdle():
             self.curAction = self._actResume
         elif self.jobContext.IsAborted():
             self.curAction = self._actRemove

@@ -29,6 +29,7 @@ from photofilmstrip.core.backend.PILBackend import PILBackend
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
+from photofilmstrip.core.RenderJobContext import RenderJobContext
 
 BACKEND = PILBackend()
 #BACKEND = CairoBackend()
@@ -183,42 +184,17 @@ class RenderEngine(object):
             
         # determine step count for progressbar
         self.__PrepareTasks(pics)
-        count = len(self.__tasks)
+        
+        # TODO: Subtitles as task
         generateSubtitle = self.__HasComments(pics)
         if generateSubtitle:
-            count += 1
-
-        try:
-            if generateSubtitle:
-#                self.__progressHandler.SetInfo(_(u"generating subtitle"))
-                st = SubtitleSrt(self.__aRenderer.GetOutputPath(), 
-                                 self.__picCountFactor)
-                st.Start(pics)
-#                self.__progressHandler.Step()
+#            self.__progressHandler.SetInfo(_(u"generating subtitle"))
+            st = SubtitleSrt(self.__aRenderer.GetOutputPath(), 
+                             self.__picCountFactor)
+            st.Start(pics)
                 
-            JobManager().Register(self.__name, self.__aRenderer, self.GetTasks())
+        rjc = RenderJobContext(self.__name, self.__aRenderer, self.GetTasks())
+        JobManager().EnqueueContext(rjc)
             
-            return True
-        except RendererException, err:
-            self.__errorCls = err.__class__
-            self.__errorMsg = err.GetMessage()
-        except StandardError, err:
-            self.__errorCls = err.__class__
-            tb = StringIO.StringIO()
-            traceback.print_exc(file=tb)
-            self.__errorMsg = u"%s: %s\n%s" % (err.__class__.__name__, 
-                                               unicode(err), 
-                                               tb.getvalue())
-            return False
-        finally:
-            pass
-#            self.__progressHandler.Done()
-
-    def GetErrorMessage(self):
-        return self.__errorMsg
-
-    def GetErrorClass(self):
-        return self.__errorCls
-    
     def GetTasks(self):
         return self.__tasks

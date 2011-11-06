@@ -7,6 +7,9 @@ from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.gui.PnlJobVisual import PnlJobVisual
+from photofilmstrip.lib.jobimpl.IJobContext import IJobContext
+from photofilmstrip.lib.jobimpl.IVisualJob import IVisualJob
+import Queue
 
 
 [wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS, 
@@ -61,15 +64,14 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 
         self.pnlJobVisuals = []
         
-        JobManager().Init(visual=self)
+        JobManager().AddVisual(self)
         
         self.timerUpdate = wx.Timer(self)
         self.timerUpdate.Start(100)
         
         for i in xrange(10):
-            JobManager().Register("TestJob %d" % i, 
-                                  DummyRenderer(), 
-                                  [])
+            dc = DummyRenderContext("TestJob %d" % i)
+            JobManager().EnqueueContext(dc)
 
     def RegisterJob(self, jobContext):
         pjv = PnlJobVisual(self.pnlJobs, self, jobContext)
@@ -212,9 +214,38 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 
 
 
-class DummyRenderer():
+class DummyRenderContext(IJobContext, IVisualJob):
     
-    def Prepare(self):
+    def __init__(self, name):
+        self.name = name
+        
+    def GetName(self):
+        return self.name
+    
+    def GetMaxProgress(self):
+        return 100
+    def GetProgress(self):
+        return 20
+    def GetInfo(self):
+        return "info"
+    
+    def IsRunning(self):
+        return True
+    def IsIdle(self):
+        return False
+    def IsAborted(self):
+        return True
+    def IsDone(self):
+        return True
+    
+    def GetTask(self, block, timeout):
+        raise Queue.Empty()
+    
+    
+    def GetGroupId(self):
+        return "general"
+    
+    def Begin(self):
         pass
     
     def Finalize(self):

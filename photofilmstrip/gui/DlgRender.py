@@ -21,23 +21,20 @@
 #
 
 import os
-import sys
 
 import wx
 import wx.combo
 
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
-from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
-from photofilmstrip.core.renderer.RendererException import RendererException
 
 from photofilmstrip.lib.Settings import Settings
-from photofilmstrip.lib.util import Encode
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
+from photofilmstrip.action.ActionRender import ActionRender
 
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
@@ -216,7 +213,7 @@ class DlgRender(wx.Dialog):
 
         settings = Settings()
         self.choiceProfile.SetSelection(settings.GetLastProfile())
-        self.choiceType.SetSelection(settings.GetVideoType())
+        self.__SetChoiceSelectionByData(self.choiceType, settings.GetVideoType())
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
         
@@ -228,6 +225,12 @@ class DlgRender(wx.Dialog):
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
     
+    def __SetChoiceSelectionByData(self, choice, data):
+        for idx in range(choice.GetCount()):
+            if choice.GetClientData(idx) == data:
+                choice.Select(idx)
+                return
+
     def __GetOutputPath(self):
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
@@ -243,51 +246,27 @@ class DlgRender(wx.Dialog):
             self.cmdStart.Enable(formatData.IsOk())
 
     def OnCmdStartButton(self, event):
+        profile = self.__GetChoiceDataSelected(self.choiceProfile)
+        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
+        ar = ActionRender(self.__photoFilmStrip, 
+                          profile, 
+                          self.__GetChoiceDataSelected(self.choiceType), 
+                          rendererClass, 
+                          self.cbDraft.GetValue())
+        
         audioFile = self.__photoFilmStrip.GetAudioFile()
-        if audioFile and not os.path.exists(audioFile):
+        if not ar.CheckFile(audioFile):
             dlg = wx.MessageDialog(self,
                                    _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile, 
                                    _(u"Warning"),
                                    wx.YES_NO | wx.ICON_WARNING)
-            modalResult = dlg.ShowModal()
-            dlg.Destroy()
+            try:
+                if dlg.ShowModal() == wx.ID_NO:
+                    return
+            finally:
+                dlg.Destroy()
             
-            if modalResult == wx.ID_NO:
-                return
-            audioFile = None
-            
-        profile = self.__GetChoiceDataSelected(self.choiceProfile)
-        profile.SetVideoNorm(self.__GetChoiceDataSelected(self.choiceType))
-
-        outpath = self.__GetOutputPath()
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
-        
-        rendererClass = self.__GetChoiceDataSelected(self.choiceFormat).PRendererClass
-
-        settings = Settings()
-        settings.SetLastProfile(self.choiceProfile.GetSelection())
-        settings.SetVideoType(self.choiceType.GetSelection())
-        settings.SetUsedRenderer(self.choiceFormat.GetSelection())
-        
-        totalLength = self.__photoFilmStrip.GetDuration(False)
-        
-        renderer = rendererClass()
-        renderer.Init(profile, 
-                      self.__photoFilmStrip.GetAspect(),
-                      Encode(outpath, sys.getfilesystemencoding()))
-        
-        if audioFile:
-            renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
-
-        name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
-                            profile.GetName())
-        
-        renderEngine = RenderEngine(name,
-                                    renderer,
-                                    self.cbDraft.GetValue())
-        renderEngine.Start(self.__photoFilmStrip.GetPictures(), totalLength)
-        
+        ar.Execute()
         self.EndModal(wx.ID_OK)
 
     def OnCmdCancelButton(self, event):
