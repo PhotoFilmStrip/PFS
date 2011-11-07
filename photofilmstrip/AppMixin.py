@@ -31,7 +31,7 @@ class AppMixin(object):
         self.InitI18N()
         
         from photofilmstrip.lib.jobimpl.JobManager import JobManager
-#        JobManager().Init()
+        JobManager().Init()
         JobManager().Init("render")
         
         try:

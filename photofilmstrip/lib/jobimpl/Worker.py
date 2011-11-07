@@ -74,7 +74,12 @@ class Worker(threading.Thread, IWorker):
             ro.exception = inst
             ro.traceback = "Traceback (within worker):\n" + "".join(traceback.format_tb(sys.exc_info()[2]))
 
-        jobContext.PushResult(workLoad, ro)
+        try:
+            self.__logger.debug("pushing result %s", workLoad)
+            jobContext.PushResult(workLoad, ro)
+            self.__logger.debug("result pushed %s", workLoad)
+        except Exception, inst: # IGNORE:R0703
+            self.__logger.error("push result exception: %s", inst, exc_info=1)
         
 #        self.__logger.debug("notifying: %s", job.evt.notifyObject)
 #        try:

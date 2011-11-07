@@ -19,9 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import traceback, StringIO
-
-from photofilmstrip.core.renderer.RendererException import RendererException
 from photofilmstrip.core.Subtitle import SubtitleSrt
 
 from photofilmstrip.core.backend.PILBackend import PILBackend
