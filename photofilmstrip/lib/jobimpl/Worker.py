@@ -30,6 +30,8 @@ class Worker(threading.Thread, IWorker):
 
     def IsBusy(self):
         return self.__busy.isSet()
+    def GetBusyEvent(self):
+        return self.__busy
 
     def Kill(self):
         self.__wantAbort = True
@@ -64,7 +66,7 @@ class Worker(threading.Thread, IWorker):
         self.__logger.debug("Worker gone...")
 
     def __ProcessWorkLoad(self, jobContext, workLoad):
-        ro = ResultObject()
+        ro = ResultObject(workLoad)
         try:
             self.__logger.debug("processing work load %s", workLoad)
             ro.result = workLoad._Execute(jobContext) # IGNORE:W0212
@@ -76,7 +78,7 @@ class Worker(threading.Thread, IWorker):
 
         try:
             self.__logger.debug("pushing result %s", workLoad)
-            jobContext.PushResult(workLoad, ro)
+            jobContext.PushResult(ro)
             self.__logger.debug("result pushed %s", workLoad)
         except Exception, inst: # IGNORE:R0703
             self.__logger.error("push result exception: %s", inst, exc_info=1)

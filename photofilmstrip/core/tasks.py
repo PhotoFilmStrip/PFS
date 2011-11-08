@@ -3,11 +3,11 @@
 
 from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad
 
+from photofilmstrip.core.Subtitle import SubtitleSrt
+
 
 class Task(WorkLoad):
-    def __init__(self, backend, resolution):
-        self.backend = backend
-        self.resolution = resolution
+    def __init__(self):
         self.idx = None
         self.info = u""
 
@@ -25,11 +25,40 @@ class Task(WorkLoad):
         
     def __str__(self):
         return "%s_%s" % (self.__class__.__name__, self.idx)
+    
+
+class TaskSubtitle(Task):
+    def __init__(self, outputPath, picCountFactor, pics):
+        Task.__init__(self)
+        self.__outputPath = outputPath
+        self.__picCountFactor = picCountFactor
+        self.__pics = pics
+        self.SetInfo(_(u"generating subtitle"))
+            
+    def __HasComments(self):
+        for pic in self.__pics:
+            if pic.GetComment():
+                return True
+        return False
+    
+    def Run(self, jobContext):
+        if self.__HasComments():
+            st = SubtitleSrt(self.__outputPath, 
+                             self.__picCountFactor)
+            st.Start(self.__pics)
 
 
-class TaskCropResize(Task):
+class TaskImaging(Task):
+    def __init__(self, backend, resolution):
+        Task.__init__(self)
+        self.backend = backend
+        self.resolution = resolution
+        
+
+
+class TaskCropResize(TaskImaging):
     def __init__(self, backend, picture, rect, resolution):
-        Task.__init__(self, backend, resolution)
+        TaskImaging.__init__(self, backend, resolution)
         self.picture = picture
         self.rect = rect
         
@@ -41,10 +70,10 @@ class TaskCropResize(Task):
         return img
     
 
-class TaskTrans(Task):
+class TaskTrans(TaskImaging):
     def __init__(self, backend, kind, percentage,
                  pic1, rect1, pic2, rect2, resolution):
-        Task.__init__(self, backend, resolution)
+        TaskImaging.__init__(self, backend, resolution)
         self.kind = kind
         self.percentage = percentage
         self.taskPic1 = TaskCropResize(backend, pic1, rect1, resolution)

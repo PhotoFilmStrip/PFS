@@ -1,26 +1,16 @@
 
 class IJobContext(object):
 
-    def GetId(self):
-        raise NotImplementedError()
-    
     def GetGroupId(self):
         raise NotImplementedError
     
-    def GetTask(self, block, timeout):
+    def GetWorkLoad(self, block, timeout):
         raise NotImplementedError()
     
-    def GetResultToFetch(self):
+    def PushResult(self, resultObject):
         raise NotImplementedError()
     
-    def PushResult(self, result):
-        '''
-        @param result:
-        @return: the resultId
-        '''
-        raise NotImplementedError()
-    
-    def FetchResult(self, resultId):
+    def Begin(self):
         raise NotImplementedError()
     
     def Finalize(self):

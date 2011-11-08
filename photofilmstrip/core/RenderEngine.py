@@ -19,12 +19,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from photofilmstrip.core.Subtitle import SubtitleSrt
-
 from photofilmstrip.core.backend.PILBackend import PILBackend
 #from photofilmstrip.core.backend.CairoBackend import CairoBackend
 
-from photofilmstrip.core.tasks import TaskCropResize, TaskTrans
+from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 from photofilmstrip.core.RenderJobContext import RenderJobContext
 
@@ -162,12 +160,6 @@ class RenderEngine(object):
             pathRectsBefore = pathRects
             transCountBefore = transCount
 
-    def __HasComments(self, pics):
-        for pic in pics:
-            if pic.GetComment():
-                return True
-        return False
-    
     def Start(self, pics, targetLengthSecs=None):
         if targetLengthSecs is not None:
             # targetLength should be at least 1sec for each pic
@@ -182,13 +174,10 @@ class RenderEngine(object):
         # determine step count for progressbar
         self.__PrepareTasks(pics)
         
-        # TODO: Subtitles as task
-        generateSubtitle = self.__HasComments(pics)
-        if generateSubtitle:
-#            self.__progressHandler.SetInfo(_(u"generating subtitle"))
-            st = SubtitleSrt(self.__aRenderer.GetOutputPath(), 
-                             self.__picCountFactor)
-            st.Start(pics)
+        taskSub = TaskSubtitle(self.__aRenderer.GetOutputPath(),
+                               self.__picCountFactor,
+                               pics)
+        self.__tasks.insert(0, taskSub)
                 
         rjc = RenderJobContext(self.__name, self.__aRenderer, self.GetTasks())
         JobManager().EnqueueContext(rjc)

@@ -2,6 +2,7 @@
 import sys
 
 import wx
+from photofilmstrip.lib.jobimpl.ResultObject import ResultObject
 
 EVT_JOB_RESULT_TYPE = wx.NewEventType()
 EVT_JOB_RESULT = wx.PyEventBinder(EVT_JOB_RESULT_TYPE, 1)
@@ -27,17 +28,14 @@ class ResultEvent(SystemEvent):
 
     def __init__(self, notifyObject, notifyCallback):
         SystemEvent.__init__(self, notifyObject, notifyCallback)
-        self.result = None
-        self.exception = None
-        self.traceback = None
+        self.__resultObj = None
+        
+    def _SetResultObj(self, resultObj):
+        assert isinstance(resultObj, ResultObject)
+        self.__resultObj = resultObj
 
     def GetResult(self, printTraceback=True):
-        if self.exception:
-            if printTraceback:
-                print >> sys.stderr, self.traceback,
-            raise self.exception
-        else:
-            return self.result
+        return self.__resultObj.GetResult(printTraceback)
 
 
 #class AutocheckResultEvent(ResultEvent):

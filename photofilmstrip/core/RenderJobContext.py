@@ -91,7 +91,7 @@ class RenderJobContext(IJobContext, IVisualJob):
         pilCtx.ToStream(self.renderer.GetSink(), "JPEG")
 
 
-    def GetTask(self, block, timeout):
+    def GetWorkLoad(self, block, timeout):
         task = self.taskQueue.get(block, timeout)
 
         self.__logger.debug("%s: %s - start", self.name, task)
@@ -99,14 +99,10 @@ class RenderJobContext(IJobContext, IVisualJob):
         self.SetInfo(task.GetInfo())
         return task
         
-        
-    def GetResultToFetch(self):
-        return self.resultToFetch
-    
-    def PushResult(self, task, result):
-#        if task.IsOk():
+    def PushResult(self, resultObject):
+        task = resultObject.GetSource()
         self.__logger.debug("%s: %s - done", self.name, task)
-        self.results[task.idx] = result.GetResult()
+        self.results[task.idx] = resultObject.GetResult()
         self.FetchResult(None)
     
     def FetchResult(self, resultId):
@@ -119,7 +115,8 @@ class RenderJobContext(IJobContext, IVisualJob):
                                         idx)
                 
                 pilCtx = self.results[idx]
-                self.ToSink(pilCtx)
+                if pilCtx:
+                    self.ToSink(pilCtx)
                 del self.results[idx]
                 self.resultToFetch += 1
 
@@ -127,46 +124,6 @@ class RenderJobContext(IJobContext, IVisualJob):
 
 
 class JobContext(object):
-    
-    def __init__(self, jobName, renderer):
-        self._jobName = jobName
-        self._taskQueue = Queue.Queue()
-        
-        self._workers = []
-
-        # the number of active workers
-        self._activeWorkers = Value('i', 0)
-
-        # the index of the result to process
-        self._resultFlag = Value('i', 0)
-        
-        # a flag to control the workers
-        # 0 .. normal run mode
-        # 1 .. pause the workers
-        self._runFlag = Value('i', 0)
-        
-        # a queue containing strings about the current processing info
-        self._taskInfo = Queue.Queue()
-        
-        # the sink pipe, only needed to start new workers
-        self._renderer = renderer
-        
-    def GetCurrentProgress(self):
-#        return self.__currProgress
-        return self._resultFlag.value
-    
-    def GetInfo(self):
-        info = ProgressHandler.GetInfo(self)
-        while not self.IsAborted():
-            try:
-                info = self._taskInfo.get(False)
-                self._SetInfo(info)
-            except Queue.Empty:
-                break
-        return info
-    
-    def GetName(self):
-        return self._jobName
     
     def Pause(self):
         if self._runFlag.value == 0:

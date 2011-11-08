@@ -238,7 +238,7 @@ class DummyRenderContext(IJobContext, IVisualJob):
     def IsDone(self):
         return True
     
-    def GetTask(self, block, timeout):
+    def GetWorkLoad(self, block, timeout):
         raise Queue.Empty()
     
     
