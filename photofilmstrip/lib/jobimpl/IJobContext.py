@@ -13,8 +13,20 @@ class IJobContext(object):
     def Begin(self):
         raise NotImplementedError()
     
-    def Finalize(self):
+    def Done(self):
         raise NotImplementedError()
+    
+    def IsAborted(self):
+        raise NotImplementedError()
+    def Abort(self):
+        raise NotImplementedError()
+    
+    def IsIdle(self):
+        raise NotImplementedError()
+    def SetPaused(self, value):
+        raise NotImplementedError()
+    
+
 
     
 class IWorker(object):

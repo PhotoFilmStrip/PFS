@@ -7,8 +7,11 @@ from .LogVisualJobManager import LOGGER
 
 class LogVisualJobHandler(IVisualJobHandler):
 
-    def OnHandleJobDone(self):
-        LOGGER.debug("OnHandleJobDone {0}", self)
+    def OnHandleJobBegin(self, jobContext):
+        LOGGER.debug("OnHandleJobBegin %s", jobContext)
     
-    def OnHandleJobUpdate(self, fields=None):
-        LOGGER.debug("OnHandleJobUpdate {0}", self)
+    def OnHandleJobDone(self, jobContext):
+        LOGGER.debug("OnHandleJobDone %s", jobContext)
+    
+    def OnHandleJobUpdate(self, jobContext, fields=None):
+        LOGGER.debug("OnHandleJobUpdate %s -> %s", jobContext, fields)

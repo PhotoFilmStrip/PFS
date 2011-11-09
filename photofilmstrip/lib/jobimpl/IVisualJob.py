@@ -22,3 +22,15 @@ class IVisualJob(object):
         raise NotImplementedError()
     def SetProgress(self, value):
         raise NotImplementedError()
+    def StepProgress(self, info=None, progress=1):
+        raise NotImplementedError()
+
+    def IsAborted(self):
+        raise NotImplementedError()
+    def Abort(self):
+        raise NotImplementedError()
+    
+    def IsIdle(self):
+        raise NotImplementedError()
+    def SetIdle(self, value):
+        raise NotImplementedError()

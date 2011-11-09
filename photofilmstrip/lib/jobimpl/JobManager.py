@@ -139,7 +139,7 @@ class JobManager(Singleton):
     def __FinishCtx(self, ctx):
         self.__logger.debug("finalizing %s...", ctx.GetName())
         try:
-            ctx.Finalize()
+            ctx.Done()
         except:
             self.__logger.error("error %s", ctx.GetName(), exc_info=1)
         finally:

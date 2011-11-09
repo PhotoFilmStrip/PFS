@@ -76,6 +76,9 @@ class Worker(threading.Thread, IWorker):
             ro.exception = inst
             ro.traceback = "Traceback (within worker):\n" + "".join(traceback.format_tb(sys.exc_info()[2]))
 
+        if jobContext.IsAborted():
+            ro.exception = JobAbortedException()
+
         try:
             self.__logger.debug("pushing result %s", workLoad)
             jobContext.PushResult(ro)
@@ -88,3 +91,7 @@ class Worker(threading.Thread, IWorker):
 #            job.evt.DispatchEvent()
 #        except Exception, inst: # IGNORE:R0703
 #            self.__logger.error("notification exception: %s", inst, exc_info=1)
+
+
+class JobAbortedException(Exception):
+    pass

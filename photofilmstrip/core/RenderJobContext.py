@@ -64,7 +64,7 @@ class RenderJobContext(IJobContext, IVisualJob):
         return self.imgCache[pic.GetFilename()]
         
 
-    def Finalize(self):
+    def Done(self):
         self.renderer.Finalize()
         self.__isDone = True
 

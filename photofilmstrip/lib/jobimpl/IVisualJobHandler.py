@@ -3,8 +3,11 @@
 
 class IVisualJobHandler(object):
     
-    def OnHandleJobDone(self):
+    def OnHandleJobBegin(self, jobContext):
         raise NotImplementedError()
     
-    def OnHandleJobUpdate(self, fields=None):
+    def OnHandleJobDone(self, jobContext):
+        raise NotImplementedError()
+    
+    def OnHandleJobUpdate(self, jobContext, fields=None):
         raise NotImplementedError()

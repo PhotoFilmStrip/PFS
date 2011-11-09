@@ -7,21 +7,31 @@ from .LogVisualJobHandler import LogVisualJobHandler
 
 
 class VisualJob(Job, IVisualJob):
-    def __init__(self, evt, target=None, args=None, kwargs=None,
+    def __init__(self, name, target=None, args=None, kwargs=None,
+                 maxProgress=-1,
                  visualJobHandler=None):
-        Job.__init__(self, evt, target, args, kwargs)
         IVisualJob.__init__(self)
+        Job.__init__(self, target, args, kwargs)
         
         self.__defaultVisualJobHdl = LogVisualJobHandler()
         self.__visualJobHandler = []
         if visualJobHandler is not None:
             self.AddVisualJobHandler(visualJobHandler)
         
-        self.__name = u""
+        self.__name = name
+        self.__maxProgress = maxProgress
         self.__progress = 0
-        self.__maxProgress = 100
         self.__info = u""
+
+        self.__aborted = False
         
+    def __NotifyHandler(self, funcName, args=None):
+        if args is None:
+            args = ()
+        for hdl in self.__visualJobHandler:
+            func = getattr(hdl, funcName)
+            func(self, *args)
+
     def AddVisualJobHandler(self, visualJobHandler):
         assert isinstance(visualJobHandler, IVisualJobHandler)
         if self.__defaultVisualJobHdl in self.__visualJobHandler:
@@ -35,15 +45,11 @@ class VisualJob(Job, IVisualJob):
         
         if len(self.__visualJobHandler) == 0:
             self.__visualJobHandler.append(self.__defaultVisualJobHdl)
-    def __NotifyHandler(self, funcName, args=None):
-        if args is None:
-            args = ()
-        for hdl in self.__visualJobHandler:
-            func = getattr(hdl, funcName)
-            func(*args)
-            hdl.OnHandleJobDone()
 
-    def _Finish(self):
+    def Begin(self):
+        self.__NotifyHandler("OnHandleJobBegin")
+        
+    def Done(self):
         self.__NotifyHandler("OnHandleJobDone")
     
     def GetName(self):
@@ -58,11 +64,13 @@ class VisualJob(Job, IVisualJob):
         self.__maxProgress = maxProgress
         self.__NotifyHandler("OnHandleJobUpdate", (("maxProgress",),))
 
-    def StepProgress(self, info=None):
-        self.__progress += 1
+    def StepProgress(self, info=None, progress=1):
+        notifyFields = ("progress",)
+        self.__progress += progress
         if info is not None:
             self.__info = info
-        self.__NotifyHandler("OnHandleJobUpdate", (("progress", "info",),))
+            notifyFields = ("progress", "info")
+        self.__NotifyHandler("OnHandleJobUpdate", (notifyFields,))
 
     def GetInfo(self):
         return self.__info
@@ -75,3 +83,14 @@ class VisualJob(Job, IVisualJob):
     def SetProgress(self, progress):
         self.__progress = progress
         self.__NotifyHandler("OnHandleJobUpdate", (("progress",),))
+
+
+    def IsAborted(self):
+        return self.__aborted
+    def Abort(self):
+        self.__aborted = True
+    
+    def IsIdle(self):
+        raise NotImplementedError()
+    def SetIdle(self, value):
+        raise NotImplementedError()

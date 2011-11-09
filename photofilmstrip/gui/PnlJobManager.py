@@ -248,7 +248,7 @@ class DummyRenderContext(IJobContext, IVisualJob):
     def Begin(self):
         pass
     
-    def Finalize(self):
+    def Done(self):
         pass
     
     def GetSink(self):
