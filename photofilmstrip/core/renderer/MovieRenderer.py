@@ -65,11 +65,15 @@ class MEncoderRenderer(BaseRenderer):
         backendCtx.ToStream(self._procEncoder.stdin, 'JPEG')
     
     def __CleanUp(self):
+        if self._procEncoder is None:
+            return
+        
         self._procEncoder.communicate()
 
         for log in [self._encOut, self._encErr]:
             if log:
                 log.close()
+        self._procEncoder = None
         
     def ProcessAbort(self):
         self.__CleanUp()
