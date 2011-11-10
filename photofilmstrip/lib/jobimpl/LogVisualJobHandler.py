@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-
 from .IVisualJobHandler import IVisualJobHandler
 from .LogVisualJobManager import LOGGER
 

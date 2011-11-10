@@ -1,3 +1,4 @@
+# encoding: UTF-8
 
 class IJobContext(object):
 
@@ -10,10 +11,23 @@ class IJobContext(object):
     def PushResult(self, resultObject):
         raise NotImplementedError()
     
+    def _Begin(self):
+        """
+        internal - called from the framework
+        """
+        raise NotImplementedError()
     def Begin(self):
         raise NotImplementedError()
     
+    def _Done(self):
+        """
+        internal - called from the framework
+        """
+        raise NotImplementedError()
     def Done(self):
+        raise NotImplementedError()
+
+    def IsDone(self):
         raise NotImplementedError()
     
     def IsAborted(self):
@@ -21,10 +35,10 @@ class IJobContext(object):
     def Abort(self):
         raise NotImplementedError()
     
-    def IsIdle(self):
-        raise NotImplementedError()
-    def SetPaused(self, value):
-        raise NotImplementedError()
+#    def IsIdle(self):
+#        raise NotImplementedError()
+#    def SetPaused(self, value):
+#        raise NotImplementedError()
     
 
 

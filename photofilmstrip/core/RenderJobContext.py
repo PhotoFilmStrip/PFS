@@ -1,20 +1,18 @@
 # encoding: UTF-8
 
-import Queue
+import logging
 import threading
 
-from photofilmstrip.lib.jobimpl.IVisualJob import IVisualJob
-from photofilmstrip.lib.jobimpl.IJobContext import IJobContext 
-import logging
+from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 
 
-class RenderJobContext(IJobContext, IVisualJob):
+class RenderJobContext(VisualJob):
     def __init__(self, name, renderer, tasks):
-        self.name = name
+        VisualJob.__init__(self, name, groupId="render")
         self.renderer = renderer
         self.tasks = tasks
 
-#        self.SetMaxProgress(len(tasks))
+        self.SetMaxProgress(len(tasks))
         
         self.imgCache = {}
         self.imgKeyStack = []
@@ -25,30 +23,7 @@ class RenderJobContext(IJobContext, IVisualJob):
         
         self.results = {}
 
-#        self.activeWorkers = activeWorkers
-#        self.runFlag = runFlag
-        self.taskQueue = Queue.Queue()
-        self.__info = ""
-        self.__isDone = False
-
-        self.__logger = logging.getLogger("RenderJobContext")
-
-    def GetMaxProgress(self):
-        return len(self.tasks)
-    
-    def GetProgress(self):
-        return self.resultToFetch
-    
-    def GetGroupId(self):
-        return "render"
-    
-    def GetName(self):
-        return self.name
-    
-    def GetInfo(self):
-        return self.__info
-    def SetInfo(self, value):
-        self.__info = value
+        self.__logger = logging.getLogger("RenderJobContext<%s>" % name)
 
     def FetchImage(self, backend, pic):
         if not self.imgCache.has_key(pic.GetFilename()):
@@ -65,44 +40,46 @@ class RenderJobContext(IJobContext, IVisualJob):
         
 
     def Done(self):
+        if self.IsAborted():
+            self.renderer.ProcessAbort()
+            self.SetInfo(_(u"...aborted!"))
+        else:
+            self.SetInfo(_(u"all done"))
         self.renderer.Finalize()
-        self.__isDone = True
 
     def Begin(self):
-        # prepare the renderer, creates the sink pipe 
-        self.renderer.Prepare()
-        
-        self.__logger.debug("%s: prepare task queue", self.name)
         # prepare task queue
+        self.__logger.debug("prepare task queue")
         for idx, task in enumerate(self.tasks):
             task.SetIdx(idx)
-            self.taskQueue.put(task)
+            self.AddWorkLoad(task)
+
+        # prepare the renderer, creates the sink pipe 
+        self.renderer.Prepare()
+        self.sink = self.renderer.GetSink()
 
     def IsRunning(self):
         return True
     def IsIdle(self):
         return False
-    def IsAborted(self):
-        return False
-    def IsDone(self):
-        return self.__isDone
 
     def ToSink(self, pilCtx):
-        pilCtx.ToStream(self.renderer.GetSink(), "JPEG")
+        pilCtx.ToStream(self.sink, "JPEG")
 
 
     def GetWorkLoad(self, block, timeout):
-        task = self.taskQueue.get(block, timeout)
-
-        self.__logger.debug("%s: %s - start", self.name, task)
-        
+        task = VisualJob.GetWorkLoad(self, block, timeout)
         self.SetInfo(task.GetInfo())
+
+        self.__logger.debug("%s - start", task)
+        
         return task
         
     def PushResult(self, resultObject):
         task = resultObject.GetSource()
-        self.__logger.debug("%s: %s - done", self.name, task)
+        self.__logger.debug("%s - done", task)
         self.results[task.idx] = resultObject.GetResult()
+        self.StepProgress()
         self.FetchResult(None)
     
     def FetchResult(self, resultId):
@@ -110,9 +87,8 @@ class RenderJobContext(IJobContext, IVisualJob):
             while self.results.has_key(self.resultToFetch):
                 idx = self.resultToFetch
                 
-                self.__logger.debug("%s: resultToFetch: %s",
-                                        self.name,
-                                        idx)
+                self.__logger.debug("resultToFetch: %s",
+                                    idx)
                 
                 pilCtx = self.results[idx]
                 if pilCtx:

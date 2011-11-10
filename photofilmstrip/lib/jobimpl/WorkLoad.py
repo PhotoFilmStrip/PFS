@@ -1,15 +1,16 @@
 # encoding: UTF-8
 
-from photofilmstrip.lib.jobimpl.IWorkLoad import IWorkLoad
+from .IWorkLoad import IWorkLoad
 
 
 class WorkLoad(IWorkLoad):
+    
     def __init__(self):
         self.result = None
 
     def _Execute(self, jobContext):
         """
-        called by the jobbing framework
+        internal - called by the framework
         """
         try:
             return self.Run(jobContext)

@@ -7,13 +7,12 @@ from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.gui.PnlJobVisual import PnlJobVisual
-from photofilmstrip.lib.jobimpl.IJobContext import IJobContext
-from photofilmstrip.lib.jobimpl.IVisualJob import IVisualJob
-import Queue
+from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 
 
 [wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS, 
 ] = [wx.NewId() for _init_ctrls in range(3)]
+
 
 class PnlJobManager(wx.Panel, IVisualJobManager):
     def _init_coll_szMain_Items(self, parent):
@@ -158,30 +157,6 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
         if not isAborted and errMsg is None:
             self.Destroy()
         
-
-#    def ObservableUpdate(self, obj, arg):
-#        if isinstance(obj, ProgressHandler):
-#            if arg == 'maxProgress':
-#                wx.CallAfter(self.gaugeProgress.SetRange, obj.GetMaxProgress())
-#            elif arg == 'currentProgress':
-#                wx.CallAfter(self.gaugeProgress.SetValue, obj.GetCurrentProgress())
-#            elif arg == 'info':
-#                wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
-#            elif arg == 'done':
-#                wx.CallAfter(self.__OnDone)
-#            elif arg == 'aborting':
-#                wx.CallAfter(self.__OnProgressInfo, obj.GetInfo())
-
-#    def __OnProgressInfo(self, info):
-#        self.stProgress.SetLabel(info)
-#        self.Layout()
-
-    def __CheckAbort(self):
-        if self.__progressHandler.IsAborted():
-            self.__aRenderer.ProcessAbort()
-            return True
-        return False
-    
     def RemovePnlJobVisual(self, pnlJobVisual, layout=False):
         if pnlJobVisual.jobContext.IsDone():
             if pnlJobVisual is self._selected:
@@ -214,21 +189,13 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 
 
 
-class DummyRenderContext(IJobContext, IVisualJob):
+class DummyRenderContext(VisualJob):
     
     def __init__(self, name):
-        self.name = name
+        VisualJob.__init__(self, name)
+        self.SetMaxProgress(100)
+        self.StepProgress("info", 20)
         
-    def GetName(self):
-        return self.name
-    
-    def GetMaxProgress(self):
-        return 100
-    def GetProgress(self):
-        return 20
-    def GetInfo(self):
-        return "info"
-    
     def IsRunning(self):
         return True
     def IsIdle(self):
@@ -237,20 +204,3 @@ class DummyRenderContext(IJobContext, IVisualJob):
         return True
     def IsDone(self):
         return True
-    
-    def GetWorkLoad(self, block, timeout):
-        raise Queue.Empty()
-    
-    
-    def GetGroupId(self):
-        return "general"
-    
-    def Begin(self):
-        pass
-    
-    def Done(self):
-        pass
-    
-    def GetSink(self):
-        import StringIO
-        return StringIO.StringIO()

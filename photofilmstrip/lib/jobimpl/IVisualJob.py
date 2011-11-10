@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-
 class IVisualJob(object):
     
     def GetName(self):
@@ -25,12 +24,7 @@ class IVisualJob(object):
     def StepProgress(self, info=None, progress=1):
         raise NotImplementedError()
 
-    def IsAborted(self):
-        raise NotImplementedError()
-    def Abort(self):
-        raise NotImplementedError()
-    
-    def IsIdle(self):
-        raise NotImplementedError()
-    def SetIdle(self, value):
-        raise NotImplementedError()
+#    def IsIdle(self):
+#        raise NotImplementedError()
+#    def SetIdle(self, value):
+#        raise NotImplementedError()

@@ -1,36 +1,72 @@
 # encoding: UTF-8
 
+import logging
 import Queue
 import time
 
 from .IJobContext import IJobContext
 from .WorkLoad import WorkLoad
+from .IWorkLoad import IWorkLoad
 
 
 class Job(IJobContext):
-    def __init__(self, target=None, args=None, kwargs=None):
+    def __init__(self, target=None, args=None, kwargs=None, 
+                 groupId="general"):
         IJobContext.__init__(self)
+        self.__groupId = groupId
+        
+        self.__logger = logging.getLogger("Job<%s> %s" % (groupId, self))
         
         self.__workQueue = Queue.Queue()
         self.__resultObject = None
         self.__done = False
 
+        self.__aborted = False
+
         if target:
             self.__workQueue.put(SingleWorkLoad(target, args, kwargs))
 
     def GetGroupId(self):
-        return "general"
+        return self.__groupId
+    
+    def AddWorkLoad(self, workLoad):
+        assert isinstance(workLoad, IWorkLoad)
+        self.__workQueue.put(workLoad)
     
     def GetWorkLoad(self, block, timeout):
-        return self.__workQueue.get(block, timeout)
+        if self.__aborted:
+            while 1:
+                self.__logger.debug("emptying task queue")
+                try:
+                    self.__workQueue.get(True, 0.05)
+                finally:
+                    self.__logger.debug("task queue empty")
+        else:
+            return self.__workQueue.get(block, timeout)
     
     def PushResult(self, resultObject):
         self.__resultObject = resultObject
     
+    def _Begin(self):
+        self.Begin()
     def Begin(self):
         pass
+
+    def _Done(self):
+        try:
+            self.Done()
+        finally:
+            self.__done = True
     def Done(self):
-        self.__done = True
+        pass
+    def IsDone(self):
+        return self.__done
+    
+    def IsAborted(self):
+        return self.__aborted
+    def Abort(self):
+        self.__logger.debug("aborting...")
+        self.__aborted = True
     
     def GetResultObject(self, block=True):
         while block and not self.__done:

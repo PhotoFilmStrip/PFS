@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-
 class IVisualJobManager(object):
     
     def RegisterJob(self, job):

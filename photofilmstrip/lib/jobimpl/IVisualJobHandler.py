@@ -1,6 +1,5 @@
 # encoding: UTF-8
 
-
 class IVisualJobHandler(object):
     
     def OnHandleJobBegin(self, jobContext):

@@ -1,6 +1,7 @@
+# encoding: UTF-8
 
 import sys
-from photofilmstrip.lib.jobimpl.IWorkLoad import IWorkLoad
+from .IWorkLoad import IWorkLoad
 
 
 class ResultObject(object):
@@ -19,7 +20,7 @@ class ResultObject(object):
         if self.exception:
             if printTraceback:
                 print >> sys.stderr, self.traceback,
-            raise self.exception
+            raise self.exception # IGNORE:E0702
         else:
             return self.result
 

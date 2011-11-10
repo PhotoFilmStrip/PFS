@@ -14,8 +14,11 @@ EVT_JOB_UPDATE = wx.PyEventBinder(EVT_JOB_UPDATE_TYPE, 1)
 
 class WxVisualJobHandler(IVisualJobHandler):
     
-    def __init__(self):
-        assert isinstance(self, wx.EvtHandler)
+    def __init__(self, win=None):
+        if win is None:
+            win = self
+        assert isinstance(win, wx.EvtHandler)
+        self.__win = win
         
     def GetId(self):
         pass
@@ -24,12 +27,12 @@ class WxVisualJobHandler(IVisualJobHandler):
         pass
     
     def OnHandleJobDone(self, jobContext):
-        evt = ResultEvent(self.GetId(), jobContext.GetResultObject())
-        wx.PostEvent(self, evt)
+        evt = ResultEvent(self.__win.GetId(), jobContext.GetResultObject())
+        wx.PostEvent(self.__win, evt)
     
     def OnHandleJobUpdate(self, jobContext, fields=None):
-        evt = UpdateEvent(self.GetId(), fields)
-        wx.PostEvent(self, evt)
+        evt = UpdateEvent(self.__win.GetId(), fields)
+        wx.PostEvent(self.__win, evt)
     
 
 class ResultEvent(wx.PyEvent):

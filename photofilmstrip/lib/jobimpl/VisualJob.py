@@ -9,9 +9,10 @@ from .LogVisualJobHandler import LogVisualJobHandler
 class VisualJob(Job, IVisualJob):
     def __init__(self, name, target=None, args=None, kwargs=None,
                  maxProgress=-1,
-                 visualJobHandler=None):
+                 visualJobHandler=None,
+                 groupId="general"):
+        Job.__init__(self, target, args, kwargs, groupId)
         IVisualJob.__init__(self)
-        Job.__init__(self, target, args, kwargs)
         
         self.__defaultVisualJobHdl = LogVisualJobHandler()
         self.__visualJobHandler = []
@@ -22,8 +23,6 @@ class VisualJob(Job, IVisualJob):
         self.__maxProgress = maxProgress
         self.__progress = 0
         self.__info = u""
-
-        self.__aborted = False
         
     def __NotifyHandler(self, funcName, args=None):
         if args is None:
@@ -46,10 +45,12 @@ class VisualJob(Job, IVisualJob):
         if len(self.__visualJobHandler) == 0:
             self.__visualJobHandler.append(self.__defaultVisualJobHdl)
 
-    def Begin(self):
+    def _Begin(self):
         self.__NotifyHandler("OnHandleJobBegin")
+        Job._Begin(self)
         
-    def Done(self):
+    def _Done(self):
+        Job._Done(self)
         self.__NotifyHandler("OnHandleJobDone")
     
     def GetName(self):
@@ -84,13 +85,7 @@ class VisualJob(Job, IVisualJob):
         self.__progress = progress
         self.__NotifyHandler("OnHandleJobUpdate", (("progress",),))
 
-
-    def IsAborted(self):
-        return self.__aborted
-    def Abort(self):
-        self.__aborted = True
-    
-    def IsIdle(self):
-        raise NotImplementedError()
-    def SetIdle(self, value):
-        raise NotImplementedError()
+#    def IsIdle(self):
+#        raise NotImplementedError()
+#    def SetIdle(self, value):
+#        raise NotImplementedError()

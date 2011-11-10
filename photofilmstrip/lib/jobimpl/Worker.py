@@ -8,7 +8,7 @@ import traceback
 
 from .IJobContext import IWorker
 from .IWorkLoad import IWorkLoad
-from photofilmstrip.lib.jobimpl.ResultObject import ResultObject
+from .ResultObject import ResultObject
 
 
 class Worker(threading.Thread, IWorker):
@@ -43,7 +43,7 @@ class Worker(threading.Thread, IWorker):
     def run(self):
         self.__logger.debug("Started...")
         while not self.__wantAbort:
-            self.__logger.debug("Worker alive")
+            self.__logger.log(logging.NOTSET, "Worker alive")
             
 #            jobContext = self.__jobManager._GetJobContext(self.GetContextGroupId())
             try:

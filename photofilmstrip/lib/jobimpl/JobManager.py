@@ -1,8 +1,4 @@
-'''
-Created on 15.08.2011
-
-@author: jens
-'''
+# encoding: UTF-8
 
 import logging
 import multiprocessing
@@ -11,10 +7,9 @@ import time
 import threading
 
 from photofilmstrip.lib.common.Singleton import Singleton
-from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
-from photofilmstrip.lib.jobimpl.LogVisualJobManager import LogVisualJobManager
-from photofilmstrip.lib.jobimpl.Worker import Worker
-
+from .IVisualJobManager import IVisualJobManager
+from .LogVisualJobManager import LogVisualJobManager
+from .Worker import Worker
 
 
 class JobManager(Singleton):
@@ -105,6 +100,7 @@ class JobManager(Singleton):
             return jobCtxActive, jobCtxActive.GetWorkLoad(block, timeout) # FIXME: no tuple
         except Queue.Empty:
             # FIXME: Erst beenden, wenn alle Worker fertig sind
+            # better use WaitForMultipleObjects 
             result = True
             while not self.__destroying:
                 for worker in self.__worker[:]: 
@@ -128,9 +124,10 @@ class JobManager(Singleton):
     def __StartCtx(self, ctx):
         self.__logger.debug("starting %s...", ctx.GetName())
         try:
-            ctx.Begin()
+            ctx._Begin() # IGNORE:W0212
         except:
-            self.__logger.error("not started %s", ctx.GetName(), exc_info=1)
+            self.__logger.error("not started %s", # IGNORE:W0702
+                                ctx.GetName(), exc_info=1) 
             return False            
 
         self.__logger.debug("started %s", ctx.GetName())
@@ -139,40 +136,13 @@ class JobManager(Singleton):
     def __FinishCtx(self, ctx):
         self.__logger.debug("finalizing %s...", ctx.GetName())
         try:
-            ctx.Done()
+            ctx._Done() # IGNORE:W0212
         except:
-            self.__logger.error("error %s", ctx.GetName(), exc_info=1)
+            self.__logger.error("error %s", # IGNORE:W0702
+                                ctx.GetName(), exc_info=1)
         finally:
             self.__logger.debug("finished %s", ctx.GetName())
             
-#    def Abort(self, jobContext):
-#        self.__logger.debug("%s: aborting...", jobContext.GetName())
-#        
-#        # the workers should stop processing tasks
-#        jobContext.Pause()
-#        
-#        # set the abort flag in the progress handler
-#        jobContext.Abort()
-#        
-#        while 1:
-#            self.__logger.debug("%s: emptying task queue", jobContext.GetName())
-#            try:
-#                jobContext.GetTaskQueue().get(True, 0.05)
-#            except Queue.Empty:
-#                self.__logger.debug("%s: task queue empty", jobContext.GetName())
-#                break
-#            
-#        # release the pause loop in the workers
-#        jobContext.Resume()
-#            
-#        # wait for workers to terminate
-#        for tw in jobContext.GetWorkers():
-#            self.__logger.debug("%s: joining worker: %s", jobContext.GetName(), tw)
-#            tw.join(3.0)
-#            if tw.is_alive():
-#                self.__logger.debug("%s: killing worker: %s", jobContext.GetName(), tw)
-#                tw.terminate()
-                
     def Destroy(self):
         self.__destroying = True
         self.__logger.debug("start destroying")
