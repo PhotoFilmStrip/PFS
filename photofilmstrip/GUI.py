@@ -20,7 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import multiprocessing
 import sys
 from photofilmstrip.AppMixin import AppMixin
 
@@ -38,6 +37,5 @@ class GuiApp(AppMixin):
 
 
 if __name__ == "__main__":
-    multiprocessing.freeze_support()
     guiApp = GuiApp()
     guiApp.Start()
