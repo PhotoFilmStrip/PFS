@@ -4,6 +4,7 @@ import logging
 import threading
 
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
+from photofilmstrip.lib.jobimpl.Worker import JobAbortedException
 
 
 class RenderJobContext(VisualJob):
@@ -58,6 +59,10 @@ class RenderJobContext(VisualJob):
         self.renderer.Prepare()
         self.sink = self.renderer.GetSink()
 
+    def Abort(self):
+        VisualJob.Abort(self)
+        self.SetInfo(_(u"aborting..."))
+
     def IsRunning(self):
         return True
     def IsIdle(self):
@@ -78,11 +83,12 @@ class RenderJobContext(VisualJob):
     def PushResult(self, resultObject):
         task = resultObject.GetSource()
         self.__logger.debug("%s - done", task)
-        self.results[task.idx] = resultObject.GetResult()
+        try:
+            self.results[task.idx] = resultObject.GetResult()
+        except JobAbortedException:
+            pass
         self.StepProgress()
-        self.FetchResult(None)
-    
-    def FetchResult(self, resultId):
+
         with self.resultToFetchLock:
             while self.results.has_key(self.resultToFetch):
                 idx = self.resultToFetch

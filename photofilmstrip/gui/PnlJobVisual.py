@@ -238,7 +238,7 @@ class PnlJobVisual(wx.Panel):
         resp = dlg.ShowModal()
         dlg.Destroy()
         if resp == wx.ID_YES:
-            JobManager().Abort(self.jobContext)
+            self.jobContext.Abort()
         event.Skip()
         
     def _Remove(self):
