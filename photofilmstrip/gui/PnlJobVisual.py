@@ -231,9 +231,7 @@ class PnlJobVisual(wx.Panel):
 #        self.pnlJobManager.RemovePnlJobVisual(self, True)
         
     def _PlayVideo(self):
-        print "Play video"
-        ActionPlayVideo(None).Execute()
+        ActionPlayVideo(self.jobContext.GetOutputPath()).Execute()
         
     def _OpenFolder(self):
-        print "Open folder"
-        ActionOpenFolder(None).Execute()
+        ActionOpenFolder(self.jobContext.GetOutputPath()).Execute()

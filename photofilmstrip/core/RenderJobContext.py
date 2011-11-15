@@ -25,6 +25,9 @@ class RenderJobContext(VisualJob):
         self.results = {}
 
         self.__logger = logging.getLogger("RenderJobContext<%s>" % name)
+        
+    def GetOutputPath(self):
+        return self.renderer.GetOutputPath()
 
     def FetchImage(self, backend, pic):
         if not self.imgCache.has_key(pic.GetFilename()):
