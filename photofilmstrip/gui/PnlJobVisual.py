@@ -117,15 +117,9 @@ class PnlJobVisual(wx.Panel):
         
         self.jobContext = jobContext
         
-        self._actPause = DynamicAction(
-                _(u"Pause"), 
-                self._PauseResume, 
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR, wx.DefaultSize)}
-        )
-        self._actResume = DynamicAction(
-                 _(u"Resume"), 
-                self._PauseResume, 
+        self._actAbort = DynamicAction(
+                 _(u"Abort"), 
+                self._Abort, 
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_MENU, wx.DefaultSize),
                      wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR, wx.DefaultSize)}
         )
@@ -183,40 +177,34 @@ class PnlJobVisual(wx.Panel):
 
     def OnCmdMenuLeftDown(self, event):
         menu = wx.Menu()
-        id2 = wx.NewId()
-        id3 = wx.NewId()
 
-        if self.jobContext.IsIdle():
-            self._actResume.ToMenu(self, menu)
-#        elif self.jobContext.IsRunning():
-        else:
-            self._actPause.ToMenu(self, menu)
-        
-        if self.jobContext.IsDone() or self.jobContext.IsAborted():
-            self._actRemove.ToMenu(self, menu)
-        else:
-            menu.Append(id3, _(u"Abort"))
+        mitm = self._actAbort.ToMenu(self, menu)
+        menu.Enable(mitm.GetId(), 
+                    self.jobContext.IsIdle() or not self.jobContext.IsDone())
+
+        mitm = self._actRemove.ToMenu(self, menu)
+        menu.Enable(mitm.GetId(),
+                    self.jobContext.IsAborted())
         
         menu.AppendSeparator()
-        mitm = self._actPlay.ToMenu(self, menu)
-        menu.Enable(mitm.GetId(), not self.jobContext.IsAborted())
-        self._actOpenFldr.ToMenu(self, menu)
         
-        self.Bind(wx.EVT_MENU, self._Remove, id=id2)
-        self.Bind(wx.EVT_MENU, self._Abort, id=id3)
+        mitm = self._actPlay.ToMenu(self, menu)
+        menu.Enable(mitm.GetId(), self.jobContext.IsDone())
+
+        mitm = self._actOpenFldr.ToMenu(self, menu)
+        menu.Enable(mitm.GetId(), not self.jobContext.IsIdle())
         
         self.cmdMenu.PopupMenu(menu)
         
     def _SetupAction(self):
-        if not self.jobContext.IsIdle():
-            self.curAction = self._actPause
-        elif self.jobContext.IsIdle():
-            self.curAction = self._actResume
+        if self.jobContext.IsIdle() or not self.jobContext.IsDone():
+            self.curAction = self._actAbort
         elif self.jobContext.IsAborted():
             self.curAction = self._actRemove
         elif self.jobContext.IsDone():
             self.curAction = self._actPlay
         else:
+            print 'shit'
             self.curAction = None
         
         curTip = self.cmdAction.GetToolTip()
@@ -227,19 +215,16 @@ class PnlJobVisual(wx.Panel):
             self.cmdAction.SetBitmap(self.curAction.GetBitmap(wx.ART_TOOLBAR))
             self.cmdAction.SetToolTipString(self.curAction.GetName())
         
-    def _PauseResume(self):    
-        self.jobContext.PauseResume()
-    
-    def _Abort(self, event):
+    def _Abort(self):
         dlg = wx.MessageDialog(self,
                                _(u"Abort selected process?"), 
                                _(u"Question"),
                                wx.YES_NO | wx.ICON_EXCLAMATION)
-        resp = dlg.ShowModal()
-        dlg.Destroy()
-        if resp == wx.ID_YES:
-            self.jobContext.Abort()
-        event.Skip()
+        try:
+            if dlg.ShowModal() == wx.ID_YES:
+                self.jobContext.Abort()
+        finally:
+            dlg.Destroy()
         
     def _Remove(self):
         wx.CallAfter(self.pnlJobManager.RemovePnlJobVisual, self, True)
@@ -252,22 +237,3 @@ class PnlJobVisual(wx.Panel):
     def _OpenFolder(self):
         print "Open folder"
         ActionOpenFolder(None).Execute()
-
-
-
-"""
-Actions:
-State = running: Pause --> paused
-State = paused:  Resume --> running
-State = finished: Play video
-State = aborted: Clear (Msg: Delete files?)
-
-Menu:
-- Abort
-- - 
-- Open folder
-
-2. Continue
-State = finished
-3. 
-"""

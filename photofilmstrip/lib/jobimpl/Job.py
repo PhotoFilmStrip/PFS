@@ -7,6 +7,7 @@ import time
 from .IJobContext import IJobContext
 from .WorkLoad import WorkLoad
 from .IWorkLoad import IWorkLoad
+from photofilmstrip.lib.jobimpl.JobAbortedException import JobAbortedException
 
 
 class Job(IJobContext):
@@ -19,9 +20,10 @@ class Job(IJobContext):
         
         self.__workQueue = Queue.Queue()
         self.__resultObject = None
+        
         self.__done = False
-
         self.__aborted = False
+        self.__idle = True
 
         if target:
             self.__workQueue.put(SingleWorkLoad(target, args, kwargs))
@@ -48,9 +50,18 @@ class Job(IJobContext):
         self.__resultObject = resultObject
     
     def _Begin(self):
-        self.Begin()
+        try:
+            if self.__aborted:
+                self.__done = True
+                raise JobAbortedException()
+            
+            self.Begin()
+        finally:
+            self.__idle = False
     def Begin(self):
         pass
+    def IsIdle(self):
+        return self.__idle
 
     def _Done(self):
         try:
@@ -65,8 +76,24 @@ class Job(IJobContext):
     def IsAborted(self):
         return self.__aborted
     def Abort(self):
-        self.__logger.debug("aborting...")
-        self.__aborted = True
+        if self.__aborted:
+            return False
+        
+        if self.__done:
+            self.__logger.debug("cannot abort finished job!")
+            return False
+        else:
+            self.__aborted = True
+            if self.__idle:
+                # Abort() got called while job is idle
+                # Begin() was not called yet so Done wont get called
+                self.__idle = False
+                self.__done = True
+                return False
+            
+            self.__logger.debug("aborting...")
+        
+        return True
     
     def GetResultObject(self, block=True):
         while block and not self.__done:

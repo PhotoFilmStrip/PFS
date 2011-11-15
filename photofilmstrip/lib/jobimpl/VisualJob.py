@@ -50,8 +50,10 @@ class VisualJob(Job, IVisualJob):
         Job._Begin(self)
         
     def _Done(self):
-        Job._Done(self)
-        self.__NotifyHandler("OnHandleJobDone")
+        try:
+            Job._Done(self)
+        finally:
+            self.__NotifyHandler("OnHandleJobDone")
     
     def GetName(self):
         return self.__name
@@ -84,8 +86,3 @@ class VisualJob(Job, IVisualJob):
     def SetProgress(self, progress):
         self.__progress = progress
         self.__NotifyHandler("OnHandleJobUpdate", (("progress",),))
-
-#    def IsIdle(self):
-#        raise NotImplementedError()
-#    def SetIdle(self, value):
-#        raise NotImplementedError()

@@ -9,6 +9,7 @@ import traceback
 from .IJobContext import IWorker
 from .IWorkLoad import IWorkLoad
 from .ResultObject import ResultObject
+from .JobAbortedException import JobAbortedException
 
 
 class Worker(threading.Thread, IWorker):
@@ -91,7 +92,3 @@ class Worker(threading.Thread, IWorker):
 #            job.evt.DispatchEvent()
 #        except Exception, inst: # IGNORE:R0703
 #            self.__logger.error("notification exception: %s", inst, exc_info=1)
-
-
-class JobAbortedException(Exception):
-    pass

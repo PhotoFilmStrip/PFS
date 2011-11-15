@@ -196,8 +196,6 @@ class DummyRenderContext(VisualJob):
         self.SetMaxProgress(100)
         self.StepProgress("info", 20)
         
-    def IsRunning(self):
-        return True
     def IsIdle(self):
         return False
     def IsAborted(self):

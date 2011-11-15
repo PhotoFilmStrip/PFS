@@ -60,13 +60,8 @@ class RenderJobContext(VisualJob):
         self.sink = self.renderer.GetSink()
 
     def Abort(self):
-        VisualJob.Abort(self)
-        self.SetInfo(_(u"aborting..."))
-
-    def IsRunning(self):
-        return True
-    def IsIdle(self):
-        return False
+        if VisualJob.Abort(self):
+            self.SetInfo(_(u"aborting..."))
 
     def ToSink(self, pilCtx):
         pilCtx.ToStream(self.sink, "JPEG")
@@ -101,38 +96,3 @@ class RenderJobContext(VisualJob):
                     self.ToSink(pilCtx)
                 del self.results[idx]
                 self.resultToFetch += 1
-
-
-
-
-class JobContext(object):
-    
-    def Pause(self):
-        if self._runFlag.value == 0:
-            self._runFlag.value = 1
-#        else:
-#            raise ValueError("invalid state")
-    def IsIdle(self):
-        if self.IsDone() or self.IsAborted():
-            return False
-        else:
-            return self._runFlag.value == 1
-    
-    def Resume(self):
-        if self._runFlag.value == 1:
-            self._runFlag.value = 0
-#        else:
-#            raise ValueError("invalid state")
-    
-    def IsRunning(self):
-        if self.IsDone() or self.IsAborted():
-            return False
-        else:
-            return self._runFlag.value == 0
-
-    def PauseResume(self):
-        if self._runFlag.value == 0:
-            self._runFlag.value = 1
-        elif self._runFlag.value == 1:
-            self._runFlag.value = 0
-

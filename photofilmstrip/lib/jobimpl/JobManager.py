@@ -10,6 +10,7 @@ from photofilmstrip.lib.common.Singleton import Singleton
 from .IVisualJobManager import IVisualJobManager
 from .LogVisualJobManager import LogVisualJobManager
 from .Worker import Worker
+from .JobAbortedException import JobAbortedException
 
 
 class JobManager(Singleton):
@@ -71,7 +72,7 @@ class JobManager(Singleton):
         for worker in newWorkers:
             self.__worker.append(worker)
             worker.start()
-
+            
     def EnqueueContext(self, jobContext):
         assert isinstance(threading.current_thread(), threading._MainThread)
         
@@ -125,6 +126,8 @@ class JobManager(Singleton):
         self.__logger.debug("starting %s...", ctx.GetName())
         try:
             ctx._Begin() # IGNORE:W0212
+        except JobAbortedException:
+            return False    
         except:
             self.__logger.error("not started %s", # IGNORE:W0702
                                 ctx.GetName(), exc_info=1) 

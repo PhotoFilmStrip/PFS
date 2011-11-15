@@ -35,10 +35,8 @@ class IJobContext(object):
     def Abort(self):
         raise NotImplementedError()
     
-#    def IsIdle(self):
-#        raise NotImplementedError()
-#    def SetPaused(self, value):
-#        raise NotImplementedError()
+    def IsIdle(self):
+        raise NotImplementedError()
     
 
 
