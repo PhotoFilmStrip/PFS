@@ -34,7 +34,7 @@ class PyGameBackend(BaseBackend):
         ctx = pygame.image.load(pic.GetFilename())
         return PyGameCtx(ctx.get_size(), ctx)
 
-    def CropAndResize(self, ctx, rect, size):
+    def CropAndResize(self, ctx, rect, size, draft=False):
         subCtx = ctx.subsurface(rect)
         sfc = pygame.transform.smoothscale(subCtx, size)
         return sfc

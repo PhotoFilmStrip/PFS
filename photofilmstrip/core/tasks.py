@@ -53,7 +53,10 @@ class TaskImaging(Task):
         Task.__init__(self)
         self.backend = backend
         self.resolution = resolution
+        self.draft = False
         
+    def SetDraft(self, value):
+        self.draft = value
 
 
 class TaskCropResize(TaskImaging):
@@ -66,7 +69,8 @@ class TaskCropResize(TaskImaging):
         image = jobContext.FetchImage(self.backend, self.picture)
         img = self.backend.CropAndResize(image,
                                          self.rect,
-                                         self.resolution)
+                                         self.resolution,
+                                         self.draft)
         return img
     
 
@@ -80,6 +84,8 @@ class TaskTrans(TaskImaging):
         self.taskPic2 = TaskCropResize(backend, pic2, rect2, resolution)
         
     def Run(self, jobContext):
+        self.taskPic1.SetDraft(self.draft)
+        self.taskPic2.SetDraft(self.draft)
         image1 = self.taskPic1.Run(jobContext)
         image2 = self.taskPic2.Run(jobContext)
         

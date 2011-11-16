@@ -32,7 +32,7 @@ class BaseBackend(object):
     def CreateCtx(self, pic):
         raise NotImplementedError()
     
-    def CropAndResize(self, ctx, rect, size):
+    def CropAndResize(self, ctx, rect, size, draft=False):
         raise NotImplementedError()
     
     def Transition(self, kind, ctx1, ctx2, percentage):

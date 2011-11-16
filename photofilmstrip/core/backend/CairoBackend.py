@@ -27,7 +27,7 @@ from photofilmstrip.core.backend.PILBackend import PILBackend, PILCtx
 
 class CairoBackend(PILBackend):
     
-    def CropAndResize(self, ctx, rect, size):
+    def CropAndResize(self, ctx, rect, size, draft=False):
         from photofilmstrip.core.backend.Transformer import Transformer
         cairoImg = Transformer(ctx).ToCairo()
 

@@ -103,12 +103,12 @@ class PILBackend(BaseBackend):
                                Image.CUBIC)
         return PILCtx(imt)
             
-    def CropAndResize(self, ctx, rect, size):
+    def CropAndResize(self, ctx, rect, size, draft=False):
         box = [int(rect[0]), int(rect[1]), 
                int(rect[0] + rect[2]), int(rect[1] + rect[3])]
         subImg = ctx.data.crop(box)
         
-        if self.IsDraftMode():
+        if draft:
             filtr = Image.NEAREST
         else:
             filtr = Image.ANTIALIAS

@@ -108,6 +108,7 @@ class RenderEngine(object):
                              picTo.Copy(), pathRectsTo[idx], 
                              self.__profile.GetResolution())
             task.SetInfo(infoText)
+            task.SetDraft(self.__draftMode)
             self.__tasks.append(task)
         
         return True
@@ -154,6 +155,7 @@ class RenderEngine(object):
                                       pic.Copy(), rect, 
                                       self.__profile.GetResolution())
                 task.SetInfo(infoText)
+                task.SetDraft(self.__draftMode)
                 self.__tasks.append(task)
             
             picBefore = pic
