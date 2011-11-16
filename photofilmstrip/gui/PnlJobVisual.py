@@ -184,7 +184,7 @@ class PnlJobVisual(wx.Panel):
 
         mitm = self._actRemove.ToMenu(self, menu)
         menu.Enable(mitm.GetId(),
-                    self.jobContext.IsAborted())
+                    self.jobContext.IsDone())
         
         menu.AppendSeparator()
         
