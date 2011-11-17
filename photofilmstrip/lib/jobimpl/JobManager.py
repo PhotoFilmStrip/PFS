@@ -13,6 +13,55 @@ from .Worker import Worker
 from .JobAbortedException import JobAbortedException
 
 
+class _JobCtxGroup(object):
+    
+    def __init__(self, ctxGroup, workers):
+        self.__ctxGroup = ctxGroup
+        self.__idleLock = threading.Lock()
+        self.__idleQueue = Queue.Queue()
+        self.__activeLock = threading.Lock()
+        self.__active = None
+        getJobLock = threading.Lock()
+        self.__getJobCond = threading.Condition(getJobLock)
+       
+        getJobLock = threading.Lock()
+        self.__getJobCond = threading.Condition(getJobLock)
+        
+        self.__workers = workers
+    
+    def Put(self, jobContext):
+        self.__idleQueue.put(jobContext)
+        self.Notify()
+        
+    def Notify(self):
+        with self.__getJobCond:
+            self.__getJobCond.notifyAll()
+            
+    def Get(self):
+        return self.__idleQueue.get(False, None)
+            
+    def __enter__(self):
+        return self
+    def __exit__(self, typ, value, traceback):
+        pass
+    
+    def Active(self):
+        return self.__active
+    
+    def SetActive(self, jobContext):
+        self.__active = jobContext
+        
+    def ActiveLock(self):
+        return self.__activeLock
+        
+    def Wait(self, timeout=None):
+        with self.__getJobCond:
+            self.__getJobCond.wait(timeout)
+            
+    def Workers(self):
+        return self.__workers
+
+
 class JobManager(Singleton):
     
     DEFAULT_CTXGROUP_ID = "general"
@@ -22,13 +71,7 @@ class JobManager(Singleton):
         self.__visuals = [self.__defaultVisual]
         
         self.__destroying = False
-        self.__worker = []
-
-        self.__jobCtxIdleLock = threading.Lock()
-        self.__jobCtxsIdle = {}
-        
-        self.__jobCtxActiveLock = threading.Lock()
-        self.__jobCtxsActive = {}
+        self.__jobCtxGroups = {}
         
         self.__logger = logging.getLogger("JobManager")
         
@@ -52,73 +95,81 @@ class JobManager(Singleton):
         if workerCount is None:
             workerCount = multiprocessing.cpu_count()
             
-        # initialize queues
-        with self.__jobCtxIdleLock:
-            if not self.__jobCtxsIdle.has_key(workerCtxGroup):
-                self.__jobCtxsIdle[workerCtxGroup] = Queue.Queue()
-        with self.__jobCtxActiveLock:
-            if not self.__jobCtxsActive.has_key(workerCtxGroup):
-                self.__jobCtxsActive[workerCtxGroup] = None
+        if self.__jobCtxGroups.has_key(workerCtxGroup):
+            raise RuntimeError("group already initialized")
         
-        newWorkers = []
+        workers = []
         i = 0
         while i < workerCount:
             self.__logger.debug("creating worker for group %s", workerCtxGroup)
             worker = Worker(self, workerCtxGroup, i)
-            newWorkers.append(worker)
+            workers.append(worker)
                             
             i += 1
+
+        jcGroup = _JobCtxGroup(workerCtxGroup, workers)
+        self.__jobCtxGroups[workerCtxGroup] = jcGroup
             
-        for worker in newWorkers:
-            self.__worker.append(worker)
+        for worker in workers:
             worker.start()
+
             
     def EnqueueContext(self, jobContext):
         assert isinstance(threading.current_thread(), threading._MainThread)
         
-        if not self.__jobCtxsIdle.has_key(jobContext.GetGroupId()):
-            raise RuntimeError("no worker for job group available") 
+        if not self.__jobCtxGroups.has_key(jobContext.GetGroupId()):
+            raise RuntimeError("job group %s not available" % jobContext.GetGroupId()) 
 
         self.__logger.debug("%s: register job", jobContext)
         
-        self.__jobCtxsIdle[jobContext.GetGroupId()].put(jobContext)
-
+        self.__jobCtxGroups[jobContext.GetGroupId()].Put(jobContext)
+        
         for visual in self.__visuals:
             visual.RegisterJob(jobContext)
-
-    def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=0.1):
-        jcIdleQueue = self.__jobCtxsIdle[workerCtxGroup]
-        
-        jobCtxActive = self.__jobCtxsActive[workerCtxGroup]
-        while jobCtxActive is None:
-            # no context active, get one from idle queue
-            jcIdle = jcIdleQueue.get(True, 1)
+            
+    def __TransferIdle2Active(self, jcGroup):
+        with jcGroup.ActiveLock():
+            jcIdle = jcGroup.Get()
             if self.__StartCtx(jcIdle):
                 jobCtxActive = jcIdle
-                self.__jobCtxsActive[workerCtxGroup] = jobCtxActive
-    
+                jcGroup.SetActive(jobCtxActive)
+                return jobCtxActive
+
+    def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=None):
+        jcGroup = self.__jobCtxGroups[workerCtxGroup]
+        
+        with jcGroup.ActiveLock():
+            jobCtxActive = jcGroup.Active()
+        while jobCtxActive is None:
+            # no context active, get one from idle queue
+            try:
+                jobCtxActive = self.__TransferIdle2Active(jcGroup)
+            except Queue.Empty:
+                jcGroup.Wait(timeout)
+                jobCtxActive = self.__TransferIdle2Active(jcGroup)
+        
+        jobCtxActive = jcGroup.Active()
         try:
-            return jobCtxActive, jobCtxActive.GetWorkLoad(block, timeout) # FIXME: no tuple
+            return jobCtxActive, jobCtxActive.GetWorkLoad(False, None) # FIXME: no tuple
         except Queue.Empty:
-            # FIXME: Erst beenden, wenn alle Worker fertig sind
-            # better use WaitForMultipleObjects 
-            result = True
-            while not self.__destroying:
-                for worker in self.__worker[:]: 
-                    # use copy because this list is not thread safe
-                    if worker.GetContextGroupId() == workerCtxGroup:
-                        result = result and not worker.IsBusy()
-                if result:
-                    break
-                else:
-                    time.sleep(0.5)
+            # no more workloads, job done, only __FinishCtx() needs to be done
+            
+            with jcGroup.ActiveLock():
+                # wait for all workers to be done (better use WaitForMultipleObjects) 
+                while not self.__destroying:
+                    result = True
+                    for worker in jcGroup.Workers(): 
+                        if worker.GetContextGroupId() == workerCtxGroup:
+                            result = result and not worker.IsBusy()
+                    if result:
+                        break
+                    else:
+                        time.sleep(0.5)
                 
-            jobCtxActive = None
-            with self.__jobCtxActiveLock:
-                jobCtxActive = self.__jobCtxsActive[workerCtxGroup]
-                self.__jobCtxsActive[workerCtxGroup] = None
-            if jobCtxActive is not None:
-                self.__FinishCtx(jobCtxActive)
+                jobCtxActive = jcGroup.Active()
+                if jobCtxActive is not None:
+                    jcGroup.SetActive(None)
+                    self.__FinishCtx(jobCtxActive)
             
             raise Queue.Empty()
 
@@ -147,16 +198,19 @@ class JobManager(Singleton):
             self.__logger.debug("finished %s", ctx.GetName())
             
     def Destroy(self):
-        self.__destroying = True
         self.__logger.debug("start destroying")
-        for worker in self.__worker:
-            worker.Kill()
+        self.__destroying = True
+        for jcGroup in self.__jobCtxGroups.values():
+            for worker in jcGroup.Workers():
+                worker.Kill()
 
-        for worker in self.__worker:
-            self.__logger.debug("joining worker %s", worker.getName())
-            worker.join(3)
-            if worker.isAlive():
-                self.__logger.warning("could not join worker %s", worker.getName())
+            jcGroup.Notify()
+        
+            for worker in jcGroup.Workers():
+                self.__logger.debug("joining worker %s", worker.getName())
+                worker.join(3)
+                if worker.isAlive():
+                    self.__logger.warning("could not join worker %s", worker.getName())
 
         self.__logger.debug("destroyed")
 

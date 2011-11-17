@@ -49,7 +49,7 @@ class Worker(threading.Thread, IWorker):
 #            jobContext = self.__jobManager._GetJobContext(self.GetContextGroupId())
             try:
                 self.__logger.debug("waiting for job")
-                jobContext, workLoad = self.__GetWorkLoad() # Wartet auf Job, bricht nach 1s ab und wirft eine QueueEmpty Exception.
+                jobContext, workLoad = self.__GetWorkLoad()
             except Queue.Empty:
                 continue
 
@@ -58,11 +58,7 @@ class Worker(threading.Thread, IWorker):
                 continue
             
             self.__busy.set()
-            if 1:
-#            if not job.IsAborted():
-                ## Job nicht ausführen, wenn er auf "Aborted" steht. In diesem Fall ist
-                ## das Result Event bereits versendet und eine Ausführung unerwünscht.
-                self.__ProcessWorkLoad(jobContext, workLoad)
+            self.__ProcessWorkLoad(jobContext, workLoad)
             self.__busy.clear()
         self.__logger.debug("Worker gone...")
 
@@ -86,9 +82,3 @@ class Worker(threading.Thread, IWorker):
             self.__logger.debug("result pushed %s", workLoad)
         except Exception, inst: # IGNORE:R0703
             self.__logger.error("push result exception: %s", inst, exc_info=1)
-        
-#        self.__logger.debug("notifying: %s", job.evt.notifyObject)
-#        try:
-#            job.evt.DispatchEvent()
-#        except Exception, inst: # IGNORE:R0703
-#            self.__logger.error("notification exception: %s", inst, exc_info=1)
