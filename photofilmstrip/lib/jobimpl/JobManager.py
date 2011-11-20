@@ -17,9 +17,7 @@ class _JobCtxGroup(object):
     
     def __init__(self, ctxGroup, workers):
         self.__ctxGroup = ctxGroup
-        self.__idleLock = threading.Lock()
         self.__idleQueue = Queue.Queue()
-        self.__activeLock = threading.Lock()
         self.__active = None
         getJobLock = threading.Lock()
         self.__getJobCond = threading.Condition(getJobLock)
@@ -28,33 +26,38 @@ class _JobCtxGroup(object):
         self.__getJobCond = threading.Condition(getJobLock)
         
         self.__workers = workers
+
+        self.__lock = threading.Lock()
     
     def Put(self, jobContext):
         self.__idleQueue.put(jobContext)
-        self.Notify()
         
     def Notify(self):
         with self.__getJobCond:
             self.__getJobCond.notifyAll()
             
-    def Get(self):
-        return self.__idleQueue.get(False, None)
+    def Get(self, timeout):
+        return self.__idleQueue.get(timeout is not None, 
+                                    timeout)
             
     def __enter__(self):
+        self.__lock.acquire()
         return self
     def __exit__(self, typ, value, traceback):
-        pass
+        self.__lock.release()
     
     def Active(self):
         return self.__active
     
     def SetActive(self, jobContext):
         self.__active = jobContext
-        
-    def ActiveLock(self):
-        return self.__activeLock
+        self.Notify()
         
     def Wait(self, timeout=None):
+        if self.__lock.acquire(False):
+            self.__lock.release()
+        else:
+            raise RuntimeError("cannot acquire lock before long blocking operation")
         with self.__getJobCond:
             self.__getJobCond.wait(timeout)
             
@@ -122,39 +125,29 @@ class JobManager(Singleton):
 
         self.__logger.debug("%s: register job", jobContext)
         
-        self.__jobCtxGroups[jobContext.GetGroupId()].Put(jobContext)
+        jcGroup = self.__jobCtxGroups[jobContext.GetGroupId()]
+        jcGroup.Put(jobContext)
         
         for visual in self.__visuals:
             visual.RegisterJob(jobContext)
             
-    def __TransferIdle2Active(self, jcGroup):
-        with jcGroup.ActiveLock():
-            jcIdle = jcGroup.Get()
-            if self.__StartCtx(jcIdle):
-                jobCtxActive = jcIdle
-                jcGroup.SetActive(jobCtxActive)
-                return jobCtxActive
-
     def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=None):
         jcGroup = self.__jobCtxGroups[workerCtxGroup]
         
-        with jcGroup.ActiveLock():
+        with jcGroup:
+            while jcGroup.Active() is None:
+                # no context active, get one from idle queue
+                jcIdle = jcGroup.Get(2.0)
+                if self.__StartCtx(jcIdle):
+                    jcGroup.SetActive(jcIdle)
             jobCtxActive = jcGroup.Active()
-        while jobCtxActive is None:
-            # no context active, get one from idle queue
-            try:
-                jobCtxActive = self.__TransferIdle2Active(jcGroup)
-            except Queue.Empty:
-                jcGroup.Wait(timeout)
-                jobCtxActive = self.__TransferIdle2Active(jcGroup)
-        
-        jobCtxActive = jcGroup.Active()
+
         try:
             return jobCtxActive, jobCtxActive.GetWorkLoad(False, None) # FIXME: no tuple
         except Queue.Empty:
             # no more workloads, job done, only __FinishCtx() needs to be done
             
-            with jcGroup.ActiveLock():
+            with jcGroup:
                 # wait for all workers to be done (better use WaitForMultipleObjects) 
                 while not self.__destroying:
                     result = True

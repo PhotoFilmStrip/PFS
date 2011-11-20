@@ -26,6 +26,8 @@ class RenderJobContext(VisualJob):
 
         self.__logger = logging.getLogger("RenderJobContext<%s>" % name)
         
+        self.SetInfo(_(u"Waiting..."))
+
     def GetOutputPath(self):
         return self.renderer.GetOutputPath()
 

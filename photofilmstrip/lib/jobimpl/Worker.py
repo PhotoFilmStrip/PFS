@@ -52,14 +52,19 @@ class Worker(threading.Thread, IWorker):
                 jobContext, workLoad = self.__GetWorkLoad()
             except Queue.Empty:
                 continue
-
+            
             if not isinstance(workLoad, IWorkLoad):
                 self.__logger.debug("Retrieved invalid job object from Queue: %s", (jobContext, workLoad))
                 continue
             
-            self.__busy.set()
-            self.__ProcessWorkLoad(jobContext, workLoad)
-            self.__busy.clear()
+            if self.__wantAbort:
+                # maybe destroying is in progress, don|t start last job
+                self.__logger.debug("got job while destroying. worload not processed")
+            else:
+                self.__busy.set()
+                self.__ProcessWorkLoad(jobContext, workLoad)
+                self.__busy.clear()
+                
         self.__logger.debug("Worker gone...")
 
     def __ProcessWorkLoad(self, jobContext, workLoad):
