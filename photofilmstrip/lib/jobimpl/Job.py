@@ -7,7 +7,8 @@ import time
 from .IJobContext import IJobContext
 from .WorkLoad import WorkLoad
 from .IWorkLoad import IWorkLoad
-from photofilmstrip.lib.jobimpl.JobAbortedException import JobAbortedException
+from .ResultObject import NoResultObject
+from .JobAbortedException import JobAbortedException
 
 
 class Job(IJobContext):
@@ -19,7 +20,7 @@ class Job(IJobContext):
         self.__logger = logging.getLogger("Job<%s> %s" % (groupId, self))
         
         self.__workQueue = Queue.Queue()
-        self.__resultObject = None
+        self.__resultObject = NoResultObject(WorkLoad())
         
         self.__done = False
         self.__aborted = False
@@ -40,7 +41,7 @@ class Job(IJobContext):
             while 1:
                 self.__logger.debug("emptying task queue")
                 try:
-                    self.__workQueue.get(True, 0.05)
+                    self.__workQueue.get(False, None)
                 finally:
                     self.__logger.debug("task queue empty")
         else:

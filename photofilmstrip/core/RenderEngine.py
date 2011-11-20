@@ -125,7 +125,6 @@ class RenderEngine(object):
                 # last pic has no transition
                 transCount = self.__GetTransCount(pic)
 
-#            img = self.__aRenderer.CreateCtx(pic) # TODO:
             pathRects = self.__ComputePath(pic, picCount + transCount + transCountBefore)
 
             if idxPic > 0 and idxPic < len(pics):

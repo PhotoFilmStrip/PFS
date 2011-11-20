@@ -40,7 +40,7 @@ class ImageCache(Singleton):
         self._wxBmpCache.clear()
     
     def RegisterPicture(self, picture):
-        key = self.__GetPicKey(picture)
+        key = picture.GetKey()
         if not self._wxImgCache.has_key(key):
             img = picture.GetThumbnail(width=ImageCache.SIZE)
             wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
@@ -51,27 +51,21 @@ class ImageCache(Singleton):
             self._wxBmpCache[key] = wxImg.ConvertToBitmap()
 
     def UpdatePicture(self, picture):
-        key = self.__GetPicKey(picture)
+        key = picture.GetKey()
         if self._wxImgCache.has_key(key):
             del self._wxImgCache[key]
         self.RegisterPicture(picture)
     
     def GetImage(self, picture):
-        key = self.__GetPicKey(picture)
+        key = picture.GetKey()
         if not self._wxImgCache.has_key(key):
             self.RegisterPicture(picture)
         wxImg  = self._wxImgCache[key]
         return wxImg
     
     def GetThumbBmp(self, picture):
-        key = self.__GetPicKey(picture)
+        key = picture.GetKey()
         if not self._wxBmpCache.has_key(key):
             self.RegisterPicture(picture)
         wxBmp  = self._wxBmpCache[key]
         return wxBmp
-    
-    def __GetPicKey(self, picture):
-        key = "%s:%s:%s" % (picture.GetFilename(), 
-                            picture.GetRotation(), 
-                            picture.GetEffect())
-        return key

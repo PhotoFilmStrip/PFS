@@ -22,14 +22,15 @@ class VisualJob(Job, IVisualJob):
         self.__name = name
         self.__maxProgress = maxProgress
         self.__progress = 0
-        self.__info = u""
+        self.__info = _(u"Waiting...")
         
     def __NotifyHandler(self, funcName, args=None):
         if args is None:
             args = ()
         for hdl in self.__visualJobHandler:
-            func = getattr(hdl, funcName)
-            func(self, *args)
+            if hdl:
+                func = getattr(hdl, funcName)
+                func(self, *args)
 
     def AddVisualJobHandler(self, visualJobHandler):
         assert isinstance(visualJobHandler, IVisualJobHandler)
@@ -37,6 +38,10 @@ class VisualJob(Job, IVisualJob):
             self.__visualJobHandler.remove(self.__defaultVisualJobHdl)
 
         self.__visualJobHandler.append(visualJobHandler)
+        # if a new visual is added, notify it about all fields possible
+        # for an inital update
+        visualJobHandler.OnHandleJobUpdate(self, ("name", "maxProgress", 
+                                                    "info", "progress"),)
     
     def RemoveVisualJobHandler(self, visualJobHandler):
         if visualJobHandler in self.__visualJobHandler:
@@ -54,6 +59,10 @@ class VisualJob(Job, IVisualJob):
             Job._Done(self)
         finally:
             self.__NotifyHandler("OnHandleJobDone")
+            
+    def Abort(self):
+        Job.Abort(self)
+        self.SetInfo(_(u"...aborted!"))
     
     def GetName(self):
         return self.__name

@@ -24,3 +24,6 @@ class ResultObject(object):
         else:
             return self.result
 
+
+class NoResultObject(ResultObject):
+    pass

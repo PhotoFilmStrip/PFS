@@ -24,14 +24,18 @@ class WxVisualJobHandler(IVisualJobHandler):
         pass
         
     def OnHandleJobBegin(self, jobContext):
-        pass
+        evt = UpdateEvent(self.__win.GetId(), None, UpdateEvent.KIND_BEGIN)
+        wx.PostEvent(self.__win, evt)
     
     def OnHandleJobDone(self, jobContext):
         evt = ResultEvent(self.__win.GetId(), jobContext.GetResultObject())
         wx.PostEvent(self.__win, evt)
+
+        evt = UpdateEvent(self.__win.GetId(), None, UpdateEvent.KIND_DONE)
+        wx.PostEvent(self.__win, evt)
     
     def OnHandleJobUpdate(self, jobContext, fields=None):
-        evt = UpdateEvent(self.__win.GetId(), fields)
+        evt = UpdateEvent(self.__win.GetId(), fields, UpdateEvent.KIND_UPDATE)
         wx.PostEvent(self.__win, evt)
     
 
@@ -50,11 +54,26 @@ class ResultEvent(wx.PyEvent):
 
 
 class UpdateEvent(wx.PyEvent):
+    
+    KIND_UPDATE = 1
+    KIND_BEGIN  = 2
+    KIND_DONE    = 4
 
-    def __init__(self, ident, fields):
+    def __init__(self, ident, fields, kind):
         wx.PyEvent.__init__(self, ident, EVT_JOB_UPDATE_TYPE)
+        if fields is None:
+            fields = []
         self.__fields = fields
+        self.__kind = kind
 
     def GetFields(self):
         return self.__fields
 
+    def IsBegin(self):
+        return self.__kind == UpdateEvent.KIND_BEGIN
+
+    def IsDone(self):
+        return self.__kind == UpdateEvent.KIND_DONE
+
+    def IsUpdate(self):
+        return self.__kind == UpdateEvent.KIND_UPDATE

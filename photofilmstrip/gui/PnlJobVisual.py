@@ -2,11 +2,11 @@
 
 import wx
 
-from photofilmstrip.lib.jobimpl.JobManager import JobManager
-
 from photofilmstrip.action.DynamicAction import DynamicAction
 from photofilmstrip.action.ActionPlayVideo import ActionPlayVideo
 from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
+from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
+    WxVisualJobHandler, EVT_JOB_UPDATE)
 
 
 [wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION, 
@@ -16,7 +16,7 @@ from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
 ] = [wx.NewId() for _init_ctrls in range(8)]
 
 
-class PnlJobVisual(wx.Panel):
+class PnlJobVisual(wx.Panel, WxVisualJobHandler):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -104,6 +104,7 @@ class PnlJobVisual(wx.Panel):
 
     def __init__(self, parent, pnlJobManager, jobContext):
         self._init_ctrls(parent)
+        WxVisualJobHandler.__init__(self)
         self.pnlJobManager = pnlJobManager
         for ctrl in (self, self.stJobName, self.stJobInfo, self.gaugeProgress):
             ctrl.Bind(wx.EVT_LEFT_DOWN, self.__OnLeftDown)
@@ -143,12 +144,18 @@ class PnlJobVisual(wx.Panel):
         )
 
         self.curAction = None
+        self.jobContext.AddVisualJobHandler(self)
         
-    def OnTimer(self):
-        progress = self.jobContext.GetProgress()
-        self.stJobInfo.SetLabel(self.jobContext.GetInfo())
-        self.gaugeProgress.SetValue(progress)
+        self._SetupAction()
         
+        self.Bind(EVT_JOB_UPDATE, self.OnJobUpdate)
+
+    def OnJobUpdate(self, event):
+        fields = event.GetFields()
+        if "progress" in fields:
+            self.gaugeProgress.SetValue(self.jobContext.GetProgress())
+        if "info" in fields:
+            self.stJobInfo.SetLabel(self.jobContext.GetInfo())
         self._SetupAction()
 
     def __OnLeftDown(self, event):

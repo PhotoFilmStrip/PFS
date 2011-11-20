@@ -53,7 +53,6 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 
     def __init__(self, parent):
         self._init_ctrls(parent)
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnSelectItem)
         self.pnlJobs.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         
@@ -65,12 +64,9 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
         
         JobManager().AddVisual(self)
         
-        self.timerUpdate = wx.Timer(self)
-        self.timerUpdate.Start(100)
-        
-        for i in xrange(10):
-            dc = DummyRenderContext("TestJob %d" % i)
-            JobManager().EnqueueContext(dc)
+#        for i in xrange(80):
+#            dc = DummyRenderContext("TestJob %d" % i)
+#            JobManager().EnqueueContext(dc)
 
     def RegisterJob(self, jobContext):
         pjv = PnlJobVisual(self.pnlJobs, self, jobContext)
@@ -87,10 +83,6 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
             pjv.Select(True)
             self._selected = pjv
         
-    def OnTimer(self, event):
-        for pjv in self.pnlJobVisuals:
-            pjv.OnTimer()
-
     def OnSelectItem(self, event):
         pnl = event.GetEventObject()
         if pnl != self._selected:
@@ -119,12 +111,6 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
             event.Skip()
 
     def __OnDone(self):
-        isAborted = self.__progressHandler.IsAborted()
-        if isAborted:
-            self.stProgress.SetLabel(_(u"...aborted!"))
-        else:
-            self.stProgress.SetLabel(_(u"all done"))
-
         errMsg = self.__renderEngine.GetErrorMessage()
         errCls = self.__renderEngine.GetErrorClass()
         if errMsg:
@@ -135,24 +121,10 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
             dlg.ShowModal()
             dlg.Destroy()
 
-        self.cmdClose.SetLabel(_(u"&Close"))
-        self.cmdStart.Enable(True)
-        self.cmdBatch.Enable(True)
-        self.pnlSettings.Enable(True)
-
-        self.__progressHandler = None
-        self.__renderEngine    = None
         self.Layout()
         
         if errCls is RendererException:
             return
-        
-        dlg = DlgFinalize(self, 
-                          self.__GetOutputPath(),
-                          isAborted, 
-                          errMsg=errMsg)
-        dlg.ShowModal()
-        dlg.Destroy()
         
         if not isAborted and errMsg is None:
             self.Destroy()
@@ -192,13 +164,8 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 class DummyRenderContext(VisualJob):
     
     def __init__(self, name):
-        VisualJob.__init__(self, name)
+        VisualJob.__init__(self, name, target=lambda: None)
         self.SetMaxProgress(100)
-        self.StepProgress("info", 20)
-        
-    def IsIdle(self):
-        return False
-    def IsAborted(self):
-        return True
-    def IsDone(self):
-        return True
+
+    def Done(self):
+        self.StepProgress("Done", 95)

@@ -26,23 +26,20 @@ class RenderJobContext(VisualJob):
 
         self.__logger = logging.getLogger("RenderJobContext<%s>" % name)
         
-        self.SetInfo(_(u"Waiting..."))
-
     def GetOutputPath(self):
         return self.renderer.GetOutputPath()
 
     def FetchImage(self, backend, pic):
-        if not self.imgCache.has_key(pic.GetFilename()):
-#            self._GetLogger().debug("%s: GetImage(%s)", self.name, pic.GetFilename())
+        if not self.imgCache.has_key(pic.GetKey()):
+            self.__logger.debug("%s: GetImage(%s)", self.GetName(), pic.GetFilename())
             if len(self.imgKeyStack) > 2:
                 key = self.imgKeyStack.pop(0)
-#                self._GetLogger().debug("%s: Pop cache (%s)", self.name, key)
+                self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
                 self.imgCache[key] = None
                                 
-            # TODO: gleiches bild mit unterschiedlicher rotation
-            self.imgCache[pic.GetFilename()] = backend.CreateCtx(pic)
-            self.imgKeyStack.append(pic.GetFilename())
-        return self.imgCache[pic.GetFilename()]
+            self.imgCache[pic.GetKey()] = backend.CreateCtx(pic)
+            self.imgKeyStack.append(pic.GetKey())
+        return self.imgCache[pic.GetKey()]
         
 
     def Done(self):

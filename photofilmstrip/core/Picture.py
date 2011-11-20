@@ -219,3 +219,9 @@ class Picture(Observable):
         '''
         from photofilmstrip.core.backend.PILBackend import PILBackend
         return PILBackend.GetThumbnail(self, width, height)
+
+    def GetKey(self):
+        key = "%s:%s:%s" % (self.GetFilename(), 
+                            self.GetRotation(), 
+                            self.GetEffect())
+        return key

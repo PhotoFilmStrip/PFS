@@ -37,10 +37,6 @@ class Worker(threading.Thread, IWorker):
     def Kill(self):
         self.__wantAbort = True
 
-    def __GetWorkLoad(self):
-        # throws QueueEmpty Exception
-        return self.__jobManager._GetWorkLoad(self.GetContextGroupId())
-
     def run(self):
         self.__logger.debug("Started...")
         while not self.__wantAbort:
@@ -49,7 +45,7 @@ class Worker(threading.Thread, IWorker):
 #            jobContext = self.__jobManager._GetJobContext(self.GetContextGroupId())
             try:
                 self.__logger.debug("waiting for job")
-                jobContext, workLoad = self.__GetWorkLoad()
+                jobContext, workLoad = self.__jobManager._GetWorkLoad(self.GetContextGroupId())
             except Queue.Empty:
                 continue
             
