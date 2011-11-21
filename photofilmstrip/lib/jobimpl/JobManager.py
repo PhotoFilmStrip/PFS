@@ -142,53 +142,55 @@ class JobManager(Singleton):
                     jcGroup.SetActive(jcIdle)
             jobCtxActive = jcGroup.Active()
 
-        try:
-            return jobCtxActive, jobCtxActive.GetWorkLoad(False, None) # FIXME: no tuple
-        except Queue.Empty:
-            # no more workloads, job done, only __FinishCtx() needs to be done
-            
-            with jcGroup:
+            try:
+                workLoad = jobCtxActive.GetWorkLoad(False, None)
+                return jobCtxActive, workLoad # FIXME: no tuple
+            except Queue.Empty:
+                # no more workloads, job done, only __FinishCtx() needs to be done
                 # wait for all workers to be done (better use WaitForMultipleObjects) 
                 while not self.__destroying:
                     result = True
                     for worker in jcGroup.Workers(): 
-                        if worker.GetContextGroupId() == workerCtxGroup:
-                            result = result and not worker.IsBusy()
+                        result = result and not worker.IsBusy()
                     if result:
                         break
                     else:
-                        time.sleep(0.5)
+                        time.sleep(0.05)
                 
                 jobCtxActive = jcGroup.Active()
                 if jobCtxActive is not None:
                     jcGroup.SetActive(None)
                     self.__FinishCtx(jobCtxActive)
             
-            raise Queue.Empty()
+                raise Queue.Empty()
 
     def __StartCtx(self, ctx):
-        self.__logger.debug("starting %s...", ctx.GetName())
+        self.__logger.debug("<%s> starting %s...", 
+                            threading.currentThread().getName(), ctx.GetName())
         try:
             ctx._Begin() # IGNORE:W0212
         except JobAbortedException:
             return False    
         except:
-            self.__logger.error("not started %s", # IGNORE:W0702
-                                ctx.GetName(), exc_info=1) 
+            self.__logger.error("<%s> not started %s", # IGNORE:W0702
+                                threading.currentThread().getName(), ctx.GetName(), exc_info=1) 
             return False            
 
-        self.__logger.debug("started %s", ctx.GetName())
+        self.__logger.debug("<%s> started %s", 
+                            threading.currentThread().getName(), ctx.GetName())
         return True
     
     def __FinishCtx(self, ctx):
-        self.__logger.debug("finalizing %s...", ctx.GetName())
+        self.__logger.debug("<%s> finalizing %s...", 
+                            threading.currentThread().getName(), ctx.GetName())
         try:
             ctx._Done() # IGNORE:W0212
         except:
-            self.__logger.error("error %s", # IGNORE:W0702
-                                ctx.GetName(), exc_info=1)
+            self.__logger.error("<%s> error %s", # IGNORE:W0702
+                                threading.currentThread().getName(), ctx.GetName(), exc_info=1)
         finally:
-            self.__logger.debug("finished %s", ctx.GetName())
+            self.__logger.debug("<%s> finished %s", 
+                                threading.currentThread().getName(), ctx.GetName())
             
     def Destroy(self):
         self.__logger.debug("start destroying")

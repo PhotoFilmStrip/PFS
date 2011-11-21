@@ -24,7 +24,7 @@ class RenderJobContext(VisualJob):
         
         self.results = {}
 
-        self.__logger = logging.getLogger("RenderJobContext<%s>" % name)
+        self.__logger = logging.getLogger("RenderJobContext")
         
     def GetOutputPath(self):
         return self.renderer.GetOutputPath()
@@ -52,7 +52,7 @@ class RenderJobContext(VisualJob):
 
     def Begin(self):
         # prepare task queue
-        self.__logger.debug("prepare task queue")
+        self.__logger.debug("%s: prepare task queue", self.GetName())
         for idx, task in enumerate(self.tasks):
             task.SetIdx(idx)
             self.AddWorkLoad(task)
@@ -73,13 +73,13 @@ class RenderJobContext(VisualJob):
         task = VisualJob.GetWorkLoad(self, block, timeout)
         self.SetInfo(task.GetInfo())
 
-        self.__logger.debug("%s - start", task)
+        self.__logger.debug("%s: %s - start", self.GetName(), task)
         
         return task
         
     def PushResult(self, resultObject):
         task = resultObject.GetSource()
-        self.__logger.debug("%s - done", task)
+        self.__logger.debug("%s: %s - done", self.GetName(), task)
         try:
             self.results[task.idx] = resultObject.GetResult()
         except JobAbortedException:
@@ -90,8 +90,8 @@ class RenderJobContext(VisualJob):
             while self.results.has_key(self.resultToFetch):
                 idx = self.resultToFetch
                 
-                self.__logger.debug("resultToFetch: %s",
-                                    idx)
+                self.__logger.debug("%s: resultToFetch: %s",
+                                    self.GetName(), idx)
                 
                 pilCtx = self.results[idx]
                 if pilCtx:

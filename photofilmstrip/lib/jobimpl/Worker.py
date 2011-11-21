@@ -24,7 +24,7 @@ class Worker(threading.Thread, IWorker):
         self.__busy.clear()
         self.__wantAbort = False
         
-        self.__logger = logging.getLogger(self.getName())
+        self.__logger = logging.getLogger("Worker")
 
     def GetContextGroupId(self):
         return self.__ctxGroupId
@@ -38,39 +38,40 @@ class Worker(threading.Thread, IWorker):
         self.__wantAbort = True
 
     def run(self):
-        self.__logger.debug("Started...")
+        self.__logger.debug("<%s> Started...", self.getName())
         while not self.__wantAbort:
-            self.__logger.log(logging.NOTSET, "Worker alive")
+            self.__logger.log(logging.NOTSET, "<%s> Worker alive", self.getName())
             
 #            jobContext = self.__jobManager._GetJobContext(self.GetContextGroupId())
             try:
-                self.__logger.debug("waiting for job")
+                self.__logger.debug("<%s> waiting for job", self.getName())
                 jobContext, workLoad = self.__jobManager._GetWorkLoad(self.GetContextGroupId())
             except Queue.Empty:
                 continue
             
             if not isinstance(workLoad, IWorkLoad):
-                self.__logger.debug("Retrieved invalid job object from Queue: %s", (jobContext, workLoad))
+                self.__logger.debug("<%s> Retrieved invalid job object from Queue: %s", 
+                                    self.getName(), jobContext, workLoad)
                 continue
             
             if self.__wantAbort:
                 # maybe destroying is in progress, don|t start last job
-                self.__logger.debug("got job while destroying. worload not processed")
+                self.__logger.debug("<%s> got job while destroying. worload not processed", self.getName())
             else:
                 self.__busy.set()
                 self.__ProcessWorkLoad(jobContext, workLoad)
                 self.__busy.clear()
                 
-        self.__logger.debug("Worker gone...")
+        self.__logger.debug("<%s> Worker gone...", self.getName())
 
     def __ProcessWorkLoad(self, jobContext, workLoad):
         ro = ResultObject(workLoad)
         try:
-            self.__logger.debug("processing work load %s", workLoad)
+            self.__logger.debug("<%s> processing work load %s", self.getName(), workLoad)
             ro.result = workLoad._Execute(jobContext) # IGNORE:W0212
-            self.__logger.debug("execution done, result = %s", ro.result)
+            self.__logger.debug("<%s> execution done, result = %s", self.getName(), ro.result)
         except Exception, inst: # IGNORE:R0703
-            self.__logger.error("job exception: %s", inst, exc_info=1)
+            self.__logger.error("<%s> job exception: %s", self.getName(), inst, exc_info=1)
             ro.exception = inst
             ro.traceback = "Traceback (within worker):\n" + "".join(traceback.format_tb(sys.exc_info()[2]))
 
@@ -78,8 +79,8 @@ class Worker(threading.Thread, IWorker):
             ro.exception = JobAbortedException()
 
         try:
-            self.__logger.debug("pushing result %s", workLoad)
+            self.__logger.debug("<%s> pushing result %s", self.getName(), workLoad)
             jobContext.PushResult(ro)
-            self.__logger.debug("result pushed %s", workLoad)
+            self.__logger.debug("<%s> result pushed %s", self.getName(), workLoad)
         except Exception, inst: # IGNORE:R0703
-            self.__logger.error("push result exception: %s", inst, exc_info=1)
+            self.__logger.error("<%s> push result exception: %s", self.getName(), inst, exc_info=1)
