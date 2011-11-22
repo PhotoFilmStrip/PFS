@@ -137,11 +137,12 @@ class JobManager(Singleton):
         with jcGroup:
             while jcGroup.Active() is None:
                 # no context active, get one from idle queue
-                jcIdle = jcGroup.Get(2.0)
+                jcIdle = jcGroup.Get(1.0)
                 if self.__StartCtx(jcIdle):
                     jcGroup.SetActive(jcIdle)
+            
+        with jcGroup:
             jobCtxActive = jcGroup.Active()
-
             try:
                 workLoad = jobCtxActive.GetWorkLoad(False, None)
                 return jobCtxActive, workLoad # FIXME: no tuple
@@ -202,10 +203,12 @@ class JobManager(Singleton):
             jcGroup.Notify()
         
             for worker in jcGroup.Workers():
-                self.__logger.debug("joining worker %s", worker.getName())
+                self.__logger.debug("<%s> joining...", worker.getName())
                 worker.join(3)
                 if worker.isAlive():
-                    self.__logger.warning("could not join worker %s", worker.getName())
+                    self.__logger.warning("<%s> join failed", worker.getName())
+                else:
+                    self.__logger.debug("<%s> joined!", worker.getName())
 
         self.__logger.debug("destroyed")
 
