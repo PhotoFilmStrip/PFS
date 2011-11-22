@@ -104,8 +104,8 @@ class PILBackend(BaseBackend):
         return PILCtx(imt)
             
     def CropAndResize(self, ctx, rect, size, draft=False):
-        box = [int(rect[0]), int(rect[1]), 
-               int(rect[0] + rect[2]), int(rect[1] + rect[3])]
+        box = [int(round(rect[0])), int(round(rect[1])), 
+               int(round(rect[0] + rect[2])), int(round(rect[1] + rect[3]))]
         subImg = ctx.data.crop(box)
         
         if draft:
@@ -176,6 +176,7 @@ class PILBackend(BaseBackend):
     def __GetImage(cls, picture):
         try:
             img = Image.open(picture.GetFilename())
+            img.load()
             picture.SetDummy(False)
         except StandardError, err:
             logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err, exc_info=1)
