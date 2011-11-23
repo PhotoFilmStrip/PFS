@@ -61,8 +61,8 @@ class MEncoderRenderer(BaseRenderer):
             return "false"
         return BaseRenderer.GetDefaultProperty(prop)
 
-    def ProcessFinalize(self, backendCtx):
-        backendCtx.ToStream(self._procEncoder.stdin, 'JPEG')
+    def ProcessFinalize(self, pilImg):
+        pilImg.save(self._procEncoder.stdin, 'JPEG', quality=95)
     
     def __CleanUp(self):
         if self._procEncoder is None:

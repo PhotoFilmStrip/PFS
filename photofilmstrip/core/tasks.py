@@ -5,7 +5,7 @@ from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad
 
 from photofilmstrip.core.Subtitle import SubtitleSrt
 
-from photofilmstrip.core.PILBackend import PILBackend
+from photofilmstrip.core import PILBackend
 
 
 class Task(WorkLoad):
@@ -53,7 +53,6 @@ class TaskSubtitle(Task):
 class TaskImaging(Task):
     def __init__(self, resolution):
         Task.__init__(self)
-        self.backend = PILBackend()
         self.resolution = resolution
         self.draft = False
         
@@ -69,10 +68,10 @@ class TaskCropResize(TaskImaging):
         
     def Run(self, jobContext):
         image = jobContext.FetchImage(self.picture)
-        img = self.backend.CropAndResize(image,
-                                         self.rect,
-                                         self.resolution,
-                                         self.draft)
+        img = PILBackend.CropAndResize(image,
+                                       self.rect,
+                                       self.resolution,
+                                       self.draft)
         return img
     
 
@@ -91,8 +90,8 @@ class TaskTrans(TaskImaging):
         image1 = self.taskPic1.Run(jobContext)
         image2 = self.taskPic2.Run(jobContext)
         
-        img = self.backend.Transition(self.kind, 
-                                      image1, image2, 
-                                      self.percentage)
+        img = PILBackend.Transition(self.kind,
+                                    image1, image2,
+                                    self.percentage)
         
         return img

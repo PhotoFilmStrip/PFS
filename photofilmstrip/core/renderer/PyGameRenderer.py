@@ -64,9 +64,9 @@ class PyGameRenderer(BaseRenderer):
             framerate = 30000.0 / 1001.0
         return framerate
     
-    def ProcessFinalize(self, pilCtx):
-        if pilCtx:
-            pygameImg = self._PilToPyGame(pilCtx)
+    def ProcessFinalize(self, pilImg):
+        if pilImg:
+            pygameImg = self._PilToPyGame(pilImg)
 #            self._screen.fill(self._black)
             self._screen.blit(pygameImg, (0, 0))
             pygame.display.flip()
@@ -97,8 +97,7 @@ class PyGameRenderer(BaseRenderer):
         else:
             return False
 
-    def _PilToPyGame(self, pilCtx):
-        pilImg = pilCtx.data
+    def _PilToPyGame(self, pilImg):
         mode = pilImg.mode
         assert mode in "RGB", "RGBA"
         return pygame.image.fromstring(pilImg.tostring(), pilImg.size, mode)

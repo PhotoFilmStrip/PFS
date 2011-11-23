@@ -6,8 +6,6 @@ import threading
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 from photofilmstrip.lib.jobimpl.Worker import JobAbortedException
 
-from photofilmstrip.core.PILBackend import PILBackend
-
 
 class RenderJob(VisualJob):
     def __init__(self, name, renderer, tasks):
@@ -39,7 +37,7 @@ class RenderJob(VisualJob):
                 self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
                 self.imgCache[key] = None
                                 
-            self.imgCache[pic.GetKey()] = PILBackend().CreateCtx(pic)
+            self.imgCache[pic.GetKey()] = pic.GetImage()
             self.imgKeyStack.append(pic.GetKey())
         return self.imgCache[pic.GetKey()]
         
@@ -61,14 +59,14 @@ class RenderJob(VisualJob):
 
         # prepare the renderer, creates the sink pipe 
         self.renderer.Prepare()
-        self.sink = self.renderer.GetSink()
+#        self.sink = self.renderer.GetSink()
 
     def Abort(self):
         if VisualJob.Abort(self):
             self.SetInfo(_(u"aborting..."))
 
-    def ToSink(self, pilCtx):
-        pilCtx.ToStream(self.sink, "JPEG")
+    def ToSink(self, pilImg):
+        self.renderer.ProcessFinalize(pilImg)
 
 
     def GetWorkLoad(self, block, timeout):

@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import random
 
 from photofilmstrip.lib.common.ObserverPattern import Observable
@@ -132,14 +133,14 @@ class Picture(Observable):
         self._width = width
     def GetWidth(self):
         if self._width == -1:
-            self.GetImage()
+            logging.debug("width not set yet!")
         return self._width
     
     def SetHeight(self, height):
         self._height = height
     def GetHeight(self):
         if self._height == -1:
-            self.GetImage()
+            logging.debug("height not set yet!")
         return self._height
     
     def SetTransition(self, transition):
@@ -166,26 +167,26 @@ class Picture(Observable):
         height = self.GetHeight()
         if width < height:
             # portrait
-            self._startRect = (0, 0, width, width / ratio)
-            self._targetRect = (0, height - (width / ratio), width, width / ratio)
+            startRect = (0, 0, width, width / ratio)
+            targetRect = (0, height - (width / ratio), width, width / ratio)
         else:
             scaledWidth = width * 0.75
-            self._startRect = (0, 0, width, width / ratio)
+            startRect = (0, 0, width, width / ratio)
             d = random.randint(0, 3)
             if d == 0:
-                self._targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
+                targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
             elif d == 1:
-                self._targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+                targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
             elif d == 2:
-                self._targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
+                targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
             elif d == 3:
-                self._targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+                targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
 
         if random.randint(0, 1):
-            self._targetRect, self._startRect = self._startRect, self._targetRect
+            targetRect, startRect = startRect, targetRect
 
-        self.Notify("start")
-        self.Notify("target")
+        self.SetStartRect(startRect)
+        self.SetTargetRect(targetRect)
     
     def __Rotate(self, clockwise=True):
         if clockwise:
@@ -209,7 +210,7 @@ class Picture(Observable):
         @deprecated: convenience
         '''
         # circular import
-        from photofilmstrip.core.PILBackend import PILBackend
+        from photofilmstrip.core import PILBackend
         img = PILBackend.GetImage(self)
         self._width, self._height = PILBackend.GetImageSize(img)
         return img
@@ -219,7 +220,7 @@ class Picture(Observable):
         @deprecated: convenience
         '''
         # circular import
-        from photofilmstrip.core.PILBackend import PILBackend
+        from photofilmstrip.core import PILBackend
         return PILBackend.GetThumbnail(self, width, height)
 
     def GetKey(self):

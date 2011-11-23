@@ -74,9 +74,9 @@ class CairoRenderer(BaseRenderer):
             framerate = 30000.0 / 1001.0
         return framerate
     
-    def ProcessFinalize(self, pilCtx):
-        if pilCtx:
-            cairoImg = self._PilToCairo(pilCtx)
+    def ProcessFinalize(self, pilImg):
+        if pilImg:
+            cairoImg = self._PilToCairo(pilImg)
             self._ctx = cairoImg
         self._mainClock.tick(self._framerate)
             
@@ -118,8 +118,8 @@ class CairoRenderer(BaseRenderer):
         else:
             return False
         
-    def _PilToCairo(self, pilCtx):
-        pilImg = pilCtx.data.copy()
+    def _PilToCairo(self, pilImg):
+        pilImg = pilImg.copy()
         w, h = pilImg.size  
         data = pilImg.convert('RGBA').tostring()
         buff = array.array('B', data)

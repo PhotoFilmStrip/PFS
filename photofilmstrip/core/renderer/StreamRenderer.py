@@ -44,5 +44,9 @@ class StreamRenderer(SingleFileRenderer):
         else:
             return SingleFileRenderer.GetDefaultProperty(prop)
 
-    def ProcessFinalize(self, ctx):
-        ctx.ToStream(sys.stdout, self.GetProperty("Format"))
+    def ProcessFinalize(self, pilImg):
+        imgFormat = self.GetProperty("Format")
+        if imgFormat in ["JPEG", "PPM"]:
+            pilImg.save(sys.stdout, imgFormat)
+        else:
+            raise RuntimeError("unsupported format: %s", imgFormat)

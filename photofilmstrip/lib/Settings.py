@@ -32,7 +32,7 @@ from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.util import Encode, Decode, IsPathWritable
 
 try:
-    from _svnInfo import SVN_REV
+    from _svnInfo import SVN_REV # IGNORE:F0401
 except ImportError:
     SVN_REV = "trunk"
 
@@ -45,7 +45,7 @@ if sys.platform == "win32":
     _path.append(os.path.join(APP_DIR, "lib", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
 
-    import _subprocess
+    import _subprocess # IGNORE:F0401
     startupinfo = subprocess.STARTUPINFO()
     startupinfo.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
     subprocess.STARTUPINFO = lambda: startupinfo

@@ -48,7 +48,7 @@ class SingleFileRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
-    def ProcessFinalize(self, backendCtx):
+    def ProcessFinalize(self, pilImg):
         self._counter += 1
         imgFormat = "JPEG"
         
@@ -56,7 +56,12 @@ class SingleFileRenderer(BaseRenderer):
                                    '%09d.%s' % (self._counter, 
                                                 imgFormat.lower()))
         fd = open(newFilename, "wb")
-        backendCtx.ToStream(fd, imgFormat, quality=90)
+        
+        if imgFormat in ["JPEG", "PPM"]:
+            pilImg.save(fd, imgFormat, quality=90)
+        else:
+            raise RuntimeError("unsupported format: %s", imgFormat)
+        
         fd.close()
     
     def Finalize(self):
