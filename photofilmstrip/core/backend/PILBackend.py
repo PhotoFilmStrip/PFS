@@ -83,47 +83,17 @@ class PILBackend(BaseBackend):
         pilImg = pic.GetImage()
         return PILCtx(pilImg)
 
-    def _CropAndResize(self, ctx, rect, size):
-        width, height = ctx.size
-        mask_width, mask_height = size
-        aspect = 1.0 * width / height
-        mask_aspect = 1.0*mask_width/mask_height
-        im = ctx.data
-        if aspect > mask_aspect:
-            ratio = 1.0 * height / mask_height
-            imt = im.transform((mask_width, mask_height), 
-                               Image.AFFINE,
-                               (ratio, 0, (width-mask_width*ratio)/2, 0, ratio, 0),
-                               Image.CUBIC)
-        else:
-            ratio = 1.0 * width / mask_width
-            imt = im.transform((mask_width, mask_height), 
-                               Image.AFFINE, 
-                               (ratio, 0, 0, 0, ratio, (height-mask_height*ratio)/2),
-                               Image.CUBIC)
-        return PILCtx(imt)
-            
     def CropAndResize(self, ctx, rect, size, draft=False):
-        box = [int(round(rect[0])), int(round(rect[1])), 
-               int(round(rect[0] + rect[2])), int(round(rect[1] + rect[3]))]
-        subImg = ctx.data.crop(box)
-        
         if draft:
             filtr = Image.NEAREST
         else:
-            filtr = Image.ANTIALIAS
-            
-#        if not self._draft:
-#            # Begin Optimizations
-#            if cropRect[2] > size[0] * 3:
-#                # downscale more than factor 3, prescaling
-#                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
-#            if cropRect[2] < size[0]:
-#                # upscaling
-#                filterStr = "bicubic"
-#            # End Optimizations
-            
-        return PILCtx(subImg.resize(size, filtr))
+            filtr = Image.BILINEAR
+        im2 = ctx.data.transform(size,
+                                 Image.AFFINE,
+                                 [rect[2] / float(size[0]), 0, rect[0],
+                                  0, rect[3] / float(size[1]), rect[1]],
+                                 filtr)
+        return PILCtx(im2)
     
     def Transition(self, kind, ctx1, ctx2, percentage):
         if kind == Picture.TRANS_FADE:

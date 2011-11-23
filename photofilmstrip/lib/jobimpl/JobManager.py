@@ -141,7 +141,6 @@ class JobManager(Singleton):
                 if self.__StartCtx(jcIdle):
                     jcGroup.SetActive(jcIdle)
             
-        with jcGroup:
             jobCtxActive = jcGroup.Active()
             try:
                 workLoad = jobCtxActive.GetWorkLoad(False, None)
