@@ -19,15 +19,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from photofilmstrip.core.backend.PILBackend import PILBackend
-#from photofilmstrip.core.backend.CairoBackend import CairoBackend
-
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
-from photofilmstrip.core.RenderJobContext import RenderJobContext
-
-BACKEND = PILBackend()
-#BACKEND = CairoBackend()
+from photofilmstrip.core.RenderJob import RenderJob
 
 
 class RenderEngine(object):
@@ -102,8 +96,7 @@ class RenderEngine(object):
         
         count = len(pathRectsFrom)
         for idx in range(count):
-            task = TaskTrans(BACKEND, 
-                             trans, idx / float(count),
+            task = TaskTrans(trans, idx / float(count),
                              picFrom.Copy(), pathRectsFrom[idx], 
                              picTo.Copy(), pathRectsTo[idx], 
                              self.__profile.GetResolution())
@@ -150,8 +143,7 @@ class RenderEngine(object):
                 _pathRects = pathRects[transCountBefore:]
                 
             for rect in _pathRects:
-                task = TaskCropResize(BACKEND,
-                                      pic.Copy(), rect, 
+                task = TaskCropResize(pic.Copy(), rect, 
                                       self.__profile.GetResolution())
                 task.SetInfo(infoText)
                 task.SetDraft(self.__draftMode)
@@ -180,7 +172,7 @@ class RenderEngine(object):
                                pics)
         self.__tasks.insert(0, taskSub)
                 
-        rjc = RenderJobContext(self.__name, self.__aRenderer, self.GetTasks())
+        rjc = RenderJob(self.__name, self.__aRenderer, self.GetTasks())
         JobManager().EnqueueContext(rjc)
             
     def GetTasks(self):

@@ -5,6 +5,8 @@ from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad
 
 from photofilmstrip.core.Subtitle import SubtitleSrt
 
+from photofilmstrip.core.PILBackend import PILBackend
+
 
 class Task(WorkLoad):
     def __init__(self):
@@ -49,9 +51,9 @@ class TaskSubtitle(Task):
 
 
 class TaskImaging(Task):
-    def __init__(self, backend, resolution):
+    def __init__(self, resolution):
         Task.__init__(self)
-        self.backend = backend
+        self.backend = PILBackend()
         self.resolution = resolution
         self.draft = False
         
@@ -60,13 +62,13 @@ class TaskImaging(Task):
 
 
 class TaskCropResize(TaskImaging):
-    def __init__(self, backend, picture, rect, resolution):
-        TaskImaging.__init__(self, backend, resolution)
+    def __init__(self, picture, rect, resolution):
+        TaskImaging.__init__(self, resolution)
         self.picture = picture
         self.rect = rect
         
     def Run(self, jobContext):
-        image = jobContext.FetchImage(self.backend, self.picture)
+        image = jobContext.FetchImage(self.picture)
         img = self.backend.CropAndResize(image,
                                          self.rect,
                                          self.resolution,
@@ -75,13 +77,13 @@ class TaskCropResize(TaskImaging):
     
 
 class TaskTrans(TaskImaging):
-    def __init__(self, backend, kind, percentage,
+    def __init__(self, kind, percentage,
                  pic1, rect1, pic2, rect2, resolution):
-        TaskImaging.__init__(self, backend, resolution)
+        TaskImaging.__init__(self, resolution)
         self.kind = kind
         self.percentage = percentage
-        self.taskPic1 = TaskCropResize(backend, pic1, rect1, resolution)
-        self.taskPic2 = TaskCropResize(backend, pic2, rect2, resolution)
+        self.taskPic1 = TaskCropResize(pic1, rect1, resolution)
+        self.taskPic2 = TaskCropResize(pic2, rect2, resolution)
         
     def Run(self, jobContext):
         self.taskPic1.SetDraft(self.draft)

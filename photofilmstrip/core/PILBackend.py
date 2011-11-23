@@ -24,14 +24,13 @@ import cStringIO
 
 import Image, ImageDraw
 
-from photofilmstrip.core.BaseBackend import BaseBackend, BaseCtx
 from photofilmstrip.core.Picture import Picture
 
 
-class PILBackend(BaseBackend):
+class PILBackend(object):
     
     def __init__(self):
-        BaseBackend.__init__(self)
+        pass
     
     @staticmethod
     def ImageToStream(pilImg, imgFormat="JPEG"):
@@ -216,10 +215,17 @@ class PILBackend(BaseBackend):
         return img
 
 
-class PILCtx(BaseCtx):
+class PILCtx(object):
     
     def __init__(self, obj):
-        BaseCtx.__init__(self, obj.size, obj)
+        self.size = obj.size
+        self.data = obj
+        
+    def GetSize(self):
+        return self.size
+    
+    def GetData(self):
+        return self.data
     
     def Serialize(self):
         self.data = self.data.convert("RGB").tostring()

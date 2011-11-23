@@ -208,7 +208,8 @@ class Picture(Observable):
         '''
         @deprecated: convenience
         '''
-        from photofilmstrip.core.backend.PILBackend import PILBackend
+        # circular import
+        from photofilmstrip.core.PILBackend import PILBackend
         img = PILBackend.GetImage(self)
         self._width, self._height = PILBackend.GetImageSize(img)
         return img
@@ -217,7 +218,8 @@ class Picture(Observable):
         '''
         @deprecated: convenience
         '''
-        from photofilmstrip.core.backend.PILBackend import PILBackend
+        # circular import
+        from photofilmstrip.core.PILBackend import PILBackend
         return PILBackend.GetThumbnail(self, width, height)
 
     def GetKey(self):

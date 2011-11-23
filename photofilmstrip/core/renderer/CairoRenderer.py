@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import array
 import time
 
 import wx
@@ -31,8 +32,6 @@ except ImportError:
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
-
-from photofilmstrip.core.backend.Transformer import Transformer
 
 
 class CairoRenderer(BaseRenderer):
@@ -75,9 +74,9 @@ class CairoRenderer(BaseRenderer):
             framerate = 30000.0 / 1001.0
         return framerate
     
-    def ProcessFinalize(self, backendCtx):
-        if backendCtx:
-            cairoImg = Transformer(backendCtx).ToCairo()
+    def ProcessFinalize(self, pilCtx):
+        if pilCtx:
+            cairoImg = self._PilToCairo(pilCtx)
             self._ctx = cairoImg
         self._mainClock.tick(self._framerate)
             
@@ -119,6 +118,17 @@ class CairoRenderer(BaseRenderer):
         else:
             return False
         
+    def _PilToCairo(self, pilCtx):
+        pilImg = pilCtx.data.copy()
+        w, h = pilImg.size  
+        data = pilImg.convert('RGBA').tostring()
+        buff = array.array('B', data)
+        cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_ARGB32, w, h)
+#        cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_RGB24, w, h)
+        return cairoImage
+    
+
+
 #    def CropAndResize(self, ctx, rect):
 #        if self._mainClock.get_fps() > 1 and self._mainClock.get_fps() < self._framerate:
 #            if self._ctx is not None:

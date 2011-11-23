@@ -29,7 +29,7 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.UpdateChecker import UpdateChecker
 
 from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
-from photofilmstrip.core.backend.PILBackend import PILBackend
+from photofilmstrip.core.PILBackend import PILBackend
 
 from photofilmstrip.gui.ctrls.IconLabelLink import IconLabelLink
 

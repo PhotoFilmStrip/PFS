@@ -27,7 +27,7 @@ import wx
 from photofilmstrip.lib.common.ObserverPattern import Observable
 from photofilmstrip.lib.util import Encode
 
-from photofilmstrip.core.backend.PILBackend import PILBackend
+from photofilmstrip.core.PILBackend import PILBackend
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
      

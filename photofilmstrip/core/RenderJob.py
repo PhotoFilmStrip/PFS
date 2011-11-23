@@ -6,8 +6,10 @@ import threading
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 from photofilmstrip.lib.jobimpl.Worker import JobAbortedException
 
+from photofilmstrip.core.PILBackend import PILBackend
 
-class RenderJobContext(VisualJob):
+
+class RenderJob(VisualJob):
     def __init__(self, name, renderer, tasks):
         VisualJob.__init__(self, name, groupId="render")
         self.renderer = renderer
@@ -24,20 +26,20 @@ class RenderJobContext(VisualJob):
         
         self.results = {}
 
-        self.__logger = logging.getLogger("RenderJobContext")
+        self.__logger = logging.getLogger("RenderJob")
         
     def GetOutputPath(self):
         return self.renderer.GetOutputPath()
 
-    def FetchImage(self, backend, pic):
+    def FetchImage(self, pic):
         if not self.imgCache.has_key(pic.GetKey()):
             self.__logger.debug("%s: GetImage(%s)", self.GetName(), pic.GetFilename())
-            if len(self.imgKeyStack) > 2:
+            if len(self.imgKeyStack) > 3:
                 key = self.imgKeyStack.pop(0)
                 self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
                 self.imgCache[key] = None
                                 
-            self.imgCache[pic.GetKey()] = backend.CreateCtx(pic)
+            self.imgCache[pic.GetKey()] = PILBackend().CreateCtx(pic)
             self.imgKeyStack.append(pic.GetKey())
         return self.imgCache[pic.GetKey()]
         

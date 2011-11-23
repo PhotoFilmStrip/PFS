@@ -26,7 +26,6 @@ except ImportError:
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
-from photofilmstrip.core.backend.Transformer import Transformer
 
 
 class PyGameRenderer(BaseRenderer):
@@ -65,9 +64,9 @@ class PyGameRenderer(BaseRenderer):
             framerate = 30000.0 / 1001.0
         return framerate
     
-    def ProcessFinalize(self, backendCtx):
-        if backendCtx:
-            pygameImg = Transformer(backendCtx).ToPyGame()
+    def ProcessFinalize(self, pilCtx):
+        if pilCtx:
+            pygameImg = self._PilToPyGame(pilCtx)
 #            self._screen.fill(self._black)
             self._screen.blit(pygameImg, (0, 0))
             pygame.display.flip()
@@ -97,6 +96,13 @@ class PyGameRenderer(BaseRenderer):
             return True
         else:
             return False
+
+    def _PilToPyGame(self, pilCtx):
+        pilImg = pilCtx.data
+        mode = pilImg.mode
+        assert mode in "RGB", "RGBA"
+        return pygame.image.fromstring(pilImg.tostring(), pilImg.size, mode)
+
 
 #    def CropAndResize(self, ctx, rect):
 #        if get_fps(self._mainClock, self._framerate):

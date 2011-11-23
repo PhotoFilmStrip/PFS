@@ -29,7 +29,7 @@ from photofilmstrip.lib.util import Encode
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.core.ProgressHandler import ProgressHandler
-from photofilmstrip.core.backend.PILBackend import PILBackend
+from photofilmstrip.core.PILBackend import PILBackend
 
 
 class PhotoFilmStrip(object):
