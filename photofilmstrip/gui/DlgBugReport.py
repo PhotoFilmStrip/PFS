@@ -27,6 +27,8 @@ import urllib
 import wx
 from wx.lib.wordwrap import wordwrap
 
+from photofilmstrip import Constants
+
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Encode
 
@@ -53,7 +55,7 @@ class DlgBugReport(wx.Dialog):
                            _(u"An unexpected error occured"),
                            name=u'DlgBugReport')
         
-        text = _(u"An unexpected error occured. Do you want to send this bug report to the developers of %s?") % Settings.APP_NAME
+        text = _(u"An unexpected error occured. Do you want to send this bug report to the developers of %s?") % Constants.APP_NAME
         
         stBmp = wx.StaticBitmap(self, -1, wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (32, 32)))
         stMsg = wx.StaticText(self, -1, wordwrap(text, 300, wx.ClientDC(self)))
@@ -87,8 +89,8 @@ class DlgBugReport(wx.Dialog):
                           sys.getdefaultencoding(), 
                           sys.getfilesystemencoding(),
                           str(getattr(sys, 'frozen', False))])
-        params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Settings.APP_NAME, 
-                                                                       Settings.APP_VERSION_EX,
+        params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Constants.APP_NAME, 
+                                                                       Constants.APP_VERSION_EX,
                                                                        Encode(self.tcMsg.GetValue()),
                                                                        info)})
         try:

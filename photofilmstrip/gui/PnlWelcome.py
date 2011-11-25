@@ -25,6 +25,7 @@ import wx.html
 import wx.lib.wxpTag
 import wx.lib.hyperlink
 
+from photofilmstrip import Constants
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.UpdateChecker import UpdateChecker
 
@@ -125,7 +126,7 @@ class PnlWelcome(wx.Panel):
             return
 #        if not self.__updateChecker.IsNewer(Settings().GetLastKnownVersion()):
 #            return
-        if not self.__updateChecker.IsNewer(Settings.APP_VERSION):
+        if not self.__updateChecker.IsNewer(Constants.APP_VERSION):
             return
         
         Settings().SetLastKnownVersion(self.__updateChecker.GetVersion())
@@ -138,11 +139,11 @@ class PnlWelcome(wx.Panel):
   </center>
   <p>%(msg)s</p>
   <pre>%(changes)s</pre>""" % {"title": _("Update available"),
-                               "appname": Settings.APP_NAME,
+                               "appname": Constants.APP_NAME,
                                "version": self.__updateChecker.GetVersion(),
                                "msg": _(u'The following changes has been made:'),
                                "changes": self.__updateChecker.GetChanges(),
-                               "url": Settings.APP_URL}
+                               "url": Constants.APP_URL}
         
         self.htmlUpdate = html
         self.RefreshPage(withHistory=False)
@@ -222,7 +223,7 @@ class PfsHyperlink(wx.lib.hyperlink.HyperLinkCtrl):
                                                 label, 
                                                 wx.DefaultPosition, size)
         self.SetBackgroundColour(parent.GetBackgroundColour())
-        self.SetURL(Settings.APP_URL)
+        self.SetURL(Constants.APP_URL)
 
 
 HTML_TEMPLATE = """<html>

@@ -42,6 +42,7 @@ from photofilmstrip.gui.util.ImageProxy import ImageProxy
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
+from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT, 
@@ -410,7 +411,8 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
         pic = self.lvPics.GetPicture(selItem)
         if pic is None:
             return
-        pic.AutoPath(self.__photoFilmStrip.GetAspect())
+        actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
+        actAp.Execute()
 
     def OnToolBarImgSectToolLeftToRight(self, event):
         selItem = self.lvPics.GetSelected()
@@ -479,7 +481,8 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
 
         for idx, pic in enumerate(pics):
             if autopath:
-                pic.AutoPath(self.__photoFilmStrip.GetAspect())
+                actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
+                actAp.Execute()
 
             ImageCache().RegisterPicture(pic)
 

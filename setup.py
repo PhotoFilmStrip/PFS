@@ -22,7 +22,7 @@ import sys, os
 
 import zipfile
 
-from photofilmstrip.lib.Settings import Settings
+from photofilmstrip import Constants
 
 from distutils import log
 from distutils.command.build import build
@@ -143,7 +143,7 @@ class pfs_build(build):
             lang, ext = os.path.splitext(filename)
             if ext.lower() == ".po":
                 moDir =  os.path.join("build", "mo", lang, "LC_MESSAGES")
-                moFile = os.path.join(moDir, "%s.mo" % Settings.APP_NAME)
+                moFile = os.path.join(moDir, "%s.mo" % Constants.APP_NAME)
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
 
@@ -197,7 +197,7 @@ class pfs_win_setup(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
     
-        ver = Settings.APP_VERSION
+        ver = Constants.APP_VERSION
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
         
         log.info("building installer...")
@@ -224,7 +224,7 @@ class pfs_win_portable(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
             
-        ver = Settings.APP_VERSION
+        ver = Constants.APP_VERSION
         log.info("building portable zip...")
         if not os.path.exists("release"):
             os.makedirs("release")
@@ -239,13 +239,13 @@ class pfs_win_portable(Command):
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.product_version = Settings.APP_VERSION
+        self.product_version = Constants.APP_VERSION
         self.version = "%s.%s" % (self.product_version, 0)
         self.company_name = ""
         self.copyright = "(c) 2011"
-        self.name = "%s %s" % (Settings.APP_NAME, self.product_version)
+        self.name = "%s %s" % (Constants.APP_NAME, self.product_version)
         self.description = self.name
-        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Settings.APP_NAME))]
+        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
         
         logo = os.path.join("res", "icon", "photofilmstrip.ico")
         self.icon_resources = [(1, logo)]
@@ -383,11 +383,11 @@ setup(
                "sdist": {"formats": ["gztar"]}
     },
     windows=[Target(script = "photofilmstrip/GUI.py",
-                    dest_base = "bin/" + Settings.APP_NAME
+                    dest_base = "bin/" + Constants.APP_NAME
                     ),
     ],
     console=[Target(script = "photofilmstrip/CLI.py",
-                    dest_base = "bin/" + Settings.APP_NAME + "-cli"
+                    dest_base = "bin/" + Constants.APP_NAME + "-cli"
                     )
     ],
     zipfile = "lib/photofilmstrip/modules",
@@ -397,14 +397,14 @@ setup(
                 (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
     ],
 
-    name = Settings.APP_NAME.lower(),
-    version = Settings.APP_VERSION,
+    name = Constants.APP_NAME.lower(),
+    version = Constants.APP_VERSION,
     license = "GPLv2",
     description = "PhotoFilmStrip - Creates movies out of your pictures.",
     long_description = DESCRIPTION,
     author = "Jens Goepfert",
     author_email = "info@photofilmstrip.org",
-    url = Settings.APP_URL,
+    url = Constants.APP_URL,
        
     packages = ['photofilmstrip', 
                 'photofilmstrip.cli', 

@@ -27,6 +27,7 @@ import wx
 import wx.lib.masked.textctrl
 import wx.lib.masked.timectrl
 
+from photofilmstrip import Constants
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import IsPathWritable
 
@@ -465,7 +466,7 @@ class DlgProjectProps(wx.Dialog):
             
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Folder does not exists! Do you want %s to create it?") % Settings.APP_NAME, 
+                                   _(u"Folder does not exists! Do you want %s to create it?") % Constants.APP_NAME, 
                                    _(u"Question"),
                                    wx.YES_NO | wx.ICON_QUESTION)
             resp = dlg.ShowModal()

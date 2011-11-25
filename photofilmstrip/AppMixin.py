@@ -1,11 +1,42 @@
-'''
-Created on 20.08.2011
+# encoding: UTF-8
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2011 Jens Goepfert
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
 
-@author: jens
-'''
-
+import gettext
 import logging
+import os
+import subprocess
 import sys
+
+from photofilmstrip import Constants
+
+
+if sys.platform == "win32":
+    _path = os.getenv("PATH", "").split(";")
+    _path.append(os.path.join(Constants.APP_DIR, "lib", "mplayer"))
+    os.putenv("PATH", ";".join(_path)) 
+
+    import _subprocess # IGNORE:F0401
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
+    subprocess.STARTUPINFO = lambda: startupinfo
 
 
 class AppMixin(object):
@@ -24,7 +55,21 @@ class AppMixin(object):
 
     def InitI18N(self):
         from photofilmstrip.lib.Settings import Settings
-        Settings().InitLanguage()
+        curLang = Settings().GetLanguage()
+        localeDir = os.path.join(Constants.APP_DIR, "locale")
+        
+        if not os.path.isdir(localeDir):
+            gettext.install(Constants.APP_NAME)
+            return 
+    
+        try:
+            lang = gettext.translation(Constants.APP_NAME, 
+                                       localeDir, 
+                                       languages=[curLang, "en"])
+            lang.install(True)
+        except IOError:
+            gettext.install(Constants.APP_NAME)
+        
         
     def Start(self):
         self.InitLogging()

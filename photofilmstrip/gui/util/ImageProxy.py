@@ -49,8 +49,8 @@ class ScaleThread(threading.Thread):
             if self._abort:
                 return
         
-        img = self._picture.GetImage()
-        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+        pilImg = PILBackend.GetImage(self._picture)
+        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
 
         if not self._abort:
             self._callbackOnDone(wxImg)

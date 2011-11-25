@@ -40,6 +40,7 @@ from photofilmstrip.gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
 
 from photofilmstrip.res.license import licenseText
 from photofilmstrip.gui.PnlJobManager import PnlJobManager
+from photofilmstrip import Constants
 
 
 class FrmMain(wx.Frame):
@@ -50,7 +51,7 @@ class FrmMain(wx.Frame):
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
               title='PhotoFilmStrip')
         self.Bind(wx.EVT_CLOSE, self.OnClose)
-        self.SetTitle(Settings.APP_NAME)
+        self.SetTitle(Constants.APP_NAME)
         
         iconBundle = wx.IconBundle()
         iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_32", wx.ART_OTHER))
@@ -177,7 +178,7 @@ class FrmMain(wx.Frame):
         Settings().SetLanguage(lang)
         Settings().InitLanguage()
         dlg = wx.MessageDialog(self,
-                               _(u"You must restart %s for your new language setting to take effect.") % Settings.APP_NAME,
+                               _(u"You must restart %s for your new language setting to take effect.") % Constants.APP_NAME,
                                _(u"Information"),
                                wx.ICON_INFORMATION | wx.OK)
         dlg.ShowModal()
@@ -187,12 +188,12 @@ class FrmMain(wx.Frame):
         sel = event.GetSelection()
         if sel in (0, 1):
             self.notebook.SetWindowStyleFlag(0)
-            self.SetTitle(Settings.APP_NAME)
+            self.SetTitle(Constants.APP_NAME)
         else:
             page = self.notebook.GetPage(sel)
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
             filepath = page.GetPhotoFilmStrip().GetFilename()
-            self.SetTitle(Settings.APP_NAME + u' - ' + Decode(filepath))
+            self.SetTitle(Constants.APP_NAME + u' - ' + Decode(filepath))
             
         self.UpdateStatusText(None)
         
@@ -234,15 +235,15 @@ class FrmMain(wx.Frame):
 
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
-        info.Name = Settings.APP_NAME
-        info.Version = Settings.APP_VERSION_EX
-        info.Copyright = u"(C) 2010 %s" % Settings.DEVELOPERS[0]
+        info.Name = Constants.APP_NAME
+        info.Version = Constants.APP_VERSION_EX
+        info.Copyright = u"(C) 2010 %s" % Constants.DEVELOPERS[0]
         info.Description = wordwrap(_("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."), 
                                     350, 
                                     wx.ClientDC(self))
-        info.WebSite = (Settings.APP_URL, "%s %s" % (Settings.APP_NAME, _(u"online")))
-        info.Developers = Settings.DEVELOPERS
-        info.Translators = ["Teza Lprod - http://lprod.org"]
+        info.WebSite = (Constants.APP_URL, "%s %s" % (Constants.APP_NAME, _(u"online")))
+        info.Developers = Constants.DEVELOPERS
+        info.Translators = Constants.TRANSLATORS
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
 
@@ -256,9 +257,9 @@ class FrmMain(wx.Frame):
         dlg.Destroy()
         
     def OnProjectLoad(self, event):
-        dlg = wx.FileDialog(self, _(u"Select %s-Project") % Settings.APP_NAME, 
+        dlg = wx.FileDialog(self, _(u"Select %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), "", 
-                            Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
+                            Constants.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath())
@@ -275,10 +276,10 @@ class FrmMain(wx.Frame):
         if pfs is None:
             return
         curFilePath = pfs.GetFilename()
-        dlg = wx.FileDialog(self, _(u"Save %s-Project") % Settings.APP_NAME, 
+        dlg = wx.FileDialog(self, _(u"Save %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), 
                             curFilePath, 
-                            Settings.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
+                            Constants.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
                             wx.SAVE)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
@@ -306,10 +307,10 @@ class FrmMain(wx.Frame):
         if pfs is None:
             return
         curFilePath = pfs.GetFilename()
-        dlg = wx.FileDialog(self, _(u"Export %s-Project") % Settings.APP_NAME, 
+        dlg = wx.FileDialog(self, _(u"Export %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), 
                             curFilePath, 
-                            u"%s %s-%s %s" % (_(u"Portable"), Settings.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
+                            u"%s %s-%s %s" % (_(u"Portable"), Constants.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
                             wx.SAVE)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
@@ -318,9 +319,9 @@ class FrmMain(wx.Frame):
             self.SaveProject(filepath, True)
 
     def OnProjectImport(self, event):
-        dlg = wx.FileDialog(self, _(u"Import %s-Project") % Settings.APP_NAME, 
+        dlg = wx.FileDialog(self, _(u"Import %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), "", 
-                            u"%s %s-%s %s" % (_(u"Portable"), Settings.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
+                            u"%s %s-%s %s" % (_(u"Portable"), Constants.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
                             wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath(), True)
@@ -418,8 +419,8 @@ class FrmMain(wx.Frame):
     def UpdateStatusText(self, event):
         page = self.__GetCurrentPnlPfs()
         if page is None:
-            self.statusBar.SetStatusText(Settings.APP_URL, 1)
-            self.statusBar.SetStatusText("%s %s" % (Settings.APP_NAME, Settings.APP_VERSION), 2)
+            self.statusBar.SetStatusText(Constants.APP_URL, 1)
+            self.statusBar.SetStatusText("%s %s" % (Constants.APP_NAME, Constants.APP_VERSION), 2)
         else:
             photoFilmStrip = page.GetPhotoFilmStrip()
 
@@ -456,7 +457,7 @@ class FrmMain(wx.Frame):
         
         if not photoFilmStrip.Load(filepath):
             dlg = wx.MessageDialog(self,
-                                   _(u"Invalid %(app)s-Project: %(file)s") % {"app": Settings.APP_NAME,
+                                   _(u"Invalid %(app)s-Project: %(file)s") % {"app": Constants.APP_NAME,
                                                                               "file": filepath}, 
                                    _(u"Error"),
                                    wx.OK | wx.ICON_ERROR)

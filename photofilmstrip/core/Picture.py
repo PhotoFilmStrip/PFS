@@ -20,11 +20,8 @@
 #
 
 import logging
-import random
 
 from photofilmstrip.lib.common.ObserverPattern import Observable
-
-from photofilmstrip.core.Aspect import Aspect
 
 
 class Picture(Observable):
@@ -161,33 +158,6 @@ class Picture(Observable):
             return 0.0
         return self._transDur
     
-    def AutoPath(self, aspect):
-        ratio = Aspect.ToFloat(aspect)
-        width = self.GetWidth()
-        height = self.GetHeight()
-        if width < height:
-            # portrait
-            startRect = (0, 0, width, width / ratio)
-            targetRect = (0, height - (width / ratio), width, width / ratio)
-        else:
-            scaledWidth = width * 0.75
-            startRect = (0, 0, width, width / ratio)
-            d = random.randint(0, 3)
-            if d == 0:
-                targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
-            elif d == 1:
-                targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
-            elif d == 2:
-                targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
-            elif d == 3:
-                targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
-
-        if random.randint(0, 1):
-            targetRect, startRect = startRect, targetRect
-
-        self.SetStartRect(startRect)
-        self.SetTargetRect(targetRect)
-    
     def __Rotate(self, clockwise=True):
         if clockwise:
             self._rotation += 1
@@ -205,24 +175,6 @@ class Picture(Observable):
         self.__Rotate(clockwise)
         self.Notify("bitmap")
         
-    def GetImage(self):
-        '''
-        @deprecated: convenience
-        '''
-        # circular import
-        from photofilmstrip.core import PILBackend
-        img = PILBackend.GetImage(self)
-        self._width, self._height = PILBackend.GetImageSize(img)
-        return img
-    
-    def GetThumbnail(self, width=None, height=None):
-        '''
-        @deprecated: convenience
-        '''
-        # circular import
-        from photofilmstrip.core import PILBackend
-        return PILBackend.GetThumbnail(self, width, height)
-
     def GetKey(self):
         key = "%s:%s:%s" % (self.GetFilename(), 
                             self.GetRotation(), 

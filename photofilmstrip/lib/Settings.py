@@ -19,63 +19,35 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import gettext
 import locale
 import logging
 import os
-import sys
 import tempfile
-import subprocess
 
 from ConfigParser import ConfigParser
 from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.util import Encode, Decode, IsPathWritable
 
-try:
-    from _svnInfo import SVN_REV # IGNORE:F0401
-except ImportError:
-    SVN_REV = "trunk"
-
-
-APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
-
-
-if sys.platform == "win32":
-    _path = os.getenv("PATH", "").split(";")
-    _path.append(os.path.join(APP_DIR, "lib", "mplayer"))
-    os.putenv("PATH", ";".join(_path)) 
-
-    import _subprocess # IGNORE:F0401
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
-    subprocess.STARTUPINFO = lambda: startupinfo
+from photofilmstrip import Constants
 
 
 class Settings(Singleton):
     
-    APP_NAME        = "PhotoFilmStrip"
-    APP_VERSION     = "1.4.95"
-    APP_VERSION_EX  = "%s-%s" % (APP_VERSION, SVN_REV)
-    APP_DESCRIPTION = ""
-    APP_URL         = "http://www.photofilmstrip.org"
-    DEVELOPERS      = [u"Jens Göpfert", 
-                       u"Markus Wintermann"] 
-    
     def __init__(self):
-        self.__isFirstStart = False
+#        self.__isFirstStart = False
         self.cp = None
         
-        if IsPathWritable(APP_DIR):
-            setPath = APP_DIR
+        if IsPathWritable(Constants.APP_DIR):
+            setPath = Constants.APP_DIR
         else:
             userpath = os.path.expanduser("~")
             if userpath == "~":
                 userpath = tempfile.gettempdir()
             setPath = userpath
 
-        self.filename = os.path.join(setPath, '.%s' % Settings.APP_NAME)
-        if not os.path.isfile(self.filename):
-            self.__isFirstStart = True
+        self.filename = os.path.join(setPath, '.%s' % Constants.APP_NAME)
+#        if not os.path.isfile(self.filename):
+#            self.__isFirstStart = True
 
         logging.debug("settings file: %s", self.filename)
 
@@ -105,8 +77,8 @@ class Settings(Singleton):
         except IOError:
             pass
 
-    def IsFirstStart(self):
-        return self.__isFirstStart
+#    def IsFirstStart(self):
+#        return self.__isFirstStart
     
     def SetLanguage(self, lang):
         self.Load()
@@ -246,20 +218,4 @@ class Settings(Singleton):
             result[prop] = Decode(value)
         
         return result
-
-    def InitLanguage(self):
-        curLang = self.GetLanguage()
-        localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../locale")
-        
-        if not os.path.isdir(localeDir):
-            gettext.install(self.APP_NAME)
-            return 
-    
-        try:
-            lang = gettext.translation(self.APP_NAME, 
-                                       localeDir, 
-                                       languages=[curLang, "en"])
-            lang.install(True)
-        except IOError:
-            gettext.install(self.APP_NAME)
         

@@ -23,6 +23,8 @@ import os, sys, logging
 
 from optparse import OptionParser
 
+from photofilmstrip import Constants
+
 from photofilmstrip.lib.common.ObserverPattern import Observer
 
 from photofilmstrip.lib.Settings import Settings
@@ -34,6 +36,7 @@ from photofilmstrip.core.ProgressHandler import ProgressHandler
 from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
+from photofilmstrip.action.ActionRender import ActionRender
 
 
 class CliGui(Observer):
@@ -69,13 +72,13 @@ class CliGui(Observer):
                 return
             self.__Output()
             
-    def Info(self, options, rendererClass, profile):
+    def Info(self, project, rendererClass, profile):
         print
-        print Settings.APP_NAME, Settings.APP_VERSION_EX
+        print Constants.APP_NAME, Constants.APP_VERSION_EX
         print u"(C) 2010 Jens G\xf6pfert"
-        print Settings.APP_URL
+        print Constants.APP_URL
         print 
-        print u"%-20s: %s" % (_(u"processing project"), options.project)
+        print u"%-20s: %s" % (_(u"processing project"), project)
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
         print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
         print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC") 
@@ -91,15 +94,15 @@ class DummyGui(Observer):
         Observer.__init__(self)
     def ObservableUpdate(self, obj, arg):
         pass
-    def Info(self, options, rendererClass, profile):
+    def Info(self, project, rendererClass, profile):
         pass
     def Write(self, text):
         pass
 
 
 def main():
-    parser = OptionParser(prog="%s-cli" % Settings.APP_NAME.lower(), 
-                          version="%%prog %s" % Settings.APP_VERSION_EX)
+    parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(), 
+                          version="%%prog %s" % Constants.APP_VERSION_EX)
 
     profiles = GetOutputProfiles()
     profStr = ", ".join(["%d=%s" % (idx, prof.GetName()) for idx, prof in enumerate(profiles)])
@@ -135,9 +138,9 @@ def main():
 
 
     if options.videonorm == "p":
-        profile.SetVideoNorm(OutputProfile.PAL)
+        videoNorm = OutputProfile.PAL
     elif options.videonorm == "n":
-        profile.SetVideoNorm(OutputProfile.NTSC)
+        videoNorm = OutputProfile.NTSC
     else:
         parser.print_help()
         logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)
@@ -155,11 +158,7 @@ def main():
     if not photoFilmStrip.Load(options.project):
         logging.error(_(u"cannot load photofilmstrip"))
         return 6
-            
-
-    outpath = os.path.dirname(photoFilmStrip.GetFilename())
-    outpath = os.path.join(outpath, profile.GetName())
-    outpath = Encode(outpath, sys.getfilesystemencoding())
+        
 
     if options.outputpath:
         if options.outputpath == "-":
@@ -167,53 +166,44 @@ def main():
             rendererClass = StreamRenderer
         else:  
             outpath = os.path.abspath(options.outputpath)
-
-    if outpath != "-" and not os.path.exists(outpath):
-        try:
-            os.makedirs(outpath)
-        except StandardError, err:
-            logging.error(_(u"cannot create output path: %s"), err)
-            return 7
-        
+            if not os.path.exists(outpath):
+                try:
+                    os.makedirs(outpath)
+                except StandardError, err:
+                    logging.error(_(u"cannot create output path: %s"), err)
+                    return 7
+    else:
+        outpath = None
+            
 
 #    settings = Settings()
 #    savedProps = settings.GetRenderProperties(rendererClass.__name__)
 #    for prop in rendererClass.GetProperties():
 #        value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
 #        rendererClass.SetProperty(prop, value)
-    
-    renderer = rendererClass()
-    renderer.Init(profile,
-                  photoFilmStrip.GetAspect(), 
-                  outpath, options.draft)
 
+
+    ar = ActionRender(photoFilmStrip, profile, videoNorm, rendererClass, False, outpath)
+    
     audioFile = photoFilmStrip.GetAudioFile()
-    if audioFile:
-        audioFile = Encode(audioFile, sys.getfilesystemencoding())
-        if not os.path.isfile(audioFile):
-            logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
-            return 8
+    if not ar.CheckFile(audioFile):
+        logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
+        return 8
 
-        renderer.SetAudioFile(audioFile)
-
-    totalLength = photoFilmStrip.GetDuration(False)
-    
     if rendererClass is StreamRenderer:
         cliGui = DummyGui()
     else:
         cliGui = CliGui()
 
-    cliGui.Info(options, rendererClass, profile)
+    cliGui.Info(options.project, rendererClass, profile)
 
-    progressHandler = ProgressHandler()
-    progressHandler.AddObserver(cliGui)
+#    progressHandler = ProgressHandler()
+#    progressHandler.AddObserver(cliGui)
     
-    renderEngine = RenderEngine(renderer, progressHandler)
-
     try:
-        result = renderEngine.Start(photoFilmStrip.GetPictures(), totalLength)
+        result = ar.Execute()
     except KeyboardInterrupt:
-        progressHandler.Abort()
+#        progressHandler.Abort()
         cliGui.Write("\n" + _(u"...aborted!"))
         return 10
         
