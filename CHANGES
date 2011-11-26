@@ -1,3 +1,7 @@
+  * 2011/11/26 (Version 1.5.0)
+    changed:
+     - speed up rendering - affine transformation
+  
   * 2010/12/20 (Version 1.4.0)
     added:
      - italian translation

@@ -38,43 +38,26 @@ class SingleFileRenderer(BaseRenderer):
     
     @staticmethod
     def GetProperties():
-        return ["ResampleFilter"]
+        return []
     
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "ResampleFilter":
-            return "Antialias"
-        else:
-            return BaseRenderer.GetDefaultProperty(prop)
+        return BaseRenderer.GetDefaultProperty(prop)
 
     def Prepare(self):
         pass
     
     def ProcessCropAndResize(self, image, cropRect, size):
-        box = [int(cropRect[0]), int(cropRect[1]), 
-               int(cropRect[0] + cropRect[2]), int(cropRect[1] + cropRect[3])]
-        subImg = image.crop(box)
-        
-        filtr = Image.NEAREST
-        if not self._draft:
-            filterStr = self.GetProperty("ResampleFilter").lower()
-
-#            # Begin Optimizations
-#            if cropRect[2] > size[0] * 3:
-#                # downscale more than factor 3, prescaling
-#                subImg = subImg.resize((size[0] * 2, size[1] * 2))#, Image.BILINEAR)
-#            if cropRect[2] < size[0]:
-#                # upscaling
-#                filterStr = "bicubic"
-#            # End Optimizations
-            
-            if filterStr == "bilinear":
-                filtr = Image.BILINEAR
-            elif filterStr == "bicubic":
-                filtr = Image.BICUBIC
-            elif filterStr == "antialias":
-                filtr = Image.ANTIALIAS
-        return subImg.resize(size, filtr)
+        if self._draft:
+            filtr = Image.NEAREST
+        else:
+            filtr = Image.BILINEAR
+        img = image.transform(size,
+                              Image.AFFINE,
+                              [cropRect[2] / float(size[0]), 0, cropRect[0],
+                               0, cropRect[3] / float(size[1]), cropRect[1]],
+                              filtr)
+        return img
 
     def ProcessFinalize(self, image):
         self._counter += 1
