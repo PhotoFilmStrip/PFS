@@ -664,7 +664,7 @@ msgstr "Durée "
 
 #: src/gui/FrmMain.py:455
 msgid "Invalid %(app)s-Project: %(file)s"
-msgstr "Projet %(app)s-invalide:  %(file)s"
+msgstr "Projet %(app)s-invalide: %(file)s"
 
 #: src/gui/FrmMain.py:479
 msgid "Could not save the file '%(file)s': %(errMsg)s"

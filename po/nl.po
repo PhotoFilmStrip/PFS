@@ -75,7 +75,7 @@ msgstr "ongeldige video-norm opgegeven: %s"
 
 #: src/cli/Main.py:149
 msgid "invalid format specified: %s"
-msgstr "ongeldig formaat opgegeven:% s"
+msgstr "ongeldig formaat opgegeven: %s"
 
 #: src/cli/Main.py:156
 msgid "cannot load photofilmstrip"
@@ -83,7 +83,7 @@ msgstr "kan fotofilmstrip niet laden"
 
 #: src/cli/Main.py:175
 msgid "cannot create output path: %s"
-msgstr "kan uitvoer niet opslaan in: %s "
+msgstr "kan uitvoer niet opslaan in: %s"
 
 #: src/cli/Main.py:194
 #: src/gui/DlgProjectProps.py:388
@@ -128,7 +128,7 @@ msgstr "initialiseer renderer"
 
 #: src/core/RenderEngine.py:171
 msgid "processing transition %d/%d"
-msgstr "overgang verwerking % d /% d"
+msgstr "overgang verwerking %d/%d"
 
 #: src/core/RenderEngine.py:182
 msgid "processing image %d/%d"
@@ -258,7 +258,7 @@ msgstr "Verplaats foto & links"
 
 #: src/gui/ActionManager.py:167
 msgid "Move picture &right"
-msgstr "Verplaats foto & rechts"
+msgstr "Verplaats foto &rechts"
 
 #: src/gui/ActionManager.py:172
 msgid "&Remove Picture"
@@ -294,7 +294,7 @@ msgstr "Er is een onverwachte fout opgetreden"
 
 #: src/gui/DlgBugReport.py:55
 msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
-msgstr "Er is een onverwachte fout opgetreden. Wilt u dit foutrapport versturen naar de ontwikkelaars van% s?"
+msgstr "Er is een onverwachte fout opgetreden. Wilt u dit foutrapport versturen naar de ontwikkelaars van %s?"
 
 #: src/gui/DlgBugReport.py:101
 msgid "Bug-Report send. Thank you for your support."
@@ -470,11 +470,11 @@ msgstr "Audio bestanden"
 #: src/gui/DlgProjectProps.py:420
 #, fuzzy
 msgid "Audio file not supported!"
-msgstr "Geluidsbestand '%s' bestaat niet!"
+msgstr "Geluidsbestand bestaat niet!"
 
 #: src/gui/DlgProjectProps.py:468
 msgid "Folder does not exists! Do you want %s to create it?"
-msgstr "Map bestaat niet! Wilt u% s deze aanmaken?"
+msgstr "Map bestaat niet! Wilt u %s deze aanmaken?"
 
 #: src/gui/DlgProjectProps.py:469
 #: src/gui/DlgRender.py:335
@@ -535,7 +535,7 @@ msgstr "Configureer uitvoer en start bewerkingsproces"
 
 #: src/gui/DlgRender.py:281
 msgid "Audio file '%s' does not exist! Continue anyway?"
-msgstr "Geluid-bestand '% s' bestaat niet! Toch doorgaan?"
+msgstr "Geluid-bestand '%s' bestaat niet! Toch doorgaan?"
 
 #: src/gui/DlgRender.py:282
 msgid "Warning"
@@ -587,7 +587,7 @@ msgstr "Welkom"
 
 #: src/gui/FrmMain.py:176
 msgid "You must restart %s for your new language setting to take effect."
-msgstr "U moet opnieuw starten% s voor de nieuwe taalinstelling van kracht wordt."
+msgstr "U moet opnieuw starten %s voor de nieuwe taalinstelling van kracht wordt."
 
 #: src/gui/FrmMain.py:236
 msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
@@ -631,7 +631,7 @@ msgstr "Importeer '%s'-Project"
 
 #: src/gui/FrmMain.py:402
 msgid "'%s' has been modified. Save changes?"
-msgstr "'% s' is gewijzigd. Wijzigingen opslaan?"
+msgstr "'%s' is gewijzigd. Wijzigingen opslaan?"
 
 #: src/gui/FrmMain.py:425
 msgid "Images"
@@ -643,11 +643,11 @@ msgstr "Tijdsduur"
 
 #: src/gui/FrmMain.py:455
 msgid "Invalid %(app)s-Project: %(file)s"
-msgstr "Ongeldige% (app) s-Project:% (file) s"
+msgstr "Ongeldige %(app)s-Project: %(file)s"
 
 #: src/gui/FrmMain.py:479
 msgid "Could not save the file '%(file)s': %(errMsg)s"
-msgstr "Kon bestand '% (file) s' niet opslaan:% (Foutbericht) s"
+msgstr "Kon bestand '%(file)s' niet opslaan: %(errMsg)s"
 
 #: src/gui/PnlAddPics.py:91
 #: src/gui/PnlWelcome.py:43
@@ -756,7 +756,7 @@ msgstr "Importeer afbeelding"
 
 #: src/gui/PnlPfsProject.py:448
 msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "Sommige afbeeldingen bestaat niet meer in de map '% s' . Als de bestanden zijn verplaatst kunt u nu het nieuwe pad. Wilt u een nieuw pad te kiezen?"
+msgstr "Sommige afbeeldingen bestaat niet meer in de map '%s' . Als de bestanden zijn verplaatst kunt u nu het nieuwe pad. Wilt u een nieuw pad te kiezen?"
 
 #: src/gui/PnlPfsProject.py:472
 msgid "Please wait"

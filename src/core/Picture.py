@@ -150,26 +150,26 @@ class Picture(Observable):
         height = self.GetHeight()
         if width < height:
             # portrait
-            self._startRect = (0, 0, width, width / ratio)
-            self._targetRect = (0, height - (width / ratio), width, width / ratio)
+            startRect = (0, 0, width, width / ratio)
+            targetRect = (0, height - (width / ratio), width, width / ratio)
         else:
             scaledWidth = width * 0.75
-            self._startRect = (0, 0, width, width / ratio)
+            startRect = (0, 0, width, width / ratio)
             d = random.randint(0, 3)
             if d == 0:
-                self._targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
+                targetRect = (0, 0, scaledWidth, scaledWidth / ratio)
             elif d == 1:
-                self._targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+                targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
             elif d == 2:
-                self._targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
+                targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
             elif d == 3:
-                self._targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+                targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
 
         if random.randint(0, 1):
-            self._targetRect, self._startRect = self._startRect, self._targetRect
+            targetRect, startRect = startRect, targetRect
 
-        self.Notify("start")
-        self.Notify("target")
+        self.SetStartRect(startRect)
+        self.SetTargetRect(targetRect)
     
     def __Rotate(self, clockwise=True):
         if clockwise:
@@ -223,6 +223,11 @@ class Picture(Observable):
         
     def __GetImage(self):
         try:
+            img = Image.open(self.GetFilename())
+            # open does not validate the image data, because it is not loaded yet
+            # use thumbnail() instead of load, it checks image data much faster
+            img.thumbnail((10, 10))
+            # discard the thumbnail
             img = Image.open(self.GetFilename())
             self._isDummy = False
         except StandardError, err:
