@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
@@ -80,6 +81,7 @@ class pfs_build(build):
         build.run(self)
         
     def _make_svn_info(self):
+        # FIXME: SVN1.7
         if os.path.isfile(".svn/entries"):
             svnRev = open(".svn/entries", "r").readlines()[3].strip()
         else:
@@ -357,11 +359,6 @@ manifestVersion="1.0">
 </assembly>'''
 
 
-DESCRIPTION = """\
-PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD.
-"""
-
-
 setup(
     cmdclass={
                 "clean"         : pfs_clean,
@@ -400,9 +397,9 @@ setup(
     name = Constants.APP_NAME.lower(),
     version = Constants.APP_VERSION,
     license = "GPLv2",
-    description = "PhotoFilmStrip - Creates movies out of your pictures.",
-    long_description = DESCRIPTION,
-    author = "Jens Goepfert",
+    description = Constants.APP_SLOGAN,
+    long_description = Constants.APP_DESCRIPTION,
+    author = Constants.DEVELOPERS[0],
     author_email = "info@photofilmstrip.org",
     url = Constants.APP_URL,
        

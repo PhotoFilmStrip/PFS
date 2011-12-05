@@ -26,8 +26,10 @@ import wx
 import wx.aui
 from wx.lib.wordwrap import wordwrap
 
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip, UserInteractionHandler
 
+from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
+        WxVisualJobHandler, EVT_JOB_RESULT)
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Decode
 
@@ -41,15 +43,18 @@ from photofilmstrip.gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
 from photofilmstrip.res.license import licenseText
 from photofilmstrip.gui.PnlJobManager import PnlJobManager
 from photofilmstrip import Constants
+from photofilmstrip.core.persistence import LoadJob, SaveJob
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 
-class FrmMain(wx.Frame):
+class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
     
     def __init__(self):
         wx.Frame.__init__(self, None, -1, name=u'FrmMain',
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
               title='PhotoFilmStrip')
+        WxVisualJobHandler.__init__(self)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.SetTitle(Constants.APP_NAME)
         
@@ -133,6 +138,8 @@ class FrmMain(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnPagePrev, id=id2)
 
         self.actionManager.SelectLanguage(Settings().GetLanguage())
+        
+        self.Bind(EVT_JOB_RESULT, self.OnJobDone)
         
     def __GetCurrentPnlPfs(self):
         sel = self.notebook.GetSelection()
@@ -442,7 +449,15 @@ class FrmMain(wx.Frame):
         filepath = os.path.basename(photoFilmStrip.GetFilename())
         self.notebook.AddPage(pnl, os.path.basename(filepath), True)
         return pnl
-#
+
+    def OnJobDone(self, event):
+        result = event.GetResult()
+        job = event.GetSource().GetJob()
+        if isinstance(job, LoadJob):
+            self._OnLoadDone(result, job)
+        if isinstance(job, SaveJob):
+            self._OnSaveDone(result, job)
+        
     def LoadProject(self, filepath, skipHistory=False):
         for idx in range(2, self.notebook.GetPageCount()):
             page = self.notebook.GetPage(idx)
@@ -451,11 +466,14 @@ class FrmMain(wx.Frame):
                 return
         
         photoFilmStrip = PhotoFilmStrip(filepath)
-
-        pnl = self.NewProject(photoFilmStrip)
-        photoFilmStrip.SetUserInteractionHandler(pnl)
+        photoFilmStrip.SetUserInteractionHandler(self)
+        lj = LoadJob(photoFilmStrip)
+        lj.AddVisualJobHandler(self)
+        JobManager().EnqueueContext(lj)
         
-        if not photoFilmStrip.Load(filepath):
+    def _OnLoadDone(self, result, loadJob):
+        filepath = ""
+        if not result:
             dlg = wx.MessageDialog(self,
                                    _(u"Invalid %(app)s-Project: %(file)s") % {"app": Constants.APP_NAME,
                                                                               "file": filepath}, 
@@ -464,21 +482,35 @@ class FrmMain(wx.Frame):
             dlg.ShowModal()
             dlg.Destroy()
             return
+
+        photoFilmStrip = loadJob.GetProject()
         pics = photoFilmStrip.GetPictures()
         
+        pnl = self.NewProject(photoFilmStrip)
         pnl.InsertPictures(pics)
         pnl.SetChanged(False)
 
-        if not skipHistory:
-            self.AddFileToHistory(filepath)
-        
-#            self.pnlWelcome.RefreshPage() # crashes on unix
-            wx.CallAfter(self.pnlWelcome.RefreshPage)
+#        if not skipHistory:
+#            self.AddFileToHistory(filepath)
+#        
+##            self.pnlWelcome.RefreshPage() # crashes on unix
+#            wx.CallAfter(self.pnlWelcome.RefreshPage)
     
     def SaveProject(self, filepath, includePics):
         photoFilmStrip = self.__GetCurrentPhotoFilmStrip()
+        photoFilmStrip.SetFilename(filepath)
+        sj = SaveJob(photoFilmStrip, includePics)
+        sj.AddVisualJobHandler(self)
+        JobManager().EnqueueContext(sj)
+        return True
+
+    def _OnSaveDone(self, result, saveJob):
+        photoFilmStrip = saveJob.GetProject()
+        filepath = photoFilmStrip.GetFilename()
+        includePics = saveJob.GetIncludePics()
         try:
-            photoFilmStrip.Save(filepath, includePics)
+            pass
+#            photoFilmStrip.Save(filepath, includePics)
         except StandardError, err:
             dlg = wx.MessageDialog(self,
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
@@ -493,11 +525,35 @@ class FrmMain(wx.Frame):
         if not includePics:
             self.AddFileToHistory(filepath)
             
-#            self.pnlWelcome.RefreshPage() # crashes on unix
-            wx.CallAfter(self.pnlWelcome.RefreshPage)
+            self.pnlWelcome.RefreshPage() # crashes on unix
+#            wx.CallAfter(self.pnlWelcome.RefreshPage)
         
         return True
     
+    def GetAltPath(self, imgPath):
+        """
+        overridden method from UserInteractionHandler
+        """
+        dlg = wx.MessageDialog(self,
+                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % imgPath, 
+                               _(u"Question"),
+                               wx.YES_NO | wx.ICON_QUESTION)
+        resp = dlg.ShowModal()
+        dlg.Destroy()
+        if resp == wx.ID_NO:
+            return imgPath
+        
+        dlg = wx.DirDialog(self, defaultPath=Settings().GetImagePath())
+        try:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                self.__usedAltPath = True
+                return path
+        finally:
+            dlg.Destroy()
+
+        return imgPath
+
         
 class ProjectDropTarget(wx.FileDropTarget):
     def __init__(self, frmMain):

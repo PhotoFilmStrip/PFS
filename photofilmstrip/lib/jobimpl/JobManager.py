@@ -8,6 +8,7 @@ import threading
 
 from photofilmstrip.lib.common.Singleton import Singleton
 from .IVisualJobManager import IVisualJobManager
+from .IVisualJob import IVisualJob
 from .LogVisualJobManager import LogVisualJobManager
 from .Worker import Worker
 from .JobAbortedException import JobAbortedException
@@ -128,8 +129,9 @@ class JobManager(Singleton):
         jcGroup = self.__jobCtxGroups[jobContext.GetGroupId()]
         jcGroup.Put(jobContext)
         
-        for visual in self.__visuals:
-            visual.RegisterJob(jobContext)
+        if isinstance(jobContext, IVisualJob):
+            for visual in self.__visuals:
+                visual.RegisterJob(jobContext)
             
     def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=None):
         jcGroup = self.__jobCtxGroups[workerCtxGroup]

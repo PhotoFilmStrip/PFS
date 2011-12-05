@@ -46,9 +46,6 @@ class RenderJob(VisualJob):
     def Done(self):
         if self.IsAborted():
             self.renderer.ProcessAbort()
-            self.SetInfo(_(u"...aborted!"))
-        else:
-            self.SetInfo(_(u"all done"))
         self.renderer.Finalize()
 
     def Begin(self):
@@ -61,10 +58,6 @@ class RenderJob(VisualJob):
         # prepare the renderer, creates the sink pipe 
         self.renderer.Prepare()
 #        self.sink = self.renderer.GetSink()
-
-    def Abort(self):
-        if VisualJob.Abort(self):
-            self.SetInfo(_(u"aborting..."))
 
     def ToSink(self, pilImg):
         self.renderer.ProcessFinalize(pilImg)

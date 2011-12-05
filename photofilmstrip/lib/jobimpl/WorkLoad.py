@@ -6,7 +6,7 @@ from .IWorkLoad import IWorkLoad
 class WorkLoad(IWorkLoad):
     
     def __init__(self):
-        self.result = None
+        pass
 
     def _Execute(self, jobContext):
         """

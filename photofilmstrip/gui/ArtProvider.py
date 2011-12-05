@@ -26,7 +26,7 @@ from wx.lib.art import img2pyartprov
 import photofilmstrip.res.images
 
 
-class ImageProvider(object):
+class ArtProvider(object):
 
     provider = None
     

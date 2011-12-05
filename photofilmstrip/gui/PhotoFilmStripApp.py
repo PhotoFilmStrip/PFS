@@ -24,7 +24,7 @@ import sys
 
 import wx
 
-from photofilmstrip.gui.ImageProvider  import ImageProvider
+from photofilmstrip.gui.ArtProvider  import ArtProvider
 from photofilmstrip.gui.FrmMain import FrmMain
 from photofilmstrip.gui.DlgBugReport import DlgBugReport
 
@@ -36,7 +36,7 @@ class PhotoFilmStripApp(wx.App):
         wx.InitAllImageHandlers()
 #        loc = wx.Locale(wx.LANGUAGE_GERMAN)
 
-        ImageProvider.Init()
+        ArtProvider.Init()
 
         frame = FrmMain()
         frame.Show()

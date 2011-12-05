@@ -27,7 +27,7 @@ class Job(IJobContext):
         self.__idle = True
 
         if target:
-            self.__workQueue.put(SingleWorkLoad(target, args, kwargs))
+            self.__workQueue.put(SingleWorkLoad(self, target, args, kwargs))
 
     def GetGroupId(self):
         return self.__groupId
@@ -105,7 +105,7 @@ class Job(IJobContext):
 
 class SingleWorkLoad(WorkLoad):
 
-    def __init__(self, target, args=None, kwargs=None):
+    def __init__(self, job, target, args=None, kwargs=None):
         WorkLoad.__init__(self)
         if args is None:
             args = []
@@ -118,9 +118,13 @@ class SingleWorkLoad(WorkLoad):
         assert isinstance(kwargs, dict), \
                     "kwargs must be of type dict"
 
+        self.__job = job
         self.__target = target
         self.__args = args
         self.__kwargs = kwargs
 
-    def Run(self, jobContext):
-        return self.__target(*self.__args, **self.__kwargs)
+    def Run(self, job):
+        return self.__target(*self.__args, job=job, **self.__kwargs)
+    
+    def GetJob(self):
+        return self.__job

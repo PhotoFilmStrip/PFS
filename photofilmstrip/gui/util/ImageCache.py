@@ -22,56 +22,66 @@
 import wx
 
 from photofilmstrip.lib.common.Singleton import Singleton
+from photofilmstrip.lib.common.ObserverPattern import Observer
 
 from photofilmstrip.core import PILBackend
 
 
-class ImageCache(Singleton):
+class ImageCache(Singleton, Observer):
     
     SIZE = 400
     THUMB_SIZE = 100
     
     def __init__(self):
+        self._picRegistry = {}
         self._wxImgCache = {}
         self._wxBmpCache = {}
+        self._pilCache = {}
         
+    def ObservableUpdate(self, obj, arg):
+        if arg == 'bitmap':
+            self.UpdatePicture(obj)
+                
     def ClearCache(self):
         self._wxImgCache.clear()
         self._wxBmpCache.clear()
     
-    def RegisterPicture(self, picture):
-        key = picture.GetKey()
-        if not self._wxImgCache.has_key(key):
-            pilImg = PILBackend.GetThumbnail(picture, width=ImageCache.SIZE)
-            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
-            self._wxImgCache[key] = wxImg
-            
-        if not self._wxBmpCache.has_key(key):
-            pilImg = PILBackend.GetThumbnail(picture, height=ImageCache.THUMB_SIZE)
-            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
-            self._wxBmpCache[key] = wxImg.ConvertToBitmap()
-            
-    def RegisterThumbBmp(self, picture, pilImg):
-        key = picture.GetKey()
-        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
-        self._wxBmpCache[key] = wxImg.ConvertToBitmap()
+    def RegisterPicture(self, picture, pilThumb=None):
+        if pilThumb is None:
+            pilThumb = PILBackend.GetThumbnail(picture, height=120)
 
+        key = picture.GetKey()
+        self._picRegistry[key] = picture
+        self._pilCache[key] = pilThumb
+        
+        picture.AddObserver(self)
+        
     def UpdatePicture(self, picture):
         key = picture.GetKey()
         if self._wxImgCache.has_key(key):
             del self._wxImgCache[key]
+        if self._wxBmpCache.has_key(key):
+            del self._wxBmpCache[key]
+        if self._pilCache.has_key(key):
+            del self._pilCache[key]
+            
         self.RegisterPicture(picture)
     
     def GetImage(self, picture):
         key = picture.GetKey()
         if not self._wxImgCache.has_key(key):
-            self.RegisterPicture(picture)
-        wxImg  = self._wxImgCache[key]
-        return wxImg
+            pilImg = PILBackend.GetThumbnail(picture, width=ImageCache.SIZE)
+            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+            self._wxImgCache[key] = wxImg
+        return self._wxImgCache[key]
     
     def GetThumbBmp(self, picture):
         key = picture.GetKey()
         if not self._wxBmpCache.has_key(key):
-            self.RegisterPicture(picture)
-        wxBmp  = self._wxBmpCache[key]
-        return wxBmp
+            if self._pilCache.has_key(key):
+                pilImg = self._pilCache[key]
+            else:
+                pilImg = PILBackend.GetThumbnail(picture, height=ImageCache.THUMB_SIZE)
+            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+            self._wxBmpCache[key] = wxImg.ConvertToBitmap()
+        return self._wxBmpCache[key]

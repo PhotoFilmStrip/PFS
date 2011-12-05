@@ -32,7 +32,11 @@ def ImageToStream(pilImg, imgFormat="JPEG"):
     pilImg.save(fd, imgFormat)
     fd.seek(0)
     return fd
-    
+
+def ImageFromBuffer(size, buffr):
+    pilImg = Image.frombuffer("RGB", size, buffr, 'raw', "RGB", 0, 1)
+    return pilImg
+
 def RotateExif(pilImg):
     exifOrient = 274
     rotation = 0 
@@ -129,7 +133,11 @@ def GetImageSize(pilImg):
 def __GetImage(picture):
     try:
         img = Image.open(picture.GetFilename())
-        img.load()
+        # open does not validate the image data, because it is not loaded yet
+        # use thumbnail() instead of load, it checks image data much faster
+        img.thumbnail((10, 10))
+        # discard the thumbnail
+        img = Image.open(picture.GetFilename())
         picture.SetDummy(False)
     except StandardError, err:
         logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err, exc_info=1)
@@ -164,8 +172,9 @@ def __ProcessImage(img, picture):
     return img.convert("RGB")
     
 def GetImage(picture):
-    img = __GetImage(picture)
-    return __ProcessImage(img, picture)
+    pilImg = __GetImage(picture)
+    pilImg = __ProcessImage(pilImg, picture)
+    return pilImg
         
 def GetThumbnail(picture, width=None, height=None):
     img = __GetImage(picture)

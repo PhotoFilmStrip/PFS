@@ -49,6 +49,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.SetBackgroundColour(wx.BLACK)
         self.SetClientSizeWH(-1, self.HEIGHT+20)
         
+        self.__frozen   = False
         self.__pictures = []
         self.__selIdx   = -1
         self.__hvrIdx   = -1
@@ -66,6 +67,13 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
+        
+    def Freeze(self):
+        self.__frozen = True
+    def Thaw(self):
+        self.__frozen = False
+    def IsFrozen(self):
+        return self.__frozen
         
     def OnPaint(self, event):
         pdc = wx.BufferedPaintDC(self)
@@ -289,7 +297,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
-        self.__UpdateVirtualSize()
+        if not self.IsFrozen():
+            self.__UpdateVirtualSize()
         self._SendChangedEvent()
         
     def DeleteItem(self, idx):
@@ -353,5 +362,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self._SendChangedEvent()
 
 
+# FIXME: should be fixed height
 ImageCache.THUMB_SIZE = PhotoFilmStripList.HEIGHT - (2 * PhotoFilmStripList.BORDER)
 

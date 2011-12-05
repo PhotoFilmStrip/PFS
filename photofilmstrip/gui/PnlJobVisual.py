@@ -156,6 +156,10 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
             self.gaugeProgress.SetValue(self.jobContext.GetProgress())
         if "info" in fields:
             self.stJobInfo.SetLabel(self.jobContext.GetInfo())
+        if "maxProgress" in fields:
+            self.gaugeProgress.SetRange(self.jobContext.GetMaxProgress())
+        if "name" in fields:
+            self.stJobName.SetLabel(self.jobContext.GetName())
         self._SetupAction()
 
     def __OnLeftDown(self, event):

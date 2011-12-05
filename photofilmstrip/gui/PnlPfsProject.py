@@ -26,18 +26,16 @@ import logging
 import wx
 
 from photofilmstrip.core.Picture import Picture
-from photofilmstrip.core.PhotoFilmStrip import UserInteractionHandler
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.common.ObserverPattern import Observer
 
-from photofilmstrip.gui.ctrls.ImageSectionEditor import (
-        ImageSectionEditor, EVT_RECT_CHANGED)
-from photofilmstrip.gui.ctrls.PhotoFilmStripList import (
+from photofilmstrip.gui.ImageSectionEditor import (
+        ImageSectionEditor, ImageProxy, EVT_RECT_CHANGED)
+from photofilmstrip.gui.PhotoFilmStripList import (
         PhotoFilmStripList, EVT_CHANGED)
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
-from photofilmstrip.gui.util.ImageProxy import ImageProxy
 
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
@@ -60,7 +58,7 @@ from photofilmstrip.action.ActionAutoPath import ActionAutoPath
  wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
 ] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(4)]
 
-class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
+class PnlPfsProject(wx.Panel, Observer):
     
     _custom_classes = {"wx.Panel": ["ImageSectionEditor",
                                     "PnlEditPicture",
@@ -444,59 +442,37 @@ class PnlPfsProject(wx.Panel, Observer, UserInteractionHandler):
     def GetPhotoFilmStrip(self):
         return self.__photoFilmStrip
 
-    def GetAltPath(self, imgPath):
-        """
-        overridden method from UserInteractionHandler
-        """
-        dlg = wx.MessageDialog(self,
-                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % imgPath, 
-                               _(u"Question"),
-                               wx.YES_NO | wx.ICON_QUESTION)
-        resp = dlg.ShowModal()
-        dlg.Destroy()
-        if resp == wx.ID_NO:
-            return imgPath
-        
-        dlg = wx.DirDialog(self, defaultPath=Settings().GetImagePath())
-        try:
-            if dlg.ShowModal() == wx.ID_OK:
-                path = dlg.GetPath()
-                self.__usedAltPath = True
-                return path
-        finally:
-            dlg.Destroy()
-
-        return imgPath
-
     def InsertPictures(self, pics, position=None, autopath=False):
         logging.debug("InsertPictures(pos=%s)", position)
         if position is None:
             position = self.lvPics.GetItemCount()
         
-        dlg = wx.ProgressDialog(_(u"Please wait"),
-                                _(u"Loading pictures..."),
-                                maximum = len(pics),
-                                parent=self,
-                                style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
+#        dlg = wx.ProgressDialog(_(u"Please wait"),
+#                                _(u"Loading pictures..."),
+#                                maximum = len(pics),
+#                                parent=self,
+#                                style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
 
+#        self.lvPics.Freeze()
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
                 actAp.Execute()
 
-            ImageCache().RegisterPicture(pic)
+#            ImageCache().RegisterPicture(pic)
 
             self.lvPics.InsertPicture(position, pic)
             position += 1 
 
             pic.AddObserver(self)
 
-            dlg.Update(idx + 1)
+#            dlg.Update(idx + 1)
         
+#        self.lvPics.Thaw()
         if self.lvPics.GetSelected() == -1:
             self.lvPics.Select(0)
             
-        dlg.Destroy()
+#        dlg.Destroy()
         
         evt = UpdateStatusbarEvent(self.GetId())
         self.GetEventHandler().ProcessEvent(evt)

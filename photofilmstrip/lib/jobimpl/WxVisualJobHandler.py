@@ -44,13 +44,16 @@ class ResultEvent(wx.PyEvent):
     def __init__(self, ident, resultObj):
         wx.PyEvent.__init__(self, ident, EVT_JOB_RESULT_TYPE)
         assert isinstance(resultObj, ResultObject)
-        self.__resultObj = None
+        self.__resultObj = resultObj
         
     def _SetResultObj(self, resultObj):
         self.__resultObj = resultObj
 
     def GetResult(self, printTraceback=True):
         return self.__resultObj.GetResult(printTraceback)
+
+    def GetSource(self):
+        return self.__resultObj.GetSource()
 
 
 class UpdateEvent(wx.PyEvent):
