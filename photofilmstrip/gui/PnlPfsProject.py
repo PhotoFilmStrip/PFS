@@ -447,33 +447,19 @@ class PnlPfsProject(wx.Panel, Observer):
         if position is None:
             position = self.lvPics.GetItemCount()
         
-#        dlg = wx.ProgressDialog(_(u"Please wait"),
-#                                _(u"Loading pictures..."),
-#                                maximum = len(pics),
-#                                parent=self,
-#                                style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME | wx.PD_AUTO_HIDE)
-
-#        self.lvPics.Freeze()
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
                 actAp.Execute()
-
-#            ImageCache().RegisterPicture(pic)
 
             self.lvPics.InsertPicture(position, pic)
             position += 1 
 
             pic.AddObserver(self)
 
-#            dlg.Update(idx + 1)
-        
-#        self.lvPics.Thaw()
         if self.lvPics.GetSelected() == -1:
             self.lvPics.Select(0)
             
-#        dlg.Destroy()
-        
         evt = UpdateStatusbarEvent(self.GetId())
         self.GetEventHandler().ProcessEvent(evt)
         

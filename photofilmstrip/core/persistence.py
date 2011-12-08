@@ -17,8 +17,9 @@ from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
 
 class LoadJob(VisualJob):
     def __init__(self, project):
-        VisualJob.__init__(self, _("Loading project %s") % project.GetFilename(),
+        VisualJob.__init__(self, "",
                            target=self.__Load)
+        self.SetName(_("Loading project %s") % project.GetFilename())
         self.__project = project
 
     def __Load(self, importPath=None, job=None):
@@ -108,7 +109,9 @@ class LoadJob(VisualJob):
                 thumbHeight = row["thumb_height"] 
                 thumbData = row["thumb_data"]
                 thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
-                ImageCache().RegisterPicture(pic, thumbNail)
+            else:
+                thumbNail = PILBackend.GetThumbnail(pic, height=120)
+            ImageCache().RegisterPicture(pic, thumbNail)
             
             picList.append(pic)
 

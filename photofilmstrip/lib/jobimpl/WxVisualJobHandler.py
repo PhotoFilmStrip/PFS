@@ -15,13 +15,14 @@ EVT_JOB_UPDATE = wx.PyEventBinder(EVT_JOB_UPDATE_TYPE, 1)
 class WxVisualJobHandler(IVisualJobHandler):
     
     def __init__(self, win=None):
+        self.__id = wx.NewId()
         if win is None:
             win = self
         assert isinstance(win, wx.EvtHandler)
         self.__win = win
         
     def GetId(self):
-        pass
+        return self.__id
         
     def OnHandleJobBegin(self, jobContext):
         evt = UpdateEvent(self.__win.GetId(), None, UpdateEvent.KIND_BEGIN)

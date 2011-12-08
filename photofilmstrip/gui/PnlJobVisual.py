@@ -1,4 +1,5 @@
 #Boa:FramePanel:PnlJobVisual
+# encoding: UTF-8
 
 import wx
 

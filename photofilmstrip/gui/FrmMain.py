@@ -45,6 +45,7 @@ from photofilmstrip.gui.PnlJobManager import PnlJobManager
 from photofilmstrip import Constants
 from photofilmstrip.core.persistence import LoadJob, SaveJob
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
+from photofilmstrip.gui.DlgJobVisual import DlgJobVisual
 
 
 class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
@@ -469,6 +470,7 @@ class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
         photoFilmStrip.SetUserInteractionHandler(self)
         lj = LoadJob(photoFilmStrip)
         lj.AddVisualJobHandler(self)
+        lj.AddVisualJobHandler(DlgJobVisual(self, lj))
         JobManager().EnqueueContext(lj)
         
     def _OnLoadDone(self, result, loadJob):
@@ -501,6 +503,7 @@ class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
         photoFilmStrip.SetFilename(filepath)
         sj = SaveJob(photoFilmStrip, includePics)
         sj.AddVisualJobHandler(self)
+        sj.AddVisualJobHandler(DlgJobVisual(self, sj))
         JobManager().EnqueueContext(sj)
         return True
 
