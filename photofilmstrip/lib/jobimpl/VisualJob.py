@@ -31,6 +31,11 @@ class VisualJob(Job, IVisualJob):
             if hdl:
                 func = getattr(hdl, funcName)
                 func(self, *args)
+                
+    def _Interact(self, evtClass):
+        for hdl in self.__visualJobHandler:
+            if not hdl.OnHandleJobInteraction(self, evtClass):
+                return
 
     def AddVisualJobHandler(self, visualJobHandler):
         assert isinstance(visualJobHandler, IVisualJobHandler)
@@ -41,7 +46,7 @@ class VisualJob(Job, IVisualJob):
         # if a new visual is added, notify it about all fields possible
         # for an inital update
         visualJobHandler.OnHandleJobUpdate(self, ("name", "maxProgress", 
-                                                    "info", "progress"),)
+                                                  "info", "progress"),)
     
     def RemoveVisualJobHandler(self, visualJobHandler):
         if visualJobHandler in self.__visualJobHandler:

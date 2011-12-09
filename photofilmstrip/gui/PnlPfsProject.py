@@ -474,7 +474,6 @@ class PnlPfsProject(wx.Panel, Observer):
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
             if arg == 'bitmap':
-                ImageCache().UpdatePicture(obj)
                 self.imgProxy.SetPicture(obj)
                 self.lvPics.Refresh()
             

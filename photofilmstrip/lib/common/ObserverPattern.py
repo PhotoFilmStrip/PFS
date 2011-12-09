@@ -27,7 +27,8 @@ class Observable(object):
         
     def AddObserver(self, observer):
         if isinstance(observer, Observer):
-            self.__observers.append(observer)
+            if observer not in self.__observers:
+                self.__observers.append(observer)
         else:
             raise RuntimeError()
         

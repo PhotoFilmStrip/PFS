@@ -92,7 +92,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
               label=_(u'&Cancel'), name=u'cmdAbort', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdAbort.Show(False)
-        self.cmdAbort.Bind(wx.EVT_BUTTON, self.OnCancel,
+        self.cmdAbort.Bind(wx.EVT_BUTTON, self.__OnCancel,
               id=wxID_DLGJOBVISUALCMDABORT)
 
         self._init_sizers()
@@ -102,16 +102,12 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         WxVisualJobHandler.__init__(self)
         self.SetTitle(job.GetName())
         
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
-        self.Bind(EVT_JOB_UPDATE, self.__OnJobUpdate)
-        
-        self.__job = job
-
         if self.cmdAbort.IsShown():
             self.__state = "Continue"
         else:
             self.__state = "Uncancelable"
         
+        self.__job = job
         self.__delay = 3
         self.__maximum = 100
         self.__display_estimated = 0
@@ -119,7 +115,10 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         self.__ctdelay = 0
         self.__timeStart = wx.GetCurrentTime()
 
-    def OnCancel(self, event):
+        self.Bind(wx.EVT_CLOSE, self.__OnClose)
+        self.Bind(EVT_JOB_UPDATE, self.__OnJobUpdate)
+
+    def __OnCancel(self, event):
         if self.__state == "Finished":
             event.Skip()
         else:
@@ -129,7 +128,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 
             self.__timeStop = wx.GetCurrentTime()
 
-    def OnClose(self, event):
+    def __OnClose(self, event):
         if self.__state == "Uncancelable":
             event.Veto()
         elif self.__state == "Finished":
@@ -140,7 +139,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 #            self.DisableSkip()
             self.__timeStop = wx.GetCurrentTime()
 
-    def Pulse(self, newmsg):
+    def __Pulse(self, newmsg):
         self.gauge.Pulse()
         self.__UpdateMessage(newmsg)
 
@@ -151,8 +150,9 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 #            self.__SetTimeLabel(-1, self.stEstimated)
             self.__SetTimeLabel(-1, self.stRemainingValue)
 
-    def Update(self, value, msg):
-        self.gauge.SetValue(value)
+    def __Update(self, value, msg):
+        if value <= self.__maximum:
+            self.gauge.SetValue(value)
         self.__UpdateMessage(msg)
         
 #        if (self.__elapsed or self.__remaining or self.__estimated) and (value != 0):
@@ -222,9 +222,11 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 #            if "progress" in event.GetFields():
 #                self.gauge.SetValue(self.__job.GetProgress())
             if "maxProgress" in event.GetFields():
-                self.__maximum = self.__job.GetMaxProgress()
-                self.gauge.SetRange(self.__job.GetMaxProgress())
+                maximum = self.__job.GetMaxProgress()
+                if maximum > 0:
+                    self.__maximum = maximum
+                    self.gauge.SetRange(maximum)
             
-            self.Update(self.__job.GetProgress(), 
-                        self.__job.GetInfo())
+            self.__Update(self.__job.GetProgress(), 
+                          self.__job.GetInfo())
 

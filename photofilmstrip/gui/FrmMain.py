@@ -26,7 +26,7 @@ import wx
 import wx.aui
 from wx.lib.wordwrap import wordwrap
 
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip, UserInteractionHandler
+from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
 
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
         WxVisualJobHandler, EVT_JOB_RESULT)
@@ -48,7 +48,7 @@ from photofilmstrip.lib.jobimpl.JobManager import JobManager
 from photofilmstrip.gui.DlgJobVisual import DlgJobVisual
 
 
-class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
+class FrmMain(wx.Frame, WxVisualJobHandler):
     
     def __init__(self):
         wx.Frame.__init__(self, None, -1, name=u'FrmMain',
@@ -467,7 +467,6 @@ class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
                 return
         
         photoFilmStrip = PhotoFilmStrip(filepath)
-        photoFilmStrip.SetUserInteractionHandler(self)
         lj = LoadJob(photoFilmStrip)
         lj.AddVisualJobHandler(self)
         lj.AddVisualJobHandler(DlgJobVisual(self, lj))
@@ -533,30 +532,6 @@ class FrmMain(wx.Frame, UserInteractionHandler, WxVisualJobHandler):
         
         return True
     
-    def GetAltPath(self, imgPath):
-        """
-        overridden method from UserInteractionHandler
-        """
-        dlg = wx.MessageDialog(self,
-                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % imgPath, 
-                               _(u"Question"),
-                               wx.YES_NO | wx.ICON_QUESTION)
-        resp = dlg.ShowModal()
-        dlg.Destroy()
-        if resp == wx.ID_NO:
-            return imgPath
-        
-        dlg = wx.DirDialog(self, defaultPath=Settings().GetImagePath())
-        try:
-            if dlg.ShowModal() == wx.ID_OK:
-                path = dlg.GetPath()
-                self.__usedAltPath = True
-                return path
-        finally:
-            dlg.Destroy()
-
-        return imgPath
-
         
 class ProjectDropTarget(wx.FileDropTarget):
     def __init__(self, frmMain):

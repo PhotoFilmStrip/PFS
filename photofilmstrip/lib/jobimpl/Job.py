@@ -96,9 +96,9 @@ class Job(IJobContext):
         
         return True
     
-    def GetResultObject(self, block=True):
-        while block and not self.__done:
-            time.sleep(0.1)
+    def GetResultObject(self):#, block=True):
+#        while block and not self.__done:
+#            time.sleep(0.1)
         return self.__resultObject
 
 

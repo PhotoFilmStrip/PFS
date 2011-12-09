@@ -13,6 +13,7 @@ from photofilmstrip.core.Picture import Picture
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
 from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.lib.jobimpl.WxVisualJobHandler import WxInteractionEvent
 
 
 class LoadJob(VisualJob):
@@ -21,6 +22,11 @@ class LoadJob(VisualJob):
                            target=self.__Load)
         self.SetName(_("Loading project %s") % project.GetFilename())
         self.__project = project
+        self.__altPaths = {}
+        
+    def _SelectAlternatePath(self, imgPath):
+        sapEvent = SelectAlternatePathEvent(imgPath)
+        self._Interact(sapEvent)
 
     def __Load(self, importPath=None, job=None):
         filename = self.__project.GetFilename()
@@ -59,7 +65,6 @@ class LoadJob(VisualJob):
             return False
         
         picList = []
-        altPaths = {}
         for row in cur:
             imgFile = row["filename"]
             imgPath = os.path.dirname(imgFile)
@@ -68,13 +73,11 @@ class LoadJob(VisualJob):
             picData = self.__LoadSafe(row, 'data', None)
             if picData is None:
                 if not (os.path.exists(imgPath) and os.path.isfile(imgFile)):
-                    if altPaths.has_key(imgPath):
-                        altPath = altPaths[imgPath]
-                    else:
-                        altPath = self.__uiHandler.GetAltPath(imgPath)
-                        altPaths[imgPath] = altPath
+                    if not self.__altPaths.has_key(imgPath):
+                        self._SelectAlternatePath(imgPath)
                         
-                    imgFile = os.path.join(altPaths[imgPath], os.path.basename(imgFile))
+                    imgFile = os.path.join(self.__altPaths.get(imgPath, imgPath), 
+                                           os.path.basename(imgFile))
                 
                 pic = Picture(imgFile)
 
@@ -135,6 +138,9 @@ class LoadJob(VisualJob):
     
     def GetProject(self):
         return self.__project
+    
+    def SetAltPath(self, imgPath, path):
+        self.__altPaths[imgPath] = path
 
         
 class SaveJob(VisualJob):
@@ -241,3 +247,36 @@ class SaveJob(VisualJob):
         cur.close()
 
 #        self.__project.SetFilename(self.__filename)
+
+import wx
+from photofilmstrip.lib.Settings import Settings
+
+class SelectAlternatePathEvent(WxInteractionEvent):
+    
+    def __init__(self, imgPath):
+        WxInteractionEvent.__init__(self)
+        self.__imgPath = imgPath
+        
+    def OnProcess(self, wxParent):
+        dlg = wx.MessageDialog(wxParent,
+                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % self.__imgPath, 
+                               _(u"Question"),
+                               wx.YES_NO | wx.ICON_QUESTION)
+        try:
+            if dlg.ShowModal() == wx.ID_NO:
+                self.GetJob().SetAltPath(self.__imgPath, self.__imgPath)
+                return
+        finally:
+            dlg.Destroy()
+
+        dlg = wx.DirDialog(wxParent, defaultPath=Settings().GetImagePath())
+        try:
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                self.GetJob().SetAltPath(self.__imgPath, path)
+                return
+            else:
+                self.Skip()
+        finally:
+            dlg.Destroy()
+

@@ -69,6 +69,9 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 #            JobManager().EnqueueContext(dc)
 
     def RegisterJob(self, jobContext):
+        if jobContext.GetGroupId() != "render":
+            return
+        
         pjv = PnlJobVisual(self.pnlJobs, self, jobContext)
         pjv.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
 

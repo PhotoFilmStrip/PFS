@@ -69,7 +69,6 @@ class PhotoFilmStrip(object):
         
     def __init__(self, filename=None):
         self.__pictures = []
-        self.__uiHandler = UserInteractionHandler()
         self.__filename = filename
         
         self.__audioFile = None
@@ -93,9 +92,6 @@ class PhotoFilmStrip(object):
     def SetPictures(self, picList):
         self.__pictures = picList
         
-    def SetUserInteractionHandler(self, uiHdl):
-        self.__uiHandler = uiHdl
-        
     def SetAudioFile(self, audioFile):
         self.__audioFile = audioFile
     def GetAudioFile(self):
@@ -118,11 +114,3 @@ class PhotoFilmStrip(object):
         else:
             totalTime = self.__duration
         return totalTime
-    
-
-
-class UserInteractionHandler(object):
-    
-    def GetAltPath(self, imgPath):
-        return imgPath
-    

@@ -51,9 +51,6 @@ class Picture(Observable):
         self._trans    = Picture.TRANS_FADE
         self._transDur = 1.0
         
-    def __Reset(self):
-        pass
-    
     def Copy(self):
         clone = Picture(self._filename)
         clone.SetStartRect(self._startRect[:])
@@ -113,7 +110,6 @@ class Picture(Observable):
         if effect == self._effect:
             return
         self._effect = effect
-        self.__Reset()
         self.Notify('effect')
         self.Notify("bitmap")
     def GetEffect(self):
@@ -169,7 +165,6 @@ class Picture(Observable):
             self._rotation = 0
 
         self._width, self._height = self._height, self._width
-        self.__Reset()
     
     def Rotate(self, clockwise=True):
         self.__Rotate(clockwise)
