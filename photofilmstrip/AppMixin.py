@@ -19,7 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import gettext
 import logging
 import os
 import subprocess
@@ -54,22 +53,8 @@ class AppMixin(object):
                             datefmt='%d.%m.%Y %H:%M:%S')
 
     def InitI18N(self):
-        from photofilmstrip.lib.Settings import Settings
-        curLang = Settings().GetLanguage()
-        localeDir = os.path.join(Constants.APP_DIR, "locale")
-        
-        if not os.path.isdir(localeDir):
-            gettext.install(Constants.APP_NAME)
-            return 
-    
-        try:
-            lang = gettext.translation(Constants.APP_NAME, 
-                                       localeDir, 
-                                       languages=[curLang, "en"])
-            lang.install(True)
-        except IOError:
-            gettext.install(Constants.APP_NAME)
-        
+        from photofilmstrip.action.ActionI18N import ActionI18N
+        ActionI18N().Execute()
         
     def Start(self):
         self.InitLogging()

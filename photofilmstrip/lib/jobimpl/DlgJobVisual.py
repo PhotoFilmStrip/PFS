@@ -1,9 +1,11 @@
 #Boa:Dialog:DlgJobVisual
 # encoding: UTF-8
 
+import time
+
 import wx
 
-from photofilmstrip.lib.jobimpl.WxVisualJobHandler import WxVisualJobHandler, EVT_JOB_UPDATE
+from .WxVisualJobHandler import WxVisualJobHandler, EVT_JOB_UPDATE
 
 
 [wxID_DLGJOBVISUAL, wxID_DLGJOBVISUALCMDABORT, wxID_DLGJOBVISUALGAUGE, 
@@ -113,7 +115,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         self.__display_estimated = 0
         self.__last_timeupdate = 0
         self.__ctdelay = 0
-        self.__timeStart = wx.GetCurrentTime()
+        self.__timeStart = time.time()
 
         self.Bind(wx.EVT_CLOSE, self.__OnClose)
         self.Bind(EVT_JOB_UPDATE, self.__OnJobUpdate)
@@ -126,7 +128,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 #            self.DisableAbort()
 #            self.DisableSkip()
 
-            self.__timeStop = wx.GetCurrentTime()
+            self.__timeStop = time.time()
 
     def __OnClose(self, event):
         if self.__state == "Uncancelable":
@@ -137,14 +139,14 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
             self.__state = "Canceled"
 #            self.DisableAbort()
 #            self.DisableSkip()
-            self.__timeStop = wx.GetCurrentTime()
+            self.__timeStop = time.time()
 
     def __Pulse(self, newmsg):
         self.gauge.Pulse()
         self.__UpdateMessage(newmsg)
 
         if 1:#self.__elapsed or self.__remaining or self.__estimated:
-            elapsed = wx.GetCurrentTime() - self.__timeStart
+            elapsed = time.time() - self.__timeStart
     
             self.__SetTimeLabel(elapsed, self.stElapsedValue)
 #            self.__SetTimeLabel(-1, self.stEstimated)
@@ -157,7 +159,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         
 #        if (self.__elapsed or self.__remaining or self.__estimated) and (value != 0):
         if value != 0:
-            elapsed = wx.GetCurrentTime() - self.__timeStart
+            elapsed = time.time() - self.__timeStart
             if self.__last_timeupdate < elapsed or value == self.__maximum:
                 self.__last_timeupdate = elapsed
                 estimated = (elapsed * self.__maximum) / float(value)
@@ -202,7 +204,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 
     def __OnJobUpdate(self, event):
         if event.IsBegin():
-            self.__timeStart = wx.GetCurrentTime()
+            self.__timeStart = time.time()
 #            self.__dlg = wx.ProgressDialog(self.__job.GetName(), 
 #                                           self.__job.GetInfo(), 
 #                                           maximum=self.__job.GetMaxProgress(), 

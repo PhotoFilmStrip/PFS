@@ -28,6 +28,8 @@ from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
 
+from photofilmstrip.action.ActionI18N import ActionI18N
+
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
         WxVisualJobHandler, EVT_JOB_RESULT)
 from photofilmstrip.lib.Settings import Settings
@@ -45,7 +47,7 @@ from photofilmstrip.gui.PnlJobManager import PnlJobManager
 from photofilmstrip import Constants
 from photofilmstrip.core.persistence import LoadJob, SaveJob
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
-from photofilmstrip.gui.DlgJobVisual import DlgJobVisual
+from photofilmstrip.lib.jobimpl.DlgJobVisual import DlgJobVisual
 
 
 class FrmMain(wx.Frame, WxVisualJobHandler):
@@ -184,7 +186,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
     def OnChangeLanguage(self, event):
         lang = ActionManager.LANG_MAP.get(event.GetId(), "en")
         Settings().SetLanguage(lang)
-        Settings().InitLanguage()
+        ActionI18N().Execute()
         dlg = wx.MessageDialog(self,
                                _(u"You must restart %s for your new language setting to take effect.") % Constants.APP_NAME,
                                _(u"Information"),

@@ -19,31 +19,36 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import gettext
 import os
-import subprocess
 
 from photofilmstrip.action.IAction import IAction
 
+from photofilmstrip import Constants
 
-class ActionOpenFolder(IAction):
+from photofilmstrip.lib.Settings import Settings
+
+
+class ActionI18N(IAction):
     
-    def __init__(self, outpath):
-        self.outpath = outpath
+    def __init__(self, lang=None):
+        self.__lang = lang
     
     def GetName(self):
-        return _(u'Play video')
+        return _("Language")
     
-    def GetBitmap(self):
-        import wx
-        return wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN,
-                                        wx.ART_OTHER,
-                                        wx.DefaultSize)
-
     def Execute(self):
-        if not os.path.exists(self.outpath):
-            return
+        curLang = Settings().GetLanguage()
+        localeDir = os.path.join(Constants.APP_DIR, "locale")
         
-        if os.name == "nt":
-            os.startfile(self.outpath) # IGNORE:E1101
-        else:
-            subprocess.Popen(["xdg-open", self.outpath])
+        if not os.path.isdir(localeDir):
+            gettext.install(Constants.APP_NAME)
+            return 
+    
+        try:
+            lang = gettext.translation(Constants.APP_NAME, 
+                                       localeDir, 
+                                       languages=[curLang, "en"])
+            lang.install(True)
+        except IOError:
+            gettext.install(Constants.APP_NAME)
