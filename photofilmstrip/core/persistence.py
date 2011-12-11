@@ -17,6 +17,16 @@ from photofilmstrip.core.Project import Project
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import WxInteractionEvent
 
 
+REV = 3
+"""
+3:
+- added thumbnail table
+2:
+- added property table
+1:
+- initial
+"""
+
 def CheckProject(filename):
     try:
         conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
@@ -139,15 +149,8 @@ class LoadJob(VisualJob):
 
             pic.SetTransition(self.__LoadSafe(row, 'transition', Picture.TRANS_FADE))
             pic.SetTransitionDuration(self.__LoadSafe(row, 'transition_duration', 1.0))
-
-            if fileRev >= 3:
-                thumbWidth = row["thumb_width"]
-                thumbHeight = row["thumb_height"] 
-                thumbData = row["thumb_data"]
-                thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
-            else:
-                thumbNail = PILBackend.GetThumbnail(pic, height=120)
-            ImageCache().RegisterPicture(pic, thumbNail)
+            
+            self.__LoadThumbnail(conn, fileRev, pic, row["picture_id"])
             
             picList.append(pic)
 
@@ -155,6 +158,22 @@ class LoadJob(VisualJob):
         self.__project.SetPictures(picList)
         return True
     
+    def __LoadThumbnail(self, conn, fileRev, pic, picId):
+        thumbNail = None
+        if fileRev >= 3:
+            cur = conn.cursor()
+            cur.row_factory = sqlite3.Row
+            cur.execute("select * from `thumbnail` where picture_id=?", (picId, ))
+            row = cur.fetchone()
+            if row:
+                thumbWidth = row["width"]
+                thumbHeight = row["height"] 
+                thumbData = row["data"]
+                thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
+        if thumbNail is None:
+            thumbNail = PILBackend.GetThumbnail(pic, height=120)
+        ImageCache().RegisterPicture(pic, thumbNail)
+
     def __LoadSafe(self, row, colName, default):
         try:
             return row[colName]
@@ -193,7 +212,7 @@ class SaveJob(VisualJob):
     def GetIncludePics(self):
         return self.__includePics
         
-    def __PicToQuery(self, tableName, pic):
+    def __PicToQuery(self, pic):
         if self.__includePics:
             fd = open(pic.GetFilename(), 'rb')
             picData = buffer(fd.read())
@@ -201,26 +220,36 @@ class SaveJob(VisualJob):
         else:
             picData = None
             
-        pilThumb = PILBackend.GetThumbnail(pic, height=120)
-        thumbWidth, thumbHeight = pilThumb.size
-        thumbData = buffer(pilThumb.tostring())
-        
-        query = "INSERT INTO `%s` (filename, width, height, " \
-                                  "start_left, start_top, start_width, start_height, " \
-                                  "target_left, target_top, target_width, target_height, " \
-                                  "rotation, duration, comment, effect, " \
-                                  "transition, transition_duration, " \
-                                  "thumb_width, thumb_height, thumb_data, data) " \
-                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" % tableName
+        query = "INSERT INTO `picture` (" \
+                    "filename, width, height, " \
+                    "start_left, start_top, start_width, start_height, " \
+                    "target_left, target_top, target_width, target_height, " \
+                    "rotation, duration, comment, effect, " \
+                    "transition, transition_duration, data" \
+                ") VALUES (" \
+                    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" \
+                ");"
 
         values =  (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
                    pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect(), 
                    pic.GetTransition(), pic.GetTransitionDuration(), 
-                   thumbWidth, thumbHeight, thumbData, 
                    picData)
         return query, values
+    
+    def __ThumbToQuery(self, picId, pic):
+        pilThumb = PILBackend.GetThumbnail(pic, height=120)
+        thumbWidth, thumbHeight = pilThumb.size
+        thumbData = buffer(pilThumb.tostring())
+        
+        query = "INSERT INTO `thumbnail` (" \
+                    "picture_id, width, height, data" \
+                ") VALUES (" \
+                    "?, ?, ?, ?" \
+                ");"
+        values = (picId, thumbWidth, thumbHeight, thumbData)
+        return query, values 
 
     def __CreateSchema(self, conn):
         query = "CREATE TABLE `picture` (picture_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
@@ -241,13 +270,16 @@ class SaveJob(VisualJob):
                                         "effect INTEGER, " \
                                         "transition INTEGER, " \
                                         "transition_duration DOUBLE, " \
-                                        "thumb_width INTEGER, " \
-                                        "thumb_height INTEGER, " \
-                                        "thumb_data BLOB, " \
                                         "data BLOB);\n" \
                 "CREATE TABLE `property` (property_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
                                          "name TEXT," \
-                                         "value TEXT);\n"
+                                         "value TEXT);\n" \
+                "CREATE TABLE `thumbnail` (thumbnail_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
+                                          "picture_id INTEGER, " \
+                                          "width INTEGER, " \
+                                          "height INTEGER, " \
+                                          "data BLOB, " \
+                                          "FOREIGN KEY(picture_id) REFERENCES picture(picture_id) ON DELETE CASCADE);\n"
         conn.executescript(query)
         
     
@@ -265,11 +297,14 @@ class SaveJob(VisualJob):
         cur = conn.cursor()
         for pic in self.__pictures:
             self.StepProgress(_(u"Saving '%s' ...") % pic.GetFilename())
-            query, values = self.__PicToQuery('picture', pic)
+            query, values = self.__PicToQuery(pic)
+            cur.execute(query, values)
+            
+            query, values = self.__ThumbToQuery(cur.lastrowid, pic)
             cur.execute(query, values)
         
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
-        for name, value in [('rev', PhotoFilmStrip.REV),
+        for name, value in [('rev', REV),
                             ('audiofile', self.__project.GetAudioFile()),
                             ('aspect', self.__project.GetAspect()),
                             ('duration', self.__project.GetDuration(False))]:

@@ -26,8 +26,6 @@ from photofilmstrip.core.Aspect import Aspect
 
 class Project(object):
     
-    REV = 3
-    
     def __init__(self, filename=None):
         self.__pictures = []
         self.__filename = filename
