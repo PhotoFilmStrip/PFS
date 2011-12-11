@@ -26,7 +26,7 @@ import wx
 import wx.aui
 from wx.lib.wordwrap import wordwrap
 
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.Project import Project
 
 from photofilmstrip.action.ActionI18N import ActionI18N
 
@@ -149,10 +149,10 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
         if sel > 1:
             return self.notebook.GetPage(sel)
     
-    def __GetCurrentPhotoFilmStrip(self):
+    def __GetCurrentProject(self):
         page = self.__GetCurrentPnlPfs()
         if page:
-            return page.GetPhotoFilmStrip()
+            return page.GetProject()
         return None
     
     def OnCheckProjectActive(self, event):
@@ -202,7 +202,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
         else:
             page = self.notebook.GetPage(sel)
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
-            filepath = page.GetPhotoFilmStrip().GetFilename()
+            filepath = page.GetProject().GetFilename()
             self.SetTitle(Constants.APP_NAME + u' - ' + Decode(filepath))
             
         self.UpdateStatusText(None)
@@ -262,7 +262,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
     def OnProjectNew(self, event):
         dlg = DlgProjectProps(self)
         if dlg.ShowModal() == wx.ID_OK:
-            photoFilmStrip = dlg.GetPhotoFilmStrip()
+            photoFilmStrip = dlg.GetProject()
             self.NewProject(photoFilmStrip)
         dlg.Destroy()
         
@@ -276,13 +276,13 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
             
     def OnProjectSave(self, event):
         pnlPfs = self.__GetCurrentPnlPfs()
-        pfs = self.__GetCurrentPhotoFilmStrip()
+        pfs = self.__GetCurrentProject()
         if pfs:
             if self.SaveProject(pfs.GetFilename(), False):
                 pnlPfs.SetChanged(False)
 
     def OnProjectSaveAs(self, event):
-        pfs = self.__GetCurrentPhotoFilmStrip()
+        pfs = self.__GetCurrentProject()
         if pfs is None:
             return
         curFilePath = pfs.GetFilename()
@@ -313,7 +313,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
             self.notebook.DeletePage(sel)
     
     def OnProjectExport(self, event):
-        pfs = self.__GetCurrentPhotoFilmStrip()
+        pfs = self.__GetCurrentProject()
         if pfs is None:
             return
         curFilePath = pfs.GetFilename()
@@ -341,9 +341,9 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
         if pnlPfs is None:
             return
         
-        dlg = DlgProjectProps(self, self.__GetCurrentPhotoFilmStrip())
+        dlg = DlgProjectProps(self, self.__GetCurrentProject())
         if dlg.ShowModal() == wx.ID_OK:
-            dlg.GetPhotoFilmStrip()
+            dlg.GetProject()
             pnlPfs.UpdateProperties()
         dlg.Destroy()
 
@@ -389,7 +389,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
         sel = self.notebook.GetSelection()
         if sel > 0:
             page = self.notebook.GetPage(sel)
-            photoFilmStrip = page.GetPhotoFilmStrip()
+            photoFilmStrip = page.GetProject()
             dlg = DlgRender(self, photoFilmStrip)
             dlg.ShowModal()
 #            dlg.Destroy()
@@ -411,7 +411,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
         
     def CheckAndAskSaving(self, pnlPfs):
         if pnlPfs.HasChanged():
-            filepath = pnlPfs.GetPhotoFilmStrip().GetFilename()
+            filepath = pnlPfs.GetProject().GetFilename()
                 
             dlg = wx.MessageDialog(self,
                                    _(u"'%s' has been modified. Save changes?") % Decode(filepath), 
@@ -432,7 +432,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
             self.statusBar.SetStatusText(Constants.APP_URL, 1)
             self.statusBar.SetStatusText("%s %s" % (Constants.APP_NAME, Constants.APP_VERSION), 2)
         else:
-            photoFilmStrip = page.GetPhotoFilmStrip()
+            photoFilmStrip = page.GetProject()
 
             pics = photoFilmStrip.GetPictures()
     
@@ -464,12 +464,12 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
     def LoadProject(self, filepath, skipHistory=False):
         for idx in range(2, self.notebook.GetPageCount()):
             page = self.notebook.GetPage(idx)
-            if page.GetPhotoFilmStrip().GetFilename() == filepath:
+            if page.GetProject().GetFilename() == filepath:
                 self.notebook.SetSelection(idx)
                 return
         
-        photoFilmStrip = PhotoFilmStrip(filepath)
-        lj = LoadJob(photoFilmStrip)
+        project = Project(filepath)
+        lj = LoadJob(project)
         lj.AddVisualJobHandler(self)
         lj.AddVisualJobHandler(DlgJobVisual(self, lj))
         JobManager().EnqueueContext(lj)
@@ -500,7 +500,7 @@ class FrmMain(wx.Frame, WxVisualJobHandler):
 #            wx.CallAfter(self.pnlWelcome.RefreshPage)
     
     def SaveProject(self, filepath, includePics):
-        photoFilmStrip = self.__GetCurrentPhotoFilmStrip()
+        photoFilmStrip = self.__GetCurrentProject()
         photoFilmStrip.SetFilename(filepath)
         sj = SaveJob(photoFilmStrip, includePics)
         sj.AddVisualJobHandler(self)

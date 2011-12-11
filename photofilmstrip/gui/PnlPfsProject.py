@@ -212,7 +212,7 @@ class PnlPfsProject(wx.Panel, Observer):
 
         self._init_sizers()
 
-    def __init__(self, parent, photoFilmStrip):
+    def __init__(self, parent, project):
         self._init_ctrls(parent)
         Observer.__init__(self)
         
@@ -223,9 +223,9 @@ class PnlPfsProject(wx.Panel, Observer):
         self.imgProxy.AddObserver(self.bitmapRight)
         
         self.bitmapLeft.SetImgProxy(self.imgProxy)
-        self.bitmapLeft.SetAspect(photoFilmStrip.GetAspect())
+        self.bitmapLeft.SetAspect(project.GetAspect())
         self.bitmapRight.SetImgProxy(self.imgProxy)
-        self.bitmapRight.SetAspect(photoFilmStrip.GetAspect())
+        self.bitmapRight.SetAspect(project.GetAspect())
 
         self.pnlAddPics.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
         self.pnlAddPics.stInfo.SetDropTarget(ImageDropTarget(self))
@@ -240,7 +240,7 @@ class PnlPfsProject(wx.Panel, Observer):
         
         self.Bind(EVT_CHANGED, self.OnPhotoFilmStripListChanged, id=self.lvPics.GetId())
 
-        self.__photoFilmStrip = photoFilmStrip
+        self.__project = project
         self.__hasChanged = False
         self.__usedAltPath = False
         
@@ -401,7 +401,7 @@ class PnlPfsProject(wx.Panel, Observer):
         self.Layout()
 
     def OnPhotoFilmStripListChanged(self, event):
-        self.__photoFilmStrip.SetPictures(self.lvPics.GetPictures())
+        self.__project.SetPictures(self.lvPics.GetPictures())
         self.SetChanged(True)
 
     def OnToolBarImgSectToolAutoPath(self, event):
@@ -409,7 +409,7 @@ class PnlPfsProject(wx.Panel, Observer):
         pic = self.lvPics.GetPicture(selItem)
         if pic is None:
             return
-        actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
+        actAp = ActionAutoPath(pic, self.__project.GetAspect())
         actAp.Execute()
 
     def OnToolBarImgSectToolLeftToRight(self, event):
@@ -430,7 +430,7 @@ class PnlPfsProject(wx.Panel, Observer):
         selItem = self.lvPics.GetSelected()
         selPic = self.lvPics.GetPicture(selItem)
         
-        dlg = DlgPositionInput(self, selPic, self.__photoFilmStrip.GetAspect())
+        dlg = DlgPositionInput(self, selPic, self.__project.GetAspect())
         dlg.ShowModal()
         dlg.Destroy()
 
@@ -439,8 +439,8 @@ class PnlPfsProject(wx.Panel, Observer):
         self.imgProxy.RemoveObserver(self.bitmapRight)
         self.imgProxy.Destroy()
 
-    def GetPhotoFilmStrip(self):
-        return self.__photoFilmStrip
+    def GetProject(self):
+        return self.__project
 
     def InsertPictures(self, pics, position=None, autopath=False):
         logging.debug("InsertPictures(pos=%s)", position)
@@ -449,7 +449,7 @@ class PnlPfsProject(wx.Panel, Observer):
         
         for idx, pic in enumerate(pics):
             if autopath:
-                actAp = ActionAutoPath(pic, self.__photoFilmStrip.GetAspect())
+                actAp = ActionAutoPath(pic, self.__project.GetAspect())
                 actAp.Execute()
 
             self.lvPics.InsertPicture(position, pic)
@@ -490,8 +490,8 @@ class PnlPfsProject(wx.Panel, Observer):
             self.SetChanged(True)
 
     def UpdateProperties(self):
-        self.bitmapLeft.SetAspect(self.__photoFilmStrip.GetAspect())
-        self.bitmapRight.SetAspect(self.__photoFilmStrip.GetAspect())
+        self.bitmapLeft.SetAspect(self.__project.GetAspect())
+        self.bitmapRight.SetAspect(self.__project.GetAspect())
         self.SetChanged(True)
 
         evt = UpdateStatusbarEvent(self.GetId())

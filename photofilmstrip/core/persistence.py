@@ -2,6 +2,7 @@
 
 import logging
 import os
+import random
 import sqlite3
 
 from photofilmstrip.lib.util import Encode
@@ -12,8 +13,40 @@ from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.Project import Project
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import WxInteractionEvent
+
+
+def CheckProject(filename):
+    try:
+        conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
+        cur = conn.cursor()
+        cur.execute("select * from `picture`")
+    except sqlite3.DatabaseError, err:
+        logging.debug("IsOk(%s): %s", filename, err)
+        return False
+    except BaseException, err:
+        logging.debug("IsOk(%s): %s", filename, err)
+        return False
+    return True
+
+def QuickInfo(filename):
+    return 0, None
+    prj = Project()
+    prj.Load(filename)
+    imgCount = len(prj.GetPictures())
+    if imgCount > 0:
+        picIdx   = random.randint(0, imgCount - 1)
+    
+    pic = prj.GetPictures()[picIdx]
+    if os.path.exists(pic.GetFilename()):
+        img = PILBackend.GetThumbnail(pic, 64, 64)
+        if pic.IsDummy():
+            img = None
+    else:
+        img = None
+
+    return imgCount, img
 
 
 class LoadJob(VisualJob):

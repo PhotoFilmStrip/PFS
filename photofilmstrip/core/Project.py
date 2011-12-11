@@ -20,53 +20,14 @@
 #
 
 import os
-import logging
-import random
-import sqlite3
-
-from photofilmstrip.lib.util import Encode
 
 from photofilmstrip.core.Aspect import Aspect
-from photofilmstrip.core import PILBackend
 
 
-class PhotoFilmStrip(object):
+class Project(object):
     
     REV = 3
     
-    @staticmethod
-    def IsOk(filename):
-        try:
-            conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
-            cur = conn.cursor()
-            cur.execute("select * from `picture`")
-        except sqlite3.DatabaseError, err:
-            logging.debug("IsOk(%s): %s", filename, err)
-            return False
-        except BaseException, err:
-            logging.debug("IsOk(%s): %s", filename, err)
-            return False
-        return True
-    
-    @staticmethod
-    def QuickInfo(filename):
-        return 0, None
-        pfs = PhotoFilmStrip()
-        pfs.Load(filename)
-        imgCount = len(pfs.GetPictures())
-        if imgCount > 0:
-            picIdx   = random.randint(0, imgCount - 1)
-        
-        pic = pfs.GetPictures()[picIdx]
-        if os.path.exists(pic.GetFilename()):
-            img = PILBackend.GetThumbnail(pic, 64, 64)
-            if pic.IsDummy():
-                img = None
-        else:
-            img = None
-
-        return imgCount, img
-        
     def __init__(self, filename=None):
         self.__pictures = []
         self.__filename = filename

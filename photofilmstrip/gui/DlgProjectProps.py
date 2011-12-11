@@ -32,7 +32,7 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import IsPathWritable
 
 from photofilmstrip.core.Aspect import Aspect
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.Project import Project
 from photofilmstrip.core.MPlayer import MPlayer
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
@@ -232,7 +232,7 @@ class DlgProjectProps(wx.Dialog):
 
         self._init_sizers()
 
-    def __init__(self, parent, photoFilmStrip=None):
+    def __init__(self, parent, project=None):
         self._init_ctrls(parent)
 
         self.pnlHdr.SetTitle(_(u'PhotoFilmStrip project'))
@@ -263,9 +263,9 @@ class DlgProjectProps(wx.Dialog):
 
         self.mediaCtrl = None
 
-        self.__photoFilmStrip = photoFilmStrip
+        self.__project = project
         
-        if photoFilmStrip is None:
+        if project is None:
             projName = _(u"Unnamed PhotoFilmStrip")
             self.tcProject.SetValue(projName)
             self.tcProject.SelectAll()
@@ -279,18 +279,18 @@ class DlgProjectProps(wx.Dialog):
             
             self.cbTotalLength.SetValue(False)
         else:
-            projName = os.path.splitext(os.path.basename(photoFilmStrip.GetFilename()))[0]
+            projName = os.path.splitext(os.path.basename(project.GetFilename()))[0]
             self.tcProject.SetValue(projName)
             self.tcProject.Enable(False)
         
-            self.tcFolder.SetValue(os.path.dirname(photoFilmStrip.GetFilename()))
+            self.tcFolder.SetValue(os.path.dirname(project.GetFilename()))
             self.tcFolder.Enable(False)
             self.cmdBrowseFolder.Enable(False)
             
-            self.choiceAspect.SetStringSelection(photoFilmStrip.GetAspect())
+            self.choiceAspect.SetStringSelection(project.GetAspect())
             self.choiceAspect.Enable(False)
             
-            pfsDur = photoFilmStrip.GetDuration()
+            pfsDur = project.GetDuration()
             dur = wx.DateTime_Now()
             dur.SetHMS(0, pfsDur / 60, pfsDur % 60)
             try:
@@ -299,10 +299,10 @@ class DlgProjectProps(wx.Dialog):
                 # duration is invalid if there are no photos
                 pass
 
-            if photoFilmStrip.GetDuration(calc=False):
+            if project.GetDuration(calc=False):
                 self.cbTotalLength.SetValue(True)
             
-            audioFile = photoFilmStrip.GetAudioFile()
+            audioFile = project.GetAudioFile()
             if audioFile:
                 self.__LoadAudioFile(audioFile, True)
                 self.tcAudiofile.SetValue(audioFile)
@@ -527,13 +527,13 @@ class DlgProjectProps(wx.Dialog):
         self.__CloseMediaCtrl()
         wx.Dialog.Destroy(self)
     
-    def GetPhotoFilmStrip(self):
-        if self.__photoFilmStrip is None:
-            self.__photoFilmStrip = PhotoFilmStrip(self.__GetProjectPath())
+    def GetProject(self):
+        if self.__project is None:
+            self.__project = Project(self.__GetProjectPath())
         if self.cbTotalLength.GetValue() and self.rbAudio.GetValue():
-            self.__photoFilmStrip.SetAudioFile(self.tcAudiofile.GetValue())
+            self.__project.SetAudioFile(self.tcAudiofile.GetValue())
         else:
-            self.__photoFilmStrip.SetAudioFile(None)
-        self.__photoFilmStrip.SetDuration(self.__GetTotalLength())
-        self.__photoFilmStrip.SetAspect(self.choiceAspect.GetStringSelection())
-        return self.__photoFilmStrip
+            self.__project.SetAudioFile(None)
+        self.__project.SetDuration(self.__GetTotalLength())
+        self.__project.SetAspect(self.choiceAspect.GetStringSelection())
+        return self.__project
