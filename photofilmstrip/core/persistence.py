@@ -17,7 +17,7 @@ from photofilmstrip.core.Project import Project
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import WxInteractionEvent
 
 
-REV = 3
+SCHEMA_REV = 3
 """
 3:
 - added thumbnail table
@@ -27,11 +27,52 @@ REV = 3
 - initial
 """
 
+
+SCHEMA = """
+CREATE TABLE `picture` (
+    picture_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT,
+    width INTEGER,
+    height INTEGER,
+    start_left INTEGER, 
+    start_top INTEGER,
+    start_width INTEGER,
+    start_height INTEGER,
+    target_left INTEGER,
+    target_top INTEGER,
+    target_width INTEGER,
+    target_height INTEGER,
+    rotation INTEGER,
+    duration DOUBLE,
+    comment TEXT,
+    effect INTEGER,
+    transition INTEGER,
+    transition_duration DOUBLE,
+    data BLOB
+);
+
+CREATE TABLE `property` (
+    property_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    value TEXT
+);
+
+CREATE TABLE `thumbnail` (
+    thumbnail_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    picture_id INTEGER,
+    width INTEGER,
+    height INTEGER,
+    data BLOB,
+    FOREIGN KEY(picture_id) REFERENCES picture(picture_id) ON DELETE CASCADE
+);
+"""
+
+
 def CheckProject(filename):
     try:
         conn = sqlite3.connect(Encode(filename), detect_types=sqlite3.PARSE_DECLTYPES)
         cur = conn.cursor()
-        cur.execute("select * from `picture`")
+        cur.execute("SELECT * FROM `picture`")
     except sqlite3.DatabaseError, err:
         logging.debug("IsOk(%s): %s", filename, err)
         return False
@@ -39,6 +80,7 @@ def CheckProject(filename):
         logging.debug("IsOk(%s): %s", filename, err)
         return False
     return True
+
 
 def QuickInfo(filename):
     return 0, None
@@ -81,7 +123,7 @@ class LoadJob(VisualJob):
         cur.row_factory = sqlite3.Row
 
         try:
-            cur.execute("select count(*) from `picture`")
+            cur.execute("SELECT COUNT(*) FROM `picture`")
         except sqlite3.DatabaseError:
             return False
         picCount = cur.fetchone()[0]
@@ -90,7 +132,7 @@ class LoadJob(VisualJob):
         fileRev = 1
         try:
             # at the beginning we had no property table
-            cur.execute("select value from `property` where name=?", ("rev", ))
+            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev", ))
             result = cur.fetchone()
             if result:
                 fileRev = int(result[0])
@@ -103,7 +145,7 @@ class LoadJob(VisualJob):
             self.__aspect    = self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9)
         
         try:
-            cur.execute("select * from `picture`")
+            cur.execute("SELECT * FROM `picture`")
         except sqlite3.DatabaseError:
             return False
         
@@ -163,7 +205,7 @@ class LoadJob(VisualJob):
         if fileRev >= 3:
             cur = conn.cursor()
             cur.row_factory = sqlite3.Row
-            cur.execute("select * from `thumbnail` where picture_id=?", (picId, ))
+            cur.execute("SELECT * FROM `thumbnail` WHERE picture_id=?", (picId, ))
             row = cur.fetchone()
             if row:
                 thumbWidth = row["width"]
@@ -181,7 +223,7 @@ class LoadJob(VisualJob):
             return default
         
     def __LoadProperty(self, cur, propName, typ, default=None):
-        cur.execute("select value from `property` where name=?", (propName, ))
+        cur.execute("SELECT value FROM `property` WHERE name=?", (propName, ))
         result = cur.fetchone()
         if result:
             return typ(result[0])
@@ -252,36 +294,7 @@ class SaveJob(VisualJob):
         return query, values 
 
     def __CreateSchema(self, conn):
-        query = "CREATE TABLE `picture` (picture_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
-                                        "filename TEXT," \
-                                        "width INTEGER," \
-                                        "height INTEGER," \
-                                        "start_left INTEGER, " \
-                                        "start_top INTEGER, " \
-                                        "start_width INTEGER, " \
-                                        "start_height INTEGER, " \
-                                        "target_left INTEGER, " \
-                                        "target_top INTEGER, " \
-                                        "target_width INTEGER, " \
-                                        "target_height INTEGER, " \
-                                        "rotation INTEGER, " \
-                                        "duration DOUBLE, " \
-                                        "comment TEXT, " \
-                                        "effect INTEGER, " \
-                                        "transition INTEGER, " \
-                                        "transition_duration DOUBLE, " \
-                                        "data BLOB);\n" \
-                "CREATE TABLE `property` (property_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
-                                         "name TEXT," \
-                                         "value TEXT);\n" \
-                "CREATE TABLE `thumbnail` (thumbnail_id INTEGER PRIMARY KEY AUTOINCREMENT, "\
-                                          "picture_id INTEGER, " \
-                                          "width INTEGER, " \
-                                          "height INTEGER, " \
-                                          "data BLOB, " \
-                                          "FOREIGN KEY(picture_id) REFERENCES picture(picture_id) ON DELETE CASCADE);\n"
-        conn.executescript(query)
-        
+        conn.executescript(SCHEMA)    
     
     def __Save(self, job=None):
         dirname = os.path.dirname(self.__filename)
@@ -304,7 +317,7 @@ class SaveJob(VisualJob):
             cur.execute(query, values)
         
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
-        for name, value in [('rev', REV),
+        for name, value in [('rev', SCHEMA_REV),
                             ('audiofile', self.__project.GetAudioFile()),
                             ('aspect', self.__project.GetAspect()),
                             ('duration', self.__project.GetDuration(False))]:
