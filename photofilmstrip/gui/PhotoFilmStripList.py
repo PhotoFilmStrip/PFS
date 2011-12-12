@@ -23,7 +23,7 @@ import os
 
 import wx
 
-from photofilmstrip.gui.util.ImageCache import ImageCache
+from photofilmstrip.gui.util.ImageCache import ImageCache, EVT_THUMB_READY
 
 
 EVT_CHANGED_TYPE  = wx.NewEventType()
@@ -68,12 +68,20 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
         
+        ImageCache().RegisterWin(self)
+        ImageCache().thumb = wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE,
+              wx.ART_TOOLBAR, (120, 120))
+        self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
+        
     def Freeze(self):
         self.__frozen = True
     def Thaw(self):
         self.__frozen = False
     def IsFrozen(self):
         return self.__frozen
+    
+    def __OnThumbReady(self, event):
+        self.__UpdateVirtualSize()
         
     def OnPaint(self, event):
         pdc = wx.BufferedPaintDC(self)

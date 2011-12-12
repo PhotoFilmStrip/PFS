@@ -271,6 +271,7 @@ class PnlPfsProject(wx.Panel, Observer):
             for path in dlg.GetPaths():
                 pic = Picture(path)
                 pics.append(pic)
+                ImageCache().RegisterPicture(pic)
             
             selItm = self.lvPics.GetSelected()
             self.InsertPictures(pics, 
@@ -447,6 +448,7 @@ class PnlPfsProject(wx.Panel, Observer):
         if position is None:
             position = self.lvPics.GetItemCount()
         
+#        self.lvPics.Freeze()
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__project.GetAspect())
@@ -456,7 +458,7 @@ class PnlPfsProject(wx.Panel, Observer):
             position += 1 
 
             pic.AddObserver(self)
-
+#        self.lvPics.Thaw()
         if self.lvPics.GetSelected() == -1:
             self.lvPics.Select(0)
             

@@ -25,6 +25,8 @@ from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.common.ObserverPattern import Observer
 
 from photofilmstrip.core import PILBackend
+import threading
+import time
 
 
 class ImageCache(Singleton, Observer):
@@ -38,6 +40,14 @@ class ImageCache(Singleton, Observer):
         self._wxBmpCache = {}
         self._pilCache = {}
         
+        self.scaleThread = ScaleThread(self)
+        self.scaleThread.start()
+        self.win = None
+        self.thumb = None
+        
+    def RegisterWin(self, win):
+        self.win = win
+        
     def ObservableUpdate(self, obj, arg):
         if arg == 'bitmap':
             self.UpdatePicture(obj)
@@ -47,8 +57,8 @@ class ImageCache(Singleton, Observer):
         self._wxBmpCache.clear()
     
     def RegisterPicture(self, picture, pilThumb=None):
-        if pilThumb is None:
-            pilThumb = PILBackend.GetThumbnail(picture, height=120)
+#        if pilThumb is None:
+#            pilThumb = PILBackend.GetThumbnail(picture, height=120)
 
         key = picture.GetKey()
         self._picRegistry[key] = picture
@@ -78,10 +88,53 @@ class ImageCache(Singleton, Observer):
     def GetThumbBmp(self, picture):
         key = picture.GetKey()
         if not self._wxBmpCache.has_key(key):
-            if self._pilCache.has_key(key):
-                pilImg = self._pilCache[key]
+            pilImg = self._pilCache.get(key)
+            if pilImg is None:
+                self._pilCache[key] = -1
+                self.scaleThread.queue.append(picture)
+                return self.thumb
+            elif pilImg == -1:
+                return self.thumb
             else:
-                pilImg = PILBackend.GetThumbnail(picture, height=ImageCache.THUMB_SIZE)
-            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
-            self._wxBmpCache[key] = wxImg.ConvertToBitmap()
+#                pilImg = self._pilCache[key]
+                wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+                self._wxBmpCache[key] = wxImg.ConvertToBitmap()
         return self._wxBmpCache[key]
+
+
+class ScaleThread(threading.Thread):
+    
+    def __init__(self, imgCache):
+        threading.Thread.__init__(self, name="ScaleThread")
+        self.imgCache = imgCache
+        self.active = True
+        self.queue = []
+        
+    def run(self):
+        while self.active:
+            pic = None
+            try:
+                pic = self.queue.pop(0)
+            except IndexError:
+                time.sleep(0.1)
+                continue
+                
+            pilImg = PILBackend.GetThumbnail(pic, height=ImageCache.THUMB_SIZE)
+            self.imgCache.RegisterPicture(pic, pilImg)
+            
+            if self.imgCache.win:
+                evt = ThumbnailReadyEvent(pic)
+                wx.PostEvent(self.imgCache.win, evt)
+            
+
+_EVT_THUMB_READY_TYPE = wx.NewEventType()
+EVT_THUMB_READY = wx.PyEventBinder(_EVT_THUMB_READY_TYPE, 1)
+            
+class ThumbnailReadyEvent(wx.PyEvent):
+
+    def __init__(self, pic):
+        wx.PyEvent.__init__(self, eventType=_EVT_THUMB_READY_TYPE)
+        self.__pic = pic
+    
+    def GetPicture(self):
+        return self.__pic

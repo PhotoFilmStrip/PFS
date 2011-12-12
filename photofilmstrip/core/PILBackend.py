@@ -127,9 +127,6 @@ def __CreateDummyImage(message):
     
     return img
 
-def GetImageSize(pilImg):
-    return pilImg.size[0], pilImg.size[1]
-    
 def __GetImage(picture):
     try:
         img = Image.open(picture.GetFilename())
@@ -174,8 +171,49 @@ def __ProcessImage(img, picture):
 def GetImage(picture):
     pilImg = __GetImage(picture)
     pilImg = __ProcessImage(pilImg, picture)
+    picture.SetWidth(pilImg.size[0])
+    picture.SetHeight(pilImg.size[1])
     return pilImg
-        
+
+def GetExifRotation(pilImg):
+    exifOrient = 274
+    rotation = 0 
+    try:
+        exif = pilImg._getexif()
+        if isinstance(exif, dict) and exif.has_key(exifOrient):
+            rotation = exif[exifOrient]
+    except AttributeError:
+        pass
+    except Exception, err:
+        logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
+            
+    if rotation == 3:
+        # rotate 180
+        return 2
+    elif rotation == 5:
+        # transpose
+        return 1
+    elif rotation == 6:
+        # rotate 90
+        return 1
+    elif rotation == 7:
+        # transverse
+        return 1
+    elif rotation == 8:
+        # rotate 270
+        return 3
+    else:
+        return 0
+
+def GetImageSize(filename):
+    pilImg = Image.open(filename)
+    width, height = pilImg.size
+    rotation = GetExifRotation(pilImg)
+    while rotation > 0:
+        width, height = height, width
+        rotation -= 1
+    return width, height
+
 def GetThumbnail(picture, width=None, height=None):
     img = __GetImage(picture)
 

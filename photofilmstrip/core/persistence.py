@@ -201,6 +201,8 @@ class LoadJob(VisualJob):
         return True
     
     def __LoadThumbnail(self, conn, fileRev, pic, picId):
+        ImageCache().RegisterPicture(pic)
+        return
         thumbNail = None
         if fileRev >= 3:
             cur = conn.cursor()
