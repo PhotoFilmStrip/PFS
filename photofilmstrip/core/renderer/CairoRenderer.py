@@ -22,9 +22,9 @@
 import array
 import time
 
-import wx
 
 try:
+    import wx
     import cairo
     import wx.lib.wxcairo
 except ImportError:
