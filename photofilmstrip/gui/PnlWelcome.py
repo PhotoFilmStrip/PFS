@@ -29,8 +29,8 @@ from photofilmstrip import Constants
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.UpdateChecker import UpdateChecker
 
-from photofilmstrip.core.persistence import QuickInfo
-from photofilmstrip.core import PILBackend, persistence
+from photofilmstrip.core.ProjectFile import ProjectFile
+from photofilmstrip.core import PILBackend
 
 from photofilmstrip.gui.ctrls.IconLabelLink import IconLabelLink
 
@@ -90,7 +90,7 @@ class PnlWelcome(wx.Panel):
             htmlParts = []
             fileHistory = Settings().GetFileHistory()
             for recentFile in fileHistory:
-                if persistence.CheckProject(recentFile):
+                if ProjectFile(filename=recentFile).IsOk():
                     htmlPart = """<td align="center" valign="bottom">
                         <wxp module="photofilmstrip.gui.PnlWelcome" class="LinkOpenPfs">
                             <param name="filename" value="%s">
@@ -182,7 +182,9 @@ class LinkOpenPfs(IconLabelLink):
         self.filename = filename
         
         if not LinkOpenPfs.BMP_MAP.has_key(filename):
-            imgCount, img = QuickInfo(filename)
+            prjFile = ProjectFile(filename=filename)
+            imgCount = prjFile.GetPicCount()
+            img = prjFile.GetPreviewThumb()
             if img is not None:
                 wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
