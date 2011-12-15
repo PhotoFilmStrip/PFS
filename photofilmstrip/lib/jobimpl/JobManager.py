@@ -12,6 +12,7 @@ from .IVisualJob import IVisualJob
 from .LogVisualJobManager import LogVisualJobManager
 from .Worker import Worker
 from .JobAbortedException import JobAbortedException
+from photofilmstrip.lib.DestructionManager import Destroyable
 
 
 class _JobCtxGroup(object):
@@ -66,11 +67,12 @@ class _JobCtxGroup(object):
         return self.__workers
 
 
-class JobManager(Singleton):
+class JobManager(Singleton, Destroyable):
     
     DEFAULT_CTXGROUP_ID = "general"
     
     def __init__(self):
+        Destroyable.__init__(self)
         self.__defaultVisual = LogVisualJobManager()
         self.__visuals = [self.__defaultVisual]
         

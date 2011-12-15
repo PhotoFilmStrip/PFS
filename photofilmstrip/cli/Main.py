@@ -28,10 +28,10 @@ from photofilmstrip import Constants
 from photofilmstrip.lib.common.ObserverPattern import Observer
 
 from photofilmstrip.lib.Settings import Settings
-from photofilmstrip.lib.util import Decode, Encode
+from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
-from photofilmstrip.core.PhotoFilmStrip import PhotoFilmStrip
+from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.ProgressHandler import ProgressHandler
 from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
@@ -154,8 +154,8 @@ def main():
     rendererClass = RENDERERS[options.format]
 
     
-    photoFilmStrip = PhotoFilmStrip()
-    if not photoFilmStrip.Load(options.project):
+    prjFile = ProjectFile(filename=options.project)
+    if not prjFile.Load():
         logging.error(_(u"cannot load photofilmstrip"))
         return 6
         
@@ -182,10 +182,10 @@ def main():
 #        value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
 #        rendererClass.SetProperty(prop, value)
 
-
-    ar = ActionRender(photoFilmStrip, profile, videoNorm, rendererClass, False, outpath)
+    project = prjFile.GetProject()
+    ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)
     
-    audioFile = photoFilmStrip.GetAudioFile()
+    audioFile = project.GetAudioFile()
     if not ar.CheckFile(audioFile):
         logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
         return 8

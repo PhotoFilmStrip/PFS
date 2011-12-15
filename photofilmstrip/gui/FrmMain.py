@@ -30,8 +30,6 @@ from photofilmstrip import Constants
 
 from photofilmstrip.action.ActionI18N import ActionI18N
 
-from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
-        WxVisualJobHandler, EVT_JOB_RESULT)
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Decode
 

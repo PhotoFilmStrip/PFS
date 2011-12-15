@@ -25,6 +25,7 @@ import subprocess
 import sys
 
 from photofilmstrip import Constants
+from photofilmstrip.lib.DestructionManager import DestructionManager
 
 
 if sys.platform == "win32":
@@ -60,6 +61,8 @@ class AppMixin(object):
         self.InitLogging()
         self.InitI18N()
         
+        DestructionManager()
+        
         from photofilmstrip.lib.jobimpl.JobManager import JobManager
         JobManager().Init()
         JobManager().Init("render")
@@ -67,7 +70,7 @@ class AppMixin(object):
         try:
             return self._OnStart()
         finally:
-            JobManager().Destroy()
+            DestructionManager().Destroy()
             
     def _GetLogFormat(self):
         return '%(asctime)s (%(levelname)s) %(name)s: %(message)s'

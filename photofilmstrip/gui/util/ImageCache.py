@@ -27,6 +27,7 @@ from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.core import PILBackend
 import threading
 import time
+from photofilmstrip.lib.DestructionManager import Destroyable
 
 
 class ImageCache(Singleton, Observer):
@@ -102,13 +103,17 @@ class ImageCache(Singleton, Observer):
         return self._wxBmpCache[key]
 
 
-class ScaleThread(threading.Thread):
+class ScaleThread(threading.Thread, Destroyable):
     
     def __init__(self, imgCache):
         threading.Thread.__init__(self, name="ScaleThread")
+        Destroyable.__init__(self)
         self.imgCache = imgCache
         self.active = True
         self.queue = []
+        
+    def Destroy(self):
+        self.active = False
         
     def run(self):
         while self.active:
