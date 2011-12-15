@@ -10,7 +10,7 @@ from photofilmstrip.lib.common.Singleton import Singleton
 from .IVisualJobManager import IVisualJobManager
 from .IVisualJob import IVisualJob
 from .LogVisualJobManager import LogVisualJobManager
-from .Worker import Worker
+from .Worker import Worker, WorkerAbortSignal
 from .JobAbortedException import JobAbortedException
 from photofilmstrip.lib.DestructionManager import Destroyable
 
@@ -21,11 +21,6 @@ class _JobCtxGroup(object):
         self.__ctxGroup = ctxGroup
         self.__idleQueue = Queue.Queue()
         self.__active = None
-        getJobLock = threading.Lock()
-        self.__getJobCond = threading.Condition(getJobLock)
-       
-        getJobLock = threading.Lock()
-        self.__getJobCond = threading.Condition(getJobLock)
         
         self.__workers = workers
 
@@ -34,13 +29,8 @@ class _JobCtxGroup(object):
     def Put(self, jobContext):
         self.__idleQueue.put(jobContext)
         
-    def Notify(self):
-        with self.__getJobCond:
-            self.__getJobCond.notifyAll()
-            
-    def Get(self, timeout):
-        return self.__idleQueue.get(timeout is not None, 
-                                    timeout)
+    def Get(self):
+        return self.__idleQueue.get()
             
     def __enter__(self):
         self.__lock.acquire()
@@ -53,16 +43,7 @@ class _JobCtxGroup(object):
     
     def SetActive(self, jobContext):
         self.__active = jobContext
-        self.Notify()
         
-    def Wait(self, timeout=None):
-        if self.__lock.acquire(False):
-            self.__lock.release()
-        else:
-            raise RuntimeError("cannot acquire lock before long blocking operation")
-        with self.__getJobCond:
-            self.__getJobCond.wait(timeout)
-            
     def Workers(self):
         return self.__workers
 
@@ -140,19 +121,25 @@ class JobManager(Singleton, Destroyable):
         
         with jcGroup:
             while jcGroup.Active() is None:
-                # no context active, get one from idle queue
-                jcIdle = jcGroup.Get(1.0)
+                jcIdle = jcGroup.Get()
+                if jcIdle is None:
+                    raise WorkerAbortSignal()
                 if self.__StartCtx(jcIdle):
                     jcGroup.SetActive(jcIdle)
             
             jobCtxActive = jcGroup.Active()
             try:
+                if self.__destroying:
+                    # if in destroying state raise Queue.Empty() to 
+                    # get FinishCtx() called
+                    raise Queue.Empty()
+
                 workLoad = jobCtxActive.GetWorkLoad(False, None)
                 return jobCtxActive, workLoad # FIXME: no tuple
             except Queue.Empty:
                 # no more workloads, job done, only __FinishCtx() needs to be done
                 # wait for all workers to be done (better use WaitForMultipleObjects) 
-                while not self.__destroying:
+                while 1:
                     result = True
                     for worker in jcGroup.Workers(): 
                         result = result and not worker.IsBusy()
@@ -166,7 +153,10 @@ class JobManager(Singleton, Destroyable):
                     jcGroup.SetActive(None)
                     self.__FinishCtx(jobCtxActive)
             
-                raise Queue.Empty()
+                if self.__destroying:
+                    raise WorkerAbortSignal()
+                else:
+                    raise Queue.Empty()
 
     def __StartCtx(self, ctx):
         self.__logger.debug("<%s> starting %s...", 
@@ -201,10 +191,9 @@ class JobManager(Singleton, Destroyable):
         self.__destroying = True
         for jcGroup in self.__jobCtxGroups.values():
             for worker in jcGroup.Workers():
-                worker.Kill()
+                # put invalid jobs in idle queue to release the blocking state
+                jcGroup.Put(None)
 
-            jcGroup.Notify()
-        
             for worker in jcGroup.Workers():
                 self.__logger.debug("<%s> joining...", worker.getName())
                 worker.join(3)

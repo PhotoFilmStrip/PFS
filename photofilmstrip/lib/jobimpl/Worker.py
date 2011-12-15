@@ -22,7 +22,6 @@ class Worker(threading.Thread, IWorker):
 
         self.__busy = threading.Event()
         self.__busy.clear()
-        self.__wantAbort = False
         
         self.__logger = logging.getLogger("Worker")
 
@@ -34,13 +33,13 @@ class Worker(threading.Thread, IWorker):
     def GetBusyEvent(self):
         return self.__busy
 
-    def Kill(self):
-        self.__wantAbort = True
-
     def run(self):
         self.__logger.debug("<%s> Started...", self.getName())
-        while not self.__wantAbort:
+        while 1:
             self.__logger.log(logging.NOTSET, "<%s> Worker alive", self.getName())
+            
+            jobContext = None
+            workLoad = None
             
 #            jobContext = self.__jobManager._GetJobContext(self.GetContextGroupId())
             try:
@@ -48,19 +47,17 @@ class Worker(threading.Thread, IWorker):
                 jobContext, workLoad = self.__jobManager._GetWorkLoad(self.GetContextGroupId())
             except Queue.Empty:
                 continue
+            except WorkerAbortSignal:
+                break
             
             if not isinstance(workLoad, IWorkLoad):
                 self.__logger.debug("<%s> Retrieved invalid job object from Queue: %s", 
                                     self.getName(), jobContext, workLoad)
                 continue
             
-            if self.__wantAbort:
-                # maybe destroying is in progress, don|t start last job
-                self.__logger.debug("<%s> got job while destroying. worload not processed", self.getName())
-            else:
-                self.__busy.set()
-                self.__ProcessWorkLoad(jobContext, workLoad)
-                self.__busy.clear()
+            self.__busy.set()
+            self.__ProcessWorkLoad(jobContext, workLoad)
+            self.__busy.clear()
                 
         self.__logger.debug("<%s> Worker gone...", self.getName())
 
@@ -84,3 +81,7 @@ class Worker(threading.Thread, IWorker):
             self.__logger.debug("<%s> result pushed %s", self.getName(), workLoad)
         except Exception, inst: # IGNORE:R0703
             self.__logger.error("<%s> push result exception: %s", self.getName(), inst, exc_info=1)
+
+
+class WorkerAbortSignal(Exception):
+    pass
