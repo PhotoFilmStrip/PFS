@@ -76,27 +76,44 @@ class ProjectFile(object):
         
     def __del__(self):
         if self.__conn is not None:
+            logging.debug("database not closed properly: %s", self._filename)
             self.__conn.close()
 
     def GetProject(self):
         return self._project
     
-    def __GetCursor(self):
+    def __Connect(self):
         if self.__conn is None:
             self.__conn = sqlite3.connect(Encode(self._filename),
                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            
+    def __Close(self, commit=False):
+        if self.__conn is None:
+            raise RuntimeError("not connected")
+        if commit:
+            self.__conn.commit()
+        self.__conn.close()
+        self.__conn = None
+    
+    def __GetCursor(self):
+        if self.__conn is None:
+            raise RuntimeError("not connected")
         cur = self.__conn.cursor()
         cur.row_factory = sqlite3.Row
         return cur
     
     def GetPicCount(self):
         self.IsOk()
+        self.__Connect()
         try:
-            cur = self.__GetCursor()
-            cur.execute("SELECT COUNT(*) FROM `picture`")
-            return cur.fetchone()[0]
-        except sqlite3.DatabaseError:
-            return 0
+            try:
+                cur = self.__GetCursor()
+                cur.execute("SELECT COUNT(*) FROM `picture`")
+                return cur.fetchone()[0]
+            except sqlite3.DatabaseError:
+                return 0
+        finally:
+            self.__Close()
         return -1
     
     def GetPreviewThumb(self):
@@ -116,21 +133,24 @@ class ProjectFile(object):
         return img
     
     def IsOk(self):
+        self.__Connect()
         try:
-            cur = self.__GetCursor()
-            cur.execute("SELECT * FROM `picture`")
-            return True
-        except sqlite3.DatabaseError:
+            try:
+                cur = self.__GetCursor()
+                cur.execute("SELECT * FROM `picture`")
+                return True
+            except sqlite3.DatabaseError:
+                return False
+            except sqlite3.DatabaseError, err:
+                logging.debug("IsOk(%s): %s", self._filename, err)
+                return False
+            except BaseException, err:
+                logging.debug("IsOk(%s): %s", self._filename, err)
+                return False
             return False
-        except sqlite3.DatabaseError, err:
-            logging.debug("IsOk(%s): %s", self._filename, err)
-            return False
-        except BaseException, err:
-            logging.debug("IsOk(%s): %s", self._filename, err)
-            return False
-        return False
-        
-    
+        finally:
+            self.__Close()
+
 # save methods
     def __PicToQuery(self, pic, includePics):
         if includePics:
@@ -181,6 +201,7 @@ class ProjectFile(object):
         if os.path.exists(self._filename):
             os.remove(self._filename)
         
+        self.__Connect()
         cur = self.__GetCursor()
         cur.executescript(SCHEMA)    
 
@@ -201,9 +222,8 @@ class ProjectFile(object):
             if value is not None:
                 cur.execute(query, (name, value))
         
-        self.__conn.commit()
-        self.__conn.close()
-
+        self.__Close(commit=True)
+        
         self._project.SetFilename(self._filename)
 
 # load methods
@@ -215,6 +235,7 @@ class ProjectFile(object):
         if not os.path.isfile(filename):
             return False
         
+        self.__Connect()
         cur = self.__GetCursor()
 
         fileRev = 1
@@ -230,6 +251,7 @@ class ProjectFile(object):
         try:
             cur.execute("SELECT * FROM `picture`")
         except sqlite3.DatabaseError:
+            self.__Close()
             return False
         
         picList = []
@@ -286,7 +308,7 @@ class ProjectFile(object):
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
             project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
         
-        cur.close()
+        self.__Close()
         
         self._project = project
         return True
