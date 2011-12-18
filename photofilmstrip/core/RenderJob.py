@@ -16,6 +16,7 @@ class RenderJob(VisualJob):
 
         self.SetMaxProgress(len(tasks))
         
+        self.imgCacheLock = threading.Lock()
         self.imgCache = {}
         self.imgKeyStack = []
 
@@ -31,17 +32,17 @@ class RenderJob(VisualJob):
         return self.renderer.GetOutputPath()
 
     def FetchImage(self, pic):
-        if not self.imgCache.has_key(pic.GetKey()):
-            self.__logger.debug("%s: GetImage(%s)", self.GetName(), pic.GetFilename())
-            if len(self.imgKeyStack) > 3:
-                key = self.imgKeyStack.pop(0)
-                self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
-                self.imgCache[key] = None
-                                
-            self.imgCache[pic.GetKey()] = PILBackend.GetImage(pic)
-            self.imgKeyStack.append(pic.GetKey())
-        return self.imgCache[pic.GetKey()]
-        
+        with self.imgCacheLock:
+            if not self.imgCache.has_key(pic.GetKey()):
+                self.__logger.debug("%s: GetImage(%s)", self.GetName(), pic.GetFilename())
+                if len(self.imgKeyStack) > 2:
+                    key = self.imgKeyStack.pop(0)
+                    self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
+                    self.imgCache[key] = None
+                                    
+                self.imgCache[pic.GetKey()] = PILBackend.GetImage(pic)
+                self.imgKeyStack.append(pic.GetKey())
+            return self.imgCache[pic.GetKey()]
 
     def Done(self):
         if self.IsAborted():

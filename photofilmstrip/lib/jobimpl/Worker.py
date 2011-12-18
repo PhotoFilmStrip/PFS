@@ -20,18 +20,10 @@ class Worker(threading.Thread, IWorker):
         self.__jobManager = jobManager
         self.__ctxGroupId = ctxGroupId
 
-        self.__busy = threading.Event()
-        self.__busy.clear()
-        
         self.__logger = logging.getLogger("Worker")
 
     def GetContextGroupId(self):
         return self.__ctxGroupId
-
-    def IsBusy(self):
-        return self.__busy.isSet()
-    def GetBusyEvent(self):
-        return self.__busy
 
     def run(self):
         self.__logger.debug("<%s> Started...", self.getName())
@@ -55,9 +47,7 @@ class Worker(threading.Thread, IWorker):
                                     self.getName(), jobContext, workLoad)
                 continue
             
-            self.__busy.set()
             self.__ProcessWorkLoad(jobContext, workLoad)
-            self.__busy.clear()
                 
         self.__logger.debug("<%s> Worker gone...", self.getName())
 

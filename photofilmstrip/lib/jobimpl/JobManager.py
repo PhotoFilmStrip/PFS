@@ -3,16 +3,16 @@
 import logging
 import multiprocessing
 import Queue
-import time
 import threading
 
 from photofilmstrip.lib.common.Singleton import Singleton
+from photofilmstrip.lib.DestructionManager import Destroyable
+
 from .IVisualJobManager import IVisualJobManager
 from .IVisualJob import IVisualJob
 from .LogVisualJobManager import LogVisualJobManager
 from .Worker import Worker, WorkerAbortSignal
 from .JobAbortedException import JobAbortedException
-from photofilmstrip.lib.DestructionManager import Destroyable
 
 
 class _JobCtxGroup(object):
@@ -25,6 +25,8 @@ class _JobCtxGroup(object):
         self.__workers = workers
 
         self.__lock = threading.Lock()
+        self.doneCount = 0
+        self.doneEvent = threading.Event()
     
     def Put(self, jobContext):
         self.__idleQueue.put(jobContext)
@@ -43,6 +45,8 @@ class _JobCtxGroup(object):
     
     def SetActive(self, jobContext):
         self.__active = jobContext
+        self.doneCount = 0
+        self.doneEvent.clear()
         
     def Workers(self):
         return self.__workers
@@ -115,39 +119,42 @@ class JobManager(Singleton, Destroyable):
         if isinstance(jobContext, IVisualJob):
             for visual in self.__visuals:
                 visual.RegisterJob(jobContext)
-            
+                
     def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=None):
         jcGroup = self.__jobCtxGroups[workerCtxGroup]
         
-        with jcGroup:
-            while jcGroup.Active() is None:
-                jcIdle = jcGroup.Get()
-                if jcIdle is None:
-                    raise WorkerAbortSignal()
-                if self.__StartCtx(jcIdle):
-                    jcGroup.SetActive(jcIdle)
-            
-            jobCtxActive = jcGroup.Active()
-            try:
+        try:
+            with jcGroup:
+                while jcGroup.Active() is None:
+                    jcIdle = jcGroup.Get()
+                    if jcIdle is None:
+                        raise WorkerAbortSignal()
+                    if self.__StartCtx(jcIdle):
+                        jcGroup.SetActive(jcIdle)
+                
+                jobCtxActive = jcGroup.Active()
                 if self.__destroying:
-                    # if in destroying state raise Queue.Empty() to 
-                    # get FinishCtx() called
+                    # if in destroying state raise Queue.Empty() to enter
+                    # the except section and get FinishCtx() called
                     raise Queue.Empty()
-
                 workLoad = jobCtxActive.GetWorkLoad(False, None)
                 return jobCtxActive, workLoad # FIXME: no tuple
-            except Queue.Empty:
-                # no more workloads, job done, only __FinishCtx() needs to be done
-                # wait for all workers to be done (better use WaitForMultipleObjects) 
-                while 1:
-                    result = True
-                    for worker in jcGroup.Workers(): 
-                        result = result and not worker.IsBusy()
-                    if result:
-                        break
-                    else:
-                        time.sleep(0.05)
+        except Queue.Empty:
+            # no more workloads, job done, only __FinishCtx() needs to be done
+            # wait for all workers to be done
+            jcGroup.doneCount += 1
+            if jcGroup.doneCount < len(jcGroup.Workers()):
+                self.__logger.debug("<%s> block until ready... %s", 
+                                    threading.currentThread().getName(), jcGroup.doneCount)
+                jcGroup.doneEvent.wait()
+                self.__logger.debug("<%s> block released continuing... %s", 
+                                    threading.currentThread().getName(), jcGroup.doneCount)
+            else:
+                self.__logger.debug("<%s> set done... %s", 
+                                    threading.currentThread().getName(), jcGroup.doneCount)
+                jcGroup.doneEvent.set()
                 
+            with jcGroup:
                 jobCtxActive = jcGroup.Active()
                 if jobCtxActive is not None:
                     jcGroup.SetActive(None)
