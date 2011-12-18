@@ -21,12 +21,13 @@ class _JobCtxGroup(object):
         self.__ctxGroup = ctxGroup
         self.__idleQueue = Queue.Queue()
         self.__active = None
+
+        self.__doneCount = 0
+        self.__doneEvent = threading.Event()
         
         self.__workers = workers
 
         self.__lock = threading.Lock()
-        self.doneCount = 0
-        self.doneEvent = threading.Event()
     
     def Put(self, jobContext):
         self.__idleQueue.put(jobContext)
@@ -45,8 +46,21 @@ class _JobCtxGroup(object):
     
     def SetActive(self, jobContext):
         self.__active = jobContext
-        self.doneCount = 0
-        self.doneEvent.clear()
+        if jobContext is not None:
+            self.__doneCount = 0
+            self.__doneEvent.clear()
+        
+    def DoneCount(self):
+        return self.__doneCount
+    def CheckBusy(self):
+        return self.__doneCount < len(self.__workers)
+    def IncDoneCount(self):
+        self.__doneCount += 1
+    
+    def SetDoneEvent(self):
+        self.__doneEvent.set()
+    def WaitDoneEvent(self):
+        self.__doneEvent.wait()
         
     def Workers(self):
         return self.__workers
@@ -142,28 +156,31 @@ class JobManager(Singleton, Destroyable):
         except Queue.Empty:
             # no more workloads, job done, only __FinishCtx() needs to be done
             # wait for all workers to be done
-            jcGroup.doneCount += 1
-            if jcGroup.doneCount < len(jcGroup.Workers()):
+            jcGroup.IncDoneCount()
+            if jcGroup.CheckBusy():
                 self.__logger.debug("<%s> block until ready... %s", 
-                                    threading.currentThread().getName(), jcGroup.doneCount)
-                jcGroup.doneEvent.wait()
+                                    threading.currentThread().getName(), 
+                                    jcGroup.DoneCount())
+                jcGroup.WaitDoneEvent()
                 self.__logger.debug("<%s> block released continuing... %s", 
-                                    threading.currentThread().getName(), jcGroup.doneCount)
+                                    threading.currentThread().getName(), 
+                                    jcGroup.DoneCount())
             else:
-                self.__logger.debug("<%s> set done... %s", 
-                                    threading.currentThread().getName(), jcGroup.doneCount)
-                jcGroup.doneEvent.set()
+                with jcGroup:
+                    jobCtxActive = jcGroup.Active()
+                    if jobCtxActive is not None:
+                        jcGroup.SetActive(None)
+                        self.__FinishCtx(jobCtxActive)
                 
-            with jcGroup:
-                jobCtxActive = jcGroup.Active()
-                if jobCtxActive is not None:
-                    jcGroup.SetActive(None)
-                    self.__FinishCtx(jobCtxActive)
-            
-                if self.__destroying:
-                    raise WorkerAbortSignal()
-                else:
-                    raise Queue.Empty()
+                self.__logger.debug("<%s> set done... %s", 
+                                    threading.currentThread().getName(), 
+                                    jcGroup.DoneCount())
+                jcGroup.SetDoneEvent()
+                
+            if self.__destroying:
+                raise WorkerAbortSignal()
+            else:
+                raise Queue.Empty()
 
     def __StartCtx(self, ctx):
         self.__logger.debug("<%s> starting %s...", 

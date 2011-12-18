@@ -74,7 +74,7 @@ class VisualJob(Job, IVisualJob):
             self.SetInfo(_(u"Aborting..."))
             return True
         else:
-            if self.IsDone():
+            if self.IsDone() and self.IsAborted():
                 self.SetInfo(_(u"Aborted"))
             return False
     
