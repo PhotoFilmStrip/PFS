@@ -2,7 +2,6 @@
 
 import logging
 import Queue
-import time
 
 from .IJobContext import IJobContext
 from .WorkLoad import WorkLoad
@@ -97,8 +96,6 @@ class Job(IJobContext):
         return True
     
     def GetResultObject(self):#, block=True):
-#        while block and not self.__done:
-#            time.sleep(0.1)
         return self.__resultObject
 
 
