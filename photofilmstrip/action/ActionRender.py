@@ -43,6 +43,8 @@ class ActionRender(IAction):
         self.__rendererClass = rendererClass
         self.__draftMode = draftMode
         self.__outpath = outpath
+        
+        self.__renderJob = None
     
     def GetName(self):
         return _(u'Start')
@@ -102,4 +104,10 @@ class ActionRender(IAction):
         renderEngine = RenderEngine(name,
                                     renderer,
                                     self.__draftMode)
-        renderEngine.Start(self.__photoFilmStrip.GetPictures(), totalLength)
+        self.__renderJob = renderEngine.CreateRenderJob(
+                self.__photoFilmStrip.GetPictures(), 
+                totalLength
+        )
+
+    def GetRenderJob(self):
+        return self.__renderJob

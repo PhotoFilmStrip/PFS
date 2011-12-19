@@ -153,7 +153,7 @@ class RenderEngine(object):
             pathRectsBefore = pathRects
             transCountBefore = transCount
 
-    def Start(self, pics, targetLengthSecs=None):
+    def CreateRenderJob(self, pics, targetLengthSecs=None):
         if targetLengthSecs is not None:
             # targetLength should be at least 1sec for each pic
             targetLengthSecs = max(targetLengthSecs, len(pics))
@@ -172,8 +172,5 @@ class RenderEngine(object):
                                pics)
         self.__tasks.insert(0, taskSub)
                 
-        rjc = RenderJob(self.__name, self.__aRenderer, self.GetTasks())
-        JobManager().EnqueueContext(rjc)
-            
-    def GetTasks(self):
-        return self.__tasks
+        rjc = RenderJob(self.__name, self.__aRenderer, self.__tasks)
+        return rjc

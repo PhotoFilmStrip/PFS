@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os, sys, logging
+import os, sys, time, logging
 
 from optparse import OptionParser
 
@@ -33,10 +33,10 @@ from photofilmstrip.lib.util import Decode
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.ProgressHandler import ProgressHandler
-from photofilmstrip.core.RenderEngine import RenderEngine
 from photofilmstrip.core.renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
 from photofilmstrip.action.ActionRender import ActionRender
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 
 class CliGui(Observer):
@@ -196,18 +196,26 @@ def main():
         cliGui = CliGui()
 
     cliGui.Info(options.project, rendererClass, profile)
+    
+    ar.Execute()
+    renderJob = ar.GetRenderJob()
+    
+    JobManager().EnqueueContext(renderJob)
 
 #    progressHandler = ProgressHandler()
 #    progressHandler.AddObserver(cliGui)
     
     try:
-        result = ar.Execute()
+        while not renderJob.IsDone():
+            time.sleep(0.1)
     except KeyboardInterrupt:
-#        progressHandler.Abort()
+        renderJob.Abort()
         cliGui.Write("\n" + _(u"...aborted!"))
         return 10
         
+    resultObj = renderJob.GetResultObject()
+    result = resultObj.GetResult()
     if result:
         cliGui.Write(_(u"all done"))
-    else:
-        logging.error(_(u"Error: %s"), renderEngine.GetErrorMessage())
+#    else:
+#        logging.error(_(u"Error: %s"), renderEngine.GetErrorMessage())

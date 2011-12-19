@@ -46,7 +46,7 @@ class VisualJob(Job, IVisualJob):
         # if a new visual is added, notify it about all fields possible
         # for an inital update
         visualJobHandler.OnHandleJobUpdate(self, ("name", "maxProgress", 
-                                                  "info", "progress"),)
+                                                  "info", "progress"))
     
     def RemoveVisualJobHandler(self, visualJobHandler):
         if visualJobHandler in self.__visualJobHandler:

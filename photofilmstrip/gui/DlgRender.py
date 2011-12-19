@@ -30,6 +30,7 @@ from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
 from photofilmstrip.core.renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
@@ -267,6 +268,8 @@ class DlgRender(wx.Dialog):
                 dlg.Destroy()
             
         ar.Execute()
+        renderJob = ar.GetRenderJob()
+        JobManager().EnqueueContext(renderJob)
         self.EndModal(wx.ID_OK)
 
     def OnCmdCancelButton(self, event):

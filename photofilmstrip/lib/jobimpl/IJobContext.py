@@ -5,7 +5,7 @@ class IJobContext(object):
     def GetGroupId(self):
         raise NotImplementedError
     
-    def GetWorkLoad(self, block, timeout):
+    def GetWorkLoad(self):
         raise NotImplementedError()
     
     def PushResult(self, resultObject):

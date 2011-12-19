@@ -134,7 +134,7 @@ class JobManager(Singleton, Destroyable):
             for visual in self.__visuals:
                 visual.RegisterJob(jobContext)
                 
-    def _GetWorkLoad(self, workerCtxGroup, block=True, timeout=None):
+    def _GetWorkLoad(self, workerCtxGroup):
         jcGroup = self.__jobCtxGroups[workerCtxGroup]
         
         try:
@@ -151,7 +151,7 @@ class JobManager(Singleton, Destroyable):
                     # if in destroying state raise Queue.Empty() to enter
                     # the except section and get FinishCtx() called
                     raise Queue.Empty()
-                workLoad = jobCtxActive.GetWorkLoad(False, None)
+                workLoad = jobCtxActive.GetWorkLoad()
                 return jobCtxActive, workLoad # FIXME: no tuple
         except Queue.Empty:
             # no more workloads, job done, only __FinishCtx() needs to be done

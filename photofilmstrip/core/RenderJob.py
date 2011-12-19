@@ -64,8 +64,8 @@ class RenderJob(VisualJob):
         self.renderer.ProcessFinalize(pilImg)
 
 
-    def GetWorkLoad(self, block, timeout):
-        task = VisualJob.GetWorkLoad(self, block, timeout)
+    def GetWorkLoad(self):
+        task = VisualJob.GetWorkLoad(self)
         self.SetInfo(task.GetInfo())
 
         self.__logger.debug("%s: %s - start", self.GetName(), task)

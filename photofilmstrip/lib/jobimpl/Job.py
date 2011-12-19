@@ -35,16 +35,16 @@ class Job(IJobContext):
         assert isinstance(workLoad, IWorkLoad)
         self.__workQueue.put(workLoad)
     
-    def GetWorkLoad(self, block, timeout):
+    def GetWorkLoad(self):
         if self.__aborted:
             while 1:
                 self.__logger.debug("emptying task queue")
                 try:
-                    self.__workQueue.get(False, None)
+                    self.__workQueue.get(False)
                 finally:
                     self.__logger.debug("task queue empty")
         else:
-            return self.__workQueue.get(block, timeout)
+            return self.__workQueue.get(False)
     
     def PushResult(self, resultObject):
         self.__resultObject = resultObject
