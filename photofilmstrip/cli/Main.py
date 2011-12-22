@@ -27,7 +27,6 @@ from photofilmstrip import Constants
 
 from photofilmstrip.lib.common.ObserverPattern import Observer
 
-from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
@@ -175,12 +174,6 @@ def main():
     else:
         outpath = None
             
-
-#    settings = Settings()
-#    savedProps = settings.GetRenderProperties(rendererClass.__name__)
-#    for prop in rendererClass.GetProperties():
-#        value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
-#        rendererClass.SetProperty(prop, value)
 
     project = prjFile.GetProject()
     ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)

@@ -9,10 +9,10 @@ LOGGER = logging.getLogger("VisualJobManager")
 class LogVisualJobManager(IVisualJobManager):
     
     def RegisterJob(self, job):
-        LOGGER.debug("RegisterJob {0}", job.GetName())
+        LOGGER.debug("RegisterJob %s", job.GetName())
     
     def UpdateJob(self, job, fields=None):
-        LOGGER.debug("UpdateJob {0} [{1}]", job.GetName(), fields)
+        LOGGER.debug("UpdateJob %s [%s]", job.GetName(), fields)
     
     def RemoveJob(self, job):
-        LOGGER.debug("RemoveJob {0}", job.GetName())
+        LOGGER.debug("RemoveJob %s", job.GetName())
