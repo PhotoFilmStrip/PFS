@@ -22,12 +22,33 @@
 import logging
 import os
 import re
+import threading
+import Queue
+import cStringIO
 from subprocess import Popen, PIPE, STDOUT
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.renderer.RendererException import RendererException
 from photofilmstrip.core.BaseRenderer import BaseRenderer
+
+
+class ResultFeeder(threading.Thread):
+    def __init__(self, renderer):
+        threading.Thread.__init__(self, name="ResultFeeder")
+        self.resQueue = Queue.Queue()
+        self.active = 1
+        self.renderer = renderer
+        
+    def run(self):
+        while self.active:
+            result = None
+            try:
+                result = self.resQueue.get(True, 1.0)
+            except Queue.Empty:
+                continue
+            
+            self.renderer.GetSink().write(result)
 
 
 class MEncoderRenderer(BaseRenderer):
@@ -62,11 +83,18 @@ class MEncoderRenderer(BaseRenderer):
         return BaseRenderer.GetDefaultProperty(prop)
 
     def ProcessFinalize(self, pilImg):
-        pilImg.save(self._procEncoder.stdin, 'JPEG', quality=95)
+#        pilImg.save(self._procEncoder.stdin, 'JPEG', quality=95)
+#        return
+        res = cStringIO.StringIO()
+        pilImg.save(res, 'JPEG', quality=95)
+        self._feeder.resQueue.put(res.getvalue())
     
     def __CleanUp(self):
         if self._procEncoder is None:
             return
+        
+        self._feeder.active = 0
+        self._feeder.join()
         
         self._procEncoder.communicate()
 
@@ -84,6 +112,9 @@ class MEncoderRenderer(BaseRenderer):
         
         cmd = self._GetCmd()
         self._procEncoder = Popen(cmd, stdin=PIPE, stdout=self._encOut, stderr=self._encErr, shell=False)#, bufsize=-1)
+        
+        self._feeder = ResultFeeder(self)
+        self._feeder.start()
         
     def GetSink(self):
         return self._procEncoder.stdin
