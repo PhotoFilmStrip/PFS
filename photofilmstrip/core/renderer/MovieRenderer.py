@@ -36,17 +36,22 @@ from photofilmstrip.core.BaseRenderer import BaseRenderer
 class ResultFeeder(threading.Thread):
     def __init__(self, renderer):
         threading.Thread.__init__(self, name="ResultFeeder")
-        self.resQueue = Queue.Queue()
+        self.resQueue = Queue.Queue(20)
         self.active = 1
         self.renderer = renderer
         
     def run(self):
-        while self.active:
+        while 1:
             result = None
             try:
                 result = self.resQueue.get(True, 1.0)
             except Queue.Empty:
-                continue
+                if self.active:
+                    continue
+                else:
+                    break
+
+            print self.resQueue.qsize(), len(result)
             
             self.renderer.GetSink().write(result)
 
