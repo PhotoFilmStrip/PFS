@@ -126,25 +126,7 @@ class CairoRenderer(BaseRenderer):
         cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_ARGB32, w, h)
 #        cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_RGB24, w, h)
         return cairoImage
-    
 
-
-#    def CropAndResize(self, ctx, rect):
-#        if self._mainClock.get_fps() > 1 and self._mainClock.get_fps() < self._framerate:
-#            if self._ctx is not None:
-#                return None
-#        
-#        return BaseRenderer.CropAndResize(self, ctx, rect)
-#        
-#    def Transition(self, kind, ctx1, ctx2, percentage):
-#        if ctx1 is None or ctx2 is None:
-#            return None
-#        if self._mainClock.get_fps() > 1 and self._mainClock.get_fps() < self._framerate:
-#            if self._ctx is not None:
-#                return None
-#        
-#        return BaseRenderer.Transition(self, kind, ctx1, ctx2, percentage)
-        
 
 class Clock(object):
     def __init__(self):

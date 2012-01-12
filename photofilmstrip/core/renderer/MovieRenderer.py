@@ -51,8 +51,9 @@ class ResultFeeder(threading.Thread):
                 else:
                     break
 
-            print self.resQueue.qsize(), len(result)
-            
+            logging.getLogger("ResultFeeder").debug("result queue size: %s; result size %s",
+                                                    self.resQueue.qsize(), 
+                                                    len(result))
             self.renderer.GetSink().write(result)
 
 

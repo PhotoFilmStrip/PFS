@@ -20,7 +20,6 @@
 #
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
-from photofilmstrip.lib.jobimpl.JobManager import JobManager
 from photofilmstrip.core.RenderJob import RenderJob
 
 
@@ -30,8 +29,6 @@ class RenderEngine(object):
         self.__name = name
         self.__aRenderer = aRenderer
         self.__profile = aRenderer.GetProfile()
-        self.__errorMsg = None
-        self.__errorCls = None
         self.__tasks = []
         self.__draftMode = draftMode
 

@@ -64,7 +64,7 @@ class AppMixin(object):
         DestructionManager()
         
         from photofilmstrip.lib.jobimpl.JobManager import JobManager
-        JobManager().Init()
+        JobManager().Init(workerCount=2)
         JobManager().Init("render")
         
         try:
