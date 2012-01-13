@@ -19,7 +19,7 @@ goto end
 goto end
 
 :versioninfo
-%PYTHON% -c "import photofilmstrip.lib.Settings;print photofilmstrip.lib.Settings.Settings.APP_VERSION"
+%PYTHON% -c "from photofilmstrip import Constants;print Constants.APP_VERSION"
 goto end
 
 :package
