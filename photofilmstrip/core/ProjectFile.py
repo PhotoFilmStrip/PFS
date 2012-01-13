@@ -11,7 +11,7 @@ from photofilmstrip.core import PILBackend
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 
-from photofilmstrip.gui.util.ImageCache import ImageCache
+from photofilmstrip.gui.util.ImageCache import ImageCache # FIXME: no gui import here
 from photofilmstrip.core.Project import Project
 
 

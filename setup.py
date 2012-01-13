@@ -404,10 +404,10 @@ setup(
     url = Constants.APP_URL,
        
     packages = ['photofilmstrip', 
-                'photofilmstrip.cli', 
-                'photofilmstrip.core', 'photofilmstrip.core.backend', 'photofilmstrip.core.renderer',
+                'photofilmstrip.action', 'photofilmstrip.cli', 
+                'photofilmstrip.core', 'photofilmstrip.core.renderer',
                 'photofilmstrip.gui', 'photofilmstrip.gui.ctrls', 'photofilmstrip.gui.util',
-                'photofilmstrip.lib', 'photofilmstrip.lib.common',
+                'photofilmstrip.lib', 'photofilmstrip.lib.common', 'photofilmstrip.lib.jobimpl',
                 'photofilmstrip.res'],
 #    package_dir={'pfs': 'src'},
     )

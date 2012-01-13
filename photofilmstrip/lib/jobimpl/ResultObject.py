@@ -18,7 +18,7 @@ class ResultObject(object):
 
     def GetResult(self, printTraceback=True):
         if self.exception:
-            if printTraceback:
+            if printTraceback and self.traceback is not None:
                 print >> sys.stderr, self.traceback,
             raise self.exception # IGNORE:E0702
         else:
