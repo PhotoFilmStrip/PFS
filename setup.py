@@ -48,7 +48,7 @@ class Target:
         self.version = Settings.APP_VERSION
         self.product_version = Settings.APP_VERSION
         self.company_name = ""
-        self.copyright = "(c) 2011"
+        self.copyright = "(c) 2012"
         self.name = "%s %s" % (Settings.APP_NAME, Settings.APP_VERSION)
         self.description = self.name
 

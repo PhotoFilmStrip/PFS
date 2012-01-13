@@ -232,7 +232,7 @@ class FrmMain(wx.Frame):
         info = wx.AboutDialogInfo()
         info.Name = Settings.APP_NAME
         info.Version = Settings.APP_VERSION
-        info.Copyright = u"(C) 2011 %s" % Settings.DEVELOPERS[0]
+        info.Copyright = u"(C) 2012 %s" % Settings.DEVELOPERS[0]
         info.Description = wordwrap(_("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."), 
                                     350, 
                                     wx.ClientDC(self))
