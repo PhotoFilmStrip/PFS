@@ -1,6 +1,9 @@
-#!/bin/sh
+#!python
+# -*- coding: UTF-8 -*-
 
-prefix=/usr
-export PFSDIR=${prefix}/share/photofilmstrip
+__copyright__ = "Copyright © 2012 Jens Göpfert"
+__author__    = "Jens Göpfert <mail@jensgoepfert.de>"
 
-exec /usr/bin/python $PFSDIR/photofilmstrip-gui.py "$@"
+from photofilmstrip.GUI import main
+main()
+

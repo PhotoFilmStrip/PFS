@@ -35,7 +35,7 @@ class CliApp(AppMixin):
 
 
 
-if __name__ == "__main__":
+def main():
     cliApp = CliApp()
     
 #    import hotshot    
@@ -52,3 +52,7 @@ if __name__ == "__main__":
     exitCode = cliApp.Start()
 
     sys.exit(exitCode)
+
+
+if __name__ == "__main__":
+    main()

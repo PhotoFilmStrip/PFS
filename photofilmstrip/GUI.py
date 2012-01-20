@@ -36,6 +36,9 @@ class GuiApp(AppMixin):
         app.MainLoop()
 
 
-if __name__ == "__main__":
+def main():
     guiApp = GuiApp()
     guiApp.Start()
+
+if __name__ == "__main__":
+    main()
