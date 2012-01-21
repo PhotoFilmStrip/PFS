@@ -172,6 +172,18 @@ class pfs_exe(Command):
     def finalize_options(self):
         pass
     def run(self):
+        self.distribution.windows = [
+                 Target(script = "photofilmstrip/GUI.py",
+                        dest_base = "bin/" + Constants.APP_NAME
+                        ),
+        ]
+        self.distribution.console = [
+                 Target(script = "photofilmstrip/CLI.py",
+                        dest_base = "bin/" + Constants.APP_NAME + "-cli"
+                        )
+        ]
+        self.distribution.zipfile = "lib/photofilmstrip/modules"
+
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
@@ -247,7 +259,7 @@ class Target:
         self.copyright = "(c) 2011"
         self.name = "%s %s" % (Constants.APP_NAME, self.product_version)
         self.description = self.name
-        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
+#        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
         
         logo = os.path.join("res", "icon", "photofilmstrip.ico")
         self.icon_resources = [(1, logo)]
@@ -311,52 +323,24 @@ def Unzip(zipFile, targetDir, stripFolders=0):
         fd.write(data)
         fd.close()
 
-
-
-RT_MANIFEST = 24
-MANIFEST = '''<assembly xmlns="urn:schemas-microsoft-com:asm.v1"
-manifestVersion="1.0">
-  <assemblyIdentity
-    version="0.6.8.0"
-    processorArchitecture="x86"
-    name="%(prog)s"
-    type="win32"
-  />
-  <description>%(prog)s Program</description>
-  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
-    <security>
-      <requestedPrivileges>
-        <requestedExecutionLevel
-          level="asInvoker"
-          uiAccess="false"
-        />
-      </requestedPrivileges>
-    </security>
-  </trustInfo>
-  <dependency>
-    <dependentAssembly>
-      <assemblyIdentity
-        type="win32"
-        name="Microsoft.VC90.CRT"
-        version="9.0.21022.8"
-        processorArchitecture="x86"
-        publicKeyToken="1fc8b3b9a1e18e3b"
-      />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly>
-      <assemblyIdentity
-        type="win32"
-        name="Microsoft.Windows.Common-Controls"
-        version="6.0.0.0"
-        processorArchitecture="x86"
-        publicKeyToken="6595b64144ccf1df"
-        language="*"
-      />
-    </dependentAssembly>
-  </dependency>
-</assembly>'''
+platform_scripts = []
+platform_data = []
+if os.name == "nt":
+    platform_scripts.append("windows/photofilmstrip.bat")
+    platform_scripts.append("windows/photofilmstrip-cli.bat")
+else:
+    platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
+    platform_data.append(("share/pixmaps", ["data/photofilmstrip.xpm"]))
+    
+    for size in glob.glob(os.path.join("data/icons", "*")):
+        for category in glob.glob(os.path.join(size, "*")):
+            icons = []
+            for icon in glob.glob(os.path.join(category,"*")):
+                icons.append(icon)
+                platform_data.append(("share/icons/hicolor/%s/%s" % \
+                                      (os.path.basename(size), \
+                                       os.path.basename(category)), \
+                                       icons))
 
 
 setup(
@@ -379,20 +363,15 @@ setup(
                           },
                "sdist": {"formats": ["gztar"]}
     },
-    windows=[Target(script = "photofilmstrip/GUI.py",
-                    dest_base = "bin/" + Constants.APP_NAME
-                    ),
-    ],
-    console=[Target(script = "photofilmstrip/CLI.py",
-                    dest_base = "bin/" + Constants.APP_NAME + "-cli"
-                    )
-    ],
-    zipfile = "lib/photofilmstrip/modules",
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
                 (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("docs/html/*.*")),
-                (os.path.join("share", "photofilmstrip", "music"), glob.glob("res/audio/*.mp3")),
-    ],
+                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
+    ] + platform_data,
+    scripts=[
+             "scripts/photofilmstrip",
+             "scripts/photofilmstrip-cli",
+    ] + platform_scripts,
 
     name = Constants.APP_NAME.lower(),
     version = Constants.APP_VERSION,
@@ -409,5 +388,4 @@ setup(
                 'photofilmstrip.gui', 'photofilmstrip.gui.ctrls', 'photofilmstrip.gui.util',
                 'photofilmstrip.lib', 'photofilmstrip.lib.common', 'photofilmstrip.lib.jobimpl',
                 'photofilmstrip.res'],
-#    package_dir={'pfs': 'src'},
     )
