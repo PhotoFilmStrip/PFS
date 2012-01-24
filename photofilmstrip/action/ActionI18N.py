@@ -39,9 +39,12 @@ class ActionI18N(IAction):
     
     def Execute(self):
         curLang = Settings().GetLanguage()
-        localeDir = os.path.join(Constants.APP_DIR, "share", "locale")
         
-        if not os.path.isdir(localeDir):
+        for localeDir in (os.path.join(Constants.APP_DIR, "share", "locale"),
+                          os.path.join(Constants.APP_DIR, "locale"),):
+            if os.path.isdir(localeDir):
+                break
+        else:
             gettext.install(Constants.APP_NAME)
             return 
     

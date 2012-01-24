@@ -1,0 +1,784 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2012-01-22 15:56+0400\n"
+"PO-Revision-Date: 2012-01-24 20:49+0100\n"
+"Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
+"Language-Team: \n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: src/action/ActionAutoPath.py:37
+#: src/gui/PnlPfsProject.py:105
+msgid "Random motion"
+msgstr "Случайное движение"
+
+#: src/action/ActionI18N.py:38
+#: src/gui/ActionManager.py:217
+msgid "Language"
+msgstr "Язык"
+
+#: src/action/ActionOpenFolder.py:34
+#: src/action/ActionPlayVideo.py:35
+#: src/gui/PnlJobVisual.py:135
+msgid "Play video"
+msgstr "Воспроизвести видео"
+
+#: src/action/ActionRender.py:50
+msgid "Start"
+msgstr "Старт"
+
+#: src/cli/Main.py:67
+#: src/cli/Main.py:212
+#: src/core/ProgressHandler.py:71
+msgid "all done"
+msgstr "готово"
+
+#: src/cli/Main.py:80
+msgid "processing project"
+msgstr "обработка проекта"
+
+#: src/cli/Main.py:81
+msgid "using renderer"
+msgstr "использование создания видео"
+
+#: src/cli/Main.py:82
+msgid "output format"
+msgstr "выходной формат"
+
+#: src/cli/Main.py:83
+msgid "framerate"
+msgstr "частота кадров"
+
+#: src/cli/Main.py:111
+msgid "specifies the project file"
+msgstr "укажите файл проекта"
+
+#: src/cli/Main.py:112
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "Путь для сохранения выходных файлов. Используйте - для stdout."
+
+#: src/cli/Main.py:116
+msgid "enable draft mode"
+msgstr "включить черновой режим"
+
+#: src/cli/Main.py:116
+#: src/gui/DlgRender.py:200
+msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
+msgstr "Активируйте эту опцию для предпросмотра вашего PhotoFilmStrip. Процесс создания видео резко ускорится, но результат будет низкого качества."
+
+#: src/cli/Main.py:124
+msgid "project file does not exist: %s"
+msgstr "файл проекта не существует: %s"
+
+#: src/cli/Main.py:128
+msgid "no project file specified!"
+msgstr "не указан файл проекта!"
+
+#: src/cli/Main.py:134
+msgid "invalid profile specified: %s"
+msgstr "указан не верный профиль: %s"
+
+#: src/cli/Main.py:145
+msgid "invalid videonorm specified: %s"
+msgstr "указан не верный videonorm: %s"
+
+#: src/cli/Main.py:151
+msgid "invalid format specified: %s"
+msgstr "казан не верный формат: %s"
+
+#: src/cli/Main.py:158
+msgid "cannot load photofilmstrip"
+msgstr "невозможно загрузить photofilmstrip"
+
+#: src/cli/Main.py:172
+msgid "cannot create output path: %s"
+msgstr "невозможно создать выходной путь: %s"
+
+#: src/cli/Main.py:183
+#: src/gui/DlgProjectProps.py:389
+#: src/gui/DlgProjectProps.py:392
+#: src/gui/DlgProjectProps.py:432
+#: src/gui/DlgRender.py:213
+msgid "Audio file '%s' does not exist!"
+msgstr "Аудио файл '%s' не существует!"
+
+#: src/cli/Main.py:206
+#: src/core/ProgressHandler.py:68
+msgid "...aborted!"
+msgstr "...прерван!"
+
+#: src/core/BaseRenderer.py:64
+msgid "Unknown property: %s"
+msgstr "Неизвестное свойство: %s"
+
+#: src/core/BaseRenderer.py:72
+msgid "<default>"
+msgstr "<default>"
+
+#: src/core/ProgressHandler.py:32
+msgid "Please wait..."
+msgstr "Пожалуйста подождите..."
+
+#: src/core/ProgressHandler.py:78
+msgid "aborting..."
+msgstr "прерывание..."
+
+#: src/core/ProjectFile.py:210
+msgid "Saving '%s' ..."
+msgstr "Загрузка '%s' ..."
+
+#: src/core/ProjectFile.py:261
+msgid "Loading '%s' ..."
+msgstr "Загрузка '%s' ..."
+
+#: src/core/RenderEngine.py:122
+msgid "processing transition %d/%d"
+msgstr "обработка перехода %d/%d"
+
+#: src/core/RenderEngine.py:133
+msgid "processing image %d/%d"
+msgstr "обработка изображения %d/%d"
+
+#: src/core/renderer/MovieRenderer.py:79
+msgid "mencoder (mencoder) required!"
+msgstr "требуется mencoder (mencoder)!"
+
+#: src/core/renderer/MovieRenderer.py:131
+#: src/core/renderer/MovieRenderer.py:141
+msgid "no"
+msgstr "нет"
+
+#: src/core/renderer/MovieRenderer.py:169
+msgid "Bitrate must be a number!"
+msgstr "Битрейт должен быть числом!"
+
+#: src/core/renderer/MovieRenderer.py:180
+msgid "MPEG(1/2)-Video (MPG)"
+msgstr "MPEG(1/2)-Video (MPG"
+
+#: src/core/renderer/MovieRenderer.py:216
+msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+msgstr "Формат MPEG поддерживает только профили VCD, SVCD и DVD!"
+
+#: src/core/renderer/MovieRenderer.py:241
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:286
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "требуется mencoder с поддержкой MP3 (mp3lame)!"
+
+#: src/core/renderer/MovieRenderer.py:296
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#: src/core/renderer/MovieRenderer.py:329
+msgid "Flash-Video (FLV)"
+msgstr "Flash-Video (FLV)"
+
+#: src/core/renderer/MovieRenderer.py:360
+msgid "Motion-JPEG (AVI)"
+msgstr "Motion-JPEG (AVI)"
+
+#: src/core/renderer/SingleFileRenderer.py:35
+msgid "Single pictures"
+msgstr "Одиночные изображения"
+
+#: src/core/tasks.py:38
+msgid "generating subtitle"
+msgstr "создание субтитров"
+
+#: src/gui/ActionManager.py:72
+msgid "&File"
+msgstr "Файл"
+
+#: src/gui/ActionManager.py:73
+msgid "&Edit"
+msgstr "Правка"
+
+#: src/gui/ActionManager.py:74
+msgid "&Tools"
+msgstr "Инструменты"
+
+#: src/gui/ActionManager.py:75
+#: src/gui/ActionManager.py:204
+#: src/gui/DlgRender.py:173
+#: src/gui/DlgRendererProps.py:101
+msgid "&Help"
+msgstr "Помощь"
+
+#: src/gui/ActionManager.py:89
+msgid "New Project"
+msgstr "Новый проект"
+
+#: src/gui/ActionManager.py:92
+msgid "Load Project"
+msgstr "Загрузить проект"
+
+#: src/gui/ActionManager.py:95
+msgid "Save Project"
+msgstr "Сохранить проект"
+
+#: src/gui/ActionManager.py:102
+msgid "Import Pictures"
+msgstr "Импорт изображений"
+
+#: src/gui/ActionManager.py:105
+#: src/gui/DlgRender.py:117
+msgid "Render filmstrip"
+msgstr "Создать видео"
+
+#: src/gui/ActionManager.py:126
+msgid "&New Project"
+msgstr "Новый проект"
+
+#: src/gui/ActionManager.py:130
+msgid "&Open Project"
+msgstr "Открыть проект"
+
+#: src/gui/ActionManager.py:136
+msgid "&Save Project"
+msgstr "Сохранить проект"
+
+#: src/gui/ActionManager.py:140
+msgid "&Close Project"
+msgstr "Закрыть проект"
+
+#: src/gui/ActionManager.py:152
+msgid "&Properties"
+msgstr "Свойства"
+
+#: src/gui/ActionManager.py:157
+msgid "E&xit"
+msgstr "Выход"
+
+#: src/gui/ActionManager.py:165
+msgid "Move picture &left"
+msgstr "Переместить изображение влево"
+
+#: src/gui/ActionManager.py:169
+msgid "Move picture &right"
+msgstr "Переместить изображение вправо"
+
+#: src/gui/ActionManager.py:174
+msgid "&Remove Picture"
+msgstr "Удалить изображение"
+
+#: src/gui/ActionManager.py:179
+msgid "Rotate &clockwise"
+msgstr "Вращать по часовой стрелке"
+
+#: src/gui/ActionManager.py:183
+msgid "Rotate counter clock&wise"
+msgstr "Вращать против часовой стрелки"
+
+#: src/gui/ActionManager.py:191
+msgid "&Import Pictures"
+msgstr "Импорт изображений"
+
+#: src/gui/ActionManager.py:196
+msgid "&Render filmstrip"
+msgstr "Создать видео"
+
+#: src/gui/ActionManager.py:221
+msgid "&About"
+msgstr "О программе"
+
+#: src/gui/DlgBugReport.py:55
+msgid "An unexpected error occured"
+msgstr "Произошла непредвиденная ошибка"
+
+#: src/gui/DlgBugReport.py:58
+msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
+msgstr "Произошла непредвиденная ошибка. Вы хотите отправить информацию об ошибке разработчикам %s?"
+
+#: src/gui/DlgBugReport.py:104
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Сообщение об ошибке отправлено. Спасибо за вашу помощь."
+
+#: src/gui/DlgBugReport.py:105
+#: src/gui/FrmMain.py:184
+msgid "Information"
+msgstr "Информация"
+
+#: src/gui/DlgBugReport.py:111
+msgid "Sorry, this function is temporary not available.."
+msgstr "Извините, эта функция временно не доступна..."
+
+#: src/gui/DlgBugReport.py:112
+#: src/gui/DlgProjectProps.py:393
+#: src/gui/DlgProjectProps.py:422
+#: src/gui/DlgProjectProps.py:433
+#: src/gui/DlgProjectProps.py:480
+#: src/gui/DlgProjectProps.py:491
+#: src/gui/FrmMain.py:461
+#: src/gui/PnlJobManager.py:122
+msgid "Error"
+msgstr "Ошибка"
+
+#: src/gui/DlgPositionInput.py:155
+msgid "Motion positions"
+msgstr "Позиции движения"
+
+#: src/gui/DlgPositionInput.py:162
+msgid "Start position"
+msgstr "Начальная позиция"
+
+#: src/gui/DlgPositionInput.py:170
+#: src/gui/DlgPositionInput.py:214
+msgid "Location:"
+msgstr "Положение:"
+
+#: src/gui/DlgPositionInput.py:188
+#: src/gui/DlgPositionInput.py:230
+msgid "Size:"
+msgstr "Размер:"
+
+#: src/gui/DlgPositionInput.py:206
+msgid "End position"
+msgstr "Конечная позиция"
+
+#: src/gui/DlgPositionInput.py:248
+msgid "Reset"
+msgstr "Сброс"
+
+#: src/gui/DlgPositionInput.py:253
+#: src/gui/DlgProjectProps.py:223
+#: src/gui/DlgRender.py:179
+#: src/gui/DlgRendererProps.py:107
+#: src/lib/jobimpl/DlgJobVisual.py:94
+msgid "&Cancel"
+msgstr "Отмена"
+
+#: src/gui/DlgPositionInput.py:259
+#: src/gui/DlgProjectProps.py:229
+#: src/gui/DlgRendererProps.py:112
+msgid "&Ok"
+msgstr "Ок"
+
+#: src/gui/DlgPositionInput.py:267
+msgid "Adjust motion positions directly"
+msgstr "Настроить позиции движения напрямую"
+
+#: src/gui/DlgProjectProps.py:125
+msgid "Project properties"
+msgstr "Свойства проекта"
+
+#: src/gui/DlgProjectProps.py:134
+msgid "Project name:"
+msgstr "Имя проекта:"
+
+#: src/gui/DlgProjectProps.py:146
+msgid "Folder:"
+msgstr "Папка:"
+
+#: src/gui/DlgProjectProps.py:161
+msgid "Aspect ratio:"
+msgstr "Соотношение сторон:"
+
+#: src/gui/DlgProjectProps.py:169
+msgid "Total length:"
+msgstr "Общая длительность:"
+
+#: src/gui/DlgProjectProps.py:172
+msgid "Overrides the duration of single pictures and gives the project this total length."
+msgstr "Переопределяет продолжительность отдельных изображений и задает проекту общую длину."
+
+#: src/gui/DlgProjectProps.py:178
+msgid "User defined:"
+msgstr "Определено пользователем:"
+
+#: src/gui/DlgProjectProps.py:192
+msgid "Audio file:"
+msgstr "Аудио файл:"
+
+#: src/gui/DlgProjectProps.py:238
+msgid "PhotoFilmStrip project"
+msgstr "PhotoFilmStrip проект"
+
+#: src/gui/DlgProjectProps.py:269
+msgid "Unnamed PhotoFilmStrip"
+msgstr "Безымянный PhotoFilmStrip"
+
+#: src/gui/DlgProjectProps.py:276
+msgid "My PhotoFilmStrips"
+msgstr "Мой PhotoFilmStrips"
+
+#: src/gui/DlgProjectProps.py:320
+msgid "Browse for folder"
+msgstr "Обзор папок"
+
+#: src/gui/DlgProjectProps.py:334
+msgid "Select music"
+msgstr "Выбор музыки"
+
+#: src/gui/DlgProjectProps.py:336
+msgid "Audio files"
+msgstr "Аудио файлы"
+
+#: src/gui/DlgProjectProps.py:418
+#: src/gui/DlgProjectProps.py:421
+msgid "Audio file not supported!"
+msgstr "Аудио файл не поддерживается!"
+
+#: src/gui/DlgProjectProps.py:469
+msgid "Folder does not exists! Do you want %s to create it?"
+msgstr "Папка не существует! Вы хотите чтобы %s создал её?"
+
+#: src/gui/DlgProjectProps.py:470
+#: src/gui/FrmMain.py:294
+#: src/gui/FrmMain.py:410
+#: src/gui/FrmMain.py:490
+#: src/gui/PnlJobVisual.py:233
+#: src/gui/WxProjectFile.py:89
+msgid "Question"
+msgstr "Вопрос"
+
+#: src/gui/DlgProjectProps.py:479
+msgid "Cannot create folder: %s"
+msgstr "Невозможно создать папку: %s"
+
+#: src/gui/DlgProjectProps.py:490
+msgid "Cannot write into folder!"
+msgstr "Не могу записать в папку!"
+
+#: src/gui/DlgProjectProps.py:504
+msgid "The project name must be filled."
+msgstr "Имя проекта должно быть заполнено."
+
+#: src/gui/DlgProjectProps.py:510
+msgid "The project name contains invalid characters."
+msgstr "Имя проекта содержит недопустимые символы."
+
+#: src/gui/DlgRender.py:129
+msgid "Profile:"
+msgstr "Профиль:"
+
+#: src/gui/DlgRender.py:138
+msgid "Type:"
+msgstr "Тип:"
+
+#: src/gui/DlgRender.py:148
+msgid "Format:"
+msgstr "Формат:"
+
+#: src/gui/DlgRender.py:164
+msgid "Properties"
+msgstr "Свойства"
+
+#: src/gui/DlgRender.py:168
+msgid "Draft"
+msgstr "Черновик"
+
+#: src/gui/DlgRender.py:184
+msgid "&Start"
+msgstr "Старт"
+
+#: src/gui/DlgRender.py:196
+msgid "Configure output and start render process"
+msgstr "Сконфигурировать выходной формат и начать процесс создания видео"
+
+#: src/gui/DlgRender.py:261
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "Аудио файл '%s' не существует! Все равно продолжить?"
+
+#: src/gui/DlgRender.py:262
+msgid "Warning"
+msgstr "Внимание"
+
+#: src/gui/DlgRendererProps.py:65
+msgid "Property"
+msgstr "Свойство"
+
+#: src/gui/DlgRendererProps.py:67
+msgid "Value"
+msgstr "Значение"
+
+#: src/gui/DlgRendererProps.py:86
+msgid "Output properties"
+msgstr "Свойства выходного файла"
+
+#: src/gui/DlgRendererProps.py:128
+msgid "Edit extended output properties"
+msgstr "Редактировать расширенные свойства выходного файла"
+
+#: src/gui/DlgRendererProps.py:164
+msgid "Edit property"
+msgstr "Редактировать свойство"
+
+#: src/gui/FrmMain.py:81
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: src/gui/FrmMain.py:84
+msgid "Job queue"
+msgstr "Очередь заданий"
+
+#: src/gui/FrmMain.py:183
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "Вы должны перезапустить %s чтобы новые языковые настройки вступили в силу."
+
+#: src/gui/FrmMain.py:243
+msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr "PhotoFilmStrip создает фильмы из фотографий всего за 3 шага. Сначала выберите фотографии, настройте траекторию движения и сделайте видео. Есть несколько возможностей вывода видео от VCD, SVCD, DVD до Full-HD."
+
+#: src/gui/FrmMain.py:246
+msgid "online"
+msgstr "в интернет"
+
+#: src/gui/FrmMain.py:262
+msgid "Select %s-Project"
+msgstr "Выбрать %s-Проект"
+
+#: src/gui/FrmMain.py:264
+#: src/gui/FrmMain.py:284
+#: src/gui/FrmMain.py:315
+#: src/gui/FrmMain.py:326
+msgid "Project"
+msgstr "Проект"
+
+#: src/gui/FrmMain.py:281
+msgid "Save %s-Project"
+msgstr "Сохранить %s-Проект"
+
+#: src/gui/FrmMain.py:293
+msgid "Overwrite existing file '%s'?"
+msgstr "Перезаписать существующий файл '%s'?"
+
+#: src/gui/FrmMain.py:312
+msgid "Export %s-Project"
+msgstr "Экспорт %s-Проект"
+
+#: src/gui/FrmMain.py:315
+#: src/gui/FrmMain.py:326
+msgid "Portable"
+msgstr "Портативный"
+
+#: src/gui/FrmMain.py:324
+msgid "Import %s-Project"
+msgstr "Импорт %s-Проект"
+
+#: src/gui/FrmMain.py:409
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' был изменен. Сохранить изменения?"
+
+#: src/gui/FrmMain.py:432
+msgid "Images"
+msgstr "Изображения"
+
+#: src/gui/FrmMain.py:437
+msgid "Duration"
+msgstr "Длительность"
+
+#: src/gui/FrmMain.py:459
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr "Неправильный %(app)s-Проект: %(file)s"
+
+#: src/gui/FrmMain.py:487
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "Невозможно сохранить файл '%(file)s': %(errMsg)s"
+
+#: src/gui/PnlAddPics.py:91
+#: src/gui/PnlWelcome.py:44
+msgid "Welcome to PhotoFilmStrip"
+msgstr "Добро пожаловать в PhotoFilmStrip"
+
+#: src/gui/PnlAddPics.py:92
+msgid ""
+"Drag some pictures onto this text or\n"
+"click the button below\n"
+"to add pictures to your new PhotoFilmStrip."
+msgstr ""
+"Перетащите изображения на этот текст или\n"
+"нажмите на кнопку ниже\n"
+"чтобы добавить изображения в ваш новый PhotoFilmStrip."
+
+#: src/gui/PnlEditPicture.py:156
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/gui/PnlEditPicture.py:160
+msgid "Rotation:"
+msgstr "Вращение:"
+
+#: src/gui/PnlEditPicture.py:180
+msgid "Effect:"
+msgstr "Эффект:"
+
+#: src/gui/PnlEditPicture.py:194
+msgid "Process"
+msgstr "Показ"
+
+#: src/gui/PnlEditPicture.py:198
+msgid "Transition:"
+msgstr "Переход:"
+
+#: src/gui/PnlEditPicture.py:210
+#: src/gui/PnlEditPicture.py:222
+msgid "sec"
+msgstr "сек"
+
+#: src/gui/PnlEditPicture.py:214
+msgid "Duration:"
+msgstr "Длительность:"
+
+#: src/gui/PnlEditPicture.py:230
+msgid "Subtitle"
+msgstr "Субтитры"
+
+#: src/gui/PnlEditPicture.py:254
+msgid "No effect"
+msgstr "Без эффектов"
+
+#: src/gui/PnlEditPicture.py:255
+msgid "Black and White"
+msgstr "Черно-белое"
+
+#: src/gui/PnlEditPicture.py:256
+msgid "Sepia tone"
+msgstr "Сепия"
+
+#: src/gui/PnlEditPicture.py:262
+msgid "None"
+msgstr "Ничего"
+
+#: src/gui/PnlEditPicture.py:263
+msgid "Fade"
+msgstr "Затухание"
+
+#: src/gui/PnlEditPicture.py:264
+msgid "Roll"
+msgstr "Сдвиг"
+
+#: src/gui/PnlJobManager.py:47
+msgid "&Clear list"
+msgstr "Очистить список"
+
+#: src/gui/PnlJobVisual.py:123
+msgid "Abort"
+msgstr "Прервать"
+
+#: src/gui/PnlJobVisual.py:129
+msgid "Remove from list"
+msgstr "Удалить из списка"
+
+#: src/gui/PnlJobVisual.py:141
+msgid "Open folder"
+msgstr "Открыть папку"
+
+#: src/gui/PnlJobVisual.py:232
+msgid "Abort selected process?"
+msgstr "Прервать текущий процесс?"
+
+#: src/gui/PnlPfsProject.py:110
+msgid "Set motion end to start"
+msgstr "Установить позицию конца в позицию начала"
+
+#: src/gui/PnlPfsProject.py:114
+msgid "Set motion start to end"
+msgstr "Установить позицию начала в позицию конца"
+
+#: src/gui/PnlPfsProject.py:120
+msgid "Adjust motion manual"
+msgstr "Настроить движение вручную"
+
+#: src/gui/PnlPfsProject.py:265
+msgid "Import images"
+msgstr "Импорт изображений"
+
+#: src/gui/PnlPfsProject.py:267
+#: src/gui/PnlPfsProject.py:328
+msgid "Imagefiles"
+msgstr "Файлы изображений"
+
+#: src/gui/PnlPfsProject.py:317
+msgid "Browse"
+msgstr "Обзор"
+
+#: src/gui/PnlPfsProject.py:326
+msgid "Import image"
+msgstr "Импорт изображения"
+
+#: src/gui/PnlWelcome.py:51
+#: src/gui/PnlWelcome.py:106
+msgid "Recent projects"
+msgstr "Последние проекты"
+
+#: src/gui/PnlWelcome.py:63
+msgid "Create new project"
+msgstr "Создать новый проект"
+
+#: src/gui/PnlWelcome.py:68
+msgid "Open existing project"
+msgstr "Открыть существующий проект"
+
+#: src/gui/PnlWelcome.py:109
+msgid "How to start..."
+msgstr "С чего начать..."
+
+#: src/gui/PnlWelcome.py:110
+msgid "Create a new project or load an existing one."
+msgstr "Создать новый проект или загрузить существующий"
+
+#: src/gui/PnlWelcome.py:141
+msgid "Update available"
+msgstr "Доступно обновление"
+
+#: src/gui/PnlWelcome.py:144
+msgid "The following changes has been made:"
+msgstr "Были сделаны следующие изменения:"
+
+#: src/gui/WxProjectFile.py:53
+msgid "Loading project %s"
+msgstr "Загрузить проект %s"
+
+#: src/gui/WxProjectFile.py:66
+msgid "Saving project %s"
+msgstr "Сохранить проект %s"
+
+#: src/gui/WxProjectFile.py:88
+msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
+msgstr "Некоторые изображения больше не существуют в каталоге '%s'. Если файлы были перемещены вы можете выбрать новый путь. Вы хотите выбрать новый путь к файлам?"
+
+#: src/lib/jobimpl/DlgJobVisual.py:70
+msgid "Elapsed time"
+msgstr "Прошедшее время"
+
+#: src/lib/jobimpl/DlgJobVisual.py:82
+msgid "Remaining time"
+msgstr "Ожидаемое время"
+
+#: src/lib/jobimpl/DlgJobVisual.py:200
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: src/lib/jobimpl/VisualJob.py:25
+#: src/lib/jobimpl/VisualJobMixin.py:21
+msgid "Waiting..."
+msgstr "прерывание..."
+
+#: src/lib/jobimpl/VisualJob.py:64
+#: src/lib/jobimpl/VisualJob.py:78
+#: src/lib/jobimpl/VisualJobMixin.py:56
+msgid "Aborted"
+msgstr "...прерван!"
+
+#: src/lib/jobimpl/VisualJob.py:66
+msgid "Done"
+msgstr "Завершено"
+
+#: src/lib/jobimpl/VisualJob.py:74
+msgid "Aborting..."
+msgstr "Прерывание..."
+
