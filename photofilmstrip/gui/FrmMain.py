@@ -168,8 +168,10 @@ class FrmMain(wx.Frame):
             value = pnl.IsPictureSelected()
             kind = pnl.GetSelectedImageState()
             if event.GetId() == ActionManager.ID_PIC_MOVE_LEFT:
+                # FIXME: does not work with multiselect
                 value = kind not in ['first', 'none'] and value
             elif event.GetId() == ActionManager.ID_PIC_MOVE_RIGHT:
+                # FIXME: does not work with multiselect
                 value = kind not in ['last', 'none'] and value
             event.Enable(value)
         else:

@@ -51,7 +51,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
         self.__frozen   = False
         self.__pictures = []
-        self.__selIdx   = -1
+        self.__selIdxs  = []
         self.__hvrIdx   = -1
         
         self.__dragPic  = None
@@ -148,8 +148,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
     def __DrawHighlights(self, dc):
         dc.SetPen(wx.TRANSPARENT_PEN)
-        if self.__selIdx != -1:
-            rect = self.GetThumbRect(self.__selIdx)
+        for selIdx in self.__selIdxs:
+            rect = self.GetThumbRect(selIdx)
             col = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             dc.SetBrush(wx.Brush(wx.Color(col.Red(), col.Green(), col.Blue(), 180)))
             dc.DrawRectangleRect(rect)
@@ -201,8 +201,21 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self.__hvrIdx = -1
             self.Refresh()
         if event.LeftDown():
-            if idx != -1 and idx != self.__selIdx:
-                self.Select(idx)
+            if idx != -1:
+                if event.ControlDown():
+                    self.Select(idx, idx not in self.__selIdxs, False)
+                elif event.ShiftDown():
+                    if not self.__selIdxs:
+                        # nothing selected
+                        self.Select(idx)
+                    else:
+                        step = 1 if idx > self.__selIdxs[0] else -1
+                        for ct, _idx in enumerate(xrange(self.__selIdxs[0], 
+                                                         idx + step, 
+                                                         step)):
+                            self.Select(_idx, deselectOthers=ct == 0)
+                else:
+                    self.Select(idx)
         if event.LeftUp() and self.__dragPic is not None:
             if self.HasCapture():
                 self.ReleaseMouse()        
@@ -226,15 +239,24 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             return
         
         key = event.GetKeyCode()
-        sel = self.GetSelected()
+        if self.__selIdxs:
+            if event.ShiftDown():
+                # if add to selection use last selected item as reference
+                sel = self.__selIdxs[-1]
+            else:
+                sel = self.__selIdxs[0]
+        else:
+            sel = -1
         if key == wx.WXK_LEFT:
             if sel > 0:
-                self.Select(sel - 1)
+                self.Select(sel - 1, 
+                            deselectOthers=not event.ShiftDown())
                 self.EnsureVisible(sel - 1)
         
         elif key == wx.WXK_RIGHT:
             if sel < self.GetItemCount() - 1:
-                self.Select(sel + 1)
+                self.Select(sel + 1,
+                            deselectOthers=not event.ShiftDown())
                 self.EnsureVisible(sel + 1)
         
         elif key == wx.WXK_END:
@@ -305,19 +327,51 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
+        
+        for i in xrange(len(self.__selIdxs)):
+            if self.__selIdxs[i] >= idx \
+            and self.__selIdxs[i] + 1 not in self.__selIdxs:
+                self.__selIdxs[i] += 1
+        
         if not self.IsFrozen():
             self.__UpdateVirtualSize()
         self._SendChangedEvent()
         
     def DeleteItem(self, idx):
         self.__pictures.pop(idx)
-        if self.__selIdx >= len(self.__pictures):
-            self.__selIdx = len(self.__pictures) - 1
+        
+        firstSel = 0
+        if self.__selIdxs:
+            firstSel = self.__selIdxs[0]
+        if firstSel >= len(self.__pictures):
+            firstSel = len(self.__pictures) - 1
+
+        if idx in self.__selIdxs:
+            self.__selIdxs.remove(idx)
+            
+        if firstSel != idx \
+        and firstSel not in self.__selIdxs:
+            self.__selIdxs.insert(0, firstSel)
+        
+        if len(self.__selIdxs) == 0:
+            self.__selIdxs.append(firstSel)
+            
+        for i in xrange(len(self.__selIdxs)):
+            if self.__selIdxs[i] > idx \
+            and self.__selIdxs[i] - 1 not in self.__selIdxs:
+                self.__selIdxs[i] -= 1
+        
+        if len(self.__pictures) == 0:
+            self.__selIdxs = []
+
         self.__UpdateVirtualSize()
         self._SendChangedEvent()
+
+        evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+        self.GetEventHandler().ProcessEvent(evt)
         
     def DeleteAllItems(self):
-        self.__selIdx   = -1
+        self.__selIdxs  = []
         self.__pictures = []
         self.__UpdateVirtualSize()
         self._SendChangedEvent()
@@ -326,6 +380,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         return len(self.__pictures)
     
     def GetPicture(self, idx):
+        if isinstance(idx, list):
+            if len(idx) > 1:
+                raise ValueError('Invalid selection state!')
+            idx = idx[0]
         try:
             return self.__pictures[idx]
         except IndexError:
@@ -339,18 +397,47 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         return self.__pictures[:]
         
     def GetSelected(self):
-        return self.__selIdx
+        return self.__selIdxs[:]
     
-    def Select(self, idx):
+    def GetSelectedPictures(self):
+        selPics = []
+        for idx in self.__selIdxs:
+            pic = self.GetPicture(idx)
+            if pic is not None:
+                selPics.append(pic)
+        return selPics
+    
+    def Select(self, idx, on=True, deselectOthers=True):
         if idx in xrange(len(self.__pictures)):
-            evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
-            evt.m_itemIndex = idx
-            evt.m_oldItemIndex = self.__selIdx
+            if deselectOthers:
+                newSel = []
+            else:
+                newSel = self.__selIdxs[:]
+            if on and idx not in newSel:
+                newSel.append(idx)
+            elif not on and idx in newSel and len(newSel) > 1:
+                # must have mor than one selected item to make sure
+                # there is at least one selected
+                newSel.remove(idx)
+                
+            evts = []
+            for oldSelIdx in self.__selIdxs:
+                if oldSelIdx not in newSel:
+                    evt = wx.ListEvent(wx.EVT_LIST_ITEM_DESELECTED.typeId, self.GetId())
+                    evt.m_itemIndex = oldSelIdx
+                    evts.append(evt)
+            for newSelIdx in newSel:
+                if newSelIdx not in self.__selIdxs:
+                    evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+                    evt.m_itemIndex = newSelIdx
+#                    evt.m_oldItemIndex = self.__selIdx
+                    evts.append(evt)
 
-            self.__selIdx = idx
+            self.__selIdxs = newSel
             self.Refresh()
             
-            self.GetEventHandler().ProcessEvent(evt)
+            for evt in evts:
+                self.GetEventHandler().ProcessEvent(evt)
             return True
         else:
             return False
@@ -360,14 +447,40 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         picTo = self.__pictures[idxTo]
         self.__pictures[idxFrom] = picTo
         self.__pictures[idxTo] = picFrom
+        
+        evt = None
+        try:
+            p = self.__selIdxs.index(idxFrom)
+            self.__selIdxs[p] = idxTo
+            evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+            evt.m_itemIndex = idxTo
+            evt.m_oldItemIndex = idxFrom
+        except ValueError:
+            pass
+        
         self.Refresh()
         self._SendChangedEvent()
+        if evt:
+            self.GetEventHandler().ProcessEvent(evt)
 
     def MovePicture(self, idxFrom, idxTo):
         pic = self.__pictures.pop(idxFrom)
         self.__pictures.insert(idxTo, pic)
+
+        evt = None
+        try:
+            p = self.__selIdxs.index(idxFrom)
+            self.__selIdxs[p] = idxTo
+            evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+            evt.m_itemIndex = idxTo
+            evt.m_oldItemIndex = idxFrom
+        except ValueError:
+            pass
+        
         self.Refresh()
         self._SendChangedEvent()
+        if evt:
+            self.GetEventHandler().ProcessEvent(evt)
 
 
 # FIXME: should be fixed height

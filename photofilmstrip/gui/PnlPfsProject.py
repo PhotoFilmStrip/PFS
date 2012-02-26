@@ -184,7 +184,6 @@ class PnlPfsProject(wx.Panel, Observer):
               style=wx.LC_ICON | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL)
         self.lvPics.Bind(wx.EVT_LIST_ITEM_SELECTED,
               self.OnLvPicsListItemSelected, id=wxID_PNLPFSPROJECTLVPICS)
-        self.lvPics.Bind(wx.EVT_RIGHT_DOWN, self.OnLvPicsRightDown)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
               wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLPFSPROJECTCMDMOVELEFT,
@@ -248,16 +247,21 @@ class PnlPfsProject(wx.Panel, Observer):
         self.SetChanged(False)
         
     def GetSelectedImageState(self):
-        item = self.lvPics.GetSelected()
-        if item == 0:
+        items = self.lvPics.GetSelected()
+        if len(items) == 0:
+            kind = 'none'
+        elif items[0] == 0:
             if self.lvPics.GetItemCount() == 1:
-                kind = 'none'
+                kind = 'none' # to disable move buttons
             else:
                 kind = 'first'
-        elif item == self.lvPics.GetItemCount() - 1:
+        elif items[0] == self.lvPics.GetItemCount() - 1:
             kind = 'last'
         else:
             kind = 'any'
+        
+#        if len(items) > 1:
+#            kind = 'multi'
         
         return kind
 
@@ -273,84 +277,38 @@ class PnlPfsProject(wx.Panel, Observer):
                 pics.append(pic)
                 ImageCache().RegisterPicture(pic)
             
-            selItm = self.lvPics.GetSelected()
+            selItms = self.lvPics.GetSelected()
             self.InsertPictures(pics, 
-                                selItm + 1 if selItm != wx.NOT_FOUND else None, 
+                                selItms[0] + 1 if selItms else None, 
                                 autopath=True)
             
             Settings().SetImagePath(os.path.dirname(path))
             
-            selIdx = self.lvPics.GetSelected()
-            pic = self.lvPics.GetPicture(selIdx)
-            self.pnlEditPicture.SetPicture(pic, 
-                                           selIdx == self.lvPics.GetItemCount() - 1)
+            selPics = self.lvPics.GetSelectedPictures()
+            self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()
 
     def OnLvPicsListItemSelected(self, event):
-        item = event.GetIndex()
-
-        self.cmdMoveLeft.Enable(item > 0)
-        self.cmdMoveRight.Enable(item < self.lvPics.GetItemCount() - 1)
-        self.cmdRemove.Enable(True)
+        selItems = self.lvPics.GetSelected()
         
-        pic = self.lvPics.GetPicture(item)
-        self.imgProxy.SetPicture(pic)
+        self.cmdMoveLeft.Enable(selItems.count(0) == 0)
+        self.cmdMoveRight.Enable(selItems.count(self.lvPics.GetItemCount() - 1) == 0)
+        self.cmdRemove.Enable(len(selItems) > 0)
+        
+        selPics = self.lvPics.GetSelectedPictures()
+        self.pnlEditPicture.SetPictures(selPics)
+        
+        if selPics:
+            self.imgProxy.SetPicture(selPics[0])
+    
+            self.bitmapLeft.SetSection(wx.Rect(*selPics[0].GetStartRect()))
+            self.bitmapRight.SetSection(wx.Rect(*selPics[0].GetTargetRect()))
 
-        self.bitmapLeft.SetSection(wx.Rect(*pic.GetStartRect()))
-        self.bitmapRight.SetSection(wx.Rect(*pic.GetTargetRect()))
-
-        self.pnlEditPicture.SetPicture(pic, 
-                                       item == self.lvPics.GetItemCount() - 1)
+        self.panelTop.Enable(len(selPics) == 1)
+        self.bitmapRight.Enable(len(selPics) == 1)
+        self.bitmapLeft.Enable(len(selPics) == 1)
         
         event.Skip()
-
-    def OnLvPicsRightDown(self, event):
-        pos = event.GetPosition()
-        item = self.lvPics.HitTest(pos)
-        if item != -1:
-            self.lvPics.Select(item)
-            
-            pic = self.lvPics.GetPicture(item)
-            
-            menu = wx.Menu()
-            ident = wx.NewId()
-            item = wx.MenuItem(menu, ident, _(u"Browse"))
-            item.SetBitmap(wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize))
-            menu.AppendItem(item)
-            self.Bind(wx.EVT_MENU, self.OnBrowseImage, id=ident)
-            self.lvPics.PopupMenu(menu)
-
-            event.Skip()
-
-    def OnBrowseImage(self, event):
-        dlg = wx.FileDialog(self, _(u"Import image"), 
-                            Settings().GetImagePath(), "", 
-                            _(u"Imagefiles") + " (*.*)|*.*", 
-                            wx.OPEN | wx.FD_PREVIEW)
-        if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-
-            item = self.lvPics.GetSelected()
-            orgPic = self.lvPics.GetPicture(item)
-            
-            pic = Picture(path)
-            pic.SetComment(orgPic.GetComment())
-            pic.SetDuration(orgPic.GetDuration())
-            pic.SetEffect(orgPic.GetEffect())
-            pic.SetRotation(orgPic.GetRotation())
-            pic.SetStartRect(orgPic.GetStartRect())
-            pic.SetTargetRect(orgPic.GetTargetRect())
-
-            ImageCache().RegisterPicture(pic)
-                        
-            self.lvPics.SetPicture(item, pic)
-            pic.AddObserver(self)
-            pic.Notify('bitmap')
-            
-            Settings().SetImagePath(os.path.dirname(path))
-            
-            self.SetChanged(True)
-        dlg.Destroy()
 
     def OnRectChanged(self, event):
         selItem = self.lvPics.GetSelected()
@@ -363,30 +321,31 @@ class PnlPfsProject(wx.Panel, Observer):
             pic.SetTargetRect(tuple(self.bitmapRight.GetSection()))
 
     def OnCmdMoveLeftButton(self, event):
-        selItem = self.lvPics.GetSelected()
-        self.lvPics.SwapPictures(selItem, selItem - 1)
-        self.lvPics.Select(selItem - 1)
+        selItems = self.lvPics.GetSelected()
+        selItems.sort()
+        for selItem in selItems:
+            self.lvPics.SwapPictures(selItem, selItem - 1)
         
         self.SetChanged(True)
 
     def OnCmdMoveRightButton(self, event):
-        selItem = self.lvPics.GetSelected()
-        self.lvPics.SwapPictures(selItem, selItem + 1)
-        self.lvPics.Select(selItem + 1)
+        selItems = self.lvPics.GetSelected()
+        selItems.sort(reverse=True)
+        for selItem in selItems:
+            self.lvPics.SwapPictures(selItem, selItem + 1)
 
         self.SetChanged(True)
 
     def OnCmdRemoveButton(self, event):
-        selItem = self.lvPics.GetSelected()
-        self.lvPics.DeleteItem(selItem)
-        
-        if selItem > self.lvPics.GetItemCount() - 1:
-            selItem = self.lvPics.GetItemCount() - 1
-        self.lvPics.Select(selItem)
+        selItems = self.lvPics.GetSelected()
+        # remove pics starting at the end
+        selItems.sort(reverse=True)
+        for selItem in selItems:
+            self.lvPics.DeleteItem(selItem)
         
         if self.lvPics.GetItemCount() == 0:
             self.imgProxy.SetPicture(None)
-            self.pnlEditPicture.SetPicture(None)
+            self.pnlEditPicture.SetPictures(None)
             self.pnlEditPicture.Enable(False)
             self.cmdMoveLeft.Enable(False)
             self.cmdMoveRight.Enable(False)
@@ -459,7 +418,7 @@ class PnlPfsProject(wx.Panel, Observer):
 
             pic.AddObserver(self)
 #        self.lvPics.Thaw()
-        if self.lvPics.GetSelected() == -1:
+        if len(self.lvPics.GetSelected()) == 0:
             self.lvPics.Select(0)
             
         evt = UpdateStatusbarEvent(self.GetId())
@@ -503,7 +462,7 @@ class PnlPfsProject(wx.Panel, Observer):
         return self.lvPics.GetItemCount() > 0
         
     def IsPictureSelected(self):
-        return self.lvPics.GetSelected() >= 0
+        return len(self.lvPics.GetSelected()) > 0
     
     def SetChanged(self, changed=True):
         self.__hasChanged = changed

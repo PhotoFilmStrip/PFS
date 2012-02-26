@@ -207,7 +207,11 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         dc.SetBrush(wx.GREY_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
-        if self._imgProxy is not None:
+        if not self.IsEnabled():
+            dc.SetBrush(wx.Brush(wx.Colour(90, 90, 90, 255),
+                                 wx.HORIZONTAL_HATCH))
+            dc.DrawRectangle(0, 0, sz[0], sz[1])
+        elif self._imgProxy is not None:
             self.__DrawBitmap(dc)
             self.__DrawSection(dc)
         
@@ -564,6 +568,7 @@ class ImageSectionEditor(wx.Panel, Observer):
                             rect = wx.Rect(int(sectData[0]), int(sectData[1]),
                                            int(sectData[2]), int(sectData[3]))
                             self.SetSection(rect)
+                            self._SendRectChangedEvent()
                         except ValueError:
                             pass
             finally:
@@ -576,7 +581,6 @@ class ImageSectionEditor(wx.Panel, Observer):
     
     def SetSection(self, rect):
         self._sectRect = wx.RectPS(rect.GetPosition(), rect.GetSize())
-        self._SendRectChangedEvent()
         self.Refresh()
 
 

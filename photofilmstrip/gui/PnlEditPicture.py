@@ -265,8 +265,8 @@ class PnlEditPicture(wx.Panel):
         self.choiceTrans.SetSelection(1)
         self.choiceTrans.Bind(wx.EVT_CHOICE, self.OnChoiceTransChoice)
 
-        self._picture = None
-        self.SetPicture(None)
+        self._pictures = []
+        self.SetPictures(None)
 
     def __SetChoiceSelectionByData(self, choice, data):
         for idx in range(choice.GetCount()):
@@ -275,47 +275,56 @@ class PnlEditPicture(wx.Panel):
                 return
 
     def OnCmdRotateLeftButton(self, event):
-        self._picture.Rotate(False)
+        for pic in self._pictures:
+            pic.Rotate(False)
         event.Skip()
 
     def OnCmdRotateRightButton(self, event):
-        self._picture.Rotate(True)
+        for pic in self._pictures:
+            pic.Rotate(True)
         event.Skip()
 
     def OnChoiceEffectChoice(self, event):
-        self._picture.SetEffect(event.GetClientData())
+        for pic in self._pictures:
+            pic.SetEffect(event.GetClientData())
         event.Skip()
         
     def OnChoiceTransChoice(self, event):
-        self._picture.SetTransition(event.GetClientData())
-        self.pnlTransDuration.Enable(self._picture.GetTransition() != Picture.TRANS_NONE)
+        trans = event.GetClientData()
+        for pic in self._pictures:
+            pic.SetTransition(trans)
+        self.pnlTransDuration.Enable(trans != Picture.TRANS_NONE)
         event.Skip()
     
     def OnTransDurationChanged(self, event):
         duration = event.GetValue()
-        self._picture.SetTransitionDuration(duration)
+        for pic in self._pictures:
+            pic.SetTransitionDuration(duration)
 
     def OnImgDurationChanged(self, event):
         duration = event.GetValue()
-        self._picture.SetDuration(duration)
+        for pic in self._pictures:
+            pic.SetDuration(duration)
 
     def OnTextCtrlCommentText(self, event):
-        self._picture.SetComment(self.tcComment.GetValue())
+        for pic in self._pictures:
+            pic.SetComment(self.tcComment.GetValue())
         event.Skip()
         
-    def SetPicture(self, picture, isLast=False):
-        self.Enable(picture is not None)
+    def SetPictures(self, pictures):
+        if pictures is None:
+            pictures = []
+        self.Enable(len(pictures) > 0)
 
-        self._picture = picture
-        if self._picture is not None:
-            duration = self._picture.GetDuration()
+        self._pictures = pictures
+        if self._pictures:
+            pic = self._pictures[0]
+            
+            duration = pic.GetDuration()
             self.pnlImgDuration.SetValue(duration)
-            self.tcComment.SetValue(self._picture.GetComment())
-            self.__SetChoiceSelectionByData(self.choiceEffect, self._picture.GetEffect())
+            self.tcComment.SetValue(pic.GetComment())
+            self.__SetChoiceSelectionByData(self.choiceEffect, pic.GetEffect())
             
-            self.__SetChoiceSelectionByData(self.choiceTrans, self._picture.GetTransition())
-            self.pnlTransDuration.SetValue(self._picture.GetTransitionDuration())
-            self.pnlTransDuration.Enable(self._picture.GetTransition() != Picture.TRANS_NONE and not isLast)
-            
-            for ctrl in [self.stTrans, self.choiceTrans, self.stTransUnit]:
-                ctrl.Enable(not isLast)
+            self.__SetChoiceSelectionByData(self.choiceTrans, pic.GetTransition())
+            self.pnlTransDuration.SetValue(pic.GetTransitionDuration())
+            self.pnlTransDuration.Enable(pic.GetTransition() != Picture.TRANS_NONE)
