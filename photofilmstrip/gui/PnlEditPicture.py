@@ -326,5 +326,5 @@ class PnlEditPicture(wx.Panel):
             self.__SetChoiceSelectionByData(self.choiceEffect, pic.GetEffect())
             
             self.__SetChoiceSelectionByData(self.choiceTrans, pic.GetTransition())
-            self.pnlTransDuration.SetValue(pic.GetTransitionDuration())
+            self.pnlTransDuration.SetValue(pic.GetTransitionDuration(rawValue=True))
             self.pnlTransDuration.Enable(pic.GetTransition() != Picture.TRANS_NONE)

@@ -174,7 +174,7 @@ class ProjectFile(object):
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
                    pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect(), 
-                   pic.GetTransition(), pic.GetTransitionDuration(), 
+                   pic.GetTransition(), pic.GetTransitionDuration(rawValue=True), 
                    picData)
         return query, values
     

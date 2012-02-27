@@ -183,7 +183,7 @@ class PnlPfsProject(wx.Panel, Observer):
               size=wx.Size(-1, -1),
               style=wx.LC_ICON | wx.SUNKEN_BORDER | wx.LC_SINGLE_SEL)
         self.lvPics.Bind(wx.EVT_LIST_ITEM_SELECTED,
-              self.OnLvPicsListItemSelected, id=wxID_PNLPFSPROJECTLVPICS)
+              self.OnLvPicsSelectionChanged, id=wxID_PNLPFSPROJECTLVPICS)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
               wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLPFSPROJECTCMDMOVELEFT,
@@ -288,7 +288,7 @@ class PnlPfsProject(wx.Panel, Observer):
             self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()
 
-    def OnLvPicsListItemSelected(self, event):
+    def OnLvPicsSelectionChanged(self, event):
         selItems = self.lvPics.GetSelected()
         
         self.cmdMoveLeft.Enable(selItems.count(0) == 0)

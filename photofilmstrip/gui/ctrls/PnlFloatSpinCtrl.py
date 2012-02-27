@@ -83,7 +83,7 @@ class PnlFloatSpinCtrl(wx.Panel):
         
     def OnSpinButtonValueSpin(self, event):
         value = event.GetPosition() / 10.0
-        self.tcValue.SetValue("%.1f" % value)
+        self.tcValue.ChangeValue("%.1f" % value)
         self.__SendValueChangedEvent(value)
         event.Skip()
     
@@ -96,13 +96,14 @@ class PnlFloatSpinCtrl(wx.Panel):
         return min(floatVal, 600.0)
     
     def SetValue(self, value):
-        self.tcValue.SetValue("%.1f" % value)
+        self.tcValue.ChangeValue("%.1f" % value)
         self.spinButtonValue.SetValue(int(value * 10))
     
     def OnTextCtrlValueKillFocus(self, event):
         value = self.__GetValue()
         self.spinButtonValue.SetValue(int(value * 10))
-        self.tcValue.SetValue("%.1f" % value)
+        self.tcValue.ChangeValue("%.1f" % value)
+        self.__SendValueChangedEvent(value)
         event.Skip()
         
     def OnTextCtrlValueText(self, event):

@@ -416,27 +416,20 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if on and idx not in newSel:
                 newSel.append(idx)
             elif not on and idx in newSel and len(newSel) > 1:
-                # must have mor than one selected item to make sure
+                # must have more than one selected item to make sure
                 # there is at least one selected
                 newSel.remove(idx)
                 
-            evts = []
-            for oldSelIdx in self.__selIdxs:
-                if oldSelIdx not in newSel:
-                    evt = wx.ListEvent(wx.EVT_LIST_ITEM_DESELECTED.typeId, self.GetId())
-                    evt.m_itemIndex = oldSelIdx
-                    evts.append(evt)
-            for newSelIdx in newSel:
-                if newSelIdx not in self.__selIdxs:
-                    evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
-                    evt.m_itemIndex = newSelIdx
-#                    evt.m_oldItemIndex = self.__selIdx
-                    evts.append(evt)
+            evt = None
+            if newSel != self.__selIdxs:
+                evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+#                evt.m_itemIndex = newSelIdx
+#                evt.m_oldItemIndex = self.__selIdx
 
             self.__selIdxs = newSel
             self.Refresh()
             
-            for evt in evts:
+            if evt:
                 self.GetEventHandler().ProcessEvent(evt)
             return True
         else:

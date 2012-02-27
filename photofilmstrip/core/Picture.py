@@ -141,6 +141,7 @@ class Picture(Observable):
             return
         self._trans = transition
         self.Notify('transition')
+        self.Notify('duration') # if set to no transition
     def GetTransition(self):
         return self._trans
     
@@ -149,8 +150,8 @@ class Picture(Observable):
             return
         self._transDur = transDur
         self.Notify('duration')
-    def GetTransitionDuration(self):
-        if self._trans == Picture.TRANS_NONE:
+    def GetTransitionDuration(self, rawValue=False):
+        if not rawValue and self._trans == Picture.TRANS_NONE:
             return 0.0
         return self._transDur
     
