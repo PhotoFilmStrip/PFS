@@ -21,12 +21,14 @@
 
 import os
 
+from photofilmstrip.lib.common.ObserverPattern import Observable
 from photofilmstrip.core.Aspect import Aspect
 
 
-class Project(object):
+class Project(Observable):
     
     def __init__(self, filename=None):
+        Observable.__init__(self)
         self.__pictures = []
         self.__filename = filename
         
@@ -49,20 +51,33 @@ class Project(object):
         return self.__pictures
     
     def SetPictures(self, picList):
+        oldDuration = self.GetDuration()
         self.__pictures = picList
+        self.Notify("pictures")
+        if self.GetDuration() != oldDuration:
+            self.Notify("duration")
         
     def SetAudioFile(self, audioFile):
+        if audioFile == self.__audioFile:
+            return
         self.__audioFile = audioFile
+        self.Notify("audiofile")
     def GetAudioFile(self):
         return self.__audioFile
     
     def SetAspect(self, aspect):
+        if aspect == self.__aspect:
+            return
         self.__aspect = aspect
+        self.Notify("aspect")
     def GetAspect(self):
         return self.__aspect
     
     def SetDuration(self, duration):
+        if duration == self.__duration:
+            return
         self.__duration = duration
+        self.Notify("duration")
     def GetDuration(self, calc=True):
         if self.__duration is None:
             if not calc:

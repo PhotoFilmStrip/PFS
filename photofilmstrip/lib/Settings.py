@@ -173,7 +173,7 @@ class Settings(Singleton):
                 return self.cp.getint("General", "VideoType")
             except:
                 pass
-        return 0
+        return 1
 
     def SetUsedRenderer(self, renderer):
         self.Load()

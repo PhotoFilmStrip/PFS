@@ -130,9 +130,8 @@ class JobManager(Singleton, Destroyable):
         jcGroup = self.__jobCtxGroups[jobContext.GetGroupId()]
         jcGroup.Put(jobContext)
         
-        if isinstance(jobContext, IVisualJob):
-            for visual in self.__visuals:
-                visual.RegisterJob(jobContext)
+        for visual in self.__visuals:
+            visual.RegisterJob(jobContext)
                 
     def _GetWorkLoad(self, workerCtxGroup):
         jcGroup = self.__jobCtxGroups[workerCtxGroup]
@@ -209,6 +208,9 @@ class JobManager(Singleton, Destroyable):
         finally:
             self.__logger.debug("<%s> finished %s", 
                                 threading.currentThread().getName(), ctx.GetName())
+
+        for visual in self.__visuals:
+            visual.RemoveJob(ctx)
             
     def Destroy(self):
         self.__logger.debug("start destroying")
