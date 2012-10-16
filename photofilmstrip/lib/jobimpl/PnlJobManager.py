@@ -3,7 +3,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2010 Jens Goepfert
+# Copyright (C) 2012 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,18 +23,17 @@
 import wx
 import wx.lib.scrolledpanel
 
-from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
+from photofilmstrip.lib.jobimpl.WxVisualJobManager import WxVisualJobManager, EVT_REGISTER_JOB
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
-from photofilmstrip.gui.PnlJobVisual import PnlJobVisual
-from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
+from photofilmstrip.lib.jobimpl.PnlJobVisual import PnlJobVisual
 
 
 [wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS, 
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
 
-class PnlJobManager(wx.Panel, IVisualJobManager):
+class PnlJobManager(wx.Panel, WxVisualJobManager):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -71,8 +70,9 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 
         self._init_sizers()
 
-    def __init__(self, parent):
+    def __init__(self, parent, pnlJobClass=PnlJobVisual):
         self._init_ctrls(parent)
+        WxVisualJobManager.__init__(self)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnSelectItem)
         self.pnlJobs.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         
@@ -85,6 +85,9 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
         self._selected = None
 
         self.pnlJobVisuals = []
+        self.pnlJobClass = pnlJobClass
+        
+        self.Bind(EVT_REGISTER_JOB, self.OnRegisterJob)
         
         JobManager().AddVisual(self)
         
@@ -92,11 +95,12 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
 #            dc = DummyRenderContext("TestJob %d" % i)
 #            JobManager().EnqueueContext(dc)
 
-    def RegisterJob(self, jobContext):
+    def OnRegisterJob(self, event):
+        jobContext = event.GetJob()
         if jobContext.GetGroupId() != "render":
             return
         
-        pjv = PnlJobVisual(self.pnlJobs, self, jobContext)
+        pjv = self.pnlJobClass(self.pnlJobs, self, jobContext)
         pjv.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
 
         self.szJobs.Add(pjv, 0, wx.EXPAND)
@@ -113,10 +117,6 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
         if self.parentFrame:
             self.parentFrame.Show()
         
-    def RemoveJob(self, job):
-        # done jobs are removed manually
-        pass
-
     def OnSelectItem(self, event):
         pnl = event.GetEventObject()
         if pnl != self._selected:
@@ -193,8 +193,7 @@ class PnlJobManager(wx.Panel, IVisualJobManager):
             self.pnlJobs.SetupScrolling(scroll_x = False)
 
 
-
-
+from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 class DummyRenderContext(VisualJob):
     
     def __init__(self, name):

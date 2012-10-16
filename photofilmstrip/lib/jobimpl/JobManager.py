@@ -85,7 +85,8 @@ class JobManager(Singleton, Destroyable):
         if self.__defaultVisual in self.__visuals:
             self.__visuals.remove(self.__defaultVisual)
 
-        self.__visuals.append(visual)
+        if visual not in self.__visuals:
+            self.__visuals.append(visual)
     
     def RemoveVisual(self, visual):
         if visual in self.__visuals:

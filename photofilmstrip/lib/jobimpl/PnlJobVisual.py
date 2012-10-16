@@ -3,9 +3,7 @@
 
 import wx
 
-from photofilmstrip.action.DynamicAction import DynamicAction
-from photofilmstrip.action.ActionPlayVideo import ActionPlayVideo
-from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
+from photofilmstrip.action.WxAction import WxAction
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
     WxVisualJobHandler, EVT_JOB_UPDATE)
 
@@ -119,29 +117,25 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         
         self.jobContext = jobContext
         
-        self._actAbort = DynamicAction(
+        self._actAbort = WxAction(
                  _(u"Abort"), 
                 self._Abort, 
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR, wx.DefaultSize)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
+                                                           wx.ART_MENU, 
+                                                           wx.DefaultSize),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
+                                                              wx.ART_TOOLBAR, 
+                                                              wx.DefaultSize)}
         )
-        self._actRemove = DynamicAction(
+        self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, wx.ART_TOOLBAR, wx.DefaultSize)}
-        )
-        self._actPlay = DynamicAction(
-                _("Play video"),
-                self._PlayVideo,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR, wx.DefaultSize)}
-        )
-        self._actOpenFldr = DynamicAction(
-                    _(u"Open folder"),
-                self._OpenFolder,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_TOOLBAR, wx.DefaultSize)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
+                                                           wx.ART_MENU, 
+                                                           wx.DefaultSize),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
+                                                              wx.ART_TOOLBAR, 
+                                                              wx.DefaultSize)}
         )
 
         self.curAction = None
@@ -200,32 +194,34 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         
         menu.AppendSeparator()
         
-        mitm = self._actPlay.ToMenu(self, menu)
-        menu.Enable(mitm.GetId(), self.jobContext.IsDone())
-
-        mitm = self._actOpenFldr.ToMenu(self, menu)
-        menu.Enable(mitm.GetId(), not self.jobContext.IsIdle())
+        self._OnMenuActions(menu)
         
         self.cmdMenu.PopupMenu(menu)
+        
+    def _OnMenuActions(self, menu):
+        pass
         
     def _SetupAction(self):
         if self.jobContext.IsIdle() or not self.jobContext.IsDone():
             self.curAction = self._actAbort
-        elif self.jobContext.IsAborted():
+        elif self.jobContext.IsAborted() or self.jobContext.IsDone():
             self.curAction = self._actRemove
-        elif self.jobContext.IsDone():
-            self.curAction = self._actPlay
         else:
             print 'shit'
             self.curAction = None
+            
+        self._OnSetupAction()
         
         curTip = self.cmdAction.GetToolTip()
         if curTip:
             curTip = curTip.GetTip()
         
-        if curTip != self.curAction.GetName():
+        if self.curAction and curTip != self.curAction.GetName():
             self.cmdAction.SetBitmap(self.curAction.GetBitmap(wx.ART_TOOLBAR))
             self.cmdAction.SetToolTipString(self.curAction.GetName())
+            
+    def _OnSetupAction(self):
+        pass
         
     def _Abort(self):
         dlg = wx.MessageDialog(self,
@@ -241,9 +237,3 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
     def _Remove(self):
         wx.CallAfter(self.pnlJobManager.RemovePnlJobVisual, self, True)
 #        self.pnlJobManager.RemovePnlJobVisual(self, True)
-        
-    def _PlayVideo(self):
-        ActionPlayVideo(self.jobContext.GetOutputPath()).Execute()
-        
-    def _OpenFolder(self):
-        ActionOpenFolder(self.jobContext.GetOutputPath()).Execute()

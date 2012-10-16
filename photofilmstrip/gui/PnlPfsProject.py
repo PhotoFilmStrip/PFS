@@ -353,9 +353,6 @@ class PnlPfsProject(wx.Panel, Observer):
             self.pnlAddPics.Show(True)
             self.panelTop.Show(False)
         
-        evt = UpdateStatusbarEvent(self.GetId())
-        self.GetEventHandler().ProcessEvent(evt)
-        
         self.cmdRemove.Enable(self.lvPics.GetItemCount() > 0)
         
         self.Layout()
@@ -421,9 +418,6 @@ class PnlPfsProject(wx.Panel, Observer):
         if len(self.lvPics.GetSelected()) == 0:
             self.lvPics.Select(0)
             
-        evt = UpdateStatusbarEvent(self.GetId())
-        self.GetEventHandler().ProcessEvent(evt)
-        
         self.SetChanged(True)
 
         self.pnlAddPics.Show(self.lvPics.GetItemCount() == 0)
@@ -439,8 +433,7 @@ class PnlPfsProject(wx.Panel, Observer):
                 self.lvPics.Refresh()
             
             if arg == 'duration':
-                evt = UpdateStatusbarEvent(self.GetId())
-                self.GetEventHandler().ProcessEvent(evt)
+                self.__project.Notify("duration")
 
             if arg == 'start':
                 self.bitmapLeft.SetSection(wx.Rect(*obj.GetStartRect()))
@@ -455,9 +448,6 @@ class PnlPfsProject(wx.Panel, Observer):
         self.bitmapRight.SetAspect(self.__project.GetAspect())
         self.SetChanged(True)
 
-        evt = UpdateStatusbarEvent(self.GetId())
-        self.GetEventHandler().ProcessEvent(evt)
-    
     def IsReady(self):
         return self.lvPics.GetItemCount() > 0
         
@@ -493,11 +483,3 @@ class ImageDropTarget(wx.FileDropTarget):
             return True
         return False
 
-
-_EVT_UPDATE_STATUSBAR_TYPE  = wx.NewEventType()
-EVT_UPDATE_STATUSBAR        = wx.PyEventBinder(_EVT_UPDATE_STATUSBAR_TYPE, 1)
-
-
-class UpdateStatusbarEvent(wx.PyCommandEvent):
-    def __init__(self, wxId):
-        wx.PyCommandEvent.__init__(self, _EVT_UPDATE_STATUSBAR_TYPE, wxId)

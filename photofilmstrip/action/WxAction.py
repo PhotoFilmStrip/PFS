@@ -22,7 +22,7 @@
 from photofilmstrip.action.WxAbstractAction import WxAbstractAction
 
 
-class DynamicAction(WxAbstractAction):
+class WxAction(WxAbstractAction):
     
     def __init__(self, name, target, args=None, bmp=None):
         WxAbstractAction.__init__(self)

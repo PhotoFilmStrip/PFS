@@ -30,28 +30,36 @@ from photofilmstrip import Constants
 
 from photofilmstrip.action.ActionI18N import ActionI18N
 
+from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import Decode
+
+from photofilmstrip.lib.jobimpl.WxVisualJobManager import (
+        WxVisualJobManager, EVT_REGISTER_JOB, EVT_REMOVE_JOB)
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
+from photofilmstrip.lib.jobimpl.PnlJobManager import PnlJobManager
 
 from photofilmstrip.gui.DlgRender import DlgRender
 from photofilmstrip.gui.PnlWelcome import PnlWelcome
 from photofilmstrip.gui.ActionManager import ActionManager
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
-from photofilmstrip.gui.PnlPfsProject import PnlPfsProject, EVT_UPDATE_STATUSBAR
+from photofilmstrip.gui.PnlPfsProject import PnlPfsProject
 from photofilmstrip.gui.WxProjectFile import WxProjectFile
+from photofilmstrip.gui.PnlRenderJobVisual import PnlRenderJobVisual
 
 from photofilmstrip.res.license import licenseText
-from photofilmstrip.gui.PnlJobManager import PnlJobManager
+from photofilmstrip.core.RenderJob import RenderJob
 
 
-class FrmMain(wx.Frame):
+class FrmMain(wx.Frame, Observer, WxVisualJobManager):
     
     def __init__(self):
         wx.Frame.__init__(self, None, -1, name=u'FrmMain',
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL,
               title='PhotoFilmStrip')
+        WxVisualJobManager.__init__(self)
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.SetTitle(Constants.APP_NAME)
         
@@ -61,7 +69,8 @@ class FrmMain(wx.Frame):
         self.SetIcons(iconBundle)
         
         self.statusBar = wx.StatusBar(self)
-        self.statusBar.SetFieldsCount(3)
+        self.statusBar.SetFieldsCount(4)
+        self.statusBar.Bind(wx.EVT_LEFT_DOWN, self.OnStatusBarLeftDown)
         self.SetStatusBar(self.statusBar)
         
         self.actionManager = ActionManager()
@@ -80,7 +89,13 @@ class FrmMain(wx.Frame):
         
         self.notebook.AddPage(self.pnlWelcome, _(u"Welcome"), True)
         
-        self.pnlJobManager = PnlJobManager(self)
+        self.frmJobManager = wx.Frame(self, -1, _(u"Job queue"),
+                                      size=wx.Size(600,400),
+                                      style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
+        self.frmJobManager.Bind(wx.EVT_CLOSE, self.OnCloseFrameJobManager)
+        pnlJobManager = PnlJobManager(self.frmJobManager, pnlJobClass=PnlRenderJobVisual)
+
+        self.pnlJobManager = PnlJobManager(self, pnlJobClass=PnlRenderJobVisual)
         self.notebook.AddPage(self.pnlJobManager, _(u"Job queue"))
         
         self.Bind(wx.EVT_MENU, self.OnProjectNew, id=wx.ID_NEW)
@@ -135,11 +150,33 @@ class FrmMain(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnPagePrev, id=id2)
 
         self.actionManager.SelectLanguage(Settings().GetLanguage())
+        JobManager().AddVisual(self)
         
+        self.Bind(EVT_REGISTER_JOB, self.OnRegisterJob)
+        self.Bind(EVT_REMOVE_JOB, self.OnRemoveJob)
+        
+    def ObservableUpdate(self, obj, arg):
+        if obj is self.__GetCurrentProject():
+            self.UpdateStatusText()
+
+    def OnRegisterJob(self, event):
+        job = event.GetJob()
+        if isinstance(job, RenderJob):
+            self.statusBar.SetStatusText(_(u"Rendering in progress..."), 3)
+    
+    def OnRemoveJob(self, event):
+        self.statusBar.SetStatusText("", 3)
+
+    def OnStatusBarLeftDown(self, event):
+        if self.statusBar.GetFieldRect(3).Contains(event.GetPosition()) \
+        and self.statusBar.GetStatusText(3) != "":
+            self.frmJobManager.Show()
+
     def __GetCurrentPnlPfs(self):
         sel = self.notebook.GetSelection()
-        if sel > 1:
-            return self.notebook.GetPage(sel)
+        page = self.notebook.GetPage(sel)
+        if isinstance(page, PnlPfsProject):
+            return page
     
     def __GetCurrentProject(self):
         page = self.__GetCurrentPnlPfs()
@@ -199,7 +236,7 @@ class FrmMain(wx.Frame):
             filepath = page.GetProject().GetFilename()
             self.SetTitle(Constants.APP_NAME + u' - ' + Decode(filepath))
             
-        self.UpdateStatusText(None)
+        self.UpdateStatusText()
         
     def OnPageNext(self, event):
         idx = self.notebook.GetSelection()
@@ -224,6 +261,9 @@ class FrmMain(wx.Frame):
             else:
                 event.Veto()
     
+    def OnCloseFrameJobManager(self, event):
+        self.frmJobManager.Show(False)
+
     def OnClose(self, event):
         while self.notebook.GetPageCount() > 2:
             idx = 2
@@ -232,6 +272,8 @@ class FrmMain(wx.Frame):
                 self.notebook.DeletePage(idx)
             else:
                 return
+        JobManager().RemoveVisual(self)
+        self.frmJobManager.Destroy()
         event.Skip()
 
     def OnExit(self, event):
@@ -420,30 +462,28 @@ class FrmMain(wx.Frame):
                 return False
         return True
 
-    def UpdateStatusText(self, event):
+    def UpdateStatusText(self):
         page = self.__GetCurrentPnlPfs()
         if page is None:
             self.statusBar.SetStatusText(Constants.APP_URL, 1)
             self.statusBar.SetStatusText("%s %s" % (Constants.APP_NAME, Constants.APP_VERSION), 2)
         else:
-            photoFilmStrip = page.GetProject()
+            project = page.GetProject()
 
-            pics = photoFilmStrip.GetPictures()
-    
-            imgCount = len(pics)
+            imgCount = len(project.GetPictures())
             self.statusBar.SetStatusText("%s: %d" % (_(u"Images"), imgCount), 1)
             
-            totalTime = photoFilmStrip.GetDuration()
+            totalTime = project.GetDuration()
             minutes = totalTime / 60
             seconds = totalTime % 60
             self.statusBar.SetStatusText("%s: %02d:%02d" % (_(u"Duration"), 
                                                             minutes, 
                                                             seconds), 2)
 
-    def NewProject(self, photoFilmStrip):
-        pnl = PnlPfsProject(self.notebook, photoFilmStrip)
-        pnl.Bind(EVT_UPDATE_STATUSBAR, self.UpdateStatusText)
-        filepath = os.path.basename(photoFilmStrip.GetFilename())
+    def NewProject(self, project):
+        pnl = PnlPfsProject(self.notebook, project)
+        project.AddObserver(self)
+        filepath = os.path.basename(project.GetFilename())
         self.notebook.AddPage(pnl, os.path.basename(filepath), True)
         return pnl
 

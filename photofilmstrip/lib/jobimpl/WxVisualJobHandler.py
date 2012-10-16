@@ -70,9 +70,6 @@ class ResultEvent(wx.PyEvent):
         assert isinstance(resultObj, ResultObject)
         self.__resultObj = resultObj
         
-    def _SetResultObj(self, resultObj):
-        self.__resultObj = resultObj
-
     def GetResult(self, printTraceback=True):
         return self.__resultObj.GetResult(printTraceback)
 
