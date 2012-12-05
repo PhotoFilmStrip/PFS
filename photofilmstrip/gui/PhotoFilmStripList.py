@@ -73,11 +73,12 @@ class PhotoFilmStripList(wx.ScrolledWindow):
               wx.ART_TOOLBAR, (120, 120))
         self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
         
-    def Freeze(self):
+    def Freeze(self, *args):
         self.__frozen = True
-    def Thaw(self):
+    def Thaw(self, *args):
         self.__frozen = False
-    def IsFrozen(self):
+        self.__UpdateVirtualSize()
+    def IsFrozen(self, *args):
         return self.__frozen
     
     def __OnThumbReady(self, event):

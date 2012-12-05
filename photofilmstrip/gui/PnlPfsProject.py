@@ -404,7 +404,7 @@ class PnlPfsProject(wx.Panel, Observer):
         if position is None:
             position = self.lvPics.GetItemCount()
         
-#        self.lvPics.Freeze()
+        self.lvPics.Freeze()
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__project.GetAspect())
@@ -414,7 +414,7 @@ class PnlPfsProject(wx.Panel, Observer):
             position += 1 
 
             pic.AddObserver(self)
-#        self.lvPics.Thaw()
+        self.lvPics.Thaw()
         if len(self.lvPics.GetSelected()) == 0:
             self.lvPics.Select(0)
             
