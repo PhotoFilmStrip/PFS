@@ -90,8 +90,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         except StandardError:
             dc = pdc
         
-        self.PrepareDC(dc)
-
         font = wx.SystemSettings_GetFont(wx.SYS_ANSI_FIXED_FONT)
         font.SetPointSize(9)
         dc.SetFont(font)
@@ -116,8 +114,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
             if sxPic >= vx - stepWidth:
                 if sxPic <= vx + hx:
-                    dc.DrawBitmap(bmp, sxPic, self.BORDER, True)
-                    labelRect = wx.Rect(sxPic, 0, bmp.GetWidth(), self.HEIGHT)
+                    dc.DrawBitmap(bmp, sxPic - vx, self.BORDER, True)
+                    labelRect = wx.Rect(sxPic - vx, 0, bmp.GetWidth(), self.HEIGHT)
                     dc.DrawLabel(str(idx + 1), labelRect, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_TOP)
                     dc.DrawLabel(os.path.basename(pic.GetFilename()), 
                                  labelRect, 
@@ -133,8 +131,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 if sxFilmStrip > sxPic:
                     break
                 
-                dc.DrawRoundedRectangle(sxFilmStrip, 14, 14, 20, 3)
-                dc.DrawRoundedRectangle(sxFilmStrip, self.HEIGHT - 34, 14, 20, 3)
+                dc.DrawRoundedRectangle(sxFilmStrip - vx, 14, 14, 20, 3)
+                dc.DrawRoundedRectangle(sxFilmStrip - vx, self.HEIGHT - 34, 14, 20, 3)
                 n += 1
             
         self.__DrawHighlights(dc)
@@ -142,19 +140,22 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if self.__dragPic is not None:
             if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
                 bmp = ImageCache().GetThumbBmp(self.__pictures[self.__dragPic])
-                dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX, self.BORDER)
+                dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX - vx, self.BORDER)
             else:
                 self.__dragPic = None
 
     def __DrawHighlights(self, dc):
+        vs = self.GetViewStart()[0]
         dc.SetPen(wx.TRANSPARENT_PEN)
         for selIdx in self.__selIdxs:
             rect = self.GetThumbRect(selIdx)
+            rect.OffsetXY(-vs, 0)
             col = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             dc.SetBrush(wx.Brush(wx.Color(col.Red(), col.Green(), col.Blue(), 180)))
             dc.DrawRectangleRect(rect)
         if self.__hvrIdx != -1:
             rect = self.GetThumbRect(self.__hvrIdx)
+            rect.OffsetXY(-vs, 0)
             col = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             color = wx.Color(col.Red(), col.Green(), col.Blue(), 80)
             dc.SetBrush(wx.Brush(color))
