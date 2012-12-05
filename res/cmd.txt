@@ -31,3 +31,12 @@ mp2enc -r 48000 -o 9mill.mp2 < wavfile.wav
 mp32wav:
 mpg123 -w wavfile.wav Bicycles.mp3
 
+
+
+
+
+mencoder mf://black.jpg -o 1.avi -ovc lavc -lavcopts vcodec=mjpeg -oac mp3lame -audiofile 1.mp3 -lameopts cbr:br=192 -srate 44100 -fps 1/31 -ofps 25
+mencoder mf://black.jpg -o 2.avi -ovc lavc -lavcopts vcodec=mjpeg -oac mp3lame -audiofile 2.mp3 -lameopts cbr:br=192 -srate 44100 -fps 1/31 -ofps 25
+mencoder -forceidx -ovc copy -oac copy -o 12.avi 1.avi 2.avi
+mencoder -of rawaudio -oac copy -ovc copy -o 12.wav 12.avi
+mencoder mf://black.jpg -o 12a.avi -ovc lavc -lavcopts vcodec=mjpeg -audiofile 12.wav -lameopts cbr:br=192 -srate 44100 -oac mp3lame -fps 1/63 -ofps 25
