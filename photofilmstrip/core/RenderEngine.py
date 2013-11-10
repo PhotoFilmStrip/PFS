@@ -190,23 +190,6 @@ class LinearMovement(object):
         return self._v * t + self._s0
         
         
-class AccelMovement(object):
-    
-    def __init__(self, s, t, s0, deaccel=False):
-        self._s = float(s)
-        self._t = float(t)
-        self._s0 = float(s0)
-        
-        self._a = (2 * self._s) / (self._t * self._t)
-        if deaccel:
-            self._a *= -1
-        
-    def Get(self, t):
-        # s = a/2 *t′2
-        t = float(t)
-        return (self._a / 2.0) * (t * t) + self._s0
-
-
 class SplineMovement(object):
     
     def __init__(self, s, t, s0):
