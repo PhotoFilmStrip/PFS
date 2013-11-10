@@ -366,6 +366,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if len(self.__pictures) == 0:
             self.__selIdxs = []
 
+        if self.__hvrIdx >= len(self.__pictures):
+            self.__hvrIdx = -1
+        
         self.__UpdateVirtualSize()
         self._SendChangedEvent()
 
