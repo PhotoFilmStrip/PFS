@@ -47,18 +47,19 @@ class RenderEngine(object):
         cx2 = (w2 / 2.0) + px2
         cy2 = (h2 / 2.0) + py2
         
-        dx = (cx2 - cx1) / float(picCount - 1)
-        dy = (cy2 - cy1) / float(picCount - 1)
-        dw = (w2 - w1) / float(picCount - 1)
-        dh = (h2 - h1) / float(picCount - 1)
-        
+        clazz = SplineMovement
+        mX = clazz(cx2 - cx1, picCount, cx1)
+        mY = clazz(cy2 - cy1, picCount, cy1)
+        mW = clazz(w2 - w1, picCount, w1)
+        mH = clazz(h2 - h1, picCount, h1)
+
         pathRects = []
         for step in xrange(picCount):
-            px = cx1 + step * dx
-            py = cy1 + step * dy
-            width = w1 + step * dw
-            height = h1 + step * dh
-            
+            px = mX.Get(step)
+            py = mY.Get(step)
+            width = mW.Get(step)
+            height = mH.Get(step)
+           
             rect = (px - width / 2.0, 
                     py - height / 2.0, 
                     width, 
@@ -171,3 +172,59 @@ class RenderEngine(object):
                 
         rjc = RenderJob(self.__name, self.__aRenderer, self.__tasks)
         return rjc
+
+
+
+class LinearMovement(object):
+    
+    def __init__(self, s, t, s0):
+        self._s = float(s)
+        self._t = float(t)
+        self._s0 = float(s0)
+        
+        self._v  = self._s / (self._t - 1)
+        
+    def Get(self, t):
+        # s = v *t + s0
+        t = float(t)
+        return self._v * t + self._s0
+        
+        
+class AccelMovement(object):
+    
+    def __init__(self, s, t, s0, deaccel=False):
+        self._s = float(s)
+        self._t = float(t)
+        self._s0 = float(s0)
+        
+        self._a = (2 * self._s) / (self._t * self._t)
+        if deaccel:
+            self._a *= -1
+        
+    def Get(self, t):
+        # s = a/2 *t′2
+        t = float(t)
+        return (self._a / 2.0) * (t * t) + self._s0
+
+
+class SplineMovement(object):
+    
+    def __init__(self, s, t, s0):
+        self._s = float(s)
+        self._t = float(t)
+        self._s0 = float(s0)
+        
+        # gesucht: Polynom 3ten Grades
+        # s = a*t^3 + b*t^2 + c*t + d
+        # RB 1: f'(t) = 0
+        # RB 2: f'(0) = 0 --> c = 0
+        # RB 3: f''(t/2) = 0 --> b = -3 * a * t
+        # RB 4: f(t) = s --> a = (s - b*t^2) / t^3
+        
+        self._a = -2.0 * self._s / (self._t**3)
+        self._b = -3 * self._a * (self._t / 2.0) 
+        self._c = 0
+        self._d = float(s0)
+        
+    def Get(self, t):
+        return self._a*t**3 + self._b*t**2 + self._c*t + self._d
