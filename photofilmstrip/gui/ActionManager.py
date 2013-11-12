@@ -29,6 +29,8 @@ class ActionManager(object):
     ID_PIC_REMOVE        = wx.NewId()
     ID_PIC_ROTATE_CW     = wx.NewId()
     ID_PIC_ROTATE_CCW    = wx.NewId()
+    ID_PIC_MOTION_RANDOM = wx.NewId()
+    ID_PIC_MOTION_CENTER = wx.NewId()
     ID_PIC_IMPORT        = wx.NewId()
     ID_RENDER_FILMSTRIP  = wx.NewId()
     ID_PROJECT_IMPORT    = wx.NewId()
@@ -175,7 +177,7 @@ class ActionManager(object):
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_REMOVE, 
-                              _(u'&Remove Picture') + '\tCtrl+Del', 
+                              _(u'R&emove Picture') + '\tCtrl+Del', 
                               wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
@@ -186,6 +188,14 @@ class ActionManager(object):
                               self.ID_PIC_ROTATE_CCW, 
                               _(u'Rotate counter clock&wise') + '\tCtrl+l', 
                               wx.ArtProvider.GetBitmap(wx.ART_UNDO, wx.ART_MENU))
+        menu.AppendSeparator()
+        self.__CreateMenuItem(menu, 
+                              self.ID_PIC_MOTION_RANDOM, 
+                              _(u'Random &motion' + '\tCtrl+d'))
+        self.__CreateMenuItem(menu, 
+                              self.ID_PIC_MOTION_CENTER, 
+                              _(u'Centralize m&otion') + '\tCtrl+f')
+        
         return menu
         
     def __MakeMenuTools(self):

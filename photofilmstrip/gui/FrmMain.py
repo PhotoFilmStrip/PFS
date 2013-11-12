@@ -114,6 +114,8 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
         self.Bind(wx.EVT_MENU, self.OnCmdRotateLeftButton, id=ActionManager.ID_PIC_ROTATE_CCW)
         self.Bind(wx.EVT_MENU, self.OnCmdRotateRightButton, id=ActionManager.ID_PIC_ROTATE_CW)
+        self.Bind(wx.EVT_MENU, self.OnCmdMotionRandom, id=ActionManager.ID_PIC_MOTION_RANDOM)
+        self.Bind(wx.EVT_MENU, self.OnCmdMotionCenter, id=ActionManager.ID_PIC_MOTION_CENTER)
 
         self.Bind(wx.EVT_MENU, self.OnImportPics, id=ActionManager.ID_PIC_IMPORT)
 
@@ -136,6 +138,8 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_ROTATE_CW)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOVE_LEFT)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOVE_RIGHT)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOTION_RANDOM)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ActionManager.ID_PIC_MOTION_CENTER)
         
         self.SetInitialSize((720, 680))
         
@@ -415,6 +419,16 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         if sel > 0:
             page = self.notebook.GetPage(sel)
             page.pnlEditPicture.OnCmdRotateRightButton(event)
+    def OnCmdMotionRandom(self, event):
+        sel = self.notebook.GetSelection()
+        if sel > 0:
+            page = self.notebook.GetPage(sel)
+            page.OnMotionRandom()
+    def OnCmdMotionCenter(self, event):
+        sel = self.notebook.GetSelection()
+        if sel > 0:
+            page = self.notebook.GetPage(sel)
+            page.OnMotionCenter()
     def OnImportPics(self, event):
         sel = self.notebook.GetSelection()
         if sel > 0:

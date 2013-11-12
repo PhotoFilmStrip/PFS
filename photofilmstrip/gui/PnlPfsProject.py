@@ -40,7 +40,9 @@ from photofilmstrip.gui.util.ImageCache import ImageCache
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
+
 from photofilmstrip.action.ActionAutoPath import ActionAutoPath
+from photofilmstrip.action.ActionCenterPath import ActionCenterPath
 
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT, 
@@ -367,12 +369,7 @@ class PnlPfsProject(wx.Panel, Observer):
         self.SetChanged(True)
 
     def OnToolBarImgSectToolAutoPath(self, event):
-        selItem = self.lvPics.GetSelected()
-        pic = self.lvPics.GetPicture(selItem)
-        if pic is None:
-            return
-        actAp = ActionAutoPath(pic, self.__project.GetAspect())
-        actAp.Execute()
+        self.OnMotionRandom()
 
     def OnToolBarImgSectToolLeftToRight(self, event):
         selItem = self.lvPics.GetSelected()
@@ -405,6 +402,15 @@ class PnlPfsProject(wx.Panel, Observer):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def OnMotionRandom(self):
+        for pic in self.lvPics.GetSelectedPictures():
+            actAp = ActionAutoPath(pic, self.__project.GetAspect())
+            actAp.Execute()
+    def OnMotionCenter(self):
+        for pic in self.lvPics.GetSelectedPictures():
+            actCp = ActionCenterPath(pic, self.__project.GetAspect())
+            actCp.Execute()
+
     def Close(self):
         self.imgProxy.RemoveObserver(self.bitmapLeft)
         self.imgProxy.RemoveObserver(self.bitmapRight)
@@ -422,7 +428,11 @@ class PnlPfsProject(wx.Panel, Observer):
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__project.GetAspect())
-                actAp.Execute()
+                try:
+                    actAp.Execute()
+                except:
+                    # if it is an invalid image file
+                    pass
 
             self.lvPics.InsertPicture(position, pic)
             position += 1 
