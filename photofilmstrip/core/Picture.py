@@ -34,6 +34,9 @@ class Picture(Observable):
     TRANS_FADE = 1
     TRANS_ROLL = 2
     
+    MOVE_LINEAR = 0
+    MOVE_ACCEL = 1
+    
     def __init__(self, filename):
         Observable.__init__(self)
         self._filename   = filename
@@ -42,6 +45,7 @@ class Picture(Observable):
         self._isDummy    = False
         
         self._duration = 7.0
+        self._movement = Picture.MOVE_ACCEL
         self._rotation = 0
         self._comment  = u""
         self._effect   = Picture.EFFECT_NONE
@@ -97,6 +101,14 @@ class Picture(Observable):
         self.Notify("duration")
     def GetDuration(self):
         return self._duration
+    
+    def SetMovement(self, movement):
+        if movement == self._movement:
+            return
+        self._movement = movement
+        self.Notify("movement")
+    def GetMovement(self):
+        return self._movement
     
     def SetComment(self, comment):
         if comment == self._comment:

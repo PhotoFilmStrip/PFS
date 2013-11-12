@@ -15,8 +15,10 @@ from photofilmstrip.gui.util.ImageCache import ImageCache # FIXME: no gui import
 from photofilmstrip.core.Project import Project
 
 
-SCHEMA_REV = 3
+SCHEMA_REV = 4
 """
+4:
+- added column movement to table picture
 3:
 - added thumbnail table
 2:
@@ -42,6 +44,7 @@ CREATE TABLE `picture` (
     target_height INTEGER,
     rotation INTEGER,
     duration DOUBLE,
+    movement INTEGER,
     comment TEXT,
     effect INTEGER,
     transition INTEGER,
@@ -73,6 +76,7 @@ class ProjectFile(object):
         
         self.__conn = None
         self.__altPaths = {}
+        self.__fileRev = 1
         
     def __del__(self):
         if self.__conn is not None:
@@ -86,6 +90,16 @@ class ProjectFile(object):
         if self.__conn is None:
             self.__conn = sqlite3.connect(Encode(self._filename),
                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        cur = self.__GetCursor()
+
+        try:
+            # at the beginning we had no property table
+            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev", ))
+            result = cur.fetchone()
+            if result:
+                self.__fileRev = int(result[0])
+        except sqlite3.DatabaseError:
+            pass
             
     def __Close(self, commit=False):
         if self.__conn is None:
@@ -164,16 +178,17 @@ class ProjectFile(object):
                     "filename, width, height, " \
                     "start_left, start_top, start_width, start_height, " \
                     "target_left, target_top, target_width, target_height, " \
-                    "rotation, duration, comment, effect, " \
+                    "rotation, duration, movement, comment, effect, " \
                     "transition, transition_duration, data" \
                 ") VALUES (" \
-                    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" \
+                    "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" \
                 ");"
 
         values =  (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
-                   pic.GetRotation(), pic.GetDuration(), pic.GetComment(), pic.GetEffect(), 
+                   pic.GetRotation(), pic.GetDuration(), pic.GetMovement(),
+                   pic.GetComment(), pic.GetEffect(), 
                    pic.GetTransition(), pic.GetTransitionDuration(rawValue=True), 
                    picData)
         return query, values
@@ -290,6 +305,7 @@ class ProjectFile(object):
             rect = (row["target_left"], row["target_top"], row["target_width"], row["target_height"])
             pic.SetTargetRect(rect)
             pic.SetDuration(row["duration"])
+            pic.SetMovement(self.__LoadSafe(row, "movement", Picture.MOVE_LINEAR))
             pic.SetComment(row["comment"])
             pic.SetRotation(row['rotation'])
             pic.SetEffect(self.__LoadSafe(row, 'effect', Picture.EFFECT_NONE))
@@ -297,7 +313,7 @@ class ProjectFile(object):
             pic.SetTransition(self.__LoadSafe(row, 'transition', Picture.TRANS_FADE))
             pic.SetTransitionDuration(self.__LoadSafe(row, 'transition_duration', 1.0))
             
-            self.__LoadThumbnail(fileRev, pic, row["picture_id"])
+            self.__LoadThumbnail(pic, row["picture_id"])
             
             picList.append(pic)
 
@@ -313,11 +329,11 @@ class ProjectFile(object):
         self._project = project
         return True
     
-    def __LoadThumbnail(self, fileRev, pic, picId):
+    def __LoadThumbnail(self, pic, picId):
         ImageCache().RegisterPicture(pic)
         return
         thumbNail = None
-        if fileRev >= 3:
+        if self.__fileRev >= 3:
             cur = self.__GetCursor()
             cur.execute("SELECT * FROM `thumbnail` WHERE picture_id=?", (picId, ))
             row = cur.fetchone()

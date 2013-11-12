@@ -21,6 +21,7 @@
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.core.RenderJob import RenderJob
+from photofilmstrip.core.Picture import Picture
 
 
 class RenderEngine(object):
@@ -47,7 +48,10 @@ class RenderEngine(object):
         cx2 = (w2 / 2.0) + px2
         cy2 = (h2 / 2.0) + py2
         
-        clazz = SplineMovement
+        if pic.GetMovement() == Picture.MOVE_LINEAR:
+            clazz = LinearMovement
+        else:
+            clazz = AccelMovement
         mX = clazz(cx2 - cx1, picCount, cx1)
         mY = clazz(cy2 - cy1, picCount, cy1)
         mW = clazz(w2 - w1, picCount, w1)
@@ -190,7 +194,7 @@ class LinearMovement(object):
         return self._v * t + self._s0
         
         
-class SplineMovement(object):
+class AccelMovement(object):
     
     def __init__(self, s, t, s0):
         self._s = float(s)
