@@ -57,12 +57,14 @@ class ActionAutoPath(IAction):
             elif d == 1:
                 targetRect = (0, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
             elif d == 2:
-                targetRect = (width - (scaledWidth / ratio), 0, scaledWidth, scaledWidth / ratio)
+                targetRect = (width - scaledWidth, 0, scaledWidth, scaledWidth / ratio)
             elif d == 3:
-                targetRect = (width - (scaledWidth / ratio), height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
+                targetRect = (width - scaledWidth, height - (scaledWidth / ratio), scaledWidth, scaledWidth / ratio)
 
         if random.randint(0, 1):
             targetRect, startRect = startRect, targetRect
+            
+        print d, width, height, startRect, targetRect
 
         self.__picture.SetStartRect(startRect)
         self.__picture.SetTargetRect(targetRect)
