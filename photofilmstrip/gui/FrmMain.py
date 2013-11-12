@@ -94,9 +94,6 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                                       style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
         self.frmJobManager.Bind(wx.EVT_CLOSE, self.OnCloseFrameJobManager)
         pnlJobManager = PnlJobManager(self.frmJobManager, pnlJobClass=PnlRenderJobVisual)
-
-        self.pnlJobManager = PnlJobManager(self, pnlJobClass=PnlRenderJobVisual)
-        self.notebook.AddPage(self.pnlJobManager, _(u"Job queue"))
         
         self.Bind(wx.EVT_MENU, self.OnProjectNew, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnProjectLoad, id=wx.ID_OPEN)
@@ -125,6 +122,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             self.Bind(wx.EVT_MENU, self.OnChangeLanguage, id=wxId)
 
         self.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ActionManager.ID_RENDER_FILMSTRIP)
+        self.Bind(wx.EVT_MENU, self.OnShowFrameJobManager, id=ActionManager.ID_JOB_QUEUE)
         
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectChanged, id=wx.ID_SAVE)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectActive, id=wx.ID_SAVEAS)
@@ -231,7 +229,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
     
     def OnPageChanged(self, event):
         sel = event.GetSelection()
-        if sel in (0, 1):
+        if sel == 0:
             self.notebook.SetWindowStyleFlag(0)
             self.SetTitle(Constants.APP_NAME)
         else:
@@ -267,10 +265,13 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
     
     def OnCloseFrameJobManager(self, event):
         self.frmJobManager.Show(False)
+        
+    def OnShowFrameJobManager(self, event):
+        self.frmJobManager.Show()
 
     def OnClose(self, event):
-        while self.notebook.GetPageCount() > 2:
-            idx = 2
+        while self.notebook.GetPageCount() > 1:
+            idx = 1
             self.notebook.SetSelection(idx)
             if self.ClosePage(idx):
                 self.notebook.DeletePage(idx)
@@ -502,7 +503,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         return pnl
 
     def LoadProject(self, filepath, skipHistory=False):
-        for idx in range(2, self.notebook.GetPageCount()):
+        for idx in range(1, self.notebook.GetPageCount()):
             page = self.notebook.GetPage(idx)
             if page.GetProject().GetFilename() == filepath:
                 self.notebook.SetSelection(idx)

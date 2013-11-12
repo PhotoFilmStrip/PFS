@@ -33,6 +33,7 @@ class ActionManager(object):
     ID_PIC_MOTION_CENTER = wx.NewId()
     ID_PIC_IMPORT        = wx.NewId()
     ID_RENDER_FILMSTRIP  = wx.NewId()
+    ID_JOB_QUEUE         = wx.NewId()
     ID_PROJECT_IMPORT    = wx.NewId()
     ID_PROJECT_EXPORT    = wx.NewId()
     ID_PROJECT_PROPS     = wx.NewId()
@@ -109,6 +110,10 @@ class ActionManager(object):
         toolBar.AddSimpleTool(self.ID_RENDER_FILMSTRIP, 
                               wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR, wx.DefaultSize),
                               _(u'Render filmstrip'), _(u'Render filmstrip'))
+        toolBar.AddSeparator()
+        toolBar.AddSimpleTool(self.ID_JOB_QUEUE, 
+                              wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR, wx.DefaultSize),
+                              _(u'Show job queue'), _(u'Show job queue'))
 
         toolBar.Realize()
         
@@ -208,6 +213,11 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               self.ID_RENDER_FILMSTRIP, 
                               _(u'&Render filmstrip') + '\tF9', 
+                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU))
+        menu.AppendSeparator()
+        self.__CreateMenuItem(menu, 
+                              self.ID_JOB_QUEUE, 
+                              _(u'&Show job queue') + '\tF12', 
                               wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU))
         return menu
         
