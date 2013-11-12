@@ -120,6 +120,7 @@ class pfs_build(build):
                         ("PLAY_PAUSE", "play_pause_16.png"),
                         ("MOTION_RIGHT", "motion_right_24.png"),
                         ("MOTION_LEFT", "motion_left_24.png"),
+                        ("MOTION_SWAP", "motion_swap_24.png"),
                         ("MOTION_INPUT", "motion_input_24.png"),
                         ("MOTION_RANDOM", "motion_random_24.png"),
                         ("ICON_32", "photofilmstrip_32.png"),

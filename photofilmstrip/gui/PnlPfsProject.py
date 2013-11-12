@@ -52,11 +52,11 @@ from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 ] = [wx.NewId() for _init_ctrls in range(11)]
 
 
-[wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, 
+[wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, 
+ wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, 
  wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, 
- wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, 
- wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
-] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(4)]
+ wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
+] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(5)]
 
 class PnlPfsProject(wx.Panel, Observer):
     
@@ -112,12 +112,15 @@ class PnlPfsProject(wx.Panel, Observer):
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, kind=wx.ITEM_NORMAL,
+              label='', longHelp='', shortHelp=_(u'Swap motion'))
         parent.AddSeparator()
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, kind=wx.ITEM_NORMAL,
-              label='', longHelp='',
-              shortHelp=_(u'Adjust motion manual'))
+              label='', longHelp='', shortHelp=_(u'Adjust motion manual'))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
@@ -126,6 +129,8 @@ class PnlPfsProject(wx.Panel, Observer):
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAdjust,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectSwap,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP)
 
         parent.Realize()
 
@@ -383,6 +388,15 @@ class PnlPfsProject(wx.Panel, Observer):
             return
         pic.SetStartRect(pic.GetTargetRect())
 
+    def OnToolBarImgSectSwap(self, event):
+        selItem = self.lvPics.GetSelected()
+        pic = self.lvPics.GetPicture(selItem)
+        if pic is None:
+            return
+        target = pic.GetTargetRect()
+        pic.SetTargetRect(pic.GetStartRect())
+        pic.SetStartRect(target)
+    
     def OnToolBarImgSectToolAdjust(self, event):
         selItem = self.lvPics.GetSelected()
         selPic = self.lvPics.GetPicture(selItem)
@@ -458,9 +472,8 @@ class PnlPfsProject(wx.Panel, Observer):
         self.__hasChanged = changed
     def HasChanged(self):
         return self.__hasChanged
-    
-    
-        
+
+
 class ImageDropTarget(wx.FileDropTarget):
     
     def __init__(self, pnlPfs):
