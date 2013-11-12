@@ -254,6 +254,7 @@ class PnlEditPicture(wx.Panel):
         
         self.choiceMovement.Append(_(u"Linear"), Picture.MOVE_LINEAR)
         self.choiceMovement.Append(_(u"Accelerated"), Picture.MOVE_ACCEL)
+        self.choiceMovement.Append(_(u"Delayed"), Picture.MOVE_DELAYED)
         self.choiceMovement.SetSelection(1)
         self.choiceMovement.Bind(wx.EVT_CHOICE, self.OnChoiceMvmntChoice)
         

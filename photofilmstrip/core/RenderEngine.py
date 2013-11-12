@@ -50,6 +50,8 @@ class RenderEngine(object):
         
         if pic.GetMovement() == Picture.MOVE_LINEAR:
             clazz = LinearMovement
+        elif pic.GetMovement() == Picture.MOVE_DELAYED:
+            clazz = DelayedMovement
         else:
             clazz = AccelMovement
         mX = clazz(cx2 - cx1, picCount, cx1)
@@ -215,3 +217,20 @@ class AccelMovement(object):
         
     def Get(self, t):
         return self._a*t**3 + self._b*t**2 + self._c*t + self._d
+
+
+class DelayedMovement(AccelMovement):
+
+    def __init__(self, s, t, s0):
+        AccelMovement.__init__(self, s, t / 2, s0)
+        self._t4th = t / 4
+        self._sAccel = None
+        
+    def Get(self, t):
+        if t < self._t4th:
+            self._sAccel = self._s0
+        elif t < (self._t * 2) - self._t4th:
+            self._sAccel = AccelMovement.Get(self, t - self._t4th)
+        return self._sAccel
+        
+    
