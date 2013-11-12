@@ -64,7 +64,5 @@ class ActionAutoPath(IAction):
         if random.randint(0, 1):
             targetRect, startRect = startRect, targetRect
             
-        print d, width, height, startRect, targetRect
-
         self.__picture.SetStartRect(startRect)
         self.__picture.SetTargetRect(targetRect)
