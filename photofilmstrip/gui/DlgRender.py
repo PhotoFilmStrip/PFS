@@ -207,6 +207,7 @@ class DlgRender(wx.Dialog):
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
+        self.choiceType.SetSelection(0)
 
         audioFile = self.__photoFilmStrip.GetAudioFile()
         if audioFile and not os.path.exists(audioFile):
