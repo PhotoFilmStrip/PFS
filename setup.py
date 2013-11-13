@@ -83,7 +83,10 @@ class pfs_build(build):
     def _make_svn_info(self):
         # FIXME: SVN1.7
         if os.path.isfile(".svn/entries"):
-            svnRev = open(".svn/entries", "r").readlines()[3].strip()
+            try:
+                svnRev = open(".svn/entries", "r").readlines()[3].strip()
+            except:
+                svnRev = 0
         else:
             svnRev = 0
 
@@ -123,6 +126,8 @@ class pfs_build(build):
                         ("MOTION_SWAP", "motion_swap_24.png"),
                         ("MOTION_INPUT", "motion_input_24.png"),
                         ("MOTION_RANDOM", "motion_random_24.png"),
+                        ("LOCK", "lock_24.png"),
+                        ("UNLOCK", "unlock_24.png"),
                         ("ICON_32", "photofilmstrip_32.png"),
                         ("ICON_48", "photofilmstrip_48.png")
                        )

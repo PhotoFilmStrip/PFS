@@ -85,6 +85,8 @@ class ImageSectionEditor(wx.Panel, Observer):
         self._startY    = None
         self._startRect = None
         
+        self._lock = True
+        
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOTION, self.OnMotion)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
@@ -525,22 +527,23 @@ class ImageSectionEditor(wx.Panel, Observer):
         width = self._sectRect.GetWidth()
         height = self._sectRect.GetHeight()
         
-        if width > self._imgProxy.GetWidth():
-            width = self._imgProxy.GetWidth()
-            height = int(round(width / self.RATIO))
-        if height > self._imgProxy.GetHeight():
-            height = self._imgProxy.GetHeight()
-            width = int(round(height * self.RATIO))
-
-        if left < 0:
-            left = 0
-        if left + width > self._imgProxy.GetWidth():
-            left = self._imgProxy.GetWidth() - width
-
-        if top < 0:
-            top = 0
-        if top + height > self._imgProxy.GetHeight():
-            top = self._imgProxy.GetHeight() - height
+        if self._lock:
+            if width > self._imgProxy.GetWidth():
+                width = self._imgProxy.GetWidth()
+                height = int(round(width / self.RATIO))
+            if height > self._imgProxy.GetHeight():
+                height = self._imgProxy.GetHeight()
+                width = int(round(height * self.RATIO))
+    
+            if left < 0:
+                left = 0
+            if left + width > self._imgProxy.GetWidth():
+                left = self._imgProxy.GetWidth() - width
+    
+            if top < 0:
+                top = 0
+            if top + height > self._imgProxy.GetHeight():
+                top = self._imgProxy.GetHeight() - height
             
         self._sectRect = wx.Rect(left, top, width, height)
         
@@ -582,6 +585,9 @@ class ImageSectionEditor(wx.Panel, Observer):
     def SetSection(self, rect):
         self._sectRect = wx.RectPS(rect.GetPosition(), rect.GetSize())
         self.Refresh()
+        
+    def SetLock(self, lock):
+        self._lock = lock
 
 
 class ScaleThread(threading.Thread):

@@ -57,8 +57,9 @@ from photofilmstrip.action.ActionCenterPath import ActionCenterPath
 [wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, 
  wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, 
  wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, 
- wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
-] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(5)]
+ wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK, wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, 
+ wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, 
+] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(6)]
 
 class PnlPfsProject(wx.Panel, Observer):
     
@@ -123,6 +124,11 @@ class PnlPfsProject(wx.Panel, Observer):
               wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, kind=wx.ITEM_NORMAL,
               label='', longHelp='', shortHelp=_(u'Adjust motion manual'))
+        parent.AddSeparator()
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_LOCK',
+              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK, kind=wx.ITEM_CHECK,
+              label='', longHelp='', shortHelp=_(u'Preserve image dimension'))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
@@ -133,6 +139,8 @@ class PnlPfsProject(wx.Panel, Observer):
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectSwap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP)
+        self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectUnlockTool,
+              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK)
 
         parent.Realize()
 
@@ -308,12 +316,14 @@ class PnlPfsProject(wx.Panel, Observer):
         if selPics:
             self.imgProxy.SetPicture(selPics[0])
     
+            self.__CheckAndSetLock(selPics[0])
             self.bitmapLeft.SetSection(wx.Rect(*selPics[0].GetStartRect()))
             self.bitmapRight.SetSection(wx.Rect(*selPics[0].GetTargetRect()))
 
         self.panelTop.Enable(len(selPics) == 1)
         self.bitmapRight.Enable(len(selPics) == 1)
         self.bitmapLeft.Enable(len(selPics) == 1)
+        
         
         event.Skip()
 
@@ -482,6 +492,37 @@ class PnlPfsProject(wx.Panel, Observer):
         self.__hasChanged = changed
     def HasChanged(self):
         return self.__hasChanged
+
+    def __CheckAndSetLock(self, pic):
+        unlocked = False
+        for rect in (pic.GetStartRect(), pic.GetTargetRect()):
+            if rect[0] < 0 or rect[1] < 0 \
+            or rect[2] > pic.GetWidth() or rect[3] > pic.GetHeight():
+                unlocked = True
+                break
+        self.toolBarImgSect.ToggleTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
+                                       unlocked)
+        if unlocked:
+            resName = 'PFS_UNLOCK'
+        else:
+            resName = 'PFS_LOCK'
+        self.toolBarImgSect.SetToolNormalBitmap(
+            wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
+            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR, wx.DefaultSize))
+        self.bitmapLeft.SetLock(not unlocked)
+        self.bitmapRight.SetLock(not unlocked)
+
+    def OnToolBarImgSectUnlockTool(self, event):
+        if event.IsChecked():
+            resName = 'PFS_UNLOCK'
+        else:
+            resName = 'PFS_LOCK'
+        self.toolBarImgSect.SetToolNormalBitmap(
+            wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
+            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR, wx.DefaultSize))
+
+        self.bitmapLeft.SetLock(not event.IsChecked())
+        self.bitmapRight.SetLock(not event.IsChecked())
 
 
 class ImageDropTarget(wx.FileDropTarget):

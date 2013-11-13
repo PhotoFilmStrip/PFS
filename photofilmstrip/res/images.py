@@ -179,6 +179,62 @@ getMOTION_RANDOMBitmap = MOTION_RANDOM.GetBitmap
 getMOTION_RANDOMIcon = MOTION_RANDOM.GetIcon
 
 #----------------------------------------------------------------------
+LOCK = PyEmbeddedImage(
+    "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAfgCJAJ5G8nudAAAA"
+    "CXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsNDSovK6wuvwAAABl0RVh0Q29tbWVudABD"
+    "cmVhdGVkIHdpdGggR0lNUFeBDhcAAAM4SURBVEjH1ZVPbFRFHMc/v/nT3Yot/yopiFG5ICEi"
+    "JrLxwkFjYmJiUg94MeFkTDw38cLBU4F42UhMUIg0gQRDi1oxMRpJD8VollpXUywhRbHQNHUJ"
+    "rAHTbvvezHjYfdvd7isqPfEu782b38xnvvP7zm/gQX/kXp0HDh7PRYsLHd77ljgXR/P5g70X"
+    "gRgI/xtwoO94Lrv2ZsHHmdr45lClK4yO/Pb6ucETXwFzK0F02s933+vPZTtKBRe34SobCC5L"
+    "cO2EuPZ27YiK2bpt7T4jXZO/T/46WVPy74BD75/KtT1cKhAyhLgLAXRbGTEVlKmgzHwdKCri"
+    "ie1dPfeCNAHyH57J6fY/CxKyKLcJJYLK3kaZBQb7Px+6Mn6luPPZbU+Liqtq4gSyscfII6kQ"
+    "09jwznfYzBrwXXjrcaqEJ6L/yODZifGxIvDDho2bRl549bmjZP/CVdbjFtYBZcq3Ss8DBeAq"
+    "EKUCtEK0USgxRMwCi/Tnz5ydGB/7CRgGLg9/89lYWyazsPflZ04oVSaaXw8IcRyvAdoB1WSG"
+    "xoa1BmM01hiM1pz+aGjo0i+jxdrkl4C7wN2vz30y8OOFybeNrsZqJUCQNFc2KTDWYrTBKIPz"
+    "GmvtPPA9MLHMinNP7dg1pY1GrCYYjVIq1e5NAKsVWmusGFys0Vr52qoXl/k8dHSui4yeIxiL"
+    "0xql5D8ArEFpjVWGCIOIrHgordEYoyEYlKysoD5oZOzG7j9uzBZXU3fOf3nqzZMfHxkA/k4U"
+    "C8Dwxand0zOlIsCTjz8KCJJy9qurCYSU/mtT0wB8d/7TN459cPiLJGcCcHJoNAA8tnVLS9kR"
+    "pDplSKKTLIAs2/br0zMA7O/Zs6fmuko9B5s3d+NcICSA2gQheOomXOpCUmhburuZmZ0F2Atc"
+    "bwLEcQD80rJC895UdVRJItVVBBqhvlFiZ1KG6gDnPSEIgm8pziFRBFT3CoKE5HNJVUrK6oAQ"
+    "kgS2CkgaobEj0BIbUq6EunnLt2+u+npcNkeoA65dnXhxtZBkbL6vdwC4A7jGg5bd/9Y7r730"
+    "yr7Tq1GQ7+sdKI6O/Ax8m9hUGhLyELCjZrHO+2TcAS4Al5OD9g/91lPG7Vrj2gAAAABJRU5E"
+    "rkJggg==")
+index.append('LOCK')
+catalog['LOCK'] = LOCK
+getLOCKData = LOCK.GetData
+getLOCKImage = LOCK.GetImage
+getLOCKBitmap = LOCK.GetBitmap
+getLOCKIcon = LOCK.GetIcon
+
+#----------------------------------------------------------------------
+UNLOCK = PyEmbeddedImage(
+    "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAfgCJAJ5G8nudAAAA"
+    "CXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsNDS0NsY35nAAAABl0RVh0Q29tbWVudABD"
+    "cmVhdGVkIHdpdGggR0lNUFeBDhcAAANmSURBVEjHpZXfaxxVFMc/59472Y01qW1jSGtFzYuI"
+    "iBXs4oMFf4EgCOlDfRH6JP4DAX3wwadE8cHFIlosNtqCpUnVGEFaLBFSUZKQrpKYUlNt04aw"
+    "brFbqjS7mZl7fZiZze5mNgVzYZhf957P/Z7zPTPCBuOtwSM5f7XaYa2V5ndh4K/kB/ungABw"
+    "rWJIy+ADR3LZrdcnbZCJ1zdOVbrC9MQfr4yNHP0OuN0KotMevv3eUC7bUZoMgzbCynZcmMWF"
+    "7bggPoftiArY3bv1gJGuhT8XfluIldwZ8M4Hx3Ntd5cmcRlc0IUAuq2MmArKVFBmpQYU5fPg"
+    "w119G0EaAPnDJ3O6/a9JcVlU2I0SQWVvoEyVkaGvRy/OXiw8+kTvY6KCSE2QQHb0Gbk3FWLq"
+    "b2xoO7zMFrBdWM8SqhIWn6FDI6fmZ2cKwM/bd3RPPPvykx+TvUlY2UZYvQcoU/679BQwCVwC"
+    "/FSAVog2CiUGnyKwylD+5Kn52ZnzwDhwYfzMVzNtmUx134uPH1WqjL+yDRCCINgCtAOqpQLP"
+    "Mxij0WJwTvPZR6Ojc79OF+Lgc7FbOD12Yvj02Ik54GmgM15+E6gAtiXAeB5GG4wyhFbjed4K"
+    "8BMw32TF28AssFgXIwRubVgDTyu01nhiCAON1soC/wCrTT538W6rTaZZ1wvrUqS0xlMGH4OI"
+    "cIfhNmrWlBQZxGg8bTBOoZRqufDw52PPWFX6QcJufIpc+b28//3BN8/EympKGiJ4JiqyZwza"
+    "mGaA1B+BXzXamMgYWnN+6tzzQG/zpmvyJmau7blyrVhgE+Pst8dfO/bpoWHg30SFAIxPLe5Z"
+    "Wi4VAB564D5AkJSKSZx2l/L+8uISAD+e/fLVTz5895vEdQJwbHTaAdy/e9e6sgkShXTJ7LXy"
+    "Nnvg6tIyAAf79u6N+6ZSy9fOnT2EocMlgDiAcza6lTUVDpAU2q6eHpaLRYB9wNUGQBC4qAmT"
+    "bbnG3EQ6IpJItAtHPdTWS+xMPqQ1QGgtzgmCXWdulygColyBE5dcrqlKKVkN4FxSwJSWdHWn"
+    "ugnNc13KT61m9PKN62x2NMVwNcDlS/PPbRaSrM0P9A/HH72wvtGyB19/Y/8LLx34YjMK8gP9"
+    "w4XpiV+A7xObSl1B7gIeiS3W+T8Zt4BzwIWk0f4DcXNt5u3KdCcAAAAASUVORK5CYII=")
+index.append('UNLOCK')
+catalog['UNLOCK'] = UNLOCK
+getUNLOCKData = UNLOCK.GetData
+getUNLOCKImage = UNLOCK.GetImage
+getUNLOCKBitmap = UNLOCK.GetBitmap
+getUNLOCKIcon = UNLOCK.GetIcon
+
+#----------------------------------------------------------------------
 ICON_32 = PyEmbeddedImage(
     "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAAlwSFlz"
     "AAALEwAACxMBAJqcGAAAAAd0SU1FB9gKBhAyELGDlPoAAAZQSURBVEhL3ZZLj1tJGYa/S1Wd"
