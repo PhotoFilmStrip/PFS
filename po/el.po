@@ -1,0 +1,625 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip v1.91\n"
+"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"PO-Revision-Date: 2013-01-11 17:52+0200\n"
+"Last-Translator: geogeo.gr <admin at geogeo.gr>\n"
+"Language-Team: geogeo.gr <www.geogeo.gr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "&About"
+msgstr "&Περί"
+
+msgid "&Batch Job"
+msgstr "&Εργασία δέσμης"
+
+msgid "&Cancel"
+msgstr "Ά&κυρο"
+
+msgid "&Clear list"
+msgstr "Ε&κκαθάριση λίστας"
+
+msgid "&Close"
+msgstr "&Κλείσιμο"
+
+msgid "&Close Project"
+msgstr "&Κλείσιμο έργου"
+
+msgid "&Edit"
+msgstr "&Επεξεργασία"
+
+msgid "&File"
+msgstr "&Αρχείο"
+
+msgid "&Help"
+msgstr "&Βοήθεια"
+
+msgid "&Import Pictures"
+msgstr "&Εισαγωγή εικόνων"
+
+msgid "&New Project"
+msgstr "Νέ&ο έργο"
+
+msgid "&Ok"
+msgstr "&Εντάξει"
+
+msgid "&Open Project"
+msgstr "Ά&νοιγμα έργου"
+
+msgid "&Properties"
+msgstr "Ιδιότητες"
+
+msgid "&Remove Picture"
+msgstr "Α&φαίρεση εικόνας"
+
+msgid "&Render filmstrip"
+msgstr "&Απόδοση ταινίας"
+
+msgid "&Save Project"
+msgstr "&Αποθήκευση έργου"
+
+msgid "&Start"
+msgstr "Έ&ναρξη"
+
+msgid "&Tools"
+msgstr "Εργα&λεία"
+
+msgid "'%s' has been modified. Save changes?"
+msgstr ""
+"Το «%s» έχει τροποποιηθεί. \n"
+"Να αποθηκευτούν οι αλλαγές;"
+
+msgid "...aborted!"
+msgstr "...ματαιώθηκε!"
+
+msgid "<default>"
+msgstr "<προεπιλογή>"
+
+msgid "Abort"
+msgstr "Ματαίωση"
+
+msgid "Abort current process?"
+msgstr "Ματαίωση της τρέχουσας διαδικασίας;"
+
+msgid "Abort selected process?"
+msgstr "Ματαίωση της επιλεγμένης διαδικασίας;"
+
+msgid "Aborted"
+msgstr "Ματαιώθηκε"
+
+msgid "Aborting..."
+msgstr "Ματαίωση..."
+
+msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
+msgstr ""
+"Ενεργοποιήστε αυτή την επιλογή για να δημιουργήσετε μια προεπισκόπηση του PhotoFilmStrip σας. \n"
+"Η διαδικασία απόδοσης θα επιταχυνθεί δραστικά, αλλά με αποτέλεσμα τη χαμηλότερη ποιότητα."
+
+msgid "Adjust motion manual"
+msgstr "Ρύθμιση κίνησης χειροκίνητα"
+
+msgid "Adjust motion positions directly"
+msgstr "Άμεση ρύθμιση της θέσης κίνησης"
+
+msgid "An unexpected error occured"
+msgstr "Παρουσιάστηκε μη αναμενόμενο σφάλμα"
+
+msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
+msgstr ""
+"Παρουσιάστηκε μη αναμενόμενο σφάλμα. \n"
+"Θέλετε να στείλετε αυτή την αναφορά σφάλματος στους δημιουργούς του %s;"
+
+msgid "Aspect ratio:"
+msgstr "Αναλογία πλευρών:"
+
+msgid "Audio file '%s' does not exist!"
+msgstr "Το αρχείο ήχου '%s' δεν υπάρχει!"
+
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "Το αρχείο ήχου '%s' δεν υπάρχει! Θέλετε να συνεχίσετε οπωσδήποτε;"
+
+msgid "Audio file not supported!"
+msgstr "Το αρχείο ήχου δεν υποστηρίζεται!"
+
+msgid "Audio file:"
+msgstr "Αρχείο ήχου:"
+
+msgid "Audio files"
+msgstr "Αρχεία ήχου"
+
+msgid "Batch file"
+msgstr "Αρχείο δέσμης"
+
+msgid "Bitrate must be a number!"
+msgstr "Το bitrate πρέπει να είναι ένας αριθμός!"
+
+msgid "Black and White"
+msgstr "Ασπρόμαυρα"
+
+msgid "Browse"
+msgstr "Εύρεση"
+
+msgid "Browse for folder"
+msgstr "Αναζήτηση για φάκελο"
+
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Αποστολή αναφοράς σφάλματος. Ευχαριστούμε για την υποστήριξή σας."
+
+msgid "Cancel"
+msgstr "Άκυρο"
+
+msgid "Cannot create folder: %s"
+msgstr "Δεν είναι δυνατή η δημιουργία του φακέλου: %s"
+
+msgid "Cannot write into folder!"
+msgstr "Δεν είναι δυνατή η εγγραφή στο φάκελο!"
+
+msgid "Choose your next action:"
+msgstr "Επιλέξτε την επόμενη ενέργειά σας:"
+
+msgid "Configure output and start render process"
+msgstr "Διαμόρφωση εξόδου και έναρξη διαδικασίας απόδοσης"
+
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "Δεν ήταν δυνατή η αποθήκευση του αρχείου '%(file)s': %(errMsg)s"
+
+msgid "Create a new project or load an existing one."
+msgstr "Δημιουργήστε ένα νέο έργο ή φορτώστε ένα υπάρχον."
+
+msgid "Create new project"
+msgstr "Δημιουργία νέου έργου"
+
+msgid "Delete unfinished result"
+msgstr "Διαγραφή ανολοκλήρωτου αποτελέσματος"
+
+msgid "Do nothing"
+msgstr "Καμία ενέργεια"
+
+msgid "Done"
+msgstr "Ολοκληρώθηκε"
+
+msgid "Draft"
+msgstr "Προσχέδιο"
+
+msgid ""
+"Drag some pictures onto this text or\n"
+"click the button below\n"
+"to add pictures to your new PhotoFilmStrip."
+msgstr ""
+"Μεταφέρετε μερικές εικόνες πάνω σ΄αυτό το κείμενο\n"
+"ή κάντε κλικ στο κουμπί παρακάτω\n"
+"για να προσθέσετε εικόνες στον νέο σας PhotoFilmStrip."
+
+msgid "Duration"
+msgstr "Διάρκεια"
+
+msgid "Duration:"
+msgstr "Διάρκεια:"
+
+msgid "E&xit"
+msgstr "Έ&ξοδος"
+
+msgid "Edit extended output properties"
+msgstr "Επεξεργασία εκτεταμένων ιδιοτήτων εξόδου"
+
+msgid "Edit property"
+msgstr "Επεξεργασία ιδιότητας"
+
+msgid "Effect:"
+msgstr "Εφέ:"
+
+msgid "Elapsed time"
+msgstr "Χρόνος που πέρασε"
+
+msgid "End position"
+msgstr "Τελική θέση"
+
+msgid "Error"
+msgstr "Σφάλμα"
+
+msgid "Error: %s"
+msgstr "Σφάλμα: %s"
+
+msgid "Errors occurred"
+msgstr "Παρουσιάστηκαν σφάλματα"
+
+msgid "Export %s-Project"
+msgstr "Εξαγωγή του έργου %s"
+
+msgid "Fade"
+msgstr "Σβήσιμο"
+
+msgid "Finalizing"
+msgstr "Οριστικοποίηση"
+
+msgid "Flash-Video (FLV)"
+msgstr "Flash-Video (FLV)"
+
+msgid "Folder does not exists! Do you want %s to create it?"
+msgstr "Ο φάκελος δεν υπάρχει. Θέλετε το %s να τον δημιουργήσει;"
+
+msgid "Folder:"
+msgstr "Φάκελος:"
+
+msgid "Format:"
+msgstr "Μορφή:"
+
+msgid "How to start..."
+msgstr "Πως να ξεκινήσετε..."
+
+msgid "Imagefiles"
+msgstr "Αρχεία εικόνων"
+
+msgid "Images"
+msgstr "Εικόνες"
+
+msgid "Import %s-Project"
+msgstr "Εισαγωγή του έργου %s"
+
+msgid "Import Pictures"
+msgstr "Εισαγωγή φωτογραφιών"
+
+msgid "Import image"
+msgstr "Εισαγωγή εικόνας"
+
+msgid "Import images"
+msgstr "Εισαγωγή εικόνων"
+
+msgid "Information"
+msgstr "Πληροφορίες"
+
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr "Μη έγκυρο έργο του %(app)s: %(file)s"
+
+msgid "Job queue"
+msgstr "Ουρά εργασιών"
+
+msgid "Language"
+msgstr "Γλώσσα / Language"
+
+msgid "Load Project"
+msgstr "Φόρτωση έργου"
+
+msgid "Loading '%s' ..."
+msgstr "Φόρτωση '%s' ..."
+
+msgid "Loading pictures..."
+msgstr "Φόρτωση φωτογραφιών..."
+
+msgid "Location:"
+msgstr "Θέση:"
+
+msgid "Medium"
+msgstr "Μέσο"
+
+msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+msgstr "Η μορφή MPEG υποστηρίζει μόνο προφίλ VCD, SVCD και DVD!"
+
+msgid "MPEG(1/2)-Video (MPG)"
+msgstr "MPEG(1/2)-Βίντεο (MPG)"
+
+msgid "MPEG4-XVid/AC3 (AVI)"
+msgstr "MPEG4-XVid/AC3 (AVI)"
+
+msgid "MPEG4-XVid/MP3 (AVI)"
+msgstr "MPEG4-XVid/MP3 (AVI)"
+
+msgid "Motion positions"
+msgstr "Θέσεις κίνησης"
+
+msgid "Motion-JPEG (AVI)"
+msgstr "Κίνηση-JPEG (AVI)"
+
+msgid "Move picture &left"
+msgstr "Μετακίνηση εικόνας &αριστερά"
+
+msgid "Move picture &right"
+msgstr "Μετακίνηση εικόνας &δεξιά"
+
+msgid "My PhotoFilmStrips"
+msgstr "Οι ταινίες μου"
+
+msgid "New Project"
+msgstr "Νέο έργο"
+
+msgid "No effect"
+msgstr "Χωρίς εφέ"
+
+msgid "None"
+msgstr "Καμία"
+
+msgid "Open existing project"
+msgstr "Άνοιγμα υπάρχοντος έργου"
+
+msgid "Open folder"
+msgstr "Άνοιγμα φακέλου"
+
+msgid "OK"
+msgstr "Εντάξει"
+
+msgid "Output properties"
+msgstr "Ιδιότητες εξόδου"
+
+msgid "Overrides the duration of single pictures and gives the project this total length."
+msgstr "Παρακάμπτει τη διάρκεια των μεμονωμένων εικόνων και δίνει στο έργο, το παρακάτω συνολικό μήκος."
+
+msgid "Overwrite existing file '%s'?"
+msgstr "Αντικατάσταση του υπάρχοντος αρχείου '%s';"
+
+msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr "Το PhotoFilmStrip δημιουργεί ταινίες από τις εικόνες σας, σε 3 απλά βήματα. Πρώτα επιλέγετε τις φωτογραφίες σας, μετά προσαρμόζετε τη διαδρομή κίνησης και τέλος την απόδοση του βίντεο. Υπάρχουν πολλές δυνατότητες εξόδου για VCD, SVCD, DVD, μέχρι FULL-HD. "
+
+msgid "PhotoFilmStrip project"
+msgstr "Έργο του PhotoFilmStrip"
+
+msgid "Play video"
+msgstr "Αναπαραγωγή βίντεο"
+
+msgid "Please wait"
+msgstr "Παρακαλώ περιμένετε"
+
+msgid "Please wait..."
+msgstr "Παρακαλώ περιμένετε..."
+
+msgid "Portable"
+msgstr "Φορητό"
+
+msgid "Process"
+msgstr "Διαδικασία"
+
+msgid "Profile:"
+msgstr "Προφίλ:"
+
+msgid "Project"
+msgstr "Έργο"
+
+msgid "Project name:"
+msgstr "Όνομα έργου:"
+
+msgid "Project not saved yet. Please save the project first to create a batch job!"
+msgstr "Το έργο δεν έχει ακόμη αποθηκευτεί. Παρακαλώ αποθηκεύστε πρώτα το έργο, για να δημιουργήσετε μια δέσμη εργασιών!"
+
+msgid "Project properties"
+msgstr "Ιδιότητες έργου"
+
+msgid "Properties"
+msgstr "Ιδιότητες"
+
+msgid "Property"
+msgstr "Ιδιότητα"
+
+msgid "Question"
+msgstr "Ερώτηση"
+
+msgid "Random motion"
+msgstr "Τυχαία κίνηση"
+
+msgid "Recent projects"
+msgstr "Πρόσφατα έργα"
+
+msgid "Remaining time"
+msgstr "Χρόνος που απομένει"
+
+msgid "Remove from list"
+msgstr "Αφαίρεση από τη λίστα"
+
+msgid "Render filmstrip"
+msgstr "Απόδοση ταινίας"
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+msgid "Roll"
+msgstr "Κύλιση"
+
+msgid "Rotate &clockwise"
+msgstr "Περιστροφή δε&ξιόστροφα"
+
+msgid "Rotate counter clock&wise"
+msgstr "Περιστροφή α&ριστερόστροφα"
+
+msgid "Rotation:"
+msgstr "Περιστροφή:"
+
+msgid "Save %s-Project"
+msgstr "Αποθήκευση του έργου %s"
+
+msgid "Save Project"
+msgstr "Αποθήκευση έργου"
+
+msgid "Saving project %s"
+msgstr "Αποθήκευση του έργου %s"
+
+msgid "See the logfile '%s' for details"
+msgstr "Δείτε το αρχείο καταγραφής '%s' για λεπτομέρειες"
+
+msgid "Select %s-Project"
+msgstr "Επιλέξτε έργο %s"
+
+msgid "Select batch file"
+msgstr "Επιλέξτε αρχείο δέσμης"
+
+msgid "Select music"
+msgstr "Επιλέξτε μουσική"
+
+msgid "Sepia tone"
+msgstr "Τόνος σκουριάς"
+
+msgid "Set motion end to start"
+msgstr "Κίνηση από τέρμα προς αρχή"
+
+msgid "Set motion start to end"
+msgstr "Κίνηση από αρχή προς τέρμα"
+
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+msgid "Shell script"
+msgstr "Δέσμη ενεργειών κελύφους"
+
+msgid "Show error again and send to developer."
+msgstr "Εμφάνιση του σφάλματος ξανά και αποστολή στο δημιουργό."
+
+msgid "Single pictures"
+msgstr "Μονές εικόνες"
+
+msgid "Size:"
+msgstr "Μέγεθος:"
+
+msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
+msgstr "Κάποιες εικόνες δεν υπάρχουν πλέον στο φάκελο '%s'. Εάν τα αρχεία έχουν μετακινηθεί, μπορείτε να επιλέξετε τη νέα διαδρομή. Θέλετε να επιλέξετε μια νέα διαδρομή;"
+
+msgid "Sorry, this function is temporary not available.."
+msgstr "Συγνώμη, αυτή η λειτουργία προσωρινά δεν είναι διαθέσιμη."
+
+msgid "Start position"
+msgstr "Αρχική θέση"
+
+msgid "Subtitle"
+msgstr "Υπότιτλος "
+
+msgid "The following changes has been made:"
+msgstr "Έχουν γίνει οι ακόλουθες αλλαγές:"
+
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "Η διαδρομή όπου θα αποθηκευθούν τα εξαγόμενα αρχεία. Χρήση - για stdout."
+
+msgid "The project name contains invalid characters."
+msgstr "Το όνομα του έργου περιέχει μη έγκυρους χαρακτήρες."
+
+msgid "The project name must be filled."
+msgstr "Πρέπει να συμπληρωθεί ένα όνομα για το έργο."
+
+msgid "The rendering process has been finished."
+msgstr "Η διαδικασία απόδοσης έχει τελειώσει."
+
+msgid "The rendering process was aborted."
+msgstr "Η διαδικασία απόδοσης ματαιώθηκε."
+
+msgid "The rendering process was interrupted."
+msgstr "Η διαδικασία απόδοσης διακόπηκε."
+
+msgid "Total length:"
+msgstr "Συνολικό μήκος:"
+
+msgid "Transition:"
+msgstr "Μετάβαση:"
+
+msgid "Type:"
+msgstr "Τύπος:"
+
+msgid "Unknown property: %s"
+msgstr "Άγνωστη ιδιότητα: %s"
+
+msgid "Unnamed PhotoFilmStrip"
+msgstr "Ανώνυμο PhotoFilmStrip"
+
+msgid "Update available"
+msgstr "Υπάρχει διαθέσιμη ενημέρωση"
+
+msgid "User defined:"
+msgstr "Οριζόμενο από χρήστη:"
+
+msgid "Value"
+msgstr "Τιμή"
+
+msgid "Waiting..."
+msgstr "Αναμονή..."
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Welcome"
+msgstr "Καλώς ήλθατε"
+
+msgid "Welcome to PhotoFilmStrip"
+msgstr "Καλώς ήλθατε στο PhotoFilmStrip"
+
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "Πρέπει να κάνετε επανεκκίνηση του %s για να εφαρμοστεί η αλλαγή γλώσσας."
+
+msgid "aborting..."
+msgstr "ματαίωση..."
+
+msgid "all done"
+msgstr "Ολοκλήρωση όλων"
+
+msgid "cannot create output path: %s"
+msgstr "Δεν είναι δυνατή η δημιουργία του φακέλου εξόδου: %s"
+
+msgid "cannot load photofilmstrip"
+msgstr "Αδυναμία φόρτωσης της ταινίας"
+
+msgid "creating output..."
+msgstr "δημιουργία εξόδου ..."
+
+msgid "enable draft mode"
+msgstr "Ενεργοποίηση λειτουργίας προσχεδίου"
+
+msgid "false"
+msgstr "ψευδής"
+
+msgid "framerate"
+msgstr "Ρυθμός καρέ"
+
+msgid "generating subtitle"
+msgstr "Δημιουργία υπότιτλου"
+
+msgid "initialize renderer"
+msgstr "Προετοιμασία απόδοσης"
+
+msgid "invalid format specified: %s"
+msgstr "Καθορίστηκε μη έγκυρη μορφή: %s"
+
+msgid "invalid profile specified: %s"
+msgstr "Καθορίστηκε μη έγκυρo προφιλ: %s"
+
+msgid "invalid videonorm specified: %s"
+msgstr "Καθορίστηκε μη έγκυρο πρότυπο βίντεο: %s"
+
+msgid "mencoder (mencoder) required!"
+msgstr "Απαιτείται mencoder (mencoder)!"
+
+msgid "mencoder with MP3 support (mp3lame) required!"
+msgstr "Απαιτείται mencoder με υποστήριξη MP3 (mp3lame)!"
+
+msgid "no"
+msgstr "όχι"
+
+msgid "no project file specified!"
+msgstr "Δεν καθορίστηκε αρχείο έργου!"
+
+msgid "online"
+msgstr "Σε σύνδεση"
+
+msgid "output format"
+msgstr "μορφή εξόδου"
+
+msgid "processing image %d/%d"
+msgstr "Επεξεργασία εικόνας %d/%d"
+
+msgid "processing project"
+msgstr "Επεξεργασία έργου"
+
+msgid "processing transition %d/%d"
+msgstr "Επεξεργασία μετάβασης  %d/%d"
+
+msgid "project file does not exist: %s"
+msgstr "Το αρχείο έργου δεν υπάρχει: %s"
+
+msgid "sec"
+msgstr "δευτ."
+
+msgid "specifies the project file"
+msgstr "Καθορίζει το αρχείο έργου"
+
+msgid "using renderer"
+msgstr "Χρήση απόδοσης"
+

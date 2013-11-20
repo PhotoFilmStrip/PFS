@@ -40,4 +40,4 @@ PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select
 APP_URL         = "http://www.photofilmstrip.org"
 DEVELOPERS      = [u"Jens Göpfert", 
                    u"Markus Wintermann"] 
-TRANSLATORS     = ["Teza Lprod - http://lprod.org"]
+TRANSLATORS     = ["Teza Lprod - http://lprod.org", "geogeo - http://www.geogeo.gr"]
