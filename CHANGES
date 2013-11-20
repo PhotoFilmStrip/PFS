@@ -1,3 +1,35 @@
+  * 2013/11/20 (Version 2.0.0)
+    added:
+     - thumbnails are stored in project database
+     - lazy loading of pictures
+     - acceleration algorithm for dynamic path movement
+     - tool button to swap the motion rectangles
+     - movement (linear, accelerated) can be adjusted for each picture
+     - new option to centralize motion rectangles path for still image animation
+     - new movement type 'delayed'
+     - toolbutton to unlock the image dimension restrictions
+     - multiselect of images
+     - russian translation
+     - greek translation
+    changed:
+     - long running tasks implemented as jobs
+     - a lot of internal refactoring
+    bugfix:
+     - application icon not only for GNOME;XFCE (enabled for all)
+     - MANIFEST.in updated to create valid source dist
+     - default value for videonorm in settings file is PAL
+     - fixed #29: film strip scrambled with >185 slides loaded
+     - GUI freeze while loading a project
+     - unexpected error occured when removing an image which is hovered
+     - automatic path calculation after inserting images fixed
+     - videonorm must be one of PAL or NTSC
+
+
+  * 2011/11/28 (Version 1.5.0)
+    added:
+     - rendering uses affine transformation for speed up and smoother image movement
+
+
   * 2010/12/20 (Version 1.4.0)
     added:
      - italian translation
