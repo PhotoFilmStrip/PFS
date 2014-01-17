@@ -166,7 +166,7 @@ class PnlWelcome(wx.Panel):
         
         font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         dc.SetFont(font)
-        dc.SetTextForeground(wx.Color(127, 127, 127))
+        dc.SetTextForeground(wx.Colour(127, 127, 127))
         dc.DrawLabel(self.title, wx.Rect(0, 10, sz[0], 50), wx.ALIGN_CENTER_HORIZONTAL)
         
     def OnLinkClicked(self, event):
