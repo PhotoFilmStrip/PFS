@@ -40,6 +40,7 @@ class ImageCache(Singleton, Observer):
         self._wxImgCache = {}
         self._wxBmpCache = {}
         self._pilCache = {}
+        self._inScalingQueue = object()
         
         self.scaleThread = ScaleThread(self)
         self.scaleThread.start()
@@ -91,10 +92,10 @@ class ImageCache(Singleton, Observer):
         if not self._wxBmpCache.has_key(key):
             pilImg = self._pilCache.get(key)
             if pilImg is None:
-                self._pilCache[key] = -1
+                self._pilCache[key] = self._inScalingQueue
                 self.scaleThread.queue.append(picture)
                 return self.thumb
-            elif pilImg == -1:
+            elif pilImg is self._inScalingQueue:
                 return self.thumb
             else:
 #                pilImg = self._pilCache[key]
