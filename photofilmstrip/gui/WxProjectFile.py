@@ -60,7 +60,10 @@ class WxProjectFile(ProjectFile):
  
         self.__wxvJob = wxvJob
         JobManager().EnqueueContext(wxvJob)
-        return self.__WaitUntilJobDone()
+        try:
+            return self.__WaitUntilJobDone()
+        finally:
+            dlg.Destroy()
 
     def Save(self, includePics=False):
         wxvJob = VisualJob(_("Saving project %s") % self._filename, 
@@ -74,7 +77,10 @@ class WxProjectFile(ProjectFile):
         
         self.__wxvJob = wxvJob
         JobManager().EnqueueContext(wxvJob)
-        return self.__WaitUntilJobDone()
+        try:
+            return self.__WaitUntilJobDone()
+        finally:
+            dlg.Destroy()
 
 
 class SelectAlternatePathEvent(WxInteractionEvent):
