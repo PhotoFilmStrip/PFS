@@ -47,7 +47,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, id, pos, size,  style, name)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.BLACK)
-        self.SetClientSizeWH(-1, self.HEIGHT+20)
+        self.SetSizeHints(-1, self.HEIGHT+20, -1, self.HEIGHT+20)
         
         self.__frozen   = False
         self.__pictures = []
