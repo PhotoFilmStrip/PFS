@@ -44,10 +44,10 @@ class GStreamerWorker(threading.Thread):
         self.resQueue = resQueue
         self.outFile = outFile
         self.audioFile = audioFile
-        self.audioFile = '/tmp/1.mp3'
         self.framerate = framerate
 
         self.active = True
+        self.finished = False
         self.mainloop = None
         self.pipeline = None
 
@@ -60,19 +60,23 @@ class GStreamerWorker(threading.Thread):
         gstSrc = ['appsrc name=src block=true caps="image/jpeg,framerate={0}"'.format(self.framerate),
                   'jpegdec',
 #                  'timeoverlay halign=left valign=bottom text="Stream time:" shaded-background=true',
-                  'x264enc',
+                  'x264enc']
+        if self.audioFile:
+            gstSrc.extend([
                   'queue',
                   'mux. filesrc location="{0}"'.format(self.audioFile),
                   'decodebin2',
                   'audioconvert',
                   'lamemp3enc target=bitrate bitrate=192',
 #                  'avenc_ac3 bitrate=192000',
+                  ])
+        gstSrc.extend([
                   'matroskamux name=mux',
-                  'filesink location="{0}"'.format(self.outFile),
-                  ]
+                  'filesink location="{0}"'.format(self.outFile)
+                  ])
         
         gstString = " ! ".join(gstSrc)
-        print gstString
+        logging.debug('gst: %s', gstString)
         self.pipeline = gst.parse_launch(gstString)
         src = self.pipeline.get_by_name("src")
         src.connect("need-data", self.need_data)
@@ -84,27 +88,35 @@ class GStreamerWorker(threading.Thread):
         self.pipeline.set_state(gst.STATE_PLAYING)
         
         self.mainloop.run()
+        logging.debug('gobject mainloop finished')
         
     def on_message(self, bus, msg):
-        #print 'on_message', bus, msg, threading.currentThread()
+        logging.debug('on_message - %s - %s', bus, msg)
         if msg.type == gst.MESSAGE_EOS:
             self.pipeline.set_state(gst.STATE_NULL)
-            self.active = False
             self.mainloop.quit()
             
     def need_data(self, src, need_bytes):
-#        print 'push data', need_bytes, threading.currentThread()
+        logging.debug('need_data: %s - %s', need_bytes, self.cur_time)
         while self.active:
             result = None
             try:
-                result = self.resQueue.get(True, 1.0)
+                result = self.resQueue.get(True, 0.25)
                 break
             except Queue.Empty:
-                logging.debug('push data Queue.Empty')
+                logging.debug('need_data: Queue.Empty')
+                if self.finished:
+                    logging.debug('need_data: finished, emitting end-of-stream')
+                    src.emit("end-of-stream")
+                    return
+                else:
+                    continue
         else:
-            logging.debug('emitting end-of-stream')
+            logging.debug('need_data: not active anymore, emitting end-of-stream')
             src.emit("end-of-stream")
             return
+        
+        logging.debug('need_data: push to buffer (%s)', len(result))
                 
         buf = gst.Buffer(result)
 #        buf.timestamp = self.cur_time * gst.MSECOND
@@ -112,6 +124,7 @@ class GStreamerWorker(threading.Thread):
         src.emit("push-buffer", buf)
         
 #        self.cur_time += self.duration
+        self.cur_time += 1
 
 
 class GStreamerRenderer(BaseRenderer):
@@ -152,12 +165,12 @@ class GStreamerRenderer(BaseRenderer):
         if self.gstreamerWorker is None:
             return
         
-        self.gstreamerWorker.active = False
         self.gstreamerWorker.join()
-        
         self.gstreamerWorker = None
         
     def ProcessAbort(self):
+        if self.gstreamerWorker:
+            self.gstreamerWorker.active = False
         self.__CleanUp()
 
     def Prepare(self):
@@ -170,6 +183,8 @@ class GStreamerRenderer(BaseRenderer):
         self.gstreamerWorker.start()
         
     def Finalize(self):
+        if self.gstreamerWorker:
+            self.gstreamerWorker.finished = True
         self.__CleanUp()
         
     def _GetFrameRate(self):
