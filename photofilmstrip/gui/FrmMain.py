@@ -311,7 +311,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         dlg = wx.FileDialog(self, _(u"Select %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), "", 
                             Constants.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
-                            wx.OPEN)
+                            wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath())
             
@@ -331,7 +331,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                             Settings().GetProjectPath(), 
                             curFilePath, 
                             Constants.APP_NAME + u'-' + _(u"Project") + " (*.pfs)|*.pfs", 
-                            wx.SAVE)
+                            wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
             if os.path.splitext(filepath)[1].lower() != ".pfs":
@@ -362,7 +362,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                             Settings().GetProjectPath(), 
                             curFilePath, 
                             u"%s %s-%s %s" % (_(u"Portable"), Constants.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
-                            wx.SAVE)
+                            wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
             if os.path.splitext(filepath)[1].lower() != ".ppfs":
@@ -373,7 +373,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         dlg = wx.FileDialog(self, _(u"Import %s-Project") % Constants.APP_NAME, 
                             Settings().GetProjectPath(), "", 
                             u"%s %s-%s %s" % (_(u"Portable"), Constants.APP_NAME, _(u"Project"), "(*.ppfs)|*.ppfs"), 
-                            wx.OPEN)
+                            wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath(), True)
             

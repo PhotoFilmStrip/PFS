@@ -334,7 +334,7 @@ class DlgProjectProps(wx.Dialog):
         dlg = wx.FileDialog(self, _(u"Select music"), 
                             Settings().GetAudioPath(), "", 
                             _(u"Audio files") + " (*.*)|*.*", 
-                            wx.OPEN)
+                            wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             Settings().SetAudioPath(os.path.dirname(path))

@@ -284,7 +284,7 @@ class PnlPfsProject(wx.Panel, Observer):
         dlg = wx.FileDialog(self, _(u"Import images"), 
                             Settings().GetImagePath(), "", 
                             _(u"Imagefiles") + " (*.*)|*.*", 
-                            wx.OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
+                            wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
             pics = []
             for path in dlg.GetPaths():
