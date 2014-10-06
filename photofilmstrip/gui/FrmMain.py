@@ -467,7 +467,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             dlg = wx.MessageDialog(self,
                                    _(u"'%s' has been modified. Save changes?") % Decode(filepath), 
                                    _(u"Question"),
-                                   wx.YES_NO | wx.CANCEL | wx.ICON_QUESTION)
+                                   wx.YES_NO | wx.CANCEL | wx.ICON_EXCLAMATION)
             response = dlg.ShowModal()
             dlg.Destroy()
             
