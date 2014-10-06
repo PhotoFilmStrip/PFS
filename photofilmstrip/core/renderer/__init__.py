@@ -32,6 +32,10 @@ from photofilmstrip.core.renderer.PyGameRenderer import (
         PyGameRenderer)
 from photofilmstrip.core.renderer.CairoRenderer import (
         CairoRenderer)
+from photofilmstrip.core.renderer.OpenCvRenderer import (
+        OpenCvRenderer)
+from photofilmstrip.core.renderer.GStreamerRenderer import (
+        GStreamerRenderer)
 
 RENDERERS = [SingleFileRenderer,  
              MPEG4MP3Renderer,
@@ -39,5 +43,7 @@ RENDERERS = [SingleFileRenderer,
              MPEGRenderer,
              FlashMovieRenderer,
              MJPEGRenderer,
+             OpenCvRenderer,
+             GStreamerRenderer,
              PyGameRenderer,
              CairoRenderer]
