@@ -22,7 +22,7 @@
 import logging
 import cStringIO
 
-import Image, ImageDraw
+from PIL import Image, ImageDraw
 
 from photofilmstrip.core.Picture import Picture
 
