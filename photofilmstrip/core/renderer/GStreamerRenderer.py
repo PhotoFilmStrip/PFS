@@ -37,6 +37,7 @@ except ImportError:
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.Subtitle import SubtitleParser
 from photofilmstrip.core.renderer.RendererException import RendererException
 
 
@@ -50,7 +51,11 @@ class GStreamerRenderer(BaseRenderer):
         self.finished = None
         self.ready = None
         self.pipeline = None
-        self.cur_time = 0
+        self.curFrame = 0
+        
+        self.audioConv = None
+        self.textoverlay = None
+        self.srtParse = None
         
     @staticmethod
     def GetName():
@@ -64,10 +69,12 @@ class GStreamerRenderer(BaseRenderer):
 
     @staticmethod
     def GetProperties():
-        return ["Bitrate"]
+        return ["Bitrate", "RenderSubtitle"]
 
     @staticmethod
     def GetDefaultProperty(prop):
+        if prop == "RenderSubtitle":
+            return "false"
         return BaseRenderer.GetDefaultProperty(prop)
 
     def ProcessFinalize(self, pilImg):
@@ -80,11 +87,23 @@ class GStreamerRenderer(BaseRenderer):
             return
         
         self.ready.wait()
+        
+        self.srtParse = None
         self.ready = None
         self.active = None
         self.finished = None
-        self.pipeline = None
+        self.curFrame = 0
         
+        self.pipeline = None
+        self.audioConv = None
+        self.textoverlay = None
+        
+        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
+            # delete subtitle file, if subtitle is rendered in video
+            srtPath = os.path.join(self.GetOutputPath(), "output.srt")
+            if os.path.exists(srtPath):
+                os.remove(srtPath)
+
     def ProcessAbort(self):
         if self.active:
             self.active = False
@@ -96,36 +115,75 @@ class GStreamerRenderer(BaseRenderer):
         self.active = True
         self.finished = False
         
-        gobject.threads_init()
         outFile = os.path.join(self.GetOutputPath(), "output.mkv")
-
-        gstSrc = ['appsrc name=src block=true caps="image/jpeg,framerate={0}"'.format(self._GetFrameRate()),
-                  'jpegdec',
-#                  'timeoverlay halign=left valign=bottom text="Stream time:" shaded-background=true',
-                  'x264enc bitrate=%s' % self._GetBitrate()]
-        if self.GetAudioFile():
-            gstSrc.extend([
-                  'queue',
-                  'mux. filesrc location="{0}"'.format(self.GetAudioFile()),
-                  'decodebin2',
-                  'audioconvert',
-                  'lamemp3enc target=bitrate bitrate=192',
-#                  'avenc_ac3 bitrate=192000',
-                  ])
-        gstSrc.extend([
-                  'matroskamux name=mux',
-                  'filesink location="{0}"'.format(outFile)
-                  ])
         
-        gstString = " ! ".join(gstSrc)
-        logging.debug('gst: %s', gstString)
-        self.pipeline = gst.parse_launch(gstString)
-        src = self.pipeline.get_by_name("src")
-        src.connect("need-data", self._GstNeedData)
+        gobject.threads_init()
+        
+        self.pipeline = gst.Pipeline("pipeline")
+        
+        videoSrc = gst.element_factory_make("appsrc", "vsource")
+        videoSrc.set_property("block", "true")
+        caps = gst.Caps("image/jpeg,framerate={0}".format(self._GetFrameRate()))
+        videoSrc.set_property("caps", caps)
+        videoSrc.connect("need-data", self._GstNeedData)
+        self.pipeline.add(videoSrc)
+        
+        jpegDecoder = gst.element_factory_make("jpegdec", None)
+        self.pipeline.add(jpegDecoder)
+        videoSrc.link(jpegDecoder)
+
+        x264Enc = gst.element_factory_make("x264enc", None)
+        x264Enc.set_property("bitrate", self._GetBitrate())
+        self.pipeline.add(x264Enc)
+        
+        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
+            self.textoverlay = gst.element_factory_make("textoverlay", None)
+            self.textoverlay.set_property("text", "")
+            self.pipeline.add(self.textoverlay)
+            
+            jpegDecoder.link(self.textoverlay)
+            self.textoverlay.link(x264Enc)
+        else:
+            jpegDecoder.link(x264Enc)
+
+        mux = gst.element_factory_make("matroskamux", "mux")
+        self.pipeline.add(mux)
+
+        x264Enc.link(mux)
+        
+        if self.GetAudioFile():
+            audioSrc = gst.element_factory_make("filesrc", None)
+            audioSrc.set_property("location", self.GetAudioFile())
+            self.pipeline.add(audioSrc)
+                        
+            audioDec = gst.element_factory_make("decodebin2", None)
+            self.pipeline.add(audioDec)
+            
+            audioConv = gst.element_factory_make("audioconvert", None)
+            self.pipeline.add(audioConv)
+            
+            audioEnc = gst.element_factory_make("lamemp3enc", None)
+            audioEnc.set_property("target", "bitrate")
+            audioEnc.set_property("bitrate", 192)
+            self.pipeline.add(audioEnc)
+
+            gst.element_link_many(audioSrc, audioDec)
+            gst.element_link_many(audioConv, audioEnc, mux)
+
+            self.audioConv = audioConv
+            
+        sink = gst.element_factory_make("filesink", None)
+        sink.set_property("location", outFile)
+        self.pipeline.add(sink)
+        
+        mux.link(sink)
         
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
         bus.connect("message", self._GstOnMessage)
+        
+        if self.audioConv:
+            audioDec.connect("pad-added", self._GstPadAdded)
     
         self.pipeline.set_state(gst.STATE_PLAYING)
         
@@ -160,7 +218,8 @@ class GStreamerRenderer(BaseRenderer):
             self.ready.set()
             
     def _GstNeedData(self, src, need_bytes):
-        logging.debug('need_data: %s - %s', need_bytes, self.cur_time)
+        logging.debug('need_data: %s - %s', need_bytes, self.curFrame)
+        
         while self.active:
             result = None
             try:
@@ -182,10 +241,20 @@ class GStreamerRenderer(BaseRenderer):
         logging.debug('need_data: push to buffer (%s)', len(result))
                 
         buf = gst.Buffer(result)
-#        buf.timestamp = self.cur_time * gst.MSECOND
-#        buf.duration = self.duration * gst.MSECOND
         src.emit("push-buffer", buf)
-        
-#        self.cur_time += self.duration
-        self.cur_time += 1
 
+        if self.textoverlay:
+#             self.textoverlay.set_property("text", "Frame: %s" % self.curFrame)
+            if self.srtParse is None:
+                srtPath = os.path.join(self.GetOutputPath(), "output.srt")
+                self.srtParse = SubtitleParser(srtPath, self.GetProfile().GetFramerate())
+                
+            subtitle = self.srtParse.Get(self.curFrame)
+            self.textoverlay.set_property("text", subtitle)
+
+        self.curFrame += 1
+        
+    def _GstPadAdded(self, decodebin, pad):
+        caps = pad.get_caps()
+        compatible_pad = self.audioConv.get_compatible_pad(pad, caps)
+        pad.link(compatible_pad)

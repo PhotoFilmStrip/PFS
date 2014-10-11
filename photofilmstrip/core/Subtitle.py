@@ -71,10 +71,64 @@ class SubtitleSrt(object):
                               (pic.GetTransitionDuration() * self.__factor)
             
         fd.close()
+
+
+class SubtitleParser(object):
+    
+    def __init__(self, path, framerate):
+        self.__path = path
+        self.__framerate = framerate
         
+        self.__data = []
         
-def test():
-    from core.Picture import Picture
+        self.Parse()
+        
+    def Parse(self):
+        fd = codecs.open(self.__path, 'r', "utf-8")
+        fd.read(len(codecs.BOM_UTF8.decode("utf-8")))
+        idx = 0
+        try:
+            while 1:
+                lineIdx = fd.readline()
+                try:
+                    _idx = int(lineIdx.strip())
+                except:
+                    break
+                
+                lineTime = fd.readline()
+                start = self.__ParseTime(lineTime[:12])
+                end = self.__ParseTime(lineTime[17:])
+                lineTxt = []
+                while 1:
+                    _line = fd.readline().rstrip()
+                    if _line:
+                        lineTxt.append(_line)
+                    else:
+                        break
+                    
+                self.__data.append((start, end, "\n".join(lineTxt)))
+        finally:
+            fd.close()
+        
+    def __ParseTime(self, text):
+        hours = int(text[:2])
+        minutes = int(text[3:5])
+        seconds = float(text[6:].replace(",", "."))
+        
+        millis = ((((hours * 60) + minutes) * 60)  + seconds * 1000.0)
+        
+        return millis
+    
+    def Get(self, pic):
+        msec = pic * (1.0 / self.__framerate) * 1000.0
+        for start, end, text in self.__data:
+            if msec >= start and msec <= end:
+                return text
+        return ""
+    
+        
+def testWrite():
+    from photofilmstrip.core.Picture import Picture
     p1 = Picture(None)
     p1.SetComment("this is my first picture")
     p1.SetDuration(7)
@@ -90,5 +144,12 @@ def test():
     s = SubtitleSrt(".")
     s.Start([p1, p2, p3])
     
+def testRead():
+    stp = SubtitleParser('/home/jens/My PhotoFilmStrips/test2a/Medium/output.srt', 25.0)
+    
+    for f in xrange(800):
+        print f, stp.Get(f)
+    
+    
 if __name__ == "__main__":
-    test()
+    testRead()
