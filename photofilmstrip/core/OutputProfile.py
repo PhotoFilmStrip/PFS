@@ -80,23 +80,23 @@ def __CreateDefaultProfiles():
 
     
 def __Create16_9Profiles():
-    medium = OutputProfile("Medium", 8000, (640, 360))
-    hd = OutputProfile("HD", 10000, (1280, 720))
-    fullhd = OutputProfile("FULL-HD", 12000, (1920, 1080))
+    medium = OutputProfile("Medium", 4000, (640, 360))
+    hd = OutputProfile("HD", 6000, (1280, 720))
+    fullhd = OutputProfile("FULL-HD", 8000, (1920, 1080))
     
     return [medium, hd, fullhd]
 
 def __Create4_3Profiles():
-    medium = OutputProfile("Medium", 8000, (640, 480))
-    hd = OutputProfile("HD", 10000, (960, 720))
-    fullhd = OutputProfile("FULL-HD", 12000, (1440, 1080))
+    medium = OutputProfile("Medium", 4000, (640, 480))
+    hd = OutputProfile("HD", 6000, (960, 720))
+    fullhd = OutputProfile("FULL-HD", 8000, (1440, 1080))
     
     return [medium, hd, fullhd]
 
 def __Create3_2Profiles():
-    medium = OutputProfile("Medium", 8000, (720, 480))
-    hd = OutputProfile("HD", 10000, (1080, 720))
-    fullhd = OutputProfile("FULL-HD", 12000, (1620, 1080))
+    medium = OutputProfile("Medium", 4000, (720, 480))
+    hd = OutputProfile("HD", 6000, (1080, 720))
+    fullhd = OutputProfile("FULL-HD", 8000, (1620, 1080))
     
     return [medium, hd, fullhd]
 
