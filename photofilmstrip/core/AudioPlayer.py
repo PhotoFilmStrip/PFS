@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2011 Jens Goepfert
+# Copyright (C) 2014 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,32 +19,12 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
-import subprocess
+import sys
 
-from photofilmstrip.action.IAction import IAction
-
-
-class ActionPlayVideo(IAction):
-    
-    def __init__(self, outpath):
-        self.outpath = outpath
-    
-    def GetName(self):
-        return _(u'Play video')
-    
-    def Execute(self):
-        for ext in ('avi', 'flv', 'mkv'):
-            videoFile = os.path.join(self.outpath, "output.%s" % ext)
-            if os.path.exists(videoFile):
-                break
-        else:
-            return
-
-        if os.name == "nt":
-            try:
-                os.startfile(videoFile)
-            except:
-                pass
-        else:
-            subprocess.Popen(["xdg-open", videoFile])
+if sys.platform == "win32":
+    # FIXME: Win32 uses mplayer
+    from MPlayer import MPlayer
+    AudioPlayer = MPlayer
+else:
+    from GPlayer import GPlayer
+    AudioPlayer = GPlayer

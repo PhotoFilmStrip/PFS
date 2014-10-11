@@ -33,7 +33,7 @@ from photofilmstrip.lib.util import IsPathWritable
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Project import Project
-from photofilmstrip.core.MPlayer import MPlayer
+from photofilmstrip.core.AudioPlayer import AudioPlayer
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
@@ -396,7 +396,7 @@ class DlgProjectProps(wx.Dialog):
                 dlg.Destroy()
             return
 
-        mediaCtrl = MPlayer(path)
+        mediaCtrl = AudioPlayer(path)
         if mediaCtrl.IsOk():
             self.tcAudiofile.SetValue(path)
             
