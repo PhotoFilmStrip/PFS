@@ -20,18 +20,18 @@
 #
 
 import logging
-import os, threading
+import os
+import threading
 
 import Queue
 import cStringIO
 
 try:
-    import gobject
     import pygst
     pygst.require("0.10")
     import gst
+    import gobject
 except ImportError:
-    gobject = None
     pygst = None
     gst = None
 
@@ -40,35 +40,73 @@ from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.renderer.RendererException import RendererException
 
 
-class GStreamerWorker(threading.Thread):
+class GStreamerRenderer(BaseRenderer):
     
-    def __init__(self, resQueue, outFile, audioFile, framerate):
-#        multiprocessing.Process.__init__(self)
-        threading.Thread.__init__(self)
-        self.resQueue = resQueue
-        self.outFile = outFile
-        self.audioFile = audioFile
-        self.framerate = framerate
+    def __init__(self):
+        BaseRenderer.__init__(self)
+        self.resQueue = Queue.Queue(20)
+        
+        self.active = None
+        self.finished = None
+        self.ready = None
+        self.pipeline = None
+        self.cur_time = 0
+        
+    @staticmethod
+    def GetName():
+        return "x264/MP3 (MKV)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        if pygst is None or gst is None:
+            logging.debug("checking for gstreamer failed: %s")
+            msgList.append(_(u"GStreamer (python-gst0.10) required!"))
 
+    @staticmethod
+    def GetProperties():
+        return ["Bitrate"]
+
+    @staticmethod
+    def GetDefaultProperty(prop):
+        return BaseRenderer.GetDefaultProperty(prop)
+
+    def ProcessFinalize(self, pilImg):
+        res = cStringIO.StringIO()
+        pilImg.save(res, 'JPEG', quality=95)
+        self.resQueue.put(res.getvalue())
+    
+    def __CleanUp(self):
+        if self.ready is None:
+            return
+        
+        self.ready.wait()
+        self.ready = None
+        self.active = None
+        self.finished = None
+        self.pipeline = None
+        
+    def ProcessAbort(self):
+        if self.active:
+            self.active = False
+        
+        self.__CleanUp()
+
+    def Prepare(self):
+        self.ready = threading.Event()
         self.active = True
         self.finished = False
-        self.mainloop = None
-        self.pipeline = None
-
-        self.cur_time = 0
+        
         gobject.threads_init()
-        
-    def run(self):
-        self.mainloop = gobject.MainLoop()
-        
-        gstSrc = ['appsrc name=src block=true caps="image/jpeg,framerate={0}"'.format(self.framerate),
+        outFile = os.path.join(self.GetOutputPath(), "output.mkv")
+
+        gstSrc = ['appsrc name=src block=true caps="image/jpeg,framerate={0}"'.format(self._GetFrameRate()),
                   'jpegdec',
 #                  'timeoverlay halign=left valign=bottom text="Stream time:" shaded-background=true',
-                  'x264enc bitrate=8000']
-        if self.audioFile:
+                  'x264enc bitrate=%s' % self._GetBitrate()]
+        if self.GetAudioFile():
             gstSrc.extend([
                   'queue',
-                  'mux. filesrc location="{0}"'.format(self.audioFile),
+                  'mux. filesrc location="{0}"'.format(self.GetAudioFile()),
                   'decodebin2',
                   'audioconvert',
                   'lamemp3enc target=bitrate bitrate=192',
@@ -76,31 +114,52 @@ class GStreamerWorker(threading.Thread):
                   ])
         gstSrc.extend([
                   'matroskamux name=mux',
-                  'filesink location="{0}"'.format(self.outFile)
+                  'filesink location="{0}"'.format(outFile)
                   ])
         
         gstString = " ! ".join(gstSrc)
         logging.debug('gst: %s', gstString)
         self.pipeline = gst.parse_launch(gstString)
         src = self.pipeline.get_by_name("src")
-        src.connect("need-data", self.need_data)
+        src.connect("need-data", self._GstNeedData)
         
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect("message", self.on_message)
+        bus.connect("message", self._GstOnMessage)
     
         self.pipeline.set_state(gst.STATE_PLAYING)
         
-        self.mainloop.run()
-        logging.debug('gobject mainloop finished')
+    def Finalize(self):
+        if not self.finished:
+            self.finished = True
+
+        self.__CleanUp()
         
-    def on_message(self, bus, msg):
+    def _GetFrameRate(self):
+        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
+            framerate = "25/1"
+        else:
+            framerate = "30000/1001"
+        return framerate
+
+    def _GetBitrate(self):
+        if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
+            bitrate = self.GetProfile().GetBitrate()
+        else:
+            try:
+                bitrate = int(self.__class__.GetProperty("Bitrate"))
+            except:
+                raise RendererException(_(u"Bitrate must be a number!"))
+        return bitrate
+
+
+    def _GstOnMessage(self, bus, msg):
         logging.debug('on_message - %s - %s', bus, msg)
         if msg.type == gst.MESSAGE_EOS:
             self.pipeline.set_state(gst.STATE_NULL)
-            self.mainloop.quit()
+            self.ready.set()
             
-    def need_data(self, src, need_bytes):
+    def _GstNeedData(self, src, need_bytes):
         logging.debug('need_data: %s - %s', need_bytes, self.cur_time)
         while self.active:
             result = None
@@ -130,78 +189,3 @@ class GStreamerWorker(threading.Thread):
 #        self.cur_time += self.duration
         self.cur_time += 1
 
-
-class GStreamerRenderer(BaseRenderer):
-    
-    def __init__(self):
-        BaseRenderer.__init__(self)
-        self.resQueue = Queue.Queue(20)
-        
-        self.gstreamerWorker = None
-        
-    @staticmethod
-    def GetName():
-        return "GStreamer MKV (h264)"
-    
-    @staticmethod
-    def CheckDependencies(msgList):
-        if gobject is None or pygst is None or gst is None:
-            logging.debug("checking for gstreamer failed: %s", err)
-            output = ""
-            msgList.append(_(u"GStreamer (python-gst0.10) required!"))
-
-    @staticmethod
-    def GetProperties():
-        return ["Bitrate"]
-
-    @staticmethod
-    def GetDefaultProperty(prop):
-        return BaseRenderer.GetDefaultProperty(prop)
-
-    def ProcessFinalize(self, pilImg):
-        res = cStringIO.StringIO()
-        pilImg.save(res, 'JPEG', quality=95)
-        self.resQueue.put(res.getvalue())
-    
-    def __CleanUp(self):
-        if self.gstreamerWorker is None:
-            return
-        
-        self.gstreamerWorker.join()
-        self.gstreamerWorker = None
-        
-    def ProcessAbort(self):
-        if self.gstreamerWorker:
-            self.gstreamerWorker.active = False
-        self.__CleanUp()
-
-    def Prepare(self):
-        outFile = os.path.join(self.GetOutputPath(), "output.mkv")
-
-        self.gstreamerWorker = GStreamerWorker(self.resQueue, 
-                                               outFile, 
-                                               self.GetAudioFile(),
-                                               self._GetFrameRate())
-        self.gstreamerWorker.start()
-        
-    def Finalize(self):
-        if self.gstreamerWorker:
-            self.gstreamerWorker.finished = True
-        self.__CleanUp()
-        
-    def _GetFrameRate(self):
-        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25/1"
-        else:
-            framerate = "30000/1001"
-        return framerate
-
-    def _GetBitrate(self):
-        if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
-            bitrate = self.GetProfile().GetBitrate()
-        else:
-            try:
-                bitrate = int(self.__class__.GetProperty("Bitrate"))
-            except:
-                raise RendererException(_(u"Bitrate must be a number!"))
-        return bitrate
