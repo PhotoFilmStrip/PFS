@@ -20,20 +20,24 @@
 #
 
 import logging
-import os, time, thread, threading
-import multiprocessing
+import os, threading
 
 import Queue
 import cStringIO
 
-
-import gobject
-import pygst
-pygst.require("0.10")
-import gst
+try:
+    import gobject
+    import pygst
+    pygst.require("0.10")
+    import gst
+except ImportError:
+    gobject = None
+    pygst = None
+    gst = None
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.renderer.RendererException import RendererException
 
 
 class GStreamerWorker(threading.Thread):
@@ -60,7 +64,7 @@ class GStreamerWorker(threading.Thread):
         gstSrc = ['appsrc name=src block=true caps="image/jpeg,framerate={0}"'.format(self.framerate),
                   'jpegdec',
 #                  'timeoverlay halign=left valign=bottom text="Stream time:" shaded-background=true',
-                  'x264enc']
+                  'x264enc bitrate=8000']
         if self.audioFile:
             gstSrc.extend([
                   'queue',
@@ -141,16 +145,14 @@ class GStreamerRenderer(BaseRenderer):
     
     @staticmethod
     def CheckDependencies(msgList):
-        try:
-            pass
-        except ImportError, err:
-            logging.debug("checking for open-cv failed: %s", err)
+        if gobject is None or pygst is None or gst is None:
+            logging.debug("checking for gstreamer failed: %s", err)
             output = ""
-            msgList.append(_(u"Open-CV (python-opencv) required!"))
+            msgList.append(_(u"GStreamer (python-gst0.10) required!"))
 
     @staticmethod
     def GetProperties():
-        return []
+        return ["Bitrate"]
 
     @staticmethod
     def GetDefaultProperty(prop):
@@ -193,3 +195,13 @@ class GStreamerRenderer(BaseRenderer):
         else:
             framerate = "30000/1001"
         return framerate
+
+    def _GetBitrate(self):
+        if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
+            bitrate = self.GetProfile().GetBitrate()
+        else:
+            try:
+                bitrate = int(self.__class__.GetProperty("Bitrate"))
+            except:
+                raise RendererException(_(u"Bitrate must be a number!"))
+        return bitrate

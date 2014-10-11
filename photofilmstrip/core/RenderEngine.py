@@ -19,6 +19,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import sys
+
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.core.RenderJob import RenderJob
 from photofilmstrip.core.Picture import Picture
@@ -78,18 +80,26 @@ class RenderEngine(object):
         """
         returns the number of pictures
         """
-#                         self.__profile.GetFramerate() * \
+        if sys.platform == "win32":
+            # FIXME: Hack for mencoder which is only used under win32
+            fr = 25.0
+        else:
+            fr = self.__profile.GetFramerate()
         return int(round(pic.GetDuration() * \
-                         25.0 * \
+                         fr * \
                          self.__picCountFactor))
     
     def __GetTransCount(self, pic):
         """
         returns the number of pictures needed for the transition
         """
-#                         self.__profile.GetFramerate() * \
+        if sys.platform == "win32":
+            # FIXME: Hack for mencoder which is only used under win32
+            fr = 25.0
+        else:
+            fr = self.__profile.GetFramerate()
         return int(round(pic.GetTransitionDuration() * \
-                         25.0 * \
+                         fr * \
                          self.__picCountFactor))
 
     def __TransAndFinal(self, infoText, trans, 
