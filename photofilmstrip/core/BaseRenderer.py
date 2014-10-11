@@ -85,12 +85,6 @@ class BaseRenderer(object):
     def EnsureFramerate(self):
         return False
     
-    def PreData(self):
-        raise NotImplementedError()        
-    
-    def PostData(self):
-        raise NotImplementedError()
-    
     def Finalize(self):
         raise NotImplementedError()
     
