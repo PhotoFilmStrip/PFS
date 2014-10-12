@@ -96,7 +96,6 @@ class ActionManager(object):
             return
         
         toolBar = wx.ToolBar(parent)
-        print toolBar.GetToolBitmapSize()
         toolBar.AddSimpleTool(wx.ID_NEW, 
                               wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, self._toolSize),
                               _(u'New Project'), _(u'New Project'))
