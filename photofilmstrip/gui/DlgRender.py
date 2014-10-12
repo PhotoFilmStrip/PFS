@@ -157,7 +157,7 @@ class DlgRender(wx.Dialog):
               id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=wx.BU_AUTODRAW)

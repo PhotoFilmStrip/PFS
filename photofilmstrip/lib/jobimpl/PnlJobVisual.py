@@ -67,7 +67,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpJob = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLJOBVISUALBMPJOB,
+              wx.ART_TOOLBAR, (32, 32)), id=wxID_PNLJOBVISUALBMPJOB,
               name=u'bmpJob', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
@@ -84,13 +84,13 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAction = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLJOBVISUALCMDACTION,
+              wx.ART_TOOLBAR, (24, 24)), id=wxID_PNLJOBVISUALCMDACTION,
               name=u'cmdAction', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
         self.cmdMenu = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_DOWN',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLJOBVISUALCMDMENU,
+              wx.ART_TOOLBAR, (24, 24)), id=wxID_PNLJOBVISUALCMDMENU,
               name=u'cmdMenu', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdMenu.Bind(wx.EVT_LEFT_DOWN, self.OnCmdMenuLeftDown)
@@ -116,26 +116,29 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.gaugeProgress.SetRange(jobContext.GetMaxProgress())
         
         self.jobContext = jobContext
+
+        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
+        ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
         
         self._actAbort = WxAction(
                  _(u"Abort"), 
                 self._Abort, 
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
                                                            wx.ART_MENU, 
-                                                           wx.DefaultSize),
+                                                           ms),
                      wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
                                                               wx.ART_TOOLBAR, 
-                                                              wx.DefaultSize)}
+                                                              ts)}
         )
         self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
                                                            wx.ART_MENU, 
-                                                           wx.DefaultSize),
+                                                           ms),
                      wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
                                                               wx.ART_TOOLBAR, 
-                                                              wx.DefaultSize)}
+                                                              ts)}
         )
 
         self.curAction = None

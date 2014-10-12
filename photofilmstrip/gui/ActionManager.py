@@ -68,6 +68,9 @@ class ActionManager(object):
         self.__menuBar = None
         self.__toolBar = None
         
+        self._menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
+        self._toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)        
+        
     def GetMenuBar(self):
         if self.__menuBar:
             return self.__menuBar
@@ -93,28 +96,29 @@ class ActionManager(object):
             return
         
         toolBar = wx.ToolBar(parent)
+        print toolBar.GetToolBitmapSize()
         toolBar.AddSimpleTool(wx.ID_NEW, 
-                              wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_TOOLBAR, self._toolSize),
                               _(u'New Project'), _(u'New Project'))
         toolBar.AddSimpleTool(wx.ID_OPEN, 
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_TOOLBAR, self._toolSize),
                               _(u'Load Project'), _(u'Load Project'))
         toolBar.AddSimpleTool(wx.ID_SAVE, 
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_TOOLBAR, self._toolSize),
                               _(u'Save Project'), _(u'Save Project'))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS, 
-#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR, wx.DefaultSize),
+#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR, self._toolSize),
 #                              _(u'Save Project as'), _(u'Save Project as'))
         toolBar.AddSeparator()
         toolBar.AddSimpleTool(self.ID_PIC_IMPORT, 
-                              wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_TOOLBAR, self._toolSize),
                               _(u'Import Pictures'), _(u'Import Pictures'))
         toolBar.AddSimpleTool(self.ID_RENDER_FILMSTRIP, 
-                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_TOOLBAR, self._toolSize),
                               _(u'Render filmstrip'), _(u'Render filmstrip'))
         toolBar.AddSeparator()
         toolBar.AddSimpleTool(self.ID_JOB_QUEUE, 
-                              wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR, wx.DefaultSize),
+                              wx.ArtProvider.GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_TOOLBAR, self._toolSize),
                               _(u'Show job queue'), _(u'Show job queue'))
 
         toolBar.Realize()
@@ -137,25 +141,25 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               wx.ID_NEW, 
                               _(u'&New Project') + '\tCtrl+N',
-                              wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_NEW, wx.ART_MENU, self._menuSize))
         self.__CreateMenuItem(menu, 
                               wx.ID_OPEN, 
                               _(u'&Open Project') + '\tCtrl+O',
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, wx.ART_MENU, self._menuSize))
 
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               wx.ID_SAVE, 
                               _(u'&Save Project') + '\tCtrl+S',
-                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE, wx.ART_MENU, self._menuSize))
         self.__CreateMenuItem(menu, 
                               self.ID_PROJECT_CLOSE, 
                               _(u'&Close Project') + '\tCtrl+W',
-                              wx.ArtProvider.GetBitmap(wx.ART_REMOVABLE, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_REMOVABLE, wx.ART_MENU, self._menuSize))
 #        self.__CreateMenuItem(menu, 
 #                              wx.ID_SAVEAS, 
 #                              _(u'Save Project &as'),
-#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, wx.DefaultSize))
+#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
 #        self.__CreateMenuItem(menu, self.ID_PROJECT_IMPORT, _(u"&Import Project"))
 #        self.__CreateMenuItem(menu, self.ID_PROJECT_EXPORT, _(u"&Export Project"))
@@ -163,12 +167,12 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               self.ID_PROJECT_PROPS, 
                               _("&Properties"), 
-                              wx.ArtProvider_GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider_GetBitmap(wx.ART_EXECUTABLE_FILE, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               wx.ID_EXIT, 
                               _(u'E&xit') + '\tCtrl+Q',
-                              wx.ArtProvider.GetBitmap(wx.ART_QUIT, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_QUIT, wx.ART_MENU, self._menuSize))
         return menu
 
     def __MakeMenuEdit(self):
@@ -176,25 +180,25 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_MOVE_LEFT, 
                               _(u'Move picture &left'), 
-                              wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_MENU, self._menuSize))
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_MOVE_RIGHT, 
                               _(u'Move picture &right'), 
-                              wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_REMOVE, 
                               _(u'R&emove Picture') + '\tCtrl+Del', 
-                              wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_ROTATE_CW, 
                               _(u'Rotate &clockwise') + '\tCtrl+r', 
-                              wx.ArtProvider.GetBitmap(wx.ART_REDO, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_REDO, wx.ART_MENU, self._menuSize))
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_ROTATE_CCW, 
                               _(u'Rotate counter clock&wise') + '\tCtrl+l', 
-                              wx.ArtProvider.GetBitmap(wx.ART_UNDO, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_UNDO, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_MOTION_RANDOM, 
@@ -210,17 +214,17 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               self.ID_PIC_IMPORT, 
                               _(u'&Import Pictures') + '\tCtrl+I', 
-                              wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_RENDER_FILMSTRIP, 
                               _(u'&Render filmstrip') + '\tF9', 
-                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         self.__CreateMenuItem(menu, 
                               self.ID_JOB_QUEUE, 
                               _(u'&Show job queue') + '\tF12', 
-                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU))
+                              wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK, wx.ART_MENU, self._menuSize))
         return menu
         
     def __MakeMenuHelp(self):
@@ -228,7 +232,7 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               wx.ID_HELP, 
                               _(u'&Help') + '\tF1',
-                              wx.ArtProvider.GetBitmap(wx.ART_HELP, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_HELP, wx.ART_MENU, self._menuSize))
         menu.AppendSeparator()
         langMenu = wx.Menu()
         langMenu.AppendRadioItem(self.ID_LANG_EN, u"English")
@@ -248,7 +252,7 @@ class ActionManager(object):
         self.__CreateMenuItem(menu, 
                               wx.ID_ABOUT, 
                               _(u'&About'),
-                              wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MENU, wx.DefaultSize))
+                              wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MENU, self._menuSize))
         return menu
 
     def SelectLanguage(self, lang):

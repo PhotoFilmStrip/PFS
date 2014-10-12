@@ -31,13 +31,14 @@ class ActionOpenFolder(IAction):
         self.outpath = outpath
     
     def GetName(self):
-        return _(u'Play video')
+        return _(u'Open folder')
     
     def GetBitmap(self):
         import wx
+        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         return wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN,
-                                        wx.ART_OTHER,
-                                        wx.DefaultSize)
+                                        wx.ART_TOOLBAR,
+                                        ms)
 
     def Execute(self):
         if not os.path.exists(self.outpath):

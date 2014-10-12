@@ -14,21 +14,24 @@ class PnlRenderJobVisual(PnlJobVisual):
     def __init__(self, parent, pnlJobManager, jobContext):
         PnlJobVisual.__init__(self, parent, pnlJobManager, jobContext)
         
+        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
+        ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
+
         self._actPlay = WxAction(
                 _("Play video"),
                 self._PlayVideo,
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, 
                                                            wx.ART_MENU, 
-                                                           wx.DefaultSize),
+                                                           ms),
                      wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, 
                                                               wx.ART_TOOLBAR, 
-                                                              wx.DefaultSize)}
+                                                              ts)}
         )
         self._actOpenFldr = WxAction(
                     _(u"Open folder"),
                 self._OpenFolder,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_MENU, wx.DefaultSize),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_TOOLBAR, wx.DefaultSize)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_MENU, ms),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN, wx.ART_TOOLBAR, ts)}
         )
 
     def _OnMenuActions(self, menu):

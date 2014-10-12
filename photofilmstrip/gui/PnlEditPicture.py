@@ -162,7 +162,7 @@ class PnlEditPicture(wx.Panel):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdRotateLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_UNDO',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_PNLEDITPICTURECMDROTATELEFT, name=u'cmdRotateLeft',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
@@ -170,7 +170,7 @@ class PnlEditPicture(wx.Panel):
               id=wxID_PNLEDITPICTURECMDROTATELEFT)
 
         self.cmdRotateRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_REDO',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_TOOLBAR, (16, 16)),
               id=wxID_PNLEDITPICTURECMDROTATERIGHT, name=u'cmdRotateRight',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
