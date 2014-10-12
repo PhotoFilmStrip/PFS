@@ -38,9 +38,12 @@ class WxAbstractAction(IAction):
         mitm = wx.MenuItem(menu, ident, self.GetName())
         
         try:
-            mitm.SetBitmap(self.GetBitmap(wx.ART_MENU))
+            bmp = self.GetBitmap(wx.ART_MENU)
         except NotImplementedError:
-            pass
+            bmp = None
+        
+        if bmp:
+            mitm.SetBitmap(bmp)
         
         menu.AppendItem(mitm)
         evtHandler.Bind(wx.EVT_MENU, self.__OnExecute, id=ident)

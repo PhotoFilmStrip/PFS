@@ -144,25 +144,6 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         else:
             event.Skip()
 
-    def __OnDone(self):
-        errMsg = self.__renderEngine.GetErrorMessage()
-        errCls = self.__renderEngine.GetErrorClass()
-        if errMsg:
-            dlg = wx.MessageDialog(self,
-                                   errMsg,
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
-
-        self.Layout()
-        
-        if errCls is RendererException:
-            return
-        
-        if not isAborted and errMsg is None:
-            self.Destroy()
-        
     def RemovePnlJobVisual(self, pnlJobVisual, layout=False):
         if pnlJobVisual.jobContext.IsDone():
             if pnlJobVisual is self._selected:
