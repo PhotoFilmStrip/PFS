@@ -29,7 +29,7 @@ class GuiApp(AppMixin):
     def _OnStart(self):
         if not getattr(sys, 'frozen', False):
             import wxversion
-            wxversion.select("2.8")
+            wxversion.select("3.0")
     
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
         app = PhotoFilmStripApp(0)
