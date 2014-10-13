@@ -1,3 +1,10 @@
+  * 2014/10/13 (Version 2.1.0)
+    added:
+     - new video rendering backend python-gstreamer
+    changed:
+     - compatible to wxPython 3
+
+
   * 2013/11/20 (Version 2.0.0)
     added:
      - thumbnails are stored in project database
