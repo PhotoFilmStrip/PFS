@@ -34,14 +34,14 @@ try:
 except ImportError:
     pygst = None
     gst = None
+    gobject = None
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.Subtitle import SubtitleParser
 from photofilmstrip.core.renderer.RendererException import RendererException
 
-
-class GStreamerRenderer(BaseRenderer):
+class _GStreamerRenderer(BaseRenderer):
     
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -58,12 +58,8 @@ class GStreamerRenderer(BaseRenderer):
         self.srtParse = None
         
     @staticmethod
-    def GetName():
-        return "x264/MP3 (MKV)"
-    
-    @staticmethod
     def CheckDependencies(msgList):
-        if pygst is None or gst is None:
+        if pygst is None or gst is None or gobject is None:
             logging.debug("checking for gstreamer failed: %s")
             msgList.append(_(u"GStreamer (python-gst0.10) required!"))
 
@@ -115,7 +111,8 @@ class GStreamerRenderer(BaseRenderer):
         self.active = True
         self.finished = False
         
-        outFile = os.path.join(self.GetOutputPath(), "output.mkv")
+        outFile = os.path.join(self.GetOutputPath(), 
+                               "output.%s" % self._GetExtension())
         
         gobject.threads_init()
         
@@ -132,9 +129,8 @@ class GStreamerRenderer(BaseRenderer):
         self.pipeline.add(jpegDecoder)
         videoSrc.link(jpegDecoder)
 
-        x264Enc = gst.element_factory_make("x264enc", None)
-        x264Enc.set_property("bitrate", self._GetBitrate())
-        self.pipeline.add(x264Enc)
+        videoEnc = self._GetVideoEncoder()
+        self.pipeline.add(videoEnc)
         
         if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
             self.textoverlay = gst.element_factory_make("textoverlay", None)
@@ -142,14 +138,14 @@ class GStreamerRenderer(BaseRenderer):
             self.pipeline.add(self.textoverlay)
             
             jpegDecoder.link(self.textoverlay)
-            self.textoverlay.link(x264Enc)
+            self.textoverlay.link(videoEnc)
         else:
-            jpegDecoder.link(x264Enc)
+            jpegDecoder.link(videoEnc)
 
-        mux = gst.element_factory_make("matroskamux", "mux")
+        mux = self._GetMux()
         self.pipeline.add(mux)
 
-        x264Enc.link(mux)
+        videoEnc.link(mux)
         
         if self.GetAudioFile():
             audioSrc = gst.element_factory_make("filesrc", None)
@@ -162,9 +158,7 @@ class GStreamerRenderer(BaseRenderer):
             audioConv = gst.element_factory_make("audioconvert", None)
             self.pipeline.add(audioConv)
             
-            audioEnc = gst.element_factory_make("lamemp3enc", None)
-            audioEnc.set_property("target", "bitrate")
-            audioEnc.set_property("bitrate", 192)
+            audioEnc = self._GetAudioEncoder()
             self.pipeline.add(audioEnc)
 
             gst.element_link_many(audioSrc, audioDec)
@@ -258,3 +252,91 @@ class GStreamerRenderer(BaseRenderer):
         caps = pad.get_caps()
         compatible_pad = self.audioConv.get_compatible_pad(pad, caps)
         pad.link(compatible_pad)
+
+    def _GetExtension(self):
+        raise NotImplementedError()
+    def _GetMux(self):
+        raise NotImplementedError()
+    def _GetAudioEncoder(self):
+        raise NotImplementedError()
+    def _GetVideoEncoder(self):
+        raise NotImplementedError()
+
+
+class MkvX264AC3(_GStreamerRenderer):
+
+    @staticmethod
+    def GetName():
+        return "x264/MP3 (MKV)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = gst.element_factory_find("lamemp3enc")
+            if aEnc is None:
+                msgList.append(_(u"MP3-Codec (gstreamer0.10-plugins-ugly-multiverse) required!"))
+                
+            vEnc = gst.element_factory_find("x264enc")
+            if vEnc is None:
+                msgList.append(_(u"x264-Codec (gstreamer0.10-plugins-ugly-multiverse) required!"))
+            
+            mux = gst.element_factory_find("matroskamux")
+            if mux is None:
+                msgList.append(_(u"MKV-Muxer (gstreamer0.10-plugins-good) required!"))
+
+    def _GetExtension(self):
+        return "mkv"
+    
+    def _GetMux(self):
+        mux = gst.element_factory_make("matroskamux", None)
+        return mux    
+        
+    def _GetAudioEncoder(self):
+        audioEnc = gst.element_factory_make("lamemp3enc", None)
+        audioEnc.set_property("target", "bitrate")
+        audioEnc.set_property("bitrate", 192)
+
+    def _GetVideoEncoder(self):
+        videoEnc = gst.element_factory_make("x264enc", None)
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc
+
+
+class OggTheoraVorbis(_GStreamerRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "Theora/Vorbis (OGV)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = gst.element_factory_find("theoraenc")
+            if aEnc is None:
+                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins) required!"))
+                
+            vEnc = gst.element_factory_find("vorbisenc")
+            if vEnc is None:
+                msgList.append(_(u"Vorbis-Codec (gstreamer0.10-plugins) required!"))
+            
+            mux = gst.element_factory_find("oggmux")
+            if mux is None:
+                msgList.append(_(u"OGV-Muxer (gstreamer0.10-plugins) required!"))
+    
+    def _GetExtension(self):
+        return "ogv"
+    
+    def _GetMux(self):
+        mux = gst.element_factory_make("oggmux", None)
+        return mux    
+        
+    def _GetAudioEncoder(self):
+        audioEnc = gst.element_factory_make("vorbisenc", None)
+        
+    def _GetVideoEncoder(self):
+        videoEnc = gst.element_factory_make("theoraenc", None)
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc
+        
