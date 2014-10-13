@@ -19,7 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import logging
 import os
 
 try:
@@ -45,16 +44,11 @@ class OpenCvRenderer(BaseRenderer):
         
     @staticmethod
     def GetName():
-        return "AVI (XVid)"
+        return "XVid/silent (AVI)"
     
     @staticmethod
     def CheckDependencies(msgList):
-        try:
-            import numpy
-            import cv2
-        except ImportError, err:
-            logging.debug("checking for open-cv failed: %s", err)
-            output = ""
+        if numpy is None or cv2 is None:
             msgList.append(_(u"Open-CV (python-opencv) required!"))
 
     @staticmethod
