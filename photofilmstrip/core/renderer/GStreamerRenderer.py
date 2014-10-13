@@ -296,6 +296,7 @@ class MkvX264AC3(_GStreamerRenderer):
         audioEnc = gst.element_factory_make("lamemp3enc", None)
         audioEnc.set_property("target", "bitrate")
         audioEnc.set_property("bitrate", 192)
+        return audioEnc
 
     def _GetVideoEncoder(self):
         videoEnc = gst.element_factory_make("x264enc", None)
@@ -334,6 +335,7 @@ class OggTheoraVorbis(_GStreamerRenderer):
         
     def _GetAudioEncoder(self):
         audioEnc = gst.element_factory_make("vorbisenc", None)
+        return audioEnc
         
     def _GetVideoEncoder(self):
         videoEnc = gst.element_factory_make("theoraenc", None)
