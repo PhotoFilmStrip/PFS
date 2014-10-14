@@ -52,6 +52,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.ready = None
         self.pipeline = None
         self.curFrame = 0
+        self.gtkMainloop = None
         
         self.audioConv = None
         self.textoverlay = None
@@ -83,6 +84,7 @@ class _GStreamerRenderer(BaseRenderer):
             return
         
         self.ready.wait()
+        self.gtkMainloop.quit()
         
         self.srtParse = None
         self.ready = None
@@ -93,6 +95,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.pipeline = None
         self.audioConv = None
         self.textoverlay = None
+        self.gtkMainloop = None
         
         if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
             # delete subtitle file, if subtitle is rendered in video
@@ -180,6 +183,11 @@ class _GStreamerRenderer(BaseRenderer):
             audioDec.connect("pad-added", self._GstPadAdded)
     
         self.pipeline.set_state(gst.STATE_PLAYING)
+        
+        self.gtkMainloop = gobject.MainLoop()
+        gtkMainloopThread = threading.Thread(name="gtkMainLoop",
+                                             target=self.gtkMainloop.run)
+        gtkMainloopThread.start()
         
     def Finalize(self):
         if not self.finished:
