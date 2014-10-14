@@ -50,14 +50,12 @@ class Job(IJobContext):
         self.__resultObject = resultObject
     
     def _Begin(self):
-        try:
-            if self.__aborted:
-                self.__done = True
-                raise JobAbortedException()
-            
-            self.Begin()
-        finally:
-            self.__idle = False
+        if self.__aborted:
+            self.__done = True
+            raise JobAbortedException()
+        
+        self.Begin()
+        self.__idle = False
     def Begin(self):
         pass
     def IsIdle(self):
@@ -75,7 +73,7 @@ class Job(IJobContext):
     
     def IsAborted(self):
         return self.__aborted
-    def Abort(self):
+    def Abort(self, msg=None):
         if self.__aborted:
             return False
         
@@ -91,7 +89,7 @@ class Job(IJobContext):
                 self.__done = True
                 return False
             
-            self.__logger.debug("aborting...")
+            self.__logger.debug("aborting... (%s)", msg)
         
         return True
     

@@ -69,13 +69,17 @@ class VisualJob(Job, IVisualJob):
         finally:
             self.__NotifyHandler("OnHandleJobDone")
             
-    def Abort(self):
-        if Job.Abort(self):
-            self.SetInfo(_(u"Aborting..."))
+    def Abort(self, msg=None):
+        if Job.Abort(self, msg):
+            if msg is None:
+                msg = _(u"Aborting...")
+            self.SetInfo(msg)
             return True
         else:
             if self.IsDone() and self.IsAborted():
-                self.SetInfo(_(u"Aborted"))
+                if msg is None:
+                    msg = _(u"Aborted")
+                self.SetInfo(msg)
             return False
     
     def GetName(self):

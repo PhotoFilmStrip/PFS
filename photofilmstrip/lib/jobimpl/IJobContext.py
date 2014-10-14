@@ -32,7 +32,7 @@ class IJobContext(object):
     
     def IsAborted(self):
         raise NotImplementedError()
-    def Abort(self):
+    def Abort(self, msg=None):
         raise NotImplementedError()
     
     def IsIdle(self):

@@ -189,9 +189,14 @@ class JobManager(Singleton, Destroyable):
             ctx._Begin() # IGNORE:W0212
         except JobAbortedException:
             return False    
-        except:
+        except Exception, exc:
             self.__logger.error("<%s> not started %s", # IGNORE:W0702
-                                threading.currentThread().getName(), ctx.GetName(), exc_info=1) 
+                                threading.currentThread().getName(), ctx.GetName(), exc_info=1)
+            try:
+                ctx.Abort("Error: %s" % exc)
+            except:
+                self.__logger.error("<%s> error while aborting faulty started %s", # IGNORE:W0702
+                                    threading.currentThread().getName(), ctx.GetName(), exc_info=1)
             return False            
 
         self.__logger.debug("<%s> started %s", 
