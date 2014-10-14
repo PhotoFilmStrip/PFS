@@ -19,6 +19,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import sys
+
 from photofilmstrip.core.Aspect import Aspect
 
 
@@ -76,11 +78,14 @@ class OutputProfile(object):
 
 
 def __CreateDefaultProfiles():
-    vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240), False)
-    svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480), False)
-    dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480), False)
+    if sys.platform == "win32":
+        vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240), False)
+        svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480), False)
+        dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480), False)
     
-    return [vcd, svcd, dvd]
+        return [vcd, svcd, dvd]
+    else:
+        return []
 
     
 def __Create16_9Profiles():
