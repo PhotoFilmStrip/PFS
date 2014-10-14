@@ -38,7 +38,7 @@ except ImportError:
 
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
-from photofilmstrip.core.Subtitle import SubtitleParser
+from photofilmstrip.core.Subtitle import SrtParser
 from photofilmstrip.core.renderer.RendererException import RendererException
 
 class _GStreamerRenderer(BaseRenderer):
@@ -115,6 +115,8 @@ class _GStreamerRenderer(BaseRenderer):
 
     def Prepare(self):
         self.ready = threading.Event()
+        self.ready.set()
+        
         self.active = True
         self.finished = False
         
@@ -131,7 +133,7 @@ class _GStreamerRenderer(BaseRenderer):
         videoSrc.set_property("caps", caps)
         videoSrc.connect("need-data", self._GstNeedData)
         self.pipeline.add(videoSrc)
-        
+
         jpegDecoder = gst.element_factory_make("jpegdec", None)
         self.pipeline.add(jpegDecoder)
         videoSrc.link(jpegDecoder)
@@ -197,6 +199,8 @@ class _GStreamerRenderer(BaseRenderer):
                                              target=self.gtkMainloop.run)
         gtkMainloopThread.start()
         
+        self.ready.clear()
+        
     def Finalize(self):
         if not self.finished:
             self.finished = True
@@ -257,7 +261,7 @@ class _GStreamerRenderer(BaseRenderer):
 #             self.textoverlay.set_property("text", "Frame: %s" % self.curFrame)
             if self.srtParse is None:
                 srtPath = os.path.join(self.GetOutputPath(), "output.srt")
-                self.srtParse = SubtitleParser(srtPath, self.GetProfile().GetFramerate())
+                self.srtParse = SrtParser(srtPath, self.GetProfile().GetFramerate())
                 
             subtitle = self.srtParse.Get(self.curFrame)
             self.textoverlay.set_property("text", subtitle)
@@ -279,7 +283,7 @@ class _GStreamerRenderer(BaseRenderer):
         raise NotImplementedError()
 
 
-class MkvX264AC3(_GStreamerRenderer):
+class MkvX264MP3(_GStreamerRenderer):
 
     @staticmethod
     def GetName():

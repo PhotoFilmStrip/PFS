@@ -30,14 +30,14 @@ from photofilmstrip.core.renderer.MovieRenderer import (
 from photofilmstrip.core.renderer.SingleFileRenderer import (
         SingleFileRenderer)
 
-from photofilmstrip.core.renderer.PyGameRenderer import (
-        PyGameRenderer)
+# from photofilmstrip.core.renderer.PyGameRenderer import (
+#         PyGameRenderer)
 from photofilmstrip.core.renderer.CairoRenderer import (
         CairoRenderer)
-from photofilmstrip.core.renderer.OpenCvRenderer import (
-        OpenCvRenderer)
+# from photofilmstrip.core.renderer.OpenCvRenderer import (
+#         OpenCvRenderer)
 from photofilmstrip.core.renderer.GStreamerRenderer import (
-        MkvX264AC3, OggTheoraVorbis)
+        MkvX264MP3, OggTheoraVorbis)
 
 
 RENDERERS = [SingleFileRenderer]  
@@ -51,11 +51,12 @@ if sys.platform == "win32":
              MJPEGRenderer])
 else:
     RENDERERS.extend([
-             MkvX264AC3,
-             OggTheoraVorbis,
+             MkvX264MP3,
+             OggTheoraVorbis])
              
-             OpenCvRenderer,
-             PyGameRenderer])
+#     RENDERERS.extend([
+#              OpenCvRenderer,
+#              PyGameRenderer])
     
 RENDERERS.extend([
              CairoRenderer])

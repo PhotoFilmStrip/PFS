@@ -73,7 +73,7 @@ class SubtitleSrt(object):
         fd.close()
 
 
-class SubtitleParser(object):
+class SrtParser(object):
     
     def __init__(self, path, framerate):
         self.__path = path
@@ -145,7 +145,7 @@ def testWrite():
     s.Start([p1, p2, p3])
     
 def testRead():
-    stp = SubtitleParser('/home/jens/My PhotoFilmStrips/test2a/Medium/output.srt', 25.0)
+    stp = SrtParser('/home/jens/My PhotoFilmStrips/test2a/Medium (640x480)/output.srt', 25.0)
     
     for f in xrange(800):
         print f, stp.Get(f)
