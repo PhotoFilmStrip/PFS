@@ -63,6 +63,10 @@ class _GStreamerRenderer(BaseRenderer):
         if pygst is None or gst is None or gobject is None:
             logging.debug("checking for gstreamer failed: %s")
             msgList.append(_(u"GStreamer (python-gst0.10) required!"))
+        else:
+            to = gst.element_factory_find("textoverlay")
+            if to is None:
+                logging.warn("GStreamer element textoverlay not found! Subtitles are not rendered into video file.")
 
     @staticmethod
     def GetProperties():
@@ -132,18 +136,22 @@ class _GStreamerRenderer(BaseRenderer):
         self.pipeline.add(jpegDecoder)
         videoSrc.link(jpegDecoder)
 
+        colorConverter = gst.element_factory_make("ffmpegcolorspace", None)
+        self.pipeline.add(colorConverter)
+        jpegDecoder.link(colorConverter)
+                
         videoEnc = self._GetVideoEncoder()
         self.pipeline.add(videoEnc)
         
-        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
+        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]) and gst.element_factory_find("textoverlay"):
             self.textoverlay = gst.element_factory_make("textoverlay", None)
             self.textoverlay.set_property("text", "")
             self.pipeline.add(self.textoverlay)
             
-            jpegDecoder.link(self.textoverlay)
+            colorConverter.link(self.textoverlay)
             self.textoverlay.link(videoEnc)
         else:
-            jpegDecoder.link(videoEnc)
+            colorConverter.link(videoEnc)
 
         mux = self._GetMux()
         self.pipeline.add(mux)
