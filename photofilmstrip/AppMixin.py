@@ -32,6 +32,8 @@ if sys.platform == "win32":
     _path = os.getenv("PATH", "").split(";")
     _path.append(os.path.join(Constants.APP_DIR, "lib", "mplayer"))
     os.putenv("PATH", ";".join(_path)) 
+    if os.getenv("GST_PLUGIN_PATH") is None:
+        os.putenv("GST_PLUGIN_PATH", os.path.join(Constants.APP_DIR, "lib", "gstreamer-0.10")) 
 
     import _subprocess # IGNORE:F0401
     startupinfo = subprocess.STARTUPINFO()
@@ -51,7 +53,8 @@ class AppMixin(object):
             lvl = logging.WARNING
         logging.basicConfig(level=lvl,
                             format=self._GetLogFormat(),
-                            datefmt='%d.%m.%Y %H:%M:%S')
+                            datefmt='%d.%m.%Y %H:%M:%S',
+                            filename=self._GetLogFilename())
 
     def InitI18N(self):
         from photofilmstrip.action.ActionI18N import ActionI18N
@@ -74,6 +77,9 @@ class AppMixin(object):
             
     def _GetLogFormat(self):
         return '%(asctime)s (%(levelname)s) %(name)s: %(message)s'
+    
+    def _GetLogFilename(self):
+        return None
 
     def _OnStart(self):
         raise NotImplementedError()

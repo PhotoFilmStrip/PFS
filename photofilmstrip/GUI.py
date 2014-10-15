@@ -20,20 +20,28 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
 import sys
 from photofilmstrip.AppMixin import AppMixin
+from photofilmstrip import Constants
 
 
 class GuiApp(AppMixin):
     
     def _OnStart(self):
-#         if not getattr(sys, 'frozen', False):
-#             import wxversion
-#             wxversion.select("3.0")
+        if not getattr(sys, 'frozen', False):
+            import wxversion
+            wxversion.select("3.0")
     
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
         app = PhotoFilmStripApp(0)
         app.MainLoop()
+
+    def _GetLogFilename(self):
+        if getattr(sys, 'frozen', None) == "windows_exe":
+            return os.tempnam(prefix=Constants.APP_NAME)
+        else:
+            return None
 
 
 def main():
