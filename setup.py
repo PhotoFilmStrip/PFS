@@ -20,6 +20,7 @@
 #
 
 import sys, os
+import sqlite3
 
 import zipfile
 
@@ -81,14 +82,23 @@ class pfs_build(build):
         build.run(self)
         
     def _make_svn_info(self):
-        # FIXME: SVN1.7
-        if os.path.isfile(".svn/entries"):
+        svnRev = 0
+        if os.path.isfile(".svn/wc.db"):
+            # from svn 1.7
+            try:
+                dbConn = sqlite3.connect(".svn/wc.db")
+                cur = dbConn.execute("select changed_revision from nodes where local_relpath=''")
+                row = cur.fetchone()
+                if row:
+                    svnRev = row[0]
+            except:
+                raise
+        elif os.path.isfile(".svn/entries"):
+            # until svn 1.6
             try:
                 svnRev = open(".svn/entries", "r").readlines()[3].strip()
             except:
-                svnRev = 0
-        else:
-            svnRev = 0
+                pass
 
         for target in getattr(self.distribution, "windows", []) + \
                       getattr(self.distribution, "console", []):
