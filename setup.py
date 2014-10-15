@@ -105,9 +105,9 @@ class pfs_build(build):
             log.warn("Cannot update image resources! Using images.py from svn")
             return 
         
-#         if os.getenv("DISPLAY") is None:
-#             log.warn("Cannot update image resources! img2py needs X")
-#             return 
+        if sys.platform.startswith("linux") and os.getenv("DISPLAY") is None:
+            log.warn("Cannot update image resources! img2py needs X")
+            return 
         
         imgDir = os.path.abspath(os.path.join("res", "icons"))
         target = os.path.join("photofilmstrip", "res", "images.py")
