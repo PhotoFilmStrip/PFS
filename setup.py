@@ -105,9 +105,9 @@ class pfs_build(build):
             log.warn("Cannot update image resources! Using images.py from svn")
             return 
         
-        if os.getenv("DISPLAY") is None:
-            log.warn("Cannot update image resources! img2py needs X")
-            return 
+#         if os.getenv("DISPLAY") is None:
+#             log.warn("Cannot update image resources! img2py needs X")
+#             return 
         
         imgDir = os.path.abspath(os.path.join("res", "icons"))
         target = os.path.join("photofilmstrip", "res", "images.py")
@@ -132,24 +132,13 @@ class pfs_build(build):
                         ("ICON_48", "photofilmstrip_48.png")
                        )
         
-        update = False
-        for imgRes in imgResources:
-            img_mtime = os.path.getmtime(os.path.join(imgDir, imgRes[1]))
-            log.info("checking image resource %s: %s > %s", 
-                     imgRes[0], img_mtime, target_mtime)
-            
-            if img_mtime > target_mtime:
-                update = True
-                break
-        
-        if update:
-            for idx, (imgName, imgFile) in enumerate(imgResources):
-                img2py(os.path.join(imgDir, imgFile), 
-                       target, append=idx>0, 
-                       imgName=imgName, 
-                       icon=True, 
-                       compressed=True, 
-                       catalog=True)
+        for idx, (imgName, imgFile) in enumerate(imgResources):
+            img2py(os.path.join(imgDir, imgFile), 
+                   target, append=idx>0, 
+                   imgName=imgName, 
+                   icon=True, 
+                   compressed=True, 
+                   catalog=True)
             
     def _make_locale(self):
         for filename in os.listdir("po"):
