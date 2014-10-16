@@ -42,6 +42,7 @@ package:
 	cd "$$releasedir"; \
 	tar -xzf "$$appver.tar.gz"; \
 	cd "$$appver"; \
+	cp -r "../../debian/" .; \
 	dch -d Makefile packaging; \
 	debuild --no-tgz-check -us -uc;
 
