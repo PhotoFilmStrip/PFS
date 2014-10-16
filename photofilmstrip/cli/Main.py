@@ -31,14 +31,14 @@ from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
 from photofilmstrip.core.ProjectFile import ProjectFile
-from photofilmstrip.core.ProgressHandler import ProgressHandler
 from photofilmstrip.core.renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
 from photofilmstrip.action.ActionRender import ActionRender
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
+from photofilmstrip.lib.jobimpl.IVisualJobHandler import IVisualJobHandler
 
 
-class CliGui(Observer):
+class CliGui(IVisualJobHandler):
     
     def __init__(self):
         Observer.__init__(self)
@@ -55,21 +55,21 @@ class CliGui(Observer):
         line = line[:80]
         print u"%-80s\r" % (line),
         
-    def ObservableUpdate(self, obj, arg):
-        if isinstance(obj, ProgressHandler):
-            if arg == 'maxProgress':
-                self._maxProgress = obj.GetMaxProgress()
-            elif arg == 'currentProgress':
-                self._curProgress = obj.GetCurrentProgress()
-            elif arg == 'info':
-                self._info = obj.GetInfo()
-            elif arg == 'done':
-                self._info = _(u"all done")
-            elif arg == 'aborting':
-                self._info = obj.GetInfo()
-            else:
-                return
-            self.__Output()
+    def OnHandleJobBegin(self, jobContext):
+        pass
+    
+    def OnHandleJobDone(self, jobContext):
+        self._info = _(u"all done")
+        self.__Output()
+    
+    def OnHandleJobUpdate(self, jobContext, fields=None):
+        if 'maxProgress' in fields:
+            self._maxProgress = jobContext.GetMaxProgress()
+        if 'progress' in fields:
+            self._curProgress = jobContext.GetProgress()
+        if 'info' in fields:
+            self._info = jobContext.GetInfo()
+        self.__Output()
             
     def Info(self, project, rendererClass, profile):
         print
@@ -87,15 +87,13 @@ class CliGui(Observer):
         print text
 
 
-class DummyGui(Observer):
+class DummyGui(IVisualJobHandler):
 
-    def __init__(self):
-        Observer.__init__(self)
-    def ObservableUpdate(self, obj, arg):
+    def OnHandleJobBegin(self, jobContext):
         pass
-    def Info(self, project, rendererClass, profile):
+    def OnHandleJobDone(self, jobContext):
         pass
-    def Write(self, text):
+    def OnHandleJobUpdate(self, jobContext, fields=None):
         pass
 
 
@@ -113,7 +111,8 @@ def main():
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=3, type="int")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=1, type="int")
-    parser.add_option("-d", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
+    parser.add_option("-a", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
+    parser.add_option("-d", "--debug", action="store_true", default=False, help=u"enable debug logging")
     
     options = parser.parse_args()[0]
 
@@ -192,12 +191,10 @@ def main():
     
     ar.Execute()
     renderJob = ar.GetRenderJob()
+    renderJob.AddVisualJobHandler(cliGui)
     
     JobManager().EnqueueContext(renderJob)
 
-#    progressHandler = ProgressHandler()
-#    progressHandler.AddObserver(cliGui)
-    
     try:
         while not renderJob.IsDone():
             time.sleep(0.1)

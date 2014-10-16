@@ -81,7 +81,8 @@ class SrtParser(object):
         
         self.__data = []
         
-        self.Parse()
+        if os.path.exists(self.__path):
+            self.Parse()
         
     def Parse(self):
         fd = codecs.open(self.__path, 'r', "utf-8")
