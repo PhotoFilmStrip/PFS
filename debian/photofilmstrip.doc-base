@@ -4,8 +4,6 @@ Author: Jens Goepfert
 Abstract: This manual describes what photofilmstrip is
  and how it can be used to
  manage online manuals on Debian systems.
-Section: graphics
+Section: Video
 
 Format: HTML
-Index: /usr/share/doc/photofilmstrip/html/index.html
-Files: /usr/share/doc/photofilmstrip/html/*.html
