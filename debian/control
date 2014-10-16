@@ -4,14 +4,13 @@ Priority: optional
 Maintainer: Jens Göpfert <mail@jensgoepfert.de>
 Uploaders: Jens Göpfert <mail@jensgoepfert.de>
 Build-Depends: debhelper (>= 7), python (>= 2.6), python-support, cdbs (>= 0.4.49)
-XS-Python-Version: >= 2.6
+X-Python-Version: >= 2.6
 Standards-Version: 3.8.4
 Homepage: http://www.photofilmstrip.org
 
 Package: photofilmstrip
 Architecture: all
-Depends: ${misc:Depends}, python-support, python-wxgtk3.0, python-pil, ${python:Depends}, python-gst0.10
-XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends}, ${python:Depends}, python-support, python-wxgtk3.0, python-pil, python-gst0.10
 Description: Slideshow creator with Ken Burns effect
  This creates movies out of your pictures in just three steps.
  First select your photos, customize the motion path and render the
