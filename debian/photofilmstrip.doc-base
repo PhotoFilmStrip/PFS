@@ -7,3 +7,5 @@ Abstract: This manual describes what photofilmstrip is
 Section: Video
 
 Format: HTML
+Index: /usr/share/doc/photofilmstrip/html/index.html
+Files: /usr/share/doc/photofilmstrip/html/*.html
