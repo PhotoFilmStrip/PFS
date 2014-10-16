@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Jens Göpfert <mail@jensgoepfert.de>
 Uploaders: Jens Göpfert <mail@jensgoepfert.de>
-Build-Depends: debhelper (>= 7), python (>= 2.6), dh-python, cdbs (>= 0.4.90)
+Build-Depends: debhelper (>= 7), python (>= 2.6), cdbs (>= 0.4.90)
 X-Python-Version: >= 2.6
 Standards-Version: 3.8.4
 Homepage: http://www.photofilmstrip.org
