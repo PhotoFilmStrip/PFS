@@ -88,6 +88,11 @@ class ActionRender(IAction):
         
         self._SaveSettings()
         
+        savedProps = Settings().GetRenderProperties(self.__rendererClass.__name__)
+        for prop in self.__rendererClass.GetProperties():
+            value = savedProps.get(prop.lower(), self.__rendererClass.GetProperty(prop))
+            self.__rendererClass.SetProperty(prop, value)
+        
         totalLength = self.__photoFilmStrip.GetDuration(False)
         
         renderer = self.__rendererClass()
