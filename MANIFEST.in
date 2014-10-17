@@ -1,12 +1,9 @@
 recursive-include data *
-recursive-include docs *
 recursive-include po *
-recursive-include res *
-recursive-include scripts *
-recursive-include windows *
 
+include windows/photofilmstrip.bat
+include windows/photofilmstrip-cli.bat
 include CHANGES
 include COPYING
 include MANIFEST.in
 include README
-include make.bat

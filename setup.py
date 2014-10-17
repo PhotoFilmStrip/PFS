@@ -120,6 +120,9 @@ class pfs_build(build):
             return 
         
         imgDir = os.path.abspath(os.path.join("res", "icons"))
+        if not os.path.exists(imgDir):
+            return
+
         target = os.path.join("photofilmstrip", "res", "images.py")
         target_mtime = os.path.getmtime(target)
         
