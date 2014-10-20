@@ -37,13 +37,17 @@ class ActionAutoPath(IAction):
         return _(u'Random motion')
     
     def Execute(self):
-        ratio = Aspect.ToFloat(self.__aspect)
-        width, height = PILBackend.GetImageSize(self.__picture.GetFilename())
+        try:
+            width, height = PILBackend.GetImageSize(self.__picture.GetFilename())
+        except:
+            return
+
         if self.__picture.GetWidth() == -1:
             # FIXME: stupid if
             self.__picture.SetWidth(width)
             self.__picture.SetHeight(height)
  
+        ratio = Aspect.ToFloat(self.__aspect)
         if width < height:
             # portrait
             startRect = (0, 0, width, width / ratio)

@@ -35,9 +35,12 @@ class ActionCenterPath(IAction):
         return _(u'Centralize motion')
     
     def Execute(self):
-        ratio = Aspect.ToFloat(self.__aspect)
-        width, height = PILBackend.GetImageSize(self.__picture.GetFilename())
+        try:
+            width, height = PILBackend.GetImageSize(self.__picture.GetFilename())
+        except:
+            return
         
+        ratio = Aspect.ToFloat(self.__aspect)
         picRatio = width / float(height)
         if picRatio > ratio:
             scaledWidth = height * ratio

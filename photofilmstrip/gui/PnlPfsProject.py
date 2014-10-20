@@ -438,11 +438,7 @@ class PnlPfsProject(wx.Panel, Observer):
         for idx, pic in enumerate(pics):
             if autopath:
                 actAp = ActionAutoPath(pic, self.__project.GetAspect())
-                try:
-                    actAp.Execute()
-                except:
-                    # if it is an invalid image file
-                    pass
+                actAp.Execute()
 
             self.lvPics.InsertPicture(position, pic)
             position += 1 
