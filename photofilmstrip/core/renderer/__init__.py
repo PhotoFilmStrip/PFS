@@ -2,7 +2,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2011 Jens Goepfert
+# Copyright (C) 2014 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,45 +18,3 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-
-import sys
-
-from photofilmstrip.core.renderer.MEncoderRenderer import (
-        MPEGRenderer, 
-        MPEG4MP3Renderer,
-        MPEG4AC3Renderer,
-        FlashMovieRenderer, 
-        MJPEGRenderer)
-from photofilmstrip.core.renderer.SingleFileRenderer import (
-        SingleFileRenderer)
-
-# from photofilmstrip.core.renderer.PyGameRenderer import (
-#         PyGameRenderer)
-from photofilmstrip.core.renderer.CairoRenderer import (
-        CairoRenderer)
-# from photofilmstrip.core.renderer.OpenCvRenderer import (
-#         OpenCvRenderer)
-from photofilmstrip.core.renderer.GStreamerRenderer import (
-        MkvX264MP3, OggTheoraVorbis)
-
-
-RENDERERS = [SingleFileRenderer]  
-             
-if sys.platform == "win32":
-    RENDERERS.extend([
-             MPEG4MP3Renderer,
-             MPEG4AC3Renderer,
-             MPEGRenderer,
-             FlashMovieRenderer,
-             MJPEGRenderer])
-else:
-    RENDERERS.extend([
-             MkvX264MP3,
-             OggTheoraVorbis])
-             
-#     RENDERERS.extend([
-#              OpenCvRenderer,
-#              PyGameRenderer])
-    
-RENDERERS.extend([
-             CairoRenderer])

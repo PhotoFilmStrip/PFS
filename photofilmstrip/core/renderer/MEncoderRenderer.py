@@ -29,8 +29,7 @@ from subprocess import Popen, PIPE, STDOUT
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
-from photofilmstrip.core.renderer.RendererException import RendererException
-from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.BaseRenderer import BaseRenderer, RendererException
 
 
 class ResultFeeder(threading.Thread):
@@ -57,7 +56,7 @@ class ResultFeeder(threading.Thread):
             self.renderer.GetSink().write(result)
 
 
-class MEncoderRenderer(BaseRenderer):
+class _MEncoderRenderer(BaseRenderer):
     
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -66,6 +65,7 @@ class MEncoderRenderer(BaseRenderer):
         self._encErr = None
         
         self._procEncoder = None
+        self._feeder = None
         
     @staticmethod
     def CheckDependencies(msgList):
@@ -108,6 +108,7 @@ class MEncoderRenderer(BaseRenderer):
             if log:
                 log.close()
         self._procEncoder = None
+        self._feeder = None
         
     def ProcessAbort(self):
         self.__CleanUp()
@@ -170,50 +171,33 @@ class MEncoderRenderer(BaseRenderer):
         return bitrate
 
 
-class MPEGRenderer(MEncoderRenderer):
+class _MPEGRenderer(_MEncoderRenderer):
     
     def __init__(self):
-        MEncoderRenderer.__init__(self)
+        _MEncoderRenderer.__init__(self)
         
     @staticmethod
-    def GetName():
-        return _(u"MPEG(1/2)-Video (MPG)")
-    
-    @staticmethod
     def GetProperties():
-        return MEncoderRenderer.GetProperties()
+        return _MEncoderRenderer.GetProperties()
 
     @staticmethod
     def GetDefaultProperty(prop):
-        return MEncoderRenderer.GetDefaultProperty(prop)
+        return _MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
         aspect = "%.3f" % Aspect.ToFloat(self._aspect)
         profile = self.GetProfile()
         if profile.GetVideoNorm() == OutputProfile.PAL:
             keyint = 15
-            res = profile.GetResolution()
+#             res = profile.GetResolution()
         else:
             keyint = 18
-            res = profile.GetResolution()
+#             res = profile.GetResolution()
             
-        if profile.GetName() == "VCD":
-            mpgFormat = "xvcd"
-            srate = "44100"
-            lavcopts = "vcodec=mpeg1video:keyint=%(keyint)s:vrc_buf_size=327:vrc_minrate=1152:vbitrate=1152:vrc_maxrate=1152:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
-                                                                                                                                                                           "aspect": aspect}
-        elif profile.GetName() == "SVCD":
-            mpgFormat = "xsvcd"
-            srate = "44100"
-            lavcopts = "vcodec=mpeg2video:mbd=2:keyint=%(keyint)s:vrc_buf_size=917:vrc_minrate=600:vbitrate=2500:vrc_maxrate=2500:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
-                                                                                                                                                                                "aspect": aspect}
-        elif profile.GetName() == "DVD":
-            mpgFormat = "dvd:tsaf"
-            srate = "48000"
-            lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
-                                                                                                                                                                     "aspect": aspect}
-        else:
+        if profile.GetName() not in ["VCD", "SVCD", "DVD"]:
             raise RendererException(_(u'MPEG format supports only VCD, SVCD and DVD profile!'))
+
+        srate, lavcopts = self._GetCmdOptions(aspect, keyint)
             
 #              "-vf scale=%(resx)d:%(resy)d,harddup " \
 #              "-of mpeg -mpegopts format=%(format)s " \
@@ -229,12 +213,57 @@ class MPEGRenderer(MEncoderRenderer):
                 "-o", os.path.join(self.GetOutputPath(), "output.mpg"),
                 "-"]        
         return cmd
+    
+    def _GetCmdOptions(self, aspect, keyint):
+        raise NotImplementedError()
 
 
-class MPEG4AC3Renderer(MEncoderRenderer):
+class VCDFormat(_MPEGRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "VCD (MPG)"
+    
+    def _GetCmdOptions(self, aspect, keyint):
+#         mpgFormat = "xvcd"
+        srate = "44100"
+        lavcopts = "vcodec=mpeg1video:keyint=%(keyint)s:vrc_buf_size=327:vrc_minrate=1152:vbitrate=1152:vrc_maxrate=1152:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
+                                                                                                                                                                       "aspect": aspect}
+        return srate, lavcopts
+
+
+class SVCDFormat(_MPEGRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "SVCD (MPG)"
+    
+    def _GetCmdOptions(self, aspect, keyint):
+#         mpgFormat = "xsvcd"
+        srate = "44100"
+        lavcopts = "vcodec=mpeg2video:mbd=2:keyint=%(keyint)s:vrc_buf_size=917:vrc_minrate=600:vbitrate=2500:vrc_maxrate=2500:acodec=mp2:abitrate=224:aspect=%(aspect)s" % {"keyint": keyint,
+                                                                                                                                                                            "aspect": aspect}
+        return srate, lavcopts
+
+
+class DVDFormat(_MPEGRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "DVD (MPG)"
+    
+    def _GetCmdOptions(self, aspect, keyint):
+#         mpgFormat = "dvd:tsaf"
+        srate = "48000"
+        lavcopts = "vcodec=mpeg2video:vrc_buf_size=1835:vrc_maxrate=9800:vbitrate=5000:keyint=%(keyint)s:vstrict=0:acodec=ac3:abitrate=192:aspect=%(aspect)s" % {"keyint": keyint,
+                                                                                                                                                                 "aspect": aspect}
+        return srate, lavcopts
+
+
+class MPEG4AC3Renderer(_MEncoderRenderer):
     
     def __init__(self):
-        MEncoderRenderer.__init__(self)
+        _MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
@@ -242,13 +271,13 @@ class MPEG4AC3Renderer(MEncoderRenderer):
 
     @staticmethod
     def GetProperties():
-        return MEncoderRenderer.GetProperties() + ["FFOURCC"]
+        return _MEncoderRenderer.GetProperties() + ["FFOURCC"]
 
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "FFOURCC":
             return "XVID"
-        return MEncoderRenderer.GetDefaultProperty(prop)
+        return _MEncoderRenderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
         cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
@@ -264,14 +293,14 @@ class MPEG4AC3Renderer(MEncoderRenderer):
         return cmd
 
 
-class MEncoderMP3Renderer(MEncoderRenderer):
+class _MEncoderMP3Renderer(_MEncoderRenderer):
     
     def __init__(self):
-        MEncoderRenderer.__init__(self)
+        _MEncoderRenderer.__init__(self)
         
     @staticmethod
     def CheckDependencies(msgList):
-        MEncoderRenderer.CheckDependencies(msgList)
+        _MEncoderRenderer.CheckDependencies(msgList)
         if msgList:
             return
         
@@ -286,10 +315,10 @@ class MEncoderMP3Renderer(MEncoderRenderer):
             msgList.append(_(u"mencoder with MP3 support (mp3lame) required!"))
 
 
-class MPEG4MP3Renderer(MEncoderMP3Renderer):
+class MPEG4MP3Renderer(_MEncoderMP3Renderer):
     
     def __init__(self):
-        MEncoderMP3Renderer.__init__(self)
+        _MEncoderMP3Renderer.__init__(self)
         
     @staticmethod
     def GetName():
@@ -297,13 +326,13 @@ class MPEG4MP3Renderer(MEncoderMP3Renderer):
 
     @staticmethod
     def GetProperties():
-        return MEncoderMP3Renderer.GetProperties() + ["FFOURCC"]
+        return _MEncoderMP3Renderer.GetProperties() + ["FFOURCC"]
 
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "FFOURCC":
             return "XVID"
-        return MEncoderMP3Renderer.GetDefaultProperty(prop)
+        return _MEncoderMP3Renderer.GetDefaultProperty(prop)
 
     def _GetCmd(self):
         cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
@@ -319,23 +348,15 @@ class MPEG4MP3Renderer(MEncoderMP3Renderer):
         return cmd
 
 
-class FlashMovieRenderer(MEncoderMP3Renderer):
+class FlashMovieRenderer(_MEncoderMP3Renderer):
     
     def __init__(self):
-        MEncoderMP3Renderer.__init__(self)
+        _MEncoderMP3Renderer.__init__(self)
         
     @staticmethod
     def GetName():
         return _(u"Flash-Video (FLV)")
     
-    @staticmethod
-    def GetProperties():
-        return MEncoderMP3Renderer.GetProperties()
-
-    @staticmethod
-    def GetDefaultProperty(prop):
-        return MEncoderMP3Renderer.GetDefaultProperty(prop)
-
     def _GetCmd(self):
         cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()
@@ -350,23 +371,15 @@ class FlashMovieRenderer(MEncoderMP3Renderer):
         return cmd
 
 
-class MJPEGRenderer(MEncoderRenderer):
+class MJPEGRenderer(_MEncoderRenderer):
     
     def __init__(self):
-        MEncoderRenderer.__init__(self)
+        _MEncoderRenderer.__init__(self)
         
     @staticmethod
     def GetName():
         return _(u"Motion-JPEG (AVI)")
     
-    @staticmethod
-    def GetProperties():
-        return MEncoderRenderer.GetProperties()
-
-    @staticmethod
-    def GetDefaultProperty(prop):
-        return MEncoderRenderer.GetDefaultProperty(prop)
-
     def _GetCmd(self):
         cmd = ["mencoder", "-demuxer", "lavf", "-fps", "25", "-lavfdopts", "format=mjpeg"]
         cmd += self._GetAudioArgs()

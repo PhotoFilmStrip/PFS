@@ -49,23 +49,13 @@ class CairoRenderer(BaseRenderer):
         
     @staticmethod
     def GetName():
-        return u"Cairo"
+        return _(u"Preview")
     
     @staticmethod
     def CheckDependencies(msgList):
         BaseRenderer.CheckDependencies(msgList)
         if cairo is None:
             msgList.append("cairo not installed!")
-
-    @staticmethod
-    def GetProperties():
-        return BaseRenderer.GetProperties() + ["RenderSubtitle"]
-
-    @staticmethod
-    def GetDefaultProperty(prop):
-        if prop == "RenderSubtitle":
-            return "false"
-        return BaseRenderer.GetDefaultProperty(prop)
 
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:

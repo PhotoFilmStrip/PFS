@@ -26,7 +26,7 @@ from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.core.OutputProfile import GetOutputProfiles
-from photofilmstrip.core.renderer import RENDERERS
+from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.lib.util import Encode
 from photofilmstrip.core.RenderEngine import RenderEngine
 

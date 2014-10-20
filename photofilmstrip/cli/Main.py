@@ -31,7 +31,7 @@ from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
 from photofilmstrip.core.ProjectFile import ProjectFile
-from photofilmstrip.core.renderer import RENDERERS
+from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
 from photofilmstrip.action.ActionRender import ActionRender
 from photofilmstrip.lib.jobimpl.JobManager import JobManager

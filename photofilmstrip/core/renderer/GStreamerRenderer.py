@@ -36,10 +36,11 @@ except ImportError:
     gst = None
     gobject = None
 
+from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
-from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.BaseRenderer import BaseRenderer, RendererException
 from photofilmstrip.core.Subtitle import SrtParser
-from photofilmstrip.core.renderer.RendererException import RendererException
+
 
 class _GStreamerRenderer(BaseRenderer):
     
@@ -362,3 +363,139 @@ class OggTheoraVorbis(_GStreamerRenderer):
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
         
+        
+class VCDFormat(_GStreamerRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "VCD (MPG)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = gst.element_factory_find("theoraenc")
+            if aEnc is None:
+                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins) required!"))
+                
+            vEnc = gst.element_factory_find("vorbisenc")
+            if vEnc is None:
+                msgList.append(_(u"Vorbis-Codec (gstreamer0.10-plugins) required!"))
+            
+            mux = gst.element_factory_find("oggmux")
+            if mux is None:
+                msgList.append(_(u"OGV-Muxer (gstreamer0.10-plugins) required!"))
+    
+    def _GetExtension(self):
+        return "mpg"
+    
+    def _GetMux(self):
+        mux = gst.element_factory_make("mpegtsmux", None)
+        return mux    
+        
+    def _GetAudioEncoder(self):
+        audioEnc = gst.element_factory_make("twolame", None)
+        return audioEnc
+        
+    def _GetVideoEncoder(self):
+        videoEnc = gst.element_factory_make("mpeg2enc", None)
+        videoEnc.set_property("format", 1)
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        return videoEnc
+
+
+class SVCDFormat(_GStreamerRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "SVCD (MPG)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = gst.element_factory_find("theoraenc")
+            if aEnc is None:
+                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins) required!"))
+                
+            vEnc = gst.element_factory_find("vorbisenc")
+            if vEnc is None:
+                msgList.append(_(u"Vorbis-Codec (gstreamer0.10-plugins) required!"))
+            
+            mux = gst.element_factory_find("oggmux")
+            if mux is None:
+                msgList.append(_(u"OGV-Muxer (gstreamer0.10-plugins) required!"))
+    
+    def _GetExtension(self):
+        return "mpg"
+    
+    def _GetMux(self):
+        mux = gst.element_factory_make("mpegtsmux", None)
+        return mux    
+        
+    def _GetAudioEncoder(self):
+        audioEnc = gst.element_factory_make("twolame", None)
+        return audioEnc
+        
+    def _GetVideoEncoder(self):
+        videoEnc = gst.element_factory_make("mpeg2enc", None)
+        videoEnc.set_property("format", 4)
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        if self._aspect == Aspect.ASPECT_16_9:
+            gstAspect = 3
+        elif self._aspect == Aspect.ASPECT_4_3:
+            gstAspect = 2
+        else:
+            gstAspect = 0
+        videoEnc.set_property("aspect", gstAspect)
+        videoEnc.set_property("dummy-svcd-sof", 0)
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc
+
+
+class DVDFormat(_GStreamerRenderer):
+    
+    @staticmethod
+    def GetName():
+        return "DVD (MPG)"
+    
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = gst.element_factory_find("theoraenc")
+            if aEnc is None:
+                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins) required!"))
+                
+            vEnc = gst.element_factory_find("vorbisenc")
+            if vEnc is None:
+                msgList.append(_(u"Vorbis-Codec (gstreamer0.10-plugins) required!"))
+            
+            mux = gst.element_factory_find("oggmux")
+            if mux is None:
+                msgList.append(_(u"OGV-Muxer (gstreamer0.10-plugins) required!"))
+    
+    def _GetExtension(self):
+        return "mpg"
+    
+    def _GetMux(self):
+        mux = gst.element_factory_make("mpegtsmux", None)
+        return mux    
+        
+    def _GetAudioEncoder(self):
+        audioEnc = gst.element_factory_make("twolame", None)
+        return audioEnc
+        
+    def _GetVideoEncoder(self):
+        videoEnc = gst.element_factory_make("mpeg2enc", None)
+        videoEnc.set_property("format", 8)
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        if self._aspect == Aspect.ASPECT_16_9:
+            gstAspect = 3
+        elif self._aspect == Aspect.ASPECT_4_3:
+            gstAspect = 2
+        else:
+            gstAspect = 0
+        videoEnc.set_property("aspect", gstAspect)
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc

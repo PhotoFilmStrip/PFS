@@ -91,5 +91,16 @@ class BaseRenderer(object):
     def GetSink(self):
         raise NotImplementedError()
     
-    def Abort(self):
+    def ProcessAbort(self):
         raise NotImplementedError()
+
+
+class RendererException(Exception):
+    
+    def __init__(self, msg):
+        if isinstance(msg, unicode):
+            self.message = msg.encode("utf-8")
+        self.msg = msg
+        
+    def GetMessage(self):
+        return self.msg
