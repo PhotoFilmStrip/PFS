@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=2.1.0
-Encoding=UTF-8
 Name=PhotoFilmStrip
 GenericName=Slideshow Creator
 Comment=Create animated slideshows
+Keywords=album;gallery;image;images;photo;photographs;photos;picture;pictures;photography;video;
 Exec=photofilmstrip
 Icon=photofilmstrip
 Terminal=false

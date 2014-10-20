@@ -341,6 +341,7 @@ platform_data = []
 if os.name == "nt":
     platform_scripts.append("windows/photofilmstrip.bat")
     platform_scripts.append("windows/photofilmstrip-cli.bat")
+    platform_data.append((os.path.join("share", "doc", "photofilmstrip"), ["windows/photofilmstrip.chm"]))
 else:
     platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
     platform_data.append(("share/pixmaps", ["data/photofilmstrip.xpm"]))
@@ -379,7 +380,7 @@ setup(
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
                 (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("docs/html/*.*")),
-                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
+#                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
     ] + platform_data,
     scripts=[
              "scripts/photofilmstrip",
