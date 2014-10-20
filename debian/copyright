@@ -1,5 +1,5 @@
-This package was debianized by Jens Göpfert <jens@sg-dev.de> on
-Sun, 05 Oct 2008 17:31:35 +0200.
+This package was debianized by Jens Göpfert <mail@jensgoepfert.de> on
+Sun, 20 Oct 2014 17:31:35 +0200.
 
 It was downloaded from:
 
@@ -7,11 +7,11 @@ It was downloaded from:
 
 Upstream Author:
 
-    Jens Göpfert <jens@sg-dev.de>
+    Jens Göpfert <mail@jensgoepfert.de>
 
 Copyright:
 
-    Copyright (C) 2008-2011 Jens Göpfert
+    Copyright (C) 2008-2014 Jens Göpfert
 
 License:
 
@@ -32,5 +32,5 @@ License:
 On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.
 
-The Debian packaging is Copyright (C) 2011, Jens Göpfert <jens@sg-dev.de> and
+The Debian packaging is Copyright (C) 2014, Jens Göpfert <mail@jensgoepfert.de> and
 is licensed under the GPL, see above.
