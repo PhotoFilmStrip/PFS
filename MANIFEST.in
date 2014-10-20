@@ -1,6 +1,7 @@
 recursive-include data *
 recursive-include po *
 
+include docs/manpage/*
 include windows/photofilmstrip.bat
 include windows/photofilmstrip-cli.bat
 include CHANGES
