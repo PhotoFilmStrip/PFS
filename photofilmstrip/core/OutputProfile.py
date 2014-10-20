@@ -19,8 +19,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import sys
-
 from photofilmstrip.core.Aspect import Aspect
 
 
@@ -29,7 +27,7 @@ class OutputProfile(object):
     PAL  = 1
     NTSC = 2
     
-    def __init__(self, name, bitrate, resPal, resNtsc=None, nameWithRes=True):
+    def __init__(self, name, bitrate, resPal, resNtsc=None):
         self.__name = name
         self.__resPal = resPal
         if resNtsc is None:
@@ -40,11 +38,6 @@ class OutputProfile(object):
         
         self.__videoNorm = OutputProfile.PAL
 
-        if nameWithRes:
-            self.__name = "%s (%dx%d)" % (name, 
-                                          self.GetResolution()[0], 
-                                          self.GetResolution()[1])
-        
     def GetName(self, withRes=False):
         if withRes:
             return "%s (%dx%d)" % (self.__name, self.GetResolution()[0], self.GetResolution()[1])
@@ -76,17 +69,11 @@ class OutputProfile(object):
 
 
 
-
 def __CreateDefaultProfiles():
-    if sys.platform == "win32":
-        vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240), False)
-        svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480), False)
-        dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480), False)
-    
-        return [vcd, svcd, dvd]
-    else:
-        return []
-
+    vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240))
+    svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480))
+    dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480))
+    return [vcd, svcd, dvd]
     
 def __Create16_9Profiles():
     medium = OutputProfile("Medium", 4000, (640, 360))
