@@ -21,7 +21,7 @@
 
 import sys
 
-from photofilmstrip.core.renderer.MovieRenderer import (
+from photofilmstrip.core.renderer.MEncoderRenderer import (
         MPEGRenderer, 
         MPEG4MP3Renderer,
         MPEG4AC3Renderer,
