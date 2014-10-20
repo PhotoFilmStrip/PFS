@@ -1,0 +1,6 @@
+photofilmstrip (1.4.0-1) unstable; urgency=low
+
+  * Initial release. (Closes: #586268)
+
+ -- Gürkan Sengün <gurkan@phys.ethz.ch>  Thu, 27 Jan 2011 10:26:08 +0100
+
