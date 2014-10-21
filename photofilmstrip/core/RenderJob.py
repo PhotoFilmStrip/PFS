@@ -38,7 +38,7 @@ class RenderJob(VisualJob):
                 if len(self.imgKeyStack) > 2:
                     key = self.imgKeyStack.pop(0)
                     self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
-                    self.imgCache[key] = None
+                    del self.imgCache[key]
                                     
                 self.imgCache[pic.GetKey()] = PILBackend.GetImage(pic)
                 self.imgKeyStack.append(pic.GetKey())
