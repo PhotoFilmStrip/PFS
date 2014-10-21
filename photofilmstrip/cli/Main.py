@@ -29,7 +29,7 @@ from photofilmstrip.lib.common.ObserverPattern import Observer
 
 from photofilmstrip.lib.util import Decode
 
-from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
+from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles, GetMPEGProfiles
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
@@ -97,7 +97,7 @@ class DummyGui(IVisualJobHandler):
         pass
 
 
-def main():
+def main(showHelp=False):
     parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(), 
                           version="%%prog %s" % Constants.APP_VERSION_EX)
 
@@ -108,11 +108,15 @@ def main():
 
     parser.add_option("-p", "--project", help=_(u"specifies the project file"))
     parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. Use - for stdout."), metavar="PATH")
-    parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=3, type="int")
+    parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=0, type="int")
     parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
-    parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=1, type="int")
+    parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=4, type="int")
     parser.add_option("-a", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
     parser.add_option("-d", "--debug", action="store_true", default=False, help=u"enable debug logging")
+    
+    if showHelp:
+        parser.print_help()
+        return 0
     
     options = parser.parse_args()[0]
 
@@ -126,13 +130,6 @@ def main():
         parser.print_help()
         logging.error(_(u"no project file specified!"))
         return 2
-
-
-    if options.profile >= len(profiles):
-        parser.print_help()
-        logging.error(_(u"invalid profile specified: %s"), options.profile)
-        return 3
-    profile = profiles[options.profile]
 
 
     if options.videonorm == "p":
@@ -152,6 +149,15 @@ def main():
     rendererClass = RENDERERS[options.format]
 
     
+    profile = GetMPEGProfiles().get(rendererClass.GetName())
+    if profile is None:
+        if options.profile >= len(profiles):
+            parser.print_help()
+            logging.error(_(u"invalid profile specified: %s"), options.profile)
+            return 3
+        profile = profiles[options.profile]
+
+
     prjFile = ProjectFile(filename=options.project)
     if not prjFile.Load():
         logging.error(_(u"cannot load photofilmstrip"))

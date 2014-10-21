@@ -51,8 +51,8 @@ if not msgList:
             GSR.VCDFormat,
             GSR.SVCDFormat,
             GSR.DVDFormat,
-            GSR.MkvX264MP3,
-            GSR.OggTheoraVorbis])
+            GSR.OggTheoraVorbis,
+            GSR.MkvX264MP3])
              
 # RENDERERS.extend([
 #          OCR.OpenCvRenderer,

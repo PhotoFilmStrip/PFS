@@ -69,7 +69,7 @@ class OutputProfile(object):
 
 
 
-def __CreateDefaultProfiles():
+def __CreateMPEGProfiles():
     vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240))
     svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480))
     dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480))
@@ -99,8 +99,17 @@ def __Create3_2Profiles():
 
 def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
     if aspect == Aspect.ASPECT_4_3:
-        return __CreateDefaultProfiles() + __Create4_3Profiles()
+        return __Create4_3Profiles()
     elif aspect == Aspect.ASPECT_3_2:
         return __Create3_2Profiles()
     else:
-        return __CreateDefaultProfiles() + __Create16_9Profiles()
+        return __Create16_9Profiles()
+
+
+def GetMPEGProfiles():
+    mpgProfiles = __CreateMPEGProfiles()
+    result = {}
+    for prof in mpgProfiles:
+        result[prof.GetName()] = prof
+        result[prof.GetName() + " (MPG)"] = prof
+    return result

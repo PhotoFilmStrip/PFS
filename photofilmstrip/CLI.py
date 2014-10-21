@@ -30,8 +30,14 @@ class CliApp(AppMixin):
         return '\n%(levelname)s: %(message)s'
     
     def _OnStart(self):
+        showHelp = False
+        for helpOption in ("-h", "--help"):
+            if helpOption in sys.argv:
+                showHelp = True
+                sys.argv.remove(helpOption)
+
         from photofilmstrip.cli.Main import main
-        return main()
+        return main(showHelp)
 
 
 

@@ -26,7 +26,8 @@ import wx
 import wx.combo
 
 
-from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles
+from photofilmstrip.core.OutputProfile import (
+        OutputProfile, GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.Renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
@@ -203,11 +204,10 @@ class DlgRender(wx.Dialog):
         self.__renderEngine = None
         
         for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
-            if profile.GetName() not in ("VCD", "SVCD", "DVD"):
-                self.choiceProfile.Append(u"%s (%sx%s)" % (profile.GetName(),
-                                                           profile.GetResolution()[0],
-                                                           profile.GetResolution()[1]), 
-                                          profile)
+            self.choiceProfile.Append(u"%s (%sx%s)" % (profile.GetName(),
+                                                       profile.GetResolution()[0],
+                                                       profile.GetResolution()[1]), 
+                                      profile)
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
@@ -269,15 +269,9 @@ class DlgRender(wx.Dialog):
         formatData = self.__GetChoiceDataSelected(self.choiceFormat)
         rendererClass = formatData.PRendererClass
 
-        profile = None
-        if formatData.IsMPEG():
-            for _prof in GetOutputProfiles(self.__photoFilmStrip.GetAspect()):
-                if rendererClass.GetName().startswith(_prof.GetName()):
-                    profile = _prof
-                    break
-        else:
+        profile = GetMPEGProfiles().get(rendererClass.GetName())
+        if profile is None:
             profile = self.__GetChoiceDataSelected(self.choiceProfile)
-            
         if profile is None:
             return
             
