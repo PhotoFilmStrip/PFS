@@ -34,7 +34,7 @@ class ActionPlayVideo(IAction):
         return _(u'Play video')
     
     def Execute(self):
-        for ext in ('avi', 'flv', 'mkv', 'ogv'):
+        for ext in ('avi', 'flv', 'mkv', 'ogv', 'mpg'):
             videoFile = os.path.join(self.outpath, "output.%s" % ext)
             if os.path.exists(videoFile):
                 break

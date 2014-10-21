@@ -201,14 +201,14 @@ class PnlPfsProject(wx.Panel, Observer):
               self.OnLvPicsSelectionChanged, id=wxID_PNLPFSPROJECTLVPICS)
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_BACK',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLPFSPROJECTCMDMOVELEFT,
+              wx.ART_OTHER, (32, 32)), id=wxID_PNLPFSPROJECTCMDMOVELEFT,
               name=u'cmdMoveLeft', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdMoveLeft.Bind(wx.EVT_BUTTON, self.OnCmdMoveLeftButton,
               id=wxID_PNLPFSPROJECTCMDMOVELEFT)
 
         self.cmdMoveRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_FORWARD',
-              wx.ART_TOOLBAR, wx.DefaultSize),
+              wx.ART_OTHER, (32, 32)),
               id=wxID_PNLPFSPROJECTCMDMOVERIGHT, name=u'cmdMoveRight',
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
@@ -216,7 +216,7 @@ class PnlPfsProject(wx.Panel, Observer):
               id=wxID_PNLPFSPROJECTCMDMOVERIGHT)
 
         self.cmdRemove = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_DELETE',
-              wx.ART_TOOLBAR, wx.DefaultSize), id=wxID_PNLPFSPROJECTCMDREMOVE,
+              wx.ART_OTHER, (32, 32)), id=wxID_PNLPFSPROJECTCMDREMOVE,
               name=u'cmdRemove', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdRemove.Bind(wx.EVT_BUTTON, self.OnCmdRemoveButton,
