@@ -1,9 +1,9 @@
 
 [Setup]
 AppName           = PhotoFilmStrip
-AppPublisher      = Jens G�pfert
+AppPublisher      = Jens Göpfert
 AppPublisherURL   = http://www.photofilmstrip.org
-AppCopyright      = Copyright (C) 2008 Jens G�pfert
+AppCopyright      = Copyright (C) 2014 Jens Göpfert
 AppVerName        = {code:getAppVerName}
 AppVersion        = {code:getAppVer}
 ;VersionInfoVersion= {code:getVerInfo}
