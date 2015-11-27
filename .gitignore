@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[co]
+
+# Distribution / packaging
+.Python
+build/
+dist/
+sdist/
+var/
+
+
+.PhotoFilmStrip
