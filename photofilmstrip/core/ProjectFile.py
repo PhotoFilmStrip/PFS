@@ -196,7 +196,7 @@ class ProjectFile(object):
     def __ThumbToQuery(self, picId, pic):
         pilThumb = PILBackend.GetThumbnail(pic, height=120)
         thumbWidth, thumbHeight = pilThumb.size
-        thumbData = buffer(pilThumb.tostring())
+        thumbData = buffer(pilThumb.tobytes())
         
         query = "INSERT INTO `thumbnail` (" \
                     "picture_id, width, height, data" \

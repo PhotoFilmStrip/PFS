@@ -100,7 +100,7 @@ class PyGameRenderer(BaseRenderer):
     def _PilToPyGame(self, pilImg):
         mode = pilImg.mode
         assert mode in "RGB", "RGBA"
-        return pygame.image.fromstring(pilImg.tostring(), pilImg.size, mode)
+        return pygame.image.fromstring(pilImg.tobytes(), pilImg.size, mode)
 
 
 #    def CropAndResize(self, ctx, rect):

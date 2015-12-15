@@ -111,7 +111,7 @@ class CairoRenderer(BaseRenderer):
     def _PilToCairo(self, pilImg):
         pilImg = pilImg.copy()
         w, h = pilImg.size  
-        data = pilImg.convert('RGBA').tostring()
+        data = pilImg.convert('RGBA').tobytes()
         buff = array.array('B', data)
         cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_ARGB32, w, h)
 #        cairoImage = cairo.ImageSurface.create_for_data(buff, cairo.FORMAT_RGB24, w, h)
