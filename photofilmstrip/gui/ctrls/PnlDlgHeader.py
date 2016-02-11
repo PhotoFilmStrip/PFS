@@ -97,13 +97,15 @@ class PnlDlgHeader(wx.Panel):
 
         self._init_sizers()
 
-    def __init__(self, parent, id, pos, size, style, name):
+    def __init__(self, parent, id=wx.ID_ANY,
+                 pos=wx.DefaultPosition, size=wx.DefaultSize,
+                 style=wx.TAB_TRAVERSAL, name=u'PnlDlgHeader'):
         self._init_ctrls(parent)
 
         font = self.stHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
         self.stHeader.SetFont(font)
-                
+
     def SetErrorMessage(self, msg):
         if msg:
             msg = wordwrap(msg, 350, wx.ClientDC(self.stErrMsg))

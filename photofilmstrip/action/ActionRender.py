@@ -81,9 +81,11 @@ class ActionRender(IAction):
         settings.SetUsedRenderer(idxRenderer)
     
     def Execute(self):
-        audioFile = self.__photoFilmStrip.GetAudioFile()
-        if not self.CheckFile(audioFile):
-            audioFile = None
+        audioFiles = []
+        for audioFile in self.__photoFilmStrip.GetAudioFiles():
+            if self.CheckFile(audioFile):
+                audioFiles.append(Encode(audioFile, sys.getfilesystemencoding()))
+
         outpath = self._CheckAndGetOutpath()
         
         self._SaveSettings()
@@ -100,8 +102,7 @@ class ActionRender(IAction):
                       self.__photoFilmStrip.GetAspect(),
                       outpath)
         
-        if audioFile:
-            renderer.SetAudioFile(Encode(audioFile, sys.getfilesystemencoding()))
+        renderer.SetAudioFiles(audioFiles)
 
         name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
                             self.__profile.GetName())

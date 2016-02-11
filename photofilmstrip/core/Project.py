@@ -32,7 +32,7 @@ class Project(Observable):
         self.__pictures = []
         self.__filename = filename
         
-        self.__audioFile = None
+        self.__audioFiles = []
         self.__aspect = Aspect.ASPECT_16_9
         self.__duration = None
         
@@ -57,13 +57,19 @@ class Project(Observable):
         if self.GetDuration() != oldDuration:
             self.Notify("duration")
         
-    def SetAudioFile(self, audioFile):
-        if audioFile == self.__audioFile:
-            return
-        self.__audioFile = audioFile
+    def SetAudioFiles(self, audioFiles):
+        self.__audioFiles = audioFiles
         self.Notify("audiofile")
     def GetAudioFile(self):
-        return self.__audioFile
+        '''
+        compatibility
+        '''
+        if self.__audioFiles:
+            return self.__audioFiles[0]
+        else:
+            return None
+    def GetAudioFiles(self):
+        return self.__audioFiles
     
     def SetAspect(self, aspect):
         if aspect == self.__aspect:
@@ -79,9 +85,7 @@ class Project(Observable):
         self.__duration = duration
         self.Notify("duration")
     def GetDuration(self, calc=True):
-        if self.__duration is None:
-            if not calc:
-                return None
+        if calc:
             totalTime = 0
             for pic in self.__pictures:
                 totalTime += pic.GetDuration() + pic.GetTransitionDuration()

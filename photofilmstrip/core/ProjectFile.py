@@ -231,12 +231,14 @@ class ProjectFile(object):
         
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
         for name, value in [('rev', SCHEMA_REV),
-                            ('audiofile', self._project.GetAudioFile()),
                             ('aspect', self._project.GetAspect()),
                             ('duration', self._project.GetDuration(False))]:
             if value is not None:
                 cur.execute(query, (name, value))
         
+        for audioFile in self._project.GetAudioFiles():
+            cur.execute(query, ('audiofile', audioFile))
+
         self.__Close(commit=True)
         
         self._project.SetFilename(self._filename)
@@ -320,7 +322,7 @@ class ProjectFile(object):
         project = Project(self._filename)
         project.SetPictures(picList)
         if fileRev >= 2:
-            project.SetAudioFile(self.__LoadProperty(cur, "audiofile", unicode))
+            project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", unicode))
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
             project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
         
@@ -360,5 +362,16 @@ class ProjectFile(object):
         else:
             return default
     
+    def __LoadProperties(self, cur, propName, typ):
+        cur.execute("SELECT value "
+                    "FROM `property` "
+                    "WHERE name=? "
+                    "ORDER BY property_id ASC", (propName, ))
+        result = []
+        for row in cur:
+            if row:
+                result.append(typ(row[0]))
+        return result
+
     def SetAltPath(self, imgPath, path):
         self.__altPaths[imgPath] = path

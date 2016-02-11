@@ -37,16 +37,17 @@ from photofilmstrip.lib.util import Encode
 class GPlayer(object):
     
     def __init__(self, filename):
-        self.filename = Encode(filename, sys.getfilesystemencoding())
+        self.__filename = filename
         self.__proc = None
         self.__length = None
         
         self.__Identify()
 
     def __Identify(self):
+        filename = Encode(self.__filename, sys.getfilesystemencoding())
         d = gst.parse_launch("filesrc name=source ! decodebin2 ! fakesink")
         source = d.get_by_name("source")
-        source.set_property("location", self.filename)
+        source.set_property("location", filename)
         d.set_state(gst.STATE_PLAYING)
         d.get_state()
         gstFormat = gst.Format(gst.FORMAT_TIME)
@@ -58,6 +59,9 @@ class GPlayer(object):
         
         self.__length = duration / gst.SECOND
         
+    def GetFilename(self):
+        return self.__filename
+
     def IsOk(self):
         return self.__length is not None
     
@@ -66,9 +70,10 @@ class GPlayer(object):
     
     def Play(self):
         if self.__proc is None:
+            filename = Encode(self.__filename, sys.getfilesystemencoding())
             self.__proc = gst.parse_launch("filesrc name=source ! decodebin2 ! autoaudiosink")
             source = self.__proc.get_by_name("source")
-            source.set_property("location", self.filename)
+            source.set_property("location", filename)
             self.__proc.set_state(gst.STATE_PLAYING)
     
     def Stop(self):

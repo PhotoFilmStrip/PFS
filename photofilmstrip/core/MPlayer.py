@@ -31,14 +31,15 @@ from photofilmstrip.lib.util import Encode
 class MPlayer(object):
     
     def __init__(self, filename):
-        self.filename = Encode(filename, sys.getfilesystemencoding())
+        self.__filename = filename
         self.__proc = None
         self.__length = None
         
         self.__Identify()
 
     def __Identify(self):
-        cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", self.filename]
+        filename = Encode(self.__filename, sys.getfilesystemencoding())
+        cmd = ["mplayer", "-identify", "-frames", "0", "-ao", "null", "-vo", "null", filename]
         try:
             proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=False)
             output = proc.communicate()[0]
@@ -57,6 +58,9 @@ class MPlayer(object):
 #            import traceback
 #            traceback.print_exc()
         
+    def GetFilename(self):
+        return self.__filename
+
     def IsOk(self):
         return self.__length is not None
     
@@ -65,7 +69,8 @@ class MPlayer(object):
     
     def Play(self):
         if self.__proc is None:
-            cmd = ["mplayer", self.filename]
+            filename = Encode(self.__filename, sys.getfilesystemencoding())
+            cmd = ["mplayer", filename]
             try:
                 self.__proc = Popen(cmd, stdin=PIPE, stderr=PIPE, stdout=PIPE, shell=False)
             except Exception, err:

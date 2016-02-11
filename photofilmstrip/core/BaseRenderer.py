@@ -36,7 +36,7 @@ class BaseRenderer(object):
     def __init__(self):
         self._outputPath = None
         self._profile = None
-        self._audioFile = None
+        self._audioFiles = []
         self._aspect = None
 
     def Init(self, profile, aspect, outputPath):
@@ -71,10 +71,18 @@ class BaseRenderer(object):
     def GetDefaultProperty(prop):
         return _(u"<default>")
     
-    def SetAudioFile(self, audioFile):
-        self._audioFile = audioFile
+    def SetAudioFiles(self, audioFiles):
+        self._audioFiles = audioFiles
     def GetAudioFile(self):
-        return self._audioFile
+        '''
+        compatibility
+        '''
+        if self._audioFiles:
+            return self._audioFiles[0]
+        else:
+            return None
+    def GetAudioFiles(self):
+        return self._audioFiles
         
     def GetOutputPath(self):
         return self._outputPath
