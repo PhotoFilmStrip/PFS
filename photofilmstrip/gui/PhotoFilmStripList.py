@@ -385,10 +385,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         return len(self.__pictures)
     
     def GetPicture(self, idx):
-        if isinstance(idx, list):
-            if len(idx) > 1:
-                raise ValueError('Invalid selection state!')
-            idx = idx[0]
         try:
             return self.__pictures[idx]
         except IndexError:

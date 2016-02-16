@@ -329,7 +329,9 @@ class PnlPfsProject(wx.Panel, Observer):
 
     def OnRectChanged(self, event):
         selItem = self.lvPics.GetSelected()
-        pic = self.lvPics.GetPicture(selItem)
+        pic = None
+        if selItem:
+            pic = self.lvPics.GetPicture(selItem[0])
         if pic is None:
             return
         if event.GetEventObject() is self.bitmapLeft:
@@ -383,21 +385,21 @@ class PnlPfsProject(wx.Panel, Observer):
 
     def OnToolBarImgSectToolLeftToRight(self, event):
         selItem = self.lvPics.GetSelected()
-        pic = self.lvPics.GetPicture(selItem)
+        pic = self.lvPics.GetPicture(selItem[0])
         if pic is None:
             return
         pic.SetTargetRect(pic.GetStartRect())
 
     def OnToolBarImgSectToolRightToLeft(self, event):
         selItem = self.lvPics.GetSelected()
-        pic = self.lvPics.GetPicture(selItem)
+        pic = self.lvPics.GetPicture(selItem[0])
         if pic is None:
             return
         pic.SetStartRect(pic.GetTargetRect())
 
     def OnToolBarImgSectSwap(self, event):
         selItem = self.lvPics.GetSelected()
-        pic = self.lvPics.GetPicture(selItem)
+        pic = self.lvPics.GetPicture(selItem[0])
         if pic is None:
             return
         target = pic.GetTargetRect()
@@ -406,7 +408,7 @@ class PnlPfsProject(wx.Panel, Observer):
     
     def OnToolBarImgSectToolAdjust(self, event):
         selItem = self.lvPics.GetSelected()
-        selPic = self.lvPics.GetPicture(selItem)
+        selPic = self.lvPics.GetPicture(selItem[0])
         
         dlg = DlgPositionInput(self, selPic, self.__project.GetAspect())
         dlg.ShowModal()
