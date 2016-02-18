@@ -26,6 +26,7 @@ import logging
 import wx
 
 from photofilmstrip.core.Picture import Picture
+from photofilmstrip.core.Project import Project
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.common.ObserverPattern import Observer
@@ -232,13 +233,11 @@ class PnlPfsProject(wx.Panel, Observer):
         
         self.lvPics.SetDropTarget(ImageDropTarget(self))
         
-        self.imgProxy = ImageProxy()
-        self.imgProxy.AddObserver(self.bitmapLeft)
-        self.imgProxy.AddObserver(self.bitmapRight)
+        self.imgProxyLeft = None
+        self.imgProxyRight = None
+        self.__InitImageProxy()
         
-        self.bitmapLeft.SetImgProxy(self.imgProxy)
         self.bitmapLeft.SetAspect(project.GetAspect())
-        self.bitmapRight.SetImgProxy(self.imgProxy)
         self.bitmapRight.SetAspect(project.GetAspect())
 
         self.pnlAddPics.GetButton().Bind(wx.EVT_BUTTON, self.OnImportPics)
@@ -254,13 +253,32 @@ class PnlPfsProject(wx.Panel, Observer):
         
         self.Bind(EVT_CHANGED, self.OnPhotoFilmStripListChanged, id=self.lvPics.GetId())
 
+        project.AddObserver(self)
+
         self.__project = project
         self.__hasChanged = False
         self.__usedAltPath = False
         
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.SetChanged(False)
-        
+
+    def __InitImageProxy(self):
+        if self.__project.GetTimelapse():
+            self.imgProxyLeft = ImageProxy()
+            self.imgProxyLeft.AddObserver(self.bitmapLeft)
+            self.imgProxyRight = ImageProxy()
+            self.imgProxyRight.AddObserver(self.bitmapRight)
+
+            self.bitmapLeft.SetImgProxy(self.imgProxyLeft)
+            self.bitmapRight.SetImgProxy(self.imgProxyRight)
+        else:
+            self.imgProxyLeft = self.imgProxyRight = ImageProxy()
+            self.imgProxyLeft.AddObserver(self.bitmapLeft)
+            self.imgProxyRight.AddObserver(self.bitmapRight)
+
+            self.bitmapLeft.SetImgProxy(self.imgProxyLeft)
+            self.bitmapRight.SetImgProxy(self.imgProxyRight)
+
     def GetSelectedImageState(self):
         items = self.lvPics.GetSelected()
         if len(items) == 0:
@@ -312,20 +330,44 @@ class PnlPfsProject(wx.Panel, Observer):
         
         selPics = self.lvPics.GetSelectedPictures()
         self.pnlEditPicture.SetPictures(selPics)
-        
+
+        self.panelTop.Enable(len(selPics) == 1)
+        self.bitmapRight.Enable(len(selPics) == 1)
+        self.bitmapLeft.Enable(len(selPics) == 1)
+
+        if self.__project.GetTimelapse():
+            self.__OnLvPicsSelectionChangedTimelapse(selItems)
+        else:
+            self.__OnLvPicsSelectionChangedDefault(selPics)
+
+        if event:
+            event.Skip()
+
+    def __OnLvPicsSelectionChangedDefault(self, selPics):
         if selPics:
-            self.imgProxy.SetPicture(selPics[0])
+#             assert self.imgProxyLeft is self.imgProxyRight
+            self.imgProxyLeft.SetPicture(selPics[0])
+            self.imgProxyRight.SetPicture(selPics[0])
     
             self.__CheckAndSetLock(selPics[0])
             self.bitmapLeft.SetSection(wx.Rect(*selPics[0].GetStartRect()))
             self.bitmapRight.SetSection(wx.Rect(*selPics[0].GetTargetRect()))
 
-        self.panelTop.Enable(len(selPics) == 1)
-        self.bitmapRight.Enable(len(selPics) == 1)
-        self.bitmapLeft.Enable(len(selPics) == 1)
-        
-        
-        event.Skip()
+    def __OnLvPicsSelectionChangedTimelapse(self, selItems):
+        if selItems:
+            selIdx = selItems[0]
+            selPic = self.lvPics.GetPicture(selIdx)
+            nextPic = self.lvPics.GetPicture(selIdx + 1)
+            self.__CheckAndSetLock(selPic)
+
+            self.imgProxyLeft.SetPicture(selPic)
+            self.bitmapLeft.SetSection(wx.Rect(*selPic.GetStartRect()))
+            if nextPic:
+                self.imgProxyRight.SetPicture(nextPic)
+                self.bitmapRight.SetSection(wx.Rect(*nextPic.GetStartRect()))
+                self.bitmapRight.Enable(True)
+            else:
+                self.bitmapRight.Enable(False)
 
     def OnRectChanged(self, event):
         selItem = self.lvPics.GetSelected()
@@ -334,10 +376,29 @@ class PnlPfsProject(wx.Panel, Observer):
             pic = self.lvPics.GetPicture(selItem[0])
         if pic is None:
             return
+
+        if self.__project.GetTimelapse():
+            self.__OnRectChangedTimelapse(event, pic, selItem[0])
+        else:
+            self.__OnRectChangedDefault(event, pic)
+
+    def __OnRectChangedDefault(self, event, pic):
         if event.GetEventObject() is self.bitmapLeft:
             pic.SetStartRect(tuple(self.bitmapLeft.GetSection()))
         else:
             pic.SetTargetRect(tuple(self.bitmapRight.GetSection()))
+
+    def __OnRectChangedTimelapse(self, event, pic, selIdx):
+        if event.GetEventObject() is self.bitmapLeft:
+            pic.SetStartRect(tuple(self.bitmapLeft.GetSection()))
+            prevPic = self.lvPics.GetPicture(selIdx - 1)
+            if prevPic:
+                prevPic.SetTargetRect(tuple(self.bitmapLeft.GetSection()))
+        else:
+            pic.SetTargetRect(tuple(self.bitmapRight.GetSection()))
+            nextPic = self.lvPics.GetPicture(selIdx + 1)
+            if nextPic:
+                nextPic.SetStartRect(tuple(self.bitmapRight.GetSection()))
 
     def OnCmdMoveLeftButton(self, event):
         selItems = self.lvPics.GetSelected()
@@ -363,7 +424,8 @@ class PnlPfsProject(wx.Panel, Observer):
             self.lvPics.DeleteItem(selItem)
         
         if self.lvPics.GetItemCount() == 0:
-            self.imgProxy.SetPicture(None)
+            self.imgProxyLeft.SetPicture(None)
+            self.imgProxyRight.SetPicture(None)
             self.pnlEditPicture.SetPictures(None)
             self.pnlEditPicture.Enable(False)
             self.cmdMoveLeft.Enable(False)
@@ -424,9 +486,10 @@ class PnlPfsProject(wx.Panel, Observer):
             actCp.Execute()
 
     def Close(self):
-        self.imgProxy.RemoveObserver(self.bitmapLeft)
-        self.imgProxy.RemoveObserver(self.bitmapRight)
-        self.imgProxy.Destroy()
+        self.imgProxyLeft.RemoveObserver(self.bitmapLeft)
+        self.imgProxyRight.RemoveObserver(self.bitmapRight)
+        self.imgProxyLeft.Destroy()
+        self.imgProxyRight.Destroy()
 
     def GetProject(self):
         return self.__project
@@ -437,7 +500,7 @@ class PnlPfsProject(wx.Panel, Observer):
             position = self.lvPics.GetItemCount()
         
         self.lvPics.Freeze()
-        for idx, pic in enumerate(pics):
+        for pic in pics:
             if autopath:
                 actAp = ActionAutoPath(pic, self.__project.GetAspect())
                 actAp.Execute()
@@ -461,19 +524,27 @@ class PnlPfsProject(wx.Panel, Observer):
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
             if arg == 'bitmap':
-                self.imgProxy.SetPicture(obj)
+                if self.bitmapLeft._imgProxy._picture is obj:
+                    self.imgProxyLeft.SetPicture(obj)
+                elif self.bitmapRight._imgProxy._picture is obj:
+                    self.imgProxyRight.SetPicture(obj)
                 self.lvPics.Refresh()
             
             if arg == 'duration':
                 self.__project.Notify("duration")
 
-            if arg == 'start':
+            if arg == 'start' and self.bitmapLeft._imgProxy._picture is obj:
                 self.bitmapLeft.SetSection(wx.Rect(*obj.GetStartRect()))
 
-            if arg == 'target':
+            if arg == 'target' and self.bitmapLeft._imgProxy._picture is obj:
                 self.bitmapRight.SetSection(wx.Rect(*obj.GetTargetRect()))
              
             self.SetChanged(True)
+
+        elif isinstance(obj, Project):
+            if arg == 'timelapse':
+                self.__InitImageProxy()
+                self.OnLvPicsSelectionChanged(None)
 
     def UpdateProperties(self):
         self.bitmapLeft.SetAspect(self.__project.GetAspect())

@@ -19,6 +19,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
+import re
 import sys
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
@@ -29,53 +31,46 @@ from photofilmstrip.core.Picture import Picture
 class RenderEngine(object):
     
     def __init__(self, name, aRenderer, draftMode):
-        self.__name = name
-        self.__aRenderer = aRenderer
-        self.__profile = aRenderer.GetProfile()
-        self.__tasks = []
-        self.__draftMode = draftMode
+        self._name = name
+        self._aRenderer = aRenderer
+        self._profile = aRenderer.GetProfile()
+        self._tasks = []
+        self._draftMode = draftMode
 
-        self.__picCountFactor = 1.0
+    def _PrepareTasks(self, pics):
+        raise NotImplementedError()
         
-    def __ComputePath(self, pic, picCount):
-        px1, py1 = pic.GetStartRect()[:2]
-        w1, h1 = pic.GetStartRect()[2:]
+    def CreateRenderJob(self, pics):
+        # determine step count for progressbar
+        self._tasks = []
+        self._PrepareTasks(pics)
         
-        px2, py2 = pic.GetTargetRect()[:2]
-        w2, h2 = pic.GetTargetRect()[2:]
-        
-        cx1 = (w1 / 2.0) + px1
-        cy1 = (h1 / 2.0) + py1
+        rjc = RenderJob(self._name, self._aRenderer, self._tasks)
+        return rjc
 
-        cx2 = (w2 / 2.0) + px2
-        cy2 = (h2 / 2.0) + py2
+
+class RenderEngineSlideshow(RenderEngine):
+
+    def __init__(self, name, aRenderer, draftMode, totalLength):
+        RenderEngine.__init__(self, name, aRenderer, draftMode)
+        self.__targetLengthSecs = totalLength
+        self.__picCountFactor = None
         
-        if pic.GetMovement() == Picture.MOVE_LINEAR:
-            clazz = LinearMovement
-        elif pic.GetMovement() == Picture.MOVE_DELAYED:
-            clazz = DelayedMovement
+    def __GetPicCountFactor(self, pics):
+        if self.__targetLengthSecs is None:
+            result = 1.0
         else:
-            clazz = AccelMovement
-        mX = clazz(cx2 - cx1, picCount, cx1)
-        mY = clazz(cy2 - cy1, picCount, cy1)
-        mW = clazz(w2 - w1, picCount, w1)
-        mH = clazz(h2 - h1, picCount, h1)
-
-        pathRects = []
-        for step in xrange(picCount):
-            px = mX.Get(step)
-            py = mY.Get(step)
-            width = mW.Get(step)
-            height = mH.Get(step)
-           
-            rect = (px - width / 2.0, 
-                    py - height / 2.0, 
-                    width, 
-                    height)
+            # targetLength should be at least 1sec for each pic
+            targetLengthSecs = max(self.__targetLengthSecs, len(pics))
+            totalSecs = 0
+            for idxPic, pic in enumerate(pics):
+                totalSecs += pic.GetDuration()
+                if idxPic < (len(pics) - 1):
+                    totalSecs += pic.GetTransitionDuration()
+            result = targetLengthSecs / totalSecs
             
-            pathRects.append(rect)
-        return pathRects
-    
+        return result
+
     def __GetPicCount(self, pic):
         """
         returns the number of pictures
@@ -84,7 +79,7 @@ class RenderEngine(object):
             # FIXME: Hack for mencoder which is only used under win32
             fr = 25.0
         else:
-            fr = self.__profile.GetFramerate()
+            fr = self._profile.GetFramerate()
         return int(round(pic.GetDuration() * \
                          fr * \
                          self.__picCountFactor))
@@ -97,7 +92,7 @@ class RenderEngine(object):
             # FIXME: Hack for mencoder which is only used under win32
             fr = 25.0
         else:
-            fr = self.__profile.GetFramerate()
+            fr = self._profile.GetFramerate()
         return int(round(pic.GetTransitionDuration() * \
                          fr * \
                          self.__picCountFactor))
@@ -113,14 +108,21 @@ class RenderEngine(object):
             task = TaskTrans(trans, idx / float(count),
                              picFrom.Copy(), pathRectsFrom[idx], 
                              picTo.Copy(), pathRectsTo[idx], 
-                             self.__profile.GetResolution())
+                             self._profile.GetResolution())
             task.SetInfo(infoText)
-            task.SetDraft(self.__draftMode)
-            self.__tasks.append(task)
+            task.SetDraft(self._draftMode)
+            self._tasks.append(task)
         
         return True
 
-    def __PrepareTasks(self, pics):
+    def _PrepareTasks(self, pics):
+        self.__picCountFactor = self.__GetPicCountFactor(pics)
+
+        taskSub = TaskSubtitle(self._aRenderer.GetOutputPath(),
+                               self.__picCountFactor,
+                               pics)
+        self._tasks.append(taskSub)
+
         pathRectsBefore = None
         picBefore = None
         transCountBefore = 0
@@ -132,7 +134,8 @@ class RenderEngine(object):
                 # last pic has no transition
                 transCount = self.__GetTransCount(pic)
 
-            pathRects = self.__ComputePath(pic, picCount + transCount + transCountBefore)
+            cp = ComputePath(pic, picCount + transCount + transCountBefore)
+            pathRects = cp.GetPathRects()
 
             if idxPic > 0 and idxPic < len(pics):
                 # first and last pic has no transition
@@ -158,37 +161,124 @@ class RenderEngine(object):
                 
             for rect in _pathRects:
                 task = TaskCropResize(pic.Copy(), rect, 
-                                      self.__profile.GetResolution())
+                                      self._profile.GetResolution())
                 task.SetInfo(infoText)
-                task.SetDraft(self.__draftMode)
-                self.__tasks.append(task)
+                task.SetDraft(self._draftMode)
+                self._tasks.append(task)
             
             picBefore = pic
             pathRectsBefore = pathRects
             transCountBefore = transCount
 
-    def CreateRenderJob(self, pics, targetLengthSecs=None):
-        if targetLengthSecs is not None:
-            # targetLength should be at least 1sec for each pic
-            targetLengthSecs = max(targetLengthSecs, len(pics))
-            totalSecs = 0
-            for idxPic, pic in enumerate(pics):
-                totalSecs += pic.GetDuration()
-                if idxPic < (len(pics) - 1):
-                    totalSecs += pic.GetTransitionDuration()
-            self.__picCountFactor = targetLengthSecs / totalSecs
-            
-        # determine step count for progressbar
-        self.__PrepareTasks(pics)
-        
-        taskSub = TaskSubtitle(self.__aRenderer.GetOutputPath(),
-                               self.__picCountFactor,
-                               pics)
-        self.__tasks.insert(0, taskSub)
-                
-        rjc = RenderJob(self.__name, self.__aRenderer, self.__tasks)
-        return rjc
 
+class RenderEngineTimelapse(RenderEngine):
+
+    def _PrepareTasks(self, pics):
+        picBefore = None
+        getnum = re.compile(r"(.*?)(\d+)([.].*)")
+
+        picNum = None
+        numDigits = None
+
+        for idxPic, pic in enumerate(pics):
+            match = getnum.match(os.path.basename(pic.GetFilename()))
+            picPrefix = match.groups()[0]
+            picNum = int(match.groups()[1])
+            picPostfix = match.groups()[2]
+            numDigits = len(match.groups()[1])
+            
+            picDur = int(pic.GetDuration())
+            transDur = int(pic.GetTransitionDuration())
+            if idxPic < (len(pics) - 1):
+                # get number from next pic
+                match = getnum.match(os.path.basename(pics[idxPic + 1].GetFilename()))
+                nextPicNum = int(match.groups()[1])
+
+                picCount = nextPicNum - picNum + 1
+            else:
+                # last pic needs only one rect to add the final image
+                picCount = 1
+
+            cp = ComputePath(pic, (picDur * picCount) + (transDur * (picCount - 1)))
+            pathRects = cp.GetPathRects()
+
+            picDir = os.path.dirname(pic.GetFilename())
+            idxRect = 0
+            while idxRect < len(pathRects):
+                picCopy = pic.Copy()
+                picCopy._filename = os.path.join(picDir,
+                                                 "{0}{1}{2}".format(picPrefix,
+                                                                    ("%%0%dd" % numDigits) % picNum,
+                                                                    picPostfix))
+
+                if transDur > 0 and picBefore:
+                    for idxTrans in range(transDur):
+                        task = TaskTrans(pic.GetTransition(), (idxTrans+1) / float(transDur + 1),
+                                         picBefore.Copy(), pathRects[idxRect],
+                                         picCopy.Copy(), pathRects[idxRect],
+                                         self._profile.GetResolution())
+                        task.SetInfo(_(u"processing transition %d/%d") % (picNum, idxTrans+1))
+                        task.SetDraft(self._draftMode)
+                        self._tasks.append(task)
+                        idxRect += 1
+
+                for __ in range(picDur):
+                    task = TaskCropResize(picCopy.Copy(), pathRects[idxRect],
+                                          self._profile.GetResolution())
+                    task.SetInfo(_(u"processing image %d/%d") % (picNum, __ + 1))
+                    task.SetDraft(self._draftMode)
+                    self._tasks.append(task)
+                    idxRect += 1
+
+                picNum += 1
+                picBefore = picCopy
+
+            picBefore = None
+
+
+class ComputePath(object):
+
+    def __init__(self, pic, picCount):
+        px1, py1 = pic.GetStartRect()[:2]
+        w1, h1 = pic.GetStartRect()[2:]
+
+        px2, py2 = pic.GetTargetRect()[:2]
+        w2, h2 = pic.GetTargetRect()[2:]
+
+        cx1 = (w1 / 2.0) + px1
+        cy1 = (h1 / 2.0) + py1
+
+        cx2 = (w2 / 2.0) + px2
+        cy2 = (h2 / 2.0) + py2
+        
+        if pic.GetMovement() == Picture.MOVE_LINEAR:
+            clazz = LinearMovement
+        elif pic.GetMovement() == Picture.MOVE_DELAYED:
+            clazz = DelayedMovement
+        else:
+            clazz = AccelMovement
+        mX = clazz(cx2 - cx1, picCount, cx1)
+        mY = clazz(cy2 - cy1, picCount, cy1)
+        mW = clazz(w2 - w1, picCount, w1)
+        mH = clazz(h2 - h1, picCount, h1)
+
+        pathRects = []
+        for step in xrange(picCount):
+            px = mX.Get(step)
+            py = mY.Get(step)
+            width = mW.Get(step)
+            height = mH.Get(step)
+
+            rect = (px - width / 2.0,
+                    py - height / 2.0,
+                    width,
+                    height)
+
+            pathRects.append(rect)
+        self.pathRects = pathRects
+
+    def GetPathRects(self):
+        return self.pathRects
 
 
 class LinearMovement(object):
@@ -198,7 +288,10 @@ class LinearMovement(object):
         self._t = float(t)
         self._s0 = float(s0)
         
-        self._v  = self._s / (self._t - 1)
+        if t > 1:
+            self._v  = self._s / (self._t - 1)
+        else:
+            self._v = 0
         
     def Get(self, t):
         # s = v *t + s0

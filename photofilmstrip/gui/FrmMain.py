@@ -486,9 +486,19 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             project = page.GetProject()
 
             imgCount = len(project.GetPictures())
+            totalTime = project.GetDuration(False)
+            if project.GetTimelapse():
+                # TODO: calc from image count
+                totalTime = 1
+                imgCount = 0
+            elif totalTime == -1:
+                # TODO: calc from audio files
+                totalTime = 0
+            elif totalTime is None:
+                totalTime = project.GetDuration(True)
+
             self.statusBar.SetStatusText("%s: %d" % (_(u"Images"), imgCount), 1)
-            
-            totalTime = project.GetDuration()
+
             minutes = totalTime / 60
             seconds = totalTime % 60
             self.statusBar.SetStatusText("%s: %02d:%02d" % (_(u"Duration"), 

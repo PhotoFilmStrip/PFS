@@ -275,7 +275,7 @@ class DlgProjectProps(wx.Dialog):
             
             pfsDur = project.GetDuration(calc=True)
             duration = project.GetDuration(calc=False)
-            if 0:
+            if project.GetTimelapse():
                 self.cbTotalLength.SetValue(True)
                 self.rbTimelapse.SetValue(True)
             elif duration is None:
@@ -555,6 +555,11 @@ class DlgProjectProps(wx.Dialog):
         if self.__project is None:
             self.__project = Project(self.__GetProjectPath())
         self.__project.SetAudioFiles(self.lvAudio.GetItems())
+
+        if self.cbTotalLength.GetValue() and self.rbTimelapse.GetValue():
+            self.__project.SetTimelapse(True)
+        else:
+            self.__project.SetTimelapse(False)
 
         self.__project.SetDuration(self.__GetTotalLength())
         self.__project.SetAspect(self.choiceAspect.GetStringSelection())

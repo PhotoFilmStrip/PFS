@@ -28,7 +28,8 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.lib.util import Encode
-from photofilmstrip.core.RenderEngine import RenderEngine
+from photofilmstrip.core.RenderEngine import RenderEngineSlideshow,\
+    RenderEngineTimelapse
 
 
 class ActionRender(IAction):
@@ -107,12 +108,18 @@ class ActionRender(IAction):
         name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
                             self.__profile.GetName())
         
-        renderEngine = RenderEngine(name,
-                                    renderer,
-                                    self.__draftMode)
+        if self.__photoFilmStrip.GetTimelapse():
+            renderEngine = RenderEngineTimelapse(name,
+                                                 renderer,
+                                                 self.__draftMode)
+        else:
+            renderEngine = RenderEngineSlideshow(name,
+                                                 renderer,
+                                                 self.__draftMode,
+                                                 totalLength)
+
         self.__renderJob = renderEngine.CreateRenderJob(
-                self.__photoFilmStrip.GetPictures(), 
-                totalLength
+                self.__photoFilmStrip.GetPictures()
         )
 
     def GetRenderJob(self):

@@ -35,6 +35,7 @@ class Project(Observable):
         self.__audioFiles = []
         self.__aspect = Aspect.ASPECT_16_9
         self.__duration = None
+        self.__timelapse = False
         
     def GetName(self):
         if self.__filename is None:
@@ -92,3 +93,11 @@ class Project(Observable):
         else:
             totalTime = self.__duration
         return totalTime
+
+    def SetTimelapse(self, value):
+        if value == self.__timelapse:
+            return
+        self.__timelapse = value
+        self.Notify("timelapse")
+    def GetTimelapse(self):
+        return self.__timelapse

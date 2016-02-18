@@ -26,7 +26,7 @@ class Task(WorkLoad):
         self.idx = idx
         
     def __str__(self):
-        return "%s_%s" % (self.__class__.__name__, self.idx)
+        return "%s_%s: %s" % (self.__class__.__name__, self.idx, self.info)
     
 
 class TaskSubtitle(Task):

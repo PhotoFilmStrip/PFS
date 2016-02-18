@@ -232,7 +232,8 @@ class ProjectFile(object):
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
         for name, value in [('rev', SCHEMA_REV),
                             ('aspect', self._project.GetAspect()),
-                            ('duration', self._project.GetDuration(False))]:
+                            ('duration', self._project.GetDuration(False)),
+                            ('timelapse', int(self._project.GetTimelapse()))]:
             if value is not None:
                 cur.execute(query, (name, value))
         
@@ -325,6 +326,7 @@ class ProjectFile(object):
             project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", unicode))
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
             project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
+            project.SetTimelapse(self.__LoadProperty(cur, "timelapse", int))
         
         self.__Close()
         
