@@ -235,8 +235,12 @@ class PnlPfsProject(wx.Panel, Observer):
         
         self.imgProxyLeft = None
         self.imgProxyRight = None
-        self.__InitImageProxy()
+        self.__project = project
+        self.__hasChanged = False
+        self.__usedAltPath = False
         
+        self.__InitImageProxy()
+
         self.bitmapLeft.SetAspect(project.GetAspect())
         self.bitmapRight.SetAspect(project.GetAspect())
 
@@ -255,10 +259,6 @@ class PnlPfsProject(wx.Panel, Observer):
 
         project.AddObserver(self)
 
-        self.__project = project
-        self.__hasChanged = False
-        self.__usedAltPath = False
-        
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.SetChanged(False)
 
