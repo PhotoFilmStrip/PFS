@@ -25,9 +25,11 @@ import re
 import sys
 
 try:
-    import pygst
-    pygst.require("0.10")
-    import gst
+    import gi
+    gi.require_version('Gst', '1.0')
+
+    from gi.repository import Gst
+    from gi.repository import GObject
 except ImportError:
     pass
 
@@ -45,19 +47,17 @@ class GPlayer(object):
 
     def __Identify(self):
         filename = Encode(self.__filename, sys.getfilesystemencoding())
-        d = gst.parse_launch("filesrc name=source ! decodebin2 ! fakesink")
+        d = Gst.parse_launch("filesrc name=source ! decodebin ! fakesink")
         source = d.get_by_name("source")
         source.set_property("location", filename)
-        d.set_state(gst.STATE_PLAYING)
-        d.get_state()
-        gstFormat = gst.Format(gst.FORMAT_TIME)
-        duration = d.query_duration(gstFormat)[0]
-        d.set_state(gst.STATE_NULL)
+        d.set_state(Gst.State.PLAYING)
+        duration = d.query_duration(Gst.Format.TIME)[1]
+        d.set_state(Gst.State.NULL)
         
-        delta = datetime.timedelta(seconds=(duration / gst.SECOND))
+        delta = datetime.timedelta(seconds=(duration / Gst.SECOND))
         logging.debug("identify audio with gplayer: Duration: %s", delta)
         
-        self.__length = duration / gst.SECOND
+        self.__length = duration / Gst.SECOND
         
     def GetFilename(self):
         return self.__filename
@@ -71,16 +71,16 @@ class GPlayer(object):
     def Play(self):
         if self.__proc is None:
             filename = Encode(self.__filename, sys.getfilesystemencoding())
-            self.__proc = gst.parse_launch("filesrc name=source ! decodebin2 ! autoaudiosink")
+            self.__proc = Gst.parse_launch("filesrc name=source ! decodebin ! autoaudiosink")
             source = self.__proc.get_by_name("source")
             source.set_property("location", filename)
-            self.__proc.set_state(gst.STATE_PLAYING)
+            self.__proc.set_state(Gst.State.PLAYING)
     
     def Stop(self):
         self.Close()
     
     def Close(self):
-        self.__proc.set_state(gst.STATE_NULL)
+        self.__proc.set_state(Gst.State.NULL)
         self.__proc = None
     
     def GetLength(self):

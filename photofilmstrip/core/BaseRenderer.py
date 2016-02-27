@@ -71,6 +71,10 @@ class BaseRenderer(object):
     def GetDefaultProperty(prop):
         return _(u"<default>")
     
+    @classmethod
+    def Log(cls, level, *args, **kwargs):
+        logging.getLogger(cls.__name__).log(level, *args, **kwargs)
+    
     def SetAudioFiles(self, audioFiles):
         self._audioFiles = audioFiles
     def GetAudioFile(self):
