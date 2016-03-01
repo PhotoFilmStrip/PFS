@@ -63,56 +63,48 @@ class pfs_clean(clean):
 
         for fname in (os.path.join(WORKDIR, "version.info"),
                       os.path.join(WORKDIR, "MANIFEST"),
-                      os.path.join(WORKDIR, "_svnInfo.py"),
-                      os.path.join(WORKDIR, "_svnInfo.pyc"),
-                      os.path.join(WORKDIR, "_svnInfo.pyo")):
+                      os.path.join(WORKDIR, "_scmInfo.py"),
+                      os.path.join(WORKDIR, "_scmInfo.pyc"),
+                      os.path.join(WORKDIR, "_scmInfo.pyo")):
             if os.path.exists(fname):
                 os.remove(fname)
            
 
 class pfs_build(build):
+
+    user_options = [('rev=', None, 'the revision from scm')]
+
+    def initialize_options(self):
+        build.initialize_options(self)
+        self.rev = None
+
     def finalize_options(self):
         build.finalize_options(self)
 
     def run(self):
-        self._make_svn_info()
+        self._make_scm_info()
         self._make_resources()
         self._make_locale()
 
         build.run(self)
         
-    def _make_svn_info(self):
-        svnRev = 0
-        if os.path.isfile(".svn/wc.db"):
-            # from svn 1.7
-            try:
-                dbConn = sqlite3.connect(".svn/wc.db")
-                cur = dbConn.execute("select changed_revision from nodes where local_relpath=''")
-                row = cur.fetchone()
-                if row:
-                    svnRev = row[0]
-            except:
-                raise
-        elif os.path.isfile(".svn/entries"):
-            # until svn 1.6
-            try:
-                svnRev = open(".svn/entries", "r").readlines()[3].strip()
-            except:
-                pass
-
+    def _make_scm_info(self):
+        scmRev = "src"
+        if self.rev:
+            scmRev = self.rev
         for target in getattr(self.distribution, "windows", []) + \
                       getattr(self.distribution, "console", []):
-            target.Update(svnRev)
+            target.Update(scmRev)
         
-        fd = open("_svnInfo.py", "w")
-        fd.write("SVN_REV = \"%s\"\n" % svnRev)
+        fd = open("_scmInfo.py", "w")
+        fd.write("SCM_REV = \"%s\"\n" % scmRev)
         fd.close()
         
     def _make_resources(self):
         try:
             from wx.tools.img2py import img2py
         except ImportError:
-            log.warn("Cannot update image resources! Using images.py from svn")
+            log.warn("Cannot update image resources! Using images.py from source")
             return 
         
         if sys.platform.startswith("linux") and os.getenv("DISPLAY") is None:
@@ -285,10 +277,10 @@ class pfs_win_portable(Command):
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.product_version = Constants.APP_VERSION
+        self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
         self.version = "%s.%s" % (self.product_version, 0)
         self.company_name = ""
-        self.copyright = "(c) 2011"
+        self.copyright = "(c) 2016"
         self.name = "%s %s" % (Constants.APP_NAME, self.product_version)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
@@ -296,8 +288,8 @@ class Target:
         logo = os.path.join("res", "icon", "photofilmstrip.ico")
         self.icon_resources = [(1, logo)]
         
-    def Update(self, svnVer):
-        self.version = "%s.%s" % (self.product_version, svnVer)
+    def Update(self, scmRev):
+        self.product_version = "%s-%s" % (Constants.APP_VERSION, scmRev)
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
