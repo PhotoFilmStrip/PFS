@@ -27,7 +27,7 @@ try:
     import wx
     import cairo
     import wx.lib.wxcairo
-except ImportError:
+except (ImportError, RuntimeError):
     cairo = None
 
 from photofilmstrip.core.OutputProfile import OutputProfile
