@@ -391,10 +391,10 @@ class MkvX264MP3(_GStreamerRenderer):
         return mux    
         
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("lamemp3enc")
+        audioEnc = Gst.ElementFactory.make("avenc_ac3")
 #         audioEnc = Gst.ElementFactory.make("lame")
-        audioEnc.set_property("target", "bitrate")
-        audioEnc.set_property("bitrate", 192)
+#         audioEnc.set_property("target", "bitrate")
+        audioEnc.set_property("bitrate", 192000)
         return audioEnc
 
     def _GetVideoEncoder(self):
@@ -452,17 +452,17 @@ class VCDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("mpeg2enc")
-            if aEnc is None:
-                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins-bad) required!"))
-                
-            vEnc = Gst.ElementFactory.find("twolame")
+            vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"Vorbis-Codec (gstreamer1.0-plugins-bad) required!"))
-            
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+
+            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            if aEnc is None:
+                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
-                msgList.append(_(u"OGV-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
     
     def _GetExtension(self):
         return "mpg"
@@ -472,7 +472,7 @@ class VCDFormat(_GStreamerRenderer):
         return mux    
         
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolame")
+        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
         
     def _GetVideoEncoder(self):
@@ -492,17 +492,17 @@ class SVCDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("mpeg2enc")
-            if aEnc is None:
-                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins-bad) required!"))
-                
-            vEnc = Gst.ElementFactory.find("twolame")
+            vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"Vorbis-Codec (gstreamer1.0-plugins-bad) required!"))
-            
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+
+            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            if aEnc is None:
+                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
-                msgList.append(_(u"OGV-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
     
     def _GetExtension(self):
         return "mpg"
@@ -512,7 +512,7 @@ class SVCDFormat(_GStreamerRenderer):
         return mux    
         
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolame")
+        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
         
     def _GetVideoEncoder(self):
@@ -541,17 +541,17 @@ class DVDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("mpeg2enc")
-            if aEnc is None:
-                msgList.append(_(u"Theora-Codec (gstreamer0.10-plugins-bad) required!"))
-                
-            vEnc = Gst.ElementFactory.find("twolame")
+            vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"Vorbis-Codec (gstreamer1.0-plugins-bad) required!"))
-            
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+
+            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            if aEnc is None:
+                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
-                msgList.append(_(u"OGV-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
     
     def _GetExtension(self):
         return "mpg"
@@ -561,7 +561,7 @@ class DVDFormat(_GStreamerRenderer):
         return mux    
         
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolame")
+        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
         
     def _GetVideoEncoder(self):
