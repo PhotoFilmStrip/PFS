@@ -72,15 +72,6 @@ class pfs_clean(clean):
 
 class pfs_build(build):
 
-    user_options = [('rev=', None, 'the revision from scm')]
-
-    def initialize_options(self):
-        build.initialize_options(self)
-        self.rev = None
-
-    def finalize_options(self):
-        build.finalize_options(self)
-
     def run(self):
         self._make_scm_info()
         self._make_resources()
@@ -89,9 +80,7 @@ class pfs_build(build):
         build.run(self)
         
     def _make_scm_info(self):
-        scmRev = "src"
-        if self.rev:
-            scmRev = self.rev
+        scmRev = os.getenv("SCM_REV", "src")
         for target in getattr(self.distribution, "windows", []) + \
                       getattr(self.distribution, "console", []):
             target.Update(scmRev)
@@ -278,10 +267,10 @@ class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
         self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
-        self.version = "%s.%s" % (self.product_version, 0)
+        self.version = "%s.%s" % (Constants.APP_VERSION, 0)
         self.company_name = ""
         self.copyright = "(c) 2016"
-        self.name = "%s %s" % (Constants.APP_NAME, self.product_version)
+        self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
         
