@@ -62,7 +62,6 @@ class ActionRender(IAction):
         
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
         outpath = os.path.join(outpath, self.__profile.GetName())
-        outpath = Encode(outpath, sys.getfilesystemencoding())
         if not os.path.exists(outpath):
             os.makedirs(outpath)
         return outpath
@@ -85,7 +84,7 @@ class ActionRender(IAction):
         audioFiles = []
         for audioFile in self.__photoFilmStrip.GetAudioFiles():
             if self.CheckFile(audioFile):
-                audioFiles.append(Encode(audioFile, sys.getfilesystemencoding()))
+                audioFiles.append(audioFile)
 
         outpath = self._CheckAndGetOutpath()
         

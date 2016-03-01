@@ -26,17 +26,13 @@ import threading
 import Queue
 import cStringIO
 
-try:
-    import gi
-    gi.require_version('Gst', '1.0')
-    
-    from gi.repository import Gst
-    from gi.repository import GObject
-    
-    Gst.init(None)
-except ImportError:
-    Gst = None
-    GObject = None
+import gi
+gi.require_version('Gst', '1.0')
+
+from gi.repository import Gst
+from gi.repository import GObject
+
+Gst.init(None)
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
@@ -123,7 +119,6 @@ class _GStreamerRenderer(BaseRenderer):
         self.__CleanUp()
 
     def Prepare(self):
-        Gst.init(None)
         GObject.threads_init()
 
         self.ready = threading.Event()

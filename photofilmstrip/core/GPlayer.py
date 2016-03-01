@@ -46,10 +46,9 @@ class GPlayer(object):
         self.__Identify()
 
     def __Identify(self):
-        filename = Encode(self.__filename, sys.getfilesystemencoding())
         d = Gst.parse_launch("filesrc name=source ! decodebin ! fakesink")
         source = d.get_by_name("source")
-        source.set_property("location", filename)
+        source.set_property("location", self.__filename)
         d.set_state(Gst.State.PLAYING)
         duration = d.query_duration(Gst.Format.TIME)[1]
         d.set_state(Gst.State.NULL)
@@ -70,10 +69,9 @@ class GPlayer(object):
     
     def Play(self):
         if self.__proc is None:
-            filename = Encode(self.__filename, sys.getfilesystemencoding())
             self.__proc = Gst.parse_launch("filesrc name=source ! decodebin ! autoaudiosink")
             source = self.__proc.get_by_name("source")
-            source.set_property("location", filename)
+            source.set_property("location", self.__filename)
             self.__proc.set_state(Gst.State.PLAYING)
     
     def Stop(self):

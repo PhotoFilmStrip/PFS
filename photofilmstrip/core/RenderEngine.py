@@ -75,11 +75,7 @@ class RenderEngineSlideshow(RenderEngine):
         """
         returns the number of pictures
         """
-        if sys.platform == "win32":
-            # FIXME: Hack for mencoder which is only used under win32
-            fr = 25.0
-        else:
-            fr = self._profile.GetFramerate()
+        fr = self._profile.GetFramerate()
         return int(round(pic.GetDuration() * \
                          fr * \
                          self.__picCountFactor))
@@ -88,11 +84,7 @@ class RenderEngineSlideshow(RenderEngine):
         """
         returns the number of pictures needed for the transition
         """
-        if sys.platform == "win32":
-            # FIXME: Hack for mencoder which is only used under win32
-            fr = 25.0
-        else:
-            fr = self._profile.GetFramerate()
+        fr = self._profile.GetFramerate()
         return int(round(pic.GetTransitionDuration() * \
                          fr * \
                          self.__picCountFactor))

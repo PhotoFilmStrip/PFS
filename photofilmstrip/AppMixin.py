@@ -20,25 +20,9 @@
 #
 
 import logging
-import os
-import subprocess
 import sys
 
-from photofilmstrip import Constants
 from photofilmstrip.lib.DestructionManager import DestructionManager
-
-
-if sys.platform == "win32":
-    _path = os.getenv("PATH", "").split(";")
-    _path.append(os.path.join(Constants.APP_DIR, "lib", "mplayer"))
-    os.putenv("PATH", ";".join(_path)) 
-    if os.getenv("GST_PLUGIN_PATH") is None:
-        os.putenv("GST_PLUGIN_PATH", os.path.join(Constants.APP_DIR, "lib", "gstreamer-0.10")) 
-
-    import _subprocess # IGNORE:F0401
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
-    subprocess.STARTUPINFO = lambda: startupinfo
 
 
 class AppMixin(object):

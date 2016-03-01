@@ -19,12 +19,5 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import sys
-
-if sys.platform == "win32":
-    # FIXME: Win32 uses mplayer
-    from MPlayer import MPlayer
-    AudioPlayer = MPlayer
-else:
-    from GPlayer import GPlayer
-    AudioPlayer = GPlayer
+from GPlayer import GPlayer
+AudioPlayer = GPlayer

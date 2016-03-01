@@ -21,7 +21,6 @@
 
 import photofilmstrip.core.renderer.SingleFileRenderer as SFR
 
-import photofilmstrip.core.renderer.MEncoderRenderer as MER
 import photofilmstrip.core.renderer.GStreamerRenderer as GSR
 
 # import photofilmstrip.core.renderer.PyGameRenderer as PGR
@@ -30,33 +29,18 @@ import photofilmstrip.core.renderer.GStreamerRenderer as GSR
 import photofilmstrip.core.renderer.CairoRenderer as CR
 
 
-RENDERERS = [SFR.SingleFileRenderer]  
-             
-msgList = []
-MER._MEncoderRenderer.CheckDependencies(msgList)
-if not msgList:
-    RENDERERS.extend([
-            MER.VCDFormat,
-            MER.SVCDFormat,
-            MER.DVDFormat,
-            MER.MPEG4MP3Renderer,
-            MER.MPEG4AC3Renderer,
-            MER.FlashMovieRenderer,
-            MER.MJPEGRenderer])
+RENDERERS = [SFR.SingleFileRenderer]
 
-msgList = []
-GSR._GStreamerRenderer.CheckDependencies(msgList)
-if not msgList:
-    RENDERERS.extend([
-            GSR.VCDFormat,
-            GSR.SVCDFormat,
-            GSR.DVDFormat,
-            GSR.OggTheoraVorbis,
-            GSR.MkvX264MP3])
-             
+RENDERERS.extend([
+        GSR.VCDFormat,
+        GSR.SVCDFormat,
+        GSR.DVDFormat,
+        GSR.OggTheoraVorbis,
+        GSR.MkvX264MP3])
+
 # RENDERERS.extend([
 #          OCR.OpenCvRenderer,
 #          PGR.PyGameRenderer])
-    
+
 RENDERERS.extend([
              CR.CairoRenderer])

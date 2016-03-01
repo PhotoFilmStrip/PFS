@@ -21,7 +21,7 @@
 
 import sys, os
 import sqlite3
-
+import site
 import zipfile
 
 from photofilmstrip import Constants
@@ -200,11 +200,30 @@ class pfs_exe(Command):
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
-            
-        targetDir = os.path.join("build", "dist", "lib", "mplayer")
-        Unzip(os.path.join("windows", "MPlayer-mingw32-1.0rc2.zip"),
-              targetDir, 
-              stripFolders=1)
+
+        targetDir = os.path.join("build", "dist", "bin")
+        dllDirCairo = os.path.join(site.getsitepackages()[-1], "wx-3.0-msw", "wx")
+        for dll in ["freetype6.dll", "libcairo-2.dll", "libpng14-14.dll"]:
+            self.copy_file(os.path.join(dllDirCairo, dll),
+                           os.path.join(targetDir, dll))
+
+        dllDirGnome = os.path.join(site.getsitepackages()[-1], "gnome")
+        for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
+            self.copy_file(os.path.join(dllDirGnome, dll),
+                           os.path.join(targetDir, os.path.basename(dll)))
+
+        targetDir = os.path.join("build", "dist", "lib", "gstreamer-1.0")
+        self.copy_tree(os.path.join(dllDirGnome, "lib", "gstreamer-1.0"),
+                       targetDir)
+
+        targetDir = os.path.join("build", "dist", "lib", "girepository-1.0")
+        self.mkpath(targetDir)
+        for giTypeLib in ["GLib-2.0.typelib",
+                          "GModule-2.0.typelib",
+                          "GObject-2.0.typelib",
+                          "Gst-1.0.typelib"]:
+            self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
+                           os.path.join(targetDir, giTypeLib))
         
 
 class pfs_win_setup(Command):
@@ -370,7 +389,22 @@ setup(
 #                          "bundle_files":1,
                           "optimize": 2,
                           "dist_dir": "build/dist",
-                          "dll_excludes": ["msvcr90.dll", "msvcp90.dll"],
+                          "dll_excludes": ["msvcr90.dll", "msvcp90.dll",
+                                           "libcairo-gobject-2.dll",
+                                           "libffi-6.dll",
+                                           "libfontconfig-1.dll",
+                                           "libfreetype-6.dll",
+                                           "libgio-2.0-0.dll",
+                                           "libgirepository-1.0-1.dll",
+                                           "libglib-2.0-0.dll",
+                                           "libgmodule-2.0-0.dll",
+                                           "libgobject-2.0-0.dll",
+                                           "libintl-8.dll",
+                                           "libpng16-16.dll",
+                                           "libwinpthread-1.dll",
+                                           "libzzz.dll]"],
+                          "packages": ["gi"],
+                          "includes": ["gi"],
                           "excludes": ["Tkconstants", "Tkinter", "tcl", 
                                        "_imagingtk", "PIL._imagingtk", "ImageTk", "PIL.ImageTk", "FixTk", 
                                        "_ssl"]
