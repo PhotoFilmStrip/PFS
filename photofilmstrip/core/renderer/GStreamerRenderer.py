@@ -164,9 +164,6 @@ class _GStreamerRenderer(BaseRenderer):
             self.textoverlay.set_property("text", "")
             self.pipeline.add(self.textoverlay)
 
-        mux = self._GetMux()
-        self.pipeline.add(mux)
-
         # link elements for video stream
         videoSrc.link(jpegDecoder)
         jpegDecoder.link(colorConverter)
@@ -176,9 +173,8 @@ class _GStreamerRenderer(BaseRenderer):
         else:
             colorConverter.link(queueVideo)
         queueVideo.link(videoEnc)
-        videoEnc.link(mux)
         
-
+        audioEnc = None
         if self.GetAudioFiles():
             self.concat = Gst.ElementFactory.make("concat")
             self.pipeline.add(self.concat)
@@ -201,13 +197,28 @@ class _GStreamerRenderer(BaseRenderer):
             queueAudio.link(audioConv)
             audioConv.link(audiorate)
             audiorate.link(audioEnc)
+
+        if self.GetProfile().IsMPEGProfile():
+            vp = Gst.ElementFactory.make("mpegvideoparse")
+            self.pipeline.add(vp)
+            videoEnc.link(vp)
+            videoEnc = vp
+
+            if audioEnc:
+                ap = Gst.ElementFactory.make("mpegaudioparse")
+                self.pipeline.add(ap)
+                audioEnc.link(ap)
+                audioEnc = ap
+
+        mux = self._GetMux()
+        self.pipeline.add(mux)
+        videoEnc.link(mux)
+        if audioEnc:
             audioEnc.link(mux)
-
-            srcpad = mux.get_static_pad('src')
-            srcpad.add_probe(Gst.PadProbeType.BUFFER, 
-                             self._GstProbeBuffer, 
-                             audioConv)
-
+            muxSrcPad = mux.get_static_pad('src')
+            muxSrcPad.add_probe(Gst.PadProbeType.BUFFER,
+                                self._GstProbeBuffer,
+                                audioConv)
 
         sink = Gst.ElementFactory.make("filesink")
         sink.set_property("location", outFile)
@@ -386,9 +397,10 @@ class MkvX264MP3(_GStreamerRenderer):
         return mux    
         
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("avenc_ac3")
+        audioEnc = Gst.ElementFactory.make("lamemp3enc")
+#         audioEnc = Gst.ElementFactory.make("avenc_ac3")
 #         audioEnc = Gst.ElementFactory.make("lame")
-#         audioEnc.set_property("target", "bitrate")
+        audioEnc.set_property("target", "bitrate")
         audioEnc.set_property("bitrate", 192000)
         return audioEnc
 

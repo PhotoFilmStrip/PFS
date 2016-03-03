@@ -67,6 +67,8 @@ class OutputProfile(object):
     def GetVideoNorm(self):
         return self.__videoNorm
 
+    def IsMPEGProfile(self):
+        return self.GetName() in ("VCD",  "SVCD", "DVD")
 
 
 def __CreateMPEGProfiles():
