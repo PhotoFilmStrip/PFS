@@ -19,17 +19,17 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import logging
 import os
-import sys
 
 from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
-from photofilmstrip.lib.util import Encode
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow,\
     RenderEngineTimelapse
+from photofilmstrip.core.GPlayer import GPlayer
 
 
 class ActionRender(IAction):
@@ -82,9 +82,15 @@ class ActionRender(IAction):
     
     def Execute(self):
         audioFiles = []
+        audioLength = 0
         for audioFile in self.__photoFilmStrip.GetAudioFiles():
             if self.CheckFile(audioFile):
+                length = GPlayer(audioFile).GetLength()
                 audioFiles.append(audioFile)
+                logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
+                audioLength += length
+            else:
+                logging.warn("Missing audiofile '%s'!", audioFile)
 
         outpath = self._CheckAndGetOutpath()
         
@@ -96,6 +102,8 @@ class ActionRender(IAction):
             self.__rendererClass.SetProperty(prop, value)
         
         totalLength = self.__photoFilmStrip.GetDuration(False)
+        if totalLength == -1:
+            totalLength = int(round((audioLength + 500) / 1000.0))
         
         renderer = self.__rendererClass()
         renderer.Init(self.__profile, 
