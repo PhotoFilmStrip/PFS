@@ -26,13 +26,8 @@ import threading
 import Queue
 import cStringIO
 
-import gi
-gi.require_version('Gst', '1.0')
-
 from gi.repository import Gst
 from gi.repository import GObject
-
-Gst.init(None)
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile

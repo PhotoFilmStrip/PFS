@@ -21,7 +21,6 @@
 
 import os
 import re
-import sys
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.core.RenderJob import RenderJob

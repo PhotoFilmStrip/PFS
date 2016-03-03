@@ -44,9 +44,17 @@ class AppMixin(object):
         from photofilmstrip.action.ActionI18N import ActionI18N
         ActionI18N().Execute()
         
+    def InitGStreamer(self):
+        import gi
+        gi.require_version('Gst', '1.0')
+
+        from gi.repository import Gst
+        Gst.init(None)
+
     def Start(self):
         self.InitLogging()
         self.InitI18N()
+        self.InitGStreamer()
         
         DestructionManager()
         

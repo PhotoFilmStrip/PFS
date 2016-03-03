@@ -19,44 +19,56 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import datetime
 import logging
-import re
-import sys
+import threading
+import time
 
-try:
-    import gi
-    gi.require_version('Gst', '1.0')
-
-    from gi.repository import Gst
-    from gi.repository import GObject
-except ImportError:
-    pass
-
-from photofilmstrip.lib.util import Encode
+from gi.repository import Gst
+from gi.repository import GObject
 
 
 class GPlayer(object):
     
     def __init__(self, filename):
         self.__filename = filename
-        self.__proc = None
+        self.__pipeline = None
         self.__length = None
+        self.__gtkMainloop = None
         
         self.__Identify()
 
     def __Identify(self):
-        d = Gst.parse_launch("filesrc name=source ! decodebin ! fakesink")
-        source = d.get_by_name("source")
-        source.set_property("location", self.__filename)
-        d.set_state(Gst.State.PLAYING)
-        duration = d.query_duration(Gst.Format.TIME)[1]
-        d.set_state(Gst.State.NULL)
+        pipeline = Gst.Pipeline("pipeline")
+
+        fileSrc = Gst.ElementFactory.make("filesrc")
+        fileSrc.set_property("location", self.__filename)
+        audioDec = Gst.ElementFactory.make("decodebin")
+        audioConv = Gst.ElementFactory.make("audioconvert")
+        audioSink = Gst.ElementFactory.make("fakesink")
+
+        pipeline.add(fileSrc)
+        pipeline.add(audioDec)
+        pipeline.add(audioConv)
+        pipeline.add(audioSink)
+
+        fileSrc.link(audioDec)
+        audioConv.link(audioSink)
+
+        audioDec.connect("pad-added", self._GstPadAdded, audioConv)
+
+        pipeline.set_state(Gst.State.PLAYING)
+
+        hasResult = False
+        while not hasResult:
+            msg = pipeline.get_bus().pop()
+            if msg is None:
+                time.sleep(0.001)
+                continue
+            hasResult, duration = pipeline.query_duration(Gst.Format.TIME)
+
+        pipeline.set_state(Gst.State.NULL)
         
-        delta = datetime.timedelta(seconds=(duration / Gst.SECOND))
-        logging.debug("identify audio with gplayer: Duration: %s", delta)
-        
-        self.__length = duration / Gst.SECOND
+        self.__length = duration / Gst.MSECOND
         
     def GetFilename(self):
         return self.__filename
@@ -65,21 +77,70 @@ class GPlayer(object):
         return self.__length is not None
     
     def IsPlaying(self):
-        return self.__proc is not None
+        return self.__pipeline is not None
     
     def Play(self):
-        if self.__proc is None:
-            self.__proc = Gst.parse_launch("filesrc name=source ! decodebin ! autoaudiosink")
-            source = self.__proc.get_by_name("source")
-            source.set_property("location", self.__filename)
-            self.__proc.set_state(Gst.State.PLAYING)
+        if self.__pipeline is None:
+            pipeline = Gst.Pipeline("pipeline")
+
+            fileSrc = Gst.ElementFactory.make("filesrc")
+            fileSrc.set_property("location", self.__filename)
+
+            audioDec = Gst.ElementFactory.make("decodebin")
+            audioConv = Gst.ElementFactory.make("audioconvert")
+            audioSink = Gst.ElementFactory.make("autoaudiosink")
+
+            pipeline.add(fileSrc)
+            pipeline.add(audioDec)
+            pipeline.add(audioConv)
+            pipeline.add(audioSink)
+
+            fileSrc.link(audioDec)
+            audioConv.link(audioSink)
+
+            audioDec.connect("pad-added", self._GstPadAdded, audioConv)
+
+            self.__pipeline = pipeline
+            self.__pipeline.set_state(Gst.State.PLAYING)
+
+            bus = self.__pipeline.get_bus()
+            bus.add_signal_watch()
+            bus.connect("message", self._GstOnMessage)
+
+        gtkMainloopThread = threading.Thread(name="gtkMainLoop",
+                                             target=self._GtkMainloop)
+        gtkMainloopThread.start()
     
     def Stop(self):
         self.Close()
     
     def Close(self):
-        self.__proc.set_state(Gst.State.NULL)
-        self.__proc = None
+        self.__pipeline.send_event(Gst.Event.new_eos())
     
     def GetLength(self):
         return self.__length
+
+    def _GstOnMessage(self, bus, msg):
+        logging.debug('_GstOnMessage: %s', msg.type)
+
+        if msg.type == Gst.MessageType.ERROR:
+            err, debug = msg.parse_error()
+            logging.error("Error received from element %s: %s",
+                          msg.src.get_name(), err)
+            logging.debug("Debugging information: %s", debug)
+
+        elif msg.type == Gst.MessageType.EOS:
+            self.__pipeline.set_state(Gst.State.NULL)
+            self.__gtkMainloop.quit()
+            self.__pipeline = None
+            self.__gtkMainloop = None
+
+    def _GstPadAdded(self, decodebin, pad, audioConv):
+        caps = pad.get_current_caps()
+        compatible_pad = audioConv.get_compatible_pad(pad, caps)
+        pad.link(compatible_pad)
+
+    def _GtkMainloop(self):
+        GObject.threads_init()
+        self.__gtkMainloop = GObject.MainLoop()
+        self.__gtkMainloop.run()
