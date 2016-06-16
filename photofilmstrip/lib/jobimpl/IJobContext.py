@@ -1,6 +1,12 @@
 # encoding: UTF-8
 
 class IJobContext(object):
+    '''
+    The JobContext interface handles the processing of a long running job.
+    A Job can contain of multiple tasks (smaller workloads) that may processed
+    on different worker threads. The JobContext belongs to a group that decides
+    on which workers the workloads are processed.
+    '''
 
     def GetGroupId(self):
         raise NotImplementedError

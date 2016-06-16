@@ -11,6 +11,11 @@ from .JobAbortedException import JobAbortedException
 
 
 class Job(IJobContext):
+    '''
+    A Job implements the JobContext interface and handles the smaller workloads
+    in a queue.
+    '''
+
     def __init__(self, target=None, args=None, kwargs=None, 
                  groupId="general"):
         IJobContext.__init__(self)
@@ -26,7 +31,7 @@ class Job(IJobContext):
         self.__idle = True
 
         if target:
-            self.__workQueue.put(SingleWorkLoad(self, target, args, kwargs))
+            self.AddWorkLoad(SingleWorkLoad(self, target, args, kwargs))
 
     def GetGroupId(self):
         return self.__groupId
@@ -99,6 +104,9 @@ class Job(IJobContext):
 
 
 class SingleWorkLoad(WorkLoad):
+    '''
+    A helper class to wrap a simple method call as a Workload.
+    '''
 
     def __init__(self, job, target, args=None, kwargs=None):
         WorkLoad.__init__(self)

@@ -13,6 +13,10 @@ from .JobAbortedException import JobAbortedException
 
 
 class Worker(threading.Thread, IWorker):
+    '''
+    A worker thread that processes workloads of a JobContext. The worker belongs
+    to a specific group id that decides which JobContexts are executed.
+    '''
     
     def __init__(self, jobManager, ctxGroupId, num):
         threading.Thread.__init__(self, name="{0}-{1}".format(ctxGroupId, num))

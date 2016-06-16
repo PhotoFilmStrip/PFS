@@ -16,23 +16,39 @@ from .JobAbortedException import JobAbortedException
 
 
 class _JobCtxGroup(object):
+    '''
+    Handles the processing state of a JobContext and manages a queue with
+    JobContexts that are waiting to be processed.
+    '''
     
-    def __init__(self, ctxGroup, workers):
-        self.__ctxGroup = ctxGroup
+    def __init__(self, workers):
         self.__idleQueue = Queue.Queue()
+
+        # holds the JobContext that is currently active
         self.__active = None
 
+        # counts how many workers has finished working on the active JobContext
         self.__doneCount = 0
+
+        # if set the acitve JobContext has finshed
         self.__doneEvent = threading.Event()
         
+        # a list with workers working for this context group
         self.__workers = workers
 
         self.__lock = threading.Lock()
     
     def Put(self, jobContext):
+        '''
+        Adds a JobContext to the queue
+        :param jobContext:
+        '''
         self.__idleQueue.put(jobContext)
         
     def Get(self):
+        '''
+        Returns a JobContext from the queue. Blocks if no JobContext is waiting.
+        '''
         return self.__idleQueue.get()
             
     def __enter__(self):
@@ -42,24 +58,51 @@ class _JobCtxGroup(object):
         self.__lock.release()
     
     def Active(self):
+        '''
+        Return the currently active JobContext.
+        '''
         return self.__active
     
     def SetActive(self, jobContext):
+        '''
+        Sets the given JobContext as active. Resets the counter of finished
+        workers and the doneEvent.
+        :param jobContext:
+        '''
         self.__active = jobContext
         if jobContext is not None:
             self.__doneCount = 0
             self.__doneEvent.clear()
         
     def DoneCount(self):
+        '''
+        Returns the number of finished workers for the active JobContext.
+        Only used for logging purposes.
+        '''
         return self.__doneCount
     def CheckBusy(self):
+        '''
+        Returns True if workers are still busy with the active JobContext.
+        '''
         return self.__doneCount < len(self.__workers)
     def IncDoneCount(self):
+        '''
+        Must be called when a worker finished the last workload of the active
+        JobContext.
+        '''
         self.__doneCount += 1
     
     def SetDoneEvent(self):
+        '''
+        Must be called when the last worker finished the last workload of the
+        active JobContext.
+        '''
         self.__doneEvent.set()
     def WaitDoneEvent(self):
+        '''
+        Must be called to block a finished worker until the last worker has
+        finished.
+        '''
         self.__doneEvent.wait()
         
     def Workers(self):
@@ -113,7 +156,7 @@ class JobManager(Singleton, Destroyable):
                             
             i += 1
 
-        jcGroup = _JobCtxGroup(workerCtxGroup, workers)
+        jcGroup = _JobCtxGroup(workers)
         self.__jobCtxGroups[workerCtxGroup] = jcGroup
             
         for worker in workers:
@@ -135,6 +178,10 @@ class JobManager(Singleton, Destroyable):
             visual.RegisterJob(jobContext)
                 
     def _GetWorkLoad(self, workerCtxGroup):
+        '''
+        Retrieves a workload of the given context group.
+        :param workerCtxGroup:
+        '''
         jcGroup = self.__jobCtxGroups[workerCtxGroup]
         
         try:
@@ -146,17 +193,19 @@ class JobManager(Singleton, Destroyable):
                     if self.__StartCtx(jcIdle):
                         jcGroup.SetActive(jcIdle)
                 
-                jobCtxActive = jcGroup.Active()
                 if self.__destroying:
                     # if in destroying state raise Queue.Empty() to enter
                     # the except section and get FinishCtx() called
                     raise Queue.Empty()
+                jobCtxActive = jcGroup.Active()
                 workLoad = jobCtxActive.GetWorkLoad()
                 return jobCtxActive, workLoad # FIXME: no tuple
         except Queue.Empty:
             # no more workloads, job done, only __FinishCtx() needs to be done
             # wait for all workers to be done
-            jcGroup.IncDoneCount()
+            with jcGroup:
+                jcGroup.IncDoneCount()
+
             if jcGroup.CheckBusy():
                 self.__logger.debug("<%s> block until ready... %s", 
                                     threading.currentThread().getName(), 
