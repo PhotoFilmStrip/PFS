@@ -10,7 +10,7 @@ Homepage: http://www.photofilmstrip.org
 
 Package: photofilmstrip
 Architecture: all
-Depends: ${misc:Depends}, python-wxgtk3.0, python-pil, python-gst0.10
+Depends: ${misc:Depends}, python-wxgtk3.0, python-pil, python-gst-1.0
 Description: Slideshow creator with Ken Burns effect
  This creates movies out of your pictures in just three steps.
  First select your photos, customize the motion path and render the

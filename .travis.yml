@@ -7,4 +7,4 @@ script:
   - make versioninfo -s
   - make package
 after_success:  
-  - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip_3.0.0-1_all.deb" --data-binary @"release_2016_06_21/photofilmstrip_3.0.0-1_all.deb"
+  - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip_3.0.0-1_all.deb" --data-binary @"release_2016_06_22/photofilmstrip_3.0.0-1_all.deb"

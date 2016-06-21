@@ -63,9 +63,9 @@ class pfs_clean(clean):
 
         for fname in (os.path.join(WORKDIR, "version.info"),
                       os.path.join(WORKDIR, "MANIFEST"),
-                      os.path.join(WORKDIR, "_scmInfo.py"),
-                      os.path.join(WORKDIR, "_scmInfo.pyc"),
-                      os.path.join(WORKDIR, "_scmInfo.pyo")):
+                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.py"),
+                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.pyc"),
+                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.pyo")):
             if os.path.exists(fname):
                 os.remove(fname)
            
@@ -85,7 +85,7 @@ class pfs_build(build):
                       getattr(self.distribution, "console", []):
             target.Update(scmRev)
         
-        fd = open("_scmInfo.py", "w")
+        fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
         fd.write("SCM_REV = \"%s\"\n" % scmRev)
         fd.close()
         

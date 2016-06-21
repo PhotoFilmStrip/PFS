@@ -23,7 +23,7 @@ import os
 import sys
 
 try:
-    from _scmInfo import SCM_REV # IGNORE:F0401
+    from photofilmstrip._scmInfo import SCM_REV # IGNORE:F0401
 except ImportError:
     SCM_REV = "src"
 
