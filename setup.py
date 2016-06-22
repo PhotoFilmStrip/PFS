@@ -49,8 +49,6 @@ else:
     MSGFMT = ["msgfmt"]
 
 
-print os.environ
-
 class pfs_clean(clean):
         
     def run(self):
@@ -82,14 +80,24 @@ class pfs_build(build):
         build.run(self)
         
     def _make_scm_info(self):
-        scmRev = os.getenv("SCM_REV", "src")
+        scmRev = os.getenv("SCM_REV")
+        if not scmRev:
+            # if not set in environment it hopefully was generated earlier
+            # buildig deb with fakeroot has no SCM_REV var anymore
+            try:
+                import photofilmstrip._scmInfo
+                scmRev = photofilmstrip._scmInfo.SCM_REV
+            except ImportError:
+                scmRev = "src"
+
         for target in getattr(self.distribution, "windows", []) + \
                       getattr(self.distribution, "console", []):
             target.Update(scmRev)
         
-        fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
-        fd.write("SCM_REV = \"%s\"\n" % scmRev)
-        fd.close()
+        if scmRev != "src":
+            fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
+            fd.write("SCM_REV = \"%s\"\n" % scmRev)
+            fd.close()
         
     def _make_resources(self):
         try:
