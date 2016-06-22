@@ -49,6 +49,8 @@ else:
     MSGFMT = ["msgfmt"]
 
 
+print os.environ
+
 class pfs_clean(clean):
         
     def run(self):
