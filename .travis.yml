@@ -2,13 +2,14 @@ language: python
 before_install:
   - sudo apt-get install -y devscripts
 script:
-  - export SCM_REV=$TRAVIS_COMMIT
-  - export SCM_REV=`git rev-parse --short HEAD`
-  - export VERSION=`make versioninfo -s`
-  - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
   - echo "TRAVIS_COMMIT: $TRAVIS_COMMIT"
+  - export SCM_REV=$TRAVIS_COMMIT
   - echo "SCM_REV: $SCM_REV"
+  - export SCM_REV=`git rev-parse --short HEAD`
+  - echo "SCM_REV: $SCM_REV"
+  - export VERSION=`make versioninfo -s`
   - echo "VERSION: $VERSION"
+  - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
   - echo "RELEASE_DIR: $RELEASE_DIR"
   - make compile
   - make package
