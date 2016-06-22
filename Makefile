@@ -17,6 +17,7 @@ clean:
 	if [ -e ./dist ] ; then rm -r ./dist ; fi
 	find . -name "*.pyc" -exec rm {} ';'
 	find . -name "*.pyo" -exec rm {} ';'
+	find . -name "_scmInfo.py*" -exec rm {} ';'
 	python setup.py clean
 	
 	rm -f "$(displayname).pot"

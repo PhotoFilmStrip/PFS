@@ -63,9 +63,7 @@ class pfs_clean(clean):
 
         for fname in (os.path.join(WORKDIR, "version.info"),
                       os.path.join(WORKDIR, "MANIFEST"),
-                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.py"),
-                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.pyc"),
-                      os.path.join(WORKDIR, "photofilmstrip", "_scmInfo.pyo")):
+                      ):
             if os.path.exists(fname):
                 os.remove(fname)
            
