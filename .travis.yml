@@ -6,7 +6,6 @@ script:
   - export SCM_REV=`git rev-parse --short HEAD`
   - export VERSION=`make versioninfo -s`
   - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
-  - echo "RELEASE_DIR: $RELEASE_DIR"
   - make compile
   - make package
 after_success:  
