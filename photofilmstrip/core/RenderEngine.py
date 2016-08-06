@@ -23,35 +23,31 @@ import os
 import re
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
-from photofilmstrip.core.RenderJob import RenderJob
 from photofilmstrip.core.Picture import Picture
 
 
 class RenderEngine(object):
     
-    def __init__(self, name, aRenderer, draftMode):
-        self._name = name
-        self._aRenderer = aRenderer
-        self._profile = aRenderer.GetProfile()
-        self._tasks = []
+    def __init__(self, outputPath, profile, pics, draftMode):
+        self._outputPath = outputPath
+        self._profile = profile
+        self._pics = pics
         self._draftMode = draftMode
+        
+        self._tasks = []
 
     def _PrepareTasks(self, pics):
         raise NotImplementedError()
         
-    def CreateRenderJob(self, pics):
-        # determine step count for progressbar
-        self._tasks = []
-        self._PrepareTasks(pics)
-        
-        rjc = RenderJob(self._name, self._aRenderer, self._tasks)
-        return rjc
+    def GetTasks(self):
+        self._PrepareTasks(self._pics)
+        return self._tasks
 
 
 class RenderEngineSlideshow(RenderEngine):
 
-    def __init__(self, name, aRenderer, draftMode, totalLength):
-        RenderEngine.__init__(self, name, aRenderer, draftMode)
+    def __init__(self, outputPath, profile, pics, draftMode, totalLength):
+        RenderEngine.__init__(self, outputPath, profile, pics, draftMode)
         self.__targetLengthSecs = totalLength
         self.__picCountFactor = None
         
@@ -109,7 +105,7 @@ class RenderEngineSlideshow(RenderEngine):
     def _PrepareTasks(self, pics):
         self.__picCountFactor = self.__GetPicCountFactor(pics)
 
-        taskSub = TaskSubtitle(self._aRenderer.GetOutputPath(),
+        taskSub = TaskSubtitle(self._outputPath,
                                self.__picCountFactor,
                                pics)
         self._tasks.append(taskSub)

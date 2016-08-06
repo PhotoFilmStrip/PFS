@@ -29,6 +29,7 @@ from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow,\
     RenderEngineTimelapse
+from photofilmstrip.core.RenderJob import RenderJob
 from photofilmstrip.core.GPlayer import GPlayer
 
 
@@ -112,22 +113,23 @@ class ActionRender(IAction):
         
         renderer.SetAudioFiles(audioFiles)
 
-        name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
-                            self.__profile.GetName())
-        
         if self.__photoFilmStrip.GetTimelapse():
-            renderEngine = RenderEngineTimelapse(name,
-                                                 renderer,
+            renderEngine = RenderEngineTimelapse(outpath,
+                                                 self.__profile,
+                                                 self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode)
         else:
-            renderEngine = RenderEngineSlideshow(name,
-                                                 renderer,
+            renderEngine = RenderEngineSlideshow(outpath,
+                                                 self.__profile,
+                                                 self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode,
                                                  totalLength)
 
-        self.__renderJob = renderEngine.CreateRenderJob(
-                self.__photoFilmStrip.GetPictures()
-        )
+        name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
+                            self.__profile.GetName())
+
+        self.__renderJob = RenderJob(name, renderer,
+                                     renderEngine.GetTasks())
 
     def GetRenderJob(self):
         return self.__renderJob
