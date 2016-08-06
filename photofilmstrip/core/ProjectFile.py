@@ -326,7 +326,7 @@ class ProjectFile(object):
             project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", unicode))
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
             project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
-            project.SetTimelapse(self.__LoadProperty(cur, "timelapse", int))
+            project.SetTimelapse(self.__LoadProperty(cur, "timelapse", int, False))
         
         self.__Close()
         
