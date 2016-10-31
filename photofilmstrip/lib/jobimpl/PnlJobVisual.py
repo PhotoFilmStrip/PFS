@@ -144,8 +144,6 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.curAction = None
         self.jobContext.AddVisualJobHandler(self)
         
-        self._SetupAction()
-        
         self.Bind(EVT_JOB_UPDATE, self.OnJobUpdate)
 
     def OnJobUpdate(self, event):

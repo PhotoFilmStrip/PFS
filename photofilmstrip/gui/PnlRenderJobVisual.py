@@ -18,7 +18,7 @@ class PnlRenderJobVisual(PnlJobVisual):
         ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
 
         self._actPlay = WxAction(
-                _("Play video"),
+                _(u"Play video"),
                 self._PlayVideo,
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_FILE_OPEN, 
                                                            wx.ART_MENU, 
