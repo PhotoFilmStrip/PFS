@@ -60,18 +60,18 @@ def RotateExif(pilImg):
         return pilImg.transpose(Image.FLIP_TOP_BOTTOM)
     elif rotation == 5:
         # transpose
-        pilImg = pilImg.rotate(-90)
+        pilImg = pilImg.rotate(-90, expand=1)
         return pilImg.transpose(Image.FLIP_LEFT_RIGHT)
     elif rotation == 6:
         # rotate 90
-        return pilImg.rotate(-90)
+        return pilImg.rotate(-90, expand=1)
     elif rotation == 7:
         # transverse
-        pilImg = pilImg.rotate(-90)
+        pilImg = pilImg.rotate(-90, expand=1)
         return pilImg.transpose(Image.FLIP_TOP_BOTTOM)
     elif rotation == 8:
         # rotate 270
-        return pilImg.rotate(-270)
+        return pilImg.rotate(-270, expand=1)
         
     return pilImg
     
