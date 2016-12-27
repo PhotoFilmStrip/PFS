@@ -36,7 +36,8 @@ RENDERERS.extend([
         GSR.SVCDFormat,
         GSR.DVDFormat,
         GSR.OggTheoraVorbis,
-        GSR.MkvX264MP3])
+        GSR.MkvX264MP3,
+        GSR.Mp4X264AAC])
 
 # RENDERERS.extend([
 #          OCR.OpenCvRenderer,

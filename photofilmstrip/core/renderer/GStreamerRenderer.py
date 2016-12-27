@@ -405,6 +405,45 @@ class MkvX264MP3(_GStreamerRenderer):
         return videoEnc
 
 
+class Mp4X264AAC(_GStreamerRenderer):
+
+    @staticmethod
+    def GetName():
+        return "x264/AAC (MP4)"
+
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = Gst.ElementFactory.find("voaacenc")
+            if aEnc is None:
+                msgList.append(_(u"MP3-Codec (gstreamer1.0-plugins-bad) required!"))
+
+            vEnc = Gst.ElementFactory.find("x264enc")
+            if vEnc is None:
+                msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
+
+            mux = Gst.ElementFactory.find("flvmux")
+            if mux is None:
+                msgList.append(_(u"FLV-Muxer (gstreamer1.0-plugins-good) required!"))
+
+    def _GetExtension(self):
+        return "mp4"
+
+    def _GetMux(self):
+        mux = Gst.ElementFactory.make("flvmux")
+        return mux
+
+    def _GetAudioEncoder(self):
+        audioEnc = Gst.ElementFactory.make("voaacenc")
+        return audioEnc
+
+    def _GetVideoEncoder(self):
+        videoEnc = Gst.ElementFactory.make("x264enc")
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc
+
+
 class OggTheoraVorbis(_GStreamerRenderer):
     
     @staticmethod
