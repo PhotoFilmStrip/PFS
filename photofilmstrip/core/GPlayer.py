@@ -38,7 +38,7 @@ class GPlayer(object):
         self.__Identify()
 
     def __Identify(self):
-        pipeline = Gst.Pipeline("pipeline")
+        pipeline = Gst.Pipeline()
 
         fileSrc = Gst.ElementFactory.make("filesrc")
         fileSrc.set_property("location", self.__filename)
@@ -81,7 +81,7 @@ class GPlayer(object):
     
     def Play(self):
         if self.__pipeline is None:
-            pipeline = Gst.Pipeline("pipeline")
+            pipeline = Gst.Pipeline()
 
             fileSrc = Gst.ElementFactory.make("filesrc")
             fileSrc.set_property("location", self.__filename)

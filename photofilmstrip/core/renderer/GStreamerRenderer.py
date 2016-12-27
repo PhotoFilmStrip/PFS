@@ -133,9 +133,9 @@ class _GStreamerRenderer(BaseRenderer):
         outFile = os.path.join(self.GetOutputPath(), 
                                "output.%s" % self._GetExtension())
         
-        self.pipeline = Gst.Pipeline("pipeline")
+        self.pipeline = Gst.Pipeline()
         
-        caps = Gst.Caps("image/jpeg,framerate={0}".format(frameRate))
+        caps = Gst.caps_from_string("image/jpeg,framerate={0}".format(frameRate))
         videoSrc = Gst.ElementFactory.make("appsrc")
         videoSrc.set_property("block", "true")
         videoSrc.set_property("caps", caps)
