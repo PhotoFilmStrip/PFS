@@ -269,6 +269,11 @@ class _GStreamerRenderer(BaseRenderer):
         return bitrate
 
     def _GstOnMessage(self, bus, msg):
+        '''
+        Gstreamer message handler for messages in gstreamer event bus.
+        :param bus:
+        :param msg:
+        '''
         self._Log(logging.DEBUG, '_GstOnMessage: %s', msg.type)
 
         if msg.type == Gst.MessageType.ERROR:
@@ -283,6 +288,16 @@ class _GStreamerRenderer(BaseRenderer):
 #         return Gst.BusSyncReply.PASS
 
     def _GstNeedData(self, src, need_bytes):
+        '''
+        Gstreamer need-data probe callback to feed the appsrc with image data.
+        The image data comes from a queue that is filled from other worker
+        threads. If the queue is empty and the finish flag is set send
+        end-of-stream to the appsrc so the pipeline can finish its processing.
+        If the textoverlay element is available the current text for the
+        rendered subtitle will be set.
+        :param src: GstElement appsrc
+        :param need_bytes: unused size
+        '''
         self._Log(logging.DEBUG, '_GstNeedData: %s', self.idxFrame)
         
         pts = self.idxFrame * self.imgDuration
@@ -328,6 +343,12 @@ class _GStreamerRenderer(BaseRenderer):
         self.idxFrame += 1
         
     def _GstPadAdded(self, decodebin, pad):
+        '''
+        Gstreamer pad-added probe callback to attach a new audio file to the
+        pipeline.
+        :param decodebin: GstElement decodebin (decoder for audio data)
+        :param pad: GstPad object
+        '''
         caps = pad.get_current_caps()
         compatible_pad = self.concat.get_compatible_pad(pad, caps)
         pad.link(compatible_pad)
@@ -337,6 +358,15 @@ class _GStreamerRenderer(BaseRenderer):
             self._GstAddAudioFile(self.GetAudioFiles()[self.idxAudioFile])
 
     def _GstProbeBuffer(self, srcPad, probeInfo, audioConv):
+        '''
+        Gstreamer pad probe callback to check if the current stream time has
+        reached the final time (usually the length of the overall audio stream).
+        If final time has reached send eos event (end of stream) to finish the
+        pipeline
+        :param srcPad: src pad of the muxer
+        :param probeInfo: GstPadProbeInfo object
+        :param audioConv: GstElement audioconvert
+        '''
         buf = probeInfo.get_buffer()
         if self.finalTime is None:
             return True
