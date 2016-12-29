@@ -78,11 +78,21 @@ class _GStreamerRenderer(BaseRenderer):
         return BaseRenderer.GetDefaultProperty(prop)
 
     def ProcessFinalize(self, pilImg):
+        '''
+        ProcessFinalize is called from several worker threads and puts the new
+        image data (JPEG) in a queue.
+        :param pilImg:
+        '''
         res = cStringIO.StringIO()
         pilImg.save(res, 'JPEG', quality=95)
         self.resQueue.put(res.getvalue())
     
     def __CleanUp(self):
+        '''
+        Waits until the ready event is set and finished the GTK-Mainloop.
+        The ready event is set within _GstOnMessage if the end-of-stream event
+        was handled.
+        '''
         if self.ready is None:
             return
         
@@ -108,12 +118,19 @@ class _GStreamerRenderer(BaseRenderer):
                 os.remove(srtPath)
 
     def ProcessAbort(self):
+        '''
+        Called if the user aborts the rendering. Sets the active flag to false
+        and waits until everything is cleaned up.
+        '''
         if self.active:
             self.active = False
         
         self.__CleanUp()
 
     def Prepare(self):
+        '''
+        Build the gstreamer pipeline and all necessary objects and bindings.
+        '''
         GObject.threads_init()
 
         self.ready = threading.Event()
@@ -235,6 +252,10 @@ class _GStreamerRenderer(BaseRenderer):
         self.ready.clear()
         
     def _GstAddAudioFile(self, audioFile):
+        '''
+        Inserts new elements to refer a new audio file in the gstreamer pipeline.
+        :param audioFile: the full path to the audio file
+        '''
         audioSrc = Gst.ElementFactory.make("filesrc")
         audioSrc.set_property("location", audioFile)
         self.pipeline.add(audioSrc)
