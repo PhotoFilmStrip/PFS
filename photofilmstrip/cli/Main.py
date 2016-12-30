@@ -25,8 +25,6 @@ from optparse import OptionParser
 
 from photofilmstrip import Constants
 
-from photofilmstrip.lib.common.ObserverPattern import Observer
-
 from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles, GetMPEGProfiles
@@ -41,7 +39,6 @@ from photofilmstrip.lib.jobimpl.IVisualJobHandler import IVisualJobHandler
 class CliGui(IVisualJobHandler):
     
     def __init__(self):
-        Observer.__init__(self)
         self._maxProgress = 100
         self._curProgress = 0
         self._info = u""
