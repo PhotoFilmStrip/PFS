@@ -39,12 +39,12 @@ NOT_SET = object()
 
 
 class _GStreamerRenderer(BaseRenderer):
-    
+
     def __init__(self):
         BaseRenderer.__init__(self)
         self._Log = _GStreamerRenderer.Log
         self.resQueue = Queue.Queue(20)
-        
+
         self.active = None
         self.finished = None
         self.ready = None
@@ -86,7 +86,7 @@ class _GStreamerRenderer(BaseRenderer):
         res = cStringIO.StringIO()
         pilImg.save(res, 'JPEG', quality=95)
         self.resQueue.put(res.getvalue())
-    
+
     def __CleanUp(self):
         '''
         Waits until the ready event is set and finished the GTK-Mainloop.
@@ -98,7 +98,7 @@ class _GStreamerRenderer(BaseRenderer):
         
         self.ready.wait()
         self.gtkMainloop.quit()
-        
+
         self.active = None
         self.finished = None
         self.ready = None
@@ -124,7 +124,7 @@ class _GStreamerRenderer(BaseRenderer):
         '''
         if self.active:
             self.active = False
-        
+
         self.__CleanUp()
 
     def Prepare(self):
@@ -135,7 +135,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.ready = threading.Event()
         self.ready.set()
-        
+
         self.active = True
         self.finished = False
         frameRate = self._GetFrameRate()
@@ -144,14 +144,14 @@ class _GStreamerRenderer(BaseRenderer):
             self.imgDuration = 1000 * Gst.MSECOND / 25
         elif frameRate == "30000/1001":
             # 1000ms / 29.97fps == 33,367msec/frame
-            self.imgDuration = int(round(1000 * Gst.MSECOND / (30000.0/1001.0)))
+            self.imgDuration = int(round(1000 * Gst.MSECOND / (30000.0 / 1001.0)))
         self._Log(logging.DEBUG, "set imgDuration=%s", self.imgDuration)
-        
-        outFile = os.path.join(self.GetOutputPath(), 
+
+        outFile = os.path.join(self.GetOutputPath(),
                                "output.%s" % self._GetExtension())
-        
+
         self.pipeline = Gst.Pipeline()
-        
+
         caps = Gst.caps_from_string("image/jpeg,framerate={0}".format(frameRate))
         videoSrc = Gst.ElementFactory.make("appsrc")
         videoSrc.set_property("block", "true")
@@ -170,7 +170,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         videoEnc = self._GetVideoEncoder()
         self.pipeline.add(videoEnc)
-        
+
         if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]) and Gst.ElementFactory.find("textoverlay"):
             self.textoverlay = Gst.ElementFactory.make("textoverlay")
             self.textoverlay.set_property("text", "")
@@ -185,7 +185,7 @@ class _GStreamerRenderer(BaseRenderer):
         else:
             colorConverter.link(queueVideo)
         queueVideo.link(videoEnc)
-        
+
         audioEnc = None
         if self.GetAudioFiles():
             self.concat = Gst.ElementFactory.make("concat")
@@ -195,7 +195,7 @@ class _GStreamerRenderer(BaseRenderer):
 
             queueAudio = Gst.ElementFactory.make("queue")
             self.pipeline.add(queueAudio)
-            
+
             audioConv = Gst.ElementFactory.make("audioconvert")
             self.pipeline.add(audioConv)
 
@@ -243,12 +243,12 @@ class _GStreamerRenderer(BaseRenderer):
         bus.connect("message", self._GstOnMessage)
 
         self.pipeline.set_state(Gst.State.PLAYING)
-        
+
         self.gtkMainloop = GObject.MainLoop()
         gtkMainloopThread = threading.Thread(name="gtkMainLoop",
                                              target=self.gtkMainloop.run)
         gtkMainloopThread.start()
-        
+
         self.ready.clear()
         
     def _GstAddAudioFile(self, audioFile):
@@ -271,7 +271,7 @@ class _GStreamerRenderer(BaseRenderer):
             self.finished = True
 
         self.__CleanUp()
-        
+
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = "25/1"
@@ -299,7 +299,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         if msg.type == Gst.MessageType.ERROR:
             err, debug = msg.parse_error()
-            self._Log(logging.ERROR, "Error received from element %s: %s", 
+            self._Log(logging.ERROR, "Error received from element %s: %s",
                           msg.src.get_name(), err)
             self._Log(logging.DEBUG, "Debugging information: %s", debug)
 
@@ -320,7 +320,7 @@ class _GStreamerRenderer(BaseRenderer):
         :param need_bytes: unused size
         '''
         self._Log(logging.DEBUG, '_GstNeedData: %s', self.idxFrame)
-        
+
         pts = self.idxFrame * self.imgDuration
 
         while self.active:
@@ -342,9 +342,9 @@ class _GStreamerRenderer(BaseRenderer):
             self.finalTime = pts
             src.emit("end-of-stream")
             return
-        
+
         self._Log(logging.DEBUG, '_GstNeedData: push to buffer (%s)', len(result))
-                
+
         buf = Gst.Buffer.new_wrapped(result)
         buf.pts = pts
         buf.duration = self.imgDuration
@@ -362,7 +362,7 @@ class _GStreamerRenderer(BaseRenderer):
             self.textoverlay.set_property("text", subtitle)
 
         self.idxFrame += 1
-        
+
     def _GstPadAdded(self, decodebin, pad):
         '''
         Gstreamer pad-added probe callback to attach a new audio file to the
@@ -418,7 +418,7 @@ class MkvX264MP3(_GStreamerRenderer):
     @staticmethod
     def GetName():
         return "x264/MP3 (MKV)"
-    
+
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
@@ -426,22 +426,22 @@ class MkvX264MP3(_GStreamerRenderer):
             aEnc = Gst.ElementFactory.find("lamemp3enc")
             if aEnc is None:
                 msgList.append(_(u"MP3-Codec (gstreamer1.0-plugins-ugly) required!"))
-                
+
             vEnc = Gst.ElementFactory.find("x264enc")
             if vEnc is None:
                 msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
-            
+
             mux = Gst.ElementFactory.find("matroskamux")
             if mux is None:
                 msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
     def _GetExtension(self):
         return "mkv"
-    
+
     def _GetMux(self):
         mux = Gst.ElementFactory.make("matroskamux")
-        return mux    
-        
+        return mux
+
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("lamemp3enc")
 #         audioEnc = Gst.ElementFactory.make("avenc_ac3")
@@ -496,11 +496,11 @@ class Mp4X264AAC(_GStreamerRenderer):
 
 
 class OggTheoraVorbis(_GStreamerRenderer):
-    
+
     @staticmethod
     def GetName():
         return "Theora/Vorbis (OGV)"
-    
+
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
@@ -508,38 +508,38 @@ class OggTheoraVorbis(_GStreamerRenderer):
             aEnc = Gst.ElementFactory.find("theoraenc")
             if aEnc is None:
                 msgList.append(_(u"Theora-Codec (gstreamer1.0-plugins-base) required!"))
-                
+
             vEnc = Gst.ElementFactory.find("vorbisenc")
             if vEnc is None:
                 msgList.append(_(u"Vorbis-Codec (gstreamer1.0-plugins-base) required!"))
-            
+
             mux = Gst.ElementFactory.find("oggmux")
             if mux is None:
                 msgList.append(_(u"OGV-Muxer (gstreamer1.0-plugins-base) required!"))
-    
+
     def _GetExtension(self):
         return "ogv"
-    
+
     def _GetMux(self):
         mux = Gst.ElementFactory.make("oggmux")
-        return mux    
-        
+        return mux
+
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("vorbisenc")
         return audioEnc
-        
+
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("theoraenc")
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
-        
-        
+
+
 class VCDFormat(_GStreamerRenderer):
-    
+
     @staticmethod
     def GetName():
         return "VCD (MPG)"
-    
+
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
@@ -555,18 +555,18 @@ class VCDFormat(_GStreamerRenderer):
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
-    
+
     def _GetExtension(self):
         return "mpg"
-    
+
     def _GetMux(self):
         mux = Gst.ElementFactory.make("mpegtsmux")
-        return mux    
-        
+        return mux
+
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
-        
+
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 1)
@@ -575,11 +575,11 @@ class VCDFormat(_GStreamerRenderer):
 
 
 class SVCDFormat(_GStreamerRenderer):
-    
+
     @staticmethod
     def GetName():
         return "SVCD (MPG)"
-    
+
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
@@ -595,18 +595,18 @@ class SVCDFormat(_GStreamerRenderer):
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
-    
+
     def _GetExtension(self):
         return "mpg"
-    
+
     def _GetMux(self):
         mux = Gst.ElementFactory.make("mpegtsmux")
-        return mux    
-        
+        return mux
+
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
-        
+
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 4)
@@ -624,11 +624,11 @@ class SVCDFormat(_GStreamerRenderer):
 
 
 class DVDFormat(_GStreamerRenderer):
-    
+
     @staticmethod
     def GetName():
         return "DVD (MPG)"
-    
+
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
@@ -644,18 +644,18 @@ class DVDFormat(_GStreamerRenderer):
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
-    
+
     def _GetExtension(self):
         return "mpg"
-    
+
     def _GetMux(self):
         mux = Gst.ElementFactory.make("mpegtsmux")
-        return mux    
-        
+        return mux
+
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("twolamemp2enc")
         return audioEnc
-        
+
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 8)
