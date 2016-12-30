@@ -95,7 +95,8 @@ class _GStreamerRenderer(BaseRenderer):
         '''
         if self.ready is None:
             return
-        
+
+        self._Log(logging.DEBUG, "waiting for ready event")
         self.ready.wait()
         self.gtkMainloop.quit()
 
@@ -246,11 +247,16 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.gtkMainloop = GObject.MainLoop()
         gtkMainloopThread = threading.Thread(name="gtkMainLoop",
-                                             target=self.gtkMainloop.run)
+                                             target=self._GtkMainloop)
         gtkMainloopThread.start()
 
         self.ready.clear()
-        
+
+    def _GtkMainloop(self):
+        self._Log(logging.DEBUG, "GTK mainloop starting...")
+        self.gtkMainloop.run()
+        self._Log(logging.DEBUG, "GTK mainloop finished")
+
     def _GstAddAudioFile(self, audioFile):
         '''
         Inserts new elements to refer a new audio file in the gstreamer pipeline.
