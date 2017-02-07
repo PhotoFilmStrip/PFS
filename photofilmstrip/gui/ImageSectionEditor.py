@@ -372,11 +372,11 @@ class ImageSectionEditor(wx.Panel, Observer):
                     height = width / self.RATIO
                     recalcDelta = True
                 else:
-                    if width > self._imgProxy.GetWidth():
+                    if width > self._imgProxy.GetWidth() and self._lock:
                         width = self._imgProxy.GetWidth()
                         height = width / self.RATIO
                         recalcDelta = True
-                    if height > self._imgProxy.GetHeight():
+                    if height > self._imgProxy.GetHeight() and self._lock:
                         height = self._imgProxy.GetHeight()
                         width = height * self.RATIO
                         recalcDelta = True
@@ -415,21 +415,22 @@ class ImageSectionEditor(wx.Panel, Observer):
                 elif self._action == self.POSITION_BOTTOM:
                     nx = sx - dx / 2
                     ny = sy
-                
-                #check pos
-                if nx < 0:
-                    nx = 0
-                elif nx + width > self._imgProxy.GetWidth():
-                    nx = self._imgProxy.GetWidth() - width
-                
-                if ny < 0:
-                    ny = 0
-                elif ny + height > self._imgProxy.GetHeight():
-                    ny = self._imgProxy.GetHeight()
-                    
-                #everything should be ok now
-                self._sectRect.Set(nx, ny, width, height)              
-#           
+
+                # check pos
+                if self._lock:
+                    if nx < 0:
+                        nx = 0
+                    elif nx + width > self._imgProxy.GetWidth():
+                        nx = self._imgProxy.GetWidth() - width
+
+                    if ny < 0:
+                        ny = 0
+                    elif ny + height > self._imgProxy.GetHeight():
+                        ny = self._imgProxy.GetHeight()
+
+                # everything should be ok now
+                self._sectRect.Set(nx, ny, width, height)
+#
             self._SendRectChangedEvent()
             
             self.__UpdateSectRect()
