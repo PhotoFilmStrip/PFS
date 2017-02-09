@@ -35,9 +35,6 @@ from photofilmstrip.core.BaseRenderer import BaseRenderer, RendererException
 from photofilmstrip.core.Subtitle import SrtParser
 
 
-NOT_SET = object()
-
-
 class _GStreamerRenderer(BaseRenderer):
 
     def __init__(self):
@@ -56,7 +53,9 @@ class _GStreamerRenderer(BaseRenderer):
         self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
-        
+        self.ptsOffset = 0
+        self.ptsLast = None
+
     @staticmethod
     def CheckDependencies(msgList):
         if Gst is None or GObject is None:
@@ -111,7 +110,9 @@ class _GStreamerRenderer(BaseRenderer):
         self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
-        
+        self.ptsOffset = 0
+        self.ptsLast = None
+
         if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
             # delete subtitle file, if subtitle is rendered in video
             srtPath = os.path.join(self.GetOutputPath(), "output.srt")
@@ -155,7 +156,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         caps = Gst.caps_from_string("image/jpeg,framerate={0}".format(frameRate))
         videoSrc = Gst.ElementFactory.make("appsrc")
-        videoSrc.set_property("block", "true")
+        videoSrc.set_property("block", True)
         videoSrc.set_property("caps", caps)
         videoSrc.connect("need-data", self._GstNeedData)
         self.pipeline.add(videoSrc)
@@ -192,10 +193,11 @@ class _GStreamerRenderer(BaseRenderer):
             self.concat = Gst.ElementFactory.make("concat")
             self.pipeline.add(self.concat)
 
-            self._GstAddAudioFile(self.GetAudioFiles()[self.idxAudioFile])
+            srcpad = self.concat.get_static_pad("src")
+            srcpad.add_probe(Gst.PadProbeType.BUFFER,  # | Gst.PadProbeType.EVENT_DOWNSTREAM,
+                             self._GstProbeBuffer)
 
-            queueAudio = Gst.ElementFactory.make("queue")
-            self.pipeline.add(queueAudio)
+            self._GstAddAudioFile(self.GetAudioFiles()[self.idxAudioFile])
 
             audioConv = Gst.ElementFactory.make("audioconvert")
             self.pipeline.add(audioConv)
@@ -206,8 +208,7 @@ class _GStreamerRenderer(BaseRenderer):
             audioEnc = self._GetAudioEncoder()
             self.pipeline.add(audioEnc)
 
-            self.concat.link(queueAudio)
-            queueAudio.link(audioConv)
+            self.concat.link(audioConv)
             audioConv.link(audiorate)
             audiorate.link(audioEnc)
 
@@ -228,10 +229,6 @@ class _GStreamerRenderer(BaseRenderer):
         videoEnc.link(mux)
         if audioEnc:
             audioEnc.link(mux)
-            muxSrcPad = mux.get_static_pad('src')
-            muxSrcPad.add_probe(Gst.PadProbeType.BUFFER,
-                                self._GstProbeBuffer,
-                                audioConv)
 
         sink = Gst.ElementFactory.make("filesink")
         sink.set_property("location", outFile)
@@ -267,7 +264,8 @@ class _GStreamerRenderer(BaseRenderer):
         self.pipeline.add(audioSrc)
 
         audioDec = Gst.ElementFactory.make("decodebin")
-        audioDec.connect("pad-added", self._GstPadAdded)
+        audioDec.connect("pad-added", self._GstPadAddedAudio)
+        audioDec.connect("no-more-pads", self._GstNoMorePadsAudio)
         self.pipeline.add(audioDec)
 
         audioSrc.link(audioDec)
@@ -308,6 +306,9 @@ class _GStreamerRenderer(BaseRenderer):
             self._Log(logging.ERROR, "Error received from element %s: %s",
                           msg.src.get_name(), err)
             self._Log(logging.DEBUG, "Debugging information: %s", debug)
+
+        elif msg.type == Gst.MessageType.LATENCY:
+            self.pipeline.recalculate_latency()
 
         elif msg.type == Gst.MessageType.EOS:
             self.pipeline.set_state(Gst.State.NULL)
@@ -369,22 +370,27 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.idxFrame += 1
 
-    def _GstPadAdded(self, decodebin, pad):
+    def _GstPadAddedAudio(self, decodebin, pad):
         '''
         Gstreamer pad-added probe callback to attach a new audio file to the
         pipeline.
         :param decodebin: GstElement decodebin (decoder for audio data)
         :param pad: GstPad object
         '''
+        self._Log(logging.DEBUG, "_GstPadAddedAudio: %s - %s", decodebin, pad)
         caps = pad.get_current_caps()
         compatible_pad = self.concat.get_compatible_pad(pad, caps)
         pad.link(compatible_pad)
 
+    def _GstNoMorePadsAudio(self, decodebin):
+        self._Log(logging.DEBUG, "_GstNoMorePadsAudio: %s", decodebin)
         self.idxAudioFile += 1
         if self.idxAudioFile < len(self.GetAudioFiles()):
+#             self.pipeline.set_state(Gst.State.PAUSED)
             self._GstAddAudioFile(self.GetAudioFiles()[self.idxAudioFile])
+#             self.pipeline.set_state(Gst.State.PLAYING)
 
-    def _GstProbeBuffer(self, srcPad, probeInfo, audioConv):
+    def _GstProbeBuffer(self, srcPad, probeInfo):
         '''
         Gstreamer pad probe callback to check if the current stream time has
         reached the final time (usually the length of the overall audio stream).
@@ -392,22 +398,19 @@ class _GStreamerRenderer(BaseRenderer):
         pipeline
         :param srcPad: src pad of the muxer
         :param probeInfo: GstPadProbeInfo object
-        :param audioConv: GstElement audioconvert
         '''
         buf = probeInfo.get_buffer()
+        self._Log(logging.DEBUG, "_GstProbeBuffer: buffer %s", (buf, buf.pts / Gst.MSECOND, self.ptsOffset / Gst.MSECOND, self.finalTime))
+        if buf.pts < self.ptsLast:
+            self.ptsOffset += self.ptsLast
+        self.ptsLast = buf.pts
+
         if self.finalTime is None:
-            return True
-        elif self.finalTime is NOT_SET:
-            self._Log(logging.DEBUG, "_GstProbeBuffer: noop %s - %s", buf.pts, self.finalTime)
-            return True
-        elif buf.pts >= self.finalTime:
-            self._Log(logging.DEBUG, "_GstProbeBuffer: send eos to audio stream %s - %s", buf.pts, self.finalTime)
-            audioConv.send_event(Gst.Event.new_eos())
-            self.finalTime = NOT_SET
-            return True
+            return Gst.PadProbeReturn.PASS
+        elif self.ptsOffset + buf.pts >= self.finalTime:
+            return Gst.PadProbeReturn.DROP
         else:
-            self._Log(logging.DEBUG, "_GstProbeBuffer: finishing audio buffer %s - %s", buf.pts, self.finalTime)
-            return True
+            return Gst.PadProbeReturn.PASS
 
     def _GetExtension(self):
         raise NotImplementedError()
