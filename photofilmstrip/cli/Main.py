@@ -25,7 +25,7 @@ from optparse import OptionParser
 
 from photofilmstrip import Constants
 
-from photofilmstrip.lib.util import Decode
+from photofilmstrip.lib.util import Decode, CheckFile
 
 from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles, GetMPEGProfiles
 from photofilmstrip.core.ProjectFile import ProjectFile
@@ -181,7 +181,7 @@ def main(showHelp=False):
     ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)
     
     audioFile = project.GetAudioFile()
-    if not ar.CheckFile(audioFile):
+    if not CheckFile(audioFile):
         logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
         return 8
 

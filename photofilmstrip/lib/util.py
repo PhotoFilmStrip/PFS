@@ -51,3 +51,9 @@ def IsPathWritable(path):
     except StandardError, err:
         logging.debug("IsPathWritable(%s): %s", path, err)
         return False
+
+def CheckFile(filename):
+    if filename and not os.path.exists(filename):
+        return False
+    else:
+        return True

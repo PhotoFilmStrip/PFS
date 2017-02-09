@@ -25,6 +25,7 @@ import os
 from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import CheckFile
 from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow,\
@@ -50,13 +51,7 @@ class ActionRender(IAction):
     
     def GetName(self):
         return _(u'Start')
-    
-    def CheckFile(self, filename):
-        if filename and not os.path.exists(filename):
-            return False
-        else:
-            return True
-    
+
     def _CheckAndGetOutpath(self):
         if self.__outpath == "-":
             return
@@ -85,7 +80,7 @@ class ActionRender(IAction):
         audioFiles = []
         audioLength = 0
         for audioFile in self.__photoFilmStrip.GetAudioFiles():
-            if self.CheckFile(audioFile):
+            if CheckFile(audioFile):
                 length = GPlayer(audioFile).GetLength()
                 audioFiles.append(audioFile)
                 logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
