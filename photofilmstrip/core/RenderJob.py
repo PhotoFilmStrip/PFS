@@ -1,4 +1,23 @@
 # encoding: UTF-8
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2017 Jens Goepfert
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
 
 import logging
 import threading
@@ -15,7 +34,7 @@ class RenderJob(VisualJob):
         self.tasks = tasks
 
         self.SetMaxProgress(len(tasks))
-        
+
         self.imgCacheLock = threading.Lock()
         self.imgCache = {}
         self.imgKeyStack = []
@@ -23,11 +42,11 @@ class RenderJob(VisualJob):
         self.resultToFetchLock = threading.Lock()
         self.resultToFetch = 0
         self.sink = None
-        
+
         self.results = {}
 
         self.__logger = logging.getLogger("RenderJob")
-        
+
     def GetOutputPath(self):
         return self.renderer.GetOutputPath()
 
@@ -39,7 +58,7 @@ class RenderJob(VisualJob):
                     key = self.imgKeyStack.pop(0)
                     self.__logger.debug("%s: Pop cache (%s)", self.GetName(), key)
                     del self.imgCache[key]
-                                    
+
                 self.imgCache[pic.GetKey()] = PILBackend.GetImage(pic)
                 self.imgKeyStack.append(pic.GetKey())
             return self.imgCache[pic.GetKey()]
@@ -56,7 +75,7 @@ class RenderJob(VisualJob):
             task.SetIdx(idx)
             self.AddWorkLoad(task)
 
-        # prepare the renderer, creates the sink pipe 
+        # prepare the renderer, creates the sink pipe
         self.renderer.Prepare()
 #        self.sink = self.renderer.GetSink()
 
@@ -69,9 +88,9 @@ class RenderJob(VisualJob):
         self.SetInfo(task.GetInfo())
 
         self.__logger.debug("%s: %s - start", self.GetName(), task)
-        
+
         return task
-        
+
     def PushResult(self, resultObject):
         task = resultObject.GetSource()
         self.__logger.debug("%s: %s - done", self.GetName(), task)
@@ -84,10 +103,10 @@ class RenderJob(VisualJob):
         with self.resultToFetchLock:
             while self.results.has_key(self.resultToFetch):
                 idx = self.resultToFetch
-                
+
                 self.__logger.debug("%s: resultToFetch: %s",
                                     self.GetName(), idx)
-                
+
                 pilCtx = self.results[idx]
                 if pilCtx:
                     self.ToSink(pilCtx)

@@ -39,7 +39,7 @@ def Decode(value, coding="utf-8"):
         return value.decode(coding)
     else:
         return unicode(value)
-    
+
 def IsPathWritable(path):
     _path = Encode(path, sys.getfilesystemencoding())
     try:

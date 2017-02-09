@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlJobManager
+# Boa:FramePanel:PnlJobManager
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -29,7 +29,7 @@ from photofilmstrip.lib.jobimpl.JobManager import JobManager
 from photofilmstrip.lib.jobimpl.PnlJobVisual import PnlJobVisual
 
 
-[wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS, 
+[wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
 
@@ -75,48 +75,44 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         WxVisualJobManager.__init__(self)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnSelectItem)
         self.pnlJobs.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
-        
-        self.pnlJobs.SetupScrolling(scroll_x = False)
-        
+
+        self.pnlJobs.SetupScrolling(scroll_x=False)
+
         self.parentFrame = None
         if isinstance(parent, wx.Frame):
             self.parentFrame = parent
-        
+
         self._selected = None
 
         self.pnlJobVisuals = []
         self.pnlJobClass = pnlJobClass
-        
+
         self.Bind(EVT_REGISTER_JOB, self.OnRegisterJob)
-        
+
         JobManager().AddVisual(self)
-        
-#        for i in xrange(80):
-#            dc = DummyRenderContext("TestJob %d" % i)
-#            JobManager().EnqueueContext(dc)
 
     def OnRegisterJob(self, event):
         jobContext = event.GetJob()
         if jobContext.GetGroupId() != "render":
             return
-        
+
         pjv = self.pnlJobClass(self.pnlJobs, self, jobContext)
         pjv.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
 
         self.szJobs.Add(pjv, 0, wx.EXPAND)
         self.szJobs.Layout()
-        
-        self.pnlJobs.SetupScrolling(scroll_x = False)
-        
+
+        self.pnlJobs.SetupScrolling(scroll_x=False)
+
         self.pnlJobVisuals.append(pjv)
-        
+
         if self._selected is None:
             pjv.Select(True)
             self._selected = pjv
-        
+
         if self.parentFrame:
             self.parentFrame.Show()
-        
+
     def OnSelectItem(self, event):
         pnl = event.GetEventObject()
         if pnl != self._selected:
@@ -130,7 +126,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         try:
             idx = self.pnlJobVisuals.index(self._selected)
         except ValueError:
-            idx = -1    
+            idx = -1
         if key == wx.WXK_DOWN:
             if self._selected is not None and len(self.pnlJobVisuals) > idx + 1:
                 self._selected.Select(False)
@@ -154,7 +150,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
 
             if layout:
                 self.szJobs.Layout()
-                self.pnlJobs.SetupScrolling(scroll_x = False)
+                self.pnlJobs.SetupScrolling(scroll_x=False)
             return True
         else:
             return False
@@ -168,18 +164,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
                 removedOne = True
             else:
                 idx += 1
-        
+
         if removedOne:
             self.szJobs.Layout()
-            self.pnlJobs.SetupScrolling(scroll_x = False)
-
-
-from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
-class DummyRenderContext(VisualJob):
-    
-    def __init__(self, name):
-        VisualJob.__init__(self, name, target=lambda: None)
-        self.SetMaxProgress(100)
-
-    def Done(self):
-        self.StepProgress("Done", 95)
+            self.pnlJobs.SetupScrolling(scroll_x=False)

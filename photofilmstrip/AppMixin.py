@@ -26,10 +26,10 @@ from photofilmstrip.lib.DestructionManager import DestructionManager
 
 
 class AppMixin(object):
-    
+
     def __init__(self):
         pass
-    
+
     def InitLogging(self):
         if "-d" in sys.argv:
             lvl = logging.DEBUG
@@ -43,7 +43,7 @@ class AppMixin(object):
     def InitI18N(self):
         from photofilmstrip.action.ActionI18N import ActionI18N
         ActionI18N().Execute()
-        
+
     def InitGStreamer(self):
         import gi
         gi.require_version('Gst', '1.0')
@@ -55,21 +55,21 @@ class AppMixin(object):
         self.InitLogging()
         self.InitI18N()
         self.InitGStreamer()
-        
+
         DestructionManager()
-        
+
         from photofilmstrip.lib.jobimpl.JobManager import JobManager
         JobManager().Init(workerCount=2)
         JobManager().Init("render")
-        
+
         try:
             return self._OnStart()
         finally:
             DestructionManager().Destroy()
-            
+
     def _GetLogFormat(self):
         return '%(asctime)s (%(levelname)s) %(name)s: %(message)s'
-    
+
     def _GetLogFilename(self):
         return None
 
