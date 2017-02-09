@@ -422,17 +422,17 @@ class _GStreamerRenderer(BaseRenderer):
         raise NotImplementedError()
 
 
-class MkvX264MP3(_GStreamerRenderer):
+class MkvX264AC3(_GStreamerRenderer):
 
     @staticmethod
     def GetName():
-        return "x264/MP3 (MKV)"
+        return "x264/AC3 (MKV)"
 
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("lamemp3enc")
+            aEnc = Gst.ElementFactory.find("avenc_ac3")
             if aEnc is None:
                 msgList.append(_(u"MP3-Codec (gstreamer1.0-plugins-ugly) required!"))
 
@@ -452,11 +452,12 @@ class MkvX264MP3(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("lamemp3enc")
-#         audioEnc = Gst.ElementFactory.make("avenc_ac3")
+#         audioEnc = Gst.ElementFactory.make("lamemp3enc")
+        audioEnc = Gst.ElementFactory.make("avenc_ac3")
 #         audioEnc = Gst.ElementFactory.make("lame")
-        audioEnc.set_property("target", "bitrate")
-        audioEnc.set_property("bitrate", 192000)
+
+#         audioEnc.set_property("target", "bitrate")
+#         audioEnc.set_property("bitrate", 192)
         return audioEnc
 
     def _GetVideoEncoder(self):
