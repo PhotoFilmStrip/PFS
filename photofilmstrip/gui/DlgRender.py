@@ -31,6 +31,7 @@ from photofilmstrip.core.OutputProfile import (
 from photofilmstrip.core.Renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.lib.util import CheckFile
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
@@ -282,7 +283,7 @@ class DlgRender(wx.Dialog):
                           self.cbDraft.GetValue())
         
         audioFile = self.__photoFilmStrip.GetAudioFile()
-        if not ar.CheckFile(audioFile):
+        if not CheckFile(audioFile):
             dlg = wx.MessageDialog(self,
                                    _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile, 
                                    _(u"Warning"),
