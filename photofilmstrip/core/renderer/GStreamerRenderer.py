@@ -434,7 +434,7 @@ class MkvX264AC3(_GStreamerRenderer):
         if not msgList:
             aEnc = Gst.ElementFactory.find("avenc_ac3")
             if aEnc is None:
-                msgList.append(_(u"MP3-Codec (gstreamer1.0-plugins-ugly) required!"))
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
             vEnc = Gst.ElementFactory.find("x264enc")
             if vEnc is None:
@@ -476,9 +476,9 @@ class Mp4X264AAC(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("voaacenc")
+            aEnc = Gst.ElementFactory.find("avenc_aac")
             if aEnc is None:
-                msgList.append(_(u"MP3-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
             vEnc = Gst.ElementFactory.find("x264enc")
             if vEnc is None:
@@ -496,7 +496,7 @@ class Mp4X264AAC(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("voaacenc")
+        audioEnc = Gst.ElementFactory.make("avenc_aac")
         return audioEnc
 
     def _GetVideoEncoder(self):
@@ -558,9 +558,9 @@ class VCDFormat(_GStreamerRenderer):
             if vEnc is None:
                 msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
 
-            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
@@ -574,7 +574,7 @@ class VCDFormat(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
+        audioEnc = Gst.ElementFactory.make("avenc_mp2")
         return audioEnc
 
     def _GetVideoEncoder(self):
@@ -598,9 +598,9 @@ class SVCDFormat(_GStreamerRenderer):
             if vEnc is None:
                 msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
 
-            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
@@ -614,7 +614,7 @@ class SVCDFormat(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
+        audioEnc = Gst.ElementFactory.make("avenc_mp2")
         return audioEnc
 
     def _GetVideoEncoder(self):
@@ -647,9 +647,9 @@ class DVDFormat(_GStreamerRenderer):
             if vEnc is None:
                 msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
 
-            aEnc = Gst.ElementFactory.find("twolamemp2enc")
+            aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"TwoLAME-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegtsmux")
             if mux is None:
@@ -663,7 +663,7 @@ class DVDFormat(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("twolamemp2enc")
+        audioEnc = Gst.ElementFactory.make("avenc_mp2")
         return audioEnc
 
     def _GetVideoEncoder(self):
