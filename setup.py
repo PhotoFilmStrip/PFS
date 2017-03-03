@@ -40,7 +40,7 @@ except ImportError:
     py2exe = None
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-INNO    = r"C:\Programme\Inno Setup 5\ISCC.exe"
+INNO    = os.path.expandvars(r"%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe")
 MSGFMT  = os.path.join(os.path.dirname(sys.executable),
                        "Tools", "i18n", "msgfmt.py")
 if os.path.isfile(MSGFMT):
@@ -244,7 +244,7 @@ class pfs_win_setup(Command):
         log.info("building installer...")
         self.spawn([INNO, "/Q",
                     "/F%s-%s-%s" % ("setup_photofilmstrip", ver, bitSuffix),
-                    os.path.join("windows", "photofilmstrip.iss")])
+                    os.path.join("windows", "photofilmstrip_%s.iss" % bitSuffix)])
         log.info("    done.")
 
 
