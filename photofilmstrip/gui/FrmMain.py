@@ -288,7 +288,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         info = wx.AboutDialogInfo()
         info.Name = Constants.APP_NAME
         info.Version = Constants.APP_VERSION_EX
-        info.Copyright = u"(C) 2013 %s" % Constants.DEVELOPERS[0]
+        info.Copyright = u"(C) 2017 %s" % Constants.DEVELOPERS[0]
         info.Description = wordwrap(_("PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."), 
                                     350, 
                                     wx.ClientDC(self))
