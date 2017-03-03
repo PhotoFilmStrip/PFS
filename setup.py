@@ -234,10 +234,16 @@ class pfs_win_setup(Command):
     
         ver = Constants.APP_VERSION
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
-        
+
+        is64Bit = sys.maxsize > 2**32
+        if is64Bit:
+            bitSuffix = "win64"
+        else:
+            bitSuffix = "win32"
+
         log.info("building installer...")
         self.spawn([INNO, "/Q",
-                    "/F%s-%s" % ("setup_photofilmstrip", ver), 
+                    "/F%s-%s-%s" % ("setup_photofilmstrip", ver, bitSuffix),
                     os.path.join("windows", "photofilmstrip.iss")])
         log.info("    done.")
 
@@ -260,11 +266,18 @@ class pfs_win_portable(Command):
             self.run_command(cmdName)
             
         ver = Constants.APP_VERSION
+
+        is64Bit = sys.maxsize > 2**32
+        if is64Bit:
+            bitSuffix = "win64"
+        else:
+            bitSuffix = "win32"
+
         log.info("building portable zip...")
         if not os.path.exists("release"):
             os.makedirs("release")
             
-        Zip(os.path.join("dist", "photofilmstrip-%s.zip" % ver), 
+        Zip(os.path.join("dist", "photofilmstrip-{0}-{1}.zip".format(ver, bitSuffix)),
             "build/dist", 
             virtualFolder="PhotoFilmStrip-%s" % ver,
             stripFolders=2)
@@ -277,7 +290,7 @@ class Target:
         self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
         self.version = "%s.%s" % (Constants.APP_VERSION, 0)
         self.company_name = ""
-        self.copyright = "(c) 2016"
+        self.copyright = "(c) 2017"
         self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
