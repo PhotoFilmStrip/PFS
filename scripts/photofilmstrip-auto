@@ -1,0 +1,176 @@
+#!/usr/bin/python
+# -*- coding: utf-8
+"""
+    Contributed by Yoandy S <yoandy.shyno@gmail.com>
+"""
+import sqlite3
+import sys
+import os
+import time
+import glob
+import random
+from photofilmstrip.CLI import main as photofilmstrip_cli
+
+
+_duration = 0
+_secsperimg = 10
+_aspect = (16, 9)
+
+
+def gen_project(pname):
+    conn = sqlite3.connect(pname)
+    c = conn.cursor()
+    # fields reference
+    # picture_id|filename|width|height|start_left|start_top|start_width|start_height|target_left|target_top|target_width|target_height|rotation|duration|movement|comment|effect|transition|transition_duration|data
+    # 1|/tmp/12/SAM_2636.jpg|1440|1080|0|0|1440|810|360|0|1080|607.5|0|7.0|1||0|1|1.0|
+
+    c.execute('''CREATE TABLE `picture` (
+        picture_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT,
+        width INTEGER,
+        height INTEGER,
+        start_left INTEGER,
+        start_top INTEGER,
+        start_width INTEGER,
+        start_height INTEGER,
+        target_left INTEGER,
+        target_top INTEGER,
+        target_width INTEGER,
+        target_height INTEGER,
+        rotation INTEGER,
+        duration DOUBLE,
+        movement INTEGER,
+        comment TEXT,
+        effect INTEGER,
+        transition INTEGER,
+        transition_duration DOUBLE,
+        data BLOB
+    )
+    ''')
+    c.execute('''CREATE TABLE `property` (
+        property_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        value TEXT
+    )''')
+    '''
+        Should not be necessary for batch processing but for opening in visual
+        interface software
+    '''
+    c.execute('''CREATE TABLE `thumbnail` (
+        thumbnail_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        picture_id INTEGER,
+        width INTEGER,
+        height INTEGER,
+        data BLOB,
+        FOREIGN KEY(picture_id) REFERENCES picture(picture_id) ON DELETE CASCADE
+    )
+    ''')
+    conn.close()
+
+
+def get_images(path, WD):
+    images = glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG')
+    for p in images:
+        os.system('convert ' + p + ' -resize x1440 ' + WD + os.path.basename(p))
+
+
+def get_pos_coords(x, y):
+    # Asumming Full HD resolution 1920x1080 .  1440 height 4x3 original
+    global _aspect
+    (w, h) = (y, y * _aspect[1] / _aspect[0])
+    k = random.randint(0, 3)
+    ca = [(0, 0, w, h), (x - w, 0, w, h),
+          (0, y - h, w, h), (x - w, y - h, w, h)]
+    return ca[k]
+
+
+def process_images(path, pn):
+    # Process images and add soundtrack if a audio file is found.
+    global _secsperimg
+    global _aspect
+    (W, H) = (1920, 1440)
+    H1 = W * _aspect[1] / _aspect[0]
+    images = glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG')
+    global _duration
+    _duration = len(images) * _secsperimg
+    conn = sqlite3.connect(path + pn)
+    c = conn.cursor()
+    # 1920x1080
+    for p in images:
+        transition = random.randint(1, 2)
+        if random.randint(0, 1):
+            (start_left, start_top, start_width, start_height) = \
+                (0, (W - H1) / 2, W, H1)
+            (target_left, target_top, target_width, target_height) = \
+                get_pos_coords(W, H)
+        else:
+            (start_left, start_top, start_width, start_height) = \
+                get_pos_coords(W, H)
+            (target_left, target_top, target_width, target_height) = \
+                (0, (W - H1) / 2, W, H1)
+        c.execute('''INSERT into picture
+            (filename, width, height, start_left,  start_top, start_width,
+            start_height, target_left, target_top, target_width, target_height,
+            rotation, duration, movement, comment, effect, transition,
+            transition_duration)
+            VALUES
+            ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                  (p, W, H, start_left, start_top, start_width, start_height,
+                   target_left, target_top, target_width, target_height, 0,
+                   7.0, 1, '', 0, transition, 1.0))
+    # find mp3
+    mp3s = glob.glob(path + '*.mp3')
+    if len(mp3s) > 0:
+        c.execute('insert into property values (?,?,?)',
+                  (4, 'audiofile', mp3s[0]))
+    conn.commit()
+    conn.close()
+
+
+def set_properties(path, pn):
+    global _aspect
+    conn = sqlite3.connect(path + pn)
+    c = conn.cursor()
+    c.execute('insert into property values (?, ?, ?)', (1, 'rev', '4'))
+    c.execute('insert into property values (?, ?, ?)',
+              (2, 'aspect', ':'.join(map(str, _aspect))))
+    c.execute('insert into property values (?, ?, ?)',
+              (3, 'duration', _duration))
+    conn.commit()
+    conn.close()
+
+
+if __name__ == '__main__':
+    WD = '/tmp/'
+    WD += str(int(time.time())) + '/'
+    os.mkdir(WD)
+    # Collect data
+    if len(sys.argv) < 2:
+        print "USAGE: %s <directory>" % (sys.argv[0])
+        exit()
+    else:
+        path = os.path.normpath(sys.argv[1]) + '/'
+    project_name = 'photofilmstrip-prj-' + str(os.stat(path).st_ino) + '.pfs'
+    project_path = WD + project_name
+    if os.path.exists(project_path):
+        print "WARNING: Project file already exist, will be overwritten"
+    get_images(path, WD)
+
+    # im=Image.open(filepath)
+    # im.size # (width,height) tuple
+    # create database.
+    gen_project(project_path)
+    process_images(WD, project_name)
+    set_properties(WD, project_name)
+    sys.argv = [sys.argv[0]] +\
+        '-p {}  -o {} -t 2 -f 5'.format(project_path, WD).split()
+    photofilmstrip_cli()
+    # os.remove("test1.pfs")
+
+''' TODO:
+    X Add sound track
+    * Generate project for low quality TV, DVD, etc, ...
+    * Refactor code for error handling.
+    * Manage text subtitles automatically.
+    * Handle vertical pictures
+'''
