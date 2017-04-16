@@ -3,11 +3,10 @@
 """
     Contributed by Yoandy S <yoandy.shyno@gmail.com>
 """
+import argparse
 import sys
 import os
-import time
 import glob
-import subprocess
 from photofilmstrip.CLI import main as photofilmstrip_cli
 from photofilmstrip.core.Project import Project
 from photofilmstrip.core.ProjectFile import ProjectFile
@@ -19,7 +18,7 @@ _secsperimg = 10
 _aspect = (16, 9)
 
 
-def make_project(path, project_name):
+def make_project(path, project_path):
     project = Project()
     images = [Picture(picpath) for picpath in glob.glob(path + '*.jpg') +
               glob.glob(path + '*.JPG')]
@@ -28,35 +27,32 @@ def make_project(path, project_name):
     _duration = len(images) * _secsperimg
     project.SetDuration(_duration)
     project.SetPictures(images)
-    project_file = ProjectFile(project, os.path.join(path, project_path))
-    print(os.path.join(path, project_path))
+    project_file = ProjectFile(project, project_path)
     project_file.Save()
 
 
-def get_images(path, WD):
-    images = glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG')
-    for p in images:
-        subprocess.call(["convert", p, "-resize", "x1440",
-                         os.path.join(WD, os.path.basename(p))])
-
-
 if __name__ == '__main__':
-    WD = '/tmp/'
-    WD += str(int(time.time())) + '/'
-    os.mkdir(WD)
-    # Collect data
-    if len(sys.argv) < 2:
-        print ("USAGE: %s <directory>" % (sys.argv[0]))
-        exit()
-    else:
-        path = os.path.normpath(sys.argv[1]) + '/'
+    parser = argparse.ArgumentParser(description='Generate video from images in\
+                                     a directory.')
+    parser.add_argument("directory_path", help="Path of directory with source\
+                        images.")
+    parser.add_argument("-d", "--destination_path",
+                        help="Path where output files will be created.")
+    args = parser.parse_args()
+    if not args.destination_path:
+        WD = os.path.join(args.directory_path, "output")
+    try:
+        if not os.path.exists(WD):
+            os.mkdir(WD)
+    except PermissionError:
+            print("Permission denied: error creating directory.")
+    path = os.path.normpath(args.directory_path) + '/'
     project_name = 'photofilmstrip-prj-' + str(os.stat(path).st_ino) + '.pfs'
-    project_path = WD + project_name
+    project_path = os.path.join(WD, project_name)
     if os.path.exists(project_path):
         print ("WARNING: Project file already exist, will be overwritten")
-    get_images(path, WD)
 
-    make_project(WD, project_name)
+    make_project(path, project_path)
     sys.argv = [sys.argv[0]] +\
         '-p {}  -o {} -t 2 -f 5'.format(project_path, WD).split()
     photofilmstrip_cli()
