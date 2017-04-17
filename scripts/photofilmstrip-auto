@@ -14,8 +14,7 @@ from photofilmstrip.core.Picture import Picture
 from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 
 
-def make_project(path, project_path, duration):
-    SEC_X_IMG = 10
+def make_project(path, project_path, duration, time_per_image):
     project = Project()
     images = []
     for picpath in glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG'):
@@ -24,8 +23,7 @@ def make_project(path, project_path, duration):
         actAp.Execute()
         images.append(picture)
     if not duration:
-        duration = len(images) * SEC_X_IMG
-    print(duration)
+        duration = len(images) * time_per_image
     project.SetDuration(duration)
     project.SetPictures(images)
     project_file = ProjectFile(project, project_path)
@@ -37,11 +35,16 @@ if __name__ == '__main__':
                                      a directory.')
     parser.add_argument("directory_path", help="Path of directory with source\
                         images.")
-    parser.add_argument("-d", "--destination_path",
+    parser.add_argument("-d", "--destination-path",
                         help="Path where output files will be created.")
     parser.add_argument("-u", "--duration", default=0, type=int,
                         help="Set the duration of the output Video.")
+    parser.add_argument("-x", "--time-per-image", default=10, type=int,
+                        help="This is use to calculate the total time based on\
+                        the number of images.")
     args = parser.parse_args()
+    if args.time_per_image and args.duration:
+        print("WARNING: The time-per-image Value is ignored.")
     if not args.destination_path:
         WD = os.path.join(args.directory_path, "output")
     try:
@@ -55,7 +58,7 @@ if __name__ == '__main__':
     if os.path.exists(project_path):
         print ("WARNING: Project file already exist, will be overwritten")
 
-    make_project(path, project_path, args.duration)
+    make_project(path, project_path, args.duration, args.time_per_image)
     sys.argv = [sys.argv[0]] +\
         '-p {}  -o {} -t 2 -f 5'.format(project_path, WD).split()
     photofilmstrip_cli()
