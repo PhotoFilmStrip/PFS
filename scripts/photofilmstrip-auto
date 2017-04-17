@@ -11,7 +11,7 @@ from photofilmstrip.CLI import main as photofilmstrip_cli
 from photofilmstrip.core.Project import Project
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Picture import Picture
-
+from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 
 _duration = 0
 _secsperimg = 10
@@ -20,8 +20,12 @@ _aspect = (16, 9)
 
 def make_project(path, project_path):
     project = Project()
-    images = [Picture(picpath) for picpath in glob.glob(path + '*.jpg') +
-              glob.glob(path + '*.JPG')]
+    images = []
+    for picpath in glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG'):
+        picture = Picture(picpath)
+        actAp = ActionAutoPath(picture, project.GetAspect())
+        actAp.Execute()
+        images.append(picture)
     global _duration
     global _secsperimg
     _duration = len(images) * _secsperimg
