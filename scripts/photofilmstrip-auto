@@ -13,12 +13,9 @@ from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 
-_duration = 0
-_secsperimg = 10
-_aspect = (16, 9)
 
-
-def make_project(path, project_path):
+def make_project(path, project_path, duration):
+    SEC_X_IMG = 10
     project = Project()
     images = []
     for picpath in glob.glob(path + '*.jpg') + glob.glob(path + '*.JPG'):
@@ -26,10 +23,10 @@ def make_project(path, project_path):
         actAp = ActionAutoPath(picture, project.GetAspect())
         actAp.Execute()
         images.append(picture)
-    global _duration
-    global _secsperimg
-    _duration = len(images) * _secsperimg
-    project.SetDuration(_duration)
+    if not duration:
+        duration = len(images) * SEC_X_IMG
+    print(duration)
+    project.SetDuration(duration)
     project.SetPictures(images)
     project_file = ProjectFile(project, project_path)
     project_file.Save()
@@ -42,6 +39,8 @@ if __name__ == '__main__':
                         images.")
     parser.add_argument("-d", "--destination_path",
                         help="Path where output files will be created.")
+    parser.add_argument("-u", "--duration", default=0, type=int,
+                        help="Set the duration of the output Video.")
     args = parser.parse_args()
     if not args.destination_path:
         WD = os.path.join(args.directory_path, "output")
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     if os.path.exists(project_path):
         print ("WARNING: Project file already exist, will be overwritten")
 
-    make_project(path, project_path)
+    make_project(path, project_path, args.duration)
     sys.argv = [sys.argv[0]] +\
         '-p {}  -o {} -t 2 -f 5'.format(project_path, WD).split()
     photofilmstrip_cli()
