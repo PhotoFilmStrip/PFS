@@ -362,6 +362,7 @@ platform_data = []
 if os.name == "nt":
     platform_scripts.append("windows/photofilmstrip.bat")
     platform_scripts.append("windows/photofilmstrip-cli.bat")
+    platform_scripts.append("windows/photofilmstrip-auto.bat")
     platform_data.append((os.path.join("share", "doc", "photofilmstrip"), ["windows/photofilmstrip.chm"]))
 else:
     platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
@@ -462,6 +463,7 @@ setup(
     scripts=[
              "scripts/photofilmstrip",
              "scripts/photofilmstrip-cli",
+             "scripts/photofilmstrip-auto"
     ] + platform_scripts,
 
     name = Constants.APP_NAME.lower(),
