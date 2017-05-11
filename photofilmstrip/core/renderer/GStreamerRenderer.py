@@ -223,6 +223,11 @@ class _GStreamerRenderer(BaseRenderer):
                 self.pipeline.add(ap)
                 audioEnc.link(ap)
                 audioEnc = ap
+        elif isinstance(self, MkvX265AC3):
+            vp = Gst.ElementFactory.make("h265parse")
+            self.pipeline.add(vp)
+            videoEnc.link(vp)
+            videoEnc = vp
 
         mux = self._GetMux()
         self.pipeline.add(mux)
@@ -501,6 +506,45 @@ class Mp4X264AAC(_GStreamerRenderer):
 
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("x264enc")
+        videoEnc.set_property("bitrate", self._GetBitrate())
+        return videoEnc
+
+
+class MkvX265AC3(_GStreamerRenderer):
+
+    @staticmethod
+    def GetName():
+        return "x265/AC3 (MKV)"
+
+    @staticmethod
+    def CheckDependencies(msgList):
+        _GStreamerRenderer.CheckDependencies(msgList)
+        if not msgList:
+            aEnc = Gst.ElementFactory.find("avenc_ac3")
+            if aEnc is None:
+                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+
+            vEnc = Gst.ElementFactory.find("x265enc")
+            if vEnc is None:
+                msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
+
+            mux = Gst.ElementFactory.find("matroskamux")
+            if mux is None:
+                msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
+
+    def _GetExtension(self):
+        return "mkv"
+
+    def _GetMux(self):
+        mux = Gst.ElementFactory.make("matroskamux")
+        return mux
+
+    def _GetAudioEncoder(self):
+        audioEnc = Gst.ElementFactory.make("avenc_ac3")
+        return audioEnc
+
+    def _GetVideoEncoder(self):
+        videoEnc = Gst.ElementFactory.make("x265enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
 

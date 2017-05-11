@@ -23,10 +23,10 @@ from photofilmstrip.core.Aspect import Aspect
 
 
 class OutputProfile(object):
-    
-    PAL  = 1
+
+    PAL = 1
     NTSC = 2
-    
+
     def __init__(self, name, bitrate, resPal, resNtsc=None):
         self.__name = name
         self.__resPal = resPal
@@ -35,7 +35,7 @@ class OutputProfile(object):
         else:
             self.__resNtsc = resNtsc
         self.__bitrate = bitrate
-        
+
         self.__videoNorm = OutputProfile.PAL
 
     def GetName(self, withRes=False):
@@ -43,23 +43,22 @@ class OutputProfile(object):
             return "%s (%dx%d)" % (self.__name, self.GetResolution()[0], self.GetResolution()[1])
         else:
             return self.__name
-        
+
     def GetBitrate(self):
         return self.__bitrate
-    
+
     def GetResolution(self):
         if self.__videoNorm == OutputProfile.PAL:
             return self.__resPal
         else:
             return self.__resNtsc
-    
+
     def GetFramerate(self):
         if self.__videoNorm == OutputProfile.PAL:
             return 25.0
         else:
             return 30000.0 / 1001.0
-        
-    
+
     def SetVideoNorm(self, norm):
         if norm not in [OutputProfile.PAL, OutputProfile.NTSC]:
             raise RuntimeError("videonorm must be one of PAL or NTSC")
@@ -68,34 +67,35 @@ class OutputProfile(object):
         return self.__videoNorm
 
     def IsMPEGProfile(self):
-        return self.GetName() in ("VCD",  "SVCD", "DVD")
+        return self.GetName() in ("VCD", "SVCD", "DVD")
 
 
 def __CreateMPEGProfiles():
-    vcd  = OutputProfile("VCD",  1150, (352, 288), (352, 240))
+    vcd = OutputProfile("VCD", 1150, (352, 288), (352, 240))
     svcd = OutputProfile("SVCD", 2500, (480, 576), (480, 480))
-    dvd  = OutputProfile("DVD",  8000, (720, 576), (720, 480))
+    dvd = OutputProfile("DVD", 8000, (720, 576), (720, 480))
     return [vcd, svcd, dvd]
-    
+
 def __Create16_9Profiles():
     medium = OutputProfile("Medium", 4000, (640, 360))
     hd = OutputProfile("HD", 6000, (1280, 720))
     fullhd = OutputProfile("FULL-HD", 8000, (1920, 1080))
-    
-    return [medium, hd, fullhd]
+    uhd = OutputProfile("UHD", 24000, (3840, 2160))
+
+    return [medium, hd, fullhd, uhd]
 
 def __Create4_3Profiles():
     medium = OutputProfile("Medium", 4000, (640, 480))
     hd = OutputProfile("HD", 6000, (960, 720))
     fullhd = OutputProfile("FULL-HD", 8000, (1440, 1080))
-    
+
     return [medium, hd, fullhd]
 
 def __Create3_2Profiles():
     medium = OutputProfile("Medium", 4000, (720, 480))
     hd = OutputProfile("HD", 6000, (1080, 720))
     fullhd = OutputProfile("FULL-HD", 8000, (1620, 1080))
-    
+
     return [medium, hd, fullhd]
 
 
