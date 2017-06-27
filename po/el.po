@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PhotoFilmStrip v1.91\n"
+"Project-Id-Version: PhotoFilmStrip v3.0.2\n"
 "POT-Creation-Date: 2011-07-10 13:28+CEST\n"
-"PO-Revision-Date: 2013-01-11 17:52+0200\n"
-"Last-Translator: geogeo.gr <admin at geogeo.gr>\n"
-"Language-Team: geogeo.gr <www.geogeo.gr>\n"
+"PO-Revision-Date: 2017-06-27 10:34+0200\n"
+"Last-Translator: geogeo.gr <geogeo.gr@gmail.com>\n"
+"Language-Team: geogeo.gr <https://www.geogeo.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-Language: Greek\n"
 "X-Poedit-Country: GREECE\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "&About"
 msgstr "&Περί"
@@ -56,14 +57,14 @@ msgstr "Ά&νοιγμα έργου"
 msgid "&Properties"
 msgstr "Ιδιότητες"
 
-msgid "&Remove Picture"
-msgstr "Α&φαίρεση εικόνας"
-
 msgid "&Render filmstrip"
 msgstr "&Απόδοση ταινίας"
 
 msgid "&Save Project"
 msgstr "&Αποθήκευση έργου"
+
+msgid "&Show job queue"
+msgstr "Εμ&φάνιση ουράς εργασιών"
 
 msgid "&Start"
 msgstr "Έ&ναρξη"
@@ -96,6 +97,9 @@ msgstr "Ματαιώθηκε"
 
 msgid "Aborting..."
 msgstr "Ματαίωση..."
+
+msgid "Accelerated"
+msgstr "Επιταχυνόμενη"
 
 msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
 msgstr ""
@@ -134,6 +138,12 @@ msgstr "Αρχείο ήχου:"
 msgid "Audio files"
 msgstr "Αρχεία ήχου"
 
+msgid "Audio files:"
+msgstr "Αρχεία ήχου:"
+
+msgid "Automatic"
+msgstr "Αυτόματα"
+
 msgid "Batch file"
 msgstr "Αρχείο δέσμης"
 
@@ -161,6 +171,12 @@ msgstr "Δεν είναι δυνατή η δημιουργία του φακέλ
 msgid "Cannot write into folder!"
 msgstr "Δεν είναι δυνατή η εγγραφή στο φάκελο!"
 
+msgid "Centralize m&otion"
+msgstr "Συγκεντρωτική κίνηση"
+
+msgid "Centralize motion"
+msgstr "&Συγκεντρωτική κίνηση"
+
 msgid "Choose your next action:"
 msgstr "Επιλέξτε την επόμενη ενέργειά σας:"
 
@@ -175,6 +191,9 @@ msgstr "Δημιουργήστε ένα νέο έργο ή φορτώστε έν
 
 msgid "Create new project"
 msgstr "Δημιουργία νέου έργου"
+
+msgid "Delayed"
+msgstr "Επιβραδυνόμενη"
 
 msgid "Delete unfinished result"
 msgstr "Διαγραφή ανολοκλήρωτου αποτελέσματος"
@@ -239,6 +258,9 @@ msgstr "Σβήσιμο"
 msgid "Finalizing"
 msgstr "Οριστικοποίηση"
 
+msgid "Fit to audio files"
+msgstr "Προσαρμογή στα αρχεία ήχου"
+
 msgid "Flash-Video (FLV)"
 msgstr "Flash-Video (FLV)"
 
@@ -250,6 +272,9 @@ msgstr "Φάκελος:"
 
 msgid "Format:"
 msgstr "Μορφή:"
+
+msgid "GStreamer (python-gst0.10) required!"
+msgstr "Απαιτείται GStreamer (python-gst0.10)!"
 
 msgid "How to start..."
 msgstr "Πως να ξεκινήσετε..."
@@ -284,6 +309,9 @@ msgstr "Ουρά εργασιών"
 msgid "Language"
 msgstr "Γλώσσα / Language"
 
+msgid "Linear"
+msgstr "Γραμμική"
+
 msgid "Load Project"
 msgstr "Φόρτωση έργου"
 
@@ -295,6 +323,12 @@ msgstr "Φόρτωση φωτογραφιών..."
 
 msgid "Location:"
 msgstr "Θέση:"
+
+msgid "MKV-Muxer (gstreamer0.10-plugins-good) required!"
+msgstr "Απαιτείται MKV-Muxer (gstreamer0.10-plugins-good)!"
+
+msgid "MP3-Codec (gstreamer0.10-plugins-ugly-multiverse) required!"
+msgstr "Απαιτείται MP3-Codec (gstreamer0.10-plugins-ugly-multiverse)!"
 
 msgid "Medium"
 msgstr "Μέσο"
@@ -323,6 +357,9 @@ msgstr "Μετακίνηση εικόνας &αριστερά"
 msgid "Move picture &right"
 msgstr "Μετακίνηση εικόνας &δεξιά"
 
+msgid "Movement:"
+msgstr "Κίνηση:"
+
 msgid "My PhotoFilmStrips"
 msgstr "Οι ταινίες μου"
 
@@ -335,11 +372,17 @@ msgstr "Χωρίς εφέ"
 msgid "None"
 msgstr "Καμία"
 
+msgid "OGV-Muxer (gstreamer0.10-plugins) required!"
+msgstr "Απαιτείται OGV-Muxer (gstreamer0.10-plugins)!"
+
 msgid "Open existing project"
 msgstr "Άνοιγμα υπάρχοντος έργου"
 
 msgid "Open folder"
 msgstr "Άνοιγμα φακέλου"
+
+msgid "Open-CV (python-opencv) required!"
+msgstr "Απαιτείται Open-CV (python-opencv)!"
 
 msgid "OK"
 msgstr "Εντάξει"
@@ -371,6 +414,12 @@ msgstr "Παρακαλώ περιμένετε..."
 msgid "Portable"
 msgstr "Φορητό"
 
+msgid "Preserve image dimension"
+msgstr "Διατήρηση διάστασης εικόνας"
+
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
 msgid "Process"
 msgstr "Διαδικασία"
 
@@ -398,8 +447,14 @@ msgstr "Ιδιότητα"
 msgid "Question"
 msgstr "Ερώτηση"
 
+msgid "R&emove Picture"
+msgstr "Α&φαίρεση εικόνας"
+
 msgid "Random motion"
 msgstr "Τυχαία κίνηση"
+
+msgid "Random &motion"
+msgstr "Τυ&χαία κίνηση"
 
 msgid "Recent projects"
 msgstr "Πρόσφατα έργα"
@@ -413,8 +468,14 @@ msgstr "Αφαίρεση από τη λίστα"
 msgid "Render filmstrip"
 msgstr "Απόδοση ταινίας"
 
+msgid "RenderSubtitle"
+msgstr "Απόδοση υπότιτλων"
+
 msgid "Reset"
 msgstr "Επαναφορά"
+
+msgid "Resolution:"
+msgstr "Ανάλυση:"
 
 msgid "Roll"
 msgstr "Κύλιση"
@@ -467,8 +528,11 @@ msgstr "Δέσμη ενεργειών κελύφους"
 msgid "Show error again and send to developer."
 msgstr "Εμφάνιση του σφάλματος ξανά και αποστολή στο δημιουργό."
 
+msgid "Show job queue"
+msgstr "Εμφάνιση ουράς εργασιών"
+
 msgid "Single pictures"
-msgstr "Μονές εικόνες"
+msgstr "Μεμονωμένες εικόνες"
 
 msgid "Size:"
 msgstr "Μέγεθος:"
@@ -479,11 +543,17 @@ msgstr "Κάποιες εικόνες δεν υπάρχουν πλέον στο 
 msgid "Sorry, this function is temporary not available.."
 msgstr "Συγνώμη, αυτή η λειτουργία προσωρινά δεν είναι διαθέσιμη."
 
+msgid "Start"
+msgstr "Έναρξη"
+
 msgid "Start position"
 msgstr "Αρχική θέση"
 
 msgid "Subtitle"
 msgstr "Υπότιτλος "
+
+msgid "Swap motion"
+msgstr "Ανταλλαγή κίνησης"
 
 msgid "The following changes has been made:"
 msgstr "Έχουν γίνει οι ακόλουθες αλλαγές:"
@@ -506,6 +576,12 @@ msgstr "Η διαδικασία απόδοσης ματαιώθηκε."
 msgid "The rendering process was interrupted."
 msgstr "Η διαδικασία απόδοσης διακόπηκε."
 
+msgid "Theora-Codec (gstreamer0.10-plugins) required!"
+msgstr "Απαιτείται Theora-Codec (gstreamer0.10-plugins)!"
+
+msgid "Timelapse"
+msgstr "Παρέλευση χρόνου"
+
 msgid "Total length:"
 msgstr "Συνολικό μήκος:"
 
@@ -514,6 +590,9 @@ msgstr "Μετάβαση:"
 
 msgid "Type:"
 msgstr "Τύπος:"
+
+msgid "Unknown"
+msgstr "Άγνωστο"
 
 msgid "Unknown property: %s"
 msgstr "Άγνωστη ιδιότητα: %s"
@@ -529,6 +608,9 @@ msgstr "Οριζόμενο από χρήστη:"
 
 msgid "Value"
 msgstr "Τιμή"
+
+msgid "Vorbis-Codec (gstreamer0.10-plugins) required!"
+msgstr "Απαιτείται Vorbis-Codec (gstreamer0.10-plugins)!"
 
 msgid "Waiting..."
 msgstr "Αναμονή..."
@@ -622,4 +704,10 @@ msgstr "Καθορίζει το αρχείο έργου"
 
 msgid "using renderer"
 msgstr "Χρήση απόδοσης"
+
+msgid "Rendering in progress..."
+msgstr "Απόδοση σε εξέλιξη..."
+
+msgid "x264-Codec (gstreamer0.10-plugins-ugly-multiverse) required!"
+msgstr "Απαιτείται x264-Codec (gstreamer0.10-plugins-ugly-multiverse)!"
 
