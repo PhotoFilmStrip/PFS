@@ -460,6 +460,10 @@ class MkvX264AC3(_GStreamerRenderer):
             if mux is None:
                 msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
+    @staticmethod
+    def GetProperties():
+        return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
+
     def _GetExtension(self):
         return "mkv"
 
@@ -479,6 +483,10 @@ class MkvX264AC3(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("x264enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
+
+        speedPreset = self.GetTypedProperty("SpeedPreset", int)
+        if speedPreset is not None:
+            videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
 
 
@@ -504,6 +512,10 @@ class Mp4X264AAC(_GStreamerRenderer):
             if mux is None:
                 msgList.append(_(u"FLV-Muxer (gstreamer1.0-plugins-good) required!"))
 
+    @staticmethod
+    def GetProperties():
+        return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
+
     def _GetExtension(self):
         return "mp4"
 
@@ -518,6 +530,9 @@ class Mp4X264AAC(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("x264enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
+        speedPreset = self.GetTypedProperty("SpeedPreset", int)
+        if speedPreset is not None:
+            videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
 
 
@@ -543,6 +558,10 @@ class MkvX265AC3(_GStreamerRenderer):
             if mux is None:
                 msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
+    @staticmethod
+    def GetProperties():
+        return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
+
     def _GetExtension(self):
         return "mkv"
 
@@ -557,6 +576,9 @@ class MkvX265AC3(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("x265enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
+        speedPreset = self.GetTypedProperty("SpeedPreset", int)
+        if speedPreset is not None:
+            videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
 
 
