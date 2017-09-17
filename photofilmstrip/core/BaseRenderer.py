@@ -30,9 +30,9 @@ class MetaBaseRenderer(type):
 
 
 class BaseRenderer(object):
-    
-    __metaclass__  = MetaBaseRenderer
-    
+
+    __metaclass__ = MetaBaseRenderer
+
     def __init__(self):
         self._outputPath = None
         self._profile = None
@@ -43,7 +43,7 @@ class BaseRenderer(object):
         self._outputPath = outputPath
         self._profile = profile
         self._aspect = aspect
-        
+
     @staticmethod
     def CheckDependencies(msgList):
         pass
@@ -51,18 +51,18 @@ class BaseRenderer(object):
     @staticmethod
     def GetName():
         raise NotImplementedError()
-    
+
     @staticmethod
     def GetProperties():
         return []
-    
+
     @classmethod
     def SetProperty(cls, prop, value):
         if prop in cls.GetProperties():
             cls.PROP_VALUES[prop] = value
         else:
             logging.getLogger(cls.GetName()).warning(_(u"Unknown property: %s"), prop)
-            
+
     @classmethod
     def GetProperty(cls, prop):
         return cls.PROP_VALUES.get(prop, cls.GetDefaultProperty(prop))
@@ -70,11 +70,11 @@ class BaseRenderer(object):
     @staticmethod
     def GetDefaultProperty(prop):
         return _(u"<default>")
-    
+
     @classmethod
     def Log(cls, level, *args, **kwargs):
         logging.getLogger(cls.__name__).log(level, *args, **kwargs)
-    
+
     def SetAudioFiles(self, audioFiles):
         self._audioFiles = audioFiles
     def GetAudioFile(self):
@@ -87,32 +87,32 @@ class BaseRenderer(object):
             return None
     def GetAudioFiles(self):
         return self._audioFiles
-        
+
     def GetOutputPath(self):
         return self._outputPath
-        
+
     def GetProfile(self):
         return self._profile
 
     def EnsureFramerate(self):
         return False
-    
+
     def Finalize(self):
         raise NotImplementedError()
-    
+
     def GetSink(self):
         raise NotImplementedError()
-    
+
     def ProcessAbort(self):
         raise NotImplementedError()
 
 
 class RendererException(Exception):
-    
+
     def __init__(self, msg):
         if isinstance(msg, unicode):
             self.message = msg.encode("utf-8")
         self.msg = msg
-        
+
     def GetMessage(self):
         return self.msg
