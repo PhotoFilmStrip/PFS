@@ -75,6 +75,30 @@ class BaseRenderer(object):
     def Log(cls, level, *args, **kwargs):
         logging.getLogger(cls.__name__).log(level, *args, **kwargs)
 
+    def GetTypedProperty(self, prop, pyType, default=None):
+        value = self.__class__.GetProperty(prop)
+        warn = True
+        if value == self.__class__.GetDefaultProperty(prop):
+            if default is not None:
+                value = default
+            warn = False
+
+        if pyType is bool:
+            if value.lower() in ["0", _(u"no"), "false"]:
+                value = False
+            else:
+                value = True
+        else:
+            try:
+                value = pyType(value)
+            except:
+                if warn:
+                    self.__class__.Log(
+                           logging.WARN,
+                           "{0} must be of type {1}".format(prop, pyType))
+                value = None
+        return value
+
     def SetAudioFiles(self, audioFiles):
         self._audioFiles = audioFiles
     def GetAudioFile(self):

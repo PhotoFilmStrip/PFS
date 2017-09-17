@@ -113,7 +113,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.ptsOffset = 0
         self.ptsLast = None
 
-        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]):
+        if self.GetTypedProperty("RenderSubtitle", bool):
             # delete subtitle file, if subtitle is rendered in video
             srtPath = os.path.join(self.GetOutputPath(), "output.srt")
             if os.path.exists(srtPath):
@@ -173,7 +173,7 @@ class _GStreamerRenderer(BaseRenderer):
         videoEnc = self._GetVideoEncoder()
         self.pipeline.add(videoEnc)
 
-        if not (self.__class__.GetProperty("RenderSubtitle").lower() in ["0", _(u"no"), "false"]) and Gst.ElementFactory.find("textoverlay"):
+        if self.GetTypedProperty("RenderSubtitle", bool) and Gst.ElementFactory.find("textoverlay"):
             self.textoverlay = Gst.ElementFactory.make("textoverlay")
             self.textoverlay.set_property("text", "")
             self.pipeline.add(self.textoverlay)
@@ -289,13 +289,10 @@ class _GStreamerRenderer(BaseRenderer):
         return framerate
 
     def _GetBitrate(self):
-        if self.__class__.GetProperty("Bitrate") == self.__class__.GetDefaultProperty("Bitrate"):
-            bitrate = self.GetProfile().GetBitrate()
-        else:
-            try:
-                bitrate = int(self.__class__.GetProperty("Bitrate"))
-            except:
-                raise RendererException(_(u"Bitrate must be a number!"))
+        bitrate = self.GetTypedProperty("Bitrate", int,
+                                        self.GetProfile().GetBitrate())
+        if bitrate is None:
+            raise RendererException(_(u"Bitrate must be a number!"))
         return bitrate
 
     def _GstOnMessage(self, bus, msg):
