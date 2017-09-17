@@ -205,12 +205,16 @@ class _GStreamerRenderer(BaseRenderer):
             audiorate = Gst.ElementFactory.make("audioresample")
             self.pipeline.add(audiorate)
 
+            audioQueue = Gst.ElementFactory.make("queue")
+            self.pipeline.add(audioQueue)
+
             audioEnc = self._GetAudioEncoder()
             self.pipeline.add(audioEnc)
 
             self.concat.link(audioConv)
             audioConv.link(audiorate)
-            audiorate.link(audioEnc)
+            audiorate.link(audioQueue)
+            audioQueue.link(audioEnc)
 
         if self.GetProfile().IsMPEGProfile():
             vp = Gst.ElementFactory.make("mpegvideoparse")
@@ -231,9 +235,19 @@ class _GStreamerRenderer(BaseRenderer):
 
         mux = self._GetMux()
         self.pipeline.add(mux)
-        videoEnc.link(mux)
+
+        videoQueue2 = Gst.ElementFactory.make("queue")
+        self.pipeline.add(videoQueue2)
+
+        videoEnc.link(videoQueue2)
+        videoQueue2.link(mux)
+
         if audioEnc:
-            audioEnc.link(mux)
+            audioQueue2 = Gst.ElementFactory.make("queue")
+            self.pipeline.add(audioQueue2)
+            audioEnc.link(audioQueue2)
+            audioQueue2.link(mux)
+
 
         sink = Gst.ElementFactory.make("filesink")
         sink.set_property("location", outFile)
