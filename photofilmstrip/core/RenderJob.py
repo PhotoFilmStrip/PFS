@@ -41,7 +41,6 @@ class RenderJob(VisualJob):
 
         self.resultToFetchLock = threading.Lock()
         self.resultToFetch = 0
-        self.sink = None
 
         self.results = {}
 
@@ -77,11 +76,6 @@ class RenderJob(VisualJob):
 
         # prepare the renderer, creates the sink pipe
         self.renderer.Prepare()
-#        self.sink = self.renderer.GetSink()
-
-    def ToSink(self, pilImg):
-        self.renderer.ProcessFinalize(pilImg)
-
 
     def GetWorkLoad(self):
         task = VisualJob.GetWorkLoad(self)
@@ -109,6 +103,6 @@ class RenderJob(VisualJob):
 
                 pilCtx = self.results[idx]
                 if pilCtx:
-                    self.ToSink(pilCtx)
+                    self.renderer.ProcessFinalize(pilCtx)
                 del self.results[idx]
                 self.resultToFetch += 1
