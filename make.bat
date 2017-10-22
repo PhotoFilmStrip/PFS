@@ -4,6 +4,10 @@ if %1!==! goto usage
 
 set PYTHON=C:\Python27\python.exe
 
+git rev-parse --short HEAD > scm_rev.txt
+set /p SCM_REV=<scm_rev.txt
+del scm_rev.txt
+
 if "%1"=="compile" goto compile
 if "%1"=="clean" goto clean
 if "%1"=="package" goto package
