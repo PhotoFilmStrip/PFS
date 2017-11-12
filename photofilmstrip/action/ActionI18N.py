@@ -30,27 +30,27 @@ from photofilmstrip.lib.Settings import Settings
 
 
 class ActionI18N(IAction):
-    
+
     def __init__(self, lang=None):
         self.__lang = lang
-    
+
     def GetName(self):
         return _("Language")
-    
+
     def Execute(self):
         curLang = Settings().GetLanguage()
-        
+
         for localeDir in (os.path.join(Constants.APP_DIR, "share", "locale"),
                           os.path.join(Constants.APP_DIR, "locale"),):
             if os.path.isdir(localeDir):
                 break
         else:
-            gettext.install(Constants.APP_NAME)
-            return 
-    
+            gettext.install(Constants.APP_NAME, unicode=True)
+            return
+
         try:
-            lang = gettext.translation(Constants.APP_NAME, 
-                                       localeDir, 
+            lang = gettext.translation(Constants.APP_NAME,
+                                       localeDir,
                                        languages=[curLang, "en"])
             lang.install(True)
         except IOError:
