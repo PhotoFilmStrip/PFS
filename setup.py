@@ -135,6 +135,7 @@ class pfs_build(build):
                         ("ICON_32", "photofilmstrip_32.png"),
                         ("ICON_48", "photofilmstrip_48.png"),
                         ("ICON_64", "photofilmstrip_64.png"),
+                        ("ICON_128", "photofilmstrip_128.png"),
                        )
         
         for idx, (imgName, imgFile) in enumerate(imgResources):

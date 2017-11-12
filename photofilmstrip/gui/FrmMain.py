@@ -69,6 +69,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_32", wx.ART_OTHER))
         iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_48", wx.ART_OTHER))
         iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_64", wx.ART_OTHER))
+        iconBundle.AddIcon(wx.ArtProvider_GetIcon("PFS_ICON_128", wx.ART_OTHER))
         self.SetIcons(iconBundle)
         
         self.statusBar = wx.StatusBar(self)
