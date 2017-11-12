@@ -130,8 +130,11 @@ class pfs_build(build):
                         ("MOTION_RANDOM", "motion_random_24.png"),
                         ("LOCK", "lock_24.png"),
                         ("UNLOCK", "unlock_24.png"),
+                        ("ICON_16", "photofilmstrip_16.png"),
+                        ("ICON_24", "photofilmstrip_24.png"),
                         ("ICON_32", "photofilmstrip_32.png"),
-                        ("ICON_48", "photofilmstrip_48.png")
+                        ("ICON_48", "photofilmstrip_48.png"),
+                        ("ICON_64", "photofilmstrip_64.png"),
                        )
         
         for idx, (imgName, imgFile) in enumerate(imgResources):
