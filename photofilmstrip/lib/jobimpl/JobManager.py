@@ -54,6 +54,7 @@ class _JobCtxGroup(object):
     def __enter__(self):
         self.__lock.acquire()
         return self
+
     def __exit__(self, typ, value, traceback):
         self.__lock.release()
 
@@ -80,11 +81,13 @@ class _JobCtxGroup(object):
         Only used for logging purposes.
         '''
         return self.__doneCount
+
     def CheckBusy(self):
         '''
         Returns True if workers are still busy with the active JobContext.
         '''
         return self.__doneCount < len(self.__workers)
+
     def IncDoneCount(self):
         '''
         Must be called when a worker finished the last workload of the active
@@ -98,6 +101,7 @@ class _JobCtxGroup(object):
         active JobContext.
         '''
         self.__doneEvent.set()
+
     def WaitDoneEvent(self):
         '''
         Must be called to block a finished worker until the last worker has
@@ -162,10 +166,7 @@ class JobManager(Singleton, Destroyable):
         for worker in workers:
             worker.start()
 
-
     def EnqueueContext(self, jobContext):
-        assert isinstance(threading.current_thread(), threading._MainThread)
-
         if not self.__jobCtxGroups.has_key(jobContext.GetGroupId()):
             raise RuntimeError("job group %s not available" % jobContext.GetGroupId())
 
