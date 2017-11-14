@@ -27,27 +27,33 @@ from photofilmstrip.core import PILBackend
 
 
 class Task(WorkLoad):
-    def __init__(self):
-        self.idx = None
-        self.info = u""
 
-        self.result = None
+    def __init__(self):
+        WorkLoad.__init__(self)
+        self.info = u""
+        self.subTasks = []
+
+    def IterSubTasks(self):
+        for subTask in self.subTasks:
+            for subSubTask in subTask.IterSubTasks():
+                yield subSubTask
+            yield subTask
+
+    def GetKey(self):
+        raise NotImplementedError()
 
     def GetInfo(self):
         return self.info
+
     def SetInfo(self, info):
         self.info = info
 
-    def GetIdx(self):
-        return self.idx
-    def SetIdx(self, idx):
-        self.idx = idx
-
     def __str__(self):
-        return "%s_%s: %s" % (self.__class__.__name__, self.idx, self.info)
+        return "%s: %s" % (self.__class__.__name__, self.info)
 
 
 class TaskSubtitle(Task):
+
     def __init__(self, outputPath, picCountFactor, pics):
         Task.__init__(self)
         self.__outputPath = outputPath
@@ -61,6 +67,9 @@ class TaskSubtitle(Task):
                 return True
         return False
 
+    def GetKey(self):
+        return "subtitle"
+
     def Run(self, jobContext):
         if self.__HasComments():
             st = SubtitleSrt(self.__outputPath,
@@ -68,7 +77,22 @@ class TaskSubtitle(Task):
             st.Start(self.__pics)
 
 
+class TaskLoadPic(Task):
+
+    def __init__(self, picture):
+        Task.__init__(self)
+        self.picture = picture
+
+    def GetKey(self):
+        return 'LoadPic_{}'.format(
+            self.picture.GetKey())
+
+    def Run(self, jobContext):
+        return PILBackend.GetImage(self.picture)
+
+
 class TaskImaging(Task):
+
     def __init__(self, resolution):
         Task.__init__(self)
         self.resolution = resolution
@@ -79,13 +103,20 @@ class TaskImaging(Task):
 
 
 class TaskCropResize(TaskImaging):
+
     def __init__(self, picture, rect, resolution):
         TaskImaging.__init__(self, resolution)
         self.picture = picture
         self.rect = rect
+        self.taskLoadPic = TaskLoadPic(picture)
+        self.subTasks.append(self.taskLoadPic)
+
+    def GetKey(self):
+        return 'CropAndResize_{}_{}_{}'.format(
+            self.taskLoadPic.GetKey(), self.rect, self.resolution)
 
     def Run(self, jobContext):
-        image = jobContext.FetchImage(self.picture)
+        image = jobContext.PullTaskResult(self.taskLoadPic.GetKey())
         img = PILBackend.CropAndResize(image,
                                        self.rect,
                                        self.resolution,
@@ -94,6 +125,7 @@ class TaskCropResize(TaskImaging):
 
 
 class TaskTrans(TaskImaging):
+
     def __init__(self, kind, percentage,
                  pic1, rect1, pic2, rect2, resolution):
         TaskImaging.__init__(self, resolution)
@@ -101,13 +133,22 @@ class TaskTrans(TaskImaging):
         self.percentage = percentage
         self.taskPic1 = TaskCropResize(pic1, rect1, resolution)
         self.taskPic2 = TaskCropResize(pic2, rect2, resolution)
+        self.subTasks.append(self.taskPic1)
+        self.subTasks.append(self.taskPic2)
 
-    def Run(self, jobContext):
+    def SetDraft(self, value):
+        TaskImaging.SetDraft(self, value)
         self.taskPic1.SetDraft(self.draft)
         self.taskPic2.SetDraft(self.draft)
-        image1 = self.taskPic1.Run(jobContext)
-        image2 = self.taskPic2.Run(jobContext)
 
+    def GetKey(self):
+        return 'TaskTrans_{}_{}_{}_{}'.format(
+            self.kind, self.percentage,
+            self.taskPic1.GetKey(), self.taskPic2.GetKey())
+
+    def Run(self, jobContext):
+        image1 = jobContext.PullTaskResult(self.taskPic1.GetKey())
+        image2 = jobContext.PullTaskResult(self.taskPic2.GetKey())
         img = PILBackend.Transition(self.kind,
                                     image1, image2,
                                     self.percentage)
