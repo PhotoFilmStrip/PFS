@@ -1,2 +1,0 @@
-?package(photofilmstrip):needs="X11" section="Applications/Video"\
-  title="Photofilmstrip" command="/usr/bin/photofilmstrip"
