@@ -77,7 +77,7 @@ class CliGui(IVisualJobHandler):
         print u"%-20s: %s" % (_(u"processing project"), project)
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
         print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
-        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC")
+        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() in [OutputProfile.PAL, OutputProfile.FPS60] else "NTSC")
         print
 
     def Write(self, text):
@@ -106,7 +106,7 @@ def main(showHelp=False):
     parser.add_option("-p", "--project", help=_(u"specifies the project file"))
     parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. Use - for stdout."), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=0, type="int")
-    parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
+    parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL, 6=60fps [default: %default]", default="p")
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=4, type="int")
     parser.add_option("-a", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
     parser.add_option("-d", "--debug", action="store_true", default=False, help=u"enable debug logging")
@@ -133,6 +133,8 @@ def main(showHelp=False):
         videoNorm = OutputProfile.PAL
     elif options.videonorm == "n":
         videoNorm = OutputProfile.NTSC
+    elif options.videonorm == "6":
+        videoNorm = OutputProfile.FPS60
     else:
         parser.print_help()
         logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)

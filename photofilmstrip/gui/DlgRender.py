@@ -212,6 +212,7 @@ class DlgRender(wx.Dialog):
         
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
+        self.choiceType.Append("60fps", OutputProfile.FPS60)
         self.choiceType.SetSelection(0)
 
         audioFile = self.__photoFilmStrip.GetAudioFile()

@@ -60,8 +60,10 @@ class PyGameRenderer(BaseRenderer):
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = 25.0
-        else:
+        elif self.GetProfile().GetVideoNorm() == OutputProfile.NTSC:
             framerate = 30000.0 / 1001.0
+        else:
+            framerate = 60.0
         return framerate
     
     def ProcessFinalize(self, pilImg):
