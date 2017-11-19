@@ -26,6 +26,7 @@ class OutputProfile(object):
 
     PAL = 1
     NTSC = 2
+    FPS60 = 3
 
     def __init__(self, name, bitrate, resPal, resNtsc=None):
         self.__name = name
@@ -48,7 +49,7 @@ class OutputProfile(object):
         return self.__bitrate
 
     def GetResolution(self):
-        if self.__videoNorm == OutputProfile.PAL:
+        if self.__videoNorm in [OutputProfile.PAL, OutputProfile.FPS60]:
             return self.__resPal
         else:
             return self.__resNtsc
@@ -56,12 +57,14 @@ class OutputProfile(object):
     def GetFramerate(self):
         if self.__videoNorm == OutputProfile.PAL:
             return 25.0
-        else:
+        elif self.__videoNorm == OutputProfile.NTSC:
             return 30000.0 / 1001.0
+        else:
+            return 60.0
 
     def SetVideoNorm(self, norm):
-        if norm not in [OutputProfile.PAL, OutputProfile.NTSC]:
-            raise RuntimeError("videonorm must be one of PAL or NTSC")
+        if norm not in [OutputProfile.PAL, OutputProfile.NTSC, OutputProfile.FPS60]:
+            raise RuntimeError("videonorm must be one of PAL, NTSC or FPS60")
         self.__videoNorm = norm
     def GetVideoNorm(self):
         return self.__videoNorm

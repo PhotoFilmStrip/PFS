@@ -148,6 +148,9 @@ class _GStreamerRenderer(BaseRenderer):
         elif frameRate == "30000/1001":
             # 1000ms / 29.97fps == 33,367msec/frame
             self.imgDuration = int(round(1000 * Gst.MSECOND / (30000.0 / 1001.0)))
+        elif frameRate == "60/1":
+            # 1000ms / 60fps == 16,667msec/frame
+            self.imgDuration = 1000 * Gst.MSECOND / 60
         self._Log(logging.DEBUG, "set imgDuration=%s", self.imgDuration)
 
         outFile = os.path.join(self.GetOutputPath(),
@@ -298,8 +301,10 @@ class _GStreamerRenderer(BaseRenderer):
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = "25/1"
-        else:
+        elif self.GetProfile().GetVideoNorm() == OutputProfile.NTSC:
             framerate = "30000/1001"
+        else:
+            framerate = "60/1"
         return framerate
 
     def _GetBitrate(self):
@@ -660,7 +665,7 @@ class VCDFormat(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 1)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() in [OutputProfile.PAL, OutputProfile.FPS60] else "n")
         return videoEnc
 
 
@@ -700,7 +705,7 @@ class SVCDFormat(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 4)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() in [OutputProfile.PAL, OutputProfile.FPS60] else "n")
         if self._aspect == Aspect.ASPECT_16_9:
             gstAspect = 3
         elif self._aspect == Aspect.ASPECT_4_3:
@@ -749,7 +754,7 @@ class DVDFormat(_GStreamerRenderer):
     def _GetVideoEncoder(self):
         videoEnc = Gst.ElementFactory.make("mpeg2enc")
         videoEnc.set_property("format", 8)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() in [OutputProfile.PAL, OutputProfile.FPS60] else "n")
         if self._aspect == Aspect.ASPECT_16_9:
             gstAspect = 3
         elif self._aspect == Aspect.ASPECT_4_3:
