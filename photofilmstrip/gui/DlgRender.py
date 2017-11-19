@@ -38,7 +38,7 @@ from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
 from photofilmstrip.action.ActionRender import ActionRender
-
+from photofilmstrip.core.exceptions import RenderException
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
  wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
@@ -275,17 +275,17 @@ class DlgRender(wx.Dialog):
             profile = self.__GetChoiceDataSelected(self.choiceProfile)
         if profile is None:
             return
-            
-        ar = ActionRender(self.__photoFilmStrip, 
-                          profile, 
-                          self.__GetChoiceDataSelected(self.choiceType), 
-                          rendererClass, 
+
+        ar = ActionRender(self.__photoFilmStrip,
+                          profile,
+                          self.__GetChoiceDataSelected(self.choiceType),
+                          rendererClass,
                           self.cbDraft.GetValue())
-        
+
         audioFile = self.__photoFilmStrip.GetAudioFile()
         if not CheckFile(audioFile):
             dlg = wx.MessageDialog(self,
-                                   _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile, 
+                                   _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile,
                                    _(u"Warning"),
                                    wx.YES_NO | wx.ICON_WARNING)
             try:
@@ -293,10 +293,19 @@ class DlgRender(wx.Dialog):
                     return
             finally:
                 dlg.Destroy()
-            
-        ar.Execute()
-        renderJob = ar.GetRenderJob()
-        JobManager().EnqueueContext(renderJob)
+
+        try:
+            ar.Execute()
+            renderJob = ar.GetRenderJob()
+            JobManager().EnqueueContext(renderJob)
+        except RenderException, exc:
+            dlg = wx.MessageDialog(self,
+                                   exc.GetMessage(),
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+
         self.EndModal(wx.ID_OK)
 
     def OnCmdCancelButton(self, event):

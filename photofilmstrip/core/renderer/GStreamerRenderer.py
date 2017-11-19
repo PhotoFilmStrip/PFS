@@ -31,8 +31,9 @@ from gi.repository import GObject
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
-from photofilmstrip.core.BaseRenderer import BaseRenderer, RendererException
+from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.Subtitle import SrtParser
+from photofilmstrip.core.exceptions import RendererException
 
 
 class _GStreamerRenderer(BaseRenderer):
@@ -248,7 +249,6 @@ class _GStreamerRenderer(BaseRenderer):
             audioEnc.link(audioQueue2)
             audioQueue2.link(mux)
 
-
         sink = Gst.ElementFactory.make("filesink")
         sink.set_property("location", outFile)
         self.pipeline.add(sink)
@@ -430,10 +430,13 @@ class _GStreamerRenderer(BaseRenderer):
 
     def _GetExtension(self):
         raise NotImplementedError()
+
     def _GetMux(self):
         raise NotImplementedError()
+
     def _GetAudioEncoder(self):
         raise NotImplementedError()
+
     def _GetVideoEncoder(self):
         raise NotImplementedError()
 

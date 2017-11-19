@@ -44,7 +44,7 @@ from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
 
 from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 from photofilmstrip.action.ActionCenterPath import ActionCenterPath
-
+from photofilmstrip.core.PicturePattern import PicturePattern
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT, 
  wxID_PNLPFSPROJECTBITMAPRIGHT, wxID_PNLPFSPROJECTCMDMOVELEFT, 
@@ -299,24 +299,39 @@ class PnlPfsProject(wx.Panel, Observer):
         return kind
 
     def OnImportPics(self, event):
-        dlg = wx.FileDialog(self, _(u"Import images"), 
-                            Settings().GetImagePath(), "", 
-                            _(u"Imagefiles") + " (*.*)|*.*", 
+        dlg = wx.FileDialog(self, _(u"Import images"),
+                            Settings().GetImagePath(), "",
+                            _(u"Imagefiles") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
             pics = []
             for path in dlg.GetPaths():
+
+                if self.__project.GetTimelapse():
+                    picPattern = PicturePattern.Create(path)
+                    if not picPattern.IsOk():
+                        dlgErr = wx.MessageDialog(
+                            self,
+                            _(u"Filename '%s' does not match a number pattern "
+                              u"which is necessary for a time lapse slide "
+                              u"show!") % path,
+                            _(u"Error"),
+                            wx.OK | wx.ICON_ERROR)
+                        dlgErr.ShowModal()
+                        dlgErr.Destroy()
+                        continue
+
                 pic = Picture(path)
                 pics.append(pic)
                 ImageCache().RegisterPicture(pic)
-            
+
             selItms = self.lvPics.GetSelected()
-            self.InsertPictures(pics, 
-                                selItms[0] + 1 if selItms else None, 
+            self.InsertPictures(pics,
+                                selItms[0] + 1 if selItms else None,
                                 autopath=True)
-            
+
             Settings().SetImagePath(os.path.dirname(path))
-            
+
             selPics = self.lvPics.GetSelectedPictures()
             self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()

@@ -20,10 +20,11 @@
 #
 
 import os
-import re
 
 from photofilmstrip.core.tasks import TaskCropResize, TaskTrans, TaskSubtitle
 from photofilmstrip.core.Picture import Picture
+from photofilmstrip.core.PicturePattern import PicturePattern
+from photofilmstrip.core.exceptions import RenderException
 
 
 class RenderEngine(object):
@@ -147,12 +148,12 @@ class RenderEngineSlideshow(RenderEngine):
                 _pathRects = pathRects[transCountBefore:]
 
             for rect in _pathRects:
-                task = TaskCropResize(pic.Copy(), rect, 
+                task = TaskCropResize(pic.Copy(), rect,
                                       self._profile.GetResolution())
                 task.SetInfo(infoText)
                 task.SetDraft(self._draftMode)
                 self._tasks.append(task)
-            
+
             picBefore = pic
             pathRectsBefore = pathRects
             transCountBefore = transCount
@@ -162,28 +163,37 @@ class RenderEngineTimelapse(RenderEngine):
 
     def _PrepareTasks(self, pics):
         picBefore = None
-        getnum = re.compile(r"(.*?)(\d+)([.].*)")
 
         picNum = None
-        numDigits = None
 
-        for idxPic, pic in enumerate(pics):
-            match = getnum.match(os.path.basename(pic.GetFilename()))
-            picPrefix = match.groups()[0]
-            picNum = int(match.groups()[1])
-            picPostfix = match.groups()[2]
-            numDigits = len(match.groups()[1])
+        idxPic = 0
+        while idxPic < len(pics):
+            pic = pics[idxPic]
+            picPattern = PicturePattern.Create(pic.GetFilename())
+            if not picPattern.IsOk():
+                raise RenderException(
+                    (u"Filename '%s' does not match a number pattern "
+                     u"which is necessary for a time lapse "
+                     u"slide show!") % pic.GetFilename())
 
+            picNum = picPattern.num
             picDur = int(pic.GetDuration())
             transDur = int(pic.GetTransitionDuration())
             if idxPic < (len(pics) - 1):
                 # get number from next pic
-                match = getnum.match(os.path.basename(pics[idxPic + 1].GetFilename()))
-                nextPicNum = int(match.groups()[1])
+                nextPic = pics[idxPic + 1]
+                nextPicPattern = PicturePattern.Create(nextPic.GetFilename())
+                if not nextPicPattern.IsOk():
+                    idxPic += 1
+                    continue
 
-                picCount = nextPicNum - picNum + 1
+                picCount = nextPicPattern.num - picNum + 1
+                if picCount < 0:
+                    raise RenderException(
+                        (u"The picture counter is not "
+                         u"increasing: %s") % nextPic.GetFilename())
             else:
-                # last pic needs only one rect to add the final image
+                # no next pic so add the final image
                 picCount = 1
 
             cp = ComputePath(pic, (picDur * picCount) + (transDur * (picCount - 1)))
@@ -193,10 +203,11 @@ class RenderEngineTimelapse(RenderEngine):
             idxRect = 0
             while idxRect < len(pathRects):
                 picCopy = pic.Copy()
-                picCopy._filename = os.path.join(picDir,
-                                                 "{0}{1}{2}".format(picPrefix,
-                                                                    ("%%0%dd" % numDigits) % picNum,
-                                                                    picPostfix))
+                picCopy._filename = os.path.join(
+                    picDir,
+                    "{0}{1}{2}".format(picPattern.prefix,
+                                       ("%%0%dd" % picPattern.digits) % picNum,
+                                       picPattern.postfix))
 
                 if transDur > 0 and picBefore:
                     for idxTrans in range(transDur):
@@ -221,6 +232,7 @@ class RenderEngineTimelapse(RenderEngine):
                 picBefore = picCopy
 
             picBefore = None
+            idxPic += 1
 
 
 class ComputePath(object):

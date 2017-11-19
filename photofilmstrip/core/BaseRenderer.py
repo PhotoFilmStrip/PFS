@@ -23,6 +23,7 @@ import logging
 
 
 class MetaBaseRenderer(type):
+
     def __new__(cls, name, bases, dic):
         newBaseRendererClass = type.__new__(cls, name, bases, dic)
         newBaseRendererClass.PROP_VALUES = {}
@@ -101,6 +102,7 @@ class BaseRenderer(object):
 
     def SetAudioFiles(self, audioFiles):
         self._audioFiles = audioFiles
+
     def GetAudioFile(self):
         '''
         compatibility
@@ -109,6 +111,7 @@ class BaseRenderer(object):
             return self._audioFiles[0]
         else:
             return None
+
     def GetAudioFiles(self):
         return self._audioFiles
 
@@ -129,14 +132,3 @@ class BaseRenderer(object):
 
     def ProcessAbort(self):
         raise NotImplementedError()
-
-
-class RendererException(Exception):
-
-    def __init__(self, msg):
-        if isinstance(msg, unicode):
-            self.message = msg.encode("utf-8")
-        self.msg = msg
-
-    def GetMessage(self):
-        return self.msg
