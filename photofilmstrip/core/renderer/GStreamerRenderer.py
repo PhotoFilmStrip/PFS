@@ -628,7 +628,7 @@ class VCDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
@@ -668,7 +668,7 @@ class SVCDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
@@ -717,7 +717,7 @@ class DVDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("mpeg2enc")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer0.10-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
