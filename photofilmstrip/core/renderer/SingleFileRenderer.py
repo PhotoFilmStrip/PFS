@@ -21,10 +21,11 @@
 
 import os
 
-from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.BaseRenderer import BaseRenderer, \
+    FinalizeHandler
 
 
-class SingleFileRenderer(BaseRenderer):
+class SingleFileRenderer(BaseRenderer, FinalizeHandler):
     
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -48,21 +49,17 @@ class SingleFileRenderer(BaseRenderer):
     def Prepare(self):
         pass
     
+    def GetFinalizeHandler(self):
+        return self
+
     def ProcessFinalize(self, pilImg):
         self._counter += 1
-        imgFormat = "JPEG"
         
         newFilename = os.path.join(self.GetOutputPath(), 
                                    '%09d.%s' % (self._counter, 
-                                                imgFormat.lower()))
-        fd = open(newFilename, "wb")
-        
-        if imgFormat in ["JPEG", "PPM"]:
-            pilImg.save(fd, imgFormat, quality=90)
-        else:
-            raise RuntimeError("unsupported format: %s", imgFormat)
-        
-        fd.close()
+                                                "jpg"))
+
+        pilImg.save(newFilename, "JPEG", quality=95)
     
     def Finalize(self):
         pass

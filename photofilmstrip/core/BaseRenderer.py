@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import cStringIO
 import logging
 
 
@@ -124,11 +125,35 @@ class BaseRenderer(object):
     def EnsureFramerate(self):
         return False
 
+    def GetFinalizeHandler(self):
+        '''
+        :rtype: ImageDataFinalizeHandler
+        '''
+        return ImageDataFinalizeHandler('JPEG', 95)
+
     def Finalize(self):
         raise NotImplementedError()
 
-    def GetSink(self):
+    def ToSink(self, data):
         raise NotImplementedError()
 
     def ProcessAbort(self):
         raise NotImplementedError()
+
+
+class FinalizeHandler(object):
+
+    def ProcessFinalize(self, pilImg):
+        raise NotImplementedError()
+
+
+class ImageDataFinalizeHandler(FinalizeHandler):
+
+    def __init__(self, formt, quality):
+        self._format = formt
+        self._quality = quality
+
+    def ProcessFinalize(self, pilImg):
+        res = cStringIO.StringIO()
+        pilImg.save(res, self._format, quality=self._quality)
+        return res.getvalue()

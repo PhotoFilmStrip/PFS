@@ -40,8 +40,8 @@ class RenderJob(VisualJob):
         self.resultForRendererIdx = 0
         self.resultsForRendererCache = {}
 
-        self.taskResultLock = threading.Lock()
         self.taskResultCache = {}
+        self.finalizeHandler = self.renderer.GetFinalizeHandler()
 
         self.__logger = logging.getLogger("RenderJob")
 
@@ -53,16 +53,18 @@ class RenderJob(VisualJob):
             self.renderer.ProcessAbort()
         self.renderer.Finalize()
 
+        self.__logger.debug("task cache: %s; result cache: %s",
+                           len(self.taskResultCache),
+                           len(self.resultsForRendererCache))
+
     def Begin(self):
         # prepare task queue
         self.__logger.debug("%s: prepare task queue", self.GetName())
         for idx, task in enumerate(self.tasks):
             for subTask in task.IterSubTasks():
-                if self._RegisterTaskResult(subTask):
-                    self.AddWorkLoad(subTask)
+                self._RegisterTaskResult(subTask)
 
-            if self._RegisterTaskResult(task):
-                self.AddWorkLoad(task)
+            self._RegisterTaskResult(task)
 
             prt = RendererResultTask(idx, task)
             self.AddWorkLoad(prt)
@@ -76,7 +78,7 @@ class RenderJob(VisualJob):
             trce = self.taskResultCache[key]
             isNew = False
         else:
-            trce = TaskResultCacheEntry()
+            trce = TaskResultCacheEntry(task, self)
             self.taskResultCache[key] = trce
             isNew = True
 
@@ -85,10 +87,11 @@ class RenderJob(VisualJob):
 
     def GetWorkLoad(self):
         task = VisualJob.GetWorkLoad(self)
-        if isinstance(task, RendererResultTask):
-            self.SetInfo(task.GetInfo())
+        self.SetInfo(task.GetInfo())
 
-        self.__logger.debug("%s: %s - start", self.GetName(), task)
+        self.__logger.debug("%s: %s: %s - start",
+                            threading.current_thread().getName(),
+                            self.GetName(), task.GetKey())
 
         return task
 
@@ -97,48 +100,49 @@ class RenderJob(VisualJob):
         overrides IJobContext.PushResult
         '''
         task = resultObject.GetSource()
-        self.__logger.debug("%s: %s - done", self.GetName(), task)
+        self.__logger.debug("%s: %s: %s - done",
+                            threading.current_thread().getName(),
+                            self.GetName(), task.GetKey())
 
         try:
             result = resultObject.GetResult()
+            if result:
+                result = self.finalizeHandler.ProcessFinalize(result)
+            self.resultsForRendererCache[task.idx] = result
         except JobAbortedException:
             pass
-
-        if isinstance(task, RendererResultTask):
-            self._HandleResultForRenderer(task, result)
-        else:
-            # results of other tasks are cached
-            key = task.GetKey()
-            trce = self.taskResultCache[key]
-            trce.SetResult(result)
-
-    def PullTaskResult(self, key, decRef=False):
-        with self.taskResultLock:
-            trce = self.taskResultCache[key]
-            try:
-                return trce.GetResult()
-            finally:
-                if decRef:
-                    trce.refCount -= 1
-                    if trce.refCount == 0:
-                        del self.taskResultCache[key]
-
-    def _HandleResultForRenderer(self, task, result):
-        self.resultsForRendererCache[task.idx] = result
         with self.resultsForRendererLock:
-            while self.resultsForRendererCache.has_key(self.resultForRendererIdx):
+            while self.resultsForRendererCache.has_key(
+                                        self.resultForRendererIdx):
                 idx = self.resultForRendererIdx
 
-                self.__logger.debug("%s: resultToFetch: %s",
+                self.__logger.debug("%s: %s: resultToFetch: %s",
+                                    threading.current_thread().getName(),
                                     self.GetName(), idx)
 
-                pilCtx = self.resultsForRendererCache[idx]
-                if pilCtx:
-                    self.renderer.ProcessFinalize(pilCtx)
+                imgData = self.resultsForRendererCache[idx]
+                if imgData:
+                    self.renderer.ToSink(imgData)
                 del self.resultsForRendererCache[idx]
                 self.resultForRendererIdx += 1
 
                 self.StepProgress()
+
+    def ProcessSubTask(self, task):
+        key = task.GetKey()
+        trce = self.taskResultCache[key]
+        result = trce.GetResult()
+        if trce.refCount == 0:
+            self.__logger.debug("%s: %s: clear cached result %s",
+                                threading.current_thread().getName(),
+                                self.GetName(), key)
+            del self.taskResultCache[key]
+        else:
+            self.__logger.debug("%s: %s: result ref count %s %s",
+                                threading.current_thread().getName(),
+                                self.GetName(), trce.refCount, key)
+
+        return result
 
 
 class RendererResultTask(WorkLoad):
@@ -152,10 +156,11 @@ class RendererResultTask(WorkLoad):
         self.idx = idx
         self.task = task
 
+    def GetKey(self):
+        return self.idx
+
     def Run(self, jobContext):
-        for subTask in self.task.IterSubTasks():
-            jobContext.PullTaskResult(subTask.GetKey(), decRef=True)
-        return jobContext.PullTaskResult(self.task.GetKey(), decRef=True)
+        return jobContext.ProcessSubTask(self.task)
 
     def GetInfo(self):
         return self.task.GetInfo()
@@ -165,17 +170,20 @@ class TaskResultCacheEntry(object):
 
     NO_RESULT = object()
 
-    def __init__(self):
+    def __init__(self, task, renderJob):
+        self.task = task
+        self.renderJob = renderJob
         self.refCount = 0
         self.result = TaskResultCacheEntry.NO_RESULT
-        self.evt = threading.Event()
+        self.lock = threading.Lock()
 
     def SetResult(self, result):
         assert self.result is TaskResultCacheEntry.NO_RESULT
         self.result = result
-        self.evt.set()
 
     def GetResult(self):
-        if self.result is TaskResultCacheEntry.NO_RESULT:
-            self.evt.wait()
-        return self.result
+        with self.lock:
+            if self.result is TaskResultCacheEntry.NO_RESULT:
+                self.result = self.task.Run(self.renderJob)
+            self.refCount -= 1
+            return self.result

@@ -19,19 +19,18 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad
-
 from photofilmstrip.core.Subtitle import SubtitleSrt
-
 from photofilmstrip.core import PILBackend
 
 
-class Task(WorkLoad):
+class Task(object):
 
     def __init__(self):
-        WorkLoad.__init__(self)
         self.info = u""
         self.subTasks = []
+
+    def __str__(self):
+        return "%s: %s" % (self.__class__.__name__, self.info)
 
     def IterSubTasks(self):
         for subTask in self.subTasks:
@@ -39,17 +38,17 @@ class Task(WorkLoad):
                 yield subSubTask
             yield subTask
 
-    def GetKey(self):
-        raise NotImplementedError()
-
     def GetInfo(self):
         return self.info
 
     def SetInfo(self, info):
         self.info = info
 
-    def __str__(self):
-        return "%s: %s" % (self.__class__.__name__, self.info)
+    def GetKey(self):
+        raise NotImplementedError()
+
+    def Run(self, jobContext):
+        raise NotImplementedError()
 
 
 class TaskSubtitle(Task):
@@ -116,7 +115,7 @@ class TaskCropResize(TaskImaging):
             self.taskLoadPic.GetKey(), self.rect, self.resolution)
 
     def Run(self, jobContext):
-        image = jobContext.PullTaskResult(self.taskLoadPic.GetKey())
+        image = jobContext.ProcessSubTask(self.taskLoadPic)
         img = PILBackend.CropAndResize(image,
                                        self.rect,
                                        self.resolution,
@@ -147,8 +146,8 @@ class TaskTrans(TaskImaging):
             self.taskPic1.GetKey(), self.taskPic2.GetKey())
 
     def Run(self, jobContext):
-        image1 = jobContext.PullTaskResult(self.taskPic1.GetKey())
-        image2 = jobContext.PullTaskResult(self.taskPic2.GetKey())
+        image1 = jobContext.ProcessSubTask(self.taskPic1)
+        image2 = jobContext.ProcessSubTask(self.taskPic2)
         img = PILBackend.Transition(self.kind,
                                     image1, image2,
                                     self.percentage)

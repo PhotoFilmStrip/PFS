@@ -31,10 +31,10 @@ except (ImportError, RuntimeError):
     cairo = None
 
 from photofilmstrip.core.OutputProfile import OutputProfile
-from photofilmstrip.core.BaseRenderer import BaseRenderer
+from photofilmstrip.core.BaseRenderer import BaseRenderer, FinalizeHandler
 
 
-class CairoRenderer(BaseRenderer):
+class CairoRenderer(BaseRenderer, FinalizeHandler):
     
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -57,6 +57,12 @@ class CairoRenderer(BaseRenderer):
         if cairo is None:
             msgList.append("cairo not installed!")
 
+    def GetFinalizeHandler(self):
+        '''
+        :rtype: FinalizeHandler
+        '''
+        return self
+
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
             framerate = 25.0
@@ -65,6 +71,10 @@ class CairoRenderer(BaseRenderer):
         return framerate
     
     def ProcessFinalize(self, pilImg):
+        '''
+        overrides FinalizeHandler.ProcessFinalize
+        :param pilImg:
+        '''
         if pilImg:
             cairoImg = self._PilToCairo(pilImg)
             self._ctx = cairoImg

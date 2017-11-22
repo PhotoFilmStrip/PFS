@@ -24,7 +24,6 @@ import os
 import threading
 
 import Queue
-import cStringIO
 
 from gi.repository import Gst
 from gi.repository import GObject
@@ -77,15 +76,8 @@ class _GStreamerRenderer(BaseRenderer):
             return "false"
         return BaseRenderer.GetDefaultProperty(prop)
 
-    def ProcessFinalize(self, pilImg):
-        '''
-        ProcessFinalize is called from several worker threads and puts the new
-        image data (JPEG) in a queue.
-        :param pilImg:
-        '''
-        res = cStringIO.StringIO()
-        pilImg.save(res, 'JPEG', quality=95)
-        self.resQueue.put(res.getvalue())
+    def ToSink(self, data):
+        self.resQueue.put(data)
 
     def __CleanUp(self):
         '''
