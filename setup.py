@@ -29,6 +29,7 @@ from photofilmstrip import Constants
 from distutils import log
 from distutils.command.build import build
 from distutils.command.clean import clean
+from distutils.command.sdist import sdist
 from distutils.core import setup
 from distutils.core import Command
 from distutils.dir_util import remove_tree
@@ -40,8 +41,8 @@ except ImportError:
     py2exe = None
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-INNO    = os.path.expandvars(r"%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe")
-MSGFMT  = os.path.join(os.path.dirname(sys.executable),
+INNO = os.path.expandvars(r"%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe")
+MSGFMT = os.path.join(os.path.dirname(sys.executable),
                        "Tools", "i18n", "msgfmt.py")
 if os.path.isfile(MSGFMT):
     MSGFMT = [sys.executable, MSGFMT]
@@ -50,7 +51,7 @@ else:
 
 
 class pfs_clean(clean):
-        
+
     def run(self):
         clean.run(self)
 
@@ -66,22 +67,26 @@ class pfs_clean(clean):
                       ):
             if os.path.exists(fname):
                 os.remove(fname)
-           
 
-class pfs_build(build):
+
+class pfs_scm_info(Command):
+
+    description = "generates _scmInfo.py in source folder"
+
+    user_options = []
+    sub_commands = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
 
     def run(self):
-        self._make_scm_info()
-        self._make_resources()
-        self._make_locale()
-
-        build.run(self)
-        
-    def _make_scm_info(self):
         scmRev = os.getenv("SCM_REV")
         if not scmRev:
             # if not set in environment it hopefully was generated earlier
-            # buildig deb with fakeroot has no SCM_REV var anymore
+            # building deb with fakeroot has no SCM_REV var anymore
             try:
                 import photofilmstrip._scmInfo
                 scmRev = photofilmstrip._scmInfo.SCM_REV
@@ -91,30 +96,50 @@ class pfs_build(build):
         for target in getattr(self.distribution, "windows", []) + \
                       getattr(self.distribution, "console", []):
             target.Update(scmRev)
-        
+
         if scmRev != "src":
             fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
             fd.write("SCM_REV = \"%s\"\n" % scmRev)
             fd.close()
-        
+
+
+class pfs_sdist(sdist):
+
+    sub_commands = [
+        ('scm_info', lambda x: True),
+    ] + sdist.sub_commands
+
+
+class pfs_build(build):
+
+    sub_commands = [
+        ('scm_info', lambda x: True),
+    ] + build.sub_commands
+
+    def run(self):
+        self._make_resources()
+        self._make_locale()
+
+        build.run(self)
+
     def _make_resources(self):
         try:
             from wx.tools.img2py import img2py
         except ImportError:
             log.warn("Cannot update image resources! Using images.py from source")
-            return 
-        
+            return
+
         if sys.platform.startswith("linux") and os.getenv("DISPLAY") is None:
             log.warn("Cannot update image resources! img2py needs X")
-            return 
-        
+            return
+
         imgDir = os.path.abspath(os.path.join("res", "icons"))
         if not os.path.exists(imgDir):
             return
 
         target = os.path.join("photofilmstrip", "res", "images.py")
         target_mtime = os.path.getmtime(target)
-        
+
         imgResources = (
 #                        ("ALIGN_BOTTOM", "align_bottom.png"),
 #                        ("ALIGN_MIDDLE", "align_middle.png"),
@@ -137,20 +162,20 @@ class pfs_build(build):
                         ("ICON_64", "photofilmstrip_64.png"),
                         ("ICON_128", "photofilmstrip_128.png"),
                        )
-        
+
         for idx, (imgName, imgFile) in enumerate(imgResources):
-            img2py(os.path.join(imgDir, imgFile), 
-                   target, append=idx>0, 
-                   imgName=imgName, 
-                   icon=True, 
-                   compressed=True, 
+            img2py(os.path.join(imgDir, imgFile),
+                   target, append=idx > 0,
+                   imgName=imgName,
+                   icon=True,
+                   compressed=True,
                    catalog=True)
-            
+
     def _make_locale(self):
         for filename in os.listdir("po"):
             lang, ext = os.path.splitext(filename)
             if ext.lower() == ".po":
-                moDir =  os.path.join("build", "mo", lang, "LC_MESSAGES")
+                moDir = os.path.join("build", "mo", lang, "LC_MESSAGES")
                 moFile = os.path.join(moDir, "%s.mo" % Constants.APP_NAME)
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
@@ -158,7 +183,7 @@ class pfs_build(build):
                 self.spawn(MSGFMT + ["-o",
                                      moFile,
                                      os.path.join("po", filename)])
-                
+
                 targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
                     (targetPath, (moFile,))
@@ -166,26 +191,28 @@ class pfs_build(build):
 
 
 class pfs_exe(Command):
-    
+
     description = "create an executable dist for MS Windows (py2exe)"
 
     user_options = []
-    sub_commands = [('py2exe',  lambda x: True if py2exe else False)                    
+    sub_commands = [('py2exe', lambda x: True if py2exe else False)
                    ]
 
     def initialize_options(self):
         pass
+
     def finalize_options(self):
         pass
+
     def run(self):
         self.distribution.windows = [
-                 Target(script = "photofilmstrip/GUI.py",
-                        dest_base = "bin/" + Constants.APP_NAME
+                 Target(script="photofilmstrip/GUI.py",
+                        dest_base="bin/" + Constants.APP_NAME
                         ),
         ]
         self.distribution.console = [
-                 Target(script = "photofilmstrip/CLI.py",
-                        dest_base = "bin/" + Constants.APP_NAME + "-cli"
+                 Target(script="photofilmstrip/CLI.py",
+                        dest_base="bin/" + Constants.APP_NAME + "-cli"
                         )
         ]
         self.distribution.zipfile = "lib/photofilmstrip/modules"
@@ -217,10 +244,10 @@ class pfs_exe(Command):
                           "Gst-1.0.typelib"]:
             self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
                            os.path.join(targetDir, giTypeLib))
-        
+
 
 class pfs_win_setup(Command):
-    
+
     description = "create an executable installer for MS Windows (InnoSetup)"
 
     user_options = []
@@ -229,17 +256,19 @@ class pfs_win_setup(Command):
 
     def initialize_options(self):
         pass
+
     def finalize_options(self):
         pass
+
     def run(self):
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
-    
+
         ver = Constants.APP_VERSION
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
 
-        is64Bit = sys.maxsize > 2**32
+        is64Bit = sys.maxsize > 2 ** 32
         if is64Bit:
             bitSuffix = "win64"
         else:
@@ -255,23 +284,25 @@ class pfs_win_setup(Command):
 class pfs_win_portable(Command):
 
     description = "create a portable executable for MS Windows"
-    
+
     user_options = []
     sub_commands = [('bdist_win', lambda x: True),
                    ]
 
     def initialize_options(self):
         pass
+
     def finalize_options(self):
         pass
+
     def run(self):
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
-            
+
         ver = Constants.APP_VERSION
 
-        is64Bit = sys.maxsize > 2**32
+        is64Bit = sys.maxsize > 2 ** 32
         if is64Bit:
             bitSuffix = "win64"
         else:
@@ -280,15 +311,16 @@ class pfs_win_portable(Command):
         log.info("building portable zip...")
         if not os.path.exists("release"):
             os.makedirs("release")
-            
+
         Zip(os.path.join("dist", "photofilmstrip-{0}-{1}.zip".format(ver, bitSuffix)),
-            "build/dist", 
+            "build/dist",
             virtualFolder="PhotoFilmStrip-%s" % ver,
             stripFolders=2)
         log.info("    done.")
 
 
 class Target:
+
     def __init__(self, **kw):
         self.__dict__.update(kw)
         self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
@@ -298,10 +330,10 @@ class Target:
         self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
-        
+
         logo = os.path.join("res", "icon", "photofilmstrip.ico")
         self.icon_resources = [(1, logo)]
-        
+
     def Update(self, scmRev):
         self.product_version = "%s-%s" % (Constants.APP_VERSION, scmRev)
 
@@ -351,7 +383,6 @@ def Unzip(zipFile, targetDir, stripFolders=0):
             else:
                 fldr = ""
 
-
         eleFldr = os.path.join(targetDir, fldr)
         if not os.path.isdir(eleFldr):
             os.makedirs(eleFldr)
@@ -360,6 +391,7 @@ def Unzip(zipFile, targetDir, stripFolders=0):
         fd = open(os.path.join(eleFldr, fname), "wb")
         fd.write(data)
         fd.close()
+
 
 platform_scripts = []
 platform_data = []
@@ -370,28 +402,29 @@ if os.name == "nt":
 else:
     platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
     platform_data.append(("share/pixmaps", ["data/photofilmstrip.xpm"]))
-    
+
     for size in glob.glob(os.path.join("data/icons", "*")):
         for category in glob.glob(os.path.join(size, "*")):
             icons = []
-            for icon in glob.glob(os.path.join(category,"*")):
+            for icon in glob.glob(os.path.join(category, "*")):
                 icons.append(icon)
                 platform_data.append(("share/icons/hicolor/%s/%s" % \
                                       (os.path.basename(size), \
                                        os.path.basename(category)), \
                                        icons))
 
-
 setup(
     cmdclass={
                 "clean"         : pfs_clean,
+                "sdist"         : pfs_sdist,
                 "build"         : pfs_build,
                 "bdist_win"     : pfs_exe,
                 "bdist_wininst" : pfs_win_setup,
                 "bdist_winport" : pfs_win_portable,
+                "scm_info"      : pfs_scm_info,
               },
     verbose=False,
-    options = {"py2exe": {"compressed": 2,
+    options={"py2exe": {"compressed": 2,
 #                          "bundle_files":1,
                           "optimize": 2,
                           "dist_dir": "build/dist",
@@ -468,17 +501,17 @@ setup(
              "scripts/photofilmstrip-cli",
     ] + platform_scripts,
 
-    name = Constants.APP_NAME.lower(),
-    version = Constants.APP_VERSION,
-    license = "GPLv2",
-    description = Constants.APP_SLOGAN,
-    long_description = Constants.APP_DESCRIPTION,
-    author = Constants.DEVELOPERS[0],
-    author_email = "info@photofilmstrip.org",
-    url = Constants.APP_URL,
-       
-    packages = ['photofilmstrip', 
-                'photofilmstrip.action', 'photofilmstrip.cli', 
+    name=Constants.APP_NAME.lower(),
+    version=Constants.APP_VERSION,
+    license="GPLv2",
+    description=Constants.APP_SLOGAN,
+    long_description=Constants.APP_DESCRIPTION,
+    author=Constants.DEVELOPERS[0],
+    author_email="info@photofilmstrip.org",
+    url=Constants.APP_URL,
+
+    packages=['photofilmstrip',
+                'photofilmstrip.action', 'photofilmstrip.cli',
                 'photofilmstrip.core', 'photofilmstrip.core.renderer',
                 'photofilmstrip.gui', 'photofilmstrip.gui.ctrls', 'photofilmstrip.gui.util',
                 'photofilmstrip.lib', 'photofilmstrip.lib.common', 'photofilmstrip.lib.jobimpl',

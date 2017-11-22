@@ -39,7 +39,7 @@ package:
 	rm -rf $$releasedir; \
 	$(mkdir) "$$releasedir"; \
 	python setup.py sdist; \
-	mv dist/*.tar.gz "$$releasedir/"; \
+	cp dist/*.tar.gz "$$releasedir/"; \
 	cd "$$releasedir"; \
 	tar -xzf "$$appver.tar.gz"; \
 	cd "$$appver"; \
