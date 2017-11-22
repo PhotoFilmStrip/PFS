@@ -22,10 +22,6 @@
 import photofilmstrip.core.renderer.SingleFileRenderer as SFR
 
 import photofilmstrip.core.renderer.GStreamerRenderer as GSR
-
-# import photofilmstrip.core.renderer.PyGameRenderer as PGR
-# import photofilmstrip.core.renderer.OpenCvRenderer as OCR
-
 import photofilmstrip.core.renderer.CairoRenderer as CR
 
 
@@ -39,10 +35,6 @@ RENDERERS.extend([
         GSR.MkvX264AC3,
         GSR.Mp4X264AAC,
         GSR.MkvX265AC3])
-
-# RENDERERS.extend([
-#          OCR.OpenCvRenderer,
-#          PGR.PyGameRenderer])
 
 RENDERERS.extend([
              CR.CairoRenderer])
