@@ -22,9 +22,10 @@
 import sys
 
 from photofilmstrip.core.renderer.SingleFileRenderer import SingleFileRenderer
+from photofilmstrip.core.BaseRenderer import FinalizeHandler
 
 
-class StreamRenderer(SingleFileRenderer):
+class StreamRenderer(SingleFileRenderer, FinalizeHandler):
     
     def __init__(self):
         SingleFileRenderer.__init__(self)
@@ -44,7 +45,21 @@ class StreamRenderer(SingleFileRenderer):
         else:
             return SingleFileRenderer.GetDefaultProperty(prop)
 
+    def GetFinalizeHandler(self):
+        return self
+
+    def UseSmartFinalize(self):
+        '''
+        overrides FinalizeHandler.UseSmartFinalize
+        :param pilImg:
+        '''
+        return False
+
     def ProcessFinalize(self, pilImg):
+        '''
+        overrides FinalizeHandler.ProcessFinalize
+        :param pilImg:
+        '''
         imgFormat = self.GetProperty("Format")
         if imgFormat in ["JPEG", "PPM"]:
             pilImg.save(sys.stdout, imgFormat)

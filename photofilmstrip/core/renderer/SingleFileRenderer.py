@@ -52,7 +52,18 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
     def GetFinalizeHandler(self):
         return self
 
+    def UseSmartFinalize(self):
+        '''
+        overrides FinalizeHandler.UseSmartFinalize
+        :param pilImg:
+        '''
+        return False
+
     def ProcessFinalize(self, pilImg):
+        '''
+        overrides FinalizeHandler.ProcessFinalize
+        :param pilImg:
+        '''
         self._counter += 1
         
         newFilename = os.path.join(self.GetOutputPath(), 

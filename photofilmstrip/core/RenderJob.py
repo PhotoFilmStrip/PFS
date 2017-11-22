@@ -62,9 +62,9 @@ class RenderJob(VisualJob):
         self.__logger.debug("%s: prepare task queue", self.GetName())
         for idx, task in enumerate(self.tasks):
             for subTask in task.IterSubTasks():
-                self._RegisterTaskResult(subTask)
+                self._RegisterTaskResult(subTask, True)
 
-            self._RegisterTaskResult(task)
+            self._RegisterTaskResult(task, False)
 
             prt = RendererResultTask(idx, task)
             self.AddWorkLoad(prt)
@@ -72,13 +72,18 @@ class RenderJob(VisualJob):
         # prepare the renderer, creates the sink pipe
         self.renderer.Prepare()
 
-    def _RegisterTaskResult(self, task):
+    def _RegisterTaskResult(self, task, isSubTask):
+        if not self.finalizeHandler.UseSmartFinalize() or isSubTask:
+            # no finalize for subtasks
+            finalizeHandler = None
+        else:
+            finalizeHandler = self.finalizeHandler
         key = task.GetKey()
         if key in self.taskResultCache:
             trce = self.taskResultCache[key]
             isNew = False
         else:
-            trce = TaskResultCacheEntry(task, self)
+            trce = TaskResultCacheEntry(task, self, finalizeHandler)
             self.taskResultCache[key] = trce
             isNew = True
 
@@ -106,7 +111,7 @@ class RenderJob(VisualJob):
 
         try:
             result = resultObject.GetResult()
-            if result:
+            if not self.finalizeHandler.UseSmartFinalize() and result:
                 result = self.finalizeHandler.ProcessFinalize(result)
             self.resultsForRendererCache[task.idx] = result
         except JobAbortedException:
@@ -170,9 +175,10 @@ class TaskResultCacheEntry(object):
 
     NO_RESULT = object()
 
-    def __init__(self, task, renderJob):
+    def __init__(self, task, renderJob, finalizeHandler):
         self.task = task
         self.renderJob = renderJob
+        self.finalizeHandler = finalizeHandler
         self.refCount = 0
         self.result = TaskResultCacheEntry.NO_RESULT
         self.lock = threading.Lock()
@@ -185,5 +191,7 @@ class TaskResultCacheEntry(object):
         with self.lock:
             if self.result is TaskResultCacheEntry.NO_RESULT:
                 self.result = self.task.Run(self.renderJob)
+                if self.finalizeHandler and self.result:
+                    self.result = self.finalizeHandler.ProcessFinalize(self.result)
             self.refCount -= 1
             return self.result

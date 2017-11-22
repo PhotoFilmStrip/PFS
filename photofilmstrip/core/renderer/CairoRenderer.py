@@ -34,7 +34,7 @@ from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer, FinalizeHandler
 
 
-class CairoRenderer(BaseRenderer, FinalizeHandler):
+class CairoRenderer(BaseRenderer):
     
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -61,7 +61,7 @@ class CairoRenderer(BaseRenderer, FinalizeHandler):
         '''
         :rtype: FinalizeHandler
         '''
-        return self
+        return PilToCairoFinalizeHandler()
 
     def _GetFrameRate(self):
         if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
@@ -70,16 +70,10 @@ class CairoRenderer(BaseRenderer, FinalizeHandler):
             framerate = 30000.0 / 1001.0
         return framerate
     
-    def ProcessFinalize(self, pilImg):
-        '''
-        overrides FinalizeHandler.ProcessFinalize
-        :param pilImg:
-        '''
-        if pilImg:
-            cairoImg = self._PilToCairo(pilImg)
-            self._ctx = cairoImg
+    def ToSink(self, data):
+        self._ctx = data
         self._mainClock.tick(self._framerate)
-            
+
         wx.CallAfter(self._screen.Refresh)
     
     def ProcessAbort(self):
@@ -118,7 +112,13 @@ class CairoRenderer(BaseRenderer, FinalizeHandler):
         else:
             return False
         
-    def _PilToCairo(self, pilImg):
+
+class PilToCairoFinalizeHandler(FinalizeHandler):
+
+    def UseSmartFinalize(self):
+        return True
+
+    def ProcessFinalize(self, pilImg):
         pilImg = pilImg.copy()
         w, h = pilImg.size  
         data = pilImg.convert('RGBA').tobytes()
