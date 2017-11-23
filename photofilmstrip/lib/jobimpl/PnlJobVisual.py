@@ -7,7 +7,6 @@ from photofilmstrip.action.WxAction import WxAction
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
     WxVisualJobHandler, EVT_JOB_UPDATE)
 
-
 [wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION,
  wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
  wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
@@ -16,6 +15,7 @@ from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
 
 
 class PnlJobVisual(wx.Panel, WxVisualJobHandler):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -66,7 +66,8 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        self.bmpJob = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
+        self.bmpJob = wx.StaticBitmap(
+              bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
               id=wxID_PNLJOBVISUALBMPJOB,
               name=u'bmpJob', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -83,13 +84,15 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               label=u'job info', name=u'stJobInfo', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.cmdAction = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_ABORT_24'),
+        self.cmdAction = wx.StaticBitmap(
+              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_24'),
               id=wxID_PNLJOBVISUALCMDACTION,
               name=u'cmdAction', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
-        self.cmdMenu = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_MENU_24'),
+        self.cmdMenu = wx.StaticBitmap(
+              bitmap=wx.ArtProvider.GetBitmap('PFS_MENU_24'),
               id=wxID_PNLJOBVISUALCMDMENU,
               name=u'cmdMenu', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
