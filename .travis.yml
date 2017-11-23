@@ -11,6 +11,8 @@ script:
 after_success:
   - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip_$VERSION-1_all.deb" --data-binary @"$RELEASE_DIR/photofilmstrip_$VERSION-1_all.deb"
   - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip-$VERSION.tar.gz" --data-binary @"$RELEASE_DIR/photofilmstrip-$VERSION.tar.gz"
+  - ls -la
+  - ls -la dist/
 deploy:
   provider: releases
   api_key:
