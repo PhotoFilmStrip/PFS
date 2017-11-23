@@ -25,8 +25,8 @@ import wx
 from wx.lib.wordwrap import wordwrap
 
 
-[wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER, 
- wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER, 
+[wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
+ wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
 ] = [wx.NewId() for _init_ctrls in range(6)]
 
 
@@ -114,9 +114,9 @@ class PnlDlgHeader(wx.Panel):
         else:
             self.stErrMsg.Show(False)
         self.pnlHeader.Layout()
-        
+
     def SetTitle(self, title):
         self.stHeader.SetLabel(title)
-        
+
     def SetBitmap(self, bmp):
         self.bmpLogo.SetBitmap(bmp)

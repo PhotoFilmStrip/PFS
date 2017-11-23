@@ -8,10 +8,10 @@ from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
     WxVisualJobHandler, EVT_JOB_UPDATE)
 
 
-[wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION, 
- wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS, 
- wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO, 
- wxID_PNLJOBVISUALSTJOBNAME, 
+[wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION,
+ wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
+ wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
+ wxID_PNLJOBVISUALSTJOBNAME,
 ] = [wx.NewId() for _init_ctrls in range(8)]
 
 
@@ -62,12 +62,12 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name=u'PnlJobVisual',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), 
+              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        self.bmpJob = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, (32, 32)), id=wxID_PNLJOBVISUALBMPJOB,
+        self.bmpJob = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
+              id=wxID_PNLJOBVISUALBMPJOB,
               name=u'bmpJob', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
@@ -83,14 +83,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               label=u'job info', name=u'stJobInfo', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.cmdAction = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_FOLDER_OPEN',
-              wx.ART_TOOLBAR, (24, 24)), id=wxID_PNLJOBVISUALCMDACTION,
+        self.cmdAction = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_ABORT_24'),
+              id=wxID_PNLJOBVISUALCMDACTION,
               name=u'cmdAction', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
-        self.cmdMenu = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_DOWN',
-              wx.ART_TOOLBAR, (24, 24)), id=wxID_PNLJOBVISUALCMDMENU,
+        self.cmdMenu = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('PFS_MENU_24'),
+              id=wxID_PNLJOBVISUALCMDMENU,
               name=u'cmdMenu', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdMenu.Bind(wx.EVT_LEFT_DOWN, self.OnCmdMenuLeftDown)
@@ -107,43 +107,35 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.pnlJobManager = pnlJobManager
         for ctrl in (self, self.stJobName, self.stJobInfo, self.gaugeProgress):
             ctrl.Bind(wx.EVT_LEFT_DOWN, self.__OnLeftDown)
-        
+
         font = self.stJobName.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
         self.stJobName.SetFont(font)
 
         self.stJobName.SetLabel(jobContext.GetName())
         self.gaugeProgress.SetRange(jobContext.GetMaxProgress())
-        
+
         self.jobContext = jobContext
 
         ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
-        
+
         self._actAbort = WxAction(
-                 _(u"Abort"), 
-                self._Abort, 
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
-                                                           wx.ART_MENU, 
-                                                           ms),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, 
-                                                              wx.ART_TOOLBAR, 
-                                                              ts)}
+                 _(u"Abort"),
+                self._Abort,
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT_16'),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT_24')}
         )
         self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
-                                                           wx.ART_MENU, 
-                                                           ms),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap(wx.ART_CROSS_MARK, 
-                                                              wx.ART_TOOLBAR, 
-                                                              ts)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE_16'),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE_24')}
         )
 
         self.curAction = None
         self.jobContext.AddVisualJobHandler(self)
-        
+
         self.Bind(EVT_JOB_UPDATE, self.OnJobUpdate)
 
     def OnJobUpdate(self, event):
@@ -175,7 +167,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.SetBackgroundColour(bgCol)
         self.stJobName.SetForegroundColour(txtCol)
         self.stJobInfo.SetForegroundColour(txtCol)
-        
+
         self.Refresh()
 
     def OnCmdActionLeftDown(self, event):
@@ -186,22 +178,22 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         menu = wx.Menu()
 
         mitm = self._actAbort.ToMenu(self, menu)
-        menu.Enable(mitm.GetId(), 
+        menu.Enable(mitm.GetId(),
                     self.jobContext.IsIdle() or not self.jobContext.IsDone())
 
         mitm = self._actRemove.ToMenu(self, menu)
         menu.Enable(mitm.GetId(),
                     self.jobContext.IsDone())
-        
+
         menu.AppendSeparator()
-        
+
         self._OnMenuActions(menu)
-        
+
         self.cmdMenu.PopupMenu(menu)
-        
+
     def _OnMenuActions(self, menu):
         pass
-        
+
     def _SetupAction(self):
         if self.jobContext.IsIdle() or not self.jobContext.IsDone():
             self.curAction = self._actAbort
@@ -210,23 +202,23 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         else:
             print 'shit'
             self.curAction = None
-            
+
         self._OnSetupAction()
-        
+
         curTip = self.cmdAction.GetToolTip()
         if curTip:
             curTip = curTip.GetTip()
-        
+
         if self.curAction and curTip != self.curAction.GetName():
             self.cmdAction.SetBitmap(self.curAction.GetBitmap(wx.ART_TOOLBAR))
             self.cmdAction.SetToolTipString(self.curAction.GetName())
-            
+
     def _OnSetupAction(self):
         pass
-        
+
     def _Abort(self):
         dlg = wx.MessageDialog(self,
-                               _(u"Abort selected process?"), 
+                               _(u"Abort selected process?"),
                                _(u"Question"),
                                wx.YES_NO | wx.ICON_EXCLAMATION)
         try:
@@ -234,7 +226,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
                 self.jobContext.Abort()
         finally:
             dlg.Destroy()
-        
+
     def _Remove(self):
         wx.CallAfter(self.pnlJobManager.RemovePnlJobVisual, self, True)
 #        self.pnlJobManager.RemovePnlJobVisual(self, True)

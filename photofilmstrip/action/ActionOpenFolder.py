@@ -26,24 +26,21 @@ from photofilmstrip.action.IAction import IAction
 
 
 class ActionOpenFolder(IAction):
-    
+
     def __init__(self, outpath):
         self.outpath = outpath
-    
+
     def GetName(self):
         return _(u'Open folder')
-    
+
     def GetBitmap(self):
         import wx
-        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
-        return wx.ArtProvider.GetBitmap(wx.ART_FOLDER_OPEN,
-                                        wx.ART_TOOLBAR,
-                                        ms)
+        return wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16')
 
     def Execute(self):
         if not os.path.exists(self.outpath):
             return
-        
+
         if os.name == "nt":
             os.startfile(self.outpath) # IGNORE:E1101
         else:

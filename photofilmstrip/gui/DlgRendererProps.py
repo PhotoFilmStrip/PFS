@@ -28,10 +28,10 @@ from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
-[wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSCMDCANCEL, 
- wxID_DLGRENDERERPROPSCMDHELP, wxID_DLGRENDERERPROPSCMDOK, 
- wxID_DLGRENDERERPROPSLCPROPS, wxID_DLGRENDERERPROPSPNLHDR, 
- wxID_DLGRENDERERPROPSSTATICLINE, 
+[wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSCMDCANCEL,
+ wxID_DLGRENDERERPROPSCMDHELP, wxID_DLGRENDERERPROPSCMDOK,
+ wxID_DLGRENDERERPROPSLCPROPS, wxID_DLGRENDERERPROPSPNLHDR,
+ wxID_DLGRENDERERPROPSSTATICLINE,
 ] = [wx.NewId() for _init_ctrls in range(7)]
 
 
@@ -39,7 +39,7 @@ class DlgRendererProps(wx.Dialog):
     
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
-    
+
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
 
@@ -124,11 +124,9 @@ class DlgRendererProps(wx.Dialog):
     def __init__(self, parent, rendererClass):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
-        
+
         self.pnlHdr.SetTitle(_(u'Edit extended output properties'))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, (32, 32)))
-              
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_32'))
         self.rendererClass = rendererClass
 
         self.lcProps.DeleteAllItems()
@@ -136,18 +134,18 @@ class DlgRendererProps(wx.Dialog):
         for prop in rendererClass.GetProperties():
             value = savedProps.get(prop.lower(), rendererClass.GetProperty(prop))
             self.lcProps.Append([prop, value])
-            
+
             rendererClass.SetProperty(prop, value)
-            
+
         self.SetAffirmativeId(wxID_DLGRENDERERPROPSCMDOK)
         self.SetEscapeId(wxID_DLGRENDERERPROPSCMDCANCEL)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         self.SetFocus()
-        
+
     def OnCmdCancelButton(self, event):
         self.EndModal(wx.ID_CANCEL)
-        
+
     def OnCmdOkButton(self, event):
         propDict = {}
         for prop in self.rendererClass.GetProperties():
@@ -160,9 +158,9 @@ class DlgRendererProps(wx.Dialog):
     def OnActivateProperty(self, event):
         idx = event.GetIndex()
         prop = self.lcProps.GetItemText(idx)
-        dlg = wx.TextEntryDialog(self, 
-                                 _(u"Edit property"), 
-                                 prop, 
+        dlg = wx.TextEntryDialog(self,
+                                 _(u"Edit property"),
+                                 prop,
                                  unicode(self.rendererClass.GetProperty(prop)))
         if dlg.ShowModal() == wx.ID_OK:
             value = dlg.GetValue()
@@ -171,8 +169,7 @@ class DlgRendererProps(wx.Dialog):
             self.rendererClass.SetProperty(prop, value)
             self.lcProps.SetStringItem(idx, 1, unicode(value))
         dlg.Destroy()
-        
+
     def OnCmdHelpButton(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_RENDER)
         event.Skip()
-
