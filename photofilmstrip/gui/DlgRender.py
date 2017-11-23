@@ -40,20 +40,20 @@ from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
 from photofilmstrip.action.ActionRender import ActionRender
 from photofilmstrip.core.exceptions import RenderException
 
-[wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT, 
- wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE, 
- wxID_DLGRENDERCMDCANCEL, wxID_DLGRENDERCMDHELP, 
- wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERPNLHDR, 
- wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE, 
- wxID_DLGRENDERSTTYPE, 
+[wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT,
+ wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE,
+ wxID_DLGRENDERCMDCANCEL, wxID_DLGRENDERCMDHELP,
+ wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERPNLHDR,
+ wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE,
+ wxID_DLGRENDERSTTYPE,
 ] = [wx.NewId() for _init_ctrls in range(14)]
 
 
 class DlgRender(wx.Dialog):
-    
+
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
-    
+
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
@@ -139,8 +139,7 @@ class DlgRender(wx.Dialog):
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
               id=wxID_DLGRENDERCHOICEFORMAT)
 
-        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('wxART_EXECUTABLE_FILE',
-              wx.ART_TOOLBAR, (16, 16)),
+        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_16'),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
               parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
               -1), style=wx.BU_AUTODRAW)
@@ -194,22 +193,21 @@ class DlgRender(wx.Dialog):
     def __init__(self, parent, photoFilmStrip):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
-        
+
         self.pnlHdr.SetTitle(_('Configure output and start render process'))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK,
-              wx.ART_TOOLBAR, (32, 32)))
-        
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER_32'))
+
         self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
         self.__photoFilmStrip = photoFilmStrip
         self.__renderEngine = None
-        
+
         for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
             self.choiceProfile.Append(u"%s (%sx%s)" % (profile.GetName(),
                                                        profile.GetResolution()[0],
-                                                       profile.GetResolution()[1]), 
+                                                       profile.GetResolution()[1]),
                                       profile)
-        
+
         self.choiceType.Append("PAL", OutputProfile.PAL)
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
         self.choiceType.SetSelection(0)
@@ -220,19 +218,19 @@ class DlgRender(wx.Dialog):
 
         settings = Settings()
         self.choiceProfile.SetSelection(settings.GetLastProfile())
-        
+
         self.__SetChoiceSelectionByData(self.choiceType, settings.GetVideoType())
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
-        
+
         self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         self.SetFocus()
-        
+
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
-    
+
     def __SetChoiceSelectionByData(self, choice, data):
         for idx in range(choice.GetCount()):
             if choice.GetClientData(idx) == data:
@@ -244,18 +242,18 @@ class DlgRender(wx.Dialog):
         outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
         outpath = os.path.join(outpath, profile.GetName())
         return outpath
-    
+
     def OnChoiceFormat(self, event):
         if event is None:
             formatData = self.__GetChoiceDataSelected(self.choiceFormat)
         else:
             formatData = event.GetClientData()
-        
+
         strAuto = _(u"Automatic")
         idxAuto = self.choiceProfile.FindString(strAuto)
         if idxAuto != wx.NOT_FOUND:
             self.choiceProfile.Delete(idxAuto)
-            
+
         if isinstance(formatData, FormatData):
             self.cmdStart.Enable(formatData.IsOk())
             if formatData.IsMPEG():
@@ -316,33 +314,33 @@ class DlgRender(wx.Dialog):
         if data is None:
             return
         rendererClass = data.PRendererClass
-        
+
         dlg = DlgRendererProps(self, rendererClass)
         dlg.ShowModal()
         dlg.Destroy()
-        
+
     def OnCmdHelpButton(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_RENDER)
         event.Skip()
 
 
 class FormatComboBox(wx.combo.OwnerDrawnComboBox):
-    
+
     def __init__(self, *args, **kwargs):
         wx.combo.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
 
         for rend in RENDERERS:
             if rend.GetName() in FormatData.MPEG_PROFILES:
                 continue
-            
+
             self.AddRenderer(rend)
-            
+
     def AddRenderer(self, rend, altName=None):
         msgList = []
         rend.CheckDependencies(msgList)
-        self.Append(altName or rend.GetName(), 
+        self.Append(altName or rend.GetName(),
                     FormatData(rend, msgList))
-    
+
     def SetSelection(self, index):
         if index >= self.GetCount():
             index = 0
@@ -353,12 +351,12 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
             return
 
         data = self.GetClientData(item)
-        
+
         rect2 = wx.Rect(*rect)
         rect2.Deflate(5, 0)
 
         if data.PMessages:
-            bmp = wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (16, 16))
+            bmp = wx.ArtProvider.GetBitmap('PFS_ALERT_16')
             dc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_GRAYTEXT))
         else:
             bmp = wx.NullBitmap
@@ -368,12 +366,12 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
                 dc.SetTextForeground(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
         if flags & wx.combo.ODCB_PAINTING_CONTROL:
-            dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL) 
-        
+            dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL)
+
         else:
-            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.PMessages), 
-                              bmp, rect2, 
-                              wx.ALIGN_CENTER_VERTICAL) 
+            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.PMessages),
+                              bmp, rect2,
+                              wx.ALIGN_CENTER_VERTICAL)
 
     def OnMeasureItem(self, item):
         data = self.GetClientData(item)
@@ -382,18 +380,18 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
 
 
 class FormatData(object):
-    
+
     MPEG_PROFILES = ("VCD", "SVCD", "DVD")
-    
+
     def __init__(self, rendClass, msgList):
         self.PRendererClass = rendClass
         self.PMessages = msgList
 
     def IsOk(self):
         return len(self.PMessages) == 0
-    
+
     def IsMPEG(self):
         for mpegProf in FormatData.MPEG_PROFILES:
             if self.PRendererClass.GetName().startswith(mpegProf):
                 return True
-        return False 
+        return False

@@ -40,12 +40,12 @@ class PnlWelcome(wx.Panel):
     def __init__(self, parent, frmMain):
         wx.Panel.__init__(self, parent)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
-        
+
         self.title = _(u"Welcome to PhotoFilmStrip")
-        
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_SIZE, self.OnSize)
-        
+
         self.__frmMain = frmMain
 
         self.htmlTitle = _(u"Recent projects")
@@ -59,15 +59,15 @@ class PnlWelcome(wx.Panel):
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
         self.cmdNew = wx.BitmapButton(self, -1,
-                                      wx.ArtProvider_GetBitmap(wx.ART_NEW, wx.ART_OTHER, (64, 64)))
+                                      wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_64'))
         self.cmdNew.SetToolTipString(_(u"Create new project"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectNew)
-        
+
         self.cmdOpen = wx.BitmapButton(self, -1,
-                                       wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, (64, 64)))
+                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_64'))
         self.cmdOpen.SetToolTipString(_(u"Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
-        
+
         sizerCmd = wx.BoxSizer(wx.HORIZONTAL)
         sizerCmd.Add(self.cmdNew, 0, wx.ALL, 30)
         sizerCmd.AddStretchSpacer(1)
@@ -76,15 +76,15 @@ class PnlWelcome(wx.Panel):
         sizerMain = wx.BoxSizer(wx.VERTICAL)
         sizerMain.AddStretchSpacer(1)
         sizerMain.Add(sizerCmd, 0, wx.ALIGN_CENTER_HORIZONTAL, 8)
-        sizerMain.Add(self.htmlWin, 3, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8) 
+        sizerMain.Add(self.htmlWin, 3, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
         sizerMain.AddStretchSpacer(2)
-        
+
         self.SetSizer(sizerMain)
         self.Layout()
-        
+
         self.__updateChecker = UpdateChecker()
         wx.CallLater(500, self.__NotifyUpdate)
-        
+
     def RefreshPage(self, withHistory=True):
         if withHistory:
             htmlParts = []
@@ -97,27 +97,27 @@ class PnlWelcome(wx.Panel):
                         </wxp>
                     </td>""" % recentFile
                     htmlParts.append(htmlPart)
-    
+
             breakAt = 4
             for idx in xrange((len(htmlParts) - 1) / breakAt):
                 htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
-            
+
             if htmlParts:
                 self.htmlTitle = _(u"Recent projects")
                 self.htmlText  = ""
             else:
                 self.htmlTitle = _(u"How to start...")
                 self.htmlText  = _(u"Create a new project or load an existing one.")
-                
+
             self.htmlRecentProjects = "".join(htmlParts)
-        
+
         html = HTML_TEMPLATE  % {'title': self.htmlTitle,
                                  'text': self.htmlText,
                                  'htmlRecentProjects': self.htmlRecentProjects,
                                  'htmlUpdate': self.htmlUpdate}
-        
+
         self.htmlWin.SetPage(html)
-    
+
     def __NotifyUpdate(self):
         if not self.__updateChecker.IsDone():
             wx.CallLater(100, self.__NotifyUpdate)
@@ -128,7 +128,7 @@ class PnlWelcome(wx.Panel):
 #            return
         if not self.__updateChecker.IsNewer(Constants.APP_VERSION):
             return
-        
+
         Settings().SetLastKnownVersion(self.__updateChecker.GetVersion())
 
         html = """<h3 align="center">%(title)s</h3>
@@ -144,7 +144,7 @@ class PnlWelcome(wx.Panel):
                                "msg": _(u'The following changes has been made:'),
                                "changes": self.__updateChecker.GetChanges(),
                                "url": Constants.APP_URL}
-        
+
         self.htmlUpdate = html
         self.RefreshPage(withHistory=False)
 
@@ -157,18 +157,18 @@ class PnlWelcome(wx.Panel):
         sz = self.GetSize()
         dc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)))
         dc.Clear()
-        
-        rect = wx.RectPS(wx.Point(0, 180), sz) 
-        dc.GradientFillLinear(rect, 
-                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE), 
-                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT), 
+
+        rect = wx.RectPS(wx.Point(0, 180), sz)
+        dc.GradientFillLinear(rect,
+                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE),
+                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT),
                               wx.SOUTH)
-        
+
         font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         dc.SetFont(font)
         dc.SetTextForeground(wx.Colour(127, 127, 127))
         dc.DrawLabel(self.title, wx.Rect(0, 10, sz[0], 50), wx.ALIGN_CENTER_HORIZONTAL)
-        
+
     def OnLinkClicked(self, event):
         filename = event.GetFilename()
         self.__frmMain.LoadProject(filename)
@@ -177,10 +177,10 @@ class PnlWelcome(wx.Panel):
 class LinkOpenPfs(IconLabelLink):
     
     BMP_MAP = {}
-    
+
     def __init__(self, parent, size=wx.DefaultSize, filename=None):
         self.filename = filename
-        
+
         if not LinkOpenPfs.BMP_MAP.has_key(filename):
             prjFile = ProjectFile(filename=filename)
             imgCount = prjFile.GetPicCount()
@@ -192,18 +192,18 @@ class LinkOpenPfs(IconLabelLink):
                 bmp = wx.ArtProvider_GetBitmap("PFS_ICON_48", wx.ART_OTHER)
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
-        
+
         bmp, descr = LinkOpenPfs.BMP_MAP[filename]
-        
+
         IconLabelLink.__init__(self, parent, size,
                                os.path.splitext(os.path.basename(filename))[0],
                                bmp,
                                descr)
-        
+
     def OnClick(self):
         evt = LinkClickedEvent(self.GetParent().GetId(), self.filename)
         self.GetEventHandler().ProcessEvent(evt)
-        
+
 
 EVT_LINK_TYPE  = wx.NewEventType()
 EVT_LINK       = wx.PyEventBinder(EVT_LINK_TYPE, 1)
@@ -221,8 +221,8 @@ class LinkClickedEvent(wx.PyCommandEvent):
 class PfsHyperlink(wx.lib.hyperlink.HyperLinkCtrl):
     
     def __init__(self, parent, size=wx.DefaultSize, label=""):
-        wx.lib.hyperlink.HyperLinkCtrl.__init__(self, parent, -1, 
-                                                label, 
+        wx.lib.hyperlink.HyperLinkCtrl.__init__(self, parent, -1,
+                                                label,
                                                 wx.DefaultPosition, size)
         self.SetBackgroundColour(parent.GetBackgroundColour())
         self.SetURL(Constants.APP_URL)
