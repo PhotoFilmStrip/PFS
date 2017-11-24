@@ -23,7 +23,7 @@ import wx
 
 
 class IconLabelLink(wx.Panel):
-    
+
     def __init__(self, 
                  parent, 
                  size=wx.DefaultSize, 
@@ -38,12 +38,14 @@ class IconLabelLink(wx.Panel):
         self.bmpThumb = bmp
         self.label = label
         self.mouseOver = False
-        
+
         self.SetToolTipString(u'{0}\n{1}'.format(label, descr))
-        
+
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvents)
-        
+
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+
     def OnMouseEvents(self, event):
         if event.LeftDown():
             self.OnClick()
@@ -57,9 +59,6 @@ class IconLabelLink(wx.Panel):
             self.Refresh()
 
         #event.Skip()
-
-    def OnClick(self):
-        raise NotImplementedError("OnClick")
 
     def OnPaint(self, event):
         dc = wx.AutoBufferedPaintDC(self)
@@ -110,3 +109,6 @@ class IconLabelLink(wx.Panel):
             if width <= maxSize:
                 break
         return s, width
+
+    def OnClick(self):
+        raise NotImplementedError("OnClick")
