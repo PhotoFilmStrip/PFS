@@ -96,15 +96,15 @@ class PnlPfsProject(wx.Panel, Observer):
     def _init_coll_sizerPnlTop_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bitmapLeft, 1, border=2, flag=wx.EXPAND | wx.ALL)
+        parent.AddWindow(self.bitmapLeft, 1, border=0, flag=wx.EXPAND | wx.ALL)
         parent.AddWindow(self.toolBarImgSect, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.bitmapRight, 1, border=2, flag=wx.ALL | wx.EXPAND)
+        parent.AddWindow(self.bitmapRight, 1, border=0, flag=wx.ALL | wx.EXPAND)
 
     def _init_coll_toolBarImgSect_Tools(self, parent):
         # generated method, don't edit
 
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24',
-              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24'),
+              bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Random motion'))
         parent.AddSeparator()
@@ -180,7 +180,7 @@ class PnlPfsProject(wx.Panel, Observer):
 
         self.toolBarImgSect = wx.ToolBar(id=wxID_PNLPFSPROJECTTOOLBARIMGSECT,
               name=u'toolBarImgSect', parent=self.panelTop, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.TB_VERTICAL | wx.NO_BORDER)
+              -1), size=wx.Size(-1, -1), style=wx.TB_VERTICAL | wx.NO_BORDER | wx.TB_NODIVIDER)
 
         self.bitmapRight = ImageSectionEditor(id=wxID_PNLPFSPROJECTBITMAPRIGHT,
               name=u'bitmapRight', parent=self.panelTop, pos=wx.Point(-1, -1),

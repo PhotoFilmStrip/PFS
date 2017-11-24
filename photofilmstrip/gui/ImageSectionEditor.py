@@ -207,7 +207,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         except StandardError:
             dc = pdc
 
-        dc.SetBrush(wx.GREY_BRUSH)
+        dc.SetBrush(wx.BLACK_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
         if not self.IsEnabled():
             dc.SetBrush(wx.Brush(wx.Colour(90, 90, 90, 255),
