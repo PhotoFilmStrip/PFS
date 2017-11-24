@@ -53,10 +53,18 @@ class PnlWelcome(wx.Panel):
         self.htmlRecentProjects = u""
         self.htmlUpdate = u""
 
-        self.htmlWin = wx.html.HtmlWindow(self, -1, style=wx.SIMPLE_BORDER)
+        self.pnlHtmlBackground = wx.Panel(self)
+        self.pnlHtmlBackground.SetBackgroundColour(wx.Colour(52, 73, 94))
+
+        self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
         self.RefreshPage()
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
+
+        sizerHtmlBBackground = wx.BoxSizer(wx.HORIZONTAL)
+        sizerHtmlBBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
+
+        self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
 
         self.cmdNew = wx.BitmapButton(self, -1,
                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_64'))
@@ -76,9 +84,10 @@ class PnlWelcome(wx.Panel):
         sizerMain = wx.BoxSizer(wx.VERTICAL)
         sizerMain.AddStretchSpacer(1)
         sizerMain.Add(sizerCmd, 0, wx.ALIGN_CENTER_HORIZONTAL, 8)
-        sizerMain.Add(self.htmlWin, 3, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
-        sizerMain.AddStretchSpacer(2)
+        sizerMain.Add(self.pnlHtmlBackground, 3, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
+        sizerMain.AddStretchSpacer(1)
 
+        self.pnlHtmlBackground.SetSizer(sizerHtmlBBackground)
         self.SetSizer(sizerMain)
         self.Layout()
 
@@ -161,13 +170,15 @@ class PnlWelcome(wx.Panel):
         rect = wx.RectPS(wx.Point(0, 180), sz)
         dc.GradientFillLinear(rect,
                               wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE),
-                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT),
+                              wx.Colour(52, 73, 94),
                               wx.SOUTH)
 
-        font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        font = wx.Font(28, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, 'Tahoma')
         dc.SetFont(font)
-        dc.SetTextForeground(wx.Colour(127, 127, 127))
-        dc.DrawLabel(self.title, wx.Rect(0, 10, sz[0], 50), wx.ALIGN_CENTER_HORIZONTAL)
+        dc.SetTextForeground(wx.Colour(99, 102, 106))
+        dc.DrawLabel(self.title, wx.Rect(0, 10, sz[0], 75), wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL)
+
+        dc.DrawBitmap(self.bmpFilmstrip, 10, sz[1] - self.bmpFilmstrip.GetSize()[1] - 30)
 
     def OnLinkClicked(self, event):
         filename = event.GetFilename()
@@ -229,8 +240,8 @@ class PfsHyperlink(wx.lib.hyperlink.HyperLinkCtrl):
 
 
 HTML_TEMPLATE = """<html>
-  <body bgcolor="#FFFFFF" witdth="650px">
-  <font color="#000000" face="Verdana">
+  <body bgcolor="#EBEBEB" witdth="650px">
+  <font color="#63666A" face="Tahoma">
     <h3 align="center">%(title)s</h3>
 
     <center>
@@ -239,7 +250,7 @@ HTML_TEMPLATE = """<html>
         </table>
     </center>
 
-    <p>%(text)s</p>
+    <h5 align="center">%(text)s</h5>
     %(htmlUpdate)s
   </font>
   </body>

@@ -232,6 +232,11 @@ class pfs_build(build):
                         ("EXIT_16","exit_16.png"),
                         ("HELP_16","help_16.png"),
                         ("ABOUT_16","about_16.png"),
+
+                        ("FILMSTRIP","filmstrip.png"),
+                        ("DIA","dia.png"),
+                        ("DIA_S","dia_s.png"),
+
                        )
 
         for idx, (imgName, imgFile) in enumerate(imgResources):

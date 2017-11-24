@@ -141,7 +141,7 @@ class ProjectFile(object):
             picIdx = random.randint(0, imgCount - 1)
             pic = pics[picIdx]
             if os.path.exists(pic.GetFilename()):
-                img = PILBackend.GetThumbnail(pic, 64, 64)
+                img = PILBackend.GetThumbnail(pic, width=136, height=70)
                 if pic.IsDummy():
                     img = None
         return img
