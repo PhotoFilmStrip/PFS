@@ -61,8 +61,8 @@ class PnlWelcome(wx.Panel):
         self.RefreshPage()
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
-        sizerHtmlBBackground = wx.BoxSizer(wx.HORIZONTAL)
-        sizerHtmlBBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
+        sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
+        sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
 
         self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
 
@@ -87,7 +87,7 @@ class PnlWelcome(wx.Panel):
         sizerMain.Add(self.pnlHtmlBackground, 3, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
         sizerMain.AddStretchSpacer(1)
 
-        self.pnlHtmlBackground.SetSizer(sizerHtmlBBackground)
+        self.pnlHtmlBackground.SetSizer(sizerHtmlBackground)
         self.SetSizer(sizerMain)
         self.Layout()
 
