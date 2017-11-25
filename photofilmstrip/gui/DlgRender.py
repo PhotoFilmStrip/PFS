@@ -20,8 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import os
-
 import wx
 import wx.combo
 
@@ -31,14 +29,11 @@ from photofilmstrip.core.OutputProfile import (
 from photofilmstrip.core.Renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
-from photofilmstrip.lib.util import CheckFile
-from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
-from photofilmstrip.action.ActionRender import ActionRender
-from photofilmstrip.core.exceptions import RenderException
+
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT,
  wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE,
@@ -115,29 +110,29 @@ class DlgRender(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
+            parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+            style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
         self.SetClientSize(wx.Size(400, 250))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
-              parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
+            parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+            style=wx.TAB_TRAVERSAL)
 
         self.pnlSettings = wx.Panel(id=wxID_DLGRENDERPNLSETTINGS,
-              name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+            name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.stFormat = wx.StaticText(id=wxID_DLGRENDERSTFORMAT,
-              label=_(u'Format:'), name=u'stFormat', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+            label=_(u'Format:'), name=u'stFormat', parent=self.pnlSettings,
+            pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceFormat = FormatComboBox(choices=[],
-              id=wxID_DLGRENDERCHOICEFORMAT, name=u'choiceFormat',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=wx.CB_READONLY)
+            id=wxID_DLGRENDERCHOICEFORMAT, name=u'choiceFormat',
+            parent=self.pnlSettings, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=wx.CB_READONLY)
         self.choiceFormat.SetMinSize(wx.Size(300, -1))
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
-              id=wxID_DLGRENDERCHOICEFORMAT)
+            id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_16'),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
@@ -145,64 +140,61 @@ class DlgRender(wx.Dialog):
               -1), style=wx.BU_AUTODRAW)
         self.cmdRendererProps.SetToolTipString(_("Properties"))
         self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
-              id=wxID_DLGRENDERCMDRENDERERPROPS)
+            id=wxID_DLGRENDERCMDRENDERERPROPS)
 
         self.stProfile = wx.StaticText(id=wxID_DLGRENDERSTPROFILE,
-              label=_(u'Resolution:'), name=u'stProfile', parent=self.pnlSettings,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+            label=_(u'Resolution:'), name=u'stProfile', parent=self.pnlSettings,
+            pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceProfile = wx.Choice(choices=[],
-              id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0)
+            id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
+            parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
+            - 1), style=0)
         self.choiceProfile.SetMinSize(wx.Size(300, -1))
 
         self.stType = wx.StaticText(id=wxID_DLGRENDERSTTYPE, label=_(u'Type:'),
-              name=u'stType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+            name=u'stType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=0)
 
         self.choiceType = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICETYPE,
-              name=u'choiceType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+            name=u'choiceType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=0)
         self.choiceType.SetMinSize(wx.Size(300, -1))
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
-              name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+            name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=0)
         self.cbDraft.SetValue(False)
 
         self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'),
-              name=u'cmdHelp', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+            name=u'cmdHelp', parent=self, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=0)
         self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton, id=wx.ID_HELP)
 
         self.cmdCancel = wx.Button(id=wxID_DLGRENDERCMDCANCEL,
-              label=_(u'&Cancel'), name=u'cmdCancel', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+            label=_(u'&Cancel'), name=u'cmdCancel', parent=self,
+            pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
-              id=wxID_DLGRENDERCMDCANCEL)
+            id=wxID_DLGRENDERCMDCANCEL)
 
         self.cmdStart = wx.Button(id=wxID_DLGRENDERCMDSTART, label=_(u'&Start'),
-              name=u'cmdStart', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0)
+            name=u'cmdStart', parent=self, pos=wx.Point(-1, -1),
+            size=wx.Size(-1, -1), style=0)
         self.cmdStart.Bind(wx.EVT_BUTTON, self.OnCmdStartButton,
-              id=wxID_DLGRENDERCMDSTART)
+            id=wxID_DLGRENDERCMDSTART)
 
         self._init_sizers()
 
-    def __init__(self, parent, photoFilmStrip):
+    def __init__(self, parent, aspectRatio):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_('Configure output and start render process'))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER_32'))
 
-        self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
+        self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview. The rendering process will speed up dramatically, but results in lower quality."))
 
-        self.__photoFilmStrip = photoFilmStrip
-        self.__renderEngine = None
-
-        for profile in GetOutputProfiles(photoFilmStrip.GetAspect()):
+        for profile in GetOutputProfiles(aspectRatio):
             self.choiceProfile.Append(u"%s (%sx%s)" % (profile.GetName(),
                                                        profile.GetResolution()[0],
                                                        profile.GetResolution()[1]),
@@ -212,14 +204,13 @@ class DlgRender(wx.Dialog):
         self.choiceType.Append("NTSC", OutputProfile.NTSC)
         self.choiceType.SetSelection(0)
 
-        audioFile = self.__photoFilmStrip.GetAudioFile()
-        if audioFile and not os.path.exists(audioFile):
-            self.pnlHdr.SetErrorMessage(_(u"Audio file '%s' does not exist!") % audioFile)
-
         settings = Settings()
         self.choiceProfile.SetSelection(settings.GetLastProfile())
+        self.profile = None
 
-        self.__SetChoiceSelectionByData(self.choiceType, settings.GetVideoType())
+        self.videoNorm = settings.GetVideoType()
+        self.__SetChoiceSelectionByData(self.choiceType, self.videoNorm)
+
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
 
@@ -227,6 +218,9 @@ class DlgRender(wx.Dialog):
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         self.SetFocus()
+
+        self.draftMode = False
+        self.rendererClass = None
 
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
@@ -236,12 +230,6 @@ class DlgRender(wx.Dialog):
             if choice.GetClientData(idx) == data:
                 choice.Select(idx)
                 return
-
-    def __GetOutputPath(self):
-        profile = self.__GetChoiceDataSelected(self.choiceProfile)
-        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, profile.GetName())
-        return outpath
 
     def OnChoiceFormat(self, event):
         if event is None:
@@ -266,43 +254,17 @@ class DlgRender(wx.Dialog):
 
     def OnCmdStartButton(self, event):
         formatData = self.__GetChoiceDataSelected(self.choiceFormat)
-        rendererClass = formatData.PRendererClass
+        self.rendererClass = formatData.PRendererClass
 
-        profile = GetMPEGProfiles().get(rendererClass.GetName())
+        profile = GetMPEGProfiles().get(self.rendererClass.GetName())
         if profile is None:
             profile = self.__GetChoiceDataSelected(self.choiceProfile)
         if profile is None:
             return
 
-        ar = ActionRender(self.__photoFilmStrip,
-                          profile,
-                          self.__GetChoiceDataSelected(self.choiceType),
-                          rendererClass,
-                          self.cbDraft.GetValue())
-
-        audioFile = self.__photoFilmStrip.GetAudioFile()
-        if not CheckFile(audioFile):
-            dlg = wx.MessageDialog(self,
-                                   _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile,
-                                   _(u"Warning"),
-                                   wx.YES_NO | wx.ICON_WARNING)
-            try:
-                if dlg.ShowModal() == wx.ID_NO:
-                    return
-            finally:
-                dlg.Destroy()
-
-        try:
-            ar.Execute()
-            renderJob = ar.GetRenderJob()
-            JobManager().EnqueueContext(renderJob)
-        except RenderException, exc:
-            dlg = wx.MessageDialog(self,
-                                   exc.GetMessage(),
-                                   _(u"Error"),
-                                   wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            dlg.Destroy()
+        self.profile = profile
+        self.videoNorm = self.__GetChoiceDataSelected(self.choiceType)
+        self.draftMode = self.cbDraft.GetValue()
 
         self.EndModal(wx.ID_OK)
 
@@ -322,6 +284,15 @@ class DlgRender(wx.Dialog):
     def OnCmdHelpButton(self, event):
         HelpViewer().DisplayID(HelpViewer.ID_RENDER)
         event.Skip()
+
+    def GetProfile(self):
+        return self.profile
+    def GetVideoNorm(self):
+        return self.videoNorm
+    def GetDraftMode(self):
+        return self.draftMode
+    def GetRendererClass(self):
+        return self.rendererClass
 
 
 class FormatComboBox(wx.combo.OwnerDrawnComboBox):

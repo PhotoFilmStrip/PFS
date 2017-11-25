@@ -288,12 +288,10 @@ class PnlEditPicture(wx.Panel):
     def OnCmdRotateLeftButton(self, event):
         for pic in self._pictures:
             pic.Rotate(False)
-        event.Skip()
 
     def OnCmdRotateRightButton(self, event):
         for pic in self._pictures:
             pic.Rotate(True)
-        event.Skip()
 
     def OnChoiceEffectChoice(self, event):
         for pic in self._pictures:

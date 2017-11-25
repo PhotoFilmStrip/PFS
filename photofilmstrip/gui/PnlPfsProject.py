@@ -3,7 +3,7 @@
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
-# Copyright (C) 2010 Jens Goepfert
+# Copyright (C) 2017 Jens Goepfert
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,12 +25,20 @@ import logging
 
 import wx
 
+from photofilmstrip.action.ActionAutoPath import ActionAutoPath
+from photofilmstrip.action.ActionCenterPath import ActionCenterPath
+from photofilmstrip.action.ActionRender import ActionRender
+
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.core.Project import Project
+from photofilmstrip.core.PicturePattern import PicturePattern
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
+from photofilmstrip.lib.util import CheckFile
 
+from photofilmstrip.gui.helper import CreateMenuItem
 from photofilmstrip.gui.ImageSectionEditor import (
         ImageSectionEditor, ImageProxy, EVT_RECT_CHANGED)
 from photofilmstrip.gui.PhotoFilmStripList import (
@@ -38,13 +46,14 @@ from photofilmstrip.gui.PhotoFilmStripList import (
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
 
+from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
-
-from photofilmstrip.action.ActionAutoPath import ActionAutoPath
-from photofilmstrip.action.ActionCenterPath import ActionCenterPath
-from photofilmstrip.core.PicturePattern import PicturePattern
+from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
+from photofilmstrip.gui.DlgRender import DlgRender
+from photofilmstrip.gui.WxProjectFile import WxProjectFile
+from photofilmstrip.core.exceptions import RenderException
 
 [wxID_PNLPFSPROJECT, wxID_PNLPFSPROJECTBITMAPLEFT,
  wxID_PNLPFSPROJECTBITMAPRIGHT, wxID_PNLPFSPROJECTCMDMOVELEFT,
@@ -62,9 +71,25 @@ from photofilmstrip.core.PicturePattern import PicturePattern
  wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH,
 ] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(6)]
 
-class PnlPfsProject(wx.Panel, Observer):
+[ID_PROJECT_PROPS,
+ ID_PIC_MOVE_LEFT,
+ ID_PIC_MOVE_RIGHT,
+ ID_PIC_REMOVE,
+ ID_PIC_ROTATE_CW,
+ ID_PIC_ROTATE_CCW,
+ ID_PIC_MOTION_RANDOM,
+ ID_PIC_MOTION_CENTER,
+ ID_PIC_IMPORT,
+ ID_PIC_SLIDE,
+ ID_RENDER_FILMSTRIP,
+ ID_EXPORT, ID_IMPORT,
+] = [wx.NewId() for __ in range(13)]
 
-    _custom_classes = {"wx.Panel": ["ImageSectionEditor",
+
+class PnlPfsProject(PnlEditorPage, Observer):
+
+    _custom_classes = {"wx.Panel": ["PnlEditorPage",
+                                    "ImageSectionEditor",
                                     "PnlEditPicture",
                                     "PnlAddPics"],
                        "wx.ListView": ["PhotoFilmStripList"]}
@@ -165,9 +190,8 @@ class PnlPfsProject(wx.Panel, Observer):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLPFSPROJECT, name=u'PnlPfsProject',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
+        PnlEditorPage.__init__(self, id=wxID_PNLPFSPROJECT, name=u'PnlPfsProject',
+              parent=prnt)
         self.SetClientSize(wx.Size(400, 250))
 
         self.panelTop = wx.Panel(id=wxID_PNLPFSPROJECTPANELTOP,
@@ -238,7 +262,6 @@ class PnlPfsProject(wx.Panel, Observer):
         self.imgProxyLeft = None
         self.imgProxyRight = None
         self.__project = project
-        self.__hasChanged = False
         self.__usedAltPath = False
 
         self.__InitImageProxy()
@@ -281,13 +304,153 @@ class PnlPfsProject(wx.Panel, Observer):
             self.bitmapLeft.SetImgProxy(self.imgProxyLeft)
             self.bitmapRight.SetImgProxy(self.imgProxyRight)
 
+    def GetFileExtension(self):
+        return ".pfs"
+
+    def GetStatusText(self, index):
+        project = self.__project
+
+        imgCount = len(project.GetPictures())
+        totalTime = project.GetDuration(False)
+        if project.GetTimelapse():
+            # TODO: calc from image count
+            totalTime = 1
+            imgCount = 0
+        elif totalTime == -1:
+            # TODO: calc from audio files
+            totalTime = 0
+        elif totalTime is None:
+            totalTime = project.GetDuration(True)
+
+        if index == 0:
+            return u"%s: %d" % (_(u"Images"), imgCount)
+
+        elif index == 1:
+            minutes = totalTime / 60
+            seconds = totalTime % 60
+            return u"%s: %02d:%02d" % (_(u"Duration"),
+                                       minutes,
+                                       seconds)
+        else:
+            return u""
+
+    def GetSaveFilePath(self):
+        return self.__project.GetFilename()
+
+    def _GetEditorName(self):
+        return _(u"Project")
+
+    def _Save(self, filepath):
+        prjFile = WxProjectFile(self, self.__project, filepath)
+        prjFile.Save(False)
+        return True
+
+    def AddMenuFileActions(self, menu):
+        menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
+#        CreateMenuItem(menu, self.ID_IMPORT, _(u"&Import Project"))
+#        CreateMenuItem(menu, self.ID_EXPORT, _(u"&Export Project"))
+#        menu.AppendSeparator()
+        CreateMenuItem(menu, ID_PROJECT_PROPS,
+                       _(u"&Properties"),
+                       wx.ArtProvider.GetBitmap('PFS_PROPERTIES_16'))
+
+    def AddMenuEditActions(self, menu):
+        menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
+        CreateMenuItem(menu, ID_PIC_IMPORT,
+                       _(u'&Import Pictures') + '\tCtrl+I',
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
+        menu.AppendSeparator()
+        CreateMenuItem(menu, ID_PIC_MOVE_LEFT,
+                       _(u'Move picture &left'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D_16'))
+        CreateMenuItem(menu, ID_PIC_MOVE_RIGHT,
+                       _(u'Move picture &right'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D_16'))
+        menu.AppendSeparator()
+        CreateMenuItem(menu, ID_PIC_REMOVE,
+                       _(u'R&emove Picture') + '\tCtrl+Del',
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D_16'))
+        menu.AppendSeparator()
+        CreateMenuItem(menu, ID_PIC_ROTATE_CW,
+                       _(u'Rotate &clockwise') + '\tCtrl+r',
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D_16'))
+        CreateMenuItem(menu, ID_PIC_ROTATE_CCW,
+                       _(u'Rotate counter clock&wise') + '\tCtrl+l',
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
+        menu.AppendSeparator()
+        CreateMenuItem(menu, ID_PIC_MOTION_RANDOM,
+                       _(u'Random &motion' + '\tCtrl+d'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_16'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_D_16'))
+        CreateMenuItem(menu, ID_PIC_MOTION_CENTER,
+                       _(u'Centralize m&otion') + '\tCtrl+f',
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_16'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
+
+    def AddToolBarActions(self, toolBar):
+        toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
+
+        toolBar.DoAddTool(ID_PIC_IMPORT, '',
+                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
+                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
+                          wx.ITEM_NORMAL,
+                          _(u'Import Pictures'),
+                          _(u'Import Pictures'),
+                          None)
+        toolBar.AddSeparator()
+        toolBar.DoAddTool(ID_RENDER_FILMSTRIP, '',
+                          wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
+                          wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
+                          wx.ITEM_NORMAL,
+                          _(u'Render filmstrip'),
+                          _(u'Render filmstrip'),
+                          None)
+
+    def ConnectEvents(self, evtHandler):
+        evtHandler.Bind(wx.EVT_MENU, self.OnProjectExport, id=ID_EXPORT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnProjectImport, id=ID_IMPORT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnProjectProps, id=ID_PROJECT_PROPS)
+
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=ID_PIC_MOVE_LEFT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdMoveRightButton, id=ID_PIC_MOVE_RIGHT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdRemoveButton, id=ID_PIC_REMOVE)
+
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdRotateLeftButton, id=ID_PIC_ROTATE_CCW)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdRotateRightButton, id=ID_PIC_ROTATE_CW)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdMotionRandom, id=ID_PIC_MOTION_RANDOM)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdMotionCenter, id=ID_PIC_MOTION_CENTER)
+
+        evtHandler.Bind(wx.EVT_MENU, self.OnImportPics, id=ID_PIC_IMPORT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ID_RENDER_FILMSTRIP)
+
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_REMOVE)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_ROTATE_CCW)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_ROTATE_CW)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOVE_LEFT)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOVE_RIGHT)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_RANDOM)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_CENTER)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_RENDER_FILMSTRIP)
+
+    def DisconnEvents(self, evtHandler):
+        for wId in [ID_PIC_MOVE_LEFT, ID_PIC_MOVE_RIGHT, ID_PIC_REMOVE,
+                    ID_PIC_ROTATE_CCW, ID_PIC_ROTATE_CW, ID_PIC_MOTION_RANDOM,
+                    ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_PIC_SLIDE]:
+            evtHandler.Disconnect(wId)
+
     def GetSelectedImageState(self):
         items = self.lvPics.GetSelected()
         if len(items) == 0:
             kind = 'none'
         elif items[0] == 0:
             if self.lvPics.GetItemCount() == 1:
-                kind = 'none' # to disable move buttons
+                kind = 'none'  # to disable move buttons
             else:
                 kind = 'first'
         elif items[0] == self.lvPics.GetItemCount() - 1:
@@ -299,6 +462,42 @@ class PnlPfsProject(wx.Panel, Observer):
 #            kind = 'multi'
 
         return kind
+
+    def OnProjectExport(self, event):
+        prj = self.__project
+        curFilePath = prj.GetFilename()
+        dlg = wx.FileDialog(self, _(u"Export slideshow"),
+                            Settings().GetProjectPath(),
+                            curFilePath,
+                            u"%s %s" % (_(u"Portable slideshow"), "(*.ppfs)|*.ppfs"),
+                            wx.FD_SAVE)
+        if dlg.ShowModal() == wx.ID_OK:
+            filepath = dlg.GetPath()
+            if os.path.splitext(filepath)[1].lower() != ".ppfs":
+                filepath += ".ppfs"
+
+            prjFile = WxProjectFile(self, self.__project, filepath)
+            prjFile.Save(True)
+
+    def OnProjectImport(self, event):
+        dlg = wx.FileDialog(self, _(u"Import Slideshow"),
+                            Settings().GetProjectPath(), "",
+                            u"%s %s" % (_(u"Portable slideshow"), "(*.ppfs)|*.ppfs"),
+                            wx.FD_OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            filepath = dlg.GetPath()
+
+            prjFile = WxProjectFile(self, filename=filepath)
+            result = prjFile.Load()
+
+    def OnProjectProps(self, event):
+        dlg = DlgProjectProps(self, self.__project)
+        if dlg.ShowModal() == wx.ID_OK:
+            dlg.GetProject()  # Makes changes to self.__project
+            self.bitmapLeft.SetAspect(self.__project.GetAspect())
+            self.bitmapRight.SetAspect(self.__project.GetAspect())
+            self.SetChanged(True)
+        dlg.Destroy()
 
     def OnImportPics(self, event):
         dlg = wx.FileDialog(self, _(u"Import images"),
@@ -337,6 +536,53 @@ class PnlPfsProject(wx.Panel, Observer):
             selPics = self.lvPics.GetSelectedPictures()
             self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()
+
+    def OnRenderFilmstrip(self, event):
+        self.PrepareRendering()
+
+        project = self.__project
+        dlg = DlgRender(self, project.GetAspect())
+        try:
+            if dlg.ShowModal() != wx.ID_OK:
+                return
+
+            profile = dlg.GetProfile()
+            videoNorm = dlg.GetVideoNorm()
+            draftMode = dlg.GetDraftMode()
+            rendererClass = dlg.GetRendererClass()
+        finally:
+            dlg.Destroy()
+
+        ar = ActionRender(project,
+                          profile,
+                          videoNorm,
+                          rendererClass,
+                          draftMode)
+        try:
+            ar.Execute()
+            renderJob = ar.GetRenderJob()
+            JobManager().EnqueueContext(renderJob)
+        except RenderException, exc:
+            dlg = wx.MessageDialog(self,
+                                   exc.GetMessage(),
+                                   _(u"Error"),
+                                   wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            dlg.Destroy()
+
+    def OnCheckImageSelected(self, event):
+        value = self.IsPictureSelected()
+        kind = self.GetSelectedImageState()
+        if event.GetId() == ID_PIC_MOVE_LEFT:
+            # FIXME: does not work with multiselect
+            value = kind not in ['first', 'none'] and value
+        elif event.GetId() == ID_PIC_MOVE_RIGHT:
+            # FIXME: does not work with multiselect
+            value = kind not in ['last', 'none'] and value
+        event.Enable(value)
+
+    def OnCheckProjectReady(self, event):
+        event.Enable(self.IsReady())
 
     def OnLvPicsSelectionChanged(self, event):
         selItems = self.lvPics.GetSelected()
@@ -455,6 +701,15 @@ class PnlPfsProject(wx.Panel, Observer):
 
         self.Layout()
 
+    def OnCmdRotateLeftButton(self, event):
+        self.pnlEditPicture.OnCmdRotateLeftButton(event)
+    def OnCmdRotateRightButton(self, event):
+        self.pnlEditPicture.OnCmdRotateRightButton(event)
+    def OnCmdMotionRandom(self, event):
+        self.OnMotionRandom()
+    def OnCmdMotionCenter(self, event):
+        self.OnMotionCenter()
+
     def OnPhotoFilmStripListChanged(self, event):
         self.__project.SetPictures(self.lvPics.GetPictures())
         self.SetChanged(True)
@@ -511,6 +766,20 @@ class PnlPfsProject(wx.Panel, Observer):
     def GetProject(self):
         return self.__project
 
+    def PrepareRendering(self):
+        for audioFile in self.__project.GetAudioFiles():
+            if not CheckFile(audioFile):
+                dlg = wx.MessageDialog(self,
+                                       _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile,
+                                       _(u"Warning"),
+                                       wx.YES_NO | wx.ICON_WARNING)
+                dlgResult = dlg.ShowModal()
+                dlg.Destroy()
+                if dlgResult == wx.ID_NO:
+                    return
+                else:
+                    break
+
     def InsertPictures(self, pics, position=None, autopath=False):
         logging.debug("InsertPictures(pos=%s)", position)
         if position is None:
@@ -563,21 +832,11 @@ class PnlPfsProject(wx.Panel, Observer):
                 self.__InitImageProxy()
                 self.OnLvPicsSelectionChanged(None)
 
-    def UpdateProperties(self):
-        self.bitmapLeft.SetAspect(self.__project.GetAspect())
-        self.bitmapRight.SetAspect(self.__project.GetAspect())
-        self.SetChanged(True)
-
     def IsReady(self):
         return self.lvPics.GetItemCount() > 0
 
     def IsPictureSelected(self):
         return len(self.lvPics.GetSelected()) > 0
-
-    def SetChanged(self, changed=True):
-        self.__hasChanged = changed
-    def HasChanged(self):
-        return self.__hasChanged
 
     def __CheckAndSetLock(self, pic):
         unlocked = False
