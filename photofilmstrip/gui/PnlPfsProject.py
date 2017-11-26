@@ -132,11 +132,11 @@ class PnlPfsProject(PnlEditorPage, Observer):
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Random motion'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
               bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, kind=wx.ITEM_NORMAL,
               label='', longHelp='', shortHelp=_(u'Set motion end to start'))
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
+        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
               bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
               label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
