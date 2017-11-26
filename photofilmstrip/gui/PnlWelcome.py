@@ -58,7 +58,6 @@ class PnlWelcome(wx.Panel):
 
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
-        self.RefreshPage()
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
@@ -90,6 +89,8 @@ class PnlWelcome(wx.Panel):
         self.pnlHtmlBackground.SetSizer(sizerHtmlBackground)
         self.SetSizer(sizerMain)
         self.Layout()
+
+        self.RefreshPage()
 
         self.__updateChecker = UpdateChecker()
         wx.CallLater(500, self.__NotifyUpdate)
@@ -164,12 +165,12 @@ class PnlWelcome(wx.Panel):
     def OnPaint(self, event):
         dc = wx.AutoBufferedPaintDC(self)
         sz = self.GetSize()
-        dc.SetBackground(wx.Brush(wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)))
+        dc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)))
         dc.Clear()
 
-        rect = wx.RectPS(wx.Point(0, 180), sz)
+        rect = wx.Rect(0, 180, sz[0], sz[1])
         dc.GradientFillLinear(rect,
-                              wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE),
+                              wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE),
                               wx.Colour(52, 73, 94),
                               wx.SOUTH)
 
@@ -200,7 +201,7 @@ class LinkOpenPfs(IconLabelLink):
                 wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
             else:
-                bmp = wx.ArtProvider_GetBitmap("PFS_ICON_48", wx.ART_OTHER)
+                bmp = wx.ArtProvider.GetBitmap("PFS_ICON_48", wx.ART_OTHER)
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
 

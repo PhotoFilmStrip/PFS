@@ -71,7 +71,7 @@ class PnlFloatSpinCtrl(wx.Panel):
     def __init__(self, parent, id, pos, size, style, name):
         self._init_ctrls(parent)
         self.tcValue.SetValidator(FloatValidator())
-        self.spinButtonValue.SetMinSize(wx.Size(-1, self.tcValue.GetSizeTuple()[1]))
+        self.spinButtonValue.SetMinSize(wx.Size(-1, self.tcValue.GetSize()[1]))
 
     def __SendValueChangedEvent(self, value):
         evt = ValueChangedEvent(self.GetId(), value)

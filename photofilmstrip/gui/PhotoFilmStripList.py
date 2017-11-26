@@ -93,7 +93,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         except StandardError:
             dc = pdc
 
-        font = wx.SystemSettings_GetFont(wx.SYS_ANSI_FIXED_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_ANSI_FIXED_FONT)
         font.SetPointSize(9)
         dc.SetFont(font)
         dc.SetTextForeground(wx.Colour(237, 156, 0))
@@ -153,13 +153,13 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         for selIdx in self.__selIdxs:
             rect = self.GetThumbRect(selIdx)
             rect.OffsetXY(-vs, 0)
-            col = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+            col = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             dc.SetBrush(wx.Brush(wx.Colour(col.Red(), col.Green(), col.Blue(), 180)))
             dc.DrawRectangleRect(rect)
         if self.__hvrIdx != -1:
             rect = self.GetThumbRect(self.__hvrIdx)
             rect.OffsetXY(-vs, 0)
-            col = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+            col = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             color = wx.Colour(col.Red(), col.Green(), col.Blue(), 80)
             dc.SetBrush(wx.Brush(color))
             dc.DrawRectangleRect(rect)
@@ -192,7 +192,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if event.Dragging():
             if mPos.x < 10:
                 self.__Scroll(-40)
-            elif mPos.x > self.GetClientSizeTuple()[0] - 10:
+            elif mPos.x > self.GetClientSize()[0] - 10:
                 self.__Scroll(40)
             self.__dragX = unscrolledPos.x
             if self.__dragPic is None and idx != -1:
@@ -278,7 +278,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         rect = self.GetThumbRect(idx)
         left = rect.GetLeft()
         vs = self.GetViewStart()[0]
-        ch = self.GetClientSizeTuple()[0]
+        ch = self.GetClientSize()[0]
         if left < vs:
             self.Scroll(left, 0)
         elif left > vs + ch:

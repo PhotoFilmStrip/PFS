@@ -58,7 +58,7 @@ class DlgBugReport(wx.Dialog):
 
         text = _(u"An unexpected error occured. Do you want to send this bug report to the developers of %s?") % Constants.APP_NAME
 
-        stBmp = wx.StaticBitmap(self, -1, wx.ArtProvider_GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (32, 32)))
+        stBmp = wx.StaticBitmap(self, -1, wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_OTHER, (32, 32)))
         stMsg = wx.StaticText(self, -1, wordwrap(text, 300, wx.ClientDC(self)))
 
         szTop = wx.BoxSizer(wx.HORIZONTAL)

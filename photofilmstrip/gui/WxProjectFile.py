@@ -20,27 +20,28 @@ class WxProjectFile(ProjectFile):
         ProjectFile.__init__(self, project, filename)
         self.__wxParent = wxParent
         self.__wxvJob = None
-        self.__resultEvent = None
+        self.__result = None
 
     def __WaitUntilJobDone(self):
-        while self.__resultEvent is None:
+        while self.__result is None:
             if wx.Thread_IsMain():
                 wx.Yield()
             time.sleep(0.05)
         self.__wxvJob = None
         try:
-            return self.__resultEvent.GetResult()
+            return self.__result
         finally:
-            self.__resultEvent = None
+            self.__result = None
 
     def __OnJobDone(self, event):
-        self.__resultEvent = event
+        self.__result = event.GetResult()
 
     def __Load(self, importPath, job=None):
         return ProjectFile.Load(self, importPath)
 
     def __Save(self, includePics, job=None):
-        return ProjectFile.Save(self, includePics)
+        ProjectFile.Save(self, includePics)
+        return True
 
     def _SelectAlternatePath(self, imgPath):
         sapEvent = SelectAlternatePathEvent(imgPath)

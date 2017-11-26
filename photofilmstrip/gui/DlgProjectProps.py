@@ -175,7 +175,7 @@ class DlgProjectProps(wx.Dialog):
 
         self.timeCtrlTotalLength = wx.lib.masked.timectrl.TimeCtrl(self,
               display_seconds=True, fmt24hr=True,
-              name=u'timeCtrlTotalLength', oob_color=wx.NamedColour('Yellow'),
+              name=u'timeCtrlTotalLength', oob_color=wx.YELLOW,
               style=0, useFixedWidthFont=True, value='12:00:00 AM')
         self.timeCtrlTotalLength.Enable(False)
 
@@ -228,11 +228,11 @@ class DlgProjectProps(wx.Dialog):
         self.timeCtrlTotalLength.SetMinSize(wx.Size(300, -1))
         self.lvAudio.SetMinSize(wx.Size(300, -1))
 
-        defTime = wx.DateTime_Now()
+        defTime = wx.DateTime.Now()
         defTime.SetHMS(0, 0, 30)
-        minTime = wx.DateTime_Now()
+        minTime = wx.DateTime.Now()
         minTime.SetHMS(0, 0, 1)
-        maxTime = wx.DateTime_Now()
+        maxTime = wx.DateTime.Now()
         maxTime.SetHMS(1, 59, 59)
         self.timeCtrlTotalLength.SetValue(defTime)
         self.timeCtrlTotalLength.SetMin(minTime)
@@ -284,7 +284,9 @@ class DlgProjectProps(wx.Dialog):
                 self.rbManual.SetValue(True)
                 pfsDur = duration
 
-            dur = wx.DateTime_Now()
+            pfsDur = int(round(pfsDur))
+
+            dur = wx.DateTime.Now()
             dur.SetHMS(0, pfsDur / 60, pfsDur % 60)
             try:
                 self.timeCtrlTotalLength.SetWxDateTime(dur)

@@ -159,11 +159,11 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         if value:
             if self.IsShownOnScreen():
                 self.SetFocus()
-            bgCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
-            txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
+            bgCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+            txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:
             bgCol = wx.WHITE
-            txtCol = wx.SystemSettings_GetColour(wx.SYS_COLOUR_LISTBOXTEXT)
+            txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOXTEXT)
         self.SetBackgroundColour(bgCol)
         self.stJobName.SetForegroundColour(txtCol)
         self.stJobInfo.SetForegroundColour(txtCol)

@@ -68,7 +68,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         wx.Panel.__init__(self, parent, id, pos, size, style, name)
         Observer.__init__(self)
 
-        self.SetMinSize(wx.Size(200, 150))
+        self.SetSizeHints(200, 150)
         self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
@@ -183,10 +183,11 @@ class ImageSectionEditor(wx.Panel, Observer):
         alpha = 255
         if now - self._lastRectUpdate > self.INFO_TIME_OUT / 2:
             alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT / 2)) / (self.INFO_TIME_OUT / 2)) * 255
+            alpha = int(round(alpha))
         if alpha < 0:
             alpha = 0
         dc.SetTextForeground(wx.Colour(255, 255, 255, alpha))
-        font = wx.SystemSettings_GetFont(wx.SYS_SYSTEM_FIXED_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FIXED_FONT)
         font.SetPointSize(16)
         font.SetWeight(wx.BOLD)
         dc.SetFont(font)
@@ -428,7 +429,10 @@ class ImageSectionEditor(wx.Panel, Observer):
                         ny = self._imgProxy.GetHeight()
 
                 # everything should be ok now
-                self._sectRect.Set(nx, ny, width, height)
+                self._sectRect.SetX(nx)
+                self._sectRect.SetY(ny)
+                self._sectRect.SetWidth(width)
+                self._sectRect.SetHeight(height)
 #
             self._SendRectChangedEvent()
 
@@ -661,6 +665,8 @@ class ImageProxy(Observable):
         return self.GetWidth(), self.GetHeight()
 
     def Scale(self, width, height):
+        if not (width > 0 and height > 0):
+            return
         img = self._wxImg.Scale(width, height)
         self._wxBmp = img.ConvertToBitmap()
         self._curSize = width, height

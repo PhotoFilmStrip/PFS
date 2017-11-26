@@ -128,7 +128,7 @@ class PnlEditPicture(wx.Panel):
 
         self.sizerRotationTools = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerTimesCtrls = wx.FlexGridSizer(cols=4, hgap=8, rows=1, vgap=8)
+        self.sizerTimesCtrls = wx.FlexGridSizer(cols=4, hgap=8, rows=2, vgap=8)
 
         self.szTimes = wx.BoxSizer(orient=wx.VERTICAL)
 
