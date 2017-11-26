@@ -78,7 +78,9 @@ class RenderJob(VisualJob):
             finalizeHandler = None
         else:
             finalizeHandler = self.finalizeHandler
-        key = task.GetKey()
+        # make sure that a real sub task is not processed from FinalizeHandler
+        # so generate a special key for subtasks
+        key = "{0}{1}".format(task.GetKey(), isSubTask)
         if key in self.taskResultCache:
             trce = self.taskResultCache[key]
             isNew = False
@@ -133,8 +135,8 @@ class RenderJob(VisualJob):
 
                 self.StepProgress()
 
-    def ProcessSubTask(self, task):
-        key = task.GetKey()
+    def ProcessSubTask(self, task, isSubTask=True):
+        key = "{0}{1}".format(task.GetKey(), isSubTask)
         trce = self.taskResultCache[key]
         result = trce.GetResult()
         if trce.refCount == 0:
@@ -165,7 +167,9 @@ class RendererResultTask(WorkLoad):
         return self.idx
 
     def Run(self, jobContext):
-        return jobContext.ProcessSubTask(self.task)
+        # self.task is not really a sub task, but is processed as a sub task to
+        # use the result cache
+        return jobContext.ProcessSubTask(self.task, False)
 
     def GetInfo(self):
         return self.task.GetInfo()
