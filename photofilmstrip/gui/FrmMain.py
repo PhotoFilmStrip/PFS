@@ -376,6 +376,9 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         if not skipHistory:
             self.AddFileToHistory(filepath)
 
+#             self.pnlWelcome.RefreshPage() # crashes on unix
+            wx.CallAfter(self.pnlWelcome.RefreshPage)
+
 
 class ProjectDropTarget(wx.FileDropTarget):
 
