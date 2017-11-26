@@ -139,11 +139,15 @@ class PnlEditorPage(wx.Panel):
 
     def AddMenuFileActions(self, menu):
         pass
+
     def AddMenuEditActions(self, menu):
         pass
+
     def AddToolBarActions(self, toolBar):
         pass
+
     def ConnectEvents(self, evtHandler):
         pass
+
     def DisconnEvents(self, evtHandler):
         pass

@@ -61,16 +61,16 @@ class BaseRenderer(object):
     @classmethod
     def SetProperty(cls, prop, value):
         if prop in cls.GetProperties():
-            cls.PROP_VALUES[prop] = value
+            cls.PROP_VALUES[prop] = value  # pylint: disable=no-member
         else:
             logging.getLogger(cls.GetName()).warning(_(u"Unknown property: %s"), prop)
 
     @classmethod
     def GetProperty(cls, prop):
-        return cls.PROP_VALUES.get(prop, cls.GetDefaultProperty(prop))
+        return cls.PROP_VALUES.get(prop, cls.GetDefaultProperty(prop))  # pylint: disable=no-member
 
     @staticmethod
-    def GetDefaultProperty(prop):
+    def GetDefaultProperty(prop):  # pylint: disable=unused-argument
         return _(u"<default>")
 
     @classmethod

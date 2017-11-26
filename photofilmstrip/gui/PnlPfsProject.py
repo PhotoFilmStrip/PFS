@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlPfsProject
+# Boa:FramePanel:PnlPfsProject
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -62,7 +62,6 @@ from photofilmstrip.core.exceptions import RenderException
  wxID_PNLPFSPROJECTPNLADDPICS, wxID_PNLPFSPROJECTPNLEDITPICTURE,
  wxID_PNLPFSPROJECTTOOLBARIMGSECT,
 ] = [wx.NewId() for _init_ctrls in range(11)]
-
 
 [wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST,
  wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT,
@@ -203,8 +202,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
               size=wx.Size(-1, -1), style=0)
 
         self.toolBarImgSect = wx.ToolBar(id=wxID_PNLPFSPROJECTTOOLBARIMGSECT,
-              name=u'toolBarImgSect', parent=self.panelTop, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.TB_VERTICAL | wx.NO_BORDER | wx.TB_NODIVIDER)
+              name=u'toolBarImgSect', parent=self.panelTop,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=wx.TB_VERTICAL | wx.NO_BORDER | wx.TB_NODIVIDER)
 
         self.bitmapRight = ImageSectionEditor(id=wxID_PNLPFSPROJECTBITMAPRIGHT,
               name=u'bitmapRight', parent=self.panelTop, pos=wx.Point(-1, -1),
@@ -346,7 +346,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
         return True
 
     def AddMenuFileActions(self, menu):
-        menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
 #        CreateMenuItem(menu, self.ID_IMPORT, _(u"&Import Project"))
 #        CreateMenuItem(menu, self.ID_EXPORT, _(u"&Export Project"))
 #        menu.AppendSeparator()
@@ -355,7 +354,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        wx.ArtProvider.GetBitmap('PFS_PROPERTIES_16'))
 
     def AddMenuEditActions(self, menu):
-        menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         CreateMenuItem(menu, ID_PIC_IMPORT,
                        _(u'&Import Pictures') + '\tCtrl+I',
                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
@@ -394,8 +392,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
 
     def AddToolBarActions(self, toolBar):
-        toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
-
         toolBar.DoAddTool(ID_PIC_IMPORT, '',
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
@@ -488,7 +484,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
             filepath = dlg.GetPath()
 
             prjFile = WxProjectFile(self, filename=filepath)
-            result = prjFile.Load()
+            prjFile.Load()
 
     def OnProjectProps(self, event):
         dlg = DlgProjectProps(self, self.__project)
@@ -703,10 +699,13 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
     def OnCmdRotateLeftButton(self, event):
         self.pnlEditPicture.OnCmdRotateLeftButton(event)
+
     def OnCmdRotateRightButton(self, event):
         self.pnlEditPicture.OnCmdRotateRightButton(event)
+
     def OnCmdMotionRandom(self, event):
         self.OnMotionRandom()
+
     def OnCmdMotionCenter(self, event):
         self.OnMotionCenter()
 
@@ -752,6 +751,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         for pic in self.lvPics.GetSelectedPictures():
             actAp = ActionAutoPath(pic, self.__project.GetAspect())
             actAp.Execute()
+
     def OnMotionCenter(self):
         for pic in self.lvPics.GetSelectedPictures():
             actCp = ActionCenterPath(pic, self.__project.GetAspect())

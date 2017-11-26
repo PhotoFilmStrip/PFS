@@ -28,13 +28,13 @@ from gi.repository import GObject
 
 
 class GPlayer(object):
-    
+
     def __init__(self, filename):
         self.__filename = filename
         self.__pipeline = None
         self.__length = None
         self.__gtkMainloop = None
-        
+
         self.__Identify()
 
     def __Identify(self):
@@ -67,18 +67,18 @@ class GPlayer(object):
             hasResult, duration = pipeline.query_duration(Gst.Format.TIME)
 
         pipeline.set_state(Gst.State.NULL)
-        
+
         self.__length = duration / Gst.MSECOND
-        
+
     def GetFilename(self):
         return self.__filename
 
     def IsOk(self):
         return self.__length is not None
-    
+
     def IsPlaying(self):
         return self.__pipeline is not None
-    
+
     def Play(self):
         if self.__pipeline is None:
             pipeline = Gst.Pipeline()
@@ -110,17 +110,17 @@ class GPlayer(object):
         gtkMainloopThread = threading.Thread(name="gtkMainLoop",
                                              target=self._GtkMainloop)
         gtkMainloopThread.start()
-    
+
     def Stop(self):
         self.Close()
-    
+
     def Close(self):
         self.__pipeline.send_event(Gst.Event.new_eos())
-    
+
     def GetLength(self):
         return self.__length
 
-    def _GstOnMessage(self, bus, msg):
+    def _GstOnMessage(self, bus, msg):  # pylint: disable=unused-argument
         logging.debug('_GstOnMessage: %s', msg.type)
 
         if msg.type == Gst.MessageType.ERROR:
@@ -135,7 +135,7 @@ class GPlayer(object):
             self.__pipeline = None
             self.__gtkMainloop = None
 
-    def _GstPadAdded(self, decodebin, pad, audioConv):
+    def _GstPadAdded(self, decodebin, pad, audioConv):  # pylint: disable=unused-argument
         caps = pad.get_current_caps()
         compatible_pad = audioConv.get_compatible_pad(pad, caps)
         pad.link(compatible_pad)

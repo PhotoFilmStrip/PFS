@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlDlgHeader
+# Boa:FramePanel:PnlDlgHeader
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -24,13 +24,13 @@ import wx
 
 from wx.lib.wordwrap import wordwrap
 
-
 [wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
  wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
 ] = [wx.NewId() for _init_ctrls in range(6)]
 
 
 class PnlDlgHeader(wx.Panel):
+
     def _init_coll_szHeaderText_Items(self, parent):
         # generated method, don't edit
 

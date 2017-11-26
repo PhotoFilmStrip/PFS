@@ -1,4 +1,4 @@
-#Boa:Dialog:DlgRendererProps
+# Boa:Dialog:DlgRendererProps
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -27,7 +27,6 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
-
 [wxID_DLGRENDERERPROPS, wxID_DLGRENDERERPROPSCMDCANCEL,
  wxID_DLGRENDERERPROPSCMDHELP, wxID_DLGRENDERERPROPSCMDOK,
  wxID_DLGRENDERERPROPSLCPROPS, wxID_DLGRENDERERPROPSPNLHDR,
@@ -36,7 +35,7 @@ from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
 class DlgRendererProps(wx.Dialog):
-    
+
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
 
@@ -110,8 +109,8 @@ class DlgRendererProps(wx.Dialog):
               id=wxID_DLGRENDERERPROPSCMDCANCEL)
 
         self.cmdOk = wx.Button(id=wxID_DLGRENDERERPROPSCMDOK, label=_(u'&Ok'),
-              name=u'cmdOk', parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=0)
+              name=u'cmdOk', parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0)
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton,
               id=wxID_DLGRENDERERPROPSCMDOK)
 

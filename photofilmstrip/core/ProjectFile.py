@@ -33,7 +33,6 @@ from photofilmstrip.core.Picture import Picture
 from photofilmstrip.gui.util.ImageCache import ImageCache  # FIXME: no gui import here
 from photofilmstrip.core.Project import Project
 
-
 SCHEMA_REV = 4
 """
 4:
@@ -45,7 +44,6 @@ SCHEMA_REV = 4
 1:
 - initial
 """
-
 
 SCHEMA = """
 CREATE TABLE `picture` (
@@ -87,7 +85,9 @@ CREATE TABLE `thumbnail` (
 );
 """
 
+
 class ProjectFile(object):
+
     def __init__(self, project=None, filename=None):
         self._project = project
         self._filename = filename

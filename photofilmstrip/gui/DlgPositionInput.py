@@ -1,4 +1,4 @@
-#Boa:Dialog:DlgPositionInput
+# Boa:Dialog:DlgPositionInput
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -26,18 +26,17 @@ from photofilmstrip.core.Aspect import Aspect
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
-
-[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL, 
- wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET, 
- wxID_DLGPOSITIONINPUTPNLHDR, wxID_DLGPOSITIONINPUTSLENDPOS, 
- wxID_DLGPOSITIONINPUTSLSTARTPOS, wxID_DLGPOSITIONINPUTSPINENDHEIGHT, 
- wxID_DLGPOSITIONINPUTSPINENDWIDTH, wxID_DLGPOSITIONINPUTSPINENDX, 
- wxID_DLGPOSITIONINPUTSPINENDY, wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT, 
- wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, wxID_DLGPOSITIONINPUTSPINSTARTX, 
- wxID_DLGPOSITIONINPUTSPINSTARTY, wxID_DLGPOSITIONINPUTSTENDLOCATION, 
- wxID_DLGPOSITIONINPUTSTENDPOS, wxID_DLGPOSITIONINPUTSTENDSIZE, 
- wxID_DLGPOSITIONINPUTSTSTARTLOCATION, wxID_DLGPOSITIONINPUTSTSTARTPOS, 
- wxID_DLGPOSITIONINPUTSTSTARTSIZE, 
+[wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL,
+ wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET,
+ wxID_DLGPOSITIONINPUTPNLHDR, wxID_DLGPOSITIONINPUTSLENDPOS,
+ wxID_DLGPOSITIONINPUTSLSTARTPOS, wxID_DLGPOSITIONINPUTSPINENDHEIGHT,
+ wxID_DLGPOSITIONINPUTSPINENDWIDTH, wxID_DLGPOSITIONINPUTSPINENDX,
+ wxID_DLGPOSITIONINPUTSPINENDY, wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT,
+ wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, wxID_DLGPOSITIONINPUTSPINSTARTX,
+ wxID_DLGPOSITIONINPUTSPINSTARTY, wxID_DLGPOSITIONINPUTSTENDLOCATION,
+ wxID_DLGPOSITIONINPUTSTENDPOS, wxID_DLGPOSITIONINPUTSTENDSIZE,
+ wxID_DLGPOSITIONINPUTSTSTARTLOCATION, wxID_DLGPOSITIONINPUTSTSTARTPOS,
+ wxID_DLGPOSITIONINPUTSTSTARTSIZE,
 ] = [wx.NewId() for _init_ctrls in range(21)]
 
 
@@ -215,14 +214,14 @@ class DlgPositionInput(wx.Dialog):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.spinEndX = wx.SpinCtrl(id=wxID_DLGPOSITIONINPUTSPINENDX, initial=0,
-              max=100, min=0, name=u'spinEndX', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.SP_ARROW_KEYS)
+              max=100, min=0, name=u'spinEndX', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.SP_ARROW_KEYS)
         self.spinEndX.Bind(wx.EVT_TEXT, self.OnSpinChange,
               id=wxID_DLGPOSITIONINPUTSPINENDX)
 
         self.spinEndY = wx.SpinCtrl(id=wxID_DLGPOSITIONINPUTSPINENDY, initial=0,
-              max=100, min=0, name=u'spinEndY', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=wx.SP_ARROW_KEYS)
+              max=100, min=0, name=u'spinEndY', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.SP_ARROW_KEYS)
         self.spinEndY.Bind(wx.EVT_TEXT, self.OnSpinChange,
               id=wxID_DLGPOSITIONINPUTSPINENDY)
 
@@ -245,8 +244,8 @@ class DlgPositionInput(wx.Dialog):
               id=wxID_DLGPOSITIONINPUTSPINENDHEIGHT)
 
         self.cmdReset = wx.Button(id=wxID_DLGPOSITIONINPUTCMDRESET,
-              label=_(u'Reset'), name=u'cmdReset', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+              label=_(u'Reset'), name=u'cmdReset', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdReset.Bind(wx.EVT_BUTTON, self.OnCmdResetButton,
               id=wxID_DLGPOSITIONINPUTCMDRESET)
 
@@ -267,42 +266,42 @@ class DlgPositionInput(wx.Dialog):
         self.pnlHdr.SetTitle(_(u'Adjust motion positions directly'))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_INPUT',
               wx.ART_TOOLBAR, (32, 32)))
-        
+
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)
         self.__doOnChange = True
-        
+
         self.__backupStart = self.__pic.GetStartRect()
         self.__backupEnd = self.__pic.GetTargetRect()
-        
+
         font = self.stStartPos.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
         self.stStartPos.SetFont(font)
         self.stEndPos.SetFont(font)
-        
+
         self._InitValues()
-        
+
         self.SetInitialSize(self.GetEffectiveMinSize())
-        self.CenterOnParent()        
+        self.CenterOnParent()
         self.SetFocus()
-        
+
     def _InitValues(self):
         self.__doOnChange = False
         # Init ranges with max values
         self.spinStartX.SetRange(0, self.__pic.GetWidth())
         self.spinStartY.SetRange(0, self.__pic.GetHeight())
-        self.spinStartWidth.SetRange(0, min(int(round(self.__pic.GetHeight() * self.__ratio)), 
+        self.spinStartWidth.SetRange(0, min(int(round(self.__pic.GetHeight() * self.__ratio)),
                                             self.__pic.GetWidth()))
-        self.spinStartHeight.SetRange(0, min(int(round(self.__pic.GetWidth() / self.__ratio)), 
+        self.spinStartHeight.SetRange(0, min(int(round(self.__pic.GetWidth() / self.__ratio)),
                                              self.__pic.GetHeight()))
-        
+
         self.spinEndX.SetRange(0, self.__pic.GetWidth())
         self.spinEndY.SetRange(0, self.__pic.GetHeight())
-        self.spinEndWidth.SetRange(0, min(int(round(self.__pic.GetHeight() * self.__ratio)), 
+        self.spinEndWidth.SetRange(0, min(int(round(self.__pic.GetHeight() * self.__ratio)),
                                           self.__pic.GetWidth()))
-        self.spinEndHeight.SetRange(0, min(int(round(self.__pic.GetWidth() / self.__ratio)), 
+        self.spinEndHeight.SetRange(0, min(int(round(self.__pic.GetWidth() / self.__ratio)),
                                            self.__pic.GetHeight()))
-        
+
         # Init values
         self.spinStartX.SetValue(self.__pic.GetStartRect()[0])
         self.spinStartY.SetValue(self.__pic.GetStartRect()[1])
@@ -315,19 +314,19 @@ class DlgPositionInput(wx.Dialog):
         self.spinEndHeight.SetValue(self.__pic.GetTargetRect()[3])
 
         self.__doOnChange = True
-        
+
         self._SetupRanges()
-        
+
     def _SetupRanges(self):
         '''
         Limit the location ranges to the current adjusted size
         '''
         self.spinStartX.SetRange(0, self.__pic.GetWidth() - self.spinStartWidth.GetValue())
         self.spinStartY.SetRange(0, self.__pic.GetHeight() - self.spinStartHeight.GetValue())
-        
+
         self.spinEndX.SetRange(0, self.__pic.GetWidth() - self.spinEndWidth.GetValue())
         self.spinEndY.SetRange(0, self.__pic.GetHeight() - self.spinEndHeight.GetValue())
-        
+
     def _PreserveAspect(self, wxId):
         self.__doOnChange = False
 
@@ -342,25 +341,25 @@ class DlgPositionInput(wx.Dialog):
             self.spinEndWidth.SetValue(int(round(self.spinEndHeight.GetValue() * self.__ratio)))
 
         self.__doOnChange = True
-        
+
     def OnSpinChange(self, event):
         if not self.__doOnChange:
             return
         self._PreserveAspect(event.GetId())
-        
+
         startRect = (self.spinStartX.GetValue(), self.spinStartY.GetValue(),
                      self.spinStartWidth.GetValue(), self.spinStartHeight.GetValue())
-        
+
         endRect = (self.spinEndX.GetValue(), self.spinEndY.GetValue(),
                    self.spinEndWidth.GetValue(), self.spinEndHeight.GetValue())
-        
+
         if event.GetId() in (wxID_DLGPOSITIONINPUTSPINENDWIDTH, wxID_DLGPOSITIONINPUTSPINENDHEIGHT,
                              wxID_DLGPOSITIONINPUTSPINSTARTWIDTH, wxID_DLGPOSITIONINPUTSPINSTARTHEIGHT):
             self._SetupRanges()
-            
+
         self.__pic.SetStartRect(startRect)
         self.__pic.SetTargetRect(endRect)
-        
+
         event.Skip()
 
     def OnCmdResetButton(self, event):

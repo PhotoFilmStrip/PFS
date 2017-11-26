@@ -27,7 +27,8 @@ from photofilmstrip import Constants
 
 from photofilmstrip.lib.util import Decode, CheckFile
 
-from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles, GetMPEGProfiles
+from photofilmstrip.core.OutputProfile import (
+    OutputProfile, GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
@@ -76,8 +77,12 @@ class CliGui(IVisualJobHandler):
         print
         print u"%-20s: %s" % (_(u"processing project"), project)
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-        print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
-        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC")
+        print u"%-20s: %s" % (_(u"output format"), profile.GetName(
+            withRes=True))
+        print u"%-20s: %1.f (%s):" % (
+            _(u"framerate"),
+            profile.GetFramerate(),
+            "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC")
         print
 
     def Write(self, text):
@@ -88,8 +93,10 @@ class DummyGui(IVisualJobHandler):
 
     def OnHandleJobBegin(self, jobContext):
         pass
+
     def OnHandleJobDone(self, jobContext):
         pass
+
     def OnHandleJobUpdate(self, jobContext, fields=None):
         pass
 
@@ -99,7 +106,9 @@ def main(showHelp=False):
                           version="%%prog %s" % Constants.APP_VERSION_EX)
 
     profiles = GetOutputProfiles()
-    profStr = ", ".join(["%d=%s" % (idx, prof.GetName()) for idx, prof in enumerate(profiles)])
+    profStr = ", ".join(["%d=%s" % (
+        idx,
+        prof.GetName()) for idx, prof in enumerate(profiles)])
 
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
@@ -128,7 +137,6 @@ def main(showHelp=False):
         logging.error(_(u"no project file specified!"))
         return 2
 
-
     if options.videonorm == "p":
         videoNorm = OutputProfile.PAL
     elif options.videonorm == "n":
@@ -138,13 +146,11 @@ def main(showHelp=False):
         logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)
         return 4
 
-
     if options.format not in range(len(RENDERERS)):
         parser.print_help()
         logging.error(_(u"invalid format specified: %s"), options.format)
         return 5
     rendererClass = RENDERERS[options.format]
-
 
     profile = GetMPEGProfiles().get(rendererClass.GetName())
     if profile is None:
@@ -154,12 +160,10 @@ def main(showHelp=False):
             return 3
         profile = profiles[options.profile]
 
-
     prjFile = ProjectFile(filename=options.project)
     if not prjFile.Load():
         logging.error(_(u"cannot load photofilmstrip"))
         return 6
-
 
     if options.outputpath:
         if options.outputpath == "-":
@@ -175,7 +179,6 @@ def main(showHelp=False):
                     return 7
     else:
         outpath = None
-
 
     project = prjFile.GetProject()
     ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)

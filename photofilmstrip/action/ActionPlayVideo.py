@@ -43,7 +43,7 @@ class ActionPlayVideo(IAction):
 
         if os.name == "nt":
             try:
-                os.startfile(videoFile)
+                os.startfile(videoFile)  # pylint: disable=no-member
             except:
                 pass
         else:

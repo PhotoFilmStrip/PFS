@@ -14,7 +14,7 @@ EVT_REMOVE_JOB = wx.PyEventBinder(_EVT_REMOVE_JOB_TYPE, 1)
 
 
 class WxVisualJobManager(IVisualJobManager):
-    
+
     def __init__(self, win=None):
         self.__id = wx.NewId()
         if win is None:
@@ -25,22 +25,22 @@ class WxVisualJobManager(IVisualJobManager):
 
     def GetId(self):
         return self.__id
-        
+
     def RegisterJob(self, job):
         evt = JobEvent(self.__win.GetId(), job, _EVT_REGISTER_JOB_TYPE)
         wx.PostEvent(self.__win, evt)
-    
+
     def RemoveJob(self, job):
         evt = JobEvent(self.__win.GetId(), job, _EVT_REMOVE_JOB_TYPE)
         wx.PostEvent(self.__win, evt)
 
 
 class JobEvent(wx.PyEvent):
-    
+
     def __init__(self, ident, job, evtType):
         wx.PyEvent.__init__(self, ident, evtType)
         assert isinstance(job, Job)
         self.__job = job
-        
+
     def GetJob(self):
         return self.__job

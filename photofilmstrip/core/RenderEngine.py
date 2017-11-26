@@ -111,7 +111,7 @@ class RenderEngineSlideshow(RenderEngine):
                                pics)
         self._tasks.append(taskSub)
 
-        pathRectsBefore = None
+        pathRectsBefore = []
         picBefore = None
         transCountBefore = 0
 

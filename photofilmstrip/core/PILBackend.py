@@ -33,22 +33,24 @@ def ImageToStream(pilImg, imgFormat="JPEG"):
     fd.seek(0)
     return fd
 
+
 def ImageFromBuffer(size, buffr):
     pilImg = Image.frombuffer("RGB", size, buffr, 'raw', "RGB", 0, 1)
     return pilImg
 
+
 def RotateExif(pilImg):
     exifOrient = 274
-    rotation = 0 
+    rotation = 0
     try:
-        exif = pilImg._getexif()
+        exif = pilImg._getexif()  # pylint: disable=protected-access
         if isinstance(exif, dict) and exif.has_key(exifOrient):
             rotation = exif[exifOrient]
     except AttributeError:
         pass
     except Exception, err:
         logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
-            
+
     if rotation == 2:
         # flip horizontal
         return pilImg.transpose(Image.FLIP_LEFT_RIGHT)
@@ -72,9 +74,10 @@ def RotateExif(pilImg):
     elif rotation == 8:
         # rotate 270
         return pilImg.rotate(-270, expand=1)
-        
+
     return pilImg
-    
+
+
 def CropAndResize(pilImg, rect, size, draft=False):
     if draft:
         filtr = Image.NEAREST
@@ -86,7 +89,8 @@ def CropAndResize(pilImg, rect, size, draft=False):
                             0, rect[3] / float(size[1]), rect[1]],
                            filtr)
     return img
-    
+
+
 def Transition(kind, pilImg1, pilImg2, percentage):
     if kind == Picture.TRANS_FADE:
         img = Image.blend(pilImg1, pilImg2, percentage)
@@ -96,10 +100,10 @@ def Transition(kind, pilImg1, pilImg2, percentage):
         part1 = pilImg2.crop((0, 0, delta, ysize))
         part2 = pilImg1.crop((delta, 0, xsize, ysize))
         image = pilImg2.copy()
-        image.paste(part2, (0, 0, xsize-delta, ysize))
-        image.paste(part1, (xsize-delta, 0, xsize, ysize))
+        image.paste(part2, (0, 0, xsize - delta, ysize))
+        image.paste(part1, (xsize - delta, 0, xsize, ysize))
         img = image
-        
+
     return img
 
 
@@ -115,8 +119,8 @@ def __CreateDummyImage(message):
     draw.text((x, y), message, fill=(0, 0, 0))
 
     sz = width / 2
-    draw.ellipse(((width - sz) / 2, (height - sz) / 2, 
-                  (width + sz) / 2, (height + sz) / 2), 
+    draw.ellipse(((width - sz) / 2, (height - sz) / 2,
+                  (width + sz) / 2, (height + sz) / 2),
                   fill=(255, 0, 0))
 
     sz = width / 7
@@ -124,8 +128,9 @@ def __CreateDummyImage(message):
     draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
 
     del draw
-    
+
     return img
+
 
 def __GetImage(picture):
     try:
@@ -141,7 +146,8 @@ def __GetImage(picture):
         img = __CreateDummyImage(str(err))
         picture.SetDummy(True)
     return img
-    
+
+
 def __ProcessImage(img, picture):
     if not picture.IsDummy():
         img = RotateExif(img)
@@ -153,12 +159,13 @@ def __ProcessImage(img, picture):
         img = img.convert("L")
 
     elif picture.GetEffect() == picture.EFFECT_SEPIA:
+
         def make_linear_ramp(white):
             # putpalette expects [r,g,b,r,g,b,...]
             ramp = []
             r, g, b = white
             for i in range(255):
-                ramp.extend((r*i/255, g*i/255, b*i/255))
+                ramp.extend((r * i / 255, g * i / 255, b * i / 255))
             return ramp
 
         # make sepia ramp (tweak color as necessary)
@@ -167,7 +174,8 @@ def __ProcessImage(img, picture):
         img.putpalette(sepia)
 
     return img.convert("RGB")
-    
+
+
 def GetImage(picture):
     pilImg = __GetImage(picture)
     pilImg = __ProcessImage(pilImg, picture)
@@ -175,18 +183,19 @@ def GetImage(picture):
     picture.SetHeight(pilImg.size[1])
     return pilImg
 
+
 def GetExifRotation(pilImg):
     exifOrient = 274
-    rotation = 0 
+    rotation = 0
     try:
-        exif = pilImg._getexif()
+        exif = pilImg._getexif()  # pylint: disable=protected-access
         if isinstance(exif, dict) and exif.has_key(exifOrient):
             rotation = exif[exifOrient]
     except AttributeError:
         pass
     except Exception, err:
         logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
-            
+
     if rotation == 3:
         # rotate 180
         return 2
@@ -205,6 +214,7 @@ def GetExifRotation(pilImg):
     else:
         return 0
 
+
 def GetImageSize(filename):
     pilImg = Image.open(filename)
     width, height = pilImg.size
@@ -213,6 +223,7 @@ def GetImageSize(filename):
         width, height = height, width
         rotation -= 1
     return width, height
+
 
 def GetThumbnail(picture, width=None, height=None):
     img = __GetImage(picture)
@@ -227,17 +238,17 @@ def GetThumbnail(picture, width=None, height=None):
     elif height is not None:
         thumbHeight = height
         thumbWidth = int(round(thumbHeight * aspect))
-        
+
     # prescale image to speed up processing
     img.thumbnail((max(thumbWidth, thumbHeight), max(thumbWidth, thumbHeight)), Image.NEAREST)
     img = __ProcessImage(img, picture)
-    
+
     # make the real thumbnail
     img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
-    
+
 #    newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
-#    newImg.paste(img, (abs(thumbWidth - img.size[0]) / 2, 
+#    newImg.paste(img, (abs(thumbWidth - img.size[0]) / 2,
 #                       abs(thumbHeight - img.size[1]) / 2))
 #    img = newImg
-    
+
     return img

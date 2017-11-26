@@ -25,72 +25,74 @@ import wx
 
 from photofilmstrip.gui.util.ImageCache import ImageCache, EVT_THUMB_READY
 
-
-EVT_CHANGED_TYPE  = wx.NewEventType()
-EVT_CHANGED       = wx.PyEventBinder(EVT_CHANGED_TYPE, 1)
+EVT_CHANGED_TYPE = wx.NewEventType()
+EVT_CHANGED = wx.PyEventBinder(EVT_CHANGED_TYPE, 1)
 
 
 class ChangedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId):
         wx.PyCommandEvent.__init__(self, EVT_CHANGED_TYPE, wxId)
 
 
 class PhotoFilmStripList(wx.ScrolledWindow):
-    
+
     HEIGHT = 200
     BORDER = 40
-    GAP    = 10
-    
-    def __init__(self, parent, id=-1, 
-                 pos=wx.DefaultPosition, size=wx.DefaultSize, 
+    GAP = 10
+
+    def __init__(self, parent, id=-1,
+                 pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=wx.HSCROLL | wx.VSCROLL, name='PhotoFilmStripList'):
-        wx.ScrolledWindow.__init__(self, parent, id, pos, size,  style, name)
+        wx.ScrolledWindow.__init__(self, parent, id, pos, size, style, name)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.BLACK)
-        self.SetSizeHints(-1, self.HEIGHT+20, -1, self.HEIGHT+20)
-        
-        self.__frozen   = False
+        self.SetSizeHints(-1, self.HEIGHT + 20, -1, self.HEIGHT + 20)
+
+        self.__frozen = False
         self.__pictures = []
-        self.__selIdxs  = []
-        self.__hvrIdx   = -1
-        
-        self.__dragPic  = None
-        self.__dragX    = 0
+        self.__selIdxs = []
+        self.__hvrIdx = -1
+
+        self.__dragPic = None
+        self.__dragX = 0
         self.__dragOffX = 0
-        
+
         self.__UpdateVirtualSize()
-        
+
         self.SetScrollRate(1, 0)
-        
+
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
-        
+
         ImageCache().RegisterWin(self)
         ImageCache().thumb = wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE,
               wx.ART_TOOLBAR, (120, 120))
         self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
-        
+
     def Freeze(self, *args):
         self.__frozen = True
+
     def Thaw(self, *args):
         self.__frozen = False
         self.__UpdateVirtualSize()
+
     def IsFrozen(self, *args):
         return self.__frozen
-    
+
     def __OnThumbReady(self, event):
         self.__UpdateVirtualSize()
-        
+
     def OnPaint(self, event):
         pdc = wx.BufferedPaintDC(self)
         try:
             dc = wx.GCDC(pdc)
         except StandardError:
             dc = pdc
-        
+
         font = wx.SystemSettings_GetFont(wx.SYS_ANSI_FIXED_FONT)
         font.SetPointSize(9)
         dc.SetFont(font)
@@ -98,7 +100,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         dc.SetBackground(wx.BLACK_BRUSH)
 
         dc.Clear()
-        
+
         dc.SetBrush(wx.WHITE_BRUSH)
         dc.SetPen(wx.WHITE_PEN)
 
@@ -118,26 +120,26 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                     dc.DrawBitmap(bmp, sxPic - vx, self.BORDER, True)
                     labelRect = wx.Rect(sxPic - vx, 0, bmp.GetWidth(), self.HEIGHT)
                     dc.DrawLabel(str(idx + 1), labelRect, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_TOP)
-                    dc.DrawLabel(os.path.basename(pic.GetFilename()), 
-                                 labelRect, 
+                    dc.DrawLabel(os.path.basename(pic.GetFilename()),
+                                 labelRect,
                                  wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM)
                 else:
                     break
 
             sxPic += stepWidth
-            
+
             # draw filmstrip
             while 1:
                 sxFilmStrip = (n * 32) + 10
                 if sxFilmStrip > sxPic:
                     break
-                
+
                 dc.DrawRoundedRectangle(sxFilmStrip - vx, 14, 14, 20, 3)
                 dc.DrawRoundedRectangle(sxFilmStrip - vx, self.HEIGHT - 34, 14, 20, 3)
                 n += 1
-            
+
         self.__DrawHighlights(dc)
-        
+
         if self.__dragPic is not None:
             if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
                 bmp = ImageCache().GetThumbBmp(self.__pictures[self.__dragPic])
@@ -165,20 +167,20 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def _SendChangedEvent(self):
         evt = ChangedEvent(self.GetId())
         evt.SetEventObject(self)
-        self.GetEventHandler().ProcessEvent(evt)        
+        self.GetEventHandler().ProcessEvent(evt)
 
     def __Scroll(self, value):
         sp = self.GetScrollPos(wx.HORIZONTAL)
         self.Scroll(sp + value, -1)
-    
+
     def OnMouseWheel(self, event):
         rot = event.GetWheelRotation()
-        linesPer = 40 #event.GetLinesPerAction()
+        linesPer = 40  # event.GetLinesPerAction()
         if rot > 0:
             self.__Scroll(-linesPer)
         else:
             self.__Scroll(linesPer)
-            
+
     def OnMouseEvent(self, event):
         mPos = event.GetPosition()
         unscrolledPos = self.CalcUnscrolledPosition(mPos)
@@ -212,15 +214,15 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                         self.Select(idx)
                     else:
                         step = 1 if idx > self.__selIdxs[0] else -1
-                        for ct, _idx in enumerate(xrange(self.__selIdxs[0], 
-                                                         idx + step, 
+                        for ct, _idx in enumerate(xrange(self.__selIdxs[0],
+                                                         idx + step,
                                                          step)):
                             self.Select(_idx, deselectOthers=ct == 0)
                 else:
                     self.Select(idx)
         if event.LeftUp() and self.__dragPic is not None:
             if self.HasCapture():
-                self.ReleaseMouse()        
+                self.ReleaseMouse()
             if idx == -1:
                 self.__dragPic = None
                 self.Refresh()
@@ -229,17 +231,17 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 self.__dragPic = None
                 self.Select(idx)
         event.Skip()
-        
+
     def OnCaptureLost(self, event):
         self.__dragPic = None
         self.Refresh()
         event.Skip()
-    
+
     def OnKeyDown(self, event):
         if event.HasModifiers():
             event.Skip()
             return
-        
+
         key = event.GetKeyCode()
         if self.__selIdxs:
             if event.ShiftDown():
@@ -251,24 +253,24 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             sel = -1
         if key == wx.WXK_LEFT:
             if sel > 0:
-                self.Select(sel - 1, 
+                self.Select(sel - 1,
                             deselectOthers=not event.ShiftDown())
                 self.EnsureVisible(sel - 1)
-        
+
         elif key == wx.WXK_RIGHT:
             if sel < self.GetItemCount() - 1:
                 self.Select(sel + 1,
                             deselectOthers=not event.ShiftDown())
                 self.EnsureVisible(sel + 1)
-        
+
         elif key == wx.WXK_END:
             self.Select(self.GetItemCount() - 1)
             self.EnsureVisible(self.GetItemCount() - 1)
-            
+
         elif key == wx.WXK_HOME:
             self.Select(0)
             self.EnsureVisible(0)
-        
+
         else:
             event.Skip()
 
@@ -288,7 +290,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             bmp = ImageCache().GetThumbBmp(pic)
             # if the picture cannot be loaded GetWidth may return -1
             width += bmp.GetWidth() + self.GAP
-        
+
         self.SetVirtualSize((width, self.HEIGHT))
         self.Refresh()
 
@@ -297,51 +299,51 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         thumbHeight = self.HEIGHT - (2 * self.BORDER)
         thumbWidth = int(round(thumbHeight * aspect))
         return thumbWidth, thumbHeight
-    
+
     def GetThumbRect(self, idx):
         sx = self.GAP
         for picIdx, pic in enumerate(self.__pictures):
             thumbWidth = self.GetThumbSize(pic)[0]
-            
+
             if idx == picIdx:
                 rect = wx.Rect(sx, 0, thumbWidth, self.HEIGHT)
                 return rect
-        
+
             sx += thumbWidth + self.GAP
-            
+
     def HitTest(self, pos):
         pos = self.CalcUnscrolledPosition(pos)
         sx = self.GAP
         for idx, pic in enumerate(self.__pictures):
             thumbWidth = self.GetThumbSize(pic)[0]
-            
+
             rect = wx.Rect(sx, 0, thumbWidth + self.GAP, self.HEIGHT)
             if rect.Contains(pos):
                 return idx
-        
+
             sx += thumbWidth + self.GAP
         return -1
-    
+
 #    def AddPicture(self, pic):
 #        self.__pictures.append(pic)
 #        self.__UpdateVirtualSize()
 #        self._SendChangedEvent()
-        
+
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
-        
+
         for i in xrange(len(self.__selIdxs)):
             if self.__selIdxs[i] >= idx \
             and self.__selIdxs[i] + 1 not in self.__selIdxs:
                 self.__selIdxs[i] += 1
-        
+
         if not self.IsFrozen():
             self.__UpdateVirtualSize()
         self._SendChangedEvent()
-        
+
     def DeleteItem(self, idx):
         self.__pictures.pop(idx)
-        
+
         firstSel = 0
         if self.__selIdxs:
             firstSel = self.__selIdxs[0]
@@ -350,56 +352,57 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
         if idx in self.__selIdxs:
             self.__selIdxs.remove(idx)
-            
+
         if firstSel != idx \
         and firstSel not in self.__selIdxs:
             self.__selIdxs.insert(0, firstSel)
-        
+
         if len(self.__selIdxs) == 0:
             self.__selIdxs.append(firstSel)
-            
+
         for i in xrange(len(self.__selIdxs)):
             if self.__selIdxs[i] > idx \
             and self.__selIdxs[i] - 1 not in self.__selIdxs:
                 self.__selIdxs[i] -= 1
-        
+
         if len(self.__pictures) == 0:
             self.__selIdxs = []
 
         if self.__hvrIdx >= len(self.__pictures):
             self.__hvrIdx = -1
-        
+
         self.__UpdateVirtualSize()
         self._SendChangedEvent()
 
         evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
         self.GetEventHandler().ProcessEvent(evt)
-        
+
     def DeleteAllItems(self):
-        self.__selIdxs  = []
+        self.__selIdxs = []
         self.__pictures = []
         self.__UpdateVirtualSize()
         self._SendChangedEvent()
-        
+
     def GetItemCount(self):
         return len(self.__pictures)
-    
+
     def GetPicture(self, idx):
         try:
             return self.__pictures[idx]
         except IndexError:
             return None
+
     def SetPicture(self, idx, pic):
         if idx in xrange(len(self.__pictures)):
             self.__pictures[idx] = pic
             self.Refresh()
-            
+
     def GetPictures(self):
         return self.__pictures[:]
-        
+
     def GetSelected(self):
         return self.__selIdxs[:]
-    
+
     def GetSelectedPictures(self):
         selPics = []
         for idx in self.__selIdxs:
@@ -407,7 +410,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if pic is not None:
                 selPics.append(pic)
         return selPics
-    
+
     def Select(self, idx, on=True, deselectOthers=True):
         if idx in xrange(len(self.__pictures)):
             if deselectOthers:
@@ -420,7 +423,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 # must have more than one selected item to make sure
                 # there is at least one selected
                 newSel.remove(idx)
-                
+
             evt = None
             if newSel != self.__selIdxs:
                 evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
@@ -429,19 +432,19 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
             self.__selIdxs = newSel
             self.Refresh()
-            
+
             if evt:
                 self.GetEventHandler().ProcessEvent(evt)
             return True
         else:
             return False
-        
+
     def SwapPictures(self, idxFrom, idxTo):
         picFrom = self.__pictures[idxFrom]
         picTo = self.__pictures[idxTo]
         self.__pictures[idxFrom] = picTo
         self.__pictures[idxTo] = picFrom
-        
+
         evt = None
         try:
             p = self.__selIdxs.index(idxFrom)
@@ -451,7 +454,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             evt.m_oldItemIndex = idxFrom
         except ValueError:
             pass
-        
+
         self.Refresh()
         self._SendChangedEvent()
         if evt:
@@ -470,7 +473,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             evt.m_oldItemIndex = idxFrom
         except ValueError:
             pass
-        
+
         self.Refresh()
         self._SendChangedEvent()
         if evt:

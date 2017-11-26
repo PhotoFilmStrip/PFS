@@ -28,12 +28,12 @@ from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.lib.jobimpl.PnlJobVisual import PnlJobVisual
 
-
 [wxID_PNLJOBMANAGER, wxID_PNLJOBMANAGERCMDCLEAR, wxID_PNLJOBMANAGERPNLJOBS,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
 
 class PnlJobManager(wx.Panel, WxVisualJobManager):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 

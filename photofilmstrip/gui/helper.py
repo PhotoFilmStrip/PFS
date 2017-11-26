@@ -5,6 +5,7 @@
 
 import wx
 
+
 def CreateMenuItem(menu, ident, text="", bmp=None, disabledBitmap=None):
     if text:
         item = wx.MenuItem(menu, ident, text)
@@ -18,5 +19,3 @@ def CreateMenuItem(menu, ident, text="", bmp=None, disabledBitmap=None):
         item.SetDisabledBitmap(disabledBitmap)
 
     menu.AppendItem(item)
-
-

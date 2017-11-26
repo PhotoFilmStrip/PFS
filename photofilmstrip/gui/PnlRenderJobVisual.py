@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlJobVisual
+# Boa:FramePanel:PnlJobVisual
 # encoding: UTF-8
 
 import wx
@@ -13,9 +13,6 @@ class PnlRenderJobVisual(PnlJobVisual):
 
     def __init__(self, parent, pnlJobManager, jobContext):
         PnlJobVisual.__init__(self, parent, pnlJobManager, jobContext)
-
-        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
-        ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
 
         self._actPlay = WxAction(
                 _(u"Play video"),

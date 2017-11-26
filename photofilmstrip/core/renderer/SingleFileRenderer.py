@@ -26,19 +26,19 @@ from photofilmstrip.core.BaseRenderer import BaseRenderer, \
 
 
 class SingleFileRenderer(BaseRenderer, FinalizeHandler):
-    
+
     def __init__(self):
         BaseRenderer.__init__(self)
         self._counter = 0
-    
+
     @staticmethod
     def GetName():
         return _(u"Single pictures")
-    
+
     @staticmethod
     def GetProperties():
         return ["ResampleFilter"]
-    
+
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "ResampleFilter":
@@ -48,7 +48,7 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
 
     def Prepare(self):
         pass
-    
+
     def GetFinalizeHandler(self):
         return self
 
@@ -65,13 +65,13 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
         :param pilImg:
         '''
         self._counter += 1
-        
-        newFilename = os.path.join(self.GetOutputPath(), 
-                                   '%09d.%s' % (self._counter, 
+
+        newFilename = os.path.join(self.GetOutputPath(),
+                                   '%09d.%s' % (self._counter,
                                                 "jpg"))
 
         pilImg.save(newFilename, "JPEG", quality=95)
-    
+
     def Finalize(self):
         pass
 

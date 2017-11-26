@@ -26,20 +26,21 @@ from photofilmstrip.core import PILBackend
 
 
 class ActionCenterPath(IAction):
-    
+
     def __init__(self, picture, aspect):
         self.__picture = picture
         self.__aspect = aspect
-    
+
     def GetName(self):
         return _(u'Centralize motion')
-    
+
     def Execute(self):
         try:
-            width, height = PILBackend.GetImageSize(self.__picture.GetFilename())
+            width, height = PILBackend.GetImageSize(
+                self.__picture.GetFilename())
         except:
             return
-        
+
         ratio = Aspect.ToFloat(self.__aspect)
         picRatio = width / float(height)
         if picRatio > ratio:
@@ -49,8 +50,8 @@ class ActionCenterPath(IAction):
             scaledWidth = width
             scaledHeight = width / ratio
 
-        centerRect = (int(round((width - scaledWidth) /2.0)), 
-                      int(round((height - scaledHeight) / 2.0)), 
+        centerRect = (int(round((width - scaledWidth) / 2.0)),
+                      int(round((height - scaledHeight) / 2.0)),
                       int(round(scaledWidth)), int(round(scaledHeight)))
         self.__picture.SetStartRect(centerRect)
         self.__picture.SetTargetRect(centerRect)

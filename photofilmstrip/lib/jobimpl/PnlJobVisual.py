@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlJobVisual
+# Boa:FramePanel:PnlJobVisual
 # encoding: UTF-8
 
 import wx
@@ -119,9 +119,6 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.gaugeProgress.SetRange(jobContext.GetMaxProgress())
 
         self.jobContext = jobContext
-
-        ms = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
-        ts = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
 
         self._actAbort = WxAction(
                  _(u"Abort"),

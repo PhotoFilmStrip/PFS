@@ -12,7 +12,7 @@ class ResultObject(object):
         self.result = None
         self.exception = None
         self.traceback = None
-        
+
     def GetSource(self):
         return self.__source
 
@@ -20,7 +20,7 @@ class ResultObject(object):
         if self.exception:
             if printTraceback and self.traceback is not None:
                 print >> sys.stderr, self.traceback,
-            raise self.exception # IGNORE:E0702
+            raise self.exception  # pylint: disable=raising-bad-type
         else:
             return self.result
 

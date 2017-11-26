@@ -30,7 +30,7 @@ from photofilmstrip.gui.DlgBugReport import DlgBugReport
 
 
 class PhotoFilmStripApp(wx.App):
-    
+
     def OnInit(self):
         self.SetAssertMode(wx.PYAPP_ASSERT_SUPPRESS)
 #        loc = wx.Locale(wx.LANGUAGE_GERMAN)
@@ -41,9 +41,9 @@ class PhotoFilmStripApp(wx.App):
         frame.Show()
         frame.Maximize()
         self.SetTopWindow(frame)
-        
+
         DlgBugReport.Initialize(frame)
-        
+
         if len(sys.argv) > 1:
             for arg in sys.argv[1:]:
                 fname = arg.decode(sys.getfilesystemencoding())

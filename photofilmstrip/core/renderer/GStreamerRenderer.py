@@ -53,6 +53,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
+        self.concat = None
         self.ptsOffset = 0
         self.ptsLast = None
 
@@ -103,6 +104,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
+        self.concat = None
         self.ptsOffset = 0
         self.ptsLast = None
 
@@ -301,7 +303,7 @@ class _GStreamerRenderer(BaseRenderer):
             raise RendererException(_(u"Bitrate must be a number!"))
         return bitrate
 
-    def _GstOnMessage(self, bus, msg):
+    def _GstOnMessage(self, bus, msg):  # pylint: disable=unused-argument
         '''
         Gstreamer message handler for messages in gstreamer event bus.
         :param bus:
@@ -323,7 +325,7 @@ class _GStreamerRenderer(BaseRenderer):
             self.ready.set()
 #         return Gst.BusSyncReply.PASS
 
-    def _GstNeedData(self, src, need_bytes):
+    def _GstNeedData(self, src, need_bytes):  # pylint: disable=unused-argument
         '''
         Gstreamer need-data probe callback to feed the appsrc with image data.
         The image data comes from a queue that is filled from other worker
@@ -398,7 +400,7 @@ class _GStreamerRenderer(BaseRenderer):
             self._GstAddAudioFile(self.GetAudioFiles()[self.idxAudioFile])
 #             self.pipeline.set_state(Gst.State.PLAYING)
 
-    def _GstProbeBuffer(self, srcPad, probeInfo):
+    def _GstProbeBuffer(self, srcPad, probeInfo):  # pylint: disable=unused-argument
         '''
         Gstreamer pad probe callback to check if the current stream time has
         reached the final time (usually the length of the overall audio stream).

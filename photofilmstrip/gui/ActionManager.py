@@ -65,8 +65,6 @@ class ActionManager(object):
 
         self._prevEditor = None
         self._toolFix = 0
-        self._menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
-        self._toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
 
         menuFile = self.__CreateMenuFile()
         menuEdit = self.__CreateMenuEdit()
@@ -100,7 +98,7 @@ class ActionManager(object):
                              wx.ITEM_NORMAL,
                              _(u'Save'), _(u'Save'), None)
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
-#                              wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_TOOLBAR, self._toolSize),
+#                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'),
 #                              _(u'Save Project as'), _(u'Save Project as'))
         toolBar.AddSeparator()
 
@@ -137,7 +135,7 @@ class ActionManager(object):
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_16'))
 #        CreateMenuItem(menu, wx.ID_SAVEAS,
 #                       _(u'Save Project &as'),
-#                       wx.ArtProvider.GetBitmap(wx.ART_FILE_SAVE_AS, wx.ART_MENU, self._menuSize))
+#                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'))
         menu.AppendSeparator()
 
         if editor:

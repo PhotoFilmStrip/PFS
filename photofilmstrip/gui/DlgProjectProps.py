@@ -19,11 +19,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import logging
 import os
 
 import wx
-import wx.lib.masked.textctrl
 import wx.lib.masked.timectrl
 
 from photofilmstrip import Constants
@@ -420,7 +418,7 @@ class DlgProjectProps(wx.Dialog):
         self.cmdAudioPreview.Enable(selected != wx.NOT_FOUND)
         self.cmdAudioDel.Enable(selected != wx.NOT_FOUND)
         self.cmdAudioMoveUp.Enable(selected > 0)
-        self.cmdAudioMoveDown.Enable(selected < (self.lvAudio.GetCount()-1))
+        self.cmdAudioMoveDown.Enable(selected < (self.lvAudio.GetCount() - 1))
 
     def __LoadAudioFile(self, path):
         self.__CloseMediaCtrl()

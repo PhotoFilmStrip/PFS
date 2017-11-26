@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlEditPicture
+# Boa:FramePanel:PnlEditPicture
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -25,27 +25,26 @@ import wx
 from photofilmstrip.core.Picture import Picture
 
 from photofilmstrip.gui.ctrls.PnlFloatSpinCtrl import (
-        PnlFloatSpinCtrl, 
+        PnlFloatSpinCtrl,
         EVT_VALUE_CHANGED)
 
-
-[wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT, 
- wxID_PNLEDITPICTURECHOICEMOVEMENT, wxID_PNLEDITPICTURECHOICETRANS, 
- wxID_PNLEDITPICTURECMDROTATELEFT, wxID_PNLEDITPICTURECMDROTATERIGHT, 
- wxID_PNLEDITPICTUREPNLIMGDURATION, wxID_PNLEDITPICTUREPNLTRANSDURATION, 
- wxID_PNLEDITPICTURESTATICLINE1, wxID_PNLEDITPICTURESTATICLINE2, 
- wxID_PNLEDITPICTURESTDURATIONUNIT, wxID_PNLEDITPICTURESTEFFECT, 
- wxID_PNLEDITPICTURESTMOVEMENT, wxID_PNLEDITPICTURESTPROCESS, 
- wxID_PNLEDITPICTURESTROTATION, wxID_PNLEDITPICTURESTSETTINGS, 
- wxID_PNLEDITPICTURESTSUBTITLE, wxID_PNLEDITPICTURESTTRANS, 
- wxID_PNLEDITPICTURESTTRANSUNIT, wxID_PNLEDITPICTURETCCOMMENT, 
+[wxID_PNLEDITPICTURE, wxID_PNLEDITPICTURECHOICEEFFECT,
+ wxID_PNLEDITPICTURECHOICEMOVEMENT, wxID_PNLEDITPICTURECHOICETRANS,
+ wxID_PNLEDITPICTURECMDROTATELEFT, wxID_PNLEDITPICTURECMDROTATERIGHT,
+ wxID_PNLEDITPICTUREPNLIMGDURATION, wxID_PNLEDITPICTUREPNLTRANSDURATION,
+ wxID_PNLEDITPICTURESTATICLINE1, wxID_PNLEDITPICTURESTATICLINE2,
+ wxID_PNLEDITPICTURESTDURATIONUNIT, wxID_PNLEDITPICTURESTEFFECT,
+ wxID_PNLEDITPICTURESTMOVEMENT, wxID_PNLEDITPICTURESTPROCESS,
+ wxID_PNLEDITPICTURESTROTATION, wxID_PNLEDITPICTURESTSETTINGS,
+ wxID_PNLEDITPICTURESTSUBTITLE, wxID_PNLEDITPICTURESTTRANS,
+ wxID_PNLEDITPICTURESTTRANSUNIT, wxID_PNLEDITPICTURETCCOMMENT,
 ] = [wx.NewId() for _init_ctrls in range(20)]
 
 
 class PnlEditPicture(wx.Panel):
-    
+
     _custom_classes = {"wx.Panel": ["PnlFloatSpinCtrl"]}
-    
+
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
@@ -251,22 +250,22 @@ class PnlEditPicture(wx.Panel):
         self.stSettings.SetFont(font)
         self.stProcess.SetFont(font)
         self.stSubtitle.SetFont(font)
-        
+
         self.choiceMovement.Append(_(u"Linear"), Picture.MOVE_LINEAR)
         self.choiceMovement.Append(_(u"Accelerated"), Picture.MOVE_ACCEL)
         self.choiceMovement.Append(_(u"Delayed"), Picture.MOVE_DELAYED)
         self.choiceMovement.SetSelection(1)
         self.choiceMovement.Bind(wx.EVT_CHOICE, self.OnChoiceMvmntChoice)
-        
+
         self.pnlImgDuration.SetRange(1, 6000)
         self.pnlImgDuration.SetValue(7)
         self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
-        
+
         self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
         self.choiceEffect.Append(_(u"Black and White"), Picture.EFFECT_BLACK_WHITE)
         self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
-        
+
         self.pnlTransDuration.SetRange(5, 200)
         self.pnlTransDuration.SetValue(1)
         self.pnlTransDuration.Bind(EVT_VALUE_CHANGED, self.OnTransDurationChanged)
@@ -297,20 +296,20 @@ class PnlEditPicture(wx.Panel):
         for pic in self._pictures:
             pic.SetEffect(event.GetClientData())
         event.Skip()
-        
+
     def OnChoiceMvmntChoice(self, event):
         mvmnt = event.GetClientData()
         for pic in self._pictures:
             pic.SetMovement(mvmnt)
         event.Skip()
-        
+
     def OnChoiceTransChoice(self, event):
         trans = event.GetClientData()
         for pic in self._pictures:
             pic.SetTransition(trans)
         self.pnlTransDuration.Enable(trans != Picture.TRANS_NONE)
         event.Skip()
-    
+
     def OnTransDurationChanged(self, event):
         duration = event.GetValue()
         for pic in self._pictures:
@@ -325,7 +324,7 @@ class PnlEditPicture(wx.Panel):
         for pic in self._pictures:
             pic.SetComment(self.tcComment.GetValue())
         event.Skip()
-        
+
     def SetPictures(self, pictures):
         if pictures is None:
             pictures = []
@@ -334,12 +333,12 @@ class PnlEditPicture(wx.Panel):
         self._pictures = pictures
         if self._pictures:
             pic = self._pictures[0]
-            
+
             self.tcComment.SetValue(pic.GetComment())
             self.pnlImgDuration.SetValue(pic.GetDuration())
             self.__SetChoiceSelectionByData(self.choiceMovement, pic.GetMovement())
             self.__SetChoiceSelectionByData(self.choiceEffect, pic.GetEffect())
-            
+
             self.__SetChoiceSelectionByData(self.choiceTrans, pic.GetTransition())
             self.pnlTransDuration.SetValue(pic.GetTransitionDuration(rawValue=True))
             self.pnlTransDuration.Enable(pic.GetTransition() != Picture.TRANS_NONE)

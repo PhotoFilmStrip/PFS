@@ -24,7 +24,7 @@ import string
 
 
 class FloatValidator(wx.PyValidator):
-    
+
     def __init__(self):
         wx.PyValidator.__init__(self)
         self.Bind(wx.EVT_CHAR, self.OnChar)
@@ -40,7 +40,6 @@ class FloatValidator(wx.PyValidator):
                 return False
         return True
 
-
     def OnChar(self, event):
         key = event.GetKeyCode()
 
@@ -51,7 +50,7 @@ class FloatValidator(wx.PyValidator):
         if chr(key) in string.digits:
             event.Skip()
             return
-        
+
         if chr(key) == '-' and '-' not in self.GetWindow().GetValue():
             self.GetWindow().SetInsertionPoint(0)
             self.GetWindow().WriteText("-")
@@ -68,5 +67,4 @@ class FloatValidator(wx.PyValidator):
         # Returning without calling even.Skip eats the event before it
         # gets to the text control
         return
-
 

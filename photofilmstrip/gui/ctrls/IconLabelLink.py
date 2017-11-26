@@ -24,9 +24,9 @@ import wx
 
 class IconLabelLink(wx.Panel):
 
-    def __init__(self, 
-                 parent, 
-                 size=wx.DefaultSize, 
+    def __init__(self,
+                 parent,
+                 size=wx.DefaultSize,
                  label="label",
                  bmp=None,
                  descr="descr"):
@@ -58,9 +58,9 @@ class IconLabelLink(wx.Panel):
             self.mouseOver = False
             self.Refresh()
 
-        #event.Skip()
+        # event.Skip()
 
-    def OnPaint(self, event):
+    def OnPaint(self, event):  # pylint: disable=unused-argument
         dc = wx.AutoBufferedPaintDC(self)
         dc.SetBackground(wx.Brush(self.GetParent().GetBackgroundColour()))
         sz = self.GetSize()
@@ -102,7 +102,7 @@ class IconLabelLink(wx.Panel):
             return text, width
 
         for i in xrange(len(text), -1, -1):
-            s = '%s ... %s' % (text[:i*33/100], text[-i*67/100:])
+            s = '%s ... %s' % (text[:i * 33 / 100], text[-i * 67 / 100:])
 
             width, __ = dc.GetTextExtent(s)
 

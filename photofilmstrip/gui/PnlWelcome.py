@@ -49,7 +49,7 @@ class PnlWelcome(wx.Panel):
         self.__frmMain = frmMain
 
         self.htmlTitle = _(u"Recent projects")
-        self.htmlText  = u""
+        self.htmlText = u""
         self.htmlRecentProjects = u""
         self.htmlUpdate = u""
 
@@ -113,14 +113,14 @@ class PnlWelcome(wx.Panel):
 
             if htmlParts:
                 self.htmlTitle = _(u"Recent projects")
-                self.htmlText  = ""
+                self.htmlText = ""
             else:
                 self.htmlTitle = _(u"How to start...")
-                self.htmlText  = _(u"Create a new project or load an existing one.")
+                self.htmlText = _(u"Create a new project or load an existing one.")
 
             self.htmlRecentProjects = "".join(htmlParts)
 
-        html = HTML_TEMPLATE  % {'title': self.htmlTitle,
+        html = HTML_TEMPLATE % {'title': self.htmlTitle,
                                  'text': self.htmlText,
                                  'htmlRecentProjects': self.htmlRecentProjects,
                                  'htmlUpdate': self.htmlUpdate}
@@ -186,7 +186,7 @@ class PnlWelcome(wx.Panel):
 
 
 class LinkOpenPfs(IconLabelLink):
-    
+
     BMP_MAP = {}
 
     def __init__(self, parent, size=wx.DefaultSize, filename=None):
@@ -216,11 +216,12 @@ class LinkOpenPfs(IconLabelLink):
         self.GetEventHandler().ProcessEvent(evt)
 
 
-EVT_LINK_TYPE  = wx.NewEventType()
-EVT_LINK       = wx.PyEventBinder(EVT_LINK_TYPE, 1)
+EVT_LINK_TYPE = wx.NewEventType()
+EVT_LINK = wx.PyEventBinder(EVT_LINK_TYPE, 1)
 
 
 class LinkClickedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId, filename):
         wx.PyCommandEvent.__init__(self, EVT_LINK_TYPE, wxId)
         self._filename = filename
@@ -230,7 +231,7 @@ class LinkClickedEvent(wx.PyCommandEvent):
 
 
 class PfsHyperlink(wx.lib.hyperlink.HyperLinkCtrl):
-    
+
     def __init__(self, parent, size=wx.DefaultSize, label=""):
         wx.lib.hyperlink.HyperLinkCtrl.__init__(self, parent, -1,
                                                 label,

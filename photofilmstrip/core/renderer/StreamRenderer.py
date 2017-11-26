@@ -26,14 +26,14 @@ from photofilmstrip.core.BaseRenderer import FinalizeHandler
 
 
 class StreamRenderer(SingleFileRenderer, FinalizeHandler):
-    
+
     def __init__(self):
         SingleFileRenderer.__init__(self)
-    
+
     @staticmethod
     def GetName():
         return u"Stream output"
-    
+
     @staticmethod
     def GetProperties():
         return SingleFileRenderer.GetProperties() + ["Format"]
@@ -65,3 +65,6 @@ class StreamRenderer(SingleFileRenderer, FinalizeHandler):
             pilImg.save(sys.stdout, imgFormat)
         else:
             raise RuntimeError("unsupported format: %s", imgFormat)
+
+    def ToSink(self, data):
+        pass

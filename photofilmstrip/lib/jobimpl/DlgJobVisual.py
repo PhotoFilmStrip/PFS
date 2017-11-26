@@ -1,4 +1,4 @@
-#Boa:Dialog:DlgJobVisual
+# Boa:Dialog:DlgJobVisual
 # encoding: UTF-8
 
 import time
@@ -7,16 +7,16 @@ import wx
 
 from .WxVisualJobHandler import WxVisualJobHandler, EVT_JOB_UPDATE
 
-
-[wxID_DLGJOBVISUAL, wxID_DLGJOBVISUALCMDABORT, wxID_DLGJOBVISUALGAUGE, 
- wxID_DLGJOBVISUALSTELAPSEDDIV, wxID_DLGJOBVISUALSTELAPSEDLABEL, 
- wxID_DLGJOBVISUALSTELAPSEDVALUE, wxID_DLGJOBVISUALSTINFO, 
- wxID_DLGJOBVISUALSTREMAININGDIV, wxID_DLGJOBVISUALSTREMAININGLABEL, 
- wxID_DLGJOBVISUALSTREMAININGVALUE, 
+[wxID_DLGJOBVISUAL, wxID_DLGJOBVISUALCMDABORT, wxID_DLGJOBVISUALGAUGE,
+ wxID_DLGJOBVISUALSTELAPSEDDIV, wxID_DLGJOBVISUALSTELAPSEDLABEL,
+ wxID_DLGJOBVISUALSTELAPSEDVALUE, wxID_DLGJOBVISUALSTINFO,
+ wxID_DLGJOBVISUALSTREMAININGDIV, wxID_DLGJOBVISUALSTREMAININGLABEL,
+ wxID_DLGJOBVISUALSTREMAININGVALUE,
 ] = [wx.NewId() for _init_ctrls in range(10)]
 
 
 class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -63,16 +63,16 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
               size=wx.Size(-1, -1), style=0)
 
         self.gauge = wx.Gauge(id=wxID_DLGJOBVISUALGAUGE, name=u'gauge',
-              parent=self, pos=wx.Point(-1, -1), range=100, size=wx.Size(-1,
-              -1), style=wx.GA_HORIZONTAL)
+              parent=self, pos=wx.Point(-1, -1), range=100,
+              size=wx.Size(-1, -1), style=wx.GA_HORIZONTAL)
 
         self.stElapsedLabel = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDLABEL,
               label=_(u'Elapsed time'), name=u'stElapsedLabel', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.ALIGN_RIGHT)
 
         self.stElapsedDiv = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDDIV,
-              label=u':', name=u'stElapsedDiv', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+              label=u':', name=u'stElapsedDiv', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stElapsedValue = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDVALUE,
               label=u'0:00:00', name=u'stElapsedValue', parent=self,
@@ -83,8 +83,8 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRemainingDiv = wx.StaticText(id=wxID_DLGJOBVISUALSTREMAININGDIV,
-              label=u':', name=u'stRemainingDiv', parent=self, pos=wx.Point(-1,
-              -1), size=wx.Size(-1, -1), style=0)
+              label=u':', name=u'stRemainingDiv', parent=self,
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRemainingValue = wx.StaticText(id=wxID_DLGJOBVISUALSTREMAININGVALUE,
               label=u'0:00:00', name=u'stRemainingValue', parent=self,
@@ -103,12 +103,12 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         self._init_ctrls(parent)
         WxVisualJobHandler.__init__(self)
         self.SetTitle(job.GetName())
-        
+
         if self.cmdAbort.IsShown():
             self.__state = "Continue"
         else:
             self.__state = "Uncancelable"
-        
+
         self.__job = job
         self.__delay = 3
         self.__maximum = 100
@@ -145,9 +145,9 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         self.gauge.Pulse()
         self.__UpdateMessage(newmsg)
 
-        if 1:#self.__elapsed or self.__remaining or self.__estimated:
+        if 1:  # self.__elapsed or self.__remaining or self.__estimated:
             elapsed = time.time() - self.__timeStart
-    
+
             self.__SetTimeLabel(elapsed, self.stElapsedValue)
 #            self.__SetTimeLabel(-1, self.stEstimated)
             self.__SetTimeLabel(-1, self.stRemainingValue)
@@ -156,7 +156,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         if value <= self.__maximum:
             self.gauge.SetValue(value)
         self.__UpdateMessage(msg)
-        
+
 #        if (self.__elapsed or self.__remaining or self.__estimated) and (value != 0):
         if value != 0:
             elapsed = time.time() - self.__timeStart
@@ -177,11 +177,11 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
                 or (elapsed > 0 and elapsed < 4):
                     self.__display_estimated = estimated
                     self.__ctdelay = 0
-    
+
             display_remaining = self.__display_estimated - elapsed
             if display_remaining < 0:
                 display_remaining = 0;
-    
+
             self.__SetTimeLabel(elapsed, self.stElapsedValue)
 #            self.__SetTimeLabel(m_display_estimated, self.stEstimated)
             self.__SetTimeLabel(display_remaining, self.stRemainingValue)
@@ -205,9 +205,9 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
     def __OnJobUpdate(self, event):
         if event.IsBegin():
             self.__timeStart = time.time()
-#            self.__dlg = wx.ProgressDialog(self.__job.GetName(), 
-#                                           self.__job.GetInfo(), 
-#                                           maximum=self.__job.GetMaxProgress(), 
+#            self.__dlg = wx.ProgressDialog(self.__job.GetName(),
+#                                           self.__job.GetInfo(),
+#                                           maximum=self.__job.GetMaxProgress(),
 #                                           parent=self,
 #                                           style = wx.PD_APP_MODAL | wx.PD_ELAPSED_TIME | wx.PD_REMAINING_TIME)# | wx.PD_AUTO_HIDE)
             self.SetInitialSize(self.GetEffectiveMinSize())
@@ -228,7 +228,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
                 if maximum > 0:
                     self.__maximum = maximum
                     self.gauge.SetRange(maximum)
-            
-            self.__Update(self.__job.GetProgress(), 
+
+            self.__Update(self.__job.GetProgress(),
                           self.__job.GetInfo())
 

@@ -21,9 +21,11 @@
 
 
 class SingletonType(type):
+
     def __init__(self, name, bases, dict):
         type.__init__(self, name, bases, dict)
         self.instance = None
+
     def __call__(self):
         if self.instance is None:
             self.instance = type.__call__(self)

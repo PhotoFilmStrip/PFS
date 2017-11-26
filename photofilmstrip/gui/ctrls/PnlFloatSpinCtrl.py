@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlFloatSpinCtrl
+# Boa:FramePanel:PnlFloatSpinCtrl
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -24,13 +24,13 @@ import wx
 
 from photofilmstrip.gui.util.FloatValidator import FloatValidator
 
-
-[wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE, 
- wxID_PNLFLOATSPINCTRLTCVALUE, 
+[wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE,
+ wxID_PNLFLOATSPINCTRLTCVALUE,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
 
 class PnlFloatSpinCtrl(wx.Panel):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
@@ -76,17 +76,17 @@ class PnlFloatSpinCtrl(wx.Panel):
     def __SendValueChangedEvent(self, value):
         evt = ValueChangedEvent(self.GetId(), value)
         evt.SetEventObject(self)
-        self.GetEventHandler().ProcessEvent(evt)        
+        self.GetEventHandler().ProcessEvent(evt)
 
     def SetRange(self, minVal, maxVal):
         self.spinButtonValue.SetRange(minVal, maxVal)
-        
+
     def OnSpinButtonValueSpin(self, event):
         value = event.GetPosition() / 10.0
         self.tcValue.ChangeValue("%.1f" % value)
         self.__SendValueChangedEvent(value)
         event.Skip()
-    
+
     def __GetValue(self):
         val = self.tcValue.GetValue()
         try:
@@ -94,29 +94,30 @@ class PnlFloatSpinCtrl(wx.Panel):
         except ValueError:
             floatVal = 1.0
         return min(floatVal, 600.0)
-    
+
     def SetValue(self, value):
         self.tcValue.ChangeValue("%.1f" % value)
         self.spinButtonValue.SetValue(int(value * 10))
-    
+
     def OnTextCtrlValueKillFocus(self, event):
         value = self.__GetValue()
         self.spinButtonValue.SetValue(int(value * 10))
         self.tcValue.ChangeValue("%.1f" % value)
         self.__SendValueChangedEvent(value)
         event.Skip()
-        
+
     def OnTextCtrlValueText(self, event):
         value = self.__GetValue()
         self.__SendValueChangedEvent(value)
         event.Skip()
-        
 
-_EVT_VALUE_CHANGED_TYPE  = wx.NewEventType()
-EVT_VALUE_CHANGED        = wx.PyEventBinder(_EVT_VALUE_CHANGED_TYPE, 1)
+
+_EVT_VALUE_CHANGED_TYPE = wx.NewEventType()
+EVT_VALUE_CHANGED = wx.PyEventBinder(_EVT_VALUE_CHANGED_TYPE, 1)
 
 
 class ValueChangedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId, value):
         wx.PyCommandEvent.__init__(self, _EVT_VALUE_CHANGED_TYPE, wxId)
         self.__value = value

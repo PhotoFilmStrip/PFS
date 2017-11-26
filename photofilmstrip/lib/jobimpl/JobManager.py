@@ -9,7 +9,6 @@ from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.DestructionManager import Destroyable
 
 from .IVisualJobManager import IVisualJobManager
-from .IVisualJob import IVisualJob
 from .LogVisualJobManager import LogVisualJobManager
 from .Worker import Worker, WorkerAbortSignal
 from .JobAbortedException import JobAbortedException
@@ -236,7 +235,7 @@ class JobManager(Singleton, Destroyable):
         self.__logger.debug("<%s> starting %s...",
                             threading.currentThread().getName(), ctx.GetName())
         try:
-            ctx._Begin()  # IGNORE:W0212
+            ctx._Begin()  # pylint: disable=protected-access
         except JobAbortedException:
             return False
         except Exception, exc:
@@ -257,7 +256,7 @@ class JobManager(Singleton, Destroyable):
         self.__logger.debug("<%s> finalizing %s...",
                             threading.currentThread().getName(), ctx.GetName())
         try:
-            ctx._Done()  # IGNORE:W0212
+            ctx._Done()  # pylint: disable=protected-access
         except:
             self.__logger.error("<%s> error %s",  # IGNORE:W0702
                                 threading.currentThread().getName(), ctx.GetName(), exc_info=1)

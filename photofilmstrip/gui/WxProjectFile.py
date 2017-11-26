@@ -15,13 +15,13 @@ from photofilmstrip.lib.jobimpl.DlgJobVisual import DlgJobVisual
 
 
 class WxProjectFile(ProjectFile):
-    
+
     def __init__(self, wxParent, project=None, filename=None):
         ProjectFile.__init__(self, project, filename)
         self.__wxParent = wxParent
         self.__wxvJob = None
         self.__resultEvent = None
-    
+
     def __WaitUntilJobDone(self):
         while self.__resultEvent is None:
             if wx.Thread_IsMain():
@@ -32,20 +32,20 @@ class WxProjectFile(ProjectFile):
             return self.__resultEvent.GetResult()
         finally:
             self.__resultEvent = None
-        
+
     def __OnJobDone(self, event):
         self.__resultEvent = event
 
     def __Load(self, importPath, job=None):
         return ProjectFile.Load(self, importPath)
-    
+
     def __Save(self, includePics, job=None):
         return ProjectFile.Save(self, includePics)
 
     def _SelectAlternatePath(self, imgPath):
         sapEvent = SelectAlternatePathEvent(imgPath)
         self.__wxvJob._Interact(sapEvent)
-        
+
     def _StepProgress(self, msg):
         self.__wxvJob.StepProgress(msg)
 
@@ -55,9 +55,9 @@ class WxProjectFile(ProjectFile):
         wxvJob.SetAltPath = self.SetAltPath
         dlg = DlgJobVisual(self.__wxParent, wxvJob)
         dlg.Bind(EVT_JOB_RESULT, self.__OnJobDone)
-        
+
         wxvJob.AddVisualJobHandler(dlg)
- 
+
         self.__wxvJob = wxvJob
         JobManager().EnqueueContext(wxvJob)
         try:
@@ -66,15 +66,15 @@ class WxProjectFile(ProjectFile):
             dlg.Destroy()
 
     def Save(self, includePics=False):
-        wxvJob = VisualJob(_("Saving project %s") % self._filename, 
+        wxvJob = VisualJob(_("Saving project %s") % self._filename,
                            self.__Save, args=(includePics,),
                            maxProgress=len(self._project.GetPictures()))
 
         dlg = DlgJobVisual(self.__wxParent, wxvJob)
         dlg.Bind(EVT_JOB_RESULT, self.__OnJobDone)
-        
+
         wxvJob.AddVisualJobHandler(dlg)
-        
+
         self.__wxvJob = wxvJob
         JobManager().EnqueueContext(wxvJob)
         try:
@@ -84,14 +84,14 @@ class WxProjectFile(ProjectFile):
 
 
 class SelectAlternatePathEvent(WxInteractionEvent):
-    
+
     def __init__(self, imgPath):
         WxInteractionEvent.__init__(self)
         self.__imgPath = imgPath
-        
+
     def OnProcess(self, wxParent):
         dlg = wx.MessageDialog(wxParent,
-                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % self.__imgPath, 
+                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % self.__imgPath,
                                _(u"Question"),
                                wx.YES_NO | wx.ICON_QUESTION)
         try:

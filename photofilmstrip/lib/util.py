@@ -32,6 +32,7 @@ def Encode(value, coding="utf-8"):
     else:
         return str(value)
 
+
 def Decode(value, coding="utf-8"):
     if isinstance(value, unicode):
         return value
@@ -39,6 +40,7 @@ def Decode(value, coding="utf-8"):
         return value.decode(coding)
     else:
         return unicode(value)
+
 
 def IsPathWritable(path):
     _path = Encode(path, sys.getfilesystemencoding())
@@ -51,6 +53,7 @@ def IsPathWritable(path):
     except StandardError, err:
         logging.debug("IsPathWritable(%s): %s", path, err)
         return False
+
 
 def CheckFile(filename):
     if filename and not os.path.exists(filename):

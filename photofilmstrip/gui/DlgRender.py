@@ -1,4 +1,4 @@
-#Boa:Dialog:DlgRender
+# Boa:Dialog:DlgRender
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -23,7 +23,6 @@
 import wx
 import wx.combo
 
-
 from photofilmstrip.core.OutputProfile import (
         OutputProfile, GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.Renderer import RENDERERS
@@ -33,7 +32,6 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
-
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT,
  wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE,
@@ -136,8 +134,8 @@ class DlgRender(wx.Dialog):
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_16'),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
-              parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-              -1), style=wx.BU_AUTODRAW)
+              parent=self.pnlSettings, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdRendererProps.SetToolTipString(_("Properties"))
         self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
             id=wxID_DLGRENDERCMDRENDERERPROPS)
@@ -287,10 +285,13 @@ class DlgRender(wx.Dialog):
 
     def GetProfile(self):
         return self.profile
+
     def GetVideoNorm(self):
         return self.videoNorm
+
     def GetDraftMode(self):
         return self.draftMode
+
     def GetRendererClass(self):
         return self.rendererClass
 

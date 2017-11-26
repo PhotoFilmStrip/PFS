@@ -63,6 +63,7 @@ class OutputProfile(object):
         if norm not in [OutputProfile.PAL, OutputProfile.NTSC]:
             raise RuntimeError("videonorm must be one of PAL or NTSC")
         self.__videoNorm = norm
+
     def GetVideoNorm(self):
         return self.__videoNorm
 
@@ -76,6 +77,7 @@ def __CreateMPEGProfiles():
     dvd = OutputProfile("DVD", 8000, (720, 576), (720, 480))
     return [vcd, svcd, dvd]
 
+
 def __Create16_9Profiles():
     medium = OutputProfile("Medium", 4000, (640, 360))
     hd = OutputProfile("HD", 6000, (1280, 720))
@@ -84,12 +86,14 @@ def __Create16_9Profiles():
 
     return [medium, hd, fullhd, uhd]
 
+
 def __Create4_3Profiles():
     medium = OutputProfile("Medium", 4000, (640, 480))
     hd = OutputProfile("HD", 6000, (960, 720))
     fullhd = OutputProfile("FULL-HD", 8000, (1440, 1080))
 
     return [medium, hd, fullhd]
+
 
 def __Create3_2Profiles():
     medium = OutputProfile("Medium", 4000, (720, 480))

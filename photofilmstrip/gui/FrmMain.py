@@ -1,4 +1,4 @@
-#Boa:Frame:FrmMain
+# Boa:Frame:FrmMain
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.

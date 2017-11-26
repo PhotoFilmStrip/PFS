@@ -47,7 +47,7 @@ class Worker(threading.Thread, IWorker):
                 break
 
             if not isinstance(workLoad, IWorkLoad):
-                self.__logger.debug("<%s> Retrieved invalid job object from Queue: %s",
+                self.__logger.debug("<%s> Retrieved invalid job object '%s' from Queue: %s",
                                     self.getName(), jobContext, workLoad)
                 continue
 

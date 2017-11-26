@@ -1,4 +1,4 @@
-#Boa:FramePanel:PnlAddPics
+# Boa:FramePanel:PnlAddPics
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -26,7 +26,9 @@ import wx
  wxID_PNLADDPICSSTTITLE,
 ] = [wx.NewId() for _init_ctrls in range(4)]
 
+
 class PnlAddPics(wx.Panel):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 

@@ -25,10 +25,10 @@ from photofilmstrip.AppMixin import AppMixin
 
 
 class CliApp(AppMixin):
-    
+
     def _GetLogFormat(self):
         return '\n%(levelname)s: %(message)s'
-    
+
     def _OnStart(self):
         showHelp = False
         for helpOption in ("-h", "--help"):
@@ -40,15 +40,14 @@ class CliApp(AppMixin):
         return main(showHelp)
 
 
-
 def main():
     cliApp = CliApp()
-    
-#    import hotshot    
+
+#    import hotshot
 #    prof = hotshot.Profile("pfs.prof")
 #    exitCode = prof.runcall(cliApp.Start)
 #    prof.close()
-    
+
 #    import hotshot.stats
 #    stats = hotshot.stats.load("pfs.prof")
 #    stats.strip_dirs()

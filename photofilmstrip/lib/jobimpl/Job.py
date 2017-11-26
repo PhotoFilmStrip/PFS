@@ -16,16 +16,16 @@ class Job(IJobContext):
     in a queue.
     '''
 
-    def __init__(self, target=None, args=None, kwargs=None, 
+    def __init__(self, target=None, args=None, kwargs=None,
                  groupId="general"):
         IJobContext.__init__(self)
         self.__groupId = groupId
-        
+
         self.__logger = logging.getLogger("Job<%s> %s" % (groupId, self))
-        
+
         self.__workQueue = Queue.Queue()
         self.__resultObject = NoResultObject(WorkLoad())
-        
+
         self.__done = False
         self.__aborted = False
         self.__idle = True
@@ -35,11 +35,11 @@ class Job(IJobContext):
 
     def GetGroupId(self):
         return self.__groupId
-    
+
     def AddWorkLoad(self, workLoad):
         assert isinstance(workLoad, IWorkLoad)
         self.__workQueue.put(workLoad)
-    
+
     def GetWorkLoad(self):
         if self.__aborted:
             while 1:
@@ -50,19 +50,21 @@ class Job(IJobContext):
                     self.__logger.debug("task queue empty")
         else:
             return self.__workQueue.get(False)
-    
+
     def PushResult(self, resultObject):
         self.__resultObject = resultObject
-    
+
     def _Begin(self):
         if self.__aborted:
             self.__done = True
             raise JobAbortedException()
-        
+
         self.Begin()
         self.__idle = False
+
     def Begin(self):
         pass
+
     def IsIdle(self):
         return self.__idle
 
@@ -71,17 +73,20 @@ class Job(IJobContext):
             self.Done()
         finally:
             self.__done = True
+
     def Done(self):
         pass
+
     def IsDone(self):
         return self.__done
-    
+
     def IsAborted(self):
         return self.__aborted
+
     def Abort(self, msg=None):
         if self.__aborted:
             return False
-        
+
         if self.__done:
             self.__logger.debug("cannot abort finished job!")
             return False
@@ -93,14 +98,13 @@ class Job(IJobContext):
                 self.__idle = False
                 self.__done = True
                 return False
-            
-            self.__logger.debug("aborting... (%s)", msg)
-        
-        return True
-    
-    def GetResultObject(self):#, block=True):
-        return self.__resultObject
 
+            self.__logger.debug("aborting... (%s)", msg)
+
+        return True
+
+    def GetResultObject(self):  # , block=True):
+        return self.__resultObject
 
 
 class SingleWorkLoad(WorkLoad):
@@ -126,8 +130,8 @@ class SingleWorkLoad(WorkLoad):
         self.__args = args
         self.__kwargs = kwargs
 
-    def Run(self, job):
-        return self.__target(*self.__args, job=job, **self.__kwargs)
-    
+    def Run(self, jobContext):
+        return self.__target(*self.__args, job=jobContext, **self.__kwargs)
+
     def GetJob(self):
         return self.__job

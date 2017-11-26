@@ -35,12 +35,12 @@ from photofilmstrip.core import PILBackend
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
 
-
 EVT_RECT_CHANGED_TYPE = wx.NewEventType()
 EVT_RECT_CHANGED = wx.PyEventBinder(EVT_RECT_CHANGED_TYPE, 1)
 
 
 class RectChangedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId, rect):
         wx.PyCommandEvent.__init__(self, EVT_RECT_CHANGED_TYPE, wxId)
         self._rect = rect
@@ -61,7 +61,6 @@ class ImageSectionEditor(wx.Panel, Observer):
     POSITION_RIGHT = 0x80
 
     INFO_TIME_OUT = 2.0
-
 
     def __init__(self, parent, id=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
@@ -299,7 +298,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         else:
             self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
 
-    def OnCaptureLost(self, event):
+    def OnCaptureLost(self, event):  # pylint: disable=unused-argument
         if self._action is not None:
             self.__SelectCursor(None)
         self._action = None
@@ -565,7 +564,7 @@ class ImageSectionEditor(wx.Panel, Observer):
                 data = None
                 if wx.TheClipboard.GetData(do):
                     data = do.GetText()
-                    sectData = re.findall("(\d+), (\d+) - (\d+) x (\d+)", data)
+                    sectData = re.findall(r"(\d+), (\d+) - (\d+) x (\d+)", data)
                     if sectData:
                         sectData = sectData[0]
                         try:
@@ -592,6 +591,7 @@ class ImageSectionEditor(wx.Panel, Observer):
 
 
 class ScaleThread(threading.Thread):
+
     def __init__(self, picture, callbackOnDone):
         threading.Thread.__init__(self, name="reload %s" % Encode(picture.GetFilename()))
         self._picture = picture
@@ -603,7 +603,7 @@ class ScaleThread(threading.Thread):
 
     def run(self):
         self._abort = False
-        for i in range(20):
+        for __ in range(20):
             time.sleep(0.1)
             if self._abort:
                 return

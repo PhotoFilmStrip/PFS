@@ -32,11 +32,11 @@ from photofilmstrip import Constants
 
 
 class Settings(Singleton):
-    
+
     def __init__(self):
 #        self.__isFirstStart = False
         self.cp = None
-        
+
         if IsPathWritable(Constants.APP_DIR):
             setPath = Constants.APP_DIR
         else:
@@ -52,7 +52,7 @@ class Settings(Singleton):
         logging.debug("settings file: %s", self.filename)
 
         self.Load()
-        
+
     def Load(self):
         if self.cp is None:
             self.cp = ConfigParser()
@@ -62,13 +62,13 @@ class Settings(Singleton):
 
         if not self.cp.has_section("General"):
             self.cp.add_section("General")
-            
+
         if not self.cp.has_section("History"):
             self.cp.add_section("History")
-            
+
         if not self.cp.has_section("Profiles"):
             self.cp.add_section("Profiles")
-        
+
     def Save(self):
         try:
             fd = open(self.filename, 'w')
@@ -79,7 +79,7 @@ class Settings(Singleton):
 
 #    def IsFirstStart(self):
 #        return self.__isFirstStart
-    
+
     def SetLanguage(self, lang):
         self.Load()
         self.cp.set("General", "Language", Encode(lang))
@@ -102,7 +102,7 @@ class Settings(Singleton):
             if idx < 10 and os.path.exists(filename):
                 self.cp.set("History", "%d" % idx, Encode(os.path.abspath(filename)))
         self.Save()
-        
+
     def GetFileHistory(self):
         self.Load()
         fileList = []
@@ -113,7 +113,7 @@ class Settings(Singleton):
                     fileList.append(filename)
 
         return fileList
-    
+
     def SetProjectPath(self, path):
         self.Load()
         self.cp.set("General", "ProjectPath", Encode(path))
@@ -188,7 +188,7 @@ class Settings(Singleton):
             except:
                 pass
         return 1
-    
+
     def SetLastKnownVersion(self, version):
         self.Load()
         self.cp.set("General", "LastKnownVersion", version)
@@ -199,7 +199,7 @@ class Settings(Singleton):
         if self.cp.has_option("General", "LastKnownVersion"):
             return self.cp.get("General", "LastKnownVersion")
         return "0.0.0"
-    
+
     def SetRenderProperties(self, renderer, props):
         self.Load()
         if self.cp.has_section(renderer):
@@ -208,7 +208,7 @@ class Settings(Singleton):
         for prop, value in props.items():
             self.cp.set(renderer, prop, Encode(value))
         self.Save()
-    
+
     def GetRenderProperties(self, renderer):
         self.Load()
         result = {}
@@ -216,6 +216,5 @@ class Settings(Singleton):
             return result
         for prop, value in self.cp.items(renderer):
             result[prop] = Decode(value)
-        
+
         return result
-        

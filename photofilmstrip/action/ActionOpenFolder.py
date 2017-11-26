@@ -42,6 +42,6 @@ class ActionOpenFolder(IAction):
             return
 
         if os.name == "nt":
-            os.startfile(self.outpath) # IGNORE:E1101
+            os.startfile(self.outpath)  # pylint: disable=no-member
         else:
             subprocess.Popen(["xdg-open", self.outpath])
