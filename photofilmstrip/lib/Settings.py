@@ -156,24 +156,10 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "LastProfile"):
             try:
-                return self.cp.getint("General", "LastProfile")
+                return self.cp.get("General", "LastProfile")
             except:
                 pass
         return 3
-
-    def SetVideoType(self, typ):
-        self.Load()
-        self.cp.set("General", "VideoType", str(typ))
-        self.Save()
-
-    def GetVideoType(self):
-        self.Load()
-        if self.cp.has_option("General", "VideoType"):
-            try:
-                return self.cp.getint("General", "VideoType")
-            except:
-                pass
-        return 1
 
     def SetUsedRenderer(self, renderer):
         self.Load()

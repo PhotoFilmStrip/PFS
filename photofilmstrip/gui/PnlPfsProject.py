@@ -543,7 +543,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
                 return
 
             profile = dlg.GetProfile()
-            videoNorm = dlg.GetVideoNorm()
             draftMode = dlg.GetDraftMode()
             rendererClass = dlg.GetRendererClass()
         finally:
@@ -551,7 +550,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         ar = ActionRender(project,
                           profile,
-                          videoNorm,
                           rendererClass,
                           draftMode)
         try:

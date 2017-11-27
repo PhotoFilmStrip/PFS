@@ -135,13 +135,9 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.active = True
         self.finished = False
-        frameRate = self._GetFrameRate()
-        if frameRate == "25/1":
-            # 1000ms / 25fps == 40msec/frame
-            self.imgDuration = 1000 * Gst.MSECOND / 25
-        elif frameRate == "30000/1001":
-            # 1000ms / 29.97fps == 33,367msec/frame
-            self.imgDuration = int(round(1000 * Gst.MSECOND / (30000.0 / 1001.0)))
+        frameRate = self.GetProfile().GetFrameRate()
+        # 1000ms / fps == x msec/frame
+        self.imgDuration = int(round(1000 * Gst.MSECOND / frameRate.AsFloat()))
         self._Log(logging.DEBUG, "set imgDuration=%s", self.imgDuration)
 
         outFile = os.path.join(self.GetOutputPath(),
@@ -149,7 +145,8 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.pipeline = Gst.Pipeline()
 
-        caps = Gst.caps_from_string("image/jpeg,framerate={0}".format(frameRate))
+        caps = Gst.caps_from_string(
+            "image/jpeg,framerate={0}".format(frameRate.AsStr()))
         videoSrc = Gst.ElementFactory.make("appsrc")
         videoSrc.set_property("block", True)
         videoSrc.set_property("caps", caps)
@@ -289,13 +286,6 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.__CleanUp()
 
-    def _GetFrameRate(self):
-        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
-            framerate = "25/1"
-        else:
-            framerate = "30000/1001"
-        return framerate
-
     def _GetBitrate(self):
         bitrate = self.GetTypedProperty("Bitrate", int,
                                         self.GetProfile().GetBitrate())
@@ -373,7 +363,8 @@ class _GStreamerRenderer(BaseRenderer):
 #             self.textoverlay.set_property("text", "Frame: %s" % self.idxFrame)
             if self.srtParse is None:
                 srtPath = os.path.join(self.GetOutputPath(), "output.srt")
-                self.srtParse = SrtParser(srtPath, self.GetProfile().GetFramerate())
+                self.srtParse = SrtParser(
+                    srtPath, self.GetProfile().GetFrameRate().AsFloat())
 
             subtitle = self.srtParse.Get(self.idxFrame)
             self.textoverlay.set_property("text", subtitle)

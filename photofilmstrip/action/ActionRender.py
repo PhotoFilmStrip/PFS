@@ -37,12 +37,11 @@ from photofilmstrip.core.GPlayer import GPlayer
 class ActionRender(IAction):
 
     def __init__(self, photoFilmStrip,
-                 profile, videoNorm,
+                 profile,
                  rendererClass, draftMode,
                  outpath=None):
         self.__photoFilmStrip = photoFilmStrip
         self.__profile = profile
-        self.__profile.SetVideoNorm(videoNorm)
         self.__rendererClass = rendererClass
         self.__draftMode = draftMode
         self.__outpath = outpath
@@ -64,14 +63,7 @@ class ActionRender(IAction):
 
     def _SaveSettings(self):
         settings = Settings()
-        outputProfiles = GetOutputProfiles(self.__photoFilmStrip.GetAspect())
-        idxProfile = 0
-        for idx, prof in enumerate(outputProfiles):
-            if prof.GetName() == self.__profile.GetName():
-                idxProfile = idx
-        settings.SetLastProfile(idxProfile)
-
-        settings.SetVideoType(self.__profile.GetVideoNorm())
+        settings.SetLastProfile(self.__profile.GetName())
 
         idxRenderer = RENDERERS.index(self.__rendererClass)
         settings.SetUsedRenderer(idxRenderer)

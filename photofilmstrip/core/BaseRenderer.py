@@ -122,9 +122,6 @@ class BaseRenderer(object):
     def GetProfile(self):
         return self._profile
 
-    def EnsureFramerate(self):
-        return False
-
     def GetFinalizeHandler(self):
         '''
         :rtype: ImageDataFinalizeHandler

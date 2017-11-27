@@ -71,7 +71,7 @@ class RenderEngineSlideshow(RenderEngine):
         """
         returns the number of pictures
         """
-        fr = self._profile.GetFramerate()
+        fr = self._profile.GetFrameRate().AsFloat()
         return int(round(pic.GetDuration() * \
                          fr * \
                          self.__picCountFactor))
@@ -80,7 +80,7 @@ class RenderEngineSlideshow(RenderEngine):
         """
         returns the number of pictures needed for the transition
         """
-        fr = self._profile.GetFramerate()
+        fr = self._profile.GetFrameRate().AsFloat()
         return int(round(pic.GetTransitionDuration() * \
                          fr * \
                          self.__picCountFactor))

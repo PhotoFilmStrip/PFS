@@ -24,7 +24,7 @@ import wx
 import wx.combo
 
 from photofilmstrip.core.OutputProfile import (
-        OutputProfile, GetOutputProfiles, GetMPEGProfiles)
+        GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.Renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
@@ -34,12 +34,11 @@ from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
 
 [wxID_DLGRENDER, wxID_DLGRENDERCBDRAFT, wxID_DLGRENDERCHOICEFORMAT,
- wxID_DLGRENDERCHOICEPROFILE, wxID_DLGRENDERCHOICETYPE,
+ wxID_DLGRENDERCHOICEPROFILE,
  wxID_DLGRENDERCMDCANCEL, wxID_DLGRENDERCMDHELP,
  wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERPNLHDR,
  wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE,
- wxID_DLGRENDERSTTYPE,
-] = [wx.NewId() for _init_ctrls in range(14)]
+] = [wx.NewId() for _init_ctrls in range(12)]
 
 
 class DlgRender(wx.Dialog):
@@ -76,11 +75,7 @@ class DlgRender(wx.Dialog):
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.stType, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceType, 0, border=0, flag=wx.EXPAND)
         parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=wx.ALIGN_CENTER_VERTICAL)
         parent.AddWindow(self.cbDraft, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Growables(self, parent):
@@ -136,12 +131,12 @@ class DlgRender(wx.Dialog):
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdRendererProps.SetToolTipString(_("Properties"))
+        self.cmdRendererProps.SetToolTipString(_(u"Properties"))
         self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
             id=wxID_DLGRENDERCMDRENDERERPROPS)
 
         self.stProfile = wx.StaticText(id=wxID_DLGRENDERSTPROFILE,
-            label=_(u'Resolution:'), name=u'stProfile', parent=self.pnlSettings,
+            label=_(u'Profile:'), name=u'stProfile', parent=self.pnlSettings,
             pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceProfile = wx.Choice(choices=[],
@@ -149,15 +144,6 @@ class DlgRender(wx.Dialog):
             parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
             - 1), style=0)
         self.choiceProfile.SetMinSize(wx.Size(300, -1))
-
-        self.stType = wx.StaticText(id=wxID_DLGRENDERSTTYPE, label=_(u'Type:'),
-            name=u'stType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-            size=wx.Size(-1, -1), style=0)
-
-        self.choiceType = wx.Choice(choices=[], id=wxID_DLGRENDERCHOICETYPE,
-            name=u'choiceType', parent=self.pnlSettings, pos=wx.Point(-1, -1),
-            size=wx.Size(-1, -1), style=0)
-        self.choiceType.SetMinSize(wx.Size(300, -1))
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
             name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
@@ -192,42 +178,71 @@ class DlgRender(wx.Dialog):
 
         self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview. The rendering process will speed up dramatically, but results in lower quality."))
 
-        for profile in GetOutputProfiles(aspectRatio):
-            self.choiceProfile.Append(u"%s (%sx%s)" % (profile.GetName(),
-                                                       profile.GetResolution()[0],
-                                                       profile.GetResolution()[1]),
-                                      profile)
-
-        self.choiceType.Append("PAL", OutputProfile.PAL)
-        self.choiceType.Append("NTSC", OutputProfile.NTSC)
-        self.choiceType.SetSelection(0)
+        self.aspectRatio = aspectRatio
+        self.__InitProfiles()
 
         settings = Settings()
-        self.choiceProfile.SetSelection(settings.GetLastProfile())
-        self.profile = None
-
-        self.videoNorm = settings.GetVideoType()
-        self.__SetChoiceSelectionByData(self.choiceType, self.videoNorm)
-
         self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
+
+        self.__SelectProfileByName(settings.GetLastProfile())
 
         self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.CentreOnParent()
         self.SetFocus()
 
+        self.profile = None
         self.draftMode = False
         self.rendererClass = None
 
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
 
-    def __SetChoiceSelectionByData(self, choice, data):
+    def __SelectProfileByName(self, profName):
+        choice = self.choiceProfile
         for idx in range(choice.GetCount()):
-            if choice.GetClientData(idx) == data:
+            prof = choice.GetClientData(idx)
+            if prof and prof.GetName() == profName:
                 choice.Select(idx)
                 return
+
+        choice.Select(1)
+
+    def __InitProfiles(self, filtr=None, profiles=None):
+        if profiles is None:
+            profiles = []
+            profs = GetOutputProfiles(self.aspectRatio)
+            for prof in profs:
+                if prof.GetFriendlyName():
+                    profiles.append(prof)
+            profiles.append("-")
+            profiles.extend(profs)
+
+        selection = self.choiceFormat.GetStringSelection()
+        self.choiceProfile.Clear()
+
+        useFriendlyName = True
+        for profile in profiles:
+            if profile == "-":
+                self.choiceProfile.Append(u"----------")
+                useFriendlyName = False
+                continue
+
+            if filtr and not profile.GetName().startswith(filtr):
+                continue
+
+            if useFriendlyName:
+                profName = profile.GetFriendlyName()
+            else:
+                profName = profile.GetName()
+
+            self.choiceProfile.Append(u"%s (%sx%s)" % (profName,
+                                                       profile.GetResolution()[0],
+                                                       profile.GetResolution()[1]),
+                                      profile)
+
+        self.choiceProfile.SetStringSelection(selection)
 
     def OnChoiceFormat(self, event):
         if event is None:
@@ -235,33 +250,25 @@ class DlgRender(wx.Dialog):
         else:
             formatData = event.GetClientData()
 
-        strAuto = _(u"Automatic")
-        idxAuto = self.choiceProfile.FindString(strAuto)
-        if idxAuto != wx.NOT_FOUND:
-            self.choiceProfile.Delete(idxAuto)
-
         if isinstance(formatData, FormatData):
             self.cmdStart.Enable(formatData.IsOk())
             if formatData.IsMPEG():
-                self.choiceProfile.Append(strAuto)
-                self.choiceProfile.SetStringSelection(strAuto)
-                self.choiceProfile.Enable(False)
+                self.__InitProfiles(formatData.GetRendererClass().GetName().split(" ")[0],
+                                    GetMPEGProfiles())
             else:
-                self.choiceProfile.Enable(True)
-                self.choiceProfile.Select(0)
+                self.__InitProfiles()
+
+        self.__SelectProfileByName(Settings().GetLastProfile())
 
     def OnCmdStartButton(self, event):
         formatData = self.__GetChoiceDataSelected(self.choiceFormat)
-        self.rendererClass = formatData.PRendererClass
+        self.rendererClass = formatData.GetRendererClass()
 
-        profile = GetMPEGProfiles().get(self.rendererClass.GetName())
-        if profile is None:
-            profile = self.__GetChoiceDataSelected(self.choiceProfile)
+        profile = self.__GetChoiceDataSelected(self.choiceProfile)
         if profile is None:
             return
 
         self.profile = profile
-        self.videoNorm = self.__GetChoiceDataSelected(self.choiceType)
         self.draftMode = self.cbDraft.GetValue()
 
         self.EndModal(wx.ID_OK)
@@ -273,7 +280,7 @@ class DlgRender(wx.Dialog):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
         if data is None:
             return
-        rendererClass = data.PRendererClass
+        rendererClass = data.GetRendererClass()
 
         dlg = DlgRendererProps(self, rendererClass)
         dlg.ShowModal()
@@ -285,9 +292,6 @@ class DlgRender(wx.Dialog):
 
     def GetProfile(self):
         return self.profile
-
-    def GetVideoNorm(self):
-        return self.videoNorm
 
     def GetDraftMode(self):
         return self.draftMode
@@ -302,9 +306,6 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
         wx.combo.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
 
         for rend in RENDERERS:
-            if rend.GetName() in FormatData.MPEG_PROFILES:
-                continue
-
             self.AddRenderer(rend)
 
     def AddRenderer(self, rend, altName=None):
@@ -327,7 +328,7 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
         rect2 = wx.Rect(*rect)
         rect2.Deflate(5, 0)
 
-        if data.PMessages:
+        if data.GetMessages():
             bmp = wx.ArtProvider.GetBitmap('PFS_ALERT_16')
             dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
         else:
@@ -339,15 +340,14 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
 
         if flags & wx.combo.ODCB_PAINTING_CONTROL:
             dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL)
-
         else:
-            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.PMessages),
+            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.GetMessages()),
                               bmp, rect2,
                               wx.ALIGN_CENTER_VERTICAL)
 
     def OnMeasureItem(self, item):
         data = self.GetClientData(item)
-        height = self.GetTextExtent(self.GetString(item))[1] * (len(data.PMessages) + 1)
+        height = self.GetTextExtent(self.GetString(item))[1] * (len(data.GetMessages()) + 1)
         return height + 8
 
 
@@ -356,14 +356,20 @@ class FormatData(object):
     MPEG_PROFILES = ("VCD", "SVCD", "DVD")
 
     def __init__(self, rendClass, msgList):
-        self.PRendererClass = rendClass
-        self.PMessages = msgList
+        self._rendererClass = rendClass
+        self._msgList = msgList
 
     def IsOk(self):
-        return len(self.PMessages) == 0
+        return len(self._msgList) == 0
 
     def IsMPEG(self):
         for mpegProf in FormatData.MPEG_PROFILES:
-            if self.PRendererClass.GetName().startswith(mpegProf):
+            if self._rendererClass.GetName().startswith(mpegProf):
                 return True
         return False
+
+    def GetRendererClass(self):
+        return self._rendererClass
+
+    def GetMessages(self):
+        return self._msgList

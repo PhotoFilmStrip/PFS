@@ -61,13 +61,6 @@ class CairoRenderer(BaseRenderer):
         '''
         return PilToCairoFinalizeHandler()
 
-    def _GetFrameRate(self):
-        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
-            framerate = 25.0
-        else:
-            framerate = 30000.0 / 1001.0
-        return framerate
-
     def ToSink(self, data):
         self._ctx = data
         self._mainClock.tick(self._framerate)
@@ -80,7 +73,7 @@ class CairoRenderer(BaseRenderer):
     def Prepare(self):
         self._screen.SetClientSizeWH(*self.GetProfile().GetResolution())
 
-        self._framerate = self._GetFrameRate()
+        self._framerate = self.GetProfile().GetFrameRate().AsFloat()
         self._mainClock.reset()
 
     def OnPaint(self, event):
@@ -99,12 +92,6 @@ class CairoRenderer(BaseRenderer):
 
     def Finalize(self):
         wx.CallAfter(self._screen.Destroy)
-
-    def EnsureFramerate(self):
-        if get_fps(self._mainClock, self._framerate):
-            return True
-        else:
-            return False
 
 
 class PilToCairoFinalizeHandler(FinalizeHandler):

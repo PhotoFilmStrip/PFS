@@ -28,7 +28,7 @@ from photofilmstrip import Constants
 from photofilmstrip.lib.util import Decode, CheckFile
 
 from photofilmstrip.core.OutputProfile import (
-    OutputProfile, GetOutputProfiles, GetMPEGProfiles)
+    GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
@@ -79,10 +79,9 @@ class CliGui(IVisualJobHandler):
         print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
         print u"%-20s: %s" % (_(u"output format"), profile.GetName(
             withRes=True))
-        print u"%-20s: %1.f (%s):" % (
+        print u"%-20s: %1.f" % (
             _(u"framerate"),
-            profile.GetFramerate(),
-            "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC")
+            profile.GetFrameRate().AsFloat())
         print
 
     def Write(self, text):
@@ -105,7 +104,7 @@ def main(showHelp=False):
     parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(),
                           version="%%prog %s" % Constants.APP_VERSION_EX)
 
-    profiles = GetOutputProfiles()
+    profiles = GetOutputProfiles() + GetMPEGProfiles()
     profStr = ", ".join(["%d=%s" % (
         idx,
         prof.GetName()) for idx, prof in enumerate(profiles)])
@@ -115,7 +114,7 @@ def main(showHelp=False):
     parser.add_option("-p", "--project", help=_(u"specifies the project file"))
     parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. Use - for stdout."), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=0, type="int")
-    parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
+    parser.add_option("-n", "--videonorm", help=_(u"Option videonorm is deprecated, use an appropriate profile!"))
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=4, type="int")
     parser.add_option("-a", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
     parser.add_option("-d", "--debug", action="store_true", default=False, help=u"enable debug logging")
@@ -137,13 +136,9 @@ def main(showHelp=False):
         logging.error(_(u"no project file specified!"))
         return 2
 
-    if options.videonorm == "p":
-        videoNorm = OutputProfile.PAL
-    elif options.videonorm == "n":
-        videoNorm = OutputProfile.NTSC
-    else:
+    if options.videonorm:
         parser.print_help()
-        logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)
+        logging.error(_(u"Option videonorm is deprecated, use an appropriate profile!"))
         return 4
 
     if options.format not in range(len(RENDERERS)):
@@ -152,13 +147,11 @@ def main(showHelp=False):
         return 5
     rendererClass = RENDERERS[options.format]
 
-    profile = GetMPEGProfiles().get(rendererClass.GetName())
-    if profile is None:
-        if options.profile >= len(profiles):
-            parser.print_help()
-            logging.error(_(u"invalid profile specified: %s"), options.profile)
-            return 3
-        profile = profiles[options.profile]
+    if options.profile >= len(profiles):
+        parser.print_help()
+        logging.error(_(u"invalid profile specified: %s"), options.profile)
+        return 3
+    profile = profiles[options.profile]
 
     prjFile = ProjectFile(filename=options.project)
     if not prjFile.Load():
@@ -181,7 +174,7 @@ def main(showHelp=False):
         outpath = None
 
     project = prjFile.GetProject()
-    ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)
+    ar = ActionRender(project, profile, rendererClass, False, outpath)
 
     audioFile = project.GetAudioFile()
     if not CheckFile(audioFile):
