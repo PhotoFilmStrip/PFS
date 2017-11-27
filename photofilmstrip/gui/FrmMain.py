@@ -99,6 +99,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         self.frmJobManager = wx.Frame(self, -1, _(u"Job queue"),
                                       size=wx.Size(600, 400),
                                       style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
+        self.frmJobManager.SetIcon(wx.ArtProvider.GetIcon("PFS_JOB_QUEUE_16", wx.ART_OTHER))
         self.frmJobManager.Bind(wx.EVT_CLOSE, self.OnCloseFrameJobManager)
         PnlJobManager(self.frmJobManager, pnlJobClass=PnlRenderJobVisual)
 
