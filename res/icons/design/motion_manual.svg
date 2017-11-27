@@ -13,10 +13,10 @@
    viewBox="0 0 24 24"
    id="svg2"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="motion-manual.svg"
-   inkscape:export-filename="D:\Daten\Repositories\GIT\PFS\res\icons\motion_input_24.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   sodipodi:docname="motion_manual.svg"
+   inkscape:export-filename="D:\Daten\Repositories\GIT\PFS\res\icons\motion_input_32.png"
+   inkscape:export-xdpi="120"
+   inkscape:export-ydpi="120">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,15 +40,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1080"
-     inkscape:window-height="1858"
+     inkscape:window-width="2560"
+     inkscape:window-height="1378"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="12"
+     inkscape:cx="-10.220339"
      inkscape:cy="12"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="1072"
+     inkscape:window-y="162"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <path

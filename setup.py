@@ -167,6 +167,7 @@ class pfs_build(build):
                         ("MOTION_END_TO_START_24","motion_end_to_start_24.png"),
                         ("MOTION_SWAP_24","motion_swap_24.png"),
                         ("MOTION_MANUAL_24","motion_manual_24.png"),
+                        ("MOTION_MANUAL_32","motion_manual_32.png"),
                         ("MOTION_RANDOM_16","motion_random_16.png"),
                         ("MOTION_RANDOM_D_16","motion_random_d_16.png"),
                         ("MOTION_RANDOM_24","motion_random_24.png"),
