@@ -118,7 +118,7 @@ class ActionManager(object):
     def __CreateMenuNew(self):
         menu = wx.Menu()
         CreateMenuItem(menu, wx.ID_NEW, _(u'Slideshow') + '\tCtrl+N',
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'))
+                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
         return menu
 
     def __CreateMenuFile(self, editor=None):
@@ -126,7 +126,7 @@ class ActionManager(object):
         menu.AppendMenu(wx.ID_ANY, _(u'New'), self.__CreateMenuNew())
         CreateMenuItem(menu, wx.ID_OPEN,
                        _(u'&Open') + '\tCtrl+O',
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'))
+                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_16'))
 
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_SAVE,
