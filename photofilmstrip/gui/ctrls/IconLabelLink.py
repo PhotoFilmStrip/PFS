@@ -71,11 +71,11 @@ class IconLabelLink(wx.Panel):
         else:
             dc.DrawBitmap(self.bmpDia, 0, 0)
 
-        thumSz = self.bmpThumb.GetSize()
-        thumbRect = wx.Rect(sz[0] / 2 - thumSz[0] / 2,
-                            sz[1] / 2 - thumSz[1] / 2 - 15,
-                            thumSz[0],
-                            thumSz[1])
+        thumbSz = self.bmpThumb.GetSize()
+        thumbRect = wx.Rect(sz[0] / 2 - thumbSz[0] / 2,
+                            sz[1] / 2 - thumbSz[1] / 2 - 15,
+                            thumbSz[0],
+                            thumbSz[1])
 
         dc.DrawBitmapPoint(self.bmpThumb, thumbRect.GetTopLeft())
         thumbRect.Inflate(1, 1)
