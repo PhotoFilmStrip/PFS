@@ -135,11 +135,11 @@ class PnlPfsProject(PnlEditorPage, Observer):
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
               bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, kind=wx.ITEM_NORMAL,
-              label='', longHelp='', shortHelp=_(u'Set motion end to start'))
+              label='', longHelp='', shortHelp=_(u'Set motion start to end'))
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
               bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
-              label=u'', longHelp=u'', shortHelp=_(u'Set motion start to end'))
+              label=u'', longHelp=u'', shortHelp=_(u'Set motion end to start'))
         parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP_24'),
               bmpDisabled=wx.NullBitmap,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, kind=wx.ITEM_NORMAL,
