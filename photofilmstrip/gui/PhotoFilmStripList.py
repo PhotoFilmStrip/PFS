@@ -24,6 +24,7 @@ import os
 import wx
 
 from photofilmstrip.gui.util.ImageCache import ImageCache, EVT_THUMB_READY
+from photofilmstrip.gui.util.Utils import ChopText
 
 EVT_CHANGED_TYPE = wx.NewEventType()
 EVT_CHANGED = wx.PyEventBinder(EVT_CHANGED_TYPE, 1)
@@ -37,9 +38,16 @@ class ChangedEvent(wx.PyCommandEvent):
 
 class PhotoFilmStripList(wx.ScrolledWindow):
 
-    HEIGHT = 200
-    BORDER = 40
     GAP = 10
+    BORDER = 45
+    THUMB_HEIGHT = 120
+    HOLE_WIDTH = 11
+    HOLE_HEIGHT = 16
+    HOLE_PADDING = 13       # distance between holes
+    HOLE_MARGIN = 6         # distance to thumb
+    LABEL_MARGIN = 8
+
+    STRIP_HEIGHT = THUMB_HEIGHT + 2 * BORDER
 
     def __init__(self, parent, id=-1,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
@@ -47,14 +55,16 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, id, pos, size, style, name)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.BLACK)
-        self.SetSizeHints(-1, self.HEIGHT + 20, -1, self.HEIGHT + 20)
+        clientSize = wx.Size(-1, self.STRIP_HEIGHT + wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
+        self.SetSizeHintsSz(clientSize, clientSize)
 
         self.__frozen = False
         self.__pictures = []
         self.__selIdxs = []
         self.__hvrIdx = -1
 
-        self.__dragPic = None
+        self.__dragIdx = None
+        self.__dragBmp = None
         self.__dragX = 0
         self.__dragOffX = 0
 
@@ -93,76 +103,102 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         except StandardError:
             dc = pdc
 
-        font = wx.SystemSettings.GetFont(wx.SYS_ANSI_FIXED_FONT)
-        font.SetPointSize(9)
-        dc.SetFont(font)
-        dc.SetTextForeground(wx.Colour(237, 156, 0))
         dc.SetBackground(wx.BLACK_BRUSH)
-
         dc.Clear()
 
-        dc.SetBrush(wx.WHITE_BRUSH)
-        dc.SetPen(wx.WHITE_PEN)
-
         vx = self.GetViewStart()[0]
-        hx = self.GetClientSize()[0]
+        clientWidth = self.GetClientSize()[0]
 
-        sxPic = self.GAP
-        n = 0
+        diaRect = wx.Rect(-vx, 0, 0, self.STRIP_HEIGHT)
+
         for idx, pic in enumerate(self.__pictures):
             bmp = ImageCache().GetThumbBmp(pic)
 
             # if the picture cannot be loaded GetWidth may return -1
-            stepWidth = bmp.GetWidth() + self.GAP
+            bmpWidth = bmp.GetWidth()
 
-            if sxPic >= vx - stepWidth:
-                if sxPic <= vx + hx:
-                    dc.DrawBitmap(bmp, sxPic - vx, self.BORDER, True)
-                    labelRect = wx.Rect(sxPic - vx, 0, bmp.GetWidth(), self.HEIGHT)
-                    dc.DrawLabel(str(idx + 1), labelRect, wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_TOP)
-                    dc.DrawLabel(os.path.basename(pic.GetFilename()),
-                                 labelRect,
-                                 wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_BOTTOM)
+            diaRect.SetWidth(bmpWidth + self.GAP)
+
+            if diaRect.right >= 0:
+                if diaRect.left <= clientWidth:
+                    label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
+                    self.__DrawDia(dc, diaRect, diaRect.x + vx, bmp, str(idx + 1), label, idx in self.__selIdxs, idx == self.__hvrIdx)
                 else:
                     break
 
-            sxPic += stepWidth
+            diaRect.OffsetXY(diaRect.width, 0)
 
-            # draw filmstrip
-            while 1:
-                sxFilmStrip = (n * 32) + 10
-                if sxFilmStrip > sxPic:
-                    break
+        if self.__dragIdx is not None:
+            dc.DrawBitmap(self.__dragBmp, self.__dragX - self.__dragOffX - vx, 0, True)
 
-                dc.DrawRoundedRectangle(sxFilmStrip - vx, 14, 14, 20, 3)
-                dc.DrawRoundedRectangle(sxFilmStrip - vx, self.HEIGHT - 34, 14, 20, 3)
-                n += 1
+    def __CreateDiaBmp(self, picIdx, selected=False, highlighted=False):
+        pic = self.__pictures[picIdx]
+        thumbBmp = ImageCache().GetThumbBmp(pic)
+        diaRect = self.GetDiaRect(picIdx)
+        holeOffset = diaRect.x
+        diaRect.SetX(0)
 
-        self.__DrawHighlights(dc)
+        bmp = wx.EmptyBitmap(diaRect.width, diaRect.height)
+        label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
 
-        if self.__dragPic is not None:
-            if self.__dragPic >= 0 and self.__dragPic < len(self.__pictures):
-                bmp = ImageCache().GetThumbBmp(self.__pictures[self.__dragPic])
-                dc.DrawBitmap(bmp, self.__dragX - self.__dragOffX - vx, self.BORDER)
-            else:
-                self.__dragPic = None
+        dc = wx.MemoryDC(bmp)
+        try:
+            dc = wx.GCDC(dc)
+        except StandardError:
+            pass
 
-    def __DrawHighlights(self, dc):
-        vs = self.GetViewStart()[0]
-        dc.SetPen(wx.TRANSPARENT_PEN)
-        for selIdx in self.__selIdxs:
-            rect = self.GetThumbRect(selIdx)
-            rect.OffsetXY(-vs, 0)
-            col = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
-            dc.SetBrush(wx.Brush(wx.Colour(col.Red(), col.Green(), col.Blue(), 180)))
+        self.__DrawDia(dc, diaRect, holeOffset, thumbBmp, str(picIdx + 1), label, selected, highlighted)
+        return bmp
+
+    def __DrawDia(self, dc, rect, holeOffset, thumbBmp, diaNo, label, selected=False, highlighted=False):
+        font = wx.SystemSettings.GetFont(wx.SYS_ANSI_FIXED_FONT)
+        font.SetPointSize(9)
+        dc.SetFont(font)
+
+        colour = wx.Colour(235, 235, 235)
+
+        #labelRect = wx.Rect(rect.x, rect.y + self.LABEL_MARGIN, rect.width, rect.height - 2 * self.LABEL_MARGIN)
+
+        bmpX = rect.x + self.GAP / 2
+        bmpY = (rect.height - thumbBmp.GetHeight()) / 2
+
+        holeX = rect.x + self.GAP / 2 - (holeOffset % (self.HOLE_WIDTH + self.HOLE_PADDING))
+
+        dc.SetClippingRect(rect)
+
+        if selected:
+            dc.SetBackground(wx.Brush(wx.Colour(38, 54, 70)))
+            dc.Clear()
+            dc.SetPen(wx.Pen(wx.Colour(82, 116, 150)))
+            for idx in xrange(3):
+                dc.DrawLine(rect.x, idx, rect.right, idx)
+                dc.DrawLine(rect.x, rect.bottom - idx, rect.right, rect.bottom - idx)
+        else:
+            dc.SetBackground(wx.BLACK_BRUSH)
+            dc.Clear()
+
+        dc.SetTextForeground(wx.Colour(237, 156, 0))
+        dc.SetBrush(wx.Brush(colour))
+        dc.SetPen(wx.Pen(colour))
+
+        diaNoWidth, textHeight = dc.GetTextExtent(diaNo)
+        label, labelWidth = ChopText(dc, label, thumbBmp.GetWidth())
+
+        dc.DrawBitmap(thumbBmp, bmpX, bmpY, True)
+        dc.DrawText(diaNo, rect.x + (rect.width - diaNoWidth) / 2, self.LABEL_MARGIN - 3)
+        dc.DrawText(label, rect.x + (rect.width - labelWidth) / 2, rect.height - self.LABEL_MARGIN - textHeight)
+
+        while holeX < rect.right:
+            dc.DrawRoundedRectangle(holeX, self.BORDER - self.HOLE_MARGIN - self.HOLE_HEIGHT, self.HOLE_WIDTH, self.HOLE_HEIGHT, 2)
+            dc.DrawRoundedRectangle(holeX, self.BORDER + self.THUMB_HEIGHT + self.HOLE_MARGIN, self.HOLE_WIDTH, self.HOLE_HEIGHT, 2)
+            holeX += self.HOLE_WIDTH + self.HOLE_PADDING
+
+        if highlighted:
+            dc.SetPen(wx.TRANSPARENT_PEN)
+            dc.SetBrush(wx.Brush(wx.Colour(77, 136, 196, 80)))
             dc.DrawRectangleRect(rect)
-        if self.__hvrIdx != -1:
-            rect = self.GetThumbRect(self.__hvrIdx)
-            rect.OffsetXY(-vs, 0)
-            col = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
-            color = wx.Colour(col.Red(), col.Green(), col.Blue(), 80)
-            dc.SetBrush(wx.Brush(color))
-            dc.DrawRectangleRect(rect)
+
+        dc.DestroyClippingRegion()
 
     def _SendChangedEvent(self):
         evt = ChangedEvent(self.GetId())
@@ -195,9 +231,11 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             elif mPos.x > self.GetClientSize()[0] - 10:
                 self.__Scroll(40)
             self.__dragX = unscrolledPos.x
-            if self.__dragPic is None and idx != -1:
-                self.__dragPic = idx
-                rect = self.GetThumbRect(idx)
+
+            if self.__dragIdx is None and idx != -1:
+                self.__dragIdx = idx
+                self.__dragBmp = self.__CreateDiaBmp(idx, True, True)
+                rect = self.GetDiaRect(idx)
                 self.__dragOffX = self.__dragX - rect.GetLeft()
                 self.CaptureMouse()
             self.Refresh()
@@ -220,20 +258,21 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                             self.Select(_idx, deselectOthers=ct == 0)
                 else:
                     self.Select(idx)
-        if event.LeftUp() and self.__dragPic is not None:
+
+        if event.LeftUp() and self.__dragIdx is not None:
             if self.HasCapture():
                 self.ReleaseMouse()
             if idx == -1:
-                self.__dragPic = None
+                self.__dragIdx = None
                 self.Refresh()
             else:
-                self.MovePicture(self.__dragPic, idx)
-                self.__dragPic = None
+                self.MovePicture(self.__dragIdx, idx)
+                self.__dragIdx = None
                 self.Select(idx)
         event.Skip()
 
     def OnCaptureLost(self, event):
-        self.__dragPic = None
+        self.__dragIdx = None
         self.Refresh()
         event.Skip()
 
@@ -275,7 +314,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             event.Skip()
 
     def EnsureVisible(self, idx):
-        rect = self.GetThumbRect(idx)
+        rect = self.GetDiaRect(idx)
         left = rect.GetLeft()
         vs = self.GetViewStart()[0]
         ch = self.GetClientSize()[0]
@@ -285,39 +324,39 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self.Scroll(rect.GetRight() - ch, 0)
 
     def __UpdateVirtualSize(self):
-        width = self.GAP
+        width = 0
         for pic in self.__pictures:
             bmp = ImageCache().GetThumbBmp(pic)
             # if the picture cannot be loaded GetWidth may return -1
             width += bmp.GetWidth() + self.GAP
 
-        self.SetVirtualSize((width, self.HEIGHT))
+        self.SetVirtualSize((width, self.STRIP_HEIGHT))
         self.Refresh()
 
     def GetThumbSize(self, pic):
         aspect = float(pic.GetWidth()) / float(pic.GetHeight())
-        thumbHeight = self.HEIGHT - (2 * self.BORDER)
+        thumbHeight = self.THUMB_HEIGHT
         thumbWidth = int(round(thumbHeight * aspect))
         return thumbWidth, thumbHeight
 
-    def GetThumbRect(self, idx):
-        sx = self.GAP
+    def GetDiaRect(self, idx):
+        sx = 0
         for picIdx, pic in enumerate(self.__pictures):
-            thumbWidth = self.GetThumbSize(pic)[0]
+            thumbWidth = ImageCache().GetThumbBmp(pic).GetWidth()
 
             if idx == picIdx:
-                rect = wx.Rect(sx, 0, thumbWidth, self.HEIGHT)
+                rect = wx.Rect(sx, 0, thumbWidth + self.GAP, self.STRIP_HEIGHT)
                 return rect
 
             sx += thumbWidth + self.GAP
 
     def HitTest(self, pos):
         pos = self.CalcUnscrolledPosition(pos)
-        sx = self.GAP
+        sx = 0
         for idx, pic in enumerate(self.__pictures):
-            thumbWidth = self.GetThumbSize(pic)[0]
+            thumbWidth = ImageCache().GetThumbBmp(pic).GetWidth()
 
-            rect = wx.Rect(sx, 0, thumbWidth + self.GAP, self.HEIGHT)
+            rect = wx.Rect(sx, 0, thumbWidth + self.GAP, self.STRIP_HEIGHT)
             if rect.Contains(pos):
                 return idx
 
@@ -481,5 +520,4 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
 
 # FIXME: should be fixed height
-ImageCache.THUMB_SIZE = PhotoFilmStripList.HEIGHT - (2 * PhotoFilmStripList.BORDER)
-
+ImageCache.THUMB_SIZE = PhotoFilmStripList.THUMB_HEIGHT
