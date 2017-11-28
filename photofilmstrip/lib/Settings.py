@@ -159,7 +159,7 @@ class Settings(Singleton):
                 return self.cp.get("General", "LastProfile")
             except:
                 pass
-        return 3
+        return None
 
     def SetUsedRenderer(self, renderer):
         self.Load()
@@ -173,7 +173,7 @@ class Settings(Singleton):
                 return self.cp.getint("General", "Renderer")
             except:
                 pass
-        return 1
+        return None
 
     def SetLastKnownVersion(self, version):
         self.Load()

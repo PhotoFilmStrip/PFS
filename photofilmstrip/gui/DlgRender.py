@@ -46,6 +46,9 @@ class DlgRender(wx.Dialog):
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
 
+    DEFAULT_FORMAT = u"x264/AC3 (MKV)"
+    DEFAULT_PROFILE = u"HD 720p@25.00 fps"
+
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
@@ -182,7 +185,10 @@ class DlgRender(wx.Dialog):
         self.__InitProfiles()
 
         settings = Settings()
-        self.choiceFormat.SetSelection(settings.GetUsedRenderer())
+        if settings.GetUsedRenderer() is None:
+            self.choiceFormat.SetStringSelection(self.DEFAULT_FORMAT)
+        else:
+            self.choiceFormat.SetSelection(settings.GetUsedRenderer())
         self.OnChoiceFormat(None)
 
         self.__SelectProfileByName(settings.GetLastProfile())
@@ -200,6 +206,8 @@ class DlgRender(wx.Dialog):
         return choice.GetClientData(choice.GetSelection())
 
     def __SelectProfileByName(self, profName):
+        if profName is None:
+            profName = self.DEFAULT_PROFILE
         choice = self.choiceProfile
         for idx in range(choice.GetCount()):
             prof = choice.GetClientData(idx)
@@ -207,7 +215,7 @@ class DlgRender(wx.Dialog):
                 choice.Select(idx)
                 return
 
-        choice.Select(1)
+        choice.Select(0)
 
     def __InitProfiles(self, filtr=None, profiles=None):
         if profiles is None:
