@@ -169,7 +169,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             dropRect = self.GetDiaRect(dropIdx)
 
             if dropIdx > picIdx:
-                holeOffset = dropRect.right - diaRect.width
+                holeOffset = dropRect.right + 1 - diaRect.width
 
         diaRect.SetX(0)
         self.__DrawDia(dc, diaRect, holeOffset, thumbBmp, diaNo, label, selected, highlighted)
