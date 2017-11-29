@@ -296,18 +296,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                     self.Select(idx)
 
         if event.LeftUp() and self.__dragIdx is not None:
-            if self.HasCapture():
-                self.ReleaseMouse()
+            self.__FinishDnD()
 
-            if idx == -1:
-                self.__dragIdx = None
-                self.__dropIdx = None
-                self.Refresh()
-            else:
-                self.MovePicture(self.__dragIdx, idx)
-                self.__dragIdx = None
-                self.__dropIdx = None
-                self.Select(idx)
         event.Skip()
 
     def OnCaptureLost(self, event):
@@ -350,8 +340,29 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self.Select(0)
             self.EnsureVisible(0)
 
+        elif key == wx.WXK_ESCAPE:
+            if self.__dragIdx is not None:
+                self.__FinishDnD(abort=True)
+
         else:
             event.Skip()
+
+    def __FinishDnD(self, abort=False):
+        if self.__dragIdx is not None:
+            if self.HasCapture():
+                self.ReleaseMouse()
+
+            idx = self.__dragIdx
+            if not abort:
+                self.MovePicture(self.__dragIdx, self.__dropIdx)
+                self.Select(self.__dropIdx)
+                idx = self.__dropIdx
+
+            self.__dragIdx = None
+            self.__dropIdx = None
+
+            self.Refresh()
+            self.EnsureVisible(idx)
 
     def EnsureVisible(self, idx):
         rect = self.GetDiaRect(idx)
