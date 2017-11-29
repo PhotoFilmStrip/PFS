@@ -64,7 +64,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.__hvrIdx = -1
 
         self.__dragIdx = None
+        self.__dropIdx = None
         self.__dragBmp = None
+        self.__dragBmpIdx = None
         self.__dragX = 0
         self.__dragOffX = 0
 
@@ -119,26 +121,41 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
             diaRect.SetWidth(bmpWidth + self.GAP)
 
-            if diaRect.right >= 0:
+            if idx == self.__dropIdx and self.__dragIdx > idx:
+                diaRect.OffsetXY(self.__dragBmp.GetWidth(), 0)
+
+            if diaRect.right >= 0 and idx != self.__dragIdx:
                 if diaRect.left <= clientWidth:
                     label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
-                    self.__DrawDia(dc, diaRect, diaRect.x + vx, bmp, str(idx + 1), label, idx in self.__selIdxs, idx == self.__hvrIdx)
+                    diaNo = idx + 1
+
+                    if idx >= self.__dropIdx and idx < self.__dragIdx:
+                        diaNo += 1
+
+                    if idx <= self.__dropIdx and idx > self.__dragIdx:
+                        diaNo -= 1
+
+                    self.__DrawDia(dc, diaRect, diaRect.x + vx, bmp, str(diaNo), label, idx in self.__selIdxs, idx == self.__hvrIdx)
                 else:
                     break
 
-            diaRect.OffsetXY(diaRect.width, 0)
+            if idx != self.__dragIdx or self.__dragIdx == self.__dropIdx:
+                diaRect.OffsetXY(diaRect.width, 0)
+
+            if idx == self.__dropIdx and self.__dragIdx < idx:
+                diaRect.OffsetXY(self.__dragBmp.GetWidth(), 0)
 
         if self.__dragIdx is not None:
             dc.DrawBitmap(self.__dragBmp, self.__dragX - self.__dragOffX - vx, 0, True)
 
-    def __CreateDiaBmp(self, picIdx, selected=False, highlighted=False):
+    def __CreateDiaBmp(self, picIdx, selected=False, highlighted=False, dropIdx=None):
         pic = self.__pictures[picIdx]
         thumbBmp = ImageCache().GetThumbBmp(pic)
         diaRect = self.GetDiaRect(picIdx)
         holeOffset = diaRect.x
-        diaRect.SetX(0)
 
         bmp = wx.EmptyBitmap(diaRect.width, diaRect.height)
+        diaNo = str(picIdx + 1)
         label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
 
         dc = wx.MemoryDC(bmp)
@@ -147,7 +164,15 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         except StandardError:
             pass
 
-        self.__DrawDia(dc, diaRect, holeOffset, thumbBmp, str(picIdx + 1), label, selected, highlighted)
+        if dropIdx is not None:
+            diaNo = str(dropIdx + 1)
+            dropRect = self.GetDiaRect(dropIdx)
+
+            if dropIdx > picIdx:
+                holeOffset = dropRect.right - diaRect.width
+
+        diaRect.SetX(0)
+        self.__DrawDia(dc, diaRect, holeOffset, thumbBmp, diaNo, label, selected, highlighted)
         return bmp
 
     def __DrawDia(self, dc, rect, holeOffset, thumbBmp, diaNo, label, selected=False, highlighted=False):
@@ -156,8 +181,6 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         dc.SetFont(font)
 
         colour = wx.Colour(235, 235, 235)
-
-        #labelRect = wx.Rect(rect.x, rect.y + self.LABEL_MARGIN, rect.width, rect.height - 2 * self.LABEL_MARGIN)
 
         bmpX = rect.x + self.GAP / 2
         bmpY = (rect.height - thumbBmp.GetHeight()) / 2
@@ -225,24 +248,37 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if idx != self.__hvrIdx:
                 self.__hvrIdx = idx
                 self.Refresh()
+
         if event.Dragging():
+            if idx != -1:
+                self.__dropIdx = idx
+
             if mPos.x < 10:
                 self.__Scroll(-40)
             elif mPos.x > self.GetClientSize()[0] - 10:
                 self.__Scroll(40)
-            self.__dragX = unscrolledPos.x
 
-            if self.__dragIdx is None and idx != -1:
-                self.__dragIdx = idx
-                self.__dragBmp = self.__CreateDiaBmp(idx, True, True)
-                rect = self.GetDiaRect(idx)
-                self.__dragOffX = self.__dragX - rect.GetLeft()
-                self.CaptureMouse()
+            self.__dragX = unscrolledPos.x
+            if self.__dragIdx is None:
+                if idx != -1:
+                    self.__dragIdx = idx
+                    self.__dragBmp = self.__CreateDiaBmp(idx, True, True)
+                    self.__dragBmpIdx = idx
+                    rect = self.GetDiaRect(idx)
+                    self.__dragOffX = self.__dragX - rect.GetLeft()
+                    self.CaptureMouse()
+
+            elif self.__dragBmpIdx != self.__dropIdx:
+                self.__dragBmpIdx = self.__dropIdx
+                self.__dragBmp = self.__CreateDiaBmp(self.__dragIdx, True, True, self.__dropIdx)
+
             self.Refresh()
+
         if event.Leaving():
             self.__hvrIdx = -1
             self.Refresh()
-        if event.LeftDown():
+
+        if event.LeftDown() and not event.Dragging():
             if idx != -1:
                 if event.ControlDown():
                     self.Select(idx, idx not in self.__selIdxs, False)
@@ -262,17 +298,21 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if event.LeftUp() and self.__dragIdx is not None:
             if self.HasCapture():
                 self.ReleaseMouse()
+
             if idx == -1:
                 self.__dragIdx = None
+                self.__dropIdx = None
                 self.Refresh()
             else:
                 self.MovePicture(self.__dragIdx, idx)
                 self.__dragIdx = None
+                self.__dropIdx = None
                 self.Select(idx)
         event.Skip()
 
     def OnCaptureLost(self, event):
         self.__dragIdx = None
+        self.__dropIdx = None
         self.Refresh()
         event.Skip()
 
