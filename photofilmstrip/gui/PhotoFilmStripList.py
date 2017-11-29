@@ -124,7 +124,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if idx == self.__dropIdx and self.__dragIdx > idx:
                 diaRect.OffsetXY(self.__dragBmp.GetWidth(), 0)
 
-            if diaRect.right >= 0 and idx != self.__dragIdx:
+            if diaRect.right + 1 >= 0 and idx != self.__dragIdx:
                 if diaRect.left <= clientWidth:
                     label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
                     diaNo = idx + 1
@@ -192,10 +192,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if selected:
             dc.SetBackground(wx.Brush(wx.Colour(38, 54, 70)))
             dc.Clear()
-            dc.SetPen(wx.Pen(wx.Colour(82, 116, 150)))
-            for idx in xrange(3):
-                dc.DrawLine(rect.x, idx, rect.right, idx)
-                dc.DrawLine(rect.x, rect.bottom - idx, rect.right, rect.bottom - idx)
+            dc.SetPen(wx.Pen(wx.Colour(237, 156, 0)))
+            dc.SetBrush(wx.Brush(wx.Colour(237, 156, 0)))
+            dc.DrawRectangle(rect.x, 0, rect.right + 1, 3)
+            dc.DrawRectangle(rect.x, rect.bottom - 2, rect.right + 1, rect.bottom)
         else:
             dc.SetBackground(wx.BLACK_BRUSH)
             dc.Clear()
@@ -211,7 +211,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         dc.DrawText(diaNo, rect.x + (rect.width - diaNoWidth) / 2, self.LABEL_MARGIN - 3)
         dc.DrawText(label, rect.x + (rect.width - labelWidth) / 2, rect.height - self.LABEL_MARGIN - textHeight)
 
-        while holeX < rect.right:
+        while holeX <= rect.right + 1:
             dc.DrawRoundedRectangle(holeX, self.BORDER - self.HOLE_MARGIN - self.HOLE_HEIGHT, self.HOLE_WIDTH, self.HOLE_HEIGHT, 2)
             dc.DrawRoundedRectangle(holeX, self.BORDER + self.THUMB_HEIGHT + self.HOLE_MARGIN, self.HOLE_WIDTH, self.HOLE_HEIGHT, 2)
             holeX += self.HOLE_WIDTH + self.HOLE_PADDING
