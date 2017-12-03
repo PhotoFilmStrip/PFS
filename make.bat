@@ -2,7 +2,7 @@
 
 if %1!==! goto usage
 
-set PYTHON=C:\Python27\python.exe
+set PYTHON=python.exe
 
 git rev-parse --short HEAD > scm_rev.txt
 set /p SCM_REV=<scm_rev.txt
