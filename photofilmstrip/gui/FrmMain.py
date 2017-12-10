@@ -24,6 +24,7 @@ import os
 
 import wx
 import wx.aui
+import wx.adv
 from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip import Constants
@@ -288,7 +289,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         dlg.Destroy()
 
     def OnAbout(self, event):
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         info.Name = Constants.APP_NAME
         info.Version = Constants.APP_VERSION_EX
         info.Copyright = u"(C) 2017 %s" % Constants.DEVELOPERS[0]
@@ -301,7 +302,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
         info.License = wordwrap(licenseText, 500, wx.ClientDC(self))
 
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
 #### Event-Handler - END #######################################################
 

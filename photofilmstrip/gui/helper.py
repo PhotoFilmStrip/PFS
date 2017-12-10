@@ -18,7 +18,7 @@ def CreateMenuItem(menu, ident, text="", bmp=None, disabledBitmap=None):
     if disabledBitmap is not None:
         item.SetDisabledBitmap(disabledBitmap)
 
-    menu.AppendItem(item)
+    menu.Append(item)
 
 
 def ChopText(dc, text, maxSize):

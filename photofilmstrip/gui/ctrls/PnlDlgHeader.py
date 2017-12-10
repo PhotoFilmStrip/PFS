@@ -34,21 +34,21 @@ class PnlDlgHeader(wx.Panel):
     def _init_coll_szHeaderText_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stHeader, 0, border=0, flag=0)
-        parent.AddWindow(self.stErrMsg, 0, border=4, flag=wx.TOP)
+        parent.Add(self.stHeader, 0, border=0, flag=0)
+        parent.Add(self.stErrMsg, 0, border=4, flag=wx.TOP)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.pnlHeader, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.slHdr, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bmpLogo, 0, border=8,
+        parent.Add(self.bmpLogo, 0, border=8,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
-        parent.AddSizer(self.szHeaderText, 0, border=8,
+        parent.Add(self.szHeaderText, 0, border=8,
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
 
     def _init_sizers(self):

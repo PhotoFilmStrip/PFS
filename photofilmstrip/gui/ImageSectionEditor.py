@@ -69,7 +69,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         Observer.__init__(self)
 
         self.SetSizeHints(200, 150)
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
         self.RATIO = 16.0 / 9.0
@@ -158,10 +158,10 @@ class ImageSectionEditor(wx.Panel, Observer):
         sectRect = self.__SectRectToClientRect()
 
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        iRect = wx.RectPS(sectRect.GetPosition(), sectRect.GetSize())
+        iRect = wx.Rect(sectRect.GetPosition(), sectRect.GetSize())
         dc.SetPen(wx.WHITE_PEN)
         iRect.Inflate(1, 1)
-        dc.DrawRectangleRect(iRect)
+        dc.DrawRectangle(iRect)
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
@@ -187,13 +187,13 @@ class ImageSectionEditor(wx.Panel, Observer):
         if alpha < 0:
             alpha = 0
         dc.SetTextForeground(wx.Colour(255, 255, 255, alpha))
-        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FIXED_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
         font.SetPointSize(16)
         font.SetWeight(wx.BOLD)
         dc.SetFont(font)
         dc.SetPen(wx.WHITE_PEN)
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        dc.DrawRectangleRect(sectRect)
+        dc.DrawRectangle(sectRect)
         dc.DrawLabel("%d, %d - %d x %d" % tuple(self._sectRect),
                      sectRect,
                      wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL)
@@ -272,7 +272,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         elif abs(cpy - bry) < self.BORDER_TOLERANCE and (tlx < cpx < brx):
             return self.POSITION_BOTTOM
 
-        elif self._sectRect.ContainsXY(cpx, cpy):
+        elif self._sectRect.Contains(cpx, cpy):
             return self.POSITION_INSIDE
         else:
             return None
@@ -290,14 +290,14 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         # the Borders
         elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZEWE))
         elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZENS))
 
         elif position == self.POSITION_INSIDE:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZING))
         else:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
 
     def OnCaptureLost(self, event):  # pylint: disable=unused-argument
         if self._action is not None:
@@ -493,24 +493,24 @@ class ImageSectionEditor(wx.Panel, Observer):
             self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), int(round(self._imgProxy.GetWidth() / self.RATIO)))
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(-50, 0)
+                self._sectRect.Offset(-50, 0)
             else:
-                self._sectRect.OffsetXY(-10, 0)
+                self._sectRect.Offset(-10, 0)
         elif key == wx.WXK_UP:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(0, -50)
+                self._sectRect.Offset(0, -50)
             else:
-                self._sectRect.OffsetXY(0, -10)
+                self._sectRect.Offset(0, -10)
         elif key == wx.WXK_RIGHT:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(50, 0)
+                self._sectRect.Offset(50, 0)
             else:
-                self._sectRect.OffsetXY(10, 0)
+                self._sectRect.Offset(10, 0)
         elif key == wx.WXK_DOWN:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(0, 50)
+                self._sectRect.Offset(0, 50)
             else:
-                self._sectRect.OffsetXY(0, 10)
+                self._sectRect.Offset(0, 10)
         elif event.GetModifiers() == wx.MOD_CONTROL and key == ord('C'):
             self.OnCopy(event)
         elif event.GetModifiers() == wx.MOD_CONTROL and key == ord('V'):
@@ -587,7 +587,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         return self._sectRect
 
     def SetSection(self, rect):
-        self._sectRect = wx.RectPS(rect.GetPosition(), rect.GetSize())
+        self._sectRect = wx.Rect(rect.GetPosition(), rect.GetSize())
         self.Refresh()
 
     def SetLock(self, lock):
@@ -613,7 +613,7 @@ class ScaleThread(threading.Thread):
                 return
 
         pilImg = PILBackend.GetImage(self._picture)
-        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+        wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
 
         if not self._abort:
             self._callbackOnDone(wxImg)

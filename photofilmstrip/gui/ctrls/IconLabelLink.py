@@ -41,12 +41,12 @@ class IconLabelLink(wx.Panel):
         self.label = label
         self.mouseOver = False
 
-        self.SetToolTipString(u'{0}\n{1}'.format(label, descr))
+        self.SetToolTip(u'{0}\n{1}'.format(label, descr))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvents)
 
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
 
     def OnMouseEvents(self, event):
         if event.LeftDown():
@@ -79,10 +79,10 @@ class IconLabelLink(wx.Panel):
                             thumbSz[0],
                             thumbSz[1])
 
-        dc.DrawBitmapPoint(self.bmpThumb, thumbRect.GetTopLeft())
+        dc.DrawBitmap(self.bmpThumb, thumbRect.GetTopLeft())
         thumbRect.Inflate(1, 1)
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        dc.DrawRectangleRect(thumbRect)
+        dc.DrawRectangle(thumbRect)
 
         label, width = ChopText(dc, self.label, 138)
         dc.DrawText(label, sz[0] / 2 - width / 2, 97)

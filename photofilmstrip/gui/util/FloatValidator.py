@@ -23,10 +23,10 @@ import wx
 import string
 
 
-class FloatValidator(wx.PyValidator):
+class FloatValidator(wx.Validator):
 
     def __init__(self):
-        wx.PyValidator.__init__(self)
+        wx.Validator.__init__(self)
         self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):
@@ -61,7 +61,7 @@ class FloatValidator(wx.PyValidator):
             self.GetWindow().WriteText(".")
             return
 
-        if not wx.Validator_IsSilent():
+        if not wx.Validator.IsSilent():
             wx.Bell()
 
         # Returning without calling even.Skip eats the event before it

@@ -45,7 +45,7 @@ class WxAbstractAction(IAction):
         if bmp:
             mitm.SetBitmap(bmp)
 
-        menu.AppendItem(mitm)
+        menu.Append(mitm)
         evtHandler.Bind(wx.EVT_MENU, self.__OnExecute, id=ident)
         return mitm
 

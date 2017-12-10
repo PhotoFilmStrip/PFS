@@ -37,8 +37,8 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlJobs, 1, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.cmdClear, 0, border=4, flag=wx.ALL)
+        parent.Add(self.pnlJobs, 1, border=0, flag=wx.EXPAND)
+        parent.Add(self.cmdClear, 0, border=4, flag=wx.ALL)
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -145,7 +145,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
             if pnlJobVisual is self._selected:
                 self._selected = None
             self.pnlJobVisuals.remove(pnlJobVisual)
-            self.szJobs.Remove(pnlJobVisual)
+            self.szJobs.Detach(pnlJobVisual)
             pnlJobVisual.Destroy()
 
             if layout:

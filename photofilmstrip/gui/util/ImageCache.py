@@ -84,7 +84,7 @@ class ImageCache(Singleton, Observer):
         key = picture.GetKey()
         if not self._wxImgCache.has_key(key):
             pilImg = PILBackend.GetThumbnail(picture, width=ImageCache.SIZE)
-            wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+            wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
             self._wxImgCache[key] = wxImg
         return self._wxImgCache[key]
 
@@ -100,7 +100,7 @@ class ImageCache(Singleton, Observer):
                 return self.thumb
             else:
 #                pilImg = self._pilCache[key]
-                wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+                wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
                 self._wxBmpCache[key] = wxImg.ConvertToBitmap()
         return self._wxBmpCache[key]
 

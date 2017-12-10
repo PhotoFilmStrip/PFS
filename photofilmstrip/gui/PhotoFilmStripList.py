@@ -43,8 +43,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     THUMB_HEIGHT = 120
     HOLE_WIDTH = 11
     HOLE_HEIGHT = 16
-    HOLE_PADDING = 13       # distance between holes
-    HOLE_MARGIN = 6         # distance to thumb
+    HOLE_PADDING = 13  # distance between holes
+    HOLE_MARGIN = 6  # distance to thumb
     LABEL_MARGIN = 8
 
     STRIP_HEIGHT = THUMB_HEIGHT + 2 * BORDER
@@ -56,7 +56,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
         self.SetBackgroundColour(wx.BLACK)
         clientSize = wx.Size(-1, self.STRIP_HEIGHT + wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
-        self.SetSizeHintsSz(clientSize, clientSize)
+        self.SetSizeHints(clientSize, clientSize)
 
         self.__frozen = False
         self.__pictures = []
@@ -122,7 +122,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             diaRect.SetWidth(bmpWidth + self.GAP)
 
             if idx == self.__dropIdx and self.__dragIdx > idx:
-                diaRect.OffsetXY(self.__dragBmp.GetWidth(), 0)
+                diaRect.Offset(self.__dragBmp.GetWidth(), 0)
 
             if diaRect.right + 1 >= 0 and idx != self.__dragIdx:
                 if diaRect.left <= clientWidth:
@@ -140,10 +140,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                     break
 
             if idx != self.__dragIdx or self.__dragIdx == self.__dropIdx:
-                diaRect.OffsetXY(diaRect.width, 0)
+                diaRect.Offset(diaRect.width, 0)
 
             if idx == self.__dropIdx and self.__dragIdx < idx:
-                diaRect.OffsetXY(self.__dragBmp.GetWidth(), 0)
+                diaRect.Offset(self.__dragBmp.GetWidth(), 0)
 
         if self.__dragIdx is not None:
             dc.DrawBitmap(self.__dragBmp, self.__dragX - self.__dragOffX - vx, 0, True)
@@ -154,7 +154,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         diaRect = self.GetDiaRect(picIdx)
         holeOffset = diaRect.x
 
-        bmp = wx.EmptyBitmap(diaRect.width, diaRect.height)
+        bmp = wx.Bitmap(diaRect.width, diaRect.height)
         diaNo = str(picIdx + 1)
         label = os.path.splitext(os.path.basename(pic.GetFilename()))[0]
 
@@ -187,7 +187,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
         holeX = rect.x + self.GAP / 2 - (holeOffset % (self.HOLE_WIDTH + self.HOLE_PADDING))
 
-        dc.SetClippingRect(rect)
+        dc.SetClippingRegion(rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight())
 
         if selected:
             dc.SetBackground(wx.Brush(wx.Colour(38, 54, 70)))
@@ -219,7 +219,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if highlighted:
             dc.SetPen(wx.TRANSPARENT_PEN)
             dc.SetBrush(wx.Brush(wx.Colour(77, 136, 196, 80)))
-            dc.DrawRectangleRect(rect)
+            dc.DrawRectangle(rect)
 
         dc.DestroyClippingRegion()
 

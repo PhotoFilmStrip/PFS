@@ -47,74 +47,74 @@ class DlgPositionInput(wx.Dialog):
     def _init_coll_szStart_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stStartLocation, 0, border=0,
+        parent.Add(self.stStartLocation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.spinStartX, 0, border=0, flag=0)
-        parent.AddWindow(self.spinStartY, 0, border=0, flag=0)
-        parent.AddWindow(self.stStartSize, 0, border=0,
+        parent.Add(self.spinStartX, 0, border=0, flag=0)
+        parent.Add(self.spinStartY, 0, border=0, flag=0)
+        parent.Add(self.stStartSize, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.spinStartWidth, 0, border=0, flag=0)
-        parent.AddWindow(self.spinStartHeight, 0, border=0, flag=0)
+        parent.Add(self.spinStartWidth, 0, border=0, flag=0)
+        parent.Add(self.spinStartHeight, 0, border=0, flag=0)
 
     def _init_coll_szStartHdr_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stStartPos, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.slStartPos, 1, border=0,
+        parent.Add(self.stStartPos, 0, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.slStartPos, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_szEndCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
-        parent.AddSizer(self.szEnd, 1, border=0, flag=0)
+        parent.AddSpacer(16)
+        parent.Add(self.szEnd, 1, border=0, flag=0)
 
     def _init_coll_szEnd_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stEndLocation, 0, border=0,
+        parent.Add(self.stEndLocation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.spinEndX, 0, border=0, flag=0)
-        parent.AddWindow(self.spinEndY, 0, border=0, flag=0)
-        parent.AddWindow(self.stEndSize, 0, border=0,
+        parent.Add(self.spinEndX, 0, border=0, flag=0)
+        parent.Add(self.spinEndY, 0, border=0, flag=0)
+        parent.Add(self.stEndSize, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.spinEndWidth, 0, border=0, flag=0)
-        parent.AddWindow(self.spinEndHeight, 0, border=0, flag=0)
+        parent.Add(self.spinEndWidth, 0, border=0, flag=0)
+        parent.Add(self.spinEndHeight, 0, border=0, flag=0)
 
     def _init_coll_szCmds_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cmdReset, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdCancel, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdOk, 0, border=0, flag=0)
+        parent.Add(self.cmdReset, 0, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.cmdCancel, 0, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.cmdOk, 0, border=0, flag=0)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.szStartHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSizer(self.szStartCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
-        parent.AddSizer(self.szEndHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSizer(self.szEndCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
-        parent.AddSizer(self.szCmds, 0, border=4, flag=wx.ALL | wx.ALIGN_RIGHT)
+        parent.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.szStartHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szStartCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(16)
+        parent.Add(self.szEndHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szEndCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(16)
+        parent.Add(self.szCmds, 0, border=4, flag=wx.ALL | wx.ALIGN_RIGHT)
 
     def _init_coll_szStartCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSpacer(wx.Size(16, 8), border=0, flag=0)
-        parent.AddSizer(self.szStart, 1, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.szStart, 1, border=0, flag=0)
 
     def _init_coll_szEndHdr_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stEndPos, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.slEndPos, 1, border=0,
+        parent.Add(self.stEndPos, 0, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.slEndPos, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_sizers(self):

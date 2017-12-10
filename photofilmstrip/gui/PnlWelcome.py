@@ -22,8 +22,8 @@
 import os
 import wx
 import wx.html
-import wx.lib.wxpTag
-import wx.lib.hyperlink
+import wx.lib.wxpTag  # import needed to initialize html tag 'wxp'; pylint: disable=unused-import
+import wx.adv
 
 from photofilmstrip import Constants
 from photofilmstrip.lib.Settings import Settings
@@ -67,12 +67,12 @@ class PnlWelcome(wx.Panel):
 
         self.cmdNew = wx.BitmapButton(self, -1,
                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_64'))
-        self.cmdNew.SetToolTipString(_(u"Create new project"))
+        self.cmdNew.SetToolTip(_(u"Create new project"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectNew)
 
         self.cmdOpen = wx.BitmapButton(self, -1,
                                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_64'))
-        self.cmdOpen.SetToolTipString(_(u"Open existing project"))
+        self.cmdOpen.SetToolTip(_(u"Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
 
         sizerCmd = wx.BoxSizer(wx.HORIZONTAL)
@@ -163,7 +163,7 @@ class PnlWelcome(wx.Panel):
         event.Skip()
 
     def OnPaint(self, event):
-        dc = wx.AutoBufferedPaintDC(self)
+        dc = wx.BufferedPaintDC(self)
         sz = self.GetSize()
         dc.SetBackground(wx.Brush(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)))
         dc.Clear()
@@ -198,7 +198,7 @@ class LinkOpenPfs(IconLabelLink):
             imgCount = prjFile.GetPicCount()
             img = prjFile.GetPreviewThumb()
             if img is not None:
-                wxImg = wx.ImageFromStream(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
+                wxImg = wx.Image(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
             else:
                 bmp = wx.ArtProvider.GetBitmap("PFS_ICON_48", wx.ART_OTHER)
@@ -231,12 +231,10 @@ class LinkClickedEvent(wx.PyCommandEvent):
         return self._filename
 
 
-class PfsHyperlink(wx.lib.hyperlink.HyperLinkCtrl):
+class PfsHyperlink(wx.adv.HyperlinkCtrl):
 
     def __init__(self, parent, size=wx.DefaultSize, label=""):
-        wx.lib.hyperlink.HyperLinkCtrl.__init__(self, parent, -1,
-                                                label,
-                                                wx.DefaultPosition, size)
+        wx.adv.HyperlinkCtrl.__init__(self, parent, -1, label, size=size)
         self.SetBackgroundColour(parent.GetBackgroundColour())
         self.SetURL(Constants.APP_URL)
 

@@ -71,7 +71,7 @@ class CairoRenderer(BaseRenderer):
         wx.CallAfter(self._screen.Destroy)
 
     def Prepare(self):
-        self._screen.SetClientSizeWH(*self.GetProfile().GetResolution())
+        self._screen.SetClientSize(*self.GetProfile().GetResolution())
 
         self._framerate = self.GetProfile().GetFrameRate().AsFloat()
         self._mainClock.reset()
@@ -85,7 +85,7 @@ class CairoRenderer(BaseRenderer):
             w = self._ctx.get_width()
             h = self._ctx.get_height()
             data = self._ctx.get_data()
-            wxbmp = wx.BitmapFromBufferRGBA(w, h, data)
+            wxbmp = wx.Bitmap.FromBufferRGBA(w, h, data)
             dc.DrawBitmap(wxbmp, 0, 0)
 
         event.Skip()

@@ -31,10 +31,8 @@ from photofilmstrip import Constants
 class GuiApp(AppMixin):
 
     def _OnStart(self):
-        if not getattr(sys, 'frozen', False):
-            import wxversion
-            wxversion.select("3.0")
-
+        import wx
+        assert wx.VERSION[0] == 4
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
         app = PhotoFilmStripApp(0)
         app.MainLoop()

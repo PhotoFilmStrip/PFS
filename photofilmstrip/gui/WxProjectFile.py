@@ -24,7 +24,7 @@ class WxProjectFile(ProjectFile):
 
     def __WaitUntilJobDone(self):
         while self.__result is None:
-            if wx.Thread_IsMain():
+            if wx.IsMainThread():
                 wx.Yield()
             time.sleep(0.05)
         self.__wxvJob = None

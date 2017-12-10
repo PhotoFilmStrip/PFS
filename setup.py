@@ -22,7 +22,7 @@
 import glob
 import sys, os
 import sqlite3
-import site
+import wx
 import zipfile
 
 from distutils import log
@@ -52,8 +52,10 @@ else:
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 INNO = os.path.join(PROGRAMFILES, "Inno Setup 5", "ISCC.exe")
-MSGFMT = os.path.join(os.path.dirname(sys.executable),
-                       "Tools", "i18n", "msgfmt.py")
+MSGFMT = os.path.join(getattr(sys,
+                              "real_prefix",
+                              os.path.dirname(sys.executable)),
+                      "Tools", "i18n", "msgfmt.py")
 if os.path.isfile(MSGFMT):
     MSGFMT = [sys.executable, MSGFMT]
 else:
@@ -356,13 +358,10 @@ class pfs_exe(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        targetDir = os.path.join("build", "dist", "bin")
-        dllDirCairo = os.path.join(site.getsitepackages()[-1], "wx-3.0-msw", "wx")
-        for dll in ["freetype6.dll", "libcairo-2.dll", "libpng14-14.dll"]:
-            self.copy_file(os.path.join(dllDirCairo, dll),
-                           os.path.join(targetDir, dll))
+        site_packages = os.path.abspath(os.path.join(wx.__file__, "..", ".."))
 
-        dllDirGnome = os.path.join(site.getsitepackages()[-1], "gnome")
+        targetDir = os.path.join("build", "dist", "bin")
+        dllDirGnome = os.path.join(site_packages, "gnome")
         for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
             self.copy_file(os.path.join(dllDirGnome, dll),
                            os.path.join(targetDir, os.path.basename(dll)))

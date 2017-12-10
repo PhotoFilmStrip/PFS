@@ -42,7 +42,7 @@ __CURSORS = {}
 
 
 def __MakeCursor(data):
-    img = wx.EmptyImage(16, 16)
+    img = wx.Image(16, 16)
     img.SetMaskColour(255, 0, 0)
     for px in range(len(data)):
         for py in range(len(data[px])):
@@ -53,9 +53,9 @@ def __MakeCursor(data):
                 img.SetRGB(px, py, 0, 0, 0)
             elif val == 0:
                 img.SetRGB(px, py, 255, 255, 255)
-    img.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_X, 8)
-    img.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, 8)
-    return wx.CursorFromImage(img)
+    img.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_X, 8)
+    img.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, 8)
+    return wx.Cursor(img)
 
 
 def GetNW():

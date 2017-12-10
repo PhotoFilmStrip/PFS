@@ -55,7 +55,7 @@ class WxVisualJobHandler(IVisualJobHandler):
         return evt.GetSkipped()
 
     def __OnInteract(self, event):
-        assert wx.Thread_IsMain()
+        assert wx.IsMainThread()
         try:
             event.OnProcess(self.__win)
         finally:

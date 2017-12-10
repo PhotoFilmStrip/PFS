@@ -96,64 +96,63 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def _init_coll_sizerPictures_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.lvPics, 1, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerPictureCtrls, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.lvPics, 1, border=0, flag=wx.EXPAND)
+        parent.Add(self.sizerPictureCtrls, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_sizerPictureCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cmdMoveLeft, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdMoveLeft, 0, border=2, flag=wx.ALL)
         parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdMoveRight, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdMoveRight, 0, border=2, flag=wx.ALL)
         parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdRemove, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdRemove, 0, border=2, flag=wx.ALL)
 
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.panelTop, 1, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.pnlAddPics, 1, border=0,
+        parent.Add(self.panelTop, 1, border=0, flag=wx.EXPAND)
+        parent.Add(self.pnlAddPics, 1, border=0,
               flag=wx.ALIGN_CENTER_HORIZONTAL)
-        parent.AddWindow(self.pnlEditPicture, 0, border=0, flag=wx.EXPAND)
-        parent.AddSizer(self.sizerPictures, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.pnlEditPicture, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.sizerPictures, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_sizerPnlTop_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bitmapLeft, 1, border=0, flag=wx.EXPAND | wx.ALL)
-        parent.AddWindow(self.toolBarImgSect, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.bitmapRight, 1, border=0, flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.bitmapLeft, 1, border=0, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.toolBarImgSect, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.bitmapRight, 1, border=0, flag=wx.ALL | wx.EXPAND)
 
     def _init_coll_toolBarImgSect_Tools(self, parent):
         # generated method, don't edit
 
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24'),
-              bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, kind=wx.ITEM_NORMAL,
-              label=u'', longHelp=u'', shortHelp=_(u'Random motion'))
+        parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, "",
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24'),
+                       _(u'Random motion'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
-              bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT, kind=wx.ITEM_NORMAL,
-              label='', longHelp='', shortHelp=_(u'Set motion start to end'))
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
-              bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT, kind=wx.ITEM_NORMAL,
-              label=u'', longHelp=u'', shortHelp=_(u'Set motion end to start'))
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP_24'),
-              bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP, kind=wx.ITEM_NORMAL,
-              label='', longHelp='', shortHelp=_(u'Swap motion'))
+        parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT,
+                       _(u'Set motion start to end'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
+                       _(u'Set motion start to end'))
+        parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT,
+                       _(u'Set motion end to start'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
+                       _(u'Set motion end to start'))
+        parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP,
+                       _(u'Swap motion'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP_24'),
+                       _(u'Swap motion'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL_24',
-              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST, kind=wx.ITEM_NORMAL,
-              label='', longHelp='', shortHelp=_(u'Adjust motion manual'))
+        parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST,
+                       _(u'Adjust motion manual'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL_24'),
+                       _(u'Adjust motion manual'))
         parent.AddSeparator()
-        parent.DoAddTool(bitmap=wx.ArtProvider.GetBitmap('PFS_LOCK_24',
-              wx.ART_TOOLBAR, wx.DefaultSize), bmpDisabled=wx.NullBitmap,
-              id=wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK, kind=wx.ITEM_CHECK,
-              label='', longHelp='', shortHelp=_(u'Preserve image dimension'))
+        parent.AddCheckTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
+                            _(u'Preserve image dimension'),
+                            wx.ArtProvider.GetBitmap('PFS_LOCK_24'),
+                            shortHelp=_(u'Preserve image dimension'))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
@@ -392,7 +391,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
 
     def AddToolBarActions(self, toolBar):
-        toolBar.DoAddTool(ID_PIC_IMPORT, '',
+        toolBar.AddTool(ID_PIC_IMPORT, '',
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
                           wx.ITEM_NORMAL,
@@ -400,7 +399,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
                           _(u'Import Pictures'),
                           None)
         toolBar.AddSeparator()
-        toolBar.DoAddTool(ID_RENDER_FILMSTRIP, '',
+        toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
                           wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
                           wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
                           wx.ITEM_NORMAL,

@@ -20,24 +20,24 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stInfo, 0, border=8, flag=wx.ALL)
-        parent.AddWindow(self.gauge, 0, border=8, flag=wx.EXPAND | wx.ALL)
-        parent.AddSizer(self.szTiming, 0, border=8, flag=wx.EXPAND | wx.ALL)
-        parent.AddWindow(self.cmdAbort, 0, border=8,
+        parent.Add(self.stInfo, 0, border=8, flag=wx.ALL)
+        parent.Add(self.gauge, 0, border=8, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.szTiming, 0, border=8, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.cmdAbort, 0, border=8,
               flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
 
     def _init_coll_szTiming_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stElapsedLabel, 0, border=0, flag=wx.ALIGN_RIGHT)
-        parent.AddWindow(self.stElapsedDiv, 0, border=4,
+        parent.Add(self.stElapsedLabel, 0, border=0, flag=wx.ALIGN_RIGHT)
+        parent.Add(self.stElapsedDiv, 0, border=4,
               flag=wx.RIGHT | wx.LEFT)
-        parent.AddWindow(self.stElapsedValue, 0, border=8, flag=wx.LEFT)
-        parent.AddWindow(self.stRemainingLabel, 0, border=0,
+        parent.Add(self.stElapsedValue, 0, border=8, flag=wx.LEFT)
+        parent.Add(self.stRemainingLabel, 0, border=0,
               flag=wx.ALIGN_RIGHT)
-        parent.AddWindow(self.stRemainingDiv, 0, border=4,
+        parent.Add(self.stRemainingDiv, 0, border=4,
               flag=wx.RIGHT | wx.LEFT)
-        parent.AddWindow(self.stRemainingValue, 0, border=8, flag=wx.LEFT)
+        parent.Add(self.stRemainingValue, 0, border=8, flag=wx.LEFT)
 
     def _init_sizers(self):
         # generated method, don't edit

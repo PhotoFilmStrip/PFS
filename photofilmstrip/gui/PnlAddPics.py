@@ -32,19 +32,19 @@ class PnlAddPics(wx.Panel):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSizer(self.szCentered, 0, border=0,
+        parent.Add(self.szCentered, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_szCentered_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stTitle, 0, border=4,
+        parent.Add(self.stTitle, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
-        parent.AddSpacer(wx.Size(8, 16), border=0, flag=0)
-        parent.AddWindow(self.stInfo, 0, border=4,
+        parent.AddSpacer(8)
+        parent.Add(self.stInfo, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdBrowse, 0, border=4,
+        parent.AddSpacer(8)
+        parent.Add(self.cmdBrowse, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
     def _init_sizers(self):

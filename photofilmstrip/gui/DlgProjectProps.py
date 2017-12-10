@@ -46,58 +46,58 @@ class DlgProjectProps(wx.Dialog):
 
         self.szAudioCmds = wx.BoxSizer(orient=wx.VERTICAL)
 
-        self.szMain.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        self.szMain.AddSizer(self.szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
-        self.szMain.AddWindow(self.staticLine1, 0, border=0, flag=wx.EXPAND)
-        self.szMain.AddSizer(self.szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
+        self.szMain.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
+        self.szMain.Add(self.szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
+        self.szMain.Add(self.staticLine1, 0, border=0, flag=wx.EXPAND)
+        self.szMain.Add(self.szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
 
-        self.szCtrls.AddWindow(self.stProject, (0, 0), border=0,
+        self.szCtrls.Add(self.stProject, (0, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        self.szCtrls.AddWindow(self.tcProject, (0, 1), border=0, flag=wx.EXPAND, span=(1, 1))
-        self.szCtrls.AddWindow(self.stFolder, (1, 0), border=0,
+        self.szCtrls.Add(self.tcProject, (0, 1), border=0, flag=wx.EXPAND, span=(1, 1))
+        self.szCtrls.Add(self.stFolder, (1, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        self.szCtrls.AddWindow(self.tcFolder, (1, 1), border=0,
+        self.szCtrls.Add(self.tcFolder, (1, 1), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, span=(1, 1))
-        self.szCtrls.AddWindow(self.cmdBrowseFolder, (1, 2), border=0, flag=0,
+        self.szCtrls.Add(self.cmdBrowseFolder, (1, 2), border=0, flag=0,
               span=(1, 1))
-        self.szCtrls.AddWindow(self.staticLine, (2, 0), border=0, flag=0, span=(1, 4))
-        self.szCtrls.AddWindow(self.stAspect, (3, 0), border=0,
+        self.szCtrls.Add(self.staticLine, (2, 0), border=0, flag=0, span=(1, 4))
+        self.szCtrls.Add(self.stAspect, (3, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
-        self.szCtrls.AddWindow(self.choiceAspect, (3, 1), border=0, flag=wx.EXPAND, span=(1,
+        self.szCtrls.Add(self.choiceAspect, (3, 1), border=0, flag=wx.EXPAND, span=(1,
               1))
 
-        self.szCtrls.AddWindow(self.stAudio, (4, 0), border=0,
+        self.szCtrls.Add(self.stAudio, (4, 0), border=0,
               flag=wx.ALIGN_TOP, span=(1, 1))
-        self.szCtrls.AddWindow(self.lvAudio, (4, 1), border=0,
+        self.szCtrls.Add(self.lvAudio, (4, 1), border=0,
               flag=wx.EXPAND, span=(1, 1))
-        self.szCtrls.AddSizer(self.szAudioCmds, (4, 2), border=0,
+        self.szCtrls.Add(self.szAudioCmds, (4, 2), border=0,
               flag=0, span=(1, 1))
 
-        self.szCtrls.AddWindow(self.cbTotalLength, (5, 0), border=0, flag=0, span=(1,
+        self.szCtrls.Add(self.cbTotalLength, (5, 0), border=0, flag=0, span=(1,
               1))
-        self.szCtrls.AddWindow(self.rbAudio, (6, 0), border=32,
+        self.szCtrls.Add(self.rbAudio, (6, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        self.szCtrls.AddWindow(self.rbTimelapse, (7, 0), border=32,
+        self.szCtrls.Add(self.rbTimelapse, (7, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        self.szCtrls.AddWindow(self.rbManual, (8, 0), border=32,
+        self.szCtrls.Add(self.rbManual, (8, 0), border=32,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.LEFT, span=(1, 1))
-        self.szCtrls.AddWindow(self.timeCtrlTotalLength, (8, 1), border=0, flag=0,
+        self.szCtrls.Add(self.timeCtrlTotalLength, (8, 1), border=0, flag=0,
               span=(1, 1))
 
-        self.szAudioCmds.AddWindow(self.cmdBrowseAudio,
-                                   border=2, flag=wx.BOTTOM)
-        self.szAudioCmds.AddWindow(self.cmdAudioPreview,
-                                   border=2, flag=wx.BOTTOM)
-        self.szAudioCmds.AddWindow(self.cmdAudioMoveUp,
-                                   border=2, flag=wx.BOTTOM)
-        self.szAudioCmds.AddWindow(self.cmdAudioMoveDown,
-                                   border=2, flag=wx.BOTTOM)
-        self.szAudioCmds.AddWindow(self.cmdAudioDel,
-                                   border=2, flag=wx.BOTTOM)
+        self.szAudioCmds.Add(self.cmdBrowseAudio,
+                             border=2, flag=wx.BOTTOM)
+        self.szAudioCmds.Add(self.cmdAudioPreview,
+                             border=2, flag=wx.BOTTOM)
+        self.szAudioCmds.Add(self.cmdAudioMoveUp,
+                             border=2, flag=wx.BOTTOM)
+        self.szAudioCmds.Add(self.cmdAudioMoveDown,
+                             border=2, flag=wx.BOTTOM)
+        self.szAudioCmds.Add(self.cmdAudioDel,
+                             border=2, flag=wx.BOTTOM)
 
-        self.szCmds.AddWindow(self.cmdCancel, 0, border=0, flag=0)
-        self.szCmds.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        self.szCmds.AddWindow(self.cmdOk, 0, border=0, flag=0)
+        self.szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
+        self.szCmds.AddSpacer(8)
+        self.szCmds.Add(self.cmdOk, 0, border=0, flag=0)
 
         self.SetSizer(self.szMain)
 
@@ -166,7 +166,7 @@ class DlgProjectProps(wx.Dialog):
         self.cbTotalLength = wx.CheckBox(self,
               label=_(u'Total length:'), name=u'cbTotalLength')
         self.cbTotalLength.SetValue(False)
-        self.cbTotalLength.SetToolTipString(_(u'Overrides the duration of single pictures and gives the project this total length.'))
+        self.cbTotalLength.SetToolTip(_(u'Overrides the duration of single pictures and gives the project this total length.'))
         self.cbTotalLength.Bind(wx.EVT_CHECKBOX, self.OnControlStatusTotalLength)
 
         self.rbManual = wx.RadioButton(self,

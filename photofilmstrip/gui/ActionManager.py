@@ -82,27 +82,27 @@ class ActionManager(object):
                 self._menuBar.Check(ident, True)
 
     def __MakeToolBar(self, toolBar):
-        toolBar.DoAddTool(wx.ID_NEW, _(u'New Slideshow'),
+        toolBar.AddTool(wx.ID_NEW, "",
                           wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'),
                           kind=wx.ITEM_DROPDOWN,
                           shortHelp=_(u'New Slideshow'))
         toolBar.Bind(wx.EVT_TOOL_DROPDOWN, self.OnDropDownNew)
 
-        toolBar.AddSimpleTool(wx.ID_OPEN,
+        toolBar.AddTool(wx.ID_OPEN, "",
                               wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'),
-                              _(u'Load'), _(u'Load'))
+                              _(u'Load'),)
 
-        toolBar.DoAddTool(wx.ID_SAVE, '',
+        toolBar.AddTool(wx.ID_SAVE, "",
                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_24'),
                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_24'),
                              wx.ITEM_NORMAL,
-                             _(u'Save'), _(u'Save'), None)
+                             shortHelp=_(u'Save'))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
 #                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'),
 #                              _(u'Save Project as'), _(u'Save Project as'))
         toolBar.AddSeparator()
 
-        toolBar.DoAddTool(self.ID_JOB_QUEUE, '',
+        toolBar.AddTool(self.ID_JOB_QUEUE, '',
                           wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_24'),
                           wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D_24'),
                           wx.ITEM_NORMAL,
@@ -123,7 +123,7 @@ class ActionManager(object):
 
     def __CreateMenuFile(self, editor=None):
         menu = wx.Menu()
-        menu.AppendMenu(wx.ID_ANY, _(u'New'), self.__CreateMenuNew())
+        menu.Append(wx.ID_ANY, _(u'New'), self.__CreateMenuNew())
         CreateMenuItem(menu, wx.ID_OPEN,
                        _(u'&Open') + '\tCtrl+O',
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_16'))
@@ -177,7 +177,7 @@ class ActionManager(object):
         langMenu.AppendRadioItem(self.ID_LANG_TA, u"தமிழ்")
         langMenu.AppendRadioItem(self.ID_LANG_UK, u"Український")
         langMenu.AppendRadioItem(self.ID_LANG_EL, u"ελληνικά")
-        menu.AppendMenu(wx.NewId(), _("Language"), langMenu)
+        menu.Append(wx.NewId(), _("Language"), langMenu)
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_ABOUT,
                        _(u'&About'),

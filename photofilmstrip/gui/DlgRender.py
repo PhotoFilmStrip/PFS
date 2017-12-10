@@ -21,7 +21,7 @@
 #
 
 import wx
-import wx.combo
+import wx.adv
 
 from photofilmstrip.core.OutputProfile import (
         GetOutputProfiles, GetMPEGProfiles)
@@ -52,34 +52,34 @@ class DlgRender(wx.Dialog):
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.pnlSettings, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSizer(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.pnlSettings, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(8)
+        parent.Add(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
 
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cmdHelp, 0, border=0, flag=0)
+        parent.Add(self.cmdHelp, 0, border=0, flag=0)
         parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdCancel, 0, border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cmdStart, 0, border=0, flag=0)
+        parent.Add(self.cmdCancel, 0, border=0, flag=0)
+        parent.AddSpacer(8)
+        parent.Add(self.cmdStart, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stFormat, 0, border=0,
+        parent.Add(self.stFormat, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceFormat, 0, border=0,
+        parent.Add(self.choiceFormat, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.cmdRendererProps, 0, border=0, flag=0)
-        parent.AddWindow(self.stProfile, 0, border=0,
+        parent.Add(self.cmdRendererProps, 0, border=0, flag=0)
+        parent.Add(self.stProfile, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.cbDraft, 0, border=0, flag=0)
+        parent.Add(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
+        parent.AddSpacer(8)
+        parent.AddSpacer(8)
+        parent.Add(self.cbDraft, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Growables(self, parent):
         # generated method, don't edit
@@ -134,7 +134,7 @@ class DlgRender(wx.Dialog):
               id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdRendererProps.SetToolTipString(_(u"Properties"))
+        self.cmdRendererProps.SetToolTip(_(u"Properties"))
         self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
             id=wxID_DLGRENDERCMDRENDERERPROPS)
 
@@ -179,7 +179,7 @@ class DlgRender(wx.Dialog):
         self.pnlHdr.SetTitle(_('Configure output and start render process'))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER_32'))
 
-        self.cbDraft.SetToolTipString(_(u"Activate this option to generate a preview. The rendering process will speed up dramatically, but results in lower quality."))
+        self.cbDraft.SetToolTip(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
         self.aspectRatio = aspectRatio
         self.__InitProfiles()
@@ -308,10 +308,10 @@ class DlgRender(wx.Dialog):
         return self.rendererClass
 
 
-class FormatComboBox(wx.combo.OwnerDrawnComboBox):
+class FormatComboBox(wx.adv.OwnerDrawnComboBox):
 
     def __init__(self, *args, **kwargs):
-        wx.combo.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
+        wx.adv.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
 
         for rend in RENDERERS:
             self.AddRenderer(rend)
@@ -325,7 +325,7 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
     def SetSelection(self, index):
         if index >= self.GetCount():
             index = 0
-        wx.combo.OwnerDrawnComboBox.SetSelection(self, index)
+        wx.adv.OwnerDrawnComboBox.SetSelection(self, index)
 
     def OnDrawItem(self, dc, rect, item, flags):
         if item == wx.NOT_FOUND:
@@ -341,17 +341,17 @@ class FormatComboBox(wx.combo.OwnerDrawnComboBox):
             dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
         else:
             bmp = wx.NullBitmap
-            if flags & wx.combo.ODCB_PAINTING_SELECTED:
+            if flags & wx.adv.ODCB_PAINTING_SELECTED:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
             else:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
 
-        if flags & wx.combo.ODCB_PAINTING_CONTROL:
+        if flags & wx.adv.ODCB_PAINTING_CONTROL:
             dc.DrawLabel(self.GetString(item), rect2, wx.ALIGN_CENTER_VERTICAL)
         else:
-            dc.DrawImageLabel("\n".join([self.GetString(item)] + data.GetMessages()),
-                              bmp, rect2,
-                              wx.ALIGN_CENTER_VERTICAL)
+            dc.DrawLabel("\n".join([self.GetString(item)] + data.GetMessages()),
+                         bmp, rect2,
+                         wx.ALIGN_CENTER_VERTICAL)
 
     def OnMeasureItem(self, item):
         data = self.GetClientData(item)

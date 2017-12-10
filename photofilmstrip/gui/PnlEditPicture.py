@@ -48,75 +48,75 @@ class PnlEditPicture(wx.Panel):
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSizer(self.szSettings, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.staticLine1, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSizer(self.szTimes, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddWindow(self.staticLine2, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(wx.Size(8, 8), border=0, flag=0)
-        parent.AddSizer(self.szSubtitle, 1, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szSettings, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(8)
+        parent.Add(self.staticLine1, 0, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.AddSpacer(8)
+        parent.Add(self.szTimes, 0, border=4, flag=wx.ALL)
+        parent.AddSpacer(8)
+        parent.Add(self.staticLine2, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(8)
+        parent.Add(self.szSubtitle, 1, border=4, flag=wx.ALL | wx.EXPAND)
 
     def _init_coll_szTimes_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stProcess, 0, border=0, flag=0)
-        parent.AddSizer(self.sizerTimesCtrls, 0, border=16, flag=wx.LEFT)
+        parent.Add(self.stProcess, 0, border=0, flag=0)
+        parent.Add(self.sizerTimesCtrls, 0, border=16, flag=wx.LEFT)
 
     def _init_coll_szSubtitle_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stSubtitle, 0, border=0, flag=0)
-        parent.AddWindow(self.tcComment, 1, border=16, flag=wx.LEFT | wx.EXPAND)
+        parent.Add(self.stSubtitle, 0, border=0, flag=0)
+        parent.Add(self.tcComment, 1, border=16, flag=wx.LEFT | wx.EXPAND)
 
     def _init_coll_sizerTimesCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stMovement, 0, border=0,
+        parent.Add(self.stMovement, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceMovement, 0, border=0,
+        parent.Add(self.choiceMovement, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.pnlImgDuration, 0, border=0,
+        parent.Add(self.pnlImgDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stDurationUnit, 0, border=0,
+        parent.Add(self.stDurationUnit, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stTrans, 0, border=0,
+        parent.Add(self.stTrans, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceTrans, 0, border=0,
+        parent.Add(self.choiceTrans, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.pnlTransDuration, 0, border=0,
+        parent.Add(self.pnlTransDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.stTransUnit, 0, border=0,
+        parent.Add(self.stTransUnit, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_szSettings_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stSettings, 0, border=0, flag=0)
-        parent.AddSizer(self.szSettingsCtrls, 0, border=16, flag=wx.LEFT)
+        parent.Add(self.stSettings, 0, border=0, flag=0)
+        parent.Add(self.szSettingsCtrls, 0, border=16, flag=wx.LEFT)
 
     def _init_coll_szSettingsCtrls_Growables(self, parent):
         # generated method, don't edit
 
-        parent.AddGrowableCol(1)
+        parent.AddGrowableCol(1)#!!!
 
     def _init_coll_szSettingsCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stRotation, 0, border=0,
+        parent.Add(self.stRotation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSizer(self.sizerRotationTools, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.stEffect, 0, border=0,
+        parent.Add(self.sizerRotationTools, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.stEffect, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddWindow(self.choiceEffect, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.choiceEffect, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_sizerRotationTools_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.cmdRotateLeft, 0, border=0, flag=0)
+        parent.Add(self.cmdRotateLeft, 0, border=0, flag=0)
         parent.AddStretchSpacer(1)
-        parent.AddWindow(self.cmdRotateRight, 0, border=0, flag=0)
+        parent.Add(self.cmdRotateRight, 0, border=0, flag=0)
 
     def _init_sizers(self):
         # generated method, don't edit

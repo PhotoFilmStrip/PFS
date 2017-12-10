@@ -32,7 +32,7 @@ from photofilmstrip.gui.DlgBugReport import DlgBugReport
 class PhotoFilmStripApp(wx.App):
 
     def OnInit(self):
-        self.SetAssertMode(wx.PYAPP_ASSERT_SUPPRESS)
+#        self.SetAssertMode(wx.PYAPP_ASSERT_SUPPRESS)
 #        loc = wx.Locale(wx.LANGUAGE_GERMAN)
 
         ArtProvider.Init()

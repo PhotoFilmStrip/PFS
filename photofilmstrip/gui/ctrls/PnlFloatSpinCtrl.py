@@ -34,8 +34,8 @@ class PnlFloatSpinCtrl(wx.Panel):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.tcValue, 1, border=0, flag=0)
-        parent.AddWindow(self.spinButtonValue, 0, border=0, flag=0)
+        parent.Add(self.tcValue, 1, border=0, flag=0)
+        parent.Add(self.spinButtonValue, 0, border=0, flag=0)
 
     def _init_sizers(self):
         # generated method, don't edit
