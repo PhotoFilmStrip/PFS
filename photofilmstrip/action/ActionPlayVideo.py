@@ -20,9 +20,9 @@
 #
 
 import os
-import subprocess
 
 from photofilmstrip.action.IAction import IAction
+from photofilmstrip.lib.util import StartFile
 
 
 class ActionPlayVideo(IAction):
@@ -41,10 +41,4 @@ class ActionPlayVideo(IAction):
         else:
             return
 
-        if os.name == "nt":
-            try:
-                os.startfile(videoFile)  # pylint: disable=no-member
-            except:
-                pass
-        else:
-            subprocess.Popen(["xdg-open", videoFile])
+        StartFile(videoFile)

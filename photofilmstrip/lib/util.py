@@ -21,6 +21,7 @@
 
 import logging
 import os
+import subprocess
 import sys
 
 
@@ -60,3 +61,13 @@ def CheckFile(filename):
         return False
     else:
         return True
+
+
+def StartFile(filename):
+    if os.name == "nt":
+        try:
+            os.startfile(filename)  # pylint: disable=no-member
+        except:
+            pass
+    else:
+        subprocess.Popen(["xdg-open", filename])

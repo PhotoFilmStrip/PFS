@@ -22,26 +22,29 @@
 import os
 import sys
 
-import wx.html
-
-from photofilmstrip.lib.common.Singleton import Singleton
+from photofilmstrip.lib.util import StartFile
 
 
-class HelpViewer(Singleton):
+class HelpViewer(object):
 
-    ID_INDEX = 1
-    ID_CREATE_PFS = 3
-    ID_RENDER = 4
+    ID_INDEX = "index.html"
+    ID_CREATE_PFS = "createpfs.html"
+    ID_RENDER = "renderpfs.html"
 
     def __init__(self):
-        self.__htmlCtrl = wx.html.HtmlHelpController()
-        docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])),
-                               "..", "share", "doc", "photofilmstrip", "photofilmstrip.hhp")
-        fn = os.path.abspath(docFile)
-        self.__htmlCtrl.AddBook(fn)
+        basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        docDir = None
+        for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", "html"),
+                        os.path.join("..", "build", "sphinx", "html")):
+            docDir = os.path.join(basedir, docDir)
+            if os.path.isdir(docDir):
+                break
+        else:
+            raise RuntimeError("helpdir not found!")
+        self.docDir = os.path.abspath(docDir)
 
     def DisplayID(self, ident):
-        self.__htmlCtrl.DisplayID(ident)
+        StartFile(os.path.join(self.docDir, ident))
 
     def Show(self):
-        self.__htmlCtrl.DisplayContents()
+        StartFile(os.path.join(self.docDir, self.ID_INDEX))

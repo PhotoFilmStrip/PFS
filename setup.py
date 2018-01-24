@@ -19,12 +19,12 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import glob
 import sys, os
 import sqlite3
 import site
 import zipfile
-
-from photofilmstrip import Constants
+import setuptools
 
 from distutils import log
 from distutils.command.build import build
@@ -34,14 +34,22 @@ from distutils.core import setup
 from distutils.core import Command
 from distutils.dir_util import remove_tree
 
-import glob
+from sphinx.setup_command import BuildDoc
+
 try:
     import py2exe
 except ImportError:
     py2exe = None
 
+from photofilmstrip import Constants
+
+if os.getenv("ProgramFiles(x86)"):
+    PROGRAMFILES = os.path.expandvars("%ProgramFiles(x86)%")
+else:
+    PROGRAMFILES = os.path.expandvars("%ProgramFiles%")
+
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-INNO = os.path.expandvars(r"%ProgramFiles(x86)%\Inno Setup 5\ISCC.exe")
+INNO = os.path.join(PROGRAMFILES, "Inno Setup 5", "ISCC.exe")
 MSGFMT = os.path.join(os.path.dirname(sys.executable),
                        "Tools", "i18n", "msgfmt.py")
 if os.path.isfile(MSGFMT):
@@ -114,6 +122,7 @@ class pfs_build(build):
 
     sub_commands = [
         ('scm_info', lambda x: True),
+        ('build_sphinx', lambda x: True),
     ] + build.sub_commands
 
     def run(self):
@@ -475,7 +484,6 @@ platform_data = []
 if os.name == "nt":
     platform_scripts.append("windows/photofilmstrip.bat")
     platform_scripts.append("windows/photofilmstrip-cli.bat")
-    platform_data.append((os.path.join("share", "doc", "photofilmstrip"), ["windows/photofilmstrip.chm"]))
 else:
     platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
     platform_data.append(("share/pixmaps", ["data/photofilmstrip.xpm"]))
@@ -499,6 +507,7 @@ setup(
                 "bdist_wininst" : pfs_win_setup,
                 "bdist_winport" : pfs_win_portable,
                 "scm_info"      : pfs_scm_info,
+                'build_sphinx'  : BuildDoc,
               },
     verbose=False,
     options={"py2exe": {"compressed": 2,
@@ -566,11 +575,17 @@ setup(
                                        "PIL._imagingtk", "PIL.ImageTk",
                                        "_ssl"]
                           },
-               "sdist": {"formats": ["gztar"]}
+               "sdist": {"formats": ["gztar"]},
+               'build_sphinx': {"project": Constants.APP_NAME,
+                                "release": Constants.APP_VERSION,
+                                "config_dir": 'docs/help',
+                                "builder": ["html"]}
     },
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
-                (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("docs/html/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("build/sphinx/html/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html", "_sources"), glob.glob("build/sphinx/html/_sources/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html", "_static"), glob.glob("build/sphinx/html/_static/*.*")),
 #                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
     ] + platform_data,
     scripts=[
