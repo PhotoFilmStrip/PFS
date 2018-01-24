@@ -1,6 +1,7 @@
 language: python
 before_install:
-  - sudo apt-get install -y devscripts debhelper python-sphinx
+  - sudo apt-get install -y devscripts debhelper python-pip
+  - pip install setuptools sphinx
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
