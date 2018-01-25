@@ -24,7 +24,6 @@ import sys, os
 import sqlite3
 import site
 import zipfile
-import setuptools
 
 from distutils import log
 from distutils.command.build import build
@@ -34,7 +33,10 @@ from distutils.core import setup
 from distutils.core import Command
 from distutils.dir_util import remove_tree
 
-from sphinx.setup_command import BuildDoc
+try:
+    from sphinx.setup_command import BuildDoc
+except ImportError:
+    BuildDoc = object
 
 try:
     import py2exe
@@ -122,7 +124,7 @@ class pfs_build(build):
 
     sub_commands = [
         ('scm_info', lambda x: True),
-        ('build_sphinx', lambda x: True),
+        ('build_sphinx', lambda x: issubclass(BuildDoc, Command)),
     ] + build.sub_commands
 
     def run(self):

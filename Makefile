@@ -38,7 +38,7 @@ package:
 	targetdir=`echo $$releasedir/$$appver`; \
 	rm -rf $$releasedir; \
 	$(mkdir) "$$releasedir"; \
-	python setup.py sdist; \
+	python setup.py build_sphinx sdist; \
 	cp dist/*.tar.gz "$$releasedir/"; \
 	cd "$$releasedir"; \
 	tar -xzf "$$appver.tar.gz"; \
