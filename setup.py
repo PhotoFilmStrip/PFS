@@ -34,9 +34,9 @@ from distutils.core import Command
 from distutils.dir_util import remove_tree
 
 try:
-    from sphinx.setup_command import BuildDoc
+    from sphinx.application import Sphinx
 except ImportError:
-    BuildDoc = object
+    Sphinx = None
 
 try:
     import py2exe
@@ -120,11 +120,58 @@ class pfs_sdist(sdist):
     ] + sdist.sub_commands
 
 
+class pfs_docs(Command):
+
+    description = "generates sphinx docs"
+
+    user_options = [
+        ('config-dir=', 'c', 'Location of the configuration directory'),
+        ('project=', None, 'The documented project\'s name'),
+        ('version=', None, 'The short X.Y version'),
+        ('release=', None, 'The full version, including alpha/beta/rc tags'),
+        ('builder=', 'b', 'The builder (or builders) to use.')
+    ]
+    sub_commands = []
+
+    def initialize_options(self):
+        self.config_dir = None
+        self.project = ''
+        self.version = ''
+        self.release = ''
+        self.builder = ['html']
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        build = self.get_finalized_command('build')
+        build_dir = os.path.join(os.path.abspath(build.build_base), 'sphinx')
+        doctree_dir = os.path.join(build_dir, 'doctrees')
+        self.mkpath(build_dir)
+        self.mkpath(doctree_dir)
+        confoverrides = {}
+        if self.project:
+            confoverrides['project'] = self.project
+        if self.version:
+            confoverrides['version'] = self.version
+        if self.release:
+            confoverrides['release'] = self.release
+
+        for builder in self.builder:
+            builder_target_dir = os.path.join(build_dir, builder)
+            self.mkpath(builder_target_dir)
+
+            app = Sphinx(self.config_dir, self.config_dir,
+                         builder_target_dir, doctree_dir,
+                         builder, confoverrides)
+            app.build()
+
+
 class pfs_build(build):
 
     sub_commands = [
         ('scm_info', lambda x: True),
-        ('build_sphinx', lambda x: issubclass(BuildDoc, Command)),
+        ('build_sphinx', lambda x: True if Sphinx else False),
     ] + build.sub_commands
 
     def run(self):
@@ -509,7 +556,7 @@ setup(
                 "bdist_wininst" : pfs_win_setup,
                 "bdist_winport" : pfs_win_portable,
                 "scm_info"      : pfs_scm_info,
-                'build_sphinx'  : BuildDoc,
+                'build_sphinx'  : pfs_docs,
               },
     verbose=False,
     options={"py2exe": {"compressed": 2,
