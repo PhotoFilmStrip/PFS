@@ -8,7 +8,6 @@ PhotoFilmStrip documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
    
    copyright
    introduction
