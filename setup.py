@@ -22,7 +22,7 @@
 import glob
 import sys, os
 import sqlite3
-import wx
+
 import zipfile
 
 from distutils import log
@@ -32,6 +32,7 @@ from distutils.command.sdist import sdist
 from distutils.core import setup
 from distutils.core import Command
 from distutils.dir_util import remove_tree
+from distutils.sysconfig import get_python_lib
 
 try:
     from sphinx.application import Sphinx
@@ -358,8 +359,7 @@ class pfs_exe(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        site_packages = os.path.abspath(os.path.join(wx.__file__, "..", ".."))
-
+        site_packages = get_python_lib()
         targetDir = os.path.join("build", "dist", "bin")
         dllDirGnome = os.path.join(site_packages, "gnome")
         for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
