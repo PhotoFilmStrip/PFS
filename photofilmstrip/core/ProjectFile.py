@@ -172,7 +172,7 @@ class ProjectFile(object):
                 cur = self.__GetCursor()
                 cur.execute("SELECT * FROM `picture`")
                 return True
-            except BaseException, err:
+            except BaseException as err:
                 logging.debug("IsOk(%s): %s", self._filename, err)
                 return False
         finally:
@@ -294,7 +294,7 @@ class ProjectFile(object):
             picData = self.__LoadSafe(row, 'data', None)
             if picData is None:
                 if not (os.path.exists(imgPath) and os.path.isfile(imgFile)):
-                    if not self.__altPaths.has_key(imgPath):
+                    if imgPath not in self.__altPaths:
                         self._SelectAlternatePath(imgPath)
 
                     imgFile = os.path.join(self.__altPaths.get(imgPath, imgPath),

@@ -147,7 +147,7 @@ class JobManager(Singleton, Destroyable):
         if workerCount is None:
             workerCount = multiprocessing.cpu_count()
 
-        if self.__jobCtxGroups.has_key(workerCtxGroup):
+        if workerCtxGroup in self.__jobCtxGroups:
             raise RuntimeError("group already initialized")
 
         workers = []
@@ -166,7 +166,7 @@ class JobManager(Singleton, Destroyable):
             worker.start()
 
     def EnqueueContext(self, jobContext):
-        if not self.__jobCtxGroups.has_key(jobContext.GetGroupId()):
+        if jobContext.GetGroupId() not in self.__jobCtxGroups:
             raise RuntimeError("job group %s not available" % jobContext.GetGroupId())
 
         self.__logger.debug("%s: register job", jobContext)
@@ -238,7 +238,7 @@ class JobManager(Singleton, Destroyable):
             ctx._Begin()  # pylint: disable=protected-access
         except JobAbortedException:
             return False
-        except Exception, exc:
+        except Exception as exc:
             self.__logger.error("<%s> not started %s",  # IGNORE:W0702
                                 threading.currentThread().getName(), ctx.GetName(), exc_info=1)
             try:

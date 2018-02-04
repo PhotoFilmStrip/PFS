@@ -19,7 +19,7 @@ class ResultObject(object):
     def GetResult(self, printTraceback=True):
         if self.exception:
             if printTraceback and self.traceback is not None:
-                print >> sys.stderr, self.traceback,
+                print(self.traceback, end=' ', file=sys.stderr)
             raise self.exception  # pylint: disable=raising-bad-type
         else:
             return self.result

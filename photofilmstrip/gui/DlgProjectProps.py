@@ -496,7 +496,7 @@ class DlgProjectProps(wx.Dialog):
             if resp == wx.ID_YES:
                 try:
                     os.makedirs(path)
-                except StandardError, err:
+                except Exception as err:
                     dlg = wx.MessageDialog(self,
                                            _(u"Cannot create folder: %s") % unicode(err),
                                            _(u"Error"),
@@ -528,7 +528,7 @@ class DlgProjectProps(wx.Dialog):
         elif not os.path.exists(projPath):
             try:
                 os.makedirs(projPath)
-            except StandardError:
+            except Exception:
                 self.pnlHdr.SetErrorMessage(_(u"The project name contains invalid characters."))
                 return False
             os.removedirs(projPath)

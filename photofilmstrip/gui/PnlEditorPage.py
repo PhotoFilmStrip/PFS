@@ -36,7 +36,7 @@ class PnlEditorPage(wx.Panel):
     def __Save(self, filepath):
         try:
             return self._Save(filepath)
-        except StandardError, err:
+        except Exception as err:
             dlg = wx.MessageDialog(self.GetParent(),
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
                                             {'file': Decode(filepath),

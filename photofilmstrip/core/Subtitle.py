@@ -148,7 +148,7 @@ def testRead():
     stp = SrtParser('output.srt', 25.0)
 
     for f in xrange(800):
-        print f, stp.Get(f)
+        print(f, stp.Get(f))
 
 
 if __name__ == "__main__":

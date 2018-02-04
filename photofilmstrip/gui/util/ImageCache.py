@@ -71,18 +71,18 @@ class ImageCache(Singleton, Observer):
 
     def UpdatePicture(self, picture):
         key = picture.GetKey()
-        if self._wxImgCache.has_key(key):
+        if key in self._wxImgCache:
             del self._wxImgCache[key]
-        if self._wxBmpCache.has_key(key):
+        if key in self._wxBmpCache:
             del self._wxBmpCache[key]
-        if self._pilCache.has_key(key):
+        if key in self._pilCache:
             del self._pilCache[key]
 
         self.RegisterPicture(picture)
 
     def GetImage(self, picture):
         key = picture.GetKey()
-        if not self._wxImgCache.has_key(key):
+        if key not in self._wxImgCache:
             pilImg = PILBackend.GetThumbnail(picture, width=ImageCache.SIZE)
             wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
             self._wxImgCache[key] = wxImg
@@ -90,7 +90,7 @@ class ImageCache(Singleton, Observer):
 
     def GetThumbBmp(self, picture):
         key = picture.GetKey()
-        if not self._wxBmpCache.has_key(key):
+        if key not in self._wxBmpCache:
             pilImg = self._pilCache.get(key)
             if pilImg is None:
                 self._pilCache[key] = self._inScalingQueue

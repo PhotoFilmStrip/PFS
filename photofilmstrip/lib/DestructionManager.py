@@ -23,7 +23,7 @@ class DestructionManager(Singleton):
                 dest.Destroy()
 
                 logging.getLogger('DestructionManager').debug("destroyed '%s'", dest)
-            except BaseException, exc:
+            except BaseException as exc:
                 logging.debug("could not destroy '%s': %s", dest, exc, exc_info=True)
 
         logging.getLogger('DestructionManager').debug("everything destroyed")

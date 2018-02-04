@@ -44,11 +44,11 @@ def RotateExif(pilImg):
     rotation = 0
     try:
         exif = pilImg._getexif()  # pylint: disable=protected-access
-        if isinstance(exif, dict) and exif.has_key(exifOrient):
+        if isinstance(exif, dict) and exifOrient in exif:
             rotation = exif[exifOrient]
     except AttributeError:
         pass
-    except Exception, err:
+    except Exception as err:
         logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
 
     if rotation == 2:
@@ -141,7 +141,7 @@ def __GetImage(picture):
         # discard the thumbnail
         img = Image.open(picture.GetFilename())
         picture.SetDummy(False)
-    except StandardError, err:
+    except Exception as err:
         logging.debug("PILBackend.GetImage(%s): %s", picture.GetFilename(), err, exc_info=1)
         img = __CreateDummyImage(str(err))
         picture.SetDummy(True)
@@ -189,11 +189,11 @@ def GetExifRotation(pilImg):
     rotation = 0
     try:
         exif = pilImg._getexif()  # pylint: disable=protected-access
-        if isinstance(exif, dict) and exif.has_key(exifOrient):
+        if isinstance(exif, dict) and exifOrient in exif:
             rotation = exif[exifOrient]
     except AttributeError:
         pass
-    except Exception, err:
+    except Exception as err:
         logging.debug("PILBackend.RotateExif(): %s", err, exc_info=1)
 
     if rotation == 3:

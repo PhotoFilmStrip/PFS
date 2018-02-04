@@ -204,7 +204,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         pdc = wx.BufferedPaintDC(self)
         try:
             dc = wx.GCDC(pdc)
-        except StandardError:
+        except Exception:
             dc = pdc
 
         dc.SetBrush(wx.BLACK_BRUSH)

@@ -555,7 +555,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
             ar.Execute()
             renderJob = ar.GetRenderJob()
             JobManager().EnqueueContext(renderJob)
-        except RenderException, exc:
+        except RenderException as exc:
             dlg = wx.MessageDialog(self,
                                    exc.GetMessage(),
                                    _(u"Error"),

@@ -119,8 +119,7 @@ class RenderJob(VisualJob):
         except JobAbortedException:
             pass
         with self.resultsForRendererLock:
-            while self.resultsForRendererCache.has_key(
-                                        self.resultForRendererIdx):
+            while self.resultForRendererIdx in self.resultsForRendererCache:
                 idx = self.resultForRendererIdx
 
                 self.__logger.debug("%s: %s: resultToFetch: %s",

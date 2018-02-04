@@ -200,7 +200,6 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         elif self.jobContext.IsAborted() or self.jobContext.IsDone():
             self.curAction = self._actRemove
         else:
-            print 'shit'
             self.curAction = None
 
         self._OnSetupAction()

@@ -51,7 +51,7 @@ class CliGui(IVisualJobHandler):
         chars = chars[:width]
         line = u"|%-3d%%%-37s| %s" % (int(percent * 100), chars, self._info)
         line = line[:80]
-        print u"%-80s\r" % (line),
+        print(u"%-80s\r" % (line), end=' ')
 
     def OnHandleJobBegin(self, jobContext):
         pass
@@ -70,22 +70,22 @@ class CliGui(IVisualJobHandler):
         self.__Output()
 
     def Info(self, project, rendererClass, profile):
-        print
-        print Constants.APP_NAME, Constants.APP_VERSION_EX
-        print u"(C) 2010 Jens G\xf6pfert"
-        print Constants.APP_URL
-        print
-        print u"%-20s: %s" % (_(u"processing project"), project)
-        print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-        print u"%-20s: %s" % (_(u"output format"), profile.GetName(
-            withRes=True))
-        print u"%-20s: %1.f" % (
+        print()
+        print(Constants.APP_NAME, Constants.APP_VERSION_EX)
+        print(u"(C) 2010 Jens G\xf6pfert")
+        print(Constants.APP_URL)
+        print()
+        print(u"%-20s: %s" % (_(u"processing project"), project))
+        print(u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName()))
+        print(u"%-20s: %s" % (_(u"output format"), profile.GetName(
+            withRes=True)))
+        print(u"%-20s: %1.f" % (
             _(u"framerate"),
-            profile.GetFrameRate().AsFloat())
-        print
+            profile.GetFrameRate().AsFloat()))
+        print()
 
     def Write(self, text):
-        print text
+        print(text)
 
 
 class DummyGui(IVisualJobHandler):
@@ -167,7 +167,7 @@ def main(showHelp=False):
             if not os.path.exists(outpath):
                 try:
                     os.makedirs(outpath)
-                except StandardError, err:
+                except Exception as err:
                     logging.error(_(u"cannot create output path: %s"), err)
                     return 7
     else:

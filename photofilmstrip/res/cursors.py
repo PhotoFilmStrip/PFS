@@ -59,7 +59,7 @@ def __MakeCursor(data):
 
 
 def GetNW():
-    if __CURSORS.has_key('NW'):
+    if 'NW' in __CURSORS:
         return __CURSORS['NW']
 
     result = []
@@ -74,7 +74,7 @@ def GetNW():
 
 
 def GetSE():
-    if __CURSORS.has_key('SE'):
+    if 'SE' in __CURSORS:
         return __CURSORS['SE']
 
     cursor = __MakeCursor(DATA)
@@ -83,7 +83,7 @@ def GetSE():
 
 
 def GetSW():
-    if __CURSORS.has_key('SW'):
+    if 'SW' in __CURSORS:
         return __CURSORS['SW']
 
     result = []
@@ -98,7 +98,7 @@ def GetSW():
 
 
 def GetNE():
-    if __CURSORS.has_key('NE'):
+    if 'NE' in __CURSORS:
         return __CURSORS['NE']
 
     result = []

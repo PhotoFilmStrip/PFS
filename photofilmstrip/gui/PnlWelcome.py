@@ -193,7 +193,7 @@ class LinkOpenPfs(IconLabelLink):
     def __init__(self, parent, size=wx.DefaultSize, filename=None):
         self.filename = filename
 
-        if not LinkOpenPfs.BMP_MAP.has_key(filename):
+        if filename not in LinkOpenPfs.BMP_MAP:
             prjFile = ProjectFile(filename=filename)
             imgCount = prjFile.GetPicCount()
             img = prjFile.GetPreviewThumb()

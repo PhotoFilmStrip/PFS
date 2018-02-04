@@ -102,7 +102,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         pdc = wx.BufferedPaintDC(self)
         try:
             dc = wx.GCDC(pdc)
-        except StandardError:
+        except Exception:
             dc = pdc
 
         dc.SetBackground(wx.BLACK_BRUSH)
@@ -161,7 +161,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         dc = wx.MemoryDC(bmp)
         try:
             dc = wx.GCDC(dc)
-        except StandardError:
+        except Exception:
             pass
 
         if dropIdx is not None:

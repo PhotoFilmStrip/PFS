@@ -51,7 +51,7 @@ def IsPathWritable(path):
         fd.close()
         os.remove(os.path.join(_path, 'test'))
         return True
-    except StandardError, err:
+    except Exception as err:
         logging.debug("IsPathWritable(%s): %s", path, err)
         return False
 
