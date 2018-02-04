@@ -30,7 +30,7 @@ except ImportError:
 APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
 APP_NAME = "PhotoFilmStrip"
-APP_VERSION = "3.3.1"
+APP_VERSION = "3.4.0"
 APP_VERSION_EX = "%s-%s" % (APP_VERSION, SCM_REV)
 APP_SLOGAN = "PhotoFilmStrip - Creates movies out of your pictures."
 APP_DESCRIPTION = """\
