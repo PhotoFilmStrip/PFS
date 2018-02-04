@@ -24,7 +24,7 @@ import logging
 import os
 import tempfile
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.util import Encode, Decode, IsPathWritable
 

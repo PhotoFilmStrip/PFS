@@ -20,7 +20,7 @@
 #
 
 import threading
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 
 
@@ -40,7 +40,7 @@ class UpdateChecker(threading.Thread):
 
     def run(self):
         try:
-            fd = urllib.urlopen(self.URL)
+            fd = urllib.request.urlopen(self.URL)
 #            fd = open('/home/jens/Projects/Python/PhotoFilmStrip/res/update.txt', 'r')
 
             data = fd.read()

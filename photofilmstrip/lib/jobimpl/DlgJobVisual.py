@@ -162,7 +162,7 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
             elapsed = time.time() - self.__timeStart
             if self.__last_timeupdate < elapsed or value == self.__maximum:
                 self.__last_timeupdate = elapsed
-                estimated = (elapsed * self.__maximum) / float(value)
+                estimated = (elapsed * self.__maximum) / value
                 if estimated > self.__display_estimated and self.__ctdelay >= 0:
                     self.__ctdelay += 1
                 elif estimated < self.__display_estimated and self.__ctdelay <= 0:
@@ -192,8 +192,8 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 
     def __SetTimeLabel(self, val, staticText):
         if val != -1:
-            hours = val / 3600
-            minutes = (val % 3600) / 60
+            hours = val // 3600
+            minutes = (val % 3600) // 60
             seconds = val % 60
             s = "%d:%02d:%02d" % (hours, minutes, seconds)
         else:

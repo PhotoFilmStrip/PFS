@@ -115,8 +115,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         cw, ch = self.GetClientSize().Get()
         iw, ih = self._imgProxy.GetSize()
-        rx = float(cw) / float(iw)
-        ry = float(ch) / float(ih)
+        rx = cw / iw
+        ry = ch / ih
 
         newWidth = cw
         newHeight = ih * rx
@@ -181,8 +181,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         now = time.time()
         alpha = 255
-        if now - self._lastRectUpdate > self.INFO_TIME_OUT / 2:
-            alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT / 2)) / (self.INFO_TIME_OUT / 2)) * 255
+        if now - self._lastRectUpdate > self.INFO_TIME_OUT // 2:
+            alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT // 2)) / (self.INFO_TIME_OUT // 2)) * 255
             alpha = int(round(alpha))
         if alpha < 0:
             alpha = 0

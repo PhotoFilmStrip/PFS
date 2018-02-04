@@ -47,7 +47,7 @@ class ActionI18N(IAction):
                 break
 
         if localeDir is None:
-            gettext.install(Constants.APP_NAME, unicode=True)
+            gettext.install(Constants.APP_NAME)
             return
 
         try:
@@ -56,4 +56,4 @@ class ActionI18N(IAction):
                                        languages=[curLang, "en"])
             lang.install(True)
         except IOError:
-            gettext.install(Constants.APP_NAME, unicode=True)
+            gettext.install(Constants.APP_NAME)

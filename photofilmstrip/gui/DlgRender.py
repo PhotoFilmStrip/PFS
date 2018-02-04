@@ -359,7 +359,7 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
         return height + 8
 
 
-class FormatData(object):
+class FormatData:
 
     MPEG_PROFILES = ("VCD", "SVCD", "DVD")
 

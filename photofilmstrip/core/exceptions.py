@@ -24,8 +24,7 @@ class RenderException(Exception):
 
     def __init__(self, msg):
         Exception.__init__(self)
-        if isinstance(msg, unicode):
-            self.message = msg.encode("utf-8")
+        self.message = msg
         self.msg = msg
 
     def GetMessage(self):

@@ -42,7 +42,7 @@ class ActionCenterPath(IAction):
             return
 
         ratio = Aspect.ToFloat(self.__aspect)
-        picRatio = width / float(height)
+        picRatio = width / height
         if picRatio > ratio:
             scaledWidth = height * ratio
             scaledHeight = height

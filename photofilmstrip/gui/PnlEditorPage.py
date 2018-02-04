@@ -40,7 +40,7 @@ class PnlEditorPage(wx.Panel):
             dlg = wx.MessageDialog(self.GetParent(),
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
                                             {'file': Decode(filepath),
-                                             'errMsg': unicode(err)},
+                                             'errMsg': str(err)},
                                    _(u"Question"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()

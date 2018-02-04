@@ -2,7 +2,7 @@
 
 import logging
 import multiprocessing
-import Queue
+import queue
 import threading
 
 from photofilmstrip.lib.common.Singleton import Singleton
@@ -14,14 +14,14 @@ from .Worker import Worker, WorkerAbortSignal
 from .JobAbortedException import JobAbortedException
 
 
-class _JobCtxGroup(object):
+class _JobCtxGroup:
     '''
     Handles the processing state of a JobContext and manages a queue with
     JobContexts that are waiting to be processed.
     '''
 
     def __init__(self, workers):
-        self.__idleQueue = Queue.Queue()
+        self.__idleQueue = queue.Queue()
 
         # holds the JobContext that is currently active
         self.__active = None
@@ -196,11 +196,11 @@ class JobManager(Singleton, Destroyable):
                 if self.__destroying:
                     # if in destroying state raise Queue.Empty() to enter
                     # the except section and get FinishCtx() called
-                    raise Queue.Empty()
+                    raise queue.Empty()
                 jobCtxActive = jcGroup.Active()
                 workLoad = jobCtxActive.GetWorkLoad()
                 return jobCtxActive, workLoad  # FIXME: no tuple
-        except Queue.Empty:
+        except queue.Empty:
             # no more workloads, job done, only __FinishCtx() needs to be done
             # wait for all workers to be done
             with jcGroup:
@@ -229,7 +229,7 @@ class JobManager(Singleton, Destroyable):
             if self.__destroying:
                 raise WorkerAbortSignal()
             else:
-                raise Queue.Empty()
+                raise queue.Empty()
 
     def __StartCtx(self, ctx):
         self.__logger.debug("<%s> starting %s...",

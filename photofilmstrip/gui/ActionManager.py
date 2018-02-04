@@ -25,7 +25,7 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.gui.helper import CreateMenuItem
 
 
-class ActionManager(object):
+class ActionManager:
 
     ID_JOB_QUEUE = wx.NewId()
     ID_PROJECT_CLOSE = wx.NewId()

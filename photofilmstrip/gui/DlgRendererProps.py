@@ -160,13 +160,13 @@ class DlgRendererProps(wx.Dialog):
         dlg = wx.TextEntryDialog(self,
                                  _(u"Edit property"),
                                  prop,
-                                 unicode(self.rendererClass.GetProperty(prop)))
+                                 str(self.rendererClass.GetProperty(prop)))
         if dlg.ShowModal() == wx.ID_OK:
             value = dlg.GetValue()
             if len(value) == 0:
                 value = self.rendererClass.GetDefaultProperty(prop)
             self.rendererClass.SetProperty(prop, value)
-            self.lcProps.SetItem(idx, 1, unicode(value))
+            self.lcProps.SetItem(idx, 1, str(value))
         dlg.Destroy()
 
     def OnCmdHelpButton(self, event):

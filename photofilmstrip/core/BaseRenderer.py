@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import cStringIO
+import io
 import logging
 
 
@@ -31,9 +31,7 @@ class MetaBaseRenderer(type):
         return newBaseRendererClass
 
 
-class BaseRenderer(object):
-
-    __metaclass__ = MetaBaseRenderer
+class BaseRenderer(metaclass=MetaBaseRenderer):
 
     def __init__(self):
         self._outputPath = None
@@ -157,6 +155,6 @@ class ImageDataFinalizeHandler(FinalizeHandler):
         return True
 
     def ProcessFinalize(self, pilImg):
-        res = cStringIO.StringIO()
+        res = io.StringIO()
         pilImg.save(res, self._format, quality=self._quality)
         return res.getvalue()

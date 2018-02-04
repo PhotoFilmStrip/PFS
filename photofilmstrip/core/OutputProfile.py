@@ -22,7 +22,7 @@
 from photofilmstrip.core.Aspect import Aspect
 
 
-class FrameRate(object):
+class FrameRate:
 
     def __init__(self, numValue, strValue):
         self.num = numValue
@@ -38,7 +38,7 @@ class FrameRate(object):
         return self.str
 
 
-class OutputProfile(object):
+class OutputProfile:
 
     PAL = 1
     NTSC = 2

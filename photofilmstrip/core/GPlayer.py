@@ -27,7 +27,7 @@ from gi.repository import Gst
 from gi.repository import GObject
 
 
-class GPlayer(object):
+class GPlayer:
 
     def __init__(self, filename):
         self.__filename = filename
@@ -68,7 +68,7 @@ class GPlayer(object):
 
         pipeline.set_state(Gst.State.NULL)
 
-        self.__length = duration / Gst.MSECOND
+        self.__length = duration // Gst.MSECOND
 
     def GetFilename(self):
         return self.__filename

@@ -25,7 +25,7 @@ import sys
 from photofilmstrip.lib.util import StartFile
 
 
-class HelpViewer(object):
+class HelpViewer:
 
     ID_INDEX = "index.html"
     ID_CREATE_PFS = "createpfs.html"

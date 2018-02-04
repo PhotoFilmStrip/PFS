@@ -37,8 +37,8 @@ def ChopText(dc, text, maxSize):
     if width <= maxSize:
         return text, width
 
-    for i in xrange(len(text), -1, -1):
-        s = '%s ... %s' % (text[:i * 33 / 100], text[-i * 67 / 100:])
+    for i in range(len(text), -1, -1):
+        s = '%s ... %s' % (text[:i * 33 // 100], text[-i * 67 // 100:])
 
         width, __ = dc.GetTextExtent(s)
 

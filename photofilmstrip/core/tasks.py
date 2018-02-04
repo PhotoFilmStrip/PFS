@@ -23,7 +23,7 @@ from photofilmstrip.core.Subtitle import SubtitleSrt
 from photofilmstrip.core import PILBackend
 
 
-class Task(object):
+class Task:
 
     def __init__(self):
         self.info = u""

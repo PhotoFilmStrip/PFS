@@ -86,7 +86,7 @@ CREATE TABLE `thumbnail` (
 """
 
 
-class ProjectFile(object):
+class ProjectFile:
 
     def __init__(self, project=None, filename=None):
         self._project = project
@@ -340,9 +340,9 @@ class ProjectFile(object):
         project = Project(self._filename)
         project.SetPictures(picList)
         if fileRev >= 2:
-            project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", unicode))
+            project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", str))
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
-            project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
+            project.SetAspect(self.__LoadProperty(cur, "aspect", str, Aspect.ASPECT_16_9))
             project.SetTimelapse(self.__LoadProperty(cur, "timelapse", int, False))
 
         self.__Close()

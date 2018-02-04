@@ -19,10 +19,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import cStringIO
+import io
 import sys
 import traceback
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import wx
 from wx.lib.wordwrap import wordwrap
@@ -43,7 +43,7 @@ class DlgBugReport(wx.Dialog):
         def excepthook(etype, value, tb):
             if not getattr(sys, 'frozen', False):
                 traceback.print_exception(etype, value, tb)
-            output = cStringIO.StringIO()
+            output = io.StringIO()
             traceback.print_exception(etype, value, tb, file=output)
             dlg = DlgBugReport(cls.PARENT, output.getvalue())
             dlg.ShowModal()
@@ -90,12 +90,12 @@ class DlgBugReport(wx.Dialog):
                           sys.getdefaultencoding(),
                           sys.getfilesystemencoding(),
                           str(getattr(sys, 'frozen', False))])
-        params = urllib.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Constants.APP_NAME,
+        params = urllib.parse.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Constants.APP_NAME,
                                                                        Constants.APP_VERSION_EX,
                                                                        Encode(self.tcMsg.GetValue()),
                                                                        info)})
         try:
-            fd = urllib.urlopen("http://www.photofilmstrip.org/bugreport.php", params)
+            fd = urllib.request.urlopen("http://www.photofilmstrip.org/bugreport.php", params)
             result = fd.read()
         except IOError:
             result = None

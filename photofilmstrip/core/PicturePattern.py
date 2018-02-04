@@ -23,7 +23,7 @@ import os
 import re
 
 
-class PicturePattern(object):
+class PicturePattern:
 
     @staticmethod
     def Create(path):

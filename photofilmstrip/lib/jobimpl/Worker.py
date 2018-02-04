@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 import logging
-import Queue
+import queue
 import sys
 import threading
 import traceback
@@ -41,7 +41,7 @@ class Worker(threading.Thread, IWorker):
             try:
                 self.__logger.debug("<%s> waiting for job", self.getName())
                 jobContext, workLoad = self.__jobManager._GetWorkLoad(self.GetContextGroupId())
-            except Queue.Empty:
+            except queue.Empty:
                 continue
             except WorkerAbortSignal:
                 break

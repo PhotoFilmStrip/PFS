@@ -26,21 +26,17 @@ import sys
 
 
 def Encode(value, coding="utf-8"):
-    if isinstance(value, unicode):
-        return value.encode(coding)
-    elif isinstance(value, str):
+    if isinstance(value, bytes):
         return value
     else:
-        return str(value)
+        return str(value).encode(coding)
 
 
 def Decode(value, coding="utf-8"):
-    if isinstance(value, unicode):
-        return value
-    elif isinstance(value, str):
+    if isinstance(value, bytes):
         return value.decode(coding)
     else:
-        return unicode(value)
+        return str(value)
 
 
 def IsPathWritable(path):

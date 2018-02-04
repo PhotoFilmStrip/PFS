@@ -23,7 +23,7 @@ import logging
 import os
 import threading
 
-import Queue
+import queue
 
 from gi.repository import Gst
 from gi.repository import GObject
@@ -40,7 +40,7 @@ class _GStreamerRenderer(BaseRenderer):
     def __init__(self):
         BaseRenderer.__init__(self)
         self._Log = _GStreamerRenderer.Log
-        self.resQueue = Queue.Queue(20)
+        self.resQueue = queue.Queue(20)
 
         self.active = None
         self.finished = None
@@ -335,7 +335,7 @@ class _GStreamerRenderer(BaseRenderer):
             try:
                 result = self.resQueue.get(True, 0.25)
                 break
-            except Queue.Empty:
+            except queue.Empty:
                 self._Log(logging.DEBUG, '_GstNeedData: Queue.Empty')
                 if self.finished:
                     self._Log(logging.DEBUG, '_GstNeedData: finished, emitting end-of-stream (finalTime %s)', pts)
@@ -401,7 +401,7 @@ class _GStreamerRenderer(BaseRenderer):
         :param probeInfo: GstPadProbeInfo object
         '''
         buf = probeInfo.get_buffer()
-        self._Log(logging.DEBUG, "_GstProbeBuffer: buffer %s", (buf, buf.pts / Gst.MSECOND, self.ptsOffset / Gst.MSECOND, self.finalTime))
+        self._Log(logging.DEBUG, "_GstProbeBuffer: buffer %s", (buf, buf.pts // Gst.MSECOND, self.ptsOffset // Gst.MSECOND, self.finalTime))
         if buf.pts < self.ptsLast:
             self.ptsOffset += self.ptsLast
         self.ptsLast = buf.pts

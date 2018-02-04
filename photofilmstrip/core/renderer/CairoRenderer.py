@@ -110,7 +110,7 @@ class PilToCairoFinalizeHandler(FinalizeHandler):
         return cairoImage
 
 
-class Clock(object):
+class Clock:
 
     def __init__(self):
         self.fps = 0.0

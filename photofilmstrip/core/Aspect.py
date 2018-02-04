@@ -20,7 +20,7 @@
 #
 
 
-class Aspect(object):
+class Aspect:
 
     ASPECT_4_3 = "4:3"
     ASPECT_3_2 = "3:2"

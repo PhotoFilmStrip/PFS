@@ -287,7 +287,7 @@ class DlgProjectProps(wx.Dialog):
             pfsDur = int(round(pfsDur))
 
             dur = wx.DateTime.Now()
-            dur.SetHMS(0, pfsDur / 60, pfsDur % 60)
+            dur.SetHMS(0, pfsDur // 60, pfsDur % 60)
             try:
                 self.timeCtrlTotalLength.SetWxDateTime(dur)
             except ValueError:
@@ -498,7 +498,7 @@ class DlgProjectProps(wx.Dialog):
                     os.makedirs(path)
                 except Exception as err:
                     dlg = wx.MessageDialog(self,
-                                           _(u"Cannot create folder: %s") % unicode(err),
+                                           _(u"Cannot create folder: %s") % str(err),
                                            _(u"Error"),
                                            wx.OK | wx.ICON_ERROR)
                     dlg.ShowModal()

@@ -20,7 +20,7 @@
 #
 
 import logging
-import cStringIO
+import io
 
 from PIL import Image, ImageDraw
 
@@ -28,7 +28,7 @@ from photofilmstrip.core.Picture import Picture
 
 
 def ImageToStream(pilImg, imgFormat="JPEG"):
-    fd = cStringIO.StringIO()
+    fd = io.StringIO()
     pilImg.save(fd, imgFormat)
     fd.seek(0)
     return fd
@@ -85,8 +85,8 @@ def CropAndResize(pilImg, rect, size, draft=False):
         filtr = Image.BILINEAR
     img = pilImg.transform(size,
                            Image.AFFINE,
-                           [rect[2] / float(size[0]), 0, rect[0],
-                            0, rect[3] / float(size[1]), rect[1]],
+                           [rect[2] / size[0], 0, rect[0],
+                            0, rect[3] / size[1], rect[1]],
                            filtr)
     return img
 
@@ -114,18 +114,18 @@ def __CreateDummyImage(message):
 
     draw = ImageDraw.Draw(img)
     textWidth, textHeight = draw.textsize(message)
-    x = (width - textWidth) / 2
+    x = (width - textWidth) // 2
     y = (height - textHeight * 2)
     draw.text((x, y), message, fill=(0, 0, 0))
 
-    sz = width / 2
-    draw.ellipse(((width - sz) / 2, (height - sz) / 2,
-                  (width + sz) / 2, (height + sz) / 2),
+    sz = width // 2
+    draw.ellipse(((width - sz) // 2, (height - sz) // 2,
+                  (width + sz) // 2, (height + sz) // 2),
                   fill=(255, 0, 0))
 
-    sz = width / 7
-    draw.line((width / 2 - sz, height / 2 - sz, width / 2 + sz, height / 2 + sz), fill=(255, 255, 255), width=20)
-    draw.line((width / 2 + sz, height / 2 - sz, width / 2 - sz, height / 2 + sz), fill=(255, 255, 255), width=20)
+    sz = width // 7
+    draw.line((width // 2 - sz, height // 2 - sz, width // 2 + sz, height // 2 + sz), fill=(255, 255, 255), width=20)
+    draw.line((width // 2 + sz, height // 2 - sz, width // 2 - sz, height // 2 + sz), fill=(255, 255, 255), width=20)
 
     del draw
 
@@ -228,7 +228,7 @@ def GetImageSize(filename):
 def GetThumbnail(picture, width=None, height=None):
     img = __GetImage(picture)
 
-    aspect = float(img.size[0]) / float(img.size[1])
+    aspect = img.size[0] / img.size[1]
     if width is not None and height is not None:
         thumbWidth = width
         thumbHeight = height

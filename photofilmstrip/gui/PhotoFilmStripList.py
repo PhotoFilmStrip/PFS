@@ -182,10 +182,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
         colour = wx.Colour(235, 235, 235)
 
-        bmpX = rect.x + self.GAP / 2
-        bmpY = (rect.height - thumbBmp.GetHeight()) / 2
+        bmpX = rect.x + self.GAP // 2
+        bmpY = (rect.height - thumbBmp.GetHeight()) // 2
 
-        holeX = rect.x + self.GAP / 2 - (holeOffset % (self.HOLE_WIDTH + self.HOLE_PADDING))
+        holeX = rect.x + self.GAP // 2 - (holeOffset % (self.HOLE_WIDTH + self.HOLE_PADDING))
 
         dc.SetClippingRegion(rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight())
 
@@ -208,8 +208,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         label, labelWidth = ChopText(dc, label, thumbBmp.GetWidth())
 
         dc.DrawBitmap(thumbBmp, bmpX, bmpY, True)
-        dc.DrawText(diaNo, rect.x + (rect.width - diaNoWidth) / 2, self.LABEL_MARGIN - 3)
-        dc.DrawText(label, rect.x + (rect.width - labelWidth) / 2, rect.height - self.LABEL_MARGIN - textHeight)
+        dc.DrawText(diaNo, rect.x + (rect.width - diaNoWidth) // 2, self.LABEL_MARGIN - 3)
+        dc.DrawText(label, rect.x + (rect.width - labelWidth) // 2, rect.height - self.LABEL_MARGIN - textHeight)
 
         while holeX <= rect.right + 1:
             dc.DrawRoundedRectangle(holeX, self.BORDER - self.HOLE_MARGIN - self.HOLE_HEIGHT, self.HOLE_WIDTH, self.HOLE_HEIGHT, 2)
@@ -288,9 +288,9 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                         self.Select(idx)
                     else:
                         step = 1 if idx > self.__selIdxs[0] else -1
-                        for ct, _idx in enumerate(xrange(self.__selIdxs[0],
-                                                         idx + step,
-                                                         step)):
+                        for ct, _idx in enumerate(range(self.__selIdxs[0],
+                                                        idx + step,
+                                                        step)):
                             self.Select(_idx, deselectOthers=ct == 0)
                 else:
                     self.Select(idx)
@@ -385,7 +385,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Refresh()
 
     def GetThumbSize(self, pic):
-        aspect = float(pic.GetWidth()) / float(pic.GetHeight())
+        aspect = pic.GetWidth() / pic.GetHeight()
         thumbHeight = self.THUMB_HEIGHT
         thumbWidth = int(round(thumbHeight * aspect))
         return thumbWidth, thumbHeight
@@ -422,7 +422,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def InsertPicture(self, idx, pic):
         self.__pictures.insert(idx, pic)
 
-        for i in xrange(len(self.__selIdxs)):
+        for i in range(len(self.__selIdxs)):
             if self.__selIdxs[i] >= idx \
             and self.__selIdxs[i] + 1 not in self.__selIdxs:
                 self.__selIdxs[i] += 1
@@ -450,7 +450,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         if len(self.__selIdxs) == 0:
             self.__selIdxs.append(firstSel)
 
-        for i in xrange(len(self.__selIdxs)):
+        for i in range(len(self.__selIdxs)):
             if self.__selIdxs[i] > idx \
             and self.__selIdxs[i] - 1 not in self.__selIdxs:
                 self.__selIdxs[i] -= 1
@@ -483,7 +483,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             return None
 
     def SetPicture(self, idx, pic):
-        if idx in xrange(len(self.__pictures)):
+        if idx in range(len(self.__pictures)):
             self.__pictures[idx] = pic
             self.Refresh()
 
@@ -502,7 +502,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         return selPics
 
     def Select(self, idx, on=True, deselectOthers=True):
-        if idx in xrange(len(self.__pictures)):
+        if idx in range(len(self.__pictures)):
             if deselectOthers:
                 newSel = []
             else:

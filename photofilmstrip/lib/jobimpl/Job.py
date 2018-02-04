@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 import logging
-import Queue
+import queue
 
 from .IJobContext import IJobContext
 from .WorkLoad import WorkLoad
@@ -23,7 +23,7 @@ class Job(IJobContext):
 
         self.__logger = logging.getLogger("Job<%s> %s" % (groupId, self))
 
-        self.__workQueue = Queue.Queue()
+        self.__workQueue = queue.Queue()
         self.__resultObject = NoResultObject(WorkLoad())
 
         self.__done = False

@@ -25,7 +25,7 @@ import sys
 from photofilmstrip.lib.DestructionManager import DestructionManager
 
 
-class AppMixin(object):
+class AppMixin:
 
     def __init__(self):
         pass

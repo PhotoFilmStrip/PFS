@@ -74,8 +74,8 @@ class IconLabelLink(wx.Panel):
             dc.DrawBitmap(self.bmpDia, 0, 0)
 
         thumbSz = self.bmpThumb.GetSize()
-        thumbRect = wx.Rect(sz[0] / 2 - thumbSz[0] / 2,
-                            sz[1] / 2 - thumbSz[1] / 2 - 15,
+        thumbRect = wx.Rect(sz[0] // 2 - thumbSz[0] // 2,
+                            sz[1] // 2 - thumbSz[1] // 2 - 15,
                             thumbSz[0],
                             thumbSz[1])
 
@@ -85,7 +85,7 @@ class IconLabelLink(wx.Panel):
         dc.DrawRectangle(thumbRect)
 
         label, width = ChopText(dc, self.label, 138)
-        dc.DrawText(label, sz[0] / 2 - width / 2, 97)
+        dc.DrawText(label, sz[0] // 2 - width // 2, 97)
 
     def OnClick(self):
         raise NotImplementedError("OnClick")

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 
-class IVisualJob(object):
+class IVisualJob:
 
     def GetName(self):
         raise NotImplementedError()

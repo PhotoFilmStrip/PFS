@@ -20,7 +20,7 @@
 #
 
 
-class Observable(object):
+class Observable:
 
     def __init__(self):
         self.__observers = []
@@ -40,7 +40,7 @@ class Observable(object):
             observer.ObservableUpdate(self, arg)
 
 
-class Observer(object):
+class Observer:
 
     def ObservableUpdate(self, obj, arg):
         raise NotImplementedError()

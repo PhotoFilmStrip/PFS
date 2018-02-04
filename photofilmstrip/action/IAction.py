@@ -20,7 +20,7 @@
 #
 
 
-class IAction(object):
+class IAction:
 
     def GetName(self):
         raise NotImplementedError()

@@ -29,7 +29,7 @@ class DestructionManager(Singleton):
         logging.getLogger('DestructionManager').debug("everything destroyed")
 
 
-class IDestroyable(object):
+class IDestroyable:
 
     def Destroy(self):
         raise NotImplementedError()

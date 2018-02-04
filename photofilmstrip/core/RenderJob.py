@@ -174,7 +174,7 @@ class RendererResultTask(WorkLoad):
         return self.task.GetInfo()
 
 
-class TaskResultCacheEntry(object):
+class TaskResultCacheEntry:
 
     NO_RESULT = object()
 

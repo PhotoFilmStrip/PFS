@@ -325,7 +325,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
             return u"%s: %d" % (_(u"Images"), imgCount)
 
         elif index == 1:
-            minutes = totalTime / 60
+            minutes = totalTime // 60
             seconds = totalTime % 60
             return u"%s: %02d:%02d" % (_(u"Duration"),
                                        minutes,

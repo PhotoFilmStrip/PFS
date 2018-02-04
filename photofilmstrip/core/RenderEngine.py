@@ -27,7 +27,7 @@ from photofilmstrip.core.PicturePattern import PicturePattern
 from photofilmstrip.core.exceptions import RenderException
 
 
-class RenderEngine(object):
+class RenderEngine:
 
     def __init__(self, outputPath, profile, pics, draftMode):
         self._outputPath = outputPath
@@ -93,7 +93,7 @@ class RenderEngineSlideshow(RenderEngine):
 
         count = len(pathRectsFrom)
         for idx in range(count):
-            task = TaskTrans(trans, idx / float(count),
+            task = TaskTrans(trans, idx / count,
                              picFrom.Copy(), pathRectsFrom[idx],
                              picTo.Copy(), pathRectsTo[idx],
                              self._profile.GetResolution())
@@ -211,7 +211,7 @@ class RenderEngineTimelapse(RenderEngine):
 
                 if transDur > 0 and picBefore:
                     for idxTrans in range(transDur):
-                        task = TaskTrans(pic.GetTransition(), (idxTrans + 1) / float(transDur + 1),
+                        task = TaskTrans(pic.GetTransition(), (idxTrans + 1) / (transDur + 1),
                                          picBefore.Copy(), pathRects[idxRect],
                                          picCopy.Copy(), pathRects[idxRect],
                                          self._profile.GetResolution())
@@ -235,7 +235,7 @@ class RenderEngineTimelapse(RenderEngine):
             idxPic += 1
 
 
-class ComputePath(object):
+class ComputePath:
 
     def __init__(self, pic, picCount):
         px1, py1 = pic.GetStartRect()[:2]
@@ -262,7 +262,7 @@ class ComputePath(object):
         mH = clazz(h2 - h1, picCount, h1)
 
         pathRects = []
-        for step in xrange(picCount):
+        for step in range(picCount):
             px = mX.Get(step)
             py = mY.Get(step)
             width = mW.Get(step)
@@ -280,7 +280,7 @@ class ComputePath(object):
         return self.pathRects
 
 
-class LinearMovement(object):
+class LinearMovement:
 
     def __init__(self, s, t, s0):
         self._s = float(s)
@@ -298,7 +298,7 @@ class LinearMovement(object):
         return self._v * t + self._s0
 
 
-class AccelMovement(object):
+class AccelMovement:
 
     def __init__(self, s, t, s0):
         self._s = float(s)

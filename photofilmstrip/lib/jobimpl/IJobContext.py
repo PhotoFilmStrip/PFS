@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 
-class IJobContext(object):
+class IJobContext:
     '''
     The JobContext interface handles the processing of a long running job.
     A Job can contain of multiple tasks (smaller workloads) that may processed
@@ -49,7 +49,7 @@ class IJobContext(object):
         raise NotImplementedError()
 
 
-class IWorker(object):
+class IWorker:
 
     def GetContextGroupId(self):
         raise NotImplementedError()

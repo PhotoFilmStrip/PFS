@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 
-class IWorkLoad(object):
+class IWorkLoad:
 
     def _Execute(self, jobContext):
         raise NotImplementedError()

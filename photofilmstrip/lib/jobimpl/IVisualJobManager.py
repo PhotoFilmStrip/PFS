@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 
-class IVisualJobManager(object):
+class IVisualJobManager:
 
     def RegisterJob(self, job):
         raise NotImplementedError()

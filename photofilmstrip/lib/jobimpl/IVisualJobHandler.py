@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 
-class IVisualJobHandler(object):
+class IVisualJobHandler:
 
     def OnHandleJobBegin(self, jobContext):
         raise NotImplementedError()
