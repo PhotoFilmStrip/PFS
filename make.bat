@@ -23,7 +23,7 @@ goto end
 goto end
 
 :versioninfo
-%PYTHON% -c "from photofilmstrip import Constants;print Constants.APP_VERSION"
+%PYTHON% -c "from photofilmstrip import Constants;print(Constants.APP_VERSION)"
 goto end
 
 :package

@@ -27,12 +27,12 @@ pot:
 
 
 versioninfo:
-	python3 -c "from photofilmstrip import Constants;print Constants.APP_VERSION"; \
+	python3 -c "from photofilmstrip import Constants;print(Constants.APP_VERSION)"; \
 
 
 package:
 	curdir=`pwd`; \
-	ver=`python3 -c "from photofilmstrip import Constants;print Constants.APP_VERSION"`; \
+	ver=`python3 -c "from photofilmstrip import Constants;print(Constants.APP_VERSION)"`; \
 	appver=`echo $(appname)-$$ver`; \
 	releasedir=`echo release_\`date +"%Y_%m_%d"\``; \
 	targetdir=`echo $$releasedir/$$appver`; \
