@@ -29,8 +29,6 @@ from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip import Constants
 
-from photofilmstrip.lib.util import Encode
-
 
 class DlgBugReport(wx.Dialog):
 
@@ -92,11 +90,13 @@ class DlgBugReport(wx.Dialog):
                           str(getattr(sys, 'frozen', False))])
         params = urllib.parse.urlencode({'bugreport': "%s-%s\n\n%s\n%s\n" % (Constants.APP_NAME,
                                                                        Constants.APP_VERSION_EX,
-                                                                       Encode(self.tcMsg.GetValue()),
+                                                                       self.tcMsg.GetValue(),
                                                                        info)})
+        params = params.encode('utf_8')
         try:
             fd = urllib.request.urlopen("http://www.photofilmstrip.org/bugreport.php", params)
             result = fd.read()
+            result = result.decode("utf-8")
         except IOError:
             result = None
 

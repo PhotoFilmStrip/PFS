@@ -46,8 +46,7 @@ class PhotoFilmStripApp(wx.App):
 
         if len(sys.argv) > 1:
             for arg in sys.argv[1:]:
-                fname = arg.decode(sys.getfilesystemencoding())
-                if os.path.isfile(fname):
-                    frame.LoadProject(fname)
+                if os.path.isfile(arg):
+                    frame.LoadProject(arg)
 
         return True

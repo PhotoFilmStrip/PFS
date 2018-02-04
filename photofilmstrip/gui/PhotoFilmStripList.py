@@ -63,10 +63,10 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.__selIdxs = []
         self.__hvrIdx = -1
 
-        self.__dragIdx = None
-        self.__dropIdx = None
+        self.__dragIdx = -1
+        self.__dropIdx = -1
         self.__dragBmp = None
-        self.__dragBmpIdx = None
+        self.__dragBmpIdx = -1
         self.__dragX = 0
         self.__dragOffX = 0
 
@@ -145,7 +145,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             if idx == self.__dropIdx and self.__dragIdx < idx:
                 diaRect.Offset(self.__dragBmp.GetWidth(), 0)
 
-        if self.__dragIdx is not None:
+        if self.__dragIdx != -1:
             dc.DrawBitmap(self.__dragBmp, self.__dragX - self.__dragOffX - vx, 0, True)
 
     def __CreateDiaBmp(self, picIdx, selected=False, highlighted=False, dropIdx=None):
@@ -259,7 +259,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 self.__Scroll(40)
 
             self.__dragX = unscrolledPos.x
-            if self.__dragIdx is None:
+            if self.__dragIdx == -1:
                 if idx != -1:
                     self.__dragIdx = idx
                     self.__dragBmp = self.__CreateDiaBmp(idx, True, True)
@@ -295,14 +295,14 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 else:
                     self.Select(idx)
 
-        if event.LeftUp() and self.__dragIdx is not None:
+        if event.LeftUp() and self.__dragIdx != -1:
             self.__FinishDnD()
 
         event.Skip()
 
     def OnCaptureLost(self, event):
-        self.__dragIdx = None
-        self.__dropIdx = None
+        self.__dragIdx = -1
+        self.__dropIdx = -1
         self.Refresh()
         event.Skip()
 
@@ -341,14 +341,14 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self.EnsureVisible(0)
 
         elif key == wx.WXK_ESCAPE:
-            if self.__dragIdx is not None:
+            if self.__dragIdx != -1:
                 self.__FinishDnD(abort=True)
 
         else:
             event.Skip()
 
     def __FinishDnD(self, abort=False):
-        if self.__dragIdx is not None:
+        if self.__dragIdx != -1:
             if self.HasCapture():
                 self.ReleaseMouse()
 
@@ -358,8 +358,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
                 self.Select(self.__dropIdx)
                 idx = self.__dropIdx
 
-            self.__dragIdx = None
-            self.__dropIdx = None
+            self.__dragIdx = -1
+            self.__dropIdx = -1
 
             self.Refresh()
             self.EnsureVisible(idx)

@@ -22,25 +22,10 @@
 import logging
 import os
 import subprocess
-import sys
-
-
-def Encode(value, coding="utf-8"):
-    if isinstance(value, bytes):
-        return value
-    else:
-        return str(value).encode(coding)
-
-
-def Decode(value, coding="utf-8"):
-    if isinstance(value, bytes):
-        return value.decode(coding)
-    else:
-        return str(value)
 
 
 def IsPathWritable(path):
-    _path = Encode(path, sys.getfilesystemencoding())
+    _path = path
     try:
         fd = open(os.path.join(_path, 'test'), 'w')
         fd.write(" ")

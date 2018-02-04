@@ -55,7 +55,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.srtParse = None
         self.concat = None
         self.ptsOffset = 0
-        self.ptsLast = None
+        self.ptsLast = -1
 
     @staticmethod
     def CheckDependencies(msgList):
@@ -106,7 +106,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.srtParse = None
         self.concat = None
         self.ptsOffset = 0
-        self.ptsLast = None
+        self.ptsLast = -1
 
         if self.GetTypedProperty("RenderSubtitle", bool):
             # delete subtitle file, if subtitle is rendered in video

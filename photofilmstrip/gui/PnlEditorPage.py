@@ -24,7 +24,6 @@ import os
 import wx
 
 from photofilmstrip.lib.Settings import Settings
-from photofilmstrip.lib.util import Decode
 
 
 class PnlEditorPage(wx.Panel):
@@ -39,7 +38,7 @@ class PnlEditorPage(wx.Panel):
         except Exception as err:
             dlg = wx.MessageDialog(self.GetParent(),
                                    _(u"Could not save the file '%(file)s': %(errMsg)s") % \
-                                            {'file': Decode(filepath),
+                                            {'file': filepath,
                                              'errMsg': str(err)},
                                    _(u"Question"),
                                    wx.OK | wx.ICON_ERROR)
@@ -60,7 +59,7 @@ class PnlEditorPage(wx.Panel):
                 filepath = _(u"New file")
 
             dlg = wx.MessageDialog(self.GetParent(),
-                                   _(u"'%s' has been modified. Save changes?") % Decode(filepath),
+                                   _(u"'%s' has been modified. Save changes?") % filepath,
                                    _(u"Question"),
                                    wx.YES_NO | wx.CANCEL | wx.ICON_EXCLAMATION)
             response = dlg.ShowModal()

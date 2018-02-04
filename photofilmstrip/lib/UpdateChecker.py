@@ -48,7 +48,7 @@ class UpdateChecker(threading.Thread):
             self._checkDone = True
             return
 
-        lines = data.split('\n')
+        lines = data.decode("utf-8").split('\n')
 
         ovMatch = re.match(r"(\d+).(\d+).(\d+)?(.+)?", lines.pop(0))
         if ovMatch:

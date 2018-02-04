@@ -28,7 +28,7 @@ from photofilmstrip.core.Picture import Picture
 
 
 def ImageToStream(pilImg, imgFormat="JPEG"):
-    fd = io.StringIO()
+    fd = io.BytesIO()
     pilImg.save(fd, imgFormat)
     fd.seek(0)
     return fd
@@ -165,7 +165,7 @@ def __ProcessImage(img, picture):
             ramp = []
             r, g, b = white
             for i in range(255):
-                ramp.extend((r * i / 255, g * i / 255, b * i / 255))
+                ramp.extend((r * i // 255, g * i // 255, b * i // 255))
             return ramp
 
         # make sepia ramp (tweak color as necessary)

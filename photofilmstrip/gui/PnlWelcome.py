@@ -109,7 +109,7 @@ class PnlWelcome(wx.Panel):
                     htmlParts.append(htmlPart)
 
             breakAt = 4
-            for idx in xrange((len(htmlParts) - 1) // breakAt):
+            for idx in range((len(htmlParts) - 1) // breakAt):
                 htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
 
             if htmlParts:

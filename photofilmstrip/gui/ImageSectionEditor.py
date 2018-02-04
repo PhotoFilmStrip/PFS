@@ -28,7 +28,6 @@ import wx
 import photofilmstrip.res.cursors as cursors
 
 from photofilmstrip.lib.common.ObserverPattern import Observable, Observer
-from photofilmstrip.lib.util import Encode
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core import PILBackend
@@ -597,7 +596,7 @@ class ImageSectionEditor(wx.Panel, Observer):
 class ScaleThread(threading.Thread):
 
     def __init__(self, picture, callbackOnDone):
-        threading.Thread.__init__(self, name="reload %s" % Encode(picture.GetFilename()))
+        threading.Thread.__init__(self, name="reload %s" % picture.GetFilename())
         self._picture = picture
         self._abort = False
         self._callbackOnDone = callbackOnDone

@@ -24,8 +24,6 @@ import os
 import random
 import sqlite3
 
-from photofilmstrip.lib.util import Encode
-
 from photofilmstrip.core import PILBackend
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
@@ -107,7 +105,7 @@ class ProjectFile:
 
     def __Connect(self):
         if self.__conn is None:
-            self.__conn = sqlite3.connect(Encode(self._filename),
+            self.__conn = sqlite3.connect(self._filename,
                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = self.__GetCursor()
 

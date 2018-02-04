@@ -25,7 +25,7 @@ from optparse import OptionParser
 
 from photofilmstrip import Constants
 
-from photofilmstrip.lib.util import Decode, CheckFile
+from photofilmstrip.lib.util import CheckFile
 
 from photofilmstrip.core.OutputProfile import (
     GetOutputProfiles, GetMPEGProfiles)
@@ -126,7 +126,6 @@ def main(showHelp=False):
     options = parser.parse_args()[0]
 
     if options.project:
-        options.project = Decode(options.project, sys.getfilesystemencoding())
         options.project = os.path.abspath(options.project)
         if not os.path.isfile(options.project):
             logging.error(_(u"project file does not exist: %s"), options.project)

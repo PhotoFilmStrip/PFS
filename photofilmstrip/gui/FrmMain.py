@@ -35,7 +35,6 @@ from photofilmstrip.core.RenderJob import RenderJob
 
 from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.lib.Settings import Settings
-from photofilmstrip.lib.util import Decode
 
 from photofilmstrip.lib.jobimpl.WxVisualJobManager import (
         WxVisualJobManager, EVT_REGISTER_JOB, EVT_REMOVE_JOB)
@@ -175,7 +174,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
 
             filepath = page.GetProject().GetFilename()
-            self.SetTitle(Constants.APP_NAME + u' - ' + Decode(filepath))
+            self.SetTitle(Constants.APP_NAME + u' - ' + filepath)
 
         self._actionMgr.UpdateActions(page)
         self.UpdateStatusText()

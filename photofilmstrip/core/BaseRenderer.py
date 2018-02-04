@@ -155,6 +155,6 @@ class ImageDataFinalizeHandler(FinalizeHandler):
         return True
 
     def ProcessFinalize(self, pilImg):
-        res = io.StringIO()
+        res = io.BytesIO()
         pilImg.save(res, self._format, quality=self._quality)
         return res.getvalue()

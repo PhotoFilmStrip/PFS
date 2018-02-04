@@ -220,7 +220,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.lvPics = PhotoFilmStripList(id=wxID_PNLPFSPROJECTLVPICS,
               name=u'lvPics', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1),
-              style=wx.HSCROLL | wx.ALWAYS_SHOW_SB)
+              style=wx.HSCROLL)  # | wx.ALWAYS_SHOW_SB)
         self.lvPics.Bind(wx.EVT_LIST_ITEM_SELECTED,
               self.OnLvPicsSelectionChanged, id=wxID_PNLPFSPROJECTLVPICS)
 
