@@ -167,6 +167,13 @@ class pfs_docs(Command):
                          builder, confoverrides)
             app.build()
 
+        self.distribution.data_files.extend([
+                (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("build/sphinx/html/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html", "_sources"), glob.glob("build/sphinx/html/_sources/*.*")),
+                (os.path.join("share", "doc", "photofilmstrip", "html", "_static"), glob.glob("build/sphinx/html/_static/*.*"))
+        ])
+
 
 class pfs_build(build):
 
@@ -629,9 +636,6 @@ setup(
     },
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
-                (os.path.join("share", "doc", "photofilmstrip", "html"), glob.glob("build/sphinx/html/*.*")),
-                (os.path.join("share", "doc", "photofilmstrip", "html", "_sources"), glob.glob("build/sphinx/html/_sources/*.*")),
-                (os.path.join("share", "doc", "photofilmstrip", "html", "_static"), glob.glob("build/sphinx/html/_static/*.*")),
 #                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
     ] + platform_data,
     scripts=[
