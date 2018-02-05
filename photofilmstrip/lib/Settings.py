@@ -34,7 +34,6 @@ from photofilmstrip import Constants
 class Settings(Singleton):
 
     def __init__(self):
-#        self.__isFirstStart = False
         self.cp = None
 
         if IsPathWritable(Constants.APP_DIR):
@@ -46,8 +45,6 @@ class Settings(Singleton):
             setPath = userpath
 
         self.filename = os.path.join(setPath, '.%s' % Constants.APP_NAME)
-#        if not os.path.isfile(self.filename):
-#            self.__isFirstStart = True
 
         logging.debug("settings file: %s", self.filename)
 
@@ -76,9 +73,6 @@ class Settings(Singleton):
             fd.close()
         except IOError:
             pass
-
-#    def IsFirstStart(self):
-#        return self.__isFirstStart
 
     def SetLanguage(self, lang):
         self.Load()

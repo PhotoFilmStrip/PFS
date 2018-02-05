@@ -68,9 +68,7 @@ class pfs_clean(clean):
     def run(self):
         clean.run(self)
 
-        for directory in (os.path.join(WORKDIR, "dist"),
-                          os.path.join(WORKDIR, "build"),
-                          os.path.join(WORKDIR, "release"),
+        for directory in (os.path.join(WORKDIR, "build"),
                           ):
             if os.path.exists(directory):
                 remove_tree(directory, 1)
@@ -344,12 +342,12 @@ class pfs_exe(Command):
 
     def run(self):
         self.distribution.windows = [
-                 Target(script="photofilmstrip/GUI.py",
+                 Target(script=os.path.join("photofilmstrip", "GUI.py"),
                         dest_base="bin/" + Constants.APP_NAME
                         ),
         ]
         self.distribution.console = [
-                 Target(script="photofilmstrip/CLI.py",
+                 Target(script=os.path.join("photofilmstrip", "CLI.py"),
                         dest_base="bin/" + Constants.APP_NAME + "-cli"
                         )
         ]
@@ -448,7 +446,7 @@ class pfs_win_portable(Command):
 
         Zip(os.path.join("dist", "photofilmstrip-{0}-{1}.zip".format(ver, bitSuffix)),
             "build/dist",
-            virtualFolder="PhotoFilmStrip-%s" % ver,
+#            virtualFolder="PhotoFilmStrip-%s" % ver,
             stripFolders=2)
         log.info("    done.")
 
@@ -530,8 +528,8 @@ def Unzip(zipFile, targetDir, stripFolders=0):
 platform_scripts = []
 platform_data = []
 if os.name == "nt":
-    platform_scripts.append("windows/photofilmstrip.bat")
-    platform_scripts.append("windows/photofilmstrip-cli.bat")
+    platform_scripts.append(os.path.join("windows", "photofilmstrip.bat"))
+    platform_scripts.append(os.path.join("windows", "photofilmstrip-cli.bat"))
 else:
     platform_data.append(("share/applications", ["data/photofilmstrip.desktop"]))
     platform_data.append(("share/pixmaps", ["data/photofilmstrip.xpm"]))
@@ -561,7 +559,7 @@ setup(
     options={"py2exe": {"compressed": 2,
 #                          "bundle_files":1,
                           "optimize": 2,
-                          "dist_dir": "build/dist",
+                          "dist_dir": os.path.join("build", "dist"),
                           "dll_excludes": ["msvcr90.dll", "msvcp90.dll",
                                            "libcairo-gobject-2.dll",
                                            "libffi-6.dll",
