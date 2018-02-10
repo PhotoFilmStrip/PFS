@@ -206,9 +206,20 @@ class ImageSectionEditor(wx.Panel, Observer):
         except Exception:
             dc = pdc
 
+        isModalDialogShown = False
+        for win in wx.GetTopLevelWindows():
+            if isinstance(win, wx.Dialog) and win.IsModal():
+                isModalDialogShown = True
+                break
+
         dc.SetBrush(wx.BLACK_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
-        if not self.IsEnabled():
+        if not self.IsEnabled() and not isModalDialogShown:
+            # a modal dialog set this window to disabled (not enabled), but
+            # this windows is set to disabled if no selection can
+            # be made (multiple selected images)
+            # this rectangle should only be drawn if this windows is set to
+            # disabled programmatically and not when a modal dialog is shown
             dc.SetBrush(wx.Brush(wx.Colour(90, 90, 90, 255),
                                  wx.HORIZONTAL_HATCH))
             dc.DrawRectangle(0, 0, sz[0], sz[1])
