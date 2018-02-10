@@ -9,5 +9,5 @@ dist/
 sdist/
 var/
 
-
+.settings
 .PhotoFilmStrip
