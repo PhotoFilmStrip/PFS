@@ -57,6 +57,7 @@ class PnlWelcome(wx.Panel):
         self.pnlHtmlBackground.SetBackgroundColour(wx.Colour(52, 73, 94))
 
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
+        self.htmlWin.SetBackgroundStyle(wx.BG_STYLE_SYSTEM)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
