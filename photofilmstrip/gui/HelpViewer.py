@@ -34,8 +34,9 @@ class HelpViewer:
     def __init__(self):
         basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
         docDir = None
-        for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", "html"),
-                        os.path.join("..", "build", "sphinx", "html")):
+        for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", "html"),  # linux
+                       os.path.join("share", "doc", "photofilmstrip", "html"),  # win
+                       os.path.join("..", "build", "sphinx", "html")):  # source
             docDir = os.path.join(basedir, docDir)
             if os.path.isdir(docDir):
                 break

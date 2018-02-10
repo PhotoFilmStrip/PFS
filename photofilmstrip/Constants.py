@@ -27,7 +27,10 @@ try:
 except ImportError:
     SCM_REV = "src"
 
-APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
+if getattr(sys, "frozen", False):
+    APP_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
+else:
+    APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
 APP_NAME = "PhotoFilmStrip"
 APP_VERSION = "3.4.0"

@@ -350,22 +350,22 @@ class pfs_exe(Command):
     def run(self):
         self.distribution.windows = [
                  Target(script=os.path.join("photofilmstrip", "GUI.py"),
-                        dest_base="bin/" + Constants.APP_NAME
+                        dest_base=Constants.APP_NAME
                         ),
         ]
         self.distribution.console = [
                  Target(script=os.path.join("photofilmstrip", "CLI.py"),
-                        dest_base="bin/" + Constants.APP_NAME + "-cli"
+                        dest_base=Constants.APP_NAME + "-cli"
                         )
         ]
-        self.distribution.zipfile = "lib/photofilmstrip/modules"
+        self.distribution.zipfile = "modules"
 
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
         site_packages = get_python_lib()
-        targetDir = os.path.join("build", "dist", "bin")
+        targetDir = os.path.join("build", "dist")
         dllDirGnome = os.path.join(site_packages, "gnome")
         for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
             self.copy_file(os.path.join(dllDirGnome, dll),
