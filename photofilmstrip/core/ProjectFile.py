@@ -180,7 +180,7 @@ class ProjectFile:
     def __PicToQuery(self, pic, includePics):
         if includePics:
             fd = open(pic.GetFilename(), 'rb')
-            picData = buffer(fd.read())
+            picData = fd.read()
             fd.close()
         else:
             picData = None
@@ -207,7 +207,7 @@ class ProjectFile:
     def __ThumbToQuery(self, picId, pic):
         pilThumb = PILBackend.GetThumbnail(pic, height=120)
         thumbWidth, thumbHeight = pilThumb.size
-        thumbData = buffer(pilThumb.tobytes())
+        thumbData = pilThumb.tobytes()
 
         query = "INSERT INTO `thumbnail` (" \
                     "picture_id, width, height, data" \
