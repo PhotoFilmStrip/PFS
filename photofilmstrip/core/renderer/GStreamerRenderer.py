@@ -456,8 +456,18 @@ class MkvX264AC3(_GStreamerRenderer):
                 msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "Profile":
+            return "high"
+        elif prop == "HardwareEncoding":
+            return "false"
+        else:
+            return _GStreamerRenderer.GetDefaultProperty(prop)
+
+    @staticmethod
     def GetProperties():
-        return _GStreamerRenderer.GetProperties() + ["SpeedPreset", "Profile"]
+        return _GStreamerRenderer.GetProperties() + [
+            "SpeedPreset", "Profile", "HardwareEncoding"]
 
     def _GetExtension(self):
         return "mkv"
@@ -476,7 +486,10 @@ class MkvX264AC3(_GStreamerRenderer):
         return audioEnc
 
     def _GetVideoEncoder(self):
-        videoEnc = Gst.ElementFactory.make("x264enc")
+        if self.GetTypedProperty("HardwareEncoding", bool) and Gst.ElementFactory.find("vaapih264enc"):
+            videoEnc = Gst.ElementFactory.make("vaapih264enc")
+        else:
+            videoEnc = Gst.ElementFactory.make("x264enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
 
         speedPreset = self.GetTypedProperty("SpeedPreset", int)
@@ -519,8 +532,18 @@ class Mp4X264AAC(_GStreamerRenderer):
                 msgList.append(_(u"FLV-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
+    def GetDefaultProperty(prop):
+        if prop == "Profile":
+            return "high"
+        elif prop == "HardwareEncoding":
+            return "false"
+        else:
+            return _GStreamerRenderer.GetDefaultProperty(prop)
+
+    @staticmethod
     def GetProperties():
-        return _GStreamerRenderer.GetProperties() + ["SpeedPreset", "Profile"]
+        return _GStreamerRenderer.GetProperties() + [
+            "SpeedPreset", "Profile", "HardwareEncoding"]
 
     def _GetExtension(self):
         return "mp4"
@@ -534,7 +557,10 @@ class Mp4X264AAC(_GStreamerRenderer):
         return audioEnc
 
     def _GetVideoEncoder(self):
-        videoEnc = Gst.ElementFactory.make("x264enc")
+        if self.GetTypedProperty("HardwareEncoding", bool) and Gst.ElementFactory.find("vaapih264enc"):
+            videoEnc = Gst.ElementFactory.make("vaapih264enc")
+        else:
+            videoEnc = Gst.ElementFactory.make("x264enc")
         videoEnc.set_property("bitrate", self._GetBitrate())
         speedPreset = self.GetTypedProperty("SpeedPreset", int)
         if speedPreset is not None:
