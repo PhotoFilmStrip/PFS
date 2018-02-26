@@ -32,35 +32,95 @@ Each with a size of approximatally 2 MB results to 600 MB.
 Properties
 ''''''''''
 
-- UseResample (True or False, if False then filter Nearest is used)
 - ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
 
 
-MPEG2-Video
+VCD (MPG)
+`````````
+
+Creates movie files for Video-CDs.
+
+Properties
+''''''''''
+
+- RenderSubtitle (true, false)
+- Bitrate (overrides profile specific)
+
+
+SVCD, DVD (MPG)
 ```````````````
 
-Creates MPEG-2 (actually MPEG-1 too, if VCD-Profile is selected) conform movie files.
+Creates MPEG-2 conform movie files.
 
 Properties
 ''''''''''
 
-- UseResample (True or False, if False then filter Nearest is used)
-- ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
+- RenderSubtitle (true, false)
 - Bitrate (overrides profile specific)
 
 
-MPEG4-Video
-``````````````````````````````
+Theora/Vorbis (OGV)
+```````````````````
 
-Creates MPEG-4 videos in an AVI container.
+Creates OGV movie files.
 
 Properties
 ''''''''''
 
-- UseResample (True or False, if False then filter Nearest is used)
-- ResampleFilter (Nearest, Bilinear, Bicubic, Antialias)
+- RenderSubtitle (true, false)
 - Bitrate (overrides profile specific)
-- FFOURCC (XVid/DIVX)
+
+
+x264 (MKV, MP4)
+```````````````
+
+Creates H.264 or MPEG-4 part 10 video files.
+
+Properties
+''''''''''
+
+- Bitrate (overrides profile specific)
+- RenderSubtitle (true, false)
+- SpeedPreset: default is medium (6)
+
+  - (0): None
+  - (1): ultrafast
+  - (2): superfast
+  - (3): veryfast
+  - (4): faster
+  - (5): fast
+  - **(6): medium**
+  - (7): slow
+  - (8): slower
+  - (9): veryslow
+  - (10): placebo
+
+- Profile (main, **high**, baseline, constrained-baseline)
+
+
+x265 (MKV)
+``````````
+
+Creates H.265 or MPEG-H part 2 video files.
+
+Properties
+''''''''''
+
+- Bitrate (overrides profile specific)
+- RenderSubtitle (true, false)
+- SpeedPreset: default is medium (6)
+
+  - (0): None
+  - (1): ultrafast
+  - (2): superfast
+  - (3): veryfast
+  - (4): faster
+  - (5): fast
+  - **(6): medium**
+  - (7): slow
+  - (8): slower
+  - (9): veryslow
+  - (10): placebo
 
 
 .. _render_profile:
@@ -72,30 +132,28 @@ The profile field allows you to select the desired video type.
 The following table shows which types are available with their default properties.
 
 
-+---------+----------------+--------------+-------------+
-| Name    | Resolution     | Bitrate      | Compression |
-+=========+================+==============+=============+
-| VCD     | 352x288 (PAL)  | 1150 kBit/s  | MPEG-1      |
-|         | 352x240 (NTSC) |              |             |
-+---------+----------------+--------------+-------------+
-| SVCD    | 576x480 (PAL)  | 2500 kBit/s  | MPEG-2      |
-|         | 480x480 (NTSC) |              |             |
-+---------+----------------+--------------+-------------+
-| DVD     | 720x576 (PAL)  | 8000 kBit/s  |  MPEG-2     |
-|         | 720x480 (NTSC) |              |             |
-+---------+----------------+--------------+-------------+
-| Medium  | 640x360        | 8000 kBit/s  | MPEG-4 ()   |
-+---------+----------------+--------------+-------------+
-| HD      | 1280x720       | 10000 kBit/s | MPEG-4 ()   |
-+---------+----------------+--------------+-------------+
-| Full-HD | 1920x1080      | 12000 kBit/s | MPEG-4 ()   |
-+---------+----------------+--------------+-------------+
-
-
-.. _render_type:
-
-Type
-~~~~
-
-Choose between PAL and NTSC. 
++---------+---------------------+--------------+-------------+
+| Name    | Resolution          | Bitrate      | Compression |
++=========+=====================+==============+=============+
+| VCD     | 352x288 (PAL)       | 1150 kBit/s  | MPEG-1      |
+|         | 352x240 (NTSC)      |              |             |
++---------+---------------------+--------------+-------------+
+| SVCD    | 576x480 (PAL)       | 2500 kBit/s  | MPEG-2      |
+|         | 480x480 (NTSC)      |              |             |
++---------+---------------------+--------------+-------------+
+| DVD     | 720x576 (PAL)       | 8000 kBit/s  | MPEG-2      |
+|         | 720x480 (NTSC)      |              |             |
++---------+---------------------+--------------+-------------+
+| Medium  | 640x360 (360p)      | 1000 kBit/s  | various     |
++---------+---------------------+--------------+-------------+
+| Medium  | 854x480 (480p)      | 2500 kBit/s  | various     |
++---------+---------------------+--------------+-------------+
+| HD      | 1280x720 (720p)     | 7500 kBit/s  | various     |
++---------+---------------------+--------------+-------------+
+| Full-HD | 1920x1080 (1080p)   | 12000 kBit/s | various     |
++---------+---------------------+--------------+-------------+
+| UHD     | 3840x2160 (2160p)   | 50000 kBit/s | various     |
++---------+---------------------+--------------+-------------+
+| UHD-2   | 7600x4320 (4320p)   | 60000 kBit/s | various     |
++---------+---------------------+--------------+-------------+
 

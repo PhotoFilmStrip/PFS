@@ -231,7 +231,11 @@ class _GStreamerRenderer(BaseRenderer):
         videoQueue2 = Gst.ElementFactory.make("queue")
         self.pipeline.add(videoQueue2)
 
-        videoEnc.link(videoQueue2)
+        videoEncCaps = self._GetVideoEncoderCaps()
+        if videoEncCaps:
+            videoEnc.link_filtered(videoQueue2, videoEncCaps)
+        else:
+            videoEnc.link(videoQueue2)
         videoQueue2.link(mux)
 
         if audioEnc:
@@ -425,6 +429,9 @@ class _GStreamerRenderer(BaseRenderer):
     def _GetVideoEncoder(self):
         raise NotImplementedError()
 
+    def _GetVideoEncoderCaps(self):
+        return None
+
 
 class MkvX264AC3(_GStreamerRenderer):
 
@@ -450,7 +457,7 @@ class MkvX264AC3(_GStreamerRenderer):
 
     @staticmethod
     def GetProperties():
-        return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
+        return _GStreamerRenderer.GetProperties() + ["SpeedPreset", "Profile"]
 
     def _GetExtension(self):
         return "mkv"
@@ -477,6 +484,17 @@ class MkvX264AC3(_GStreamerRenderer):
             videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
 
+    def _GetVideoEncoderCaps(self):
+        profile = self.GetTypedProperty("Profile", str)
+        if profile in ("main", "high", "baseline", "constrained-baseline"):
+            caps = Gst.caps_from_string(f"video/x-h264,profile={profile}")
+            return caps
+        elif profile:
+            self._Log(logging.WARN,
+                      "value '%s' for profile not supported!",
+                      profile)
+        return None
+
 
 class Mp4X264AAC(_GStreamerRenderer):
 
@@ -502,7 +520,7 @@ class Mp4X264AAC(_GStreamerRenderer):
 
     @staticmethod
     def GetProperties():
-        return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
+        return _GStreamerRenderer.GetProperties() + ["SpeedPreset", "Profile"]
 
     def _GetExtension(self):
         return "mp4"
@@ -522,6 +540,17 @@ class Mp4X264AAC(_GStreamerRenderer):
         if speedPreset is not None:
             videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
+
+    def _GetVideoEncoderCaps(self):
+        profile = self.GetTypedProperty("Profile", str)
+        if profile in ("main", "high", "baseline", "constrained-baseline"):
+            caps = Gst.caps_from_string(f"video/x-h264,profile={profile}")
+            return caps
+        elif profile:
+            self._Log(logging.WARN,
+                      "value '%s' for profile not supported!",
+                      profile)
+        return None
 
 
 class MkvX265AC3(_GStreamerRenderer):
