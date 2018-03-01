@@ -500,7 +500,7 @@ class MkvX264AC3(_GStreamerRenderer):
     def _GetVideoEncoderCaps(self):
         profile = self.GetTypedProperty("Profile", str)
         if profile in ("main", "high", "baseline", "constrained-baseline"):
-            caps = Gst.caps_from_string(f"video/x-h264,profile={profile}")
+            caps = Gst.caps_from_string("video/x-h264,profile={}".format(profile))
             return caps
         elif profile:
             self._Log(logging.WARN,
@@ -570,7 +570,7 @@ class Mp4X264AAC(_GStreamerRenderer):
     def _GetVideoEncoderCaps(self):
         profile = self.GetTypedProperty("Profile", str)
         if profile in ("main", "high", "baseline", "constrained-baseline"):
-            caps = Gst.caps_from_string(f"video/x-h264,profile={profile}")
+            caps = Gst.caps_from_string("video/x-h264,profile={}".format(profile))
             return caps
         elif profile:
             self._Log(logging.WARN,
