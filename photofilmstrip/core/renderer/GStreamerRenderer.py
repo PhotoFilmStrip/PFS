@@ -69,12 +69,14 @@ class _GStreamerRenderer(BaseRenderer):
 
     @staticmethod
     def GetProperties():
-        return ["Bitrate", "RenderSubtitle"]
+        return ["Bitrate", "RenderSubtitle", "SubtitleSettings"]
 
     @staticmethod
     def GetDefaultProperty(prop):
         if prop == "RenderSubtitle":
             return "false"
+        if prop == "SubtitleSettings":
+            return ""
         return BaseRenderer.GetDefaultProperty(prop)
 
     def ToSink(self, data):
@@ -169,6 +171,7 @@ class _GStreamerRenderer(BaseRenderer):
         if self.GetTypedProperty("RenderSubtitle", bool) and Gst.ElementFactory.find("textoverlay"):
             self.textoverlay = Gst.ElementFactory.make("textoverlay")
             self.textoverlay.set_property("text", "")
+            self._SetupTextOverlay()
             self.pipeline.add(self.textoverlay)
 
         # link elements for video stream
@@ -417,6 +420,23 @@ class _GStreamerRenderer(BaseRenderer):
             return Gst.PadProbeReturn.DROP
         else:
             return Gst.PadProbeReturn.PASS
+
+    def _SetupTextOverlay(self):
+        settings = self.GetProperty("SubtitleSettings")
+        for singleSetting in settings.split(";"):
+            settingAndProp = singleSetting.split("=")
+            if len(settingAndProp) == 2:
+                prop, value = settingAndProp
+                try:
+                    # try number as int
+                    value = int(value)
+                except:  # pylint: disable-msg=bare-except
+                    try:
+                        # try numbers as hex
+                        value = int(value, 16)
+                    except:  # pylint: disable-msg=bare-except
+                        pass
+                self.textoverlay.set_property(prop, value)
 
     def _GetExtension(self):
         raise NotImplementedError()

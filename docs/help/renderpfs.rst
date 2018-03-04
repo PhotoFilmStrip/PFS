@@ -43,8 +43,9 @@ Creates movie files for Video-CDs.
 Properties
 ''''''''''
 
-- RenderSubtitle (true, false)
 - Bitrate (overrides profile specific)
+- RenderSubtitle (true, false)
+- SubtitleSettings
 
 
 SVCD, DVD (MPG)
@@ -55,8 +56,9 @@ Creates MPEG-2 conform movie files.
 Properties
 ''''''''''
 
-- RenderSubtitle (true, false)
 - Bitrate (overrides profile specific)
+- RenderSubtitle (true, false)
+- SubtitleSettings
 
 
 Theora/Vorbis (OGV)
@@ -67,8 +69,9 @@ Creates OGV movie files.
 Properties
 ''''''''''
 
-- RenderSubtitle (true, false)
 - Bitrate (overrides profile specific)
+- RenderSubtitle (true, false)
+- SubtitleSettings
 
 
 x264 (MKV, MP4)
@@ -81,20 +84,8 @@ Properties
 
 - Bitrate (overrides profile specific)
 - RenderSubtitle (true, false)
+- SubtitleSettings
 - SpeedPreset: default is medium (6)
-
-  - (0): None
-  - (1): ultrafast
-  - (2): superfast
-  - (3): veryfast
-  - (4): faster
-  - (5): fast
-  - **(6): medium**
-  - (7): slow
-  - (8): slower
-  - (9): veryslow
-  - (10): placebo
-
 - Profile (main, **high**, baseline, constrained-baseline)
 
 
@@ -108,7 +99,14 @@ Properties
 
 - Bitrate (overrides profile specific)
 - RenderSubtitle (true, false)
+- SubtitleSettings
 - SpeedPreset: default is medium (6)
+
+
+Common properties
+~~~~~~~~~~~~~~~~~
+
+- SpeedPreset:
 
   - (0): None
   - (1): ultrafast
@@ -116,11 +114,26 @@ Properties
   - (3): veryfast
   - (4): faster
   - (5): fast
-  - **(6): medium**
+  - (6): medium
   - (7): slow
   - (8): slower
   - (9): veryslow
   - (10): placebo
+
+- SubtitleSettings:
+
+  Use several settings splitted via semicolon. Some useful settings are:
+  
+  - shaded-background=1
+  - valignment=bottom|top
+  - font-desc=<font-name> <size> (font-desc=Arial 12)
+  - color=0xAARRGGBB (color=0xff00ff00 for green without transparancy)
+
+  A full list of properties can be found `here <https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-plugins-base-plugins/html/gst-plugins-base-plugins-textoverlay.html>`_. 
+
+  The following value shows a green subtitle at the top of the screen:
+
+  ``shaded-background=1;valignment=top;font-desc=Arial 12;color=0xff00ff00``
 
 
 .. _render_profile:
