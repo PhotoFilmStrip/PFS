@@ -26,7 +26,6 @@ from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import CheckFile
-from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow, \
     RenderEngineTimelapse
@@ -51,15 +50,19 @@ class ActionRender(IAction):
     def GetName(self):
         return _(u'Start')
 
-    def _CheckAndGetOutpath(self):
+    def _CheckAndGetOutFile(self):
         if self.__outpath == "-":
             return
 
-        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, self.__profile.GetName())
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
-        return outpath
+        projFile = self.__photoFilmStrip.GetFilename()
+        baseDir = os.path.dirname(projFile)
+        baseDir = os.path.join(baseDir, self.__profile.GetName())
+        if not os.path.isdir(baseDir):
+            os.makedirs(baseDir)
+
+        outFile = os.path.join(baseDir,
+                               os.path.basename(os.path.splitext(projFile)[0]))
+        return outFile
 
     def _SaveSettings(self):
         settings = Settings()
@@ -78,9 +81,9 @@ class ActionRender(IAction):
                 logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
                 audioLength += length
             else:
-                logging.warn("Missing audiofile '%s'!", audioFile)
+                logging.warning("Missing audiofile '%s'!", audioFile)
 
-        outpath = self._CheckAndGetOutpath()
+        outFile = self._CheckAndGetOutFile()
 
         self._SaveSettings()
 
@@ -96,18 +99,16 @@ class ActionRender(IAction):
         renderer = self.__rendererClass()
         renderer.Init(self.__profile,
                       self.__photoFilmStrip.GetAspect(),
-                      outpath)
+                      outFile)
 
         renderer.SetAudioFiles(audioFiles)
 
         if self.__photoFilmStrip.GetTimelapse():
-            renderEngine = RenderEngineTimelapse(outpath,
-                                                 self.__profile,
+            renderEngine = RenderEngineTimelapse(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode)
         else:
-            renderEngine = RenderEngineSlideshow(outpath,
-                                                 self.__profile,
+            renderEngine = RenderEngineSlideshow(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode,
                                                  totalLength)

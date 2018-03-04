@@ -39,7 +39,7 @@ class PnlRenderJobVisual(PnlJobVisual):
             self.curAction = self._actPlay
 
     def _PlayVideo(self):
-        ActionPlayVideo(self.jobContext.GetOutputPath()).Execute()
+        ActionPlayVideo(self.jobContext.GetOutputFile()).Execute()
 
     def _OpenFolder(self):
-        ActionOpenFolder(self.jobContext.GetOutputPath()).Execute()
+        ActionOpenFolder(self.jobContext.GetOutputFile()).Execute()

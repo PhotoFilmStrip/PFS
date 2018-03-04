@@ -29,8 +29,7 @@ from photofilmstrip.core.exceptions import RenderException
 
 class RenderEngine:
 
-    def __init__(self, outputPath, profile, pics, draftMode):
-        self._outputPath = outputPath
+    def __init__(self, profile, pics, draftMode):
         self._profile = profile
         self._pics = pics
         self._draftMode = draftMode
@@ -47,8 +46,8 @@ class RenderEngine:
 
 class RenderEngineSlideshow(RenderEngine):
 
-    def __init__(self, outputPath, profile, pics, draftMode, totalLength):
-        RenderEngine.__init__(self, outputPath, profile, pics, draftMode)
+    def __init__(self, profile, pics, draftMode, totalLength):
+        RenderEngine.__init__(self, profile, pics, draftMode)
         self.__targetLengthSecs = totalLength
         self.__picCountFactor = None
 
@@ -106,9 +105,7 @@ class RenderEngineSlideshow(RenderEngine):
     def _PrepareTasks(self, pics):
         self.__picCountFactor = self.__GetPicCountFactor(pics)
 
-        taskSub = TaskSubtitle(self._outputPath,
-                               self.__picCountFactor,
-                               pics)
+        taskSub = TaskSubtitle(self.__picCountFactor, pics)
         self._tasks.append(taskSub)
 
         pathRectsBefore = []

@@ -66,7 +66,8 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
         '''
         self._counter += 1
 
-        newFilename = os.path.join(self.GetOutputPath(),
+        outputPath = os.path.dirname(self._outFile)
+        newFilename = os.path.join(outputPath,
                                    '%09d.%s' % (self._counter,
                                                 "jpg"))
 

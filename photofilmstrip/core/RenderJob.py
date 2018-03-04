@@ -45,8 +45,8 @@ class RenderJob(VisualJob):
 
         self.__logger = logging.getLogger("RenderJob")
 
-    def GetOutputPath(self):
-        return self.renderer.GetOutputPath()
+    def GetOutputFile(self):
+        return self.renderer.GetOutputFile()
 
     def Done(self):
         if self.IsAborted():

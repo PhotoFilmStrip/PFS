@@ -27,18 +27,12 @@ from photofilmstrip.lib.util import StartFile
 
 class ActionPlayVideo(IAction):
 
-    def __init__(self, outpath):
-        self.outpath = outpath
+    def __init__(self, outFile):
+        self.outFile = outFile
 
     def GetName(self):
         return _(u'Play video')
 
     def Execute(self):
-        for ext in ('avi', 'flv', 'mkv', 'ogv', 'mpg', 'mp4'):
-            videoFile = os.path.join(self.outpath, "output.%s" % ext)
-            if os.path.exists(videoFile):
-                break
-        else:
-            return
-
-        StartFile(videoFile)
+        if os.path.isfile(self.outFile):
+            StartFile(self.outFile)

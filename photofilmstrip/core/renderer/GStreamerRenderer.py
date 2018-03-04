@@ -80,6 +80,10 @@ class _GStreamerRenderer(BaseRenderer):
     def ToSink(self, data):
         self.resQueue.put(data)
 
+    def GetOutputFile(self):
+        outFile = '{0}.{1}'.format(self._outFile, self._GetExtension())
+        return outFile
+
     def __CleanUp(self):
         '''
         Waits until the ready event is set and finished the GTK-Mainloop.
@@ -110,7 +114,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         if self.GetTypedProperty("RenderSubtitle", bool):
             # delete subtitle file, if subtitle is rendered in video
-            srtPath = os.path.join(self.GetOutputPath(), "output.srt")
+            srtPath = self._outFile + ".srt"
             if os.path.exists(srtPath):
                 os.remove(srtPath)
 
@@ -139,9 +143,6 @@ class _GStreamerRenderer(BaseRenderer):
         # 1000ms / fps == x msec/frame
         self.imgDuration = int(round(1000 * Gst.MSECOND / frameRate.AsFloat()))
         self._Log(logging.DEBUG, "set imgDuration=%s", self.imgDuration)
-
-        outFile = os.path.join(self.GetOutputPath(),
-                               "output.%s" % self._GetExtension())
 
         self.pipeline = Gst.Pipeline()
 
@@ -245,7 +246,7 @@ class _GStreamerRenderer(BaseRenderer):
             audioQueue2.link(mux)
 
         sink = Gst.ElementFactory.make("filesink")
-        sink.set_property("location", outFile)
+        sink.set_property("location", self.GetOutputFile())
         self.pipeline.add(sink)
 
         mux.link(sink)
@@ -366,7 +367,7 @@ class _GStreamerRenderer(BaseRenderer):
         if self.textoverlay:
 #             self.textoverlay.set_property("text", "Frame: %s" % self.idxFrame)
             if self.srtParse is None:
-                srtPath = os.path.join(self.GetOutputPath(), "output.srt")
+                srtPath = self._outFile + ".srt"
                 self.srtParse = SrtParser(
                     srtPath, self.GetProfile().GetFrameRate().AsFloat())
 

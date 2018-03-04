@@ -19,6 +19,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import os
+
 from photofilmstrip.core.Subtitle import SubtitleSrt
 from photofilmstrip.core import PILBackend
 
@@ -53,9 +55,8 @@ class Task:
 
 class TaskSubtitle(Task):
 
-    def __init__(self, outputPath, picCountFactor, pics):
+    def __init__(self, picCountFactor, pics):
         Task.__init__(self)
-        self.__outputPath = outputPath
         self.__picCountFactor = picCountFactor
         self.__pics = pics
         self.SetInfo(_(u"generating subtitle"))
@@ -71,7 +72,9 @@ class TaskSubtitle(Task):
 
     def Run(self, jobContext):
         if self.__HasComments():
-            st = SubtitleSrt(self.__outputPath,
+            outFile = jobContext.GetOutputFile()
+            baseFile = os.path.splitext(outFile)[0]
+            st = SubtitleSrt(baseFile,
                              self.__picCountFactor)
             st.Start(self.__pics)
 

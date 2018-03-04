@@ -27,8 +27,8 @@ from photofilmstrip.action.IAction import IAction
 
 class ActionOpenFolder(IAction):
 
-    def __init__(self, outpath):
-        self.outpath = outpath
+    def __init__(self, outFile):
+        self.outFile = outFile
 
     def GetName(self):
         return _(u'Open folder')
@@ -38,10 +38,11 @@ class ActionOpenFolder(IAction):
         return wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16')
 
     def Execute(self):
-        if not os.path.exists(self.outpath):
+        outDir = os.path.dirname(self.outFile)
+        if not os.path.isdir(outDir):
             return
 
         if os.name == "nt":
-            os.startfile(self.outpath)  # pylint: disable=no-member
+            os.startfile(outDir)  # pylint: disable=no-member
         else:
-            subprocess.Popen(["xdg-open", self.outpath])
+            subprocess.Popen(["xdg-open", outDir])

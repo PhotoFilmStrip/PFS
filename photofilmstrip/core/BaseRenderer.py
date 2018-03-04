@@ -34,13 +34,13 @@ class MetaBaseRenderer(type):
 class BaseRenderer(metaclass=MetaBaseRenderer):
 
     def __init__(self):
-        self._outputPath = None
+        self._outFile = None
         self._profile = None
         self._audioFiles = []
         self._aspect = None
 
-    def Init(self, profile, aspect, outputPath):
-        self._outputPath = outputPath
+    def Init(self, profile, aspect, outFile):
+        self._outFile = outFile
         self._profile = profile
         self._aspect = aspect
 
@@ -114,8 +114,8 @@ class BaseRenderer(metaclass=MetaBaseRenderer):
     def GetAudioFiles(self):
         return self._audioFiles
 
-    def GetOutputPath(self):
-        return self._outputPath
+    def GetOutputFile(self):
+        return self._outFile
 
     def GetProfile(self):
         return self._profile

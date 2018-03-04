@@ -25,8 +25,8 @@ import os
 
 class SubtitleSrt(object):
 
-    def __init__(self, outputPath, factor=1.0):
-        self.__outputPath = outputPath
+    def __init__(self, outFile, factor=1.0):
+        self.__outFile = outFile
         self.__index = 0
         self.__curTime = 0.0
         self.__factor = factor
@@ -56,9 +56,9 @@ class SubtitleSrt(object):
         return result
 
     def Start(self, pics):
-        if self.__outputPath is None:
+        if self.__outFile is None:
             return
-        fd = codecs.open(os.path.join(self.__outputPath, "output.srt"), 'w', "utf-8", "replace")
+        fd = codecs.open(self.__outFile + ".srt", 'w', "utf-8", "replace")
         fd.write(codecs.BOM_UTF8.decode("utf-8"))
         for pic in pics:
             self.__index += 1
