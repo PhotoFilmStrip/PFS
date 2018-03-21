@@ -55,7 +55,7 @@ class Settings(Singleton):
             self.cp = ConfigParser()
 
         if os.path.isfile(self.filename):
-            self.cp.read(self.filename)
+            self.cp.read(self.filename, "utf-8")
 
         if not self.cp.has_section("General"):
             self.cp.add_section("General")
@@ -68,7 +68,7 @@ class Settings(Singleton):
 
     def Save(self):
         try:
-            fd = open(self.filename, 'w')
+            fd = open(self.filename, 'w', encoding='utf-8')
             self.cp.write(fd)
             fd.close()
         except IOError:
