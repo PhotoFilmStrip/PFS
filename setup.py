@@ -41,6 +41,14 @@ except ImportError:
 
 try:
     import py2exe
+    import py2exe.dllfinder
+    orig_determine_dll_type = py2exe.dllfinder.DllFinder.determine_dll_type
+    def determine_dll_type(self, imagename):
+        if imagename.lower().find("msvcr100.dll") != -1 or imagename.lower().find("msvcp100.dll") != -1:
+            return "DLL"
+        else:
+            return orig_determine_dll_type(self, imagename)
+    py2exe.dllfinder.DllFinder.determine_dll_type = determine_dll_type
 except ImportError:
     py2exe = None
 
@@ -567,8 +575,7 @@ setup(
 #                          "bundle_files":1,
                           "optimize": 2,
                           "dist_dir": os.path.join("build", "dist"),
-                          "dll_excludes": ["msvcr90.dll", "msvcp90.dll",
-                                           "libcairo-gobject-2.dll",
+                          "dll_excludes": ["libcairo-gobject-2.dll",
                                            "libffi-6.dll",
                                            "libfontconfig-1.dll",
                                            "libfreetype-6.dll",
