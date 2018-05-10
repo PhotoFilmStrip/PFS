@@ -32,8 +32,8 @@ class SubtitleSrt(object):
         self.__factor = factor
 
     def __FormatTime(self, totalSecs):
-        minutes = int(round(totalSecs / 60.0))
-        hours = int(round(minutes / 60.0))
+        hours = int(totalSecs / 3600.0)
+        minutes = int(totalSecs / 60.0) % 60
         seconds = int(totalSecs) % 60
         frac = int((totalSecs - int(totalSecs)) * 1000.0)
         return "%02d:%02d:%02d,%03d" % (hours, minutes, seconds, frac)
@@ -130,18 +130,22 @@ def testWrite():
     from photofilmstrip.core.Picture import Picture
     p1 = Picture(None)
     p1.SetComment("this is my first picture")
-    p1.SetDuration(7)
+    p1.SetDuration(25)
 
     p2 = Picture(None)
     p2.SetComment("this is my second picture")
-    p2.SetDuration(12)
+    p2.SetDuration(10)
 
     p3 = Picture(None)
     p3.SetComment("this is my third picture")
-    p3.SetDuration(2)
+    p3.SetDuration(20)
 
-    s = SubtitleSrt(".")
-    s.Start([p1, p2, p3])
+    p4 = Picture(None)
+    p4.SetComment("this is my third picture")
+    p4.SetDuration(3740)
+
+    s = SubtitleSrt("output")
+    s.Start([p1, p2, p3, p4])
 
 
 def testRead():
@@ -152,4 +156,5 @@ def testRead():
 
 
 if __name__ == "__main__":
+    testWrite()
     testRead()
