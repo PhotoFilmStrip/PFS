@@ -841,7 +841,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
         unlocked = False
         for rect in (pic.GetStartRect(), pic.GetTargetRect()):
             if rect[0] < 0 or rect[1] < 0 \
-            or rect[2] > pic.GetWidth() or rect[3] > pic.GetHeight():
+            or rect[2] > pic.GetWidth() or rect[3] > pic.GetHeight() \
+            or rect[0] + rect[2] > pic.GetWidth() \
+            or rect[1] + rect[3] > pic.GetHeight():
                 unlocked = True
                 break
         self.toolBarImgSect.ToggleTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
