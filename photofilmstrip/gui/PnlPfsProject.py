@@ -638,6 +638,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         else:
             self.__OnRectChangedDefault(event, pic)
 
+        self.__CheckAndSetLock(pic)
+
     def __OnRectChangedDefault(self, event, pic):
         if event.GetEventObject() is self.bitmapLeft:
             pic.SetStartRect(tuple(self.bitmapLeft.GetSection()))

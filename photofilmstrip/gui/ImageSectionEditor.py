@@ -578,12 +578,13 @@ class ImageSectionEditor(wx.Panel, Observer):
                 data = None
                 if wx.TheClipboard.GetData(do):
                     data = do.GetText()
-                    sectData = re.findall(r"(\d+), (\d+) - (\d+) x (\d+)", data)
+                    sectData = re.findall(r"([-]?\d+), ([-]?\d+) - (\d+) x (\d+)", data)
                     if sectData:
                         sectData = sectData[0]
                         try:
                             rect = wx.Rect(int(sectData[0]), int(sectData[1]),
                                            int(sectData[2]), int(sectData[3]))
+                            self._lock = False
                             self.SetSection(rect)
                             self._SendRectChangedEvent()
                         except ValueError:
