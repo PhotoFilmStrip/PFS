@@ -43,9 +43,16 @@ class RectChangedEvent(wx.PyCommandEvent):
     def __init__(self, wxId, rect):
         wx.PyCommandEvent.__init__(self, EVT_RECT_CHANGED_TYPE, wxId)
         self._rect = rect
+        self._checkImageDimensionLock = False
 
     def GetRect(self):
         return self._rect
+
+    def SetCheckImageDimensionLock(self, value):
+        self._checkImageDimensionLock = value
+
+    def CheckImageDimensionLock(self):
+        return self._checkImageDimensionLock
 
 
 class ImageSectionEditor(wx.Panel, Observer):
@@ -462,11 +469,12 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         event.Skip()
 
-    def _SendRectChangedEvent(self):
+    def _SendRectChangedEvent(self, checkImageDimensionLock=False):
         if not self._imgProxy.IsOk():
             return
         self.__KeepRectInImage()
         evt = RectChangedEvent(self.GetId(), self._sectRect)
+        evt.SetCheckImageDimensionLock(checkImageDimensionLock)
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
@@ -586,7 +594,7 @@ class ImageSectionEditor(wx.Panel, Observer):
                                            int(sectData[2]), int(sectData[3]))
                             self._lock = False
                             self.SetSection(rect)
-                            self._SendRectChangedEvent()
+                            self._SendRectChangedEvent(checkImageDimensionLock=True)
                         except ValueError:
                             pass
             finally:

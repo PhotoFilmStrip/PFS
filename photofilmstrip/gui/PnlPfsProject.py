@@ -638,7 +638,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         else:
             self.__OnRectChangedDefault(event, pic)
 
-        self.__CheckAndSetLock(pic)
+        if event.CheckImageDimensionLock():
+            self.__CheckAndSetLock(pic)
 
     def __OnRectChangedDefault(self, event, pic):
         if event.GetEventObject() is self.bitmapLeft:
