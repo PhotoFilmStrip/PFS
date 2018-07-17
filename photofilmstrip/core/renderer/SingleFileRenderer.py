@@ -19,6 +19,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import io
 import os
 
 from photofilmstrip.core.BaseRenderer import BaseRenderer, \
@@ -64,14 +65,20 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
         overrides FinalizeHandler.ProcessFinalize
         :param pilImg:
         '''
+        fd = io.BytesIO()
+        pilImg.save(fd, "JPEG", quality=95)
+        fd.seek(0)
+        return fd
+
+    def ToSink(self, data):
         self._counter += 1
 
         outputPath = os.path.dirname(self._outFile)
         newFilename = os.path.join(outputPath,
                                    '%09d.%s' % (self._counter,
                                                 "jpg"))
-
-        pilImg.save(newFilename, "JPEG", quality=95)
+        with open(newFilename, "wb") as fd:
+            fd.write(data.getvalue())
 
     def Finalize(self):
         pass
