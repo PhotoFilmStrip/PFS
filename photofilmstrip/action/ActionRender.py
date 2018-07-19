@@ -68,7 +68,11 @@ class ActionRender(IAction):
         settings = Settings()
         settings.SetLastProfile(self.__profile.GetName())
 
-        idxRenderer = RENDERERS.index(self.__rendererClass)
+        try:
+            idxRenderer = RENDERERS.index(self.__rendererClass)
+        except ValueError:
+            return
+
         settings.SetUsedRenderer(idxRenderer)
 
     def Execute(self):

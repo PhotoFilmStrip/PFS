@@ -90,6 +90,9 @@ class CliGui(IVisualJobHandler):
 
 class DummyGui(IVisualJobHandler):
 
+    def Info(self, project, rendererClass, profile):
+        pass
+
     def OnHandleJobBegin(self, jobContext):
         pass
 
