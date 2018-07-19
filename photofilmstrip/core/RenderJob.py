@@ -73,7 +73,7 @@ class RenderJob(VisualJob):
         self.renderer.Prepare()
 
     def _RegisterTaskResult(self, task, isSubTask):
-        if not self.finalizeHandler.UseSmartFinalize() or isSubTask:
+        if isSubTask:
             # no finalize for subtasks
             finalizeHandler = None
         else:
@@ -113,8 +113,6 @@ class RenderJob(VisualJob):
 
         try:
             result = resultObject.GetResult()
-            if not self.finalizeHandler.UseSmartFinalize() and result:
-                result = self.finalizeHandler.ProcessFinalize(result)
             self.resultsForRendererCache[task.idx] = result
         except JobAbortedException:
             pass

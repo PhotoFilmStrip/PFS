@@ -22,10 +22,10 @@
 import sys
 
 from photofilmstrip.core.renderer.SingleFileRenderer import SingleFileRenderer
-from photofilmstrip.core.BaseRenderer import FinalizeHandler
+from photofilmstrip.core.BaseRenderer import ImageDataFinalizeHandler
 
 
-class StreamRenderer(SingleFileRenderer, FinalizeHandler):
+class StreamRenderer(SingleFileRenderer):
 
     def __init__(self):
         SingleFileRenderer.__init__(self)
@@ -46,25 +46,11 @@ class StreamRenderer(SingleFileRenderer, FinalizeHandler):
             return SingleFileRenderer.GetDefaultProperty(prop)
 
     def GetFinalizeHandler(self):
-        return self
-
-    def UseSmartFinalize(self):
-        '''
-        overrides FinalizeHandler.UseSmartFinalize
-        :param pilImg:
-        '''
-        return False
-
-    def ProcessFinalize(self, pilImg):
-        '''
-        overrides FinalizeHandler.ProcessFinalize
-        :param pilImg:
-        '''
         imgFormat = self.GetProperty("Format")
         if imgFormat in ["JPEG", "PPM"]:
-            pilImg.save(sys.stdout, imgFormat)
+            return ImageDataFinalizeHandler(imgFormat)
         else:
-            raise RuntimeError("unsupported format: %s", imgFormat)
+            raise RuntimeError("unsupported format: %s" % imgFormat)
 
     def ToSink(self, data):
-        pass
+        sys.stdout.buffer.write(data)

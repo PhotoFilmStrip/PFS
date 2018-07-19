@@ -28,7 +28,6 @@ try:
 except (ImportError, RuntimeError):
     cairo = None
 
-from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer, FinalizeHandler
 
 
@@ -95,9 +94,6 @@ class CairoRenderer(BaseRenderer):
 
 
 class PilToCairoFinalizeHandler(FinalizeHandler):
-
-    def UseSmartFinalize(self):
-        return True
 
     def ProcessFinalize(self, pilImg):
         pilImg = pilImg.copy()

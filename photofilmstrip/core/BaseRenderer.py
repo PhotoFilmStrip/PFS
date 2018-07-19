@@ -141,20 +141,17 @@ class FinalizeHandler(object):
     def ProcessFinalize(self, pilImg):
         raise NotImplementedError()
 
-    def UseSmartFinalize(self):
-        raise NotImplementedError()
-
 
 class ImageDataFinalizeHandler(FinalizeHandler):
 
-    def __init__(self, formt, quality):
+    def __init__(self, formt, quality=None):
         self._format = formt
         self._quality = quality
 
-    def UseSmartFinalize(self):
-        return True
-
     def ProcessFinalize(self, pilImg):
         res = io.BytesIO()
-        pilImg.save(res, self._format, quality=self._quality)
+        if self._quality:
+            pilImg.save(res, self._format, quality=self._quality)
+        else:
+            pilImg.save(res, self._format)
         return res.getvalue()

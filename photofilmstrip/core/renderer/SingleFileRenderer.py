@@ -19,14 +19,12 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-import io
 import os
 
-from photofilmstrip.core.BaseRenderer import BaseRenderer, \
-    FinalizeHandler
+from photofilmstrip.core.BaseRenderer import BaseRenderer
 
 
-class SingleFileRenderer(BaseRenderer, FinalizeHandler):
+class SingleFileRenderer(BaseRenderer):
 
     def __init__(self):
         BaseRenderer.__init__(self)
@@ -50,26 +48,6 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
     def Prepare(self):
         pass
 
-    def GetFinalizeHandler(self):
-        return self
-
-    def UseSmartFinalize(self):
-        '''
-        overrides FinalizeHandler.UseSmartFinalize
-        :param pilImg:
-        '''
-        return False
-
-    def ProcessFinalize(self, pilImg):
-        '''
-        overrides FinalizeHandler.ProcessFinalize
-        :param pilImg:
-        '''
-        fd = io.BytesIO()
-        pilImg.save(fd, "JPEG", quality=95)
-        fd.seek(0)
-        return fd
-
     def ToSink(self, data):
         self._counter += 1
 
@@ -78,7 +56,7 @@ class SingleFileRenderer(BaseRenderer, FinalizeHandler):
                                    '%09d.%s' % (self._counter,
                                                 "jpg"))
         with open(newFilename, "wb") as fd:
-            fd.write(data.getvalue())
+            fd.write(data)
 
     def Finalize(self):
         pass
