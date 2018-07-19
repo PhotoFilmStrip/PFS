@@ -164,7 +164,7 @@ class RenderEngineTimelapse(RenderEngine):
         picNum = None
 
         idxPic = 0
-        while idxPic < len(pics):
+        while idxPic < len(pics) - 1:
             pic = pics[idxPic]
             picPattern = PicturePattern.Create(pic.GetFilename())
             if not picPattern.IsOk():
@@ -176,26 +176,26 @@ class RenderEngineTimelapse(RenderEngine):
             picNum = picPattern.num
             picDur = int(pic.GetDuration())
             transDur = int(pic.GetTransitionDuration())
-            if idxPic < (len(pics) - 1):
-                # get number from next pic
-                nextPic = pics[idxPic + 1]
-                nextPicPattern = PicturePattern.Create(nextPic.GetFilename())
-                if not nextPicPattern.IsOk():
-                    idxPic += 1
-                    continue
 
-                picCount = nextPicPattern.num - picNum + 1
-                if picCount < 0:
-                    raise RenderException(
-                        (u"The picture counter is not "
-                         u"increasing: %s") % nextPic.GetFilename())
+            # get number from next pic
+            nextPic = pics[idxPic + 1]
+            nextPicPattern = PicturePattern.Create(nextPic.GetFilename())
+            if not nextPicPattern.IsOk():
+                idxPic += 1
+                continue
+
+            picCount = nextPicPattern.num - picNum
+            if picCount < 0:
+                raise RenderException(
+                    (u"The picture counter is not "
+                     u"increasing: %s") % nextPic.GetFilename())
+
+            if idxPic + 1 == len(pics) - 1:
+                # next pic is the last one so incluse the last pic
+                cp = ComputePath(pic, (picDur * (picCount + 1)) + (transDur * picCount))
             else:
-                # no next pic so add the final image
-                picCount = 1
-
-            cp = ComputePath(pic, (picDur * picCount) + (transDur * (picCount - 1)))
+                cp = ComputePath(pic, (picDur + transDur) * picCount)
             pathRects = cp.GetPathRects()
-
             picDir = os.path.dirname(pic.GetFilename())
             idxRect = 0
             while idxRect < len(pathRects):
@@ -217,13 +217,14 @@ class RenderEngineTimelapse(RenderEngine):
                         self._tasks.append(task)
                         idxRect += 1
 
-                for __ in range(picDur):
-                    task = TaskCropResize(picCopy.Copy(), pathRects[idxRect],
-                                          self._profile.GetResolution())
-                    task.SetInfo(_(u"processing image %d/%d") % (picNum, __ + 1))
-                    task.SetDraft(self._draftMode)
-                    self._tasks.append(task)
-                    idxRect += 1
+                if idxRect < len(pathRects):
+                    for __ in range(picDur):
+                        task = TaskCropResize(picCopy.Copy(), pathRects[idxRect],
+                                              self._profile.GetResolution())
+                        task.SetInfo(_(u"processing image %d/%d") % (picNum, __ + 1))
+                        task.SetDraft(self._draftMode)
+                        self._tasks.append(task)
+                        idxRect += 1
 
                 picNum += 1
                 picBefore = picCopy
