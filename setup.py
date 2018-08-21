@@ -345,17 +345,22 @@ class pfs_exe(Command):
 
     description = "create an executable dist for MS Windows (py2exe)"
 
-    user_options = []
+    user_options = [
+        ('target-dir=', 't', 'target directory'),
+    ]
     sub_commands = [('py2exe', lambda x: True if py2exe else False)
                    ]
 
     def initialize_options(self):
-        pass
+        self.target_dir = os.path.join("build", "dist")
 
     def finalize_options(self):
-        pass
+        self.mkpath(self.target_dir)
 
     def run(self):
+        py2exe = self.get_finalized_command('py2exe')
+        py2exe.dist_dir = self.target_dir
+
         self.distribution.windows = [
                  Target(script=os.path.join("photofilmstrip", "GUI.py"),
                         dest_base=Constants.APP_NAME
@@ -373,17 +378,17 @@ class pfs_exe(Command):
             self.run_command(cmdName)
 
         site_packages = get_python_lib()
-        targetDir = os.path.join("build", "dist")
+        targetDir = self.target_dir
         dllDirGnome = os.path.join(site_packages, "gnome")
         for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
             self.copy_file(os.path.join(dllDirGnome, dll),
                            os.path.join(targetDir, os.path.basename(dll)))
 
-        targetDir = os.path.join("build", "dist", "lib", "gstreamer-1.0")
+        targetDir = os.path.join(self.target_dir, "lib", "gstreamer-1.0")
         self.copy_tree(os.path.join(dllDirGnome, "lib", "gstreamer-1.0"),
                        targetDir)
 
-        targetDir = os.path.join("build", "dist", "lib", "girepository-1.0")
+        targetDir = os.path.join(self.target_dir, "lib", "girepository-1.0")
         self.mkpath(targetDir)
         for giTypeLib in ["GLib-2.0.typelib",
                           "GModule-2.0.typelib",
@@ -574,7 +579,6 @@ setup(
     options={"py2exe": {"compressed": 2,
 #                          "bundle_files":1,
                           "optimize": 2,
-                          "dist_dir": os.path.join("build", "dist"),
                           "dll_excludes": ["libcairo-gobject-2.dll",
                                            "libffi-6.dll",
                                            "libfontconfig-1.dll",
