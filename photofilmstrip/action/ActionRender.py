@@ -108,10 +108,12 @@ class ActionRender(IAction):
         renderer.SetAudioFiles(audioFiles)
 
         if self.__photoFilmStrip.GetTimelapse():
+            uxEvent = "RenderTimeLapse"
             renderEngine = RenderEngineTimelapse(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode)
         else:
+            uxEvent = "RenderSlideshow"
             renderEngine = RenderEngineSlideshow(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode,
@@ -122,6 +124,8 @@ class ActionRender(IAction):
 
         self.__renderJob = RenderJob(name, renderer,
                                      renderEngine.GetTasks())
+        self.__renderJob.AddUxEvent(uxEvent)
+        self.__renderJob.AddUxEvent(self.__profile.GetName())
 
     def GetRenderJob(self):
         return self.__renderJob

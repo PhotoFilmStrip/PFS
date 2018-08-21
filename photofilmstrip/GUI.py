@@ -33,6 +33,10 @@ class GuiApp(AppMixin):
     def _OnStart(self):
         import wx
         assert wx.VERSION[0] == 4
+
+        from photofilmstrip.uwp.UwpService import UwpService
+        UwpService.GetInstance()
+
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
         app = PhotoFilmStripApp(0)
         app.MainLoop()
@@ -46,6 +50,10 @@ class GuiApp(AppMixin):
 
 
 def main():
+    from photofilmstrip.uwp.UwpService import ProcessCommandArgs
+    if ProcessCommandArgs():
+        return
+
     guiApp = GuiApp()
     guiApp.Start()
 

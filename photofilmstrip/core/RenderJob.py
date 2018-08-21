@@ -22,15 +22,17 @@
 import logging
 import threading
 
+from photofilmstrip.core.ux import Ux
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 from photofilmstrip.lib.jobimpl.Worker import JobAbortedException
 from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad
 
 
-class RenderJob(VisualJob):
+class RenderJob(VisualJob, Ux):
 
     def __init__(self, name, renderer, tasks):
         VisualJob.__init__(self, name, groupId="render")
+        Ux.__init__(self)
         self.renderer = renderer
         self.tasks = tasks
 

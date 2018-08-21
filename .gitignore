@@ -8,6 +8,7 @@ build/
 dist/
 sdist/
 var/
+Tools/
 
 .settings
 .PhotoFilmStrip
