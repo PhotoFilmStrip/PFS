@@ -175,7 +175,11 @@ class JobManager(Singleton, Destroyable):
         jcGroup.Put(jobContext)
 
         for visual in self.__visuals:
-            visual.RegisterJob(jobContext)
+            try:
+                visual.RegisterJob(jobContext)
+            except Exception:
+                self.__logger.error("RegisterJob for visual <%s> failed",  # IGNORE:W0702
+                    visual, exc_info=1)
 
     def _GetWorkLoad(self, workerCtxGroup):
         '''
@@ -265,7 +269,11 @@ class JobManager(Singleton, Destroyable):
                                 threading.currentThread().getName(), ctx.GetName())
 
         for visual in self.__visuals:
-            visual.RemoveJob(ctx)
+            try:
+                visual.RemoveJob(ctx)
+            except Exception:
+                self.__logger.error("RemoveJob for visual <%s> failed",  # IGNORE:W0702
+                    visual, exc_info=1)
 
     def Destroy(self):
         self.__logger.debug("start destroying")
