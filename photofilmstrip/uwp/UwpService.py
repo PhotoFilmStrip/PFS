@@ -88,7 +88,7 @@ class UwpService(Destroyable, IVisualJobManager):
             return
         if not job.IsAborted():
             self.ShowToast(_("Slideshow created!"), job.GetName(),
-                           "",
+                           job.GetOutputFile(),
                            job.GetOutputFile())
 
 
