@@ -9,6 +9,7 @@ dist/
 sdist/
 var/
 Tools/
+_scmInfo.py
 
 .settings
 .PhotoFilmStrip
