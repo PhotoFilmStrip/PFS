@@ -382,7 +382,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOTION_RANDOM,
-                       _(u'Random &motion' + '\tCtrl+d'),
+                       _(u'Random &motion') + '\tCtrl+d',
                        wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_16'),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_D_16'))
         CreateMenuItem(menu, ID_PIC_MOTION_CENTER,

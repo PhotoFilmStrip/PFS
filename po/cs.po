@@ -5,678 +5,584 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
-"PO-Revision-Date: 2011-07-10 13:32+0100\n"
+"POT-Creation-Date: 2018-10-04 23:34+CEST\n"
+"PO-Revision-Date: 2018-10-04 23:36+0200\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
-"Language: \n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: src/cli/Main.py:65
-#: src/cli/Main.py:221
-#: src/gui/DlgRender.py:374
+#: photofilmstrip/action/ActionAutoPath.py:37
+#: photofilmstrip/gui/PnlPfsProject.py:132
+msgid "Random motion"
+msgstr ""
+
+#: photofilmstrip/action/ActionCenterPath.py:35
+msgid "Centralize motion"
+msgstr ""
+
+#: photofilmstrip/action/ActionI18N.py:38
+#: photofilmstrip/gui/ActionManager.py:180
+msgid "Language"
+msgstr ""
+
+#: photofilmstrip/action/ActionOpenFolder.py:34
+#: photofilmstrip/gui/PnlRenderJobVisual.py:24
+msgid "Open folder"
+msgstr ""
+
+#: photofilmstrip/action/ActionPlayVideo.py:34
+#: photofilmstrip/gui/PnlRenderJobVisual.py:18
+msgid "Play video"
+msgstr ""
+
+#: photofilmstrip/action/ActionRender.py:51
+#, fuzzy
+#| msgid "&Start"
+msgid "Start"
+msgstr "&Start"
+
+#: photofilmstrip/cli/Main.py:60 photofilmstrip/cli/Main.py:210
 msgid "all done"
 msgstr "dokončeno"
 
-#: src/cli/Main.py:78
+#: photofilmstrip/cli/Main.py:78
 msgid "processing project"
 msgstr "zpracovávám projekt"
 
-#: src/cli/Main.py:79
+#: photofilmstrip/cli/Main.py:79
 msgid "using renderer"
 msgstr "používám renderer"
 
-#: src/cli/Main.py:80
+#: photofilmstrip/cli/Main.py:80
 msgid "output format"
 msgstr "výstupní formát"
 
-#: src/cli/Main.py:81
+#: photofilmstrip/cli/Main.py:83
 msgid "framerate"
 msgstr "snímková frekvence"
 
-#: src/cli/Main.py:109
+#: photofilmstrip/cli/Main.py:117
 msgid "specifies the project file"
 msgstr "specifikuje soubor projektu"
 
-#: src/cli/Main.py:110
+#: photofilmstrip/cli/Main.py:118
 #, fuzzy
 msgid "The path where to save the output files. Use - for stdout."
-msgstr "Cesta, kam ukládat výstupní soubory. Pokud je použit jedno souborový renderer, lze parametr vynechat pro použití standardního výstupu."
+msgstr ""
+"Cesta, kam ukládat výstupní soubory. Pokud je použit jedno souborový "
+"renderer, lze parametr vynechat pro použití standardního výstupu."
 
-#: src/cli/Main.py:114
+#: photofilmstrip/cli/Main.py:120 photofilmstrip/cli/Main.py:143
+msgid "Option videonorm is deprecated, use an appropriate profile!"
+msgstr ""
+
+#: photofilmstrip/cli/Main.py:122
 msgid "enable draft mode"
 msgstr ""
 
-#: src/cli/Main.py:114
-#: src/gui/DlgRender.py:233
-msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
+#: photofilmstrip/cli/Main.py:122 photofilmstrip/gui/DlgRender.py:182
+msgid ""
+"Activate this option to generate a preview of your PhotoFilmStrip. The "
+"rendering process will speed up dramatically, but results in lower quality."
 msgstr ""
 
-#: src/cli/Main.py:122
+#: photofilmstrip/cli/Main.py:134
 #, fuzzy
 msgid "project file does not exist: %s"
 msgstr "soubor s projektem neexistuje: %s"
 
-#: src/cli/Main.py:126
+#: photofilmstrip/cli/Main.py:138
 #, fuzzy
 msgid "no project file specified!"
 msgstr "není specifikován projektový soubor!"
 
-#: src/cli/Main.py:132
-msgid "invalid profile specified: %s"
-msgstr "specifikován špatný profil: %s"
-
-#: src/cli/Main.py:143
-msgid "invalid videonorm specified: %s"
-msgstr "specifikována špatná video norma: %s"
-
-#: src/cli/Main.py:149
+#: photofilmstrip/cli/Main.py:148
 msgid "invalid format specified: %s"
 msgstr "specifikován špatný formát: %s"
 
-#: src/cli/Main.py:156
+#: photofilmstrip/cli/Main.py:154
+msgid "invalid profile specified: %s"
+msgstr "specifikován špatný profil: %s"
+
+#: photofilmstrip/cli/Main.py:160
 msgid "cannot load photofilmstrip"
 msgstr "nelze načíst projekt"
 
-#: src/cli/Main.py:175
+#: photofilmstrip/cli/Main.py:173
 #, fuzzy
 msgid "cannot create output path: %s"
 msgstr "nelze vytvořit výstupní cestu: %s"
 
-#: src/cli/Main.py:194
-#: src/gui/DlgProjectProps.py:388
-#: src/gui/DlgProjectProps.py:391
-#: src/gui/DlgProjectProps.py:431
-#: src/gui/DlgRender.py:247
+#: photofilmstrip/cli/Main.py:183 photofilmstrip/gui/DlgProjectProps.py:430
+#: photofilmstrip/gui/DlgProjectProps.py:452
 #, fuzzy
 msgid "Audio file '%s' does not exist!"
 msgstr "Zvukový soubor neexistuje!"
 
-#: src/cli/Main.py:217
-#: src/gui/DlgRender.py:372
+#: photofilmstrip/cli/Main.py:204
 msgid "...aborted!"
 msgstr "...přerušeno!"
 
-#: src/cli/Main.py:223
-msgid "Error: %s"
-msgstr "Chyba: %s"
-
-#: src/core/BaseRenderer.py:66
+#: photofilmstrip/core/BaseRenderer.py:64
 msgid "Unknown property: %s"
 msgstr "Neznámý parametr: %s"
 
-#: src/core/BaseRenderer.py:74
+#: photofilmstrip/core/BaseRenderer.py:72
 msgid "<default>"
 msgstr "<výchozí>"
 
-#: src/core/PhotoFilmStrip.py:154
-msgid "Loading '%s' ..."
-msgstr "Načítám '%s' ..."
-
-#: src/core/ProgressHandler.py:32
-msgid "Please wait..."
-msgstr "Prosím čekejte..."
-
-#: src/core/ProgressHandler.py:70
-msgid "aborting..."
-msgstr "přerušuji..."
-
-#: src/core/RenderEngine.py:150
-msgid "initialize renderer"
-msgstr "Iniciuji renderer"
-
-#: src/core/RenderEngine.py:171
-msgid "processing transition %d/%d"
-msgstr "zpracovávám přechod %d/%d"
-
-#: src/core/RenderEngine.py:182
-msgid "processing image %d/%d"
-msgstr "zpracovávám obraz %d/%d"
-
-#: src/core/RenderEngine.py:196
-msgid "creating output..."
-msgstr "vytvářím výstup..."
-
-#: src/core/RenderEngine.py:226
-msgid "generating subtitle"
-msgstr "generuji titulky"
-
-#: src/core/renderer/MovieRenderer.py:55
-msgid "mencoder (mencoder) required!"
-msgstr "mencoder (mencoder) vyžadován!"
-
-#: src/core/renderer/MovieRenderer.py:90
-#: src/core/renderer/MovieRenderer.py:100
+#: photofilmstrip/core/BaseRenderer.py:87
 msgid "no"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:128
+#: photofilmstrip/core/ProjectFile.py:236
+#, fuzzy
+#| msgid "Loading '%s' ..."
+msgid "Saving '%s' ..."
+msgstr "Načítám '%s' ..."
+
+#: photofilmstrip/core/ProjectFile.py:290
+msgid "Loading '%s' ..."
+msgstr "Načítám '%s' ..."
+
+#: photofilmstrip/core/RenderEngine.py:127
+#: photofilmstrip/core/RenderEngine.py:215
+msgid "processing transition %d/%d"
+msgstr "zpracovávám přechod %d/%d"
+
+#: photofilmstrip/core/RenderEngine.py:138
+#: photofilmstrip/core/RenderEngine.py:224
+msgid "processing image %d/%d"
+msgstr "zpracovávám obraz %d/%d"
+
+#: photofilmstrip/core/renderer/CairoRenderer.py:49
+msgid "Preview"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:64
+msgid "GStreamer (python-gst-1.0) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:301
 msgid "Bitrate must be a number!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:139
-msgid "MPEG(1/2)-Video (MPG)"
-msgstr "MPEG(1/2)-Video (MPG)"
-
-#: src/core/renderer/MovieRenderer.py:174
-msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:469
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:545
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:615
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:704
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:744
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:793
+msgid "libav (gstreamer1.0-libav) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:199
-msgid "MPEG4-XVid/AC3 (AVI)"
-msgstr "MPEG4-XVid/AC3 (AVI)"
-
-#: src/core/renderer/MovieRenderer.py:245
-#, fuzzy
-msgid "mencoder with MP3 support (mp3lame) required!"
-msgstr "mencoder (mencoder) vyžadován!"
-
-#: src/core/renderer/MovieRenderer.py:255
-msgid "MPEG4-XVid/MP3 (AVI)"
-msgstr "MPEG4-XVid/MP3 (AVI)"
-
-#: src/core/renderer/MovieRenderer.py:288
-msgid "Flash-Video (FLV)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:473
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:549
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:619
+msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
 msgstr ""
 
-#: src/core/renderer/MovieRenderer.py:319
-msgid "Motion-JPEG (AVI)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:477
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:623
+msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr ""
 
-#: src/core/renderer/SingleFileRenderer.py:37
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:553
+msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:661
+msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:665
+msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:669
+msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:700
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:740
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:789
+msgid "MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:708
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:748
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:797
+msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/SingleFileRenderer.py:35
 msgid "Single pictures"
 msgstr "Samostatné obrázky"
 
-#: src/gui/ActionManager.py:70
+#: photofilmstrip/core/tasks.py:62
+msgid "generating subtitle"
+msgstr "generuji titulky"
+
+#: photofilmstrip/gui/ActionManager.py:72
+#: photofilmstrip/gui/ActionManager.py:200
 msgid "&File"
 msgstr "&Soubor"
 
-#: src/gui/ActionManager.py:71
+#: photofilmstrip/gui/ActionManager.py:73
+#: photofilmstrip/gui/ActionManager.py:201
 msgid "&Edit"
 msgstr "&Úpravy"
 
-#: src/gui/ActionManager.py:72
-msgid "&Tools"
-msgstr "&Nástroje"
-
-#: src/gui/ActionManager.py:73
-#: src/gui/ActionManager.py:202
-#: src/gui/DlgRender.py:188
-#: src/gui/DlgRendererProps.py:101
+#: photofilmstrip/gui/ActionManager.py:74
+#: photofilmstrip/gui/ActionManager.py:164 photofilmstrip/gui/DlgRender.py:156
+#: photofilmstrip/gui/DlgRendererProps.py:100
 msgid "&Help"
 msgstr "Nápo&věda"
 
-#: src/gui/ActionManager.py:87
-msgid "New Project"
-msgstr "Nový projekt"
-
-#: src/gui/ActionManager.py:90
-msgid "Load Project"
-msgstr "Načíst projekt"
-
-#: src/gui/ActionManager.py:93
-msgid "Save Project"
-msgstr "Uložit projekt"
-
-#: src/gui/ActionManager.py:100
-msgid "Import Pictures"
-msgstr "Importovat obrázky"
-
-#: src/gui/ActionManager.py:103
-#: src/gui/DlgRender.py:133
-msgid "Render filmstrip"
-msgstr "Renderovat video"
-
-#: src/gui/ActionManager.py:124
-msgid "&New Project"
-msgstr "&Nový projekt"
-
-#: src/gui/ActionManager.py:128
-msgid "&Open Project"
-msgstr "&Otevřít projekt"
-
-#: src/gui/ActionManager.py:134
-msgid "&Save Project"
-msgstr "&Uložit projekt"
-
-#: src/gui/ActionManager.py:138
-#, fuzzy
-msgid "&Close Project"
-msgstr "&Nový projekt"
-
-#: src/gui/ActionManager.py:150
-#, fuzzy
-msgid "&Properties"
-msgstr "Parametr"
-
-#: src/gui/ActionManager.py:155
-msgid "E&xit"
-msgstr "U&končit"
-
-#: src/gui/ActionManager.py:163
-msgid "Move picture &left"
-msgstr "Posunout obrázek do&leva"
-
-#: src/gui/ActionManager.py:167
-msgid "Move picture &right"
-msgstr "Posunout obrázek do&prava "
-
-#: src/gui/ActionManager.py:172
-msgid "&Remove Picture"
-msgstr "O&dstranit obrázek"
-
-#: src/gui/ActionManager.py:177
-msgid "Rotate &clockwise"
-msgstr "&Otočit obrázek vpravo"
-
-#: src/gui/ActionManager.py:181
-msgid "Rotate counter clock&wise"
-msgstr "O&točit obrázek vlevo"
-
-#: src/gui/ActionManager.py:189
-msgid "&Import Pictures"
-msgstr "&Importovat obrázky"
-
-#: src/gui/ActionManager.py:194
-msgid "&Render filmstrip"
-msgstr "&Renderovat video"
-
-#: src/gui/ActionManager.py:214
-msgid "Language"
+#: photofilmstrip/gui/ActionManager.py:88
+msgid "New Slideshow"
 msgstr ""
 
-#: src/gui/ActionManager.py:218
-msgid "&About"
-msgstr "&O programu"
-
-#: src/gui/DlgBugReport.py:52
-msgid "An unexpected error occured"
-msgstr "Nastala neočekávaná chyba"
-
-#: src/gui/DlgBugReport.py:55
-msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
-msgstr "Nastala neočekávaná chyba. Chcete poslat zprávu o chybě vývojářům %s?"
-
-#: src/gui/DlgBugReport.py:101
-msgid "Bug-Report send. Thank you for your support."
-msgstr "Zpráva o chybě odeslána. Děkuji za podporu."
-
-#: src/gui/DlgBugReport.py:102
-#: src/gui/FrmMain.py:177
-msgid "Information"
-msgstr "Informace"
-
-#: src/gui/DlgBugReport.py:108
-msgid "Sorry, this function is temporary not available.."
-msgstr "Omlouvám se, tato funkce je dočasně nedostupná.."
-
-#: src/gui/DlgBugReport.py:109
-#: src/gui/DlgProjectProps.py:392
-#: src/gui/DlgProjectProps.py:421
-#: src/gui/DlgProjectProps.py:432
-#: src/gui/DlgProjectProps.py:479
-#: src/gui/DlgProjectProps.py:490
-#: src/gui/DlgRender.py:381
-#: src/gui/DlgRender.py:420
-#: src/gui/FrmMain.py:457
-msgid "Error"
-msgstr "Chyba"
-
-#: src/gui/DlgFinalize.py:78
-msgid "Finalizing"
+#: photofilmstrip/gui/ActionManager.py:93
+msgid "Open"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:87
-msgid "Choose your next action:"
+#: photofilmstrip/gui/ActionManager.py:99
+msgid "Save"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:91
-msgid "Play video"
+#: photofilmstrip/gui/ActionManager.py:109
+#: photofilmstrip/gui/ActionManager.py:110
+msgid "Show job queue"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:96
-msgid "Open folder"
+#: photofilmstrip/gui/ActionManager.py:120
+msgid "Slideshow"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:100
-msgid "Delete unfinished result"
+#: photofilmstrip/gui/ActionManager.py:126
+msgid "New"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:104
-msgid "Do nothing"
+#: photofilmstrip/gui/ActionManager.py:128
+msgid "&Open"
 msgstr ""
 
-#: src/gui/DlgFinalize.py:108
-#: src/gui/DlgRender.py:193
-#: src/gui/DlgRender.py:386
+#: photofilmstrip/gui/ActionManager.py:133
+msgid "&Save"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:146
 msgid "&Close"
 msgstr "&Zavřít"
 
-#: src/gui/DlgFinalize.py:114
-msgid "Show error again and send to developer."
-msgstr ""
+#: photofilmstrip/gui/ActionManager.py:151
+msgid "E&xit"
+msgstr "U&končit"
 
-#: src/gui/DlgFinalize.py:128
-msgid "The rendering process was aborted."
-msgstr ""
+#: photofilmstrip/gui/ActionManager.py:183
+msgid "&About"
+msgstr "&O programu"
 
-#: src/gui/DlgFinalize.py:134
-msgid "The rendering process was interrupted."
-msgstr ""
+#: photofilmstrip/gui/DlgBugReport.py:54
+msgid "An unexpected error occured"
+msgstr "Nastala neočekávaná chyba"
 
-#: src/gui/DlgFinalize.py:144
-msgid "The rendering process has been finished."
-msgstr ""
+#: photofilmstrip/gui/DlgBugReport.py:57
+msgid ""
+"An unexpected error occured. Do you want to send this bug report to the "
+"developers of %s?"
+msgstr "Nastala neočekávaná chyba. Chcete poslat zprávu o chybě vývojářům %s?"
 
-#: src/gui/DlgPositionInput.py:155
+#: photofilmstrip/gui/DlgBugReport.py:105
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Zpráva o chybě odeslána. Děkuji za podporu."
+
+#: photofilmstrip/gui/DlgBugReport.py:106 photofilmstrip/gui/FrmMain.py:285
+msgid "Information"
+msgstr "Informace"
+
+#: photofilmstrip/gui/DlgBugReport.py:112
+msgid "Sorry, this function is temporary not available.."
+msgstr "Omlouvám se, tato funkce je dočasně nedostupná.."
+
+#: photofilmstrip/gui/DlgBugReport.py:113
+#: photofilmstrip/gui/DlgProjectProps.py:431
+#: photofilmstrip/gui/DlgProjectProps.py:443
+#: photofilmstrip/gui/DlgProjectProps.py:453
+#: photofilmstrip/gui/DlgProjectProps.py:502
+#: photofilmstrip/gui/DlgProjectProps.py:513 photofilmstrip/gui/FrmMain.py:364
+#: photofilmstrip/gui/PnlPfsProject.py:514
+#: photofilmstrip/gui/PnlPfsProject.py:561
+msgid "Error"
+msgstr "Chyba"
+
+#: photofilmstrip/gui/DlgPositionInput.py:154
 msgid "Motion positions"
 msgstr ""
 
-#: src/gui/DlgPositionInput.py:162
+#: photofilmstrip/gui/DlgPositionInput.py:161
 msgid "Start position"
 msgstr ""
 
-#: src/gui/DlgPositionInput.py:170
-#: src/gui/DlgPositionInput.py:214
+#: photofilmstrip/gui/DlgPositionInput.py:169
+#: photofilmstrip/gui/DlgPositionInput.py:213
 #, fuzzy
 msgid "Location:"
 msgstr "Otočení:"
 
-#: src/gui/DlgPositionInput.py:188
-#: src/gui/DlgPositionInput.py:230
+#: photofilmstrip/gui/DlgPositionInput.py:187
+#: photofilmstrip/gui/DlgPositionInput.py:229
 msgid "Size:"
 msgstr ""
 
-#: src/gui/DlgPositionInput.py:206
+#: photofilmstrip/gui/DlgPositionInput.py:205
 #, fuzzy
 msgid "End position"
 msgstr "Rychlost přechodu:"
 
-#: src/gui/DlgPositionInput.py:248
+#: photofilmstrip/gui/DlgPositionInput.py:247
 msgid "Reset"
 msgstr ""
 
-#: src/gui/DlgPositionInput.py:253
-#: src/gui/DlgProjectProps.py:222
-#: src/gui/DlgRender.py:305
-#: src/gui/DlgRendererProps.py:107
+#: photofilmstrip/gui/DlgPositionInput.py:252
+#: photofilmstrip/gui/DlgProjectProps.py:194
+#: photofilmstrip/gui/DlgRender.py:162
+#: photofilmstrip/gui/DlgRendererProps.py:106
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:94
 msgid "&Cancel"
 msgstr "&Zrušit"
 
-#: src/gui/DlgPositionInput.py:259
-#: src/gui/DlgProjectProps.py:228
-#: src/gui/DlgRendererProps.py:112
+#: photofilmstrip/gui/DlgPositionInput.py:258
+#: photofilmstrip/gui/DlgProjectProps.py:199
+#: photofilmstrip/gui/DlgRendererProps.py:111
 msgid "&Ok"
 msgstr ""
 
-#: src/gui/DlgPositionInput.py:267
+#: photofilmstrip/gui/DlgPositionInput.py:266
 msgid "Adjust motion positions directly"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:124
-#, fuzzy
-msgid "Project properties"
-msgstr "Parametr"
-
-#: src/gui/DlgProjectProps.py:133
+#: photofilmstrip/gui/DlgProjectProps.py:108
 #, fuzzy
 msgid "Project name:"
 msgstr "Projekt"
 
-#: src/gui/DlgProjectProps.py:145
+#: photofilmstrip/gui/DlgProjectProps.py:115
 msgid "Folder:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:160
+#: photofilmstrip/gui/DlgProjectProps.py:127
 msgid "Aspect ratio:"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:168
+#: photofilmstrip/gui/DlgProjectProps.py:132
+#, fuzzy
+msgid "Audio files:"
+msgstr "Zvukové soubory"
+
+#: photofilmstrip/gui/DlgProjectProps.py:167
 msgid "Total length:"
 msgstr "Celková délka:"
 
-#: src/gui/DlgProjectProps.py:171
+#: photofilmstrip/gui/DlgProjectProps.py:169
 #, fuzzy
-msgid "Overrides the duration of single pictures and gives the project this total length."
-msgstr "Potlačí trvání jednotlivých obrázků a nastaví videu tuto celkovou délku."
+msgid ""
+"Overrides the duration of single pictures and gives the project this total "
+"length."
+msgstr ""
+"Potlačí trvání jednotlivých obrázků a nastaví videu tuto celkovou délku."
 
-#: src/gui/DlgProjectProps.py:177
+#: photofilmstrip/gui/DlgProjectProps.py:173
 msgid "User defined:"
 msgstr "Uživatelsky definované:"
 
-#: src/gui/DlgProjectProps.py:191
-msgid "Audio file:"
-msgstr "Zvukový soubor:"
+#: photofilmstrip/gui/DlgProjectProps.py:183
+#, fuzzy
+#| msgid "audio file"
+msgid "Fit to audio files"
+msgstr "zvukový soubor"
 
-#: src/gui/DlgProjectProps.py:237
+#: photofilmstrip/gui/DlgProjectProps.py:187
+msgid "Timelapse"
+msgstr ""
+
+#: photofilmstrip/gui/DlgProjectProps.py:208
+#, fuzzy
+msgid "Project properties"
+msgstr "Parametr"
+
+#: photofilmstrip/gui/DlgProjectProps.py:216
 #, fuzzy
 msgid "PhotoFilmStrip project"
 msgstr "Nepojmenované video"
 
-#: src/gui/DlgProjectProps.py:268
+#: photofilmstrip/gui/DlgProjectProps.py:247
 msgid "Unnamed PhotoFilmStrip"
 msgstr "Nepojmenované video"
 
-#: src/gui/DlgProjectProps.py:275
+#: photofilmstrip/gui/DlgProjectProps.py:254
 #, fuzzy
 msgid "My PhotoFilmStrips"
 msgstr "Nepojmenované video"
 
-#: src/gui/DlgProjectProps.py:319
+#: photofilmstrip/gui/DlgProjectProps.py:310
 msgid "Browse for folder"
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:333
+#: photofilmstrip/gui/DlgProjectProps.py:327
 msgid "Select music"
 msgstr "Vybrat hudbu"
 
-#: src/gui/DlgProjectProps.py:335
+#: photofilmstrip/gui/DlgProjectProps.py:329
 #, fuzzy
 msgid "Audio files"
 msgstr "Zvukové soubory"
 
-#: src/gui/DlgProjectProps.py:417
-#: src/gui/DlgProjectProps.py:420
+#: photofilmstrip/gui/DlgProjectProps.py:442
 #, fuzzy
 msgid "Audio file not supported!"
 msgstr "Zvukový soubor neexistuje!"
 
-#: src/gui/DlgProjectProps.py:468
+#: photofilmstrip/gui/DlgProjectProps.py:491
 #, fuzzy
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "Výstupní cesta neexistuje! Chcete aby ji %s vytvořil?"
 
-#: src/gui/DlgProjectProps.py:469
-#: src/gui/DlgRender.py:335
-#: src/gui/FrmMain.py:287
-#: src/gui/FrmMain.py:403
-#: src/gui/FrmMain.py:482
-#: src/gui/PnlPfsProject.py:449
+#: photofilmstrip/gui/DlgProjectProps.py:492
+#: photofilmstrip/gui/PnlEditorPage.py:43
+#: photofilmstrip/gui/PnlEditorPage.py:63
+#: photofilmstrip/gui/PnlEditorPage.py:102
+#: photofilmstrip/gui/WxProjectFile.py:96
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:221
 msgid "Question"
 msgstr "Otázka"
 
-#: src/gui/DlgProjectProps.py:478
+#: photofilmstrip/gui/DlgProjectProps.py:501
 #, fuzzy
 msgid "Cannot create folder: %s"
 msgstr "Nelze vytvořit adresář: %s"
 
-#: src/gui/DlgProjectProps.py:489
+#: photofilmstrip/gui/DlgProjectProps.py:512
 #, fuzzy
 msgid "Cannot write into folder!"
 msgstr "Nelze zapisovat do adresáře: %s"
 
-#: src/gui/DlgProjectProps.py:503
+#: photofilmstrip/gui/DlgProjectProps.py:526
 msgid "The project name must be filled."
 msgstr ""
 
-#: src/gui/DlgProjectProps.py:509
+#: photofilmstrip/gui/DlgProjectProps.py:532
 msgid "The project name contains invalid characters."
 msgstr ""
 
-#: src/gui/DlgRender.py:144
-msgid "Profile:"
-msgstr "Profil:"
+#: photofilmstrip/gui/DlgRender.py:110 photofilmstrip/gui/PnlPfsProject.py:406
+#: photofilmstrip/gui/PnlPfsProject.py:407
+msgid "Render filmstrip"
+msgstr "Renderovat video"
 
-#: src/gui/DlgRender.py:153
-msgid "Type:"
-msgstr "Typ:"
-
-#: src/gui/DlgRender.py:163
+#: photofilmstrip/gui/DlgRender.py:122
 msgid "Format:"
 msgstr "Formát:"
 
-#: src/gui/DlgRender.py:179
+#: photofilmstrip/gui/DlgRender.py:137
 #, fuzzy
 msgid "Properties"
 msgstr "Parametr"
 
-#: src/gui/DlgRender.py:183
+#: photofilmstrip/gui/DlgRender.py:142
+msgid "Profile:"
+msgstr "Profil:"
+
+#: photofilmstrip/gui/DlgRender.py:151
 #, fuzzy
 msgid "Draft"
 msgstr "Trvání"
 
-#: src/gui/DlgRender.py:200
-msgid "&Batch Job"
-msgstr "&Dávka"
-
-#: src/gui/DlgRender.py:205
+#: photofilmstrip/gui/DlgRender.py:167
 msgid "&Start"
 msgstr "&Start"
 
-#: src/gui/DlgRender.py:229
+#: photofilmstrip/gui/DlgRender.py:179
 msgid "Configure output and start render process"
 msgstr ""
 
-#: src/gui/DlgRender.py:281
-#, fuzzy
-msgid "Audio file '%s' does not exist! Continue anyway?"
-msgstr "Zvukový soubor neexistuje!"
-
-#: src/gui/DlgRender.py:282
-msgid "Warning"
-msgstr ""
-
-#: src/gui/DlgRender.py:334
-msgid "Abort current process?"
-msgstr "Přerušit běžící proces?"
-
-#: src/gui/DlgRender.py:419
-msgid "Project not saved yet. Please save the project first to create a batch job!"
-msgstr "Projekt není ještě uložen. Prosím uložte nejprve projekt pro vytvoření dávkové úlohy."
-
-#: src/gui/DlgRender.py:431
-msgid "Batch file"
-msgstr "Dávkový soubor"
-
-#: src/gui/DlgRender.py:438
-msgid "Shell script"
-msgstr "Skript"
-
-#: src/gui/DlgRender.py:444
-msgid "Select batch file"
-msgstr "Vybrat dávkový soubor"
-
-#: src/gui/DlgRendererProps.py:65
+#: photofilmstrip/gui/DlgRendererProps.py:64
 msgid "Property"
 msgstr "Parametr"
 
-#: src/gui/DlgRendererProps.py:67
+#: photofilmstrip/gui/DlgRendererProps.py:66
 msgid "Value"
 msgstr "Hodnota"
 
-#: src/gui/DlgRendererProps.py:86
+#: photofilmstrip/gui/DlgRendererProps.py:85
 #, fuzzy
 msgid "Output properties"
 msgstr "Parametr"
 
-#: src/gui/DlgRendererProps.py:128
+#: photofilmstrip/gui/DlgRendererProps.py:127
 msgid "Edit extended output properties"
 msgstr ""
 
-#: src/gui/DlgRendererProps.py:164
+#: photofilmstrip/gui/DlgRendererProps.py:161
 msgid "Edit property"
 msgstr "Editovat parametr"
 
-#: src/gui/FrmMain.py:77
+#: photofilmstrip/gui/FrmMain.py:97
 msgid "Welcome"
 msgstr ""
 
-#: src/gui/FrmMain.py:176
-msgid "You must restart %s for your new language setting to take effect."
+#: photofilmstrip/gui/FrmMain.py:99
+msgid "Job queue"
 msgstr ""
 
-#: src/gui/FrmMain.py:236
-msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
-msgstr "PhotoFilmStrip vytváří videa z vašich fotek v pouhých 3 krocích. Nejprve vyberte vaše fotky, upravte cesty pohybu a vyrenderujte video. Lze použít mnoho výstupních možností pro VCD, SVCD, DVD až po FULL-HD."
+#: photofilmstrip/gui/FrmMain.py:154
+msgid "Rendering in progress..."
+msgstr ""
 
-#: src/gui/FrmMain.py:239
-msgid "online"
-msgstr "online"
-
-#: src/gui/FrmMain.py:255
+#: photofilmstrip/gui/FrmMain.py:244
 msgid "Select %s-Project"
 msgstr "Vybrat %s-Projekt"
 
-#: src/gui/FrmMain.py:257
-#: src/gui/FrmMain.py:277
-#: src/gui/FrmMain.py:308
-#: src/gui/FrmMain.py:319
-msgid "Project"
-msgstr "Projekt"
+#: photofilmstrip/gui/FrmMain.py:246
+#, fuzzy
+#| msgid "&File"
+msgid "Files"
+msgstr "&Soubor"
 
-#: src/gui/FrmMain.py:274
-msgid "Save %s-Project"
-msgstr "Uložit %s-Projekt"
+#: photofilmstrip/gui/FrmMain.py:284
+msgid "You must restart %s for your new language setting to take effect."
+msgstr ""
 
-#: src/gui/FrmMain.py:286
-msgid "Overwrite existing file '%s'?"
-msgstr "Přepsat existující soubor '%s'?"
+#: photofilmstrip/gui/FrmMain.py:295
+msgid ""
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
+"select your photos, customize the motion path and render the video. There "
+"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr ""
+"PhotoFilmStrip vytváří videa z vašich fotek v pouhých 3 krocích. Nejprve "
+"vyberte vaše fotky, upravte cesty pohybu a vyrenderujte video. Lze použít "
+"mnoho výstupních možností pro VCD, SVCD, DVD až po FULL-HD."
 
-#: src/gui/FrmMain.py:305
-msgid "Export %s-Project"
-msgstr "Exportovat %s-Projekt"
+#: photofilmstrip/gui/FrmMain.py:298
+msgid "online"
+msgstr "online"
 
-#: src/gui/FrmMain.py:308
-#: src/gui/FrmMain.py:319
-msgid "Portable"
-msgstr "Přenositelný"
-
-#: src/gui/FrmMain.py:317
-msgid "Import %s-Project"
-msgstr "Importovat %s-Projekt"
-
-#: src/gui/FrmMain.py:402
-msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' byl modifikován. Uložit změny?"
-
-#: src/gui/FrmMain.py:425
-msgid "Images"
-msgstr "Obrázky"
-
-#: src/gui/FrmMain.py:430
-msgid "Duration"
-msgstr "Trvání"
-
-#: src/gui/FrmMain.py:455
+#: photofilmstrip/gui/FrmMain.py:362
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "Špatný %(app)s-Projekt: %(file)s"
 
-#: src/gui/FrmMain.py:479
-msgid "Could not save the file '%(file)s': %(errMsg)s"
-msgstr "Nemohu uložit soubor '%(file)s': %(errMsg)s"
-
-#: src/gui/PnlAddPics.py:91
-#: src/gui/PnlWelcome.py:43
+#: photofilmstrip/gui/PnlAddPics.py:93 photofilmstrip/gui/PnlWelcome.py:44
 msgid "Welcome to PhotoFilmStrip"
 msgstr "Vítejte v PhotoFilmStrip"
 
-#: src/gui/PnlAddPics.py:92
+#: photofilmstrip/gui/PnlAddPics.py:94
 msgid ""
 "Drag some pictures onto this text or\n"
 "click the button below\n"
@@ -686,144 +592,441 @@ msgstr ""
 "stiskněte tlačítko níže\n"
 "pro pro vytvoření nového videa PhotoFilmStrip."
 
-#: src/gui/PnlEditPicture.py:154
+#: photofilmstrip/gui/PnlEditPicture.py:156
 msgid "Settings"
 msgstr "Nastavení"
 
-#: src/gui/PnlEditPicture.py:158
+#: photofilmstrip/gui/PnlEditPicture.py:160
 msgid "Rotation:"
 msgstr "Otočení:"
 
-#: src/gui/PnlEditPicture.py:178
+#: photofilmstrip/gui/PnlEditPicture.py:180
 msgid "Effect:"
 msgstr "Efekt:"
 
-#: src/gui/PnlEditPicture.py:192
+#: photofilmstrip/gui/PnlEditPicture.py:194
 msgid "Process"
 msgstr ""
 
-#: src/gui/PnlEditPicture.py:196
+#: photofilmstrip/gui/PnlEditPicture.py:198
+msgid "Movement:"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:210
+#: photofilmstrip/gui/PnlEditPicture.py:226
+msgid "sec"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:214
 #, fuzzy
 msgid "Transition:"
 msgstr "Rychlost přechodu:"
 
-#: src/gui/PnlEditPicture.py:208
-#: src/gui/PnlEditPicture.py:220
-msgid "sec"
-msgstr ""
-
-#: src/gui/PnlEditPicture.py:212
-#, fuzzy
-msgid "Duration:"
-msgstr "Trvání"
-
-#: src/gui/PnlEditPicture.py:228
+#: photofilmstrip/gui/PnlEditPicture.py:234
 #, fuzzy
 msgid "Subtitle"
 msgstr "Titulky:"
 
-#: src/gui/PnlEditPicture.py:252
+#: photofilmstrip/gui/PnlEditPicture.py:254
+msgid "Linear"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:255
+msgid "Accelerated"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:256
+msgid "Delayed"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:264
 msgid "No effect"
 msgstr "Bez efektu"
 
-#: src/gui/PnlEditPicture.py:253
+#: photofilmstrip/gui/PnlEditPicture.py:265
 msgid "Black and White"
 msgstr "Černobílé"
 
-#: src/gui/PnlEditPicture.py:254
+#: photofilmstrip/gui/PnlEditPicture.py:266
 msgid "Sepia tone"
 msgstr "Sépiové tónování"
 
-#: src/gui/PnlEditPicture.py:260
+#: photofilmstrip/gui/PnlEditPicture.py:272
 #, fuzzy
 msgid "None"
 msgstr "online"
 
-#: src/gui/PnlEditPicture.py:261
+#: photofilmstrip/gui/PnlEditPicture.py:273
 msgid "Fade"
 msgstr ""
 
-#: src/gui/PnlEditPicture.py:262
+#: photofilmstrip/gui/PnlEditPicture.py:274
 msgid "Roll"
 msgstr ""
 
-#: src/gui/PnlPfsProject.py:104
-msgid "Random motion"
+#: photofilmstrip/gui/PnlEditorPage.py:40
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "Nemohu uložit soubor '%(file)s': %(errMsg)s"
+
+#: photofilmstrip/gui/PnlEditorPage.py:59
+msgid "New file"
 msgstr ""
 
-#: src/gui/PnlPfsProject.py:109
-msgid "Set motion end to start"
-msgstr ""
+#: photofilmstrip/gui/PnlEditorPage.py:62
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' byl modifikován. Uložit změny?"
 
-#: src/gui/PnlPfsProject.py:113
+#: photofilmstrip/gui/PnlEditorPage.py:88
+#, fuzzy
+#| msgid "Save %s-Project"
+msgid "Save %s"
+msgstr "Uložit %s-Projekt"
+
+#: photofilmstrip/gui/PnlEditorPage.py:91
+#, fuzzy
+#| msgid "&File"
+msgid "File"
+msgstr "&Soubor"
+
+#: photofilmstrip/gui/PnlEditorPage.py:101
+msgid "Overwrite existing file '%s'?"
+msgstr "Přepsat existující soubor '%s'?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:135
+#: photofilmstrip/gui/PnlPfsProject.py:137
 msgid "Set motion start to end"
 msgstr ""
 
-#: src/gui/PnlPfsProject.py:119
+#: photofilmstrip/gui/PnlPfsProject.py:139
+#: photofilmstrip/gui/PnlPfsProject.py:141
+msgid "Set motion end to start"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:143
+#: photofilmstrip/gui/PnlPfsProject.py:145
+msgid "Swap motion"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:148
+#: photofilmstrip/gui/PnlPfsProject.py:150
 msgid "Adjust motion manual"
 msgstr ""
 
-#: src/gui/PnlPfsProject.py:264
+#: photofilmstrip/gui/PnlPfsProject.py:153
+#: photofilmstrip/gui/PnlPfsProject.py:155
+msgid "Preserve image dimension"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:325
+msgid "Images"
+msgstr "Obrázky"
+
+#: photofilmstrip/gui/PnlPfsProject.py:330
+msgid "Duration"
+msgstr "Trvání"
+
+#: photofilmstrip/gui/PnlPfsProject.py:340
+msgid "Project"
+msgstr "Projekt"
+
+#: photofilmstrip/gui/PnlPfsProject.py:352
+#, fuzzy
+msgid "&Properties"
+msgstr "Parametr"
+
+#: photofilmstrip/gui/PnlPfsProject.py:357
+msgid "&Import Pictures"
+msgstr "&Importovat obrázky"
+
+#: photofilmstrip/gui/PnlPfsProject.py:362
+msgid "Move picture &left"
+msgstr "Posunout obrázek do&leva"
+
+#: photofilmstrip/gui/PnlPfsProject.py:366
+msgid "Move picture &right"
+msgstr "Posunout obrázek do&prava "
+
+#: photofilmstrip/gui/PnlPfsProject.py:371
+#, fuzzy
+#| msgid "&Remove Picture"
+msgid "R&emove Picture"
+msgstr "O&dstranit obrázek"
+
+#: photofilmstrip/gui/PnlPfsProject.py:376
+msgid "Rotate &clockwise"
+msgstr "&Otočit obrázek vpravo"
+
+#: photofilmstrip/gui/PnlPfsProject.py:380
+msgid "Rotate counter clock&wise"
+msgstr "O&točit obrázek vlevo"
+
+#: photofilmstrip/gui/PnlPfsProject.py:385
+#, fuzzy
+msgid "Random &motion"
+msgstr "Rychlost přechodu:"
+
+#: photofilmstrip/gui/PnlPfsProject.py:389
+msgid "Centralize m&otion"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:398
+#: photofilmstrip/gui/PnlPfsProject.py:399
+msgid "Import Pictures"
+msgstr "Importovat obrázky"
+
+#: photofilmstrip/gui/PnlPfsProject.py:464
+msgid "Export slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:467
+#: photofilmstrip/gui/PnlPfsProject.py:480
+#, fuzzy
+#| msgid "Portable"
+msgid "Portable slideshow"
+msgstr "Přenositelný"
+
+#: photofilmstrip/gui/PnlPfsProject.py:478
+#, fuzzy
+#| msgid "Import images"
+msgid "Import Slideshow"
+msgstr "Importovat obrázky"
+
+#: photofilmstrip/gui/PnlPfsProject.py:498
 msgid "Import images"
 msgstr "Importovat obrázky"
 
-#: src/gui/PnlPfsProject.py:266
-#: src/gui/PnlPfsProject.py:326
+#: photofilmstrip/gui/PnlPfsProject.py:500
 msgid "Imagefiles"
 msgstr "Soubory s obrázky"
 
-#: src/gui/PnlPfsProject.py:315
-msgid "Browse"
-msgstr "Prohlížet"
+#: photofilmstrip/gui/PnlPfsProject.py:511
+msgid ""
+"Filename '%s' does not match a number pattern which is necessary for a time "
+"lapse slide show!"
+msgstr ""
 
-#: src/gui/PnlPfsProject.py:324
-msgid "Import image"
-msgstr "Importovat obrázek"
+#: photofilmstrip/gui/PnlPfsProject.py:773
+#, fuzzy
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "Zvukový soubor neexistuje!"
 
-#: src/gui/PnlPfsProject.py:448
-msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "Některé obrázky v adresáři '%s' již neexistují. Pokud byly přesunuty, můžete vybrat novou cestu. Chcete vybrat novou cestu?"
+#: photofilmstrip/gui/PnlPfsProject.py:774
+msgid "Warning"
+msgstr ""
 
-#: src/gui/PnlPfsProject.py:472
-msgid "Please wait"
-msgstr "Prosím čekejte"
-
-#: src/gui/PnlPfsProject.py:473
-msgid "Loading pictures..."
-msgstr "Nahrávám obrázky..."
-
-#: src/gui/PnlWelcome.py:50
-#: src/gui/PnlWelcome.py:105
+#: photofilmstrip/gui/PnlWelcome.py:51 photofilmstrip/gui/PnlWelcome.py:117
 #, fuzzy
 msgid "Recent projects"
 msgstr "zpracovávám projekt"
 
-#: src/gui/PnlWelcome.py:62
+#: photofilmstrip/gui/PnlWelcome.py:71
 #, fuzzy
 msgid "Create new project"
 msgstr "Nový projekt"
 
-#: src/gui/PnlWelcome.py:67
+#: photofilmstrip/gui/PnlWelcome.py:76
 #, fuzzy
 msgid "Open existing project"
 msgstr "zpracovávám projekt"
 
-#: src/gui/PnlWelcome.py:108
+#: photofilmstrip/gui/PnlWelcome.py:120
 msgid "How to start..."
 msgstr ""
 
-#: src/gui/PnlWelcome.py:109
+#: photofilmstrip/gui/PnlWelcome.py:121
 msgid "Create a new project or load an existing one."
 msgstr ""
 
-#: src/gui/PnlWelcome.py:140
+#: photofilmstrip/gui/PnlWelcome.py:152
 msgid "Update available"
 msgstr ""
 
-#: src/gui/PnlWelcome.py:143
+#: photofilmstrip/gui/PnlWelcome.py:155
 #, fuzzy
 msgid "The following changes has been made:"
 msgstr "Nová verze je dostupná. Byly provedeny následující úpravy:"
+
+#: photofilmstrip/gui/WxProjectFile.py:54
+#, fuzzy
+#| msgid "Load Project"
+msgid "Loading project %s"
+msgstr "Načíst projekt"
+
+#: photofilmstrip/gui/WxProjectFile.py:70
+#, fuzzy
+#| msgid "Save Project as"
+msgid "Saving project %s"
+msgstr "Uložit projekt jako"
+
+#: photofilmstrip/gui/WxProjectFile.py:95
+msgid ""
+"Some images does not exist in the folder '%s' anymore. If the files has "
+"moved you can select the new path. Do you want to select a new path?"
+msgstr ""
+"Některé obrázky v adresáři '%s' již neexistují. Pokud byly přesunuty, můžete "
+"vybrat novou cestu. Chcete vybrat novou cestu?"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:70
+msgid "Elapsed time"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:82
+msgid "Remaining time"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:200
+msgid "Unknown"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobManager.py:66
+msgid "&Clear list"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:124
+msgid "Abort"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:130
+msgid "Remove from list"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:220
+#, fuzzy
+#| msgid "Abort current process?"
+msgid "Abort selected process?"
+msgstr "Přerušit běžící proces?"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:26
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:22
+#, fuzzy
+#| msgid "aborting..."
+msgid "Waiting..."
+msgstr "přerušuji..."
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:65
+#: photofilmstrip/lib/jobimpl/VisualJob.py:82
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:57
+#, fuzzy
+#| msgid "...aborted!"
+msgid "Aborted"
+msgstr "...přerušeno!"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:67
+msgid "Done"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:76
+#, fuzzy
+#| msgid "aborting..."
+msgid "Aborting..."
+msgstr "přerušuji..."
+
+#: photofilmstrip/uwp/UwpService.py:90
+msgid "Slideshow created!"
+msgstr ""
+
+#~ msgid "invalid videonorm specified: %s"
+#~ msgstr "specifikována špatná video norma: %s"
+
+#~ msgid "Error: %s"
+#~ msgstr "Chyba: %s"
+
+#~ msgid "Please wait..."
+#~ msgstr "Prosím čekejte..."
+
+#~ msgid "initialize renderer"
+#~ msgstr "Iniciuji renderer"
+
+#~ msgid "creating output..."
+#~ msgstr "vytvářím výstup..."
+
+#~ msgid "mencoder (mencoder) required!"
+#~ msgstr "mencoder (mencoder) vyžadován!"
+
+#~ msgid "MPEG(1/2)-Video (MPG)"
+#~ msgstr "MPEG(1/2)-Video (MPG)"
+
+#~ msgid "MPEG4-XVid/AC3 (AVI)"
+#~ msgstr "MPEG4-XVid/AC3 (AVI)"
+
+#, fuzzy
+#~ msgid "mencoder with MP3 support (mp3lame) required!"
+#~ msgstr "mencoder (mencoder) vyžadován!"
+
+#~ msgid "MPEG4-XVid/MP3 (AVI)"
+#~ msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#~ msgid "&Tools"
+#~ msgstr "&Nástroje"
+
+#~ msgid "New Project"
+#~ msgstr "Nový projekt"
+
+#~ msgid "Save Project"
+#~ msgstr "Uložit projekt"
+
+#~ msgid "&New Project"
+#~ msgstr "&Nový projekt"
+
+#~ msgid "&Open Project"
+#~ msgstr "&Otevřít projekt"
+
+#~ msgid "&Save Project"
+#~ msgstr "&Uložit projekt"
+
+#, fuzzy
+#~ msgid "&Close Project"
+#~ msgstr "&Nový projekt"
+
+#~ msgid "&Render filmstrip"
+#~ msgstr "&Renderovat video"
+
+#~ msgid "Audio file:"
+#~ msgstr "Zvukový soubor:"
+
+#~ msgid "Type:"
+#~ msgstr "Typ:"
+
+#~ msgid "&Batch Job"
+#~ msgstr "&Dávka"
+
+#~ msgid ""
+#~ "Project not saved yet. Please save the project first to create a batch "
+#~ "job!"
+#~ msgstr ""
+#~ "Projekt není ještě uložen. Prosím uložte nejprve projekt pro vytvoření "
+#~ "dávkové úlohy."
+
+#~ msgid "Batch file"
+#~ msgstr "Dávkový soubor"
+
+#~ msgid "Shell script"
+#~ msgstr "Skript"
+
+#~ msgid "Select batch file"
+#~ msgstr "Vybrat dávkový soubor"
+
+#~ msgid "Export %s-Project"
+#~ msgstr "Exportovat %s-Projekt"
+
+#~ msgid "Import %s-Project"
+#~ msgstr "Importovat %s-Projekt"
+
+#, fuzzy
+#~ msgid "Duration:"
+#~ msgstr "Trvání"
+
+#~ msgid "Browse"
+#~ msgstr "Prohlížet"
+
+#~ msgid "Import image"
+#~ msgstr "Importovat obrázek"
+
+#~ msgid "Please wait"
+#~ msgstr "Prosím čekejte"
+
+#~ msgid "Loading pictures..."
+#~ msgstr "Nahrávám obrázky..."
 
 #~ msgid "Invalid audio file!"
 #~ msgstr "Špatný zvukový soubor!"
@@ -834,9 +1037,6 @@ msgstr "Nová verze je dostupná. Byly provedeny následující úpravy:"
 #, fuzzy
 #~ msgid "Video clip (AVI)"
 #~ msgstr "Vide klip"
-
-#~ msgid "audio file"
-#~ msgstr "zvukový soubor"
 
 #~ msgid "total length of the PhotoFilmStrip (seconds)"
 #~ msgstr "celková délka videa (v sekundách)"
@@ -868,9 +1068,6 @@ msgstr "Nová verze je dostupná. Byly provedeny následující úpravy:"
 
 #~ msgid "Translators"
 #~ msgstr "Překladatelé"
-
-#~ msgid "Save Project as"
-#~ msgstr "Uložit projekt jako"
 
 #~ msgid "Open &recent"
 #~ msgstr "Otevřít &nedávné"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: photofilmstrip\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2012-12-05 23:08+CET\n"
+"POT-Creation-Date: 2018-10-04 23:34+CEST\n"
 "PO-Revision-Date: 2012-12-05 23:21+0100\n"
 "Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
 "Language-Team: Tamil <ta@li.org>\n"
@@ -19,41 +19,47 @@ msgstr ""
 "X-Generator: Launchpad (build 16341)\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:37
-#: photofilmstrip/gui/PnlPfsProject.py:105
+#: photofilmstrip/gui/PnlPfsProject.py:132
 msgid "Random motion"
 msgstr "சீரற்ற நகர்ச்சி"
 
+#: photofilmstrip/action/ActionCenterPath.py:35
+msgid "Centralize motion"
+msgstr ""
+
 #: photofilmstrip/action/ActionI18N.py:38
-#: photofilmstrip/gui/ActionManager.py:217
+#: photofilmstrip/gui/ActionManager.py:180
 msgid "Language"
 msgstr "மொழி"
 
 #: photofilmstrip/action/ActionOpenFolder.py:34
-#: photofilmstrip/action/ActionPlayVideo.py:35
+#: photofilmstrip/gui/PnlRenderJobVisual.py:24
+msgid "Open folder"
+msgstr "அடைவைத் திற"
+
+#: photofilmstrip/action/ActionPlayVideo.py:34
 #: photofilmstrip/gui/PnlRenderJobVisual.py:18
 msgid "Play video"
 msgstr "நிகழ்படத்தை ஓட்டு"
 
-#: photofilmstrip/action/ActionRender.py:50
+#: photofilmstrip/action/ActionRender.py:51
 #, fuzzy
 msgid "Start"
 msgstr "&தொடங்கு"
 
-#: photofilmstrip/cli/Main.py:67
-#: photofilmstrip/cli/Main.py:212
-#: photofilmstrip/core/ProgressHandler.py:71
+#: photofilmstrip/cli/Main.py:60 photofilmstrip/cli/Main.py:210
 msgid "all done"
 msgstr "எல்லாம் முடிந்தது"
 
-#: photofilmstrip/cli/Main.py:80
+#: photofilmstrip/cli/Main.py:78
 msgid "processing project"
 msgstr "திட்டப்பணி செயலாக்கப்படுகிறது"
 
-#: photofilmstrip/cli/Main.py:81
+#: photofilmstrip/cli/Main.py:79
 msgid "using renderer"
 msgstr "நிகழ்பட வழங்கி பயன்படுத்தப்படுகிறது"
 
-#: photofilmstrip/cli/Main.py:82
+#: photofilmstrip/cli/Main.py:80
 msgid "output format"
 msgstr "வெளிப்பாட்டு வடிவம்"
 
@@ -61,61 +67,61 @@ msgstr "வெளிப்பாட்டு வடிவம்"
 msgid "framerate"
 msgstr "சட்டத் திறன்"
 
-#: photofilmstrip/cli/Main.py:111
+#: photofilmstrip/cli/Main.py:117
 msgid "specifies the project file"
 msgstr "திட்டப்பணிக் கோப்பை குறிப்பிடுகிறது"
 
-#: photofilmstrip/cli/Main.py:112
+#: photofilmstrip/cli/Main.py:118
 msgid "The path where to save the output files. Use - for stdout."
-msgstr "வெளிப்பாட்டுக் கோப்புகளை சேமிக்க வேண்டிய இடம். திட்ட வெளிப்பாட்டுக்கு '-' பயன்படுத்தவும்."
+msgstr ""
+"வெளிப்பாட்டுக் கோப்புகளை சேமிக்க வேண்டிய இடம். திட்ட வெளிப்பாட்டுக்கு '-' பயன்படுத்தவும்."
 
-#: photofilmstrip/cli/Main.py:116
+#: photofilmstrip/cli/Main.py:120 photofilmstrip/cli/Main.py:143
+msgid "Option videonorm is deprecated, use an appropriate profile!"
+msgstr ""
+
+#: photofilmstrip/cli/Main.py:122
 msgid "enable draft mode"
 msgstr "வரைவு நிலையை செயல்படுத்து"
 
-#: photofilmstrip/cli/Main.py:116
-#: photofilmstrip/gui/DlgRender.py:200
-msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
-msgstr "உங்கள் போடோபிலம்ஸ்டிரிப்பின் மூன்னோட்டத்தை உருவாக்க இந்த தேர்வை செயல்படுத்தவும். செயலாக்க வேகம் வியப்பூட்டும் அளவுக்கு கூடும், ஆனால் தரம் குறையும்."
+#: photofilmstrip/cli/Main.py:122 photofilmstrip/gui/DlgRender.py:182
+msgid ""
+"Activate this option to generate a preview of your PhotoFilmStrip. The "
+"rendering process will speed up dramatically, but results in lower quality."
+msgstr ""
+"உங்கள் போடோபிலம்ஸ்டிரிப்பின் மூன்னோட்டத்தை உருவாக்க இந்த தேர்வை செயல்படுத்தவும். செயலாக்க "
+"வேகம் வியப்பூட்டும் அளவுக்கு கூடும், ஆனால் தரம் குறையும்."
 
-#: photofilmstrip/cli/Main.py:124
+#: photofilmstrip/cli/Main.py:134
 msgid "project file does not exist: %s"
 msgstr "திட்டப்பணி கோப்பு இல்லை: %s"
 
-#: photofilmstrip/cli/Main.py:128
+#: photofilmstrip/cli/Main.py:138
 msgid "no project file specified!"
 msgstr "திட்டப்பணி கோப்பு குறிப்பிடப்படவில்லை!"
 
-#: photofilmstrip/cli/Main.py:134
-msgid "invalid profile specified: %s"
-msgstr "குறிப்பிடப்பட்ட தன்விவரம் ஏற்றுக்கொள்ளத்தக்கது இல்லை: %s"
-
-#: photofilmstrip/cli/Main.py:145
-msgid "invalid videonorm specified: %s"
-msgstr "தவறான நிகழ்பட வடிவம் குறிப்பிடப்பட்டுள்ளது: %s"
-
-#: photofilmstrip/cli/Main.py:151
+#: photofilmstrip/cli/Main.py:148
 msgid "invalid format specified: %s"
 msgstr "தவறான வடிவம் குறிப்பிடப்பட்டுள்ளது: %s"
 
-#: photofilmstrip/cli/Main.py:158
+#: photofilmstrip/cli/Main.py:154
+msgid "invalid profile specified: %s"
+msgstr "குறிப்பிடப்பட்ட தன்விவரம் ஏற்றுக்கொள்ளத்தக்கது இல்லை: %s"
+
+#: photofilmstrip/cli/Main.py:160
 msgid "cannot load photofilmstrip"
 msgstr "போடோபில்ம்ஸ்டிரிப்பை ஏற்ற முடியவில்லை"
 
-#: photofilmstrip/cli/Main.py:172
+#: photofilmstrip/cli/Main.py:173
 msgid "cannot create output path: %s"
 msgstr "வெளிப்பாட்டு பாதையை உருவாக்க முடியவில்லை: %s"
 
-#: photofilmstrip/cli/Main.py:183
-#: photofilmstrip/gui/DlgProjectProps.py:389
-#: photofilmstrip/gui/DlgProjectProps.py:392
-#: photofilmstrip/gui/DlgProjectProps.py:432
-#: photofilmstrip/gui/DlgRender.py:213
+#: photofilmstrip/cli/Main.py:183 photofilmstrip/gui/DlgProjectProps.py:430
+#: photofilmstrip/gui/DlgProjectProps.py:452
 msgid "Audio file '%s' does not exist!"
 msgstr "ஒலிக் கோப்பு '%s' கோப்பமைப்பில் இல்லை!"
 
-#: photofilmstrip/cli/Main.py:206
-#: photofilmstrip/core/ProgressHandler.py:68
+#: photofilmstrip/cli/Main.py:204
 msgid "...aborted!"
 msgstr "...நிறுத்தப்பட்டது!"
 
@@ -127,481 +133,435 @@ msgstr "தெரியாத பண்பு: %s"
 msgid "<default>"
 msgstr "<இயல்பிருப்பு>"
 
-#: photofilmstrip/core/ProgressHandler.py:32
-msgid "Please wait..."
-msgstr "தயவு செய்து காத்திருக்கவும்..."
+#: photofilmstrip/core/BaseRenderer.py:87
+msgid "no"
+msgstr "இல்லை"
 
-#: photofilmstrip/core/ProgressHandler.py:78
-msgid "aborting..."
-msgstr "நிறுத்துகிறது..."
-
-#: photofilmstrip/core/ProjectFile.py:210
+#: photofilmstrip/core/ProjectFile.py:236
 #, fuzzy
 msgid "Saving '%s' ..."
 msgstr "'%s' ஏற்றப்படுகிறது..."
 
-#: photofilmstrip/core/ProjectFile.py:261
+#: photofilmstrip/core/ProjectFile.py:290
 msgid "Loading '%s' ..."
 msgstr "'%s' ஏற்றப்படுகிறது..."
 
-#: photofilmstrip/core/RenderEngine.py:122
+#: photofilmstrip/core/RenderEngine.py:127
+#: photofilmstrip/core/RenderEngine.py:215
 msgid "processing transition %d/%d"
 msgstr "சீர்மாற்றம் %d/%d செயலாக்கப்படுகிறது"
 
-#: photofilmstrip/core/RenderEngine.py:133
+#: photofilmstrip/core/RenderEngine.py:138
+#: photofilmstrip/core/RenderEngine.py:224
 msgid "processing image %d/%d"
 msgstr "நிழற்படம் %d/%d செயலாக்கப்படுகிறது"
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:79
-msgid "mencoder (mencoder) required!"
-msgstr "மென்கோடர் (mencoder) தேவை!"
+#: photofilmstrip/core/renderer/CairoRenderer.py:49
+msgid "Preview"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:131
-#: photofilmstrip/core/renderer/MovieRenderer.py:141
-msgid "no"
-msgstr "இல்லை"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:64
+msgid "GStreamer (python-gst-1.0) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:169
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:301
 msgid "Bitrate must be a number!"
 msgstr "நுண்மி விகிதம் எண்ணாக இருக்க வேண்டும்!"
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:180
-msgid "MPEG(1/2)-Video (MPG)"
-msgstr "எம்.பி.இ.ஜி (1/2)-நிகழ்படம் (MPG)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:469
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:545
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:615
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:704
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:744
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:793
+msgid "libav (gstreamer1.0-libav) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:216
-msgid "MPEG format supports only VCD, SVCD and DVD profile!"
-msgstr "எம்.பி.இ.ஜி வடிவம் விசிடி, சூப்பர் விசிடி, டிவிடி தன்விவரங்களை மட்டுமே ஆதரிக்கும்"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:473
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:549
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:619
+msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:241
-msgid "MPEG4-XVid/AC3 (AVI)"
-msgstr "எம்.பி.இ.ஜி 4-XVid/AC3 (AVI)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:477
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:623
+msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:286
-msgid "mencoder with MP3 support (mp3lame) required!"
-msgstr "MP3 ஆதரவுள்ள மென்கோடர் (mp3lame) தேவை!"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:553
+msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:296
-msgid "MPEG4-XVid/MP3 (AVI)"
-msgstr "எம்.பி.இ.ஜி 4-XVid/MP3 (AVI)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:661
+msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:329
-msgid "Flash-Video (FLV)"
-msgstr "பிளாஷ்-நிகழ்படம் (FLV)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:665
+msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
 
-#: photofilmstrip/core/renderer/MovieRenderer.py:360
-msgid "Motion-JPEG (AVI)"
-msgstr "நகர்-JPEG (AVI)"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:669
+msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:700
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:740
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:789
+msgid "MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:708
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:748
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:797
+msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
+msgstr ""
 
 #: photofilmstrip/core/renderer/SingleFileRenderer.py:35
 msgid "Single pictures"
 msgstr "ஒற்றைப் படங்கள்"
 
-#: photofilmstrip/core/tasks.py:38
+#: photofilmstrip/core/tasks.py:62
 msgid "generating subtitle"
 msgstr "துனை உரை உருவாக்கப்படுகிறது"
 
 #: photofilmstrip/gui/ActionManager.py:72
+#: photofilmstrip/gui/ActionManager.py:200
 msgid "&File"
 msgstr "&கோப்பு"
 
 #: photofilmstrip/gui/ActionManager.py:73
+#: photofilmstrip/gui/ActionManager.py:201
 msgid "&Edit"
 msgstr "&திருத்து"
 
 #: photofilmstrip/gui/ActionManager.py:74
-msgid "&Tools"
-msgstr "&கருவிகள்"
-
-#: photofilmstrip/gui/ActionManager.py:75
-#: photofilmstrip/gui/ActionManager.py:204
-#: photofilmstrip/gui/DlgRender.py:173
-#: photofilmstrip/gui/DlgRendererProps.py:101
+#: photofilmstrip/gui/ActionManager.py:164 photofilmstrip/gui/DlgRender.py:156
+#: photofilmstrip/gui/DlgRendererProps.py:100
 msgid "&Help"
 msgstr "&உதவி"
 
-#: photofilmstrip/gui/ActionManager.py:89
-msgid "New Project"
-msgstr "புதிய திட்டப்பணி"
+#: photofilmstrip/gui/ActionManager.py:88
+msgid "New Slideshow"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:92
-msgid "Load Project"
-msgstr "திட்டப்பணியை ஏற்று"
+#: photofilmstrip/gui/ActionManager.py:93
+msgid "Open"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:95
-msgid "Save Project"
-msgstr "திட்டப்பணியை சேமி"
+#: photofilmstrip/gui/ActionManager.py:99
+msgid "Save"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:102
-msgid "Import Pictures"
-msgstr "படங்களை இறக்குமதி செய்"
+#: photofilmstrip/gui/ActionManager.py:109
+#: photofilmstrip/gui/ActionManager.py:110
+msgid "Show job queue"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:105
-#: photofilmstrip/gui/DlgRender.py:117
-msgid "Render filmstrip"
-msgstr "படத்தொடரை காட்டு"
+#: photofilmstrip/gui/ActionManager.py:120
+msgid "Slideshow"
+msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:126
-msgid "&New Project"
-msgstr "&புதிய திட்டப்பணி"
+msgid "New"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:130
-msgid "&Open Project"
-msgstr "திட்டப்பணியை &திற"
+#: photofilmstrip/gui/ActionManager.py:128
+msgid "&Open"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:136
-msgid "&Save Project"
-msgstr "திட்டப்பணியை &சேமி"
+#: photofilmstrip/gui/ActionManager.py:133
+msgid "&Save"
+msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:140
-msgid "&Close Project"
-msgstr "திட்டப்பணியை &மூடு"
+#: photofilmstrip/gui/ActionManager.py:146
+msgid "&Close"
+msgstr "&மூடு"
 
-#: photofilmstrip/gui/ActionManager.py:152
-msgid "&Properties"
-msgstr "&பண்புகள்"
-
-#: photofilmstrip/gui/ActionManager.py:157
+#: photofilmstrip/gui/ActionManager.py:151
 msgid "E&xit"
 msgstr "&வெளியேறு"
 
-#: photofilmstrip/gui/ActionManager.py:165
-msgid "Move picture &left"
-msgstr "படத்தை &இடதுபுறமாக நகர்த்து"
-
-#: photofilmstrip/gui/ActionManager.py:169
-msgid "Move picture &right"
-msgstr "படத்தை வ&லதுபுறமாக நகர்த்து"
-
-#: photofilmstrip/gui/ActionManager.py:174
-msgid "&Remove Picture"
-msgstr "படத்தை &நீக்கு"
-
-#: photofilmstrip/gui/ActionManager.py:179
-msgid "Rotate &clockwise"
-msgstr "வல&ஞ்சுழியாக சுழற்று"
-
 #: photofilmstrip/gui/ActionManager.py:183
-msgid "Rotate counter clock&wise"
-msgstr "இ&டஞ்சுழியாக சுழற்று"
-
-#: photofilmstrip/gui/ActionManager.py:191
-msgid "&Import Pictures"
-msgstr "&படங்களை இறக்குமதி செய்"
-
-#: photofilmstrip/gui/ActionManager.py:196
-msgid "&Render filmstrip"
-msgstr "படத்தொடரை &உருவாக்கு"
-
-#: photofilmstrip/gui/ActionManager.py:221
 msgid "&About"
 msgstr "&பற்றி"
 
-#: photofilmstrip/gui/DlgBugReport.py:55
+#: photofilmstrip/gui/DlgBugReport.py:54
 msgid "An unexpected error occured"
 msgstr "எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது"
 
-#: photofilmstrip/gui/DlgBugReport.py:58
-msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
-msgstr "எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது. இப்பிழையின் அறிக்கையை %s இன் உருவாக்குநர்களுக்கு அனுப்ப விரும்புகிறீர்களா?"
+#: photofilmstrip/gui/DlgBugReport.py:57
+msgid ""
+"An unexpected error occured. Do you want to send this bug report to the "
+"developers of %s?"
+msgstr ""
+"எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது. இப்பிழையின் அறிக்கையை %s இன் உருவாக்குநர்களுக்கு அனுப்ப "
+"விரும்புகிறீர்களா?"
 
-#: photofilmstrip/gui/DlgBugReport.py:104
+#: photofilmstrip/gui/DlgBugReport.py:105
 msgid "Bug-Report send. Thank you for your support."
 msgstr "வழு அறிக்கை அனுப்பப்பட்டது. உங்கள் ஆதரவுக்கு நன்றி."
 
-#: photofilmstrip/gui/DlgBugReport.py:105
-#: photofilmstrip/gui/FrmMain.py:223
+#: photofilmstrip/gui/DlgBugReport.py:106 photofilmstrip/gui/FrmMain.py:285
 msgid "Information"
 msgstr "தகவல்"
 
-#: photofilmstrip/gui/DlgBugReport.py:111
+#: photofilmstrip/gui/DlgBugReport.py:112
 msgid "Sorry, this function is temporary not available.."
 msgstr "மன்னிக்கவும், இச்செயல்பாட்டை தற்காலிகமாக பயன்படுத்தமுடியாது."
 
-#: photofilmstrip/gui/DlgBugReport.py:112
-#: photofilmstrip/gui/DlgProjectProps.py:393
-#: photofilmstrip/gui/DlgProjectProps.py:422
-#: photofilmstrip/gui/DlgProjectProps.py:433
-#: photofilmstrip/gui/DlgProjectProps.py:480
-#: photofilmstrip/gui/DlgProjectProps.py:491
-#: photofilmstrip/gui/FrmMain.py:503
-#: photofilmstrip/lib/jobimpl/PnlJobManager.py:153
+#: photofilmstrip/gui/DlgBugReport.py:113
+#: photofilmstrip/gui/DlgProjectProps.py:431
+#: photofilmstrip/gui/DlgProjectProps.py:443
+#: photofilmstrip/gui/DlgProjectProps.py:453
+#: photofilmstrip/gui/DlgProjectProps.py:502
+#: photofilmstrip/gui/DlgProjectProps.py:513 photofilmstrip/gui/FrmMain.py:364
+#: photofilmstrip/gui/PnlPfsProject.py:514
+#: photofilmstrip/gui/PnlPfsProject.py:561
 msgid "Error"
 msgstr "பிழை"
 
-#: photofilmstrip/gui/DlgPositionInput.py:155
+#: photofilmstrip/gui/DlgPositionInput.py:154
 msgid "Motion positions"
 msgstr "நகர் நிலைகள்"
 
-#: photofilmstrip/gui/DlgPositionInput.py:162
+#: photofilmstrip/gui/DlgPositionInput.py:161
 msgid "Start position"
 msgstr "தொடக்க நிலை"
 
-#: photofilmstrip/gui/DlgPositionInput.py:170
-#: photofilmstrip/gui/DlgPositionInput.py:214
+#: photofilmstrip/gui/DlgPositionInput.py:169
+#: photofilmstrip/gui/DlgPositionInput.py:213
 msgid "Location:"
 msgstr "இருப்பிடம்:"
 
-#: photofilmstrip/gui/DlgPositionInput.py:188
-#: photofilmstrip/gui/DlgPositionInput.py:230
+#: photofilmstrip/gui/DlgPositionInput.py:187
+#: photofilmstrip/gui/DlgPositionInput.py:229
 msgid "Size:"
 msgstr "அளவு :"
 
-#: photofilmstrip/gui/DlgPositionInput.py:206
+#: photofilmstrip/gui/DlgPositionInput.py:205
 msgid "End position"
 msgstr "இறுதி நிலை"
 
-#: photofilmstrip/gui/DlgPositionInput.py:248
+#: photofilmstrip/gui/DlgPositionInput.py:247
 msgid "Reset"
 msgstr "மீளமை"
 
-#: photofilmstrip/gui/DlgPositionInput.py:253
-#: photofilmstrip/gui/DlgProjectProps.py:223
-#: photofilmstrip/gui/DlgRender.py:179
-#: photofilmstrip/gui/DlgRendererProps.py:107
+#: photofilmstrip/gui/DlgPositionInput.py:252
+#: photofilmstrip/gui/DlgProjectProps.py:194
+#: photofilmstrip/gui/DlgRender.py:162
+#: photofilmstrip/gui/DlgRendererProps.py:106
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:94
 msgid "&Cancel"
 msgstr "&இரத்து"
 
-#: photofilmstrip/gui/DlgPositionInput.py:259
-#: photofilmstrip/gui/DlgProjectProps.py:229
-#: photofilmstrip/gui/DlgRendererProps.py:112
+#: photofilmstrip/gui/DlgPositionInput.py:258
+#: photofilmstrip/gui/DlgProjectProps.py:199
+#: photofilmstrip/gui/DlgRendererProps.py:111
 msgid "&Ok"
 msgstr "&சரி"
 
-#: photofilmstrip/gui/DlgPositionInput.py:267
+#: photofilmstrip/gui/DlgPositionInput.py:266
 msgid "Adjust motion positions directly"
 msgstr "நகர் நிலைகளை நேராக சரிசெய்யவும்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:125
-msgid "Project properties"
-msgstr "திட்டப்பணியின் பண்புகள்"
-
-#: photofilmstrip/gui/DlgProjectProps.py:134
+#: photofilmstrip/gui/DlgProjectProps.py:108
 msgid "Project name:"
 msgstr "திட்டப்பணியின் பெயர்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:146
+#: photofilmstrip/gui/DlgProjectProps.py:115
 msgid "Folder:"
 msgstr "அடைவு:"
 
-#: photofilmstrip/gui/DlgProjectProps.py:161
+#: photofilmstrip/gui/DlgProjectProps.py:127
 msgid "Aspect ratio:"
 msgstr "உருவ விகிதம்:"
 
-#: photofilmstrip/gui/DlgProjectProps.py:169
+#: photofilmstrip/gui/DlgProjectProps.py:132
+#, fuzzy
+msgid "Audio files:"
+msgstr "ஒலி கோப்புகள்"
+
+#: photofilmstrip/gui/DlgProjectProps.py:167
 msgid "Total length:"
 msgstr "மொத்த நீளம்:"
 
-#: photofilmstrip/gui/DlgProjectProps.py:172
-msgid "Overrides the duration of single pictures and gives the project this total length."
+#: photofilmstrip/gui/DlgProjectProps.py:169
+msgid ""
+"Overrides the duration of single pictures and gives the project this total "
+"length."
 msgstr "தனிப் படங்களின் நேரங்களை புறக்கணித்து திட்டப்பணிக்கு இந்த மொத்த நீளத்தை கொடுக்கிறது."
 
-#: photofilmstrip/gui/DlgProjectProps.py:178
+#: photofilmstrip/gui/DlgProjectProps.py:173
 msgid "User defined:"
 msgstr "பயனர் வரையறுத்தது:"
 
-#: photofilmstrip/gui/DlgProjectProps.py:192
-msgid "Audio file:"
-msgstr "ஒலிக் கோப்பு:"
+#: photofilmstrip/gui/DlgProjectProps.py:183
+#, fuzzy
+msgid "Fit to audio files"
+msgstr "ஒலி கோப்புகள்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:238
+#: photofilmstrip/gui/DlgProjectProps.py:187
+msgid "Timelapse"
+msgstr ""
+
+#: photofilmstrip/gui/DlgProjectProps.py:208
+msgid "Project properties"
+msgstr "திட்டப்பணியின் பண்புகள்"
+
+#: photofilmstrip/gui/DlgProjectProps.py:216
 msgid "PhotoFilmStrip project"
 msgstr "நிழற்படத்தொடர் திட்டப்பணி"
 
-#: photofilmstrip/gui/DlgProjectProps.py:269
+#: photofilmstrip/gui/DlgProjectProps.py:247
 msgid "Unnamed PhotoFilmStrip"
 msgstr "பெயரளிக்கப்படாத நிழற்படத்தொடர்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:276
+#: photofilmstrip/gui/DlgProjectProps.py:254
 msgid "My PhotoFilmStrips"
 msgstr "எனது நிழற்படத்தொடர்கள்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:320
+#: photofilmstrip/gui/DlgProjectProps.py:310
 msgid "Browse for folder"
 msgstr "அடைவுக்கு உலாவவும்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:334
+#: photofilmstrip/gui/DlgProjectProps.py:327
 msgid "Select music"
 msgstr "இசையை தேர்ந்தெடு"
 
-#: photofilmstrip/gui/DlgProjectProps.py:336
+#: photofilmstrip/gui/DlgProjectProps.py:329
 msgid "Audio files"
 msgstr "ஒலி கோப்புகள்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:418
-#: photofilmstrip/gui/DlgProjectProps.py:421
+#: photofilmstrip/gui/DlgProjectProps.py:442
 msgid "Audio file not supported!"
 msgstr "ஒலிக் கோப்பு ஆதரிக்கப்படவில்லை!"
 
-#: photofilmstrip/gui/DlgProjectProps.py:469
+#: photofilmstrip/gui/DlgProjectProps.py:491
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "அடைவை காணமுடியவில்லை!  அடைவை %s உருவாக்க விரும்புகிறீர்களா?"
 
-#: photofilmstrip/gui/DlgProjectProps.py:470
-#: photofilmstrip/gui/FrmMain.py:338
-#: photofilmstrip/gui/FrmMain.py:454
-#: photofilmstrip/gui/FrmMain.py:532
-#: photofilmstrip/gui/WxProjectFile.py:89
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:229
+#: photofilmstrip/gui/DlgProjectProps.py:492
+#: photofilmstrip/gui/PnlEditorPage.py:43
+#: photofilmstrip/gui/PnlEditorPage.py:63
+#: photofilmstrip/gui/PnlEditorPage.py:102
+#: photofilmstrip/gui/WxProjectFile.py:96
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:221
 msgid "Question"
 msgstr "வினா"
 
-#: photofilmstrip/gui/DlgProjectProps.py:479
+#: photofilmstrip/gui/DlgProjectProps.py:501
 msgid "Cannot create folder: %s"
 msgstr "அடைவை உருவாக்க முடியவில்லை: %s"
 
-#: photofilmstrip/gui/DlgProjectProps.py:490
+#: photofilmstrip/gui/DlgProjectProps.py:512
 msgid "Cannot write into folder!"
 msgstr "அடைவில் எழுத முடியவில்லை!"
 
-#: photofilmstrip/gui/DlgProjectProps.py:504
+#: photofilmstrip/gui/DlgProjectProps.py:526
 msgid "The project name must be filled."
 msgstr "திட்டப்பணியின் பெயர் நிரப்பப்பட வேண்டும்"
 
-#: photofilmstrip/gui/DlgProjectProps.py:510
+#: photofilmstrip/gui/DlgProjectProps.py:532
 msgid "The project name contains invalid characters."
 msgstr "திட்டப்பணிப் பெயரில் ஏற்கமுடியாத எழுத்துக்கள் உள்ளன."
 
-#: photofilmstrip/gui/DlgRender.py:129
-msgid "Profile:"
-msgstr "விவரகுறிப்பு:"
+#: photofilmstrip/gui/DlgRender.py:110 photofilmstrip/gui/PnlPfsProject.py:406
+#: photofilmstrip/gui/PnlPfsProject.py:407
+msgid "Render filmstrip"
+msgstr "படத்தொடரை காட்டு"
 
-#: photofilmstrip/gui/DlgRender.py:138
-msgid "Type:"
-msgstr "வகை:"
-
-#: photofilmstrip/gui/DlgRender.py:148
+#: photofilmstrip/gui/DlgRender.py:122
 msgid "Format:"
 msgstr "வடிவம்:"
 
-#: photofilmstrip/gui/DlgRender.py:164
+#: photofilmstrip/gui/DlgRender.py:137
 msgid "Properties"
 msgstr "பண்புகள்"
 
-#: photofilmstrip/gui/DlgRender.py:168
+#: photofilmstrip/gui/DlgRender.py:142
+msgid "Profile:"
+msgstr "விவரகுறிப்பு:"
+
+#: photofilmstrip/gui/DlgRender.py:151
 msgid "Draft"
 msgstr "வரைவு"
 
-#: photofilmstrip/gui/DlgRender.py:184
+#: photofilmstrip/gui/DlgRender.py:167
 msgid "&Start"
 msgstr "&தொடங்கு"
 
-#: photofilmstrip/gui/DlgRender.py:196
+#: photofilmstrip/gui/DlgRender.py:179
 msgid "Configure output and start render process"
 msgstr "வெளிப்பாட்டை உருவமைத்து உருவாக்கச் செயலைத் தொடங்கு"
 
-#: photofilmstrip/gui/DlgRender.py:261
-msgid "Audio file '%s' does not exist! Continue anyway?"
-msgstr "ஒலிக் கோப்பு '%s' காணப்படவில்லை! எப்படியும் தொடர வேண்டுமா?"
-
-#: photofilmstrip/gui/DlgRender.py:262
-msgid "Warning"
-msgstr "எச்சரிக்கை"
-
-#: photofilmstrip/gui/DlgRendererProps.py:65
+#: photofilmstrip/gui/DlgRendererProps.py:64
 msgid "Property"
 msgstr "பண்பு"
 
-#: photofilmstrip/gui/DlgRendererProps.py:67
+#: photofilmstrip/gui/DlgRendererProps.py:66
 msgid "Value"
 msgstr "மதிப்பு"
 
-#: photofilmstrip/gui/DlgRendererProps.py:86
+#: photofilmstrip/gui/DlgRendererProps.py:85
 msgid "Output properties"
 msgstr "வெளிப்பாட்டு பண்புகள்"
 
-#: photofilmstrip/gui/DlgRendererProps.py:128
+#: photofilmstrip/gui/DlgRendererProps.py:127
 msgid "Edit extended output properties"
 msgstr "நீட்டித்த வெளிப்பாட்டு பண்புகளை திருத்து"
 
-#: photofilmstrip/gui/DlgRendererProps.py:164
+#: photofilmstrip/gui/DlgRendererProps.py:161
 msgid "Edit property"
 msgstr "பண்பை திருத்து"
 
-#: photofilmstrip/gui/FrmMain.py:90
+#: photofilmstrip/gui/FrmMain.py:97
 msgid "Welcome"
 msgstr "நல்வரவு"
 
-#: photofilmstrip/gui/FrmMain.py:92
 #: photofilmstrip/gui/FrmMain.py:99
 msgid "Job queue"
 msgstr ""
 
-#: photofilmstrip/gui/FrmMain.py:165
+#: photofilmstrip/gui/FrmMain.py:154
 msgid "Rendering in progress..."
 msgstr ""
 
-#: photofilmstrip/gui/FrmMain.py:222
-msgid "You must restart %s for your new language setting to take effect."
-msgstr "உங்கள் புதிய மொழி அமைப்பு செயல்பட %s ஐ மறுதுவக்க வேண்டும்."
-
-#: photofilmstrip/gui/FrmMain.py:287
-msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
-msgstr "நிழற்படத்தொடர் உங்கள் படங்களிலிருந்து மூன்றே செய்படிகளில் நிகழ்படங்களை உருவாக்குகிறது. முதலில் படங்களை  தேர்வுசெய்யவும். பிறகு நகர்ச்சிகளை தக்கபடி மாற்றிக்கொண்டு நிகழ்படத்தை உருவாக்கவும். விசிடி, எஸ்விசிடி, டிவிடி என்று முழு எச்டி வரை பல வெளிப்பாட்டு  உள்ளன."
-
-#: photofilmstrip/gui/FrmMain.py:290
-msgid "online"
-msgstr "இணைப்பில்"
-
-#: photofilmstrip/gui/FrmMain.py:306
+#: photofilmstrip/gui/FrmMain.py:244
 msgid "Select %s-Project"
 msgstr "%s-திட்டப்பணியை தேர்ந்தெடு"
 
-#: photofilmstrip/gui/FrmMain.py:308
-#: photofilmstrip/gui/FrmMain.py:328
-#: photofilmstrip/gui/FrmMain.py:359
-#: photofilmstrip/gui/FrmMain.py:370
-msgid "Project"
-msgstr "திட்டப்பணி"
+#: photofilmstrip/gui/FrmMain.py:246
+#, fuzzy
+msgid "Files"
+msgstr "&கோப்பு"
 
-#: photofilmstrip/gui/FrmMain.py:325
-msgid "Save %s-Project"
-msgstr "%s-திட்டப்பணியை சேமி"
+#: photofilmstrip/gui/FrmMain.py:284
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "உங்கள் புதிய மொழி அமைப்பு செயல்பட %s ஐ மறுதுவக்க வேண்டும்."
 
-#: photofilmstrip/gui/FrmMain.py:337
-msgid "Overwrite existing file '%s'?"
-msgstr "ஏற்கனவே உள்ள '%s' கோப்பை மேலெழுத வேண்டுமா?"
+#: photofilmstrip/gui/FrmMain.py:295
+msgid ""
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
+"select your photos, customize the motion path and render the video. There "
+"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr ""
+"நிழற்படத்தொடர் உங்கள் படங்களிலிருந்து மூன்றே செய்படிகளில் நிகழ்படங்களை உருவாக்குகிறது. "
+"முதலில் படங்களை  தேர்வுசெய்யவும். பிறகு நகர்ச்சிகளை தக்கபடி மாற்றிக்கொண்டு நிகழ்படத்தை "
+"உருவாக்கவும். விசிடி, எஸ்விசிடி, டிவிடி என்று முழு எச்டி வரை பல வெளிப்பாட்டு  உள்ளன."
 
-#: photofilmstrip/gui/FrmMain.py:356
-msgid "Export %s-Project"
-msgstr "%s-திட்டப்பணியை ஏற்றுமதி செய்"
+#: photofilmstrip/gui/FrmMain.py:298
+msgid "online"
+msgstr "இணைப்பில்"
 
-#: photofilmstrip/gui/FrmMain.py:359
-#: photofilmstrip/gui/FrmMain.py:370
-msgid "Portable"
-msgstr "கையடக்கமான"
-
-#: photofilmstrip/gui/FrmMain.py:368
-msgid "Import %s-Project"
-msgstr "%s-திட்டப்பணியை இறக்குமதி செய்"
-
-#: photofilmstrip/gui/FrmMain.py:453
-msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' மாற்றப்பட்டுள்ளது. மாற்றங்களை சேமிக்க வேண்டுமா?"
-
-#: photofilmstrip/gui/FrmMain.py:474
-msgid "Images"
-msgstr "படங்கள்"
-
-#: photofilmstrip/gui/FrmMain.py:479
-msgid "Duration"
-msgstr "நேர அளவு"
-
-#: photofilmstrip/gui/FrmMain.py:501
+#: photofilmstrip/gui/FrmMain.py:362
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "பிழையுற்ற %(app)s-திட்டப்பணி: %(file)s"
 
-#: photofilmstrip/gui/FrmMain.py:529
-msgid "Could not save the file '%(file)s': %(errMsg)s"
-msgstr "கோப்பு '%(file)s' ஐ சேமிக்க முடியவில்லை: %(errMsg)s"
-
-#: photofilmstrip/gui/PnlAddPics.py:91
-#: photofilmstrip/gui/PnlWelcome.py:44
+#: photofilmstrip/gui/PnlAddPics.py:93 photofilmstrip/gui/PnlWelcome.py:44
 msgid "Welcome to PhotoFilmStrip"
 msgstr "நிழற்படத்தொடருக்கு நல்வரவு"
 
-#: photofilmstrip/gui/PnlAddPics.py:92
+#: photofilmstrip/gui/PnlAddPics.py:94
 msgid ""
 "Drag some pictures onto this text or\n"
 "click the button below\n"
@@ -627,112 +587,247 @@ msgid "Process"
 msgstr "செயல்பாடு"
 
 #: photofilmstrip/gui/PnlEditPicture.py:198
-msgid "Transition:"
-msgstr "சீர்மாற்றம்:"
+msgid "Movement:"
+msgstr ""
 
 #: photofilmstrip/gui/PnlEditPicture.py:210
-#: photofilmstrip/gui/PnlEditPicture.py:222
+#: photofilmstrip/gui/PnlEditPicture.py:226
 msgid "sec"
 msgstr "நொடி"
 
 #: photofilmstrip/gui/PnlEditPicture.py:214
-msgid "Duration:"
-msgstr "கால அளவு:"
+msgid "Transition:"
+msgstr "சீர்மாற்றம்:"
 
-#: photofilmstrip/gui/PnlEditPicture.py:230
+#: photofilmstrip/gui/PnlEditPicture.py:234
 msgid "Subtitle"
 msgstr "துணை உரை"
 
 #: photofilmstrip/gui/PnlEditPicture.py:254
+msgid "Linear"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:255
+msgid "Accelerated"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:256
+msgid "Delayed"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:264
 msgid "No effect"
 msgstr "எந்த விளைவுமில்லை"
 
-#: photofilmstrip/gui/PnlEditPicture.py:255
+#: photofilmstrip/gui/PnlEditPicture.py:265
 msgid "Black and White"
 msgstr "கருப்பு வெள்ளை"
 
-#: photofilmstrip/gui/PnlEditPicture.py:256
+#: photofilmstrip/gui/PnlEditPicture.py:266
 msgid "Sepia tone"
 msgstr "பழுப்பு கலப்பு"
 
-#: photofilmstrip/gui/PnlEditPicture.py:262
+#: photofilmstrip/gui/PnlEditPicture.py:272
 msgid "None"
 msgstr "எதுவுமில்லை"
 
-#: photofilmstrip/gui/PnlEditPicture.py:263
+#: photofilmstrip/gui/PnlEditPicture.py:273
 msgid "Fade"
 msgstr "மங்கு"
 
-#: photofilmstrip/gui/PnlEditPicture.py:264
+#: photofilmstrip/gui/PnlEditPicture.py:274
 msgid "Roll"
 msgstr "உருட்டு"
 
-#: photofilmstrip/gui/PnlPfsProject.py:110
-msgid "Set motion end to start"
-msgstr "நகர்ச்சி முடிவை தொடக்கமாக அமை"
+#: photofilmstrip/gui/PnlEditorPage.py:40
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "கோப்பு '%(file)s' ஐ சேமிக்க முடியவில்லை: %(errMsg)s"
 
-#: photofilmstrip/gui/PnlPfsProject.py:114
+#: photofilmstrip/gui/PnlEditorPage.py:59
+msgid "New file"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditorPage.py:62
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' மாற்றப்பட்டுள்ளது. மாற்றங்களை சேமிக்க வேண்டுமா?"
+
+#: photofilmstrip/gui/PnlEditorPage.py:88
+#, fuzzy
+msgid "Save %s"
+msgstr "%s-திட்டப்பணியை சேமி"
+
+#: photofilmstrip/gui/PnlEditorPage.py:91
+#, fuzzy
+msgid "File"
+msgstr "&கோப்பு"
+
+#: photofilmstrip/gui/PnlEditorPage.py:101
+msgid "Overwrite existing file '%s'?"
+msgstr "ஏற்கனவே உள்ள '%s' கோப்பை மேலெழுத வேண்டுமா?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:135
+#: photofilmstrip/gui/PnlPfsProject.py:137
 msgid "Set motion start to end"
 msgstr "நகர்ச்சி தொடக்கத்தை முடிவாக அமை"
 
-#: photofilmstrip/gui/PnlPfsProject.py:120
+#: photofilmstrip/gui/PnlPfsProject.py:139
+#: photofilmstrip/gui/PnlPfsProject.py:141
+msgid "Set motion end to start"
+msgstr "நகர்ச்சி முடிவை தொடக்கமாக அமை"
+
+#: photofilmstrip/gui/PnlPfsProject.py:143
+#: photofilmstrip/gui/PnlPfsProject.py:145
+#, fuzzy
+msgid "Swap motion"
+msgstr "சீரற்ற நகர்ச்சி"
+
+#: photofilmstrip/gui/PnlPfsProject.py:148
+#: photofilmstrip/gui/PnlPfsProject.py:150
 msgid "Adjust motion manual"
 msgstr "நகர்ச்சியை கைமுறையாக சரிசெய்"
 
-#: photofilmstrip/gui/PnlPfsProject.py:269
+#: photofilmstrip/gui/PnlPfsProject.py:153
+#: photofilmstrip/gui/PnlPfsProject.py:155
+msgid "Preserve image dimension"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:325
+msgid "Images"
+msgstr "படங்கள்"
+
+#: photofilmstrip/gui/PnlPfsProject.py:330
+msgid "Duration"
+msgstr "நேர அளவு"
+
+#: photofilmstrip/gui/PnlPfsProject.py:340
+msgid "Project"
+msgstr "திட்டப்பணி"
+
+#: photofilmstrip/gui/PnlPfsProject.py:352
+msgid "&Properties"
+msgstr "&பண்புகள்"
+
+#: photofilmstrip/gui/PnlPfsProject.py:357
+msgid "&Import Pictures"
+msgstr "&படங்களை இறக்குமதி செய்"
+
+#: photofilmstrip/gui/PnlPfsProject.py:362
+msgid "Move picture &left"
+msgstr "படத்தை &இடதுபுறமாக நகர்த்து"
+
+#: photofilmstrip/gui/PnlPfsProject.py:366
+msgid "Move picture &right"
+msgstr "படத்தை வ&லதுபுறமாக நகர்த்து"
+
+#: photofilmstrip/gui/PnlPfsProject.py:371
+#, fuzzy
+msgid "R&emove Picture"
+msgstr "படத்தை &நீக்கு"
+
+#: photofilmstrip/gui/PnlPfsProject.py:376
+msgid "Rotate &clockwise"
+msgstr "வல&ஞ்சுழியாக சுழற்று"
+
+#: photofilmstrip/gui/PnlPfsProject.py:380
+msgid "Rotate counter clock&wise"
+msgstr "இ&டஞ்சுழியாக சுழற்று"
+
+#: photofilmstrip/gui/PnlPfsProject.py:385
+#, fuzzy
+msgid "Random &motion"
+msgstr "சீரற்ற நகர்ச்சி"
+
+#: photofilmstrip/gui/PnlPfsProject.py:389
+msgid "Centralize m&otion"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:398
+#: photofilmstrip/gui/PnlPfsProject.py:399
+msgid "Import Pictures"
+msgstr "படங்களை இறக்குமதி செய்"
+
+#: photofilmstrip/gui/PnlPfsProject.py:464
+msgid "Export slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:467
+#: photofilmstrip/gui/PnlPfsProject.py:480
+#, fuzzy
+msgid "Portable slideshow"
+msgstr "கையடக்கமான"
+
+#: photofilmstrip/gui/PnlPfsProject.py:478
+#, fuzzy
+msgid "Import Slideshow"
+msgstr "படங்களை இறக்குமதி செய்"
+
+#: photofilmstrip/gui/PnlPfsProject.py:498
 msgid "Import images"
 msgstr "படங்களை இறக்குமதி செய்"
 
-#: photofilmstrip/gui/PnlPfsProject.py:271
+#: photofilmstrip/gui/PnlPfsProject.py:500
 msgid "Imagefiles"
 msgstr "படக்கோப்புகள்"
 
-#: photofilmstrip/gui/PnlRenderJobVisual.py:28
-msgid "Open folder"
-msgstr "அடைவைத் திற"
+#: photofilmstrip/gui/PnlPfsProject.py:511
+msgid ""
+"Filename '%s' does not match a number pattern which is necessary for a time "
+"lapse slide show!"
+msgstr ""
 
-#: photofilmstrip/gui/PnlWelcome.py:51
-#: photofilmstrip/gui/PnlWelcome.py:106
+#: photofilmstrip/gui/PnlPfsProject.py:773
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "ஒலிக் கோப்பு '%s' காணப்படவில்லை! எப்படியும் தொடர வேண்டுமா?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:774
+msgid "Warning"
+msgstr "எச்சரிக்கை"
+
+#: photofilmstrip/gui/PnlWelcome.py:51 photofilmstrip/gui/PnlWelcome.py:117
 msgid "Recent projects"
 msgstr "அண்மைய திட்டப்பணிகள்"
 
-#: photofilmstrip/gui/PnlWelcome.py:63
+#: photofilmstrip/gui/PnlWelcome.py:71
 msgid "Create new project"
 msgstr "புதிய திட்டப்பணியை உருவாக்கு"
 
-#: photofilmstrip/gui/PnlWelcome.py:68
+#: photofilmstrip/gui/PnlWelcome.py:76
 msgid "Open existing project"
 msgstr "இருக்கும் திட்டப்பணியை திற"
 
-#: photofilmstrip/gui/PnlWelcome.py:109
+#: photofilmstrip/gui/PnlWelcome.py:120
 msgid "How to start..."
 msgstr "தொடங்குவது எப்படி..."
 
-#: photofilmstrip/gui/PnlWelcome.py:110
+#: photofilmstrip/gui/PnlWelcome.py:121
 msgid "Create a new project or load an existing one."
 msgstr "புதிய திட்டப்பணியை உருவாக்கு அல்லது இருக்கும் ஒன்றை ஏற்று."
 
-#: photofilmstrip/gui/PnlWelcome.py:141
+#: photofilmstrip/gui/PnlWelcome.py:152
 msgid "Update available"
 msgstr "மேம்பாடு இருக்கிறது"
 
-#: photofilmstrip/gui/PnlWelcome.py:144
+#: photofilmstrip/gui/PnlWelcome.py:155
 msgid "The following changes has been made:"
 msgstr "பின்வரும் மாற்றங்கள் செய்யப்பட்டுள்ளன:"
 
-#: photofilmstrip/gui/WxProjectFile.py:53
+#: photofilmstrip/gui/WxProjectFile.py:54
 #, fuzzy
 msgid "Loading project %s"
 msgstr "திட்டப்பணியை ஏற்று"
 
-#: photofilmstrip/gui/WxProjectFile.py:66
+#: photofilmstrip/gui/WxProjectFile.py:70
 #, fuzzy
 msgid "Saving project %s"
 msgstr "திட்டப்பணியை சேமி"
 
-#: photofilmstrip/gui/WxProjectFile.py:88
-msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "சில படங்கள் '%s' அடைவில் இனியும் காணப்படவில்லை. படங்கள் நகர்த்தப்பட்டிருந்தால் புதிய இருப்பிடத்தை தேர்ந்தெடுக்கவும். புதிய அடைவின் பாதையை தேரந்தெடுக்க விரும்புகிறீர்களா?"
+#: photofilmstrip/gui/WxProjectFile.py:95
+msgid ""
+"Some images does not exist in the folder '%s' anymore. If the files has "
+"moved you can select the new path. Do you want to select a new path?"
+msgstr ""
+"சில படங்கள் '%s' அடைவில் இனியும் காணப்படவில்லை. படங்கள் நகர்த்தப்பட்டிருந்தால் புதிய "
+"இருப்பிடத்தை தேர்ந்தெடுக்கவும். புதிய அடைவின் பாதையை தேரந்தெடுக்க விரும்புகிறீர்களா?"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:70
 msgid "Elapsed time"
@@ -750,38 +845,118 @@ msgstr ""
 msgid "&Clear list"
 msgstr ""
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:121
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:124
 msgid "Abort"
 msgstr ""
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:131
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:130
 msgid "Remove from list"
 msgstr ""
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:228
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:220
 #, fuzzy
 msgid "Abort selected process?"
 msgstr "தற்போதைய செயலை நிறுத்த வேண்டுமா?"
 
-#: photofilmstrip/lib/jobimpl/VisualJob.py:25
-#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:21
+#: photofilmstrip/lib/jobimpl/VisualJob.py:26
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:22
 #, fuzzy
 msgid "Waiting..."
 msgstr "நிறுத்துகிறது..."
 
-#: photofilmstrip/lib/jobimpl/VisualJob.py:64
-#: photofilmstrip/lib/jobimpl/VisualJob.py:78
-#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:56
+#: photofilmstrip/lib/jobimpl/VisualJob.py:65
+#: photofilmstrip/lib/jobimpl/VisualJob.py:82
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:57
 msgid "Aborted"
 msgstr "நிறுத்தப்பட்டது"
 
-#: photofilmstrip/lib/jobimpl/VisualJob.py:66
+#: photofilmstrip/lib/jobimpl/VisualJob.py:67
 msgid "Done"
 msgstr ""
 
-#: photofilmstrip/lib/jobimpl/VisualJob.py:74
+#: photofilmstrip/lib/jobimpl/VisualJob.py:76
 msgid "Aborting..."
 msgstr "நிறுத்துகிறது..."
+
+#: photofilmstrip/uwp/UwpService.py:90
+msgid "Slideshow created!"
+msgstr ""
+
+#~ msgid "invalid videonorm specified: %s"
+#~ msgstr "தவறான நிகழ்பட வடிவம் குறிப்பிடப்பட்டுள்ளது: %s"
+
+#~ msgid "Please wait..."
+#~ msgstr "தயவு செய்து காத்திருக்கவும்..."
+
+#~ msgid "aborting..."
+#~ msgstr "நிறுத்துகிறது..."
+
+#~ msgid "mencoder (mencoder) required!"
+#~ msgstr "மென்கோடர் (mencoder) தேவை!"
+
+#~ msgid "MPEG(1/2)-Video (MPG)"
+#~ msgstr "எம்.பி.இ.ஜி (1/2)-நிகழ்படம் (MPG)"
+
+#~ msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+#~ msgstr ""
+#~ "எம்.பி.இ.ஜி வடிவம் விசிடி, சூப்பர் விசிடி, டிவிடி தன்விவரங்களை மட்டுமே ஆதரிக்கும்"
+
+#~ msgid "MPEG4-XVid/AC3 (AVI)"
+#~ msgstr "எம்.பி.இ.ஜி 4-XVid/AC3 (AVI)"
+
+#~ msgid "mencoder with MP3 support (mp3lame) required!"
+#~ msgstr "MP3 ஆதரவுள்ள மென்கோடர் (mp3lame) தேவை!"
+
+#~ msgid "MPEG4-XVid/MP3 (AVI)"
+#~ msgstr "எம்.பி.இ.ஜி 4-XVid/MP3 (AVI)"
+
+#~ msgid "Flash-Video (FLV)"
+#~ msgstr "பிளாஷ்-நிகழ்படம் (FLV)"
+
+#~ msgid "Motion-JPEG (AVI)"
+#~ msgstr "நகர்-JPEG (AVI)"
+
+#~ msgid "&Tools"
+#~ msgstr "&கருவிகள்"
+
+#~ msgid "New Project"
+#~ msgstr "புதிய திட்டப்பணி"
+
+#~ msgid "Load Project"
+#~ msgstr "திட்டப்பணியை ஏற்று"
+
+#~ msgid "Save Project"
+#~ msgstr "திட்டப்பணியை சேமி"
+
+#~ msgid "&New Project"
+#~ msgstr "&புதிய திட்டப்பணி"
+
+#~ msgid "&Open Project"
+#~ msgstr "திட்டப்பணியை &திற"
+
+#~ msgid "&Save Project"
+#~ msgstr "திட்டப்பணியை &சேமி"
+
+#~ msgid "&Close Project"
+#~ msgstr "திட்டப்பணியை &மூடு"
+
+#~ msgid "&Render filmstrip"
+#~ msgstr "படத்தொடரை &உருவாக்கு"
+
+#~ msgid "Audio file:"
+#~ msgstr "ஒலிக் கோப்பு:"
+
+#~ msgid "Type:"
+#~ msgstr "வகை:"
+
+#~ msgid "Export %s-Project"
+#~ msgstr "%s-திட்டப்பணியை ஏற்றுமதி செய்"
+
+#~ msgid "Import %s-Project"
+#~ msgstr "%s-திட்டப்பணியை இறக்குமதி செய்"
+
+#~ msgid "Duration:"
+#~ msgstr "கால அளவு:"
 
 #~ msgid "Error: %s"
 #~ msgstr "பிழை: %s"
@@ -803,9 +978,6 @@ msgstr "நிறுத்துகிறது..."
 
 #~ msgid "Do nothing"
 #~ msgstr "எதுவும் செய்யாதே"
-
-#~ msgid "&Close"
-#~ msgstr "&மூடு"
 
 #~ msgid "Show error again and send to developer."
 #~ msgstr "பிழையை மீண்டும் காட்டி உருவாக்குநருக்கு அனுப்பு"

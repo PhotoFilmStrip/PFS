@@ -90,7 +90,7 @@ class ActionManager:
 
         toolBar.AddTool(wx.ID_OPEN, "",
                               wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'),
-                              _(u'Load'),)
+                              _(u'Open'),)
 
         toolBar.AddTool(wx.ID_SAVE, "",
                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_24'),
