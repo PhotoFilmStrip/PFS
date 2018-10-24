@@ -43,11 +43,13 @@ try:
     import py2exe
     import py2exe.dllfinder
     orig_determine_dll_type = py2exe.dllfinder.DllFinder.determine_dll_type
+
     def determine_dll_type(self, imagename):
         if imagename.lower().find("msvcr100.dll") != -1 or imagename.lower().find("msvcp100.dll") != -1:
             return "DLL"
         else:
             return orig_determine_dll_type(self, imagename)
+
     py2exe.dllfinder.DllFinder.determine_dll_type = determine_dll_type
 except ImportError:
     py2exe = None
@@ -289,6 +291,7 @@ class pfs_build(build):
                         ("IMAGE_REMOVE_D_32", "image_remove_d_32.png"),
 
                         ("MUSIC_16", "music_16.png"),
+                        ("MUSIC_24", "music_24.png"),
                         ("PLAY_16", "play_16.png"),
                         ("PLAY_24", "play_24.png"),
                         ("PLAY_PAUSE_16", "play_pause_16.png"),

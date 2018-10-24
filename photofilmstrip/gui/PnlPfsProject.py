@@ -49,6 +49,7 @@ from photofilmstrip.gui.util.ImageCache import ImageCache
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
+from photofilmstrip.gui.DlgPicDurationByAudio import DlgPicDurationByAudio
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
 from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
 from photofilmstrip.gui.DlgRender import DlgRender
@@ -80,9 +81,10 @@ from photofilmstrip.core.exceptions import RenderException
  ID_PIC_MOTION_CENTER,
  ID_PIC_IMPORT,
  ID_PIC_SLIDE,
+ ID_PIC_DURATION_BY_AUDIO,
  ID_RENDER_FILMSTRIP,
  ID_EXPORT, ID_IMPORT,
-] = [wx.NewId() for __ in range(13)]
+] = [wx.NewId() for __ in range(14)]
 
 
 class PnlPfsProject(PnlEditorPage, Observer):
@@ -399,6 +401,14 @@ class PnlPfsProject(PnlEditorPage, Observer):
                           _(u'Import Pictures'),
                           None)
         toolBar.AddSeparator()
+        toolBar.AddTool(ID_PIC_DURATION_BY_AUDIO, '',
+                          wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
+                          wx.NullBitmap,
+                          wx.ITEM_NORMAL,
+                          _(u'Adjust picture durations'),
+                          _(u'Adjust picture durations'),
+                          None)
+        toolBar.AddSeparator()
         toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
                           wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
                           wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
@@ -422,6 +432,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdMotionCenter, id=ID_PIC_MOTION_CENTER)
 
         evtHandler.Bind(wx.EVT_MENU, self.OnImportPics, id=ID_PIC_IMPORT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnPicDurationByAudio, id=ID_PIC_DURATION_BY_AUDIO)
         evtHandler.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ID_RENDER_FILMSTRIP)
 
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_REMOVE)
@@ -531,6 +542,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
             selPics = self.lvPics.GetSelectedPictures()
             self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()
+
+    def OnPicDurationByAudio(self, event):
+        DlgPicDurationByAudio.Interact(self, self.GetProject())
 
     def OnRenderFilmstrip(self, event):
         self.PrepareRendering()
