@@ -95,6 +95,8 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.Bind(wx.EVT_TIMER, self.__OnTimer)
         self.Bind(wx.EVT_CLOSE, self.__OnClose)
+        self.Bind(wx.EVT_BUTTON, self.__OnClose, id=wx.ID_OK)
+        self.Bind(wx.EVT_BUTTON, self.__OnClose, id=wx.ID_CANCEL)
 
     def __OnTimer(self, event):  # pylint: disable=unused-argument
         if self.__player:
