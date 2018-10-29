@@ -6,16 +6,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: 2018-10-29 23:22+CET\n"
-"PO-Revision-Date: 2018-10-04 23:35+0200\n"
-"Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
+"PO-Revision-Date: 2018-10-29 22:41+0000\n"
+"Last-Translator: jensgoe <mail@jensgoepfert.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
-"Language: de_DE\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.2.2\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0.6\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:37
 #: photofilmstrip/gui/PnlPfsProject.py:134
@@ -324,45 +325,53 @@ msgstr "Fehler"
 #: photofilmstrip/gui/PnlPfsProject.py:408
 #: photofilmstrip/gui/PnlPfsProject.py:409
 msgid "Adjust picture durations"
-msgstr ""
+msgstr "Anzeigedauer für Bilder einstellen"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:40
 msgid "Adjust picture durations to audio file"
-msgstr ""
+msgstr "Anzeigedauer der Bilder an Musik anpassen"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:44
 msgid ""
 "Find your picture duration by playing the audio file of your project and\n"
 "pressing the hit button to apply the current playing time."
 msgstr ""
+"In diesem Dialog können sie die Anzeigedauer der Bilder an die Musik "
+"anpassen.\n"
+"Drücken sie 'Abspielen' und anschließend für jedes Bild die Hit-"
+"Schaltfläche, wenn\n"
+"eine markante Stelle im Lied ertönt. Die aktuelle Position wird in die "
+"Anzeigedauer\n"
+"automatisch umgerechnet und nach Klicken auf Ok übernommen."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:57
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:167
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:60
 msgid "Hit"
-msgstr ""
+msgstr "Hit"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:114
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:193
-#, fuzzy
 msgid "Playing time"
-msgstr "Verbleibende Zeit"
+msgstr "Position"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:219
 msgid "Your project does not have an audio file configured."
-msgstr ""
+msgstr "In ihrem Projekt ist keine Musik eingestellt."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:227
 msgid ""
 "Your project uses more than one audio file. Currently the durations can be "
 "adjusted only for one audio file."
 msgstr ""
+"Ihr Projekt verwendet mehr als ein Musiktitel. Die Anzeigedauer kann nur für "
+"einen Titel eingestellt werden."
 
 #: photofilmstrip/gui/DlgPositionInput.py:154
 msgid "Motion positions"
