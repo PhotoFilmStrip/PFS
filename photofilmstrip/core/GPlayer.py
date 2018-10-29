@@ -34,6 +34,7 @@ class GPlayer:
         self.__pipeline = None
         self.__length = None
         self.__gtkMainloop = None
+        self.__position = None
 
         self.__Identify()
 
@@ -119,6 +120,20 @@ class GPlayer:
 
     def GetLength(self):
         return self.__length
+
+    def GetPosition(self):
+        if self.__pipeline:
+            hasResult, position = self.__pipeline.query_position(Gst.Format.TIME)
+            if hasResult:
+                return position // Gst.MSECOND
+
+    def SetPosition(self, start):
+        if self.__pipeline:
+            nanoSecs = start * Gst.MSECOND
+            self.__pipeline.seek(1.0, Gst.Format.TIME,
+                          Gst.SeekFlags.FLUSH, Gst.SeekType.SET,
+                          nanoSecs,
+                          Gst.SeekType.NONE, 0)
 
     def _GstOnMessage(self, bus, msg):  # pylint: disable=unused-argument
         logging.debug('_GstOnMessage: %s', msg.type)
