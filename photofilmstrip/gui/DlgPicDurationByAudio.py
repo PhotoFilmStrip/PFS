@@ -61,8 +61,8 @@ class DlgPicDurationByAudio(wx.Dialog):
         self.btnHit.Disable()
         self.btnHit.Bind(wx.EVT_BUTTON, self.__OnHit)
 
-        self.btnCancel = wx.Button(self, wx.ID_CANCEL)
-        self.btnOk = wx.Button(self, wx.ID_OK)
+        self.btnCancel = wx.Button(self, wx.ID_CANCEL, _('&Cancel'))
+        self.btnOk = wx.Button(self, wx.ID_OK, _('&Ok'))
 
         szButtons = wx.BoxSizer(wx.HORIZONTAL)
         szButtons.Add(self.btnPlay, flag=wx.RIGHT, border=8)
