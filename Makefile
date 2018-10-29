@@ -22,8 +22,9 @@ clean:
 	
 	rm -f "$(displayname).pot"
 
-pot:
-	pygettext -o "$(displayname).pot" -v "$(srcdir)/photofilmstrip"
+update-po:
+	pygettext -o "po/$(displayname).pot" -v "$(srcdir)/photofilmstrip"
+	find po/ -name "*.po" -exec msgmerge --backup=none --update {} "po/$(displayname).pot" ';'
 
 
 versioninfo:

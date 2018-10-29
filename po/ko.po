@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2018-10-04 23:34+CEST\n"
+"POT-Creation-Date: 2018-10-29 23:22+CET\n"
 "PO-Revision-Date: 2011-07-10 13:36+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Choi Youn-Soo <korea3d@gmail.com>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:37
-#: photofilmstrip/gui/PnlPfsProject.py:132
+#: photofilmstrip/gui/PnlPfsProject.py:134
 msgid "Random motion"
 msgstr "무작위 모션"
 
@@ -305,15 +305,61 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "죄송합니다. 이 기능은 일시적으로 사용할 수 없습니다.."
 
 #: photofilmstrip/gui/DlgBugReport.py:113
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:220
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:228
 #: photofilmstrip/gui/DlgProjectProps.py:431
 #: photofilmstrip/gui/DlgProjectProps.py:443
 #: photofilmstrip/gui/DlgProjectProps.py:453
 #: photofilmstrip/gui/DlgProjectProps.py:502
 #: photofilmstrip/gui/DlgProjectProps.py:513 photofilmstrip/gui/FrmMain.py:364
-#: photofilmstrip/gui/PnlPfsProject.py:514
-#: photofilmstrip/gui/PnlPfsProject.py:561
+#: photofilmstrip/gui/PnlPfsProject.py:525
+#: photofilmstrip/gui/PnlPfsProject.py:575
 msgid "Error"
 msgstr "오류"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:37
+#: photofilmstrip/gui/PnlPfsProject.py:408
+#: photofilmstrip/gui/PnlPfsProject.py:409
+msgid "Adjust picture durations"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:40
+msgid "Adjust picture durations to audio file"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:44
+msgid ""
+"Find your picture duration by playing the audio file of your project and\n"
+"pressing the hit button to apply the current playing time."
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:57
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:167
+msgid "Play"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:60
+msgid "Hit"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:114
+msgid "Stop"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:193
+#, fuzzy
+msgid "Playing time"
+msgstr "비디오 재생"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:219
+msgid "Your project does not have an audio file configured."
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:227
+msgid ""
+"Your project uses more than one audio file. Currently the durations can be "
+"adjusted only for one audio file."
+msgstr ""
 
 #: photofilmstrip/gui/DlgPositionInput.py:154
 msgid "Motion positions"
@@ -461,8 +507,8 @@ msgstr "프로젝트명을 입력해야 합니다."
 msgid "The project name contains invalid characters."
 msgstr ""
 
-#: photofilmstrip/gui/DlgRender.py:110 photofilmstrip/gui/PnlPfsProject.py:406
-#: photofilmstrip/gui/PnlPfsProject.py:407
+#: photofilmstrip/gui/DlgRender.py:110 photofilmstrip/gui/PnlPfsProject.py:416
+#: photofilmstrip/gui/PnlPfsProject.py:417
 msgid "Render filmstrip"
 msgstr "Filmstrip 렌더"
 
@@ -662,121 +708,121 @@ msgstr "파일(&E)"
 msgid "Overwrite existing file '%s'?"
 msgstr "기존의 '%s' 파일을 덮어 쓰시겠습니까?"
 
-#: photofilmstrip/gui/PnlPfsProject.py:135
 #: photofilmstrip/gui/PnlPfsProject.py:137
+#: photofilmstrip/gui/PnlPfsProject.py:139
 msgid "Set motion start to end"
 msgstr "끝 모션을 시작에 설정"
 
-#: photofilmstrip/gui/PnlPfsProject.py:139
 #: photofilmstrip/gui/PnlPfsProject.py:141
+#: photofilmstrip/gui/PnlPfsProject.py:143
 msgid "Set motion end to start"
 msgstr "시작 모션을 끝에 설정"
 
-#: photofilmstrip/gui/PnlPfsProject.py:143
 #: photofilmstrip/gui/PnlPfsProject.py:145
+#: photofilmstrip/gui/PnlPfsProject.py:147
 #, fuzzy
 msgid "Swap motion"
 msgstr "무작위 모션"
 
-#: photofilmstrip/gui/PnlPfsProject.py:148
 #: photofilmstrip/gui/PnlPfsProject.py:150
+#: photofilmstrip/gui/PnlPfsProject.py:152
 msgid "Adjust motion manual"
 msgstr "모션 수동 조정"
 
-#: photofilmstrip/gui/PnlPfsProject.py:153
 #: photofilmstrip/gui/PnlPfsProject.py:155
+#: photofilmstrip/gui/PnlPfsProject.py:157
 msgid "Preserve image dimension"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:325
+#: photofilmstrip/gui/PnlPfsProject.py:327
 msgid "Images"
 msgstr "이미지"
 
-#: photofilmstrip/gui/PnlPfsProject.py:330
+#: photofilmstrip/gui/PnlPfsProject.py:332
 msgid "Duration"
 msgstr "지속기간"
 
-#: photofilmstrip/gui/PnlPfsProject.py:340
+#: photofilmstrip/gui/PnlPfsProject.py:342
 msgid "Project"
 msgstr "프로젝트"
 
-#: photofilmstrip/gui/PnlPfsProject.py:352
+#: photofilmstrip/gui/PnlPfsProject.py:354
 msgid "&Properties"
 msgstr "환경 설정(&P)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:357
+#: photofilmstrip/gui/PnlPfsProject.py:359
 msgid "&Import Pictures"
 msgstr "이미지 수입(&I)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:362
+#: photofilmstrip/gui/PnlPfsProject.py:364
 msgid "Move picture &left"
 msgstr "왼쪽으로 사진 이동(&l)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:366
+#: photofilmstrip/gui/PnlPfsProject.py:368
 msgid "Move picture &right"
 msgstr "오른쪽으로 사진 이동(&r)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:371
+#: photofilmstrip/gui/PnlPfsProject.py:373
 #, fuzzy
 msgid "R&emove Picture"
 msgstr "이미지 제거(&R)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:376
+#: photofilmstrip/gui/PnlPfsProject.py:378
 msgid "Rotate &clockwise"
 msgstr "오른쪽으로 회전(&c)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:380
+#: photofilmstrip/gui/PnlPfsProject.py:382
 msgid "Rotate counter clock&wise"
 msgstr "왼쪽으로 회전(&w)"
 
-#: photofilmstrip/gui/PnlPfsProject.py:385
+#: photofilmstrip/gui/PnlPfsProject.py:387
 #, fuzzy
 msgid "Random &motion"
 msgstr "무작위 모션"
 
-#: photofilmstrip/gui/PnlPfsProject.py:389
+#: photofilmstrip/gui/PnlPfsProject.py:391
 msgid "Centralize m&otion"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:398
-#: photofilmstrip/gui/PnlPfsProject.py:399
+#: photofilmstrip/gui/PnlPfsProject.py:400
+#: photofilmstrip/gui/PnlPfsProject.py:401
 msgid "Import Pictures"
 msgstr "사진 수입"
 
-#: photofilmstrip/gui/PnlPfsProject.py:464
+#: photofilmstrip/gui/PnlPfsProject.py:475
 msgid "Export slideshow"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:467
-#: photofilmstrip/gui/PnlPfsProject.py:480
+#: photofilmstrip/gui/PnlPfsProject.py:478
+#: photofilmstrip/gui/PnlPfsProject.py:491
 #, fuzzy
 msgid "Portable slideshow"
 msgstr "포터블"
 
-#: photofilmstrip/gui/PnlPfsProject.py:478
+#: photofilmstrip/gui/PnlPfsProject.py:489
 #, fuzzy
 msgid "Import Slideshow"
 msgstr "이미지 수입"
 
-#: photofilmstrip/gui/PnlPfsProject.py:498
+#: photofilmstrip/gui/PnlPfsProject.py:509
 msgid "Import images"
 msgstr "이미지 수입"
 
-#: photofilmstrip/gui/PnlPfsProject.py:500
+#: photofilmstrip/gui/PnlPfsProject.py:511
 msgid "Imagefiles"
 msgstr "이미지 파일"
 
-#: photofilmstrip/gui/PnlPfsProject.py:511
+#: photofilmstrip/gui/PnlPfsProject.py:522
 msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a time "
 "lapse slide show!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:773
+#: photofilmstrip/gui/PnlPfsProject.py:787
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "'%s' 오디오 파일이 존재하지 않습니다! 계속하시겠습니까?"
 
-#: photofilmstrip/gui/PnlPfsProject.py:774
+#: photofilmstrip/gui/PnlPfsProject.py:788
 msgid "Warning"
 msgstr "경고"
 
