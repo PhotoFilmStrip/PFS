@@ -1119,6 +1119,25 @@ index.append('MUSIC_24')
 catalog['MUSIC_24'] = MUSIC_24
 
 #----------------------------------------------------------------------
+MUSIC_32 = PyEmbeddedImage(
+    "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlw"
+    "SFlzAAATrwAAE68BY+aOwwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA"
+    "AAJOSURBVFiF7ZZNSFRRFMd/587zKxMqScNokUVERiBvmjBpaUzh9i2GUKFF21q0j4jWRdCm"
+    "TeNHRMyqEDSXpZDpbJQorcDdRAsXKpnz8U6LMkbevJn3bGrT/Hfv3f8953fOve/woKb/XfI3"
+    "g5+5ONBcZ6TbGGx1sRHtnZ8YPVbssaqVzHGcyMranpNqsEVcW1Vs4CxQr8qvUr317hqgu+9q"
+    "h2XlbBWxVbFXNuhVo/sBVIM3NhBAqVZCvlMR0J916e7qCAbQYJnHquqUa6WPciCLoAeBI6UM"
+    "JmikgMoojCPcFpc+tRr3zU8M2yLyxm/Dn1zCNWBRYBp0ZqvA7MLU6NewQUIDiDJgLDM7O578"
+    "GHZvVQDmJkfGqpF4W9W+AzWA0KraKN5WT//g4WyBWwL9QCuwrGjzPwGIXR48kSvIK0Hbi16f"
+    "LjcmSwJ0OU5943pTTAytmjdLQQetqyTZmbyiPADR+FBCNvS+Cm0oSMRFlVylQOcuXTlVgJ4w"
+    "yT0A0fhQAtEn6h32dZUCFdQ6jlTslMfw+yvocpx6hHvs8idF0dUAtowvQON6Uyzs+RXre8vm"
+    "W+BLOY/Ac18AQQ4EyJP1W3iXSmUFbuB/YzOu697xBYhI/lMAgKVyi3MTI88EEng7Ma3IhfTL"
+    "Mc8R7DjvaHxwBuG8XwJVuZ6eHH5QidK2r9VJ21YMpVVdWU5PJT/4eXd8Ba66Q0bMa+BQCe+L"
+    "zpZvD9OVsgPp9KMcMBPASqT4IfN5YbX9qP3URNy9QAfQALxXlbudLZs3U6lUIUjQmmoKox9z"
+    "gr6vGG9NAgAAAABJRU5ErkJggg==")
+index.append('MUSIC_32')
+catalog['MUSIC_32'] = MUSIC_32
+
+#----------------------------------------------------------------------
 PLAY_16 = PyEmbeddedImage(
     "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlw"
     "SFlzAAAJOgAACToB8GSSSgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA"

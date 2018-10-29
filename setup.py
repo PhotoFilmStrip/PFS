@@ -292,6 +292,7 @@ class pfs_build(build):
 
                         ("MUSIC_16", "music_16.png"),
                         ("MUSIC_24", "music_24.png"),
+                        ("MUSIC_32", "music_32.png"),
                         ("PLAY_16", "play_16.png"),
                         ("PLAY_24", "play_24.png"),
                         ("PLAY_PAUSE_16", "play_pause_16.png"),

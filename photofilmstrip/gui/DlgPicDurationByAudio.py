@@ -38,6 +38,7 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.pnlHdr = PnlDlgHeader(self)
         self.pnlHdr.SetTitle(_(u'Adjust picture durations to audio file'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_32'))
 
         szMsg = self.CreateTextSizer(
             _("Find your picture duration by playing the audio file of your project and\n"
@@ -60,22 +61,22 @@ class DlgPicDurationByAudio(wx.Dialog):
         self.btnHit.Disable()
         self.btnHit.Bind(wx.EVT_BUTTON, self.__OnHit)
 
-#         self.btnCancel = wx.Button(self, wx.ID_CANCEL)
-#         self.btnOk = wx.Button(self, wx.ID_OK)
-        szCmds = self.CreateButtonSizer(wx.OK | wx.CANCEL)
+        self.btnCancel = wx.Button(self, wx.ID_CANCEL)
+        self.btnOk = wx.Button(self, wx.ID_OK)
 
         szButtons = wx.BoxSizer(wx.HORIZONTAL)
-        szButtons.Add(self.btnPlay, flag=wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border=8)
-        szButtons.Add(self.btnHit, flag=wx.RIGHT | wx.ALIGN_CENTER_HORIZONTAL, border=8)
+        szButtons.Add(self.btnPlay, flag=wx.RIGHT, border=8)
+        szButtons.Add(self.btnHit, flag=wx.RIGHT, border=8)
         szButtons.AddStretchSpacer()
-        szButtons.Add(szCmds)
+        szButtons.Add(self.btnCancel, flag=wx.RIGHT, border=8)
+        szButtons.Add(self.btnOk)
 
         sz = wx.BoxSizer(wx.VERTICAL)
         sz.Add(self.pnlHdr, flag=wx.EXPAND)
         sz.Add(szMsg, flag=wx.EXPAND | wx.ALL, border=8)
         sz.Add(self.stAudio, flag=wx.EXPAND | wx.ALL, border=8)
         sz.Add(self.listbox, 1, wx.EXPAND | wx.ALL, border=8)
-        sz.Add(szButtons, flag=wx.ALL, border=8)
+        sz.Add(szButtons, flag=wx.ALL | wx.ALIGN_RIGHT, border=8)
 
         self.SetSizerAndFit(sz)
 
