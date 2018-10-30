@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: 2018-10-30 23:15+CET\n"
-"PO-Revision-Date: 2018-10-29 22:41+0000\n"
+"PO-Revision-Date: 2018-10-30 22:19+0000\n"
 "Last-Translator: jensgoe <mail@jensgoepfert.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: de\n"
@@ -109,9 +109,8 @@ msgid "invalid profile specified: %s"
 msgstr "Ungültiges Profil: %s"
 
 #: photofilmstrip/cli/Main.py:160
-#, fuzzy
 msgid "cannot load project"
-msgstr "PhotoFilmStrip kann nicht geladen werden"
+msgstr "Projekt kann nicht geladen werden"
 
 #: photofilmstrip/cli/Main.py:173
 msgid "cannot create output path: %s"
@@ -814,7 +813,6 @@ msgid "Import images"
 msgstr "Bilder importieren"
 
 #: photofilmstrip/gui/PnlPfsProject.py:512
-#, fuzzy
 msgid "Image files"
 msgstr "Bilddateien"
 
