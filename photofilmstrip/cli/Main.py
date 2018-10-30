@@ -157,7 +157,7 @@ def main(showHelp=False):
 
     prjFile = ProjectFile(filename=options.project)
     if not prjFile.Load():
-        logging.error(_(u"cannot load photofilmstrip"))
+        logging.error(_(u"cannot load project"))
         return 6
 
     if options.outputpath:

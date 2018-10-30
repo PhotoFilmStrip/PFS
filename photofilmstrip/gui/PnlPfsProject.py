@@ -509,7 +509,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def OnImportPics(self, event):
         dlg = wx.FileDialog(self, _(u"Import images"),
                             Settings().GetImagePath(), "",
-                            _(u"Imagefiles") + " (*.*)|*.*",
+                            _(u"Image files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
             pics = []

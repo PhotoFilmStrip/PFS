@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: photofilmstrip\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-10-29 23:22+CET\n"
+"POT-Creation-Date: 2018-10-30 23:15+CET\n"
 "PO-Revision-Date: 2012-12-05 23:20+0100\n"
 "Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -110,7 +110,8 @@ msgid "invalid profile specified: %s"
 msgstr "вказано неправильний профіль: %s"
 
 #: photofilmstrip/cli/Main.py:160
-msgid "cannot load photofilmstrip"
+#, fuzzy
+msgid "cannot load project"
 msgstr "неможливо завантажити програму"
 
 #: photofilmstrip/cli/Main.py:173
@@ -310,15 +311,15 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Вибачте, ця функція тимчасово недоступна."
 
 #: photofilmstrip/gui/DlgBugReport.py:113
-#: photofilmstrip/gui/DlgPicDurationByAudio.py:220
-#: photofilmstrip/gui/DlgPicDurationByAudio.py:228
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:222
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:230
 #: photofilmstrip/gui/DlgProjectProps.py:431
 #: photofilmstrip/gui/DlgProjectProps.py:443
 #: photofilmstrip/gui/DlgProjectProps.py:453
 #: photofilmstrip/gui/DlgProjectProps.py:502
 #: photofilmstrip/gui/DlgProjectProps.py:513 photofilmstrip/gui/FrmMain.py:364
-#: photofilmstrip/gui/PnlPfsProject.py:525
-#: photofilmstrip/gui/PnlPfsProject.py:575
+#: photofilmstrip/gui/PnlPfsProject.py:526
+#: photofilmstrip/gui/PnlPfsProject.py:576
 msgid "Error"
 msgstr "Помилка"
 
@@ -347,6 +348,22 @@ msgstr ""
 msgid "Hit"
 msgstr ""
 
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:64
+#: photofilmstrip/gui/DlgPositionInput.py:252
+#: photofilmstrip/gui/DlgProjectProps.py:194
+#: photofilmstrip/gui/DlgRender.py:162
+#: photofilmstrip/gui/DlgRendererProps.py:106
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:94
+msgid "&Cancel"
+msgstr "&Скасувати"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:65
+#: photofilmstrip/gui/DlgPositionInput.py:258
+#: photofilmstrip/gui/DlgProjectProps.py:199
+#: photofilmstrip/gui/DlgRendererProps.py:111
+msgid "&Ok"
+msgstr "&Гаразд"
+
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:114
 msgid "Stop"
 msgstr ""
@@ -356,11 +373,11 @@ msgstr ""
 msgid "Playing time"
 msgstr "Відтворити відео"
 
-#: photofilmstrip/gui/DlgPicDurationByAudio.py:219
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:221
 msgid "Your project does not have an audio file configured."
 msgstr ""
 
-#: photofilmstrip/gui/DlgPicDurationByAudio.py:227
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:229
 msgid ""
 "Your project uses more than one audio file. Currently the durations can be "
 "adjusted only for one audio file."
@@ -391,20 +408,6 @@ msgstr "Кінець"
 #: photofilmstrip/gui/DlgPositionInput.py:247
 msgid "Reset"
 msgstr "Скинути"
-
-#: photofilmstrip/gui/DlgPositionInput.py:252
-#: photofilmstrip/gui/DlgProjectProps.py:194
-#: photofilmstrip/gui/DlgRender.py:162
-#: photofilmstrip/gui/DlgRendererProps.py:106
-#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:94
-msgid "&Cancel"
-msgstr "&Скасувати"
-
-#: photofilmstrip/gui/DlgPositionInput.py:258
-#: photofilmstrip/gui/DlgProjectProps.py:199
-#: photofilmstrip/gui/DlgRendererProps.py:111
-msgid "&Ok"
-msgstr "&Гаразд"
 
 #: photofilmstrip/gui/DlgPositionInput.py:266
 msgid "Adjust motion positions directly"
@@ -795,40 +798,41 @@ msgstr ""
 msgid "Import Pictures"
 msgstr "Імпортувати зображення"
 
-#: photofilmstrip/gui/PnlPfsProject.py:475
+#: photofilmstrip/gui/PnlPfsProject.py:476
 msgid "Export slideshow"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:478
-#: photofilmstrip/gui/PnlPfsProject.py:491
+#: photofilmstrip/gui/PnlPfsProject.py:479
+#: photofilmstrip/gui/PnlPfsProject.py:492
 #, fuzzy
 msgid "Portable slideshow"
 msgstr "Портабельний"
 
-#: photofilmstrip/gui/PnlPfsProject.py:489
+#: photofilmstrip/gui/PnlPfsProject.py:490
 #, fuzzy
 msgid "Import Slideshow"
 msgstr "Імпорт зображень"
 
-#: photofilmstrip/gui/PnlPfsProject.py:509
+#: photofilmstrip/gui/PnlPfsProject.py:510
 msgid "Import images"
 msgstr "Імпорт зображень"
 
-#: photofilmstrip/gui/PnlPfsProject.py:511
-msgid "Imagefiles"
+#: photofilmstrip/gui/PnlPfsProject.py:512
+#, fuzzy
+msgid "Image files"
 msgstr "Файли зображень"
 
-#: photofilmstrip/gui/PnlPfsProject.py:522
+#: photofilmstrip/gui/PnlPfsProject.py:523
 msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a time "
 "lapse slide show!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:787
+#: photofilmstrip/gui/PnlPfsProject.py:788
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "Звукового файлу '%s' не існує! Все одно продовжити?"
 
-#: photofilmstrip/gui/PnlPfsProject.py:788
+#: photofilmstrip/gui/PnlPfsProject.py:789
 msgid "Warning"
 msgstr "Застереження"
 
