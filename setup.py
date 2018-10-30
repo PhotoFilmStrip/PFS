@@ -291,8 +291,8 @@ class pfs_build(build):
                         ("IMAGE_REMOVE_D_32", "image_remove_d_32.png"),
 
                         ("MUSIC_16", "music_16.png"),
-                        ("MUSIC_24", "music_24.png"),
-                        ("MUSIC_32", "music_32.png"),
+                        ("MUSIC_DURATION_24", "music_duration_24.png"),
+                        ("MUSIC_DURATION_32", "music_duration_32.png"),
                         ("PLAY_16", "play_16.png"),
                         ("PLAY_24", "play_24.png"),
                         ("PLAY_PAUSE_16", "play_pause_16.png"),

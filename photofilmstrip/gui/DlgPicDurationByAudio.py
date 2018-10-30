@@ -38,7 +38,7 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.pnlHdr = PnlDlgHeader(self)
         self.pnlHdr.SetTitle(_(u'Adjust picture durations to audio file'))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_32'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION_32'))
 
         szMsg = self.CreateTextSizer(
             _("Find your picture duration by playing the audio file of your project and\n"
@@ -214,6 +214,8 @@ class DlgPicDurationByAudio(wx.Dialog):
         :type project: photofilmstrip.core.Project.Project
         '''
         pics = project.GetPictures()
+        if len(pics) == 0:
+            return
         if len(project.GetAudioFiles()) == 0:
             dlg = wx.MessageDialog(parent,
                                    _(u"Your project does not have an audio file configured."),

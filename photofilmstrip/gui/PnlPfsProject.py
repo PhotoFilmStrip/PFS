@@ -402,7 +402,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_PIC_DURATION_BY_AUDIO, '',
-                          wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
+                          wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION_24'),
                           wx.NullBitmap,
                           wx.ITEM_NORMAL,
                           _(u'Adjust picture durations'),
@@ -442,6 +442,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOVE_RIGHT)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_RANDOM)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_CENTER)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_DURATION_BY_AUDIO)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_RENDER_FILMSTRIP)
 
     def DisconnEvents(self, evtHandler):
