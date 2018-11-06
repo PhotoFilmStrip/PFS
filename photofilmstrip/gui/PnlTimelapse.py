@@ -1,8 +1,9 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
-# Copyright (C) 2018 Jens Goepfert
+# PhotoFilmStrip - Creates movies out of your pictures.
 #
-
+# Copyright (C) 2008 Jens Goepfert
+#
 import wx
 
 from photofilmstrip.core.PicturePattern import PicturePattern

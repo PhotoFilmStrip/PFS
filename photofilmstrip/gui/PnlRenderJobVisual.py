@@ -1,5 +1,9 @@
-# Boa:FramePanel:PnlJobVisual
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2008 Jens Goepfert
+#
 
 import wx
 

@@ -1,22 +1,8 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2017 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import wx
@@ -85,32 +71,32 @@ class ActionManager:
 
     def __MakeToolBar(self, toolBar):
         toolBar.AddTool(ActionManager.ID_SLIDESHOW, "",
-                          wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'),
-                          kind=wx.ITEM_DROPDOWN,
-                          shortHelp=_(u'New Slideshow'))
+                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'),
+                        kind=wx.ITEM_DROPDOWN,
+                        shortHelp=_(u'New Slideshow'))
         toolBar.Bind(wx.EVT_TOOL_DROPDOWN, self.OnDropDownNew)
 
         toolBar.AddTool(wx.ID_OPEN, "",
-                              wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'),
-                              _(u'Open'),)
+                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'),
+                        _(u'Open'),)
 
         toolBar.AddTool(wx.ID_SAVE, "",
-                             wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_24'),
-                             wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_24'),
-                             wx.ITEM_NORMAL,
-                             shortHelp=_(u'Save'))
+                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_24'),
+                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_24'),
+                        wx.ITEM_NORMAL,
+                        shortHelp=_(u'Save'))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
 #                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'),
 #                              _(u'Save Project as'), _(u'Save Project as'))
         toolBar.AddSeparator()
 
         toolBar.AddTool(self.ID_JOB_QUEUE, '',
-                          wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_24'),
-                          wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D_24'),
-                          wx.ITEM_NORMAL,
-                          _(u'Show job queue'),
-                          _(u'Show job queue'),
-                          None)
+                        wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_24'),
+                        wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D_24'),
+                        wx.ITEM_NORMAL,
+                        _(u'Show job queue'),
+                        _(u'Show job queue'),
+                        None)
 
         toolBar.AddSeparator()
         self._toolFix = toolBar.GetToolsCount()
@@ -188,7 +174,7 @@ class ActionManager:
                        wx.ArtProvider.GetBitmap('PFS_ABOUT_16'))
         return menu
 
-    def OnDropDownNew(self, event):
+    def OnDropDownNew(self, event):  # pylint: disable=unused-argument
         menu = self.__CreateMenuNew()
         self._frame.PopupMenu(menu)
 
