@@ -1104,6 +1104,40 @@ index.append('MUSIC_16')
 catalog['MUSIC_16'] = MUSIC_16
 
 #----------------------------------------------------------------------
+MUSIC_24 = PyEmbeddedImage(
+    b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlw'
+    b'SFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'
+    b'AAFoSURBVEiJ7ZQ7SwNBFEbPnV1TKCKW2kbQIohxtUqt4KNNaQoLO/+CUf+HhaZMaTTaK8GY'
+    b'iJYigTSSzkICwddei7BhI3nsRguLnGq4c/d+ZxhmYUgf5LcD5le3xkaMxI3BURcH0UQpn4l6'
+    b'+3aYYclk0qq+js6pwRFxHVVxgGUgourptjv3DIivbE/b9oejIo4qTrVOQo1OAqgGO3zPAMv+'
+    b'fFYEtOmlndveEe5RboDdUAFdqCmUgSuU68h4o1zIZhsAS2upwQIETSNW0f6yioXLo5cwNoEC'
+    b'bvOZwzBD/ZhBP/w3AYNccovF9dSmUd0DiQGVPw1oDufU97BifQOCGHkYJR1EpBUQ1MjHbJf6'
+    b'W5tIWCMfjx2rwkPHgKBGHq5w0LHb1ba6PyCQkcfd+UlOXdlEKAJ1hCKqG6WLzLm/r3UH6sq+'
+    b'GM31M/JTvjw+A8667QNY3qJWeXiaii6UxDADTDT/kLrz02jIn/MN9/546OsNyWwAAAAASUVO'
+    b'RK5CYII=')
+index.append('MUSIC_24')
+catalog['MUSIC_24'] = MUSIC_24
+
+#----------------------------------------------------------------------
+MUSIC_32 = PyEmbeddedImage(
+    b'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlw'
+    b'SFlzAAATrwAAE68BY+aOwwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'
+    b'AAJOSURBVFiF7ZZNSFRRFMd/587zKxMqScNokUVERiBvmjBpaUzh9i2GUKFF21q0j4jWRdCm'
+    b'TeNHRMyqEDSXpZDpbJQorcDdRAsXKpnz8U6LMkbevJn3bGrT/Hfv3f8953fOve/woKb/XfI3'
+    b'g5+5ONBcZ6TbGGx1sRHtnZ8YPVbssaqVzHGcyMranpNqsEVcW1Vs4CxQr8qvUr317hqgu+9q'
+    b'h2XlbBWxVbFXNuhVo/sBVIM3NhBAqVZCvlMR0J916e7qCAbQYJnHquqUa6WPciCLoAeBI6UM'
+    b'JmikgMoojCPcFpc+tRr3zU8M2yLyxm/Dn1zCNWBRYBp0ZqvA7MLU6NewQUIDiDJgLDM7O578'
+    b'GHZvVQDmJkfGqpF4W9W+AzWA0KraKN5WT//g4WyBWwL9QCuwrGjzPwGIXR48kSvIK0Hbi16f'
+    b'LjcmSwJ0OU5943pTTAytmjdLQQetqyTZmbyiPADR+FBCNvS+Cm0oSMRFlVylQOcuXTlVgJ4w'
+    b'yT0A0fhQAtEn6h32dZUCFdQ6jlTslMfw+yvocpx6hHvs8idF0dUAtowvQON6Uyzs+RXre8vm'
+    b'W+BLOY/Ac18AQQ4EyJP1W3iXSmUFbuB/YzOu697xBYhI/lMAgKVyi3MTI88EEng7Ma3IhfTL'
+    b'Mc8R7DjvaHxwBuG8XwJVuZ6eHH5QidK2r9VJ21YMpVVdWU5PJT/4eXd8Ba66Q0bMa+BQCe+L'
+    b'zpZvD9OVsgPp9KMcMBPASqT4IfN5YbX9qP3URNy9QAfQALxXlbudLZs3U6lUIUjQmmoKox9z'
+    b'gr6vGG9NAgAAAABJRU5ErkJggg==')
+index.append('MUSIC_32')
+catalog['MUSIC_32'] = MUSIC_32
+
+#----------------------------------------------------------------------
 MUSIC_DURATION_24 = PyEmbeddedImage(
     b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlw'
     b'SFlzAAAAWQAAAFkBqp2phgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'

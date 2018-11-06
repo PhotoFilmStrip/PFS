@@ -107,8 +107,7 @@ class DlgRender(wx.Dialog):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
             parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-            style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render filmstrip'))
-        self.SetClientSize(wx.Size(400, 250))
+            style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render project'))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
             parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
@@ -126,7 +125,7 @@ class DlgRender(wx.Dialog):
             id=wxID_DLGRENDERCHOICEFORMAT, name=u'choiceFormat',
             parent=self.pnlSettings, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=wx.CB_READONLY)
-        self.choiceFormat.SetMinSize(wx.Size(300, -1))
+        self.choiceFormat.SetSizeHints(400, -1)
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
             id=wxID_DLGRENDERCHOICEFORMAT)
 
@@ -145,8 +144,8 @@ class DlgRender(wx.Dialog):
         self.choiceProfile = wx.Choice(choices=[],
             id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
             parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-            - 1), style=0)
-        self.choiceProfile.SetMinSize(wx.Size(300, -1))
+            -1), style=0)
+        self.choiceProfile.SetSizeHints(400, -1)
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
             name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
@@ -194,7 +193,7 @@ class DlgRender(wx.Dialog):
         self.__SelectProfileByName(settings.GetLastProfile())
 
         self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
-        self.SetInitialSize(self.GetEffectiveMinSize())
+        self.Fit()
         self.CentreOnParent()
         self.SetFocus()
 

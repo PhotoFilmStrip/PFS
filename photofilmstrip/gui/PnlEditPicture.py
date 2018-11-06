@@ -76,7 +76,7 @@ class PnlEditPicture(wx.Panel):
         parent.Add(self.stMovement, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.choiceMovement, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
+              flag=wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
         parent.Add(self.pnlImgDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.stDurationUnit, 0, border=0,
@@ -84,7 +84,7 @@ class PnlEditPicture(wx.Panel):
         parent.Add(self.stTrans, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.choiceTrans, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
+              flag=wx.ALIGN_CENTER_VERTICAL | wx.EXPAND)
         parent.Add(self.pnlTransDuration, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.stTransUnit, 0, border=0,
@@ -99,7 +99,7 @@ class PnlEditPicture(wx.Panel):
     def _init_coll_szSettingsCtrls_Growables(self, parent):
         # generated method, don't edit
 
-        parent.AddGrowableCol(1)#!!!
+        parent.AddGrowableCol(1)  #!!!
 
     def _init_coll_szSettingsCtrls_Items(self, parent):
         # generated method, don't edit
@@ -278,11 +278,23 @@ class PnlEditPicture(wx.Panel):
         self._pictures = []
         self.SetPictures(None)
 
-    def __SetChoiceSelectionByData(self, choice, data):
+    def __FindChoiceIdxByData(self, choice, data):
         for idx in range(choice.GetCount()):
             if choice.GetClientData(idx) == data:
-                choice.Select(idx)
-                return
+                return idx
+        return wx.NOT_FOUND
+
+    def __GetChoiceDataBySelection(self, choice):
+        selIdx = choice.GetSelection()
+        if selIdx != wx.NOT_FOUND:
+            return choice.GetClientData(selIdx)
+        else:
+            return None
+
+    def __SetChoiceSelectionByData(self, choice, data):
+        idx = self.__FindChoiceIdxByData(choice, data)
+        if idx != wx.NOT_FOUND:
+            choice.Select(idx)
 
     def OnCmdRotateLeftButton(self, event):
         for pic in self._pictures:
@@ -334,7 +346,7 @@ class PnlEditPicture(wx.Panel):
         if self._pictures:
             pic = self._pictures[0]
 
-            self.tcComment.SetValue(pic.GetComment())
+            self.tcComment.ChangeValue(pic.GetComment())
             self.pnlImgDuration.SetValue(pic.GetDuration())
             self.__SetChoiceSelectionByData(self.choiceMovement, pic.GetMovement())
             self.__SetChoiceSelectionByData(self.choiceEffect, pic.GetEffect())
@@ -342,3 +354,30 @@ class PnlEditPicture(wx.Panel):
             self.__SetChoiceSelectionByData(self.choiceTrans, pic.GetTransition())
             self.pnlTransDuration.SetValue(pic.GetTransitionDuration(rawValue=True))
             self.pnlTransDuration.Enable(pic.GetTransition() != Picture.TRANS_NONE)
+
+    def SetupModeByProject(self, project):
+        if project.GetTimelapse():
+            selTrans = self.choiceTrans.GetSelection()
+            rollIdx = self.__FindChoiceIdxByData(
+                self.choiceTrans, Picture.TRANS_ROLL)
+            if rollIdx != wx.NOT_FOUND:
+                self.choiceTrans.Delete(rollIdx)
+            if rollIdx == selTrans:
+                self.choiceTrans.Select(0)
+
+            unit = _("fpp")
+            tooltip = _("frames per picture - the number of frames each picture will be shown")
+        else:
+            projDuration = project.GetDuration(calc=False)
+            if projDuration is None:
+                unit = _('sec')
+            else:
+                # project duration is set to a fixed value (or by music), so
+                # the units are not seconds but kind of ratio time
+                unit = "-"
+            tooltip = ""
+
+        self.stDurationUnit.SetLabel(unit)
+        self.stTransUnit.SetLabel(unit)
+        self.stDurationUnit.SetToolTip(tooltip)
+        self.stTransUnit.SetToolTip(tooltip)

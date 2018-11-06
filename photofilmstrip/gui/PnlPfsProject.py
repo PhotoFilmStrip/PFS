@@ -1,4 +1,3 @@
-# Boa:FramePanel:PnlPfsProject
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -31,7 +30,6 @@ from photofilmstrip.action.ActionRender import ActionRender
 
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.core.Project import Project
-from photofilmstrip.core.PicturePattern import PicturePattern
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.common.ObserverPattern import Observer
@@ -40,7 +38,7 @@ from photofilmstrip.lib.util import CheckFile
 
 from photofilmstrip.gui.helper import CreateMenuItem
 from photofilmstrip.gui.ImageSectionEditor import (
-        ImageSectionEditor, ImageProxy, EVT_RECT_CHANGED)
+        ImageSectionEditor, EVT_RECT_CHANGED)
 from photofilmstrip.gui.PhotoFilmStripList import (
         PhotoFilmStripList, EVT_CHANGED)
 
@@ -49,9 +47,8 @@ from photofilmstrip.gui.util.ImageCache import ImageCache
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
-from photofilmstrip.gui.DlgPicDurationByAudio import DlgPicDurationByAudio
+from photofilmstrip.gui.DlgConfigureAudio import DlgConfigureAudio
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
-from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
 from photofilmstrip.gui.DlgRender import DlgRender
 from photofilmstrip.gui.WxProjectFile import WxProjectFile
 from photofilmstrip.core.exceptions import RenderException
@@ -71,8 +68,7 @@ from photofilmstrip.core.exceptions import RenderException
  wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH,
 ] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(6)]
 
-[ID_PROJECT_PROPS,
- ID_PIC_MOVE_LEFT,
+[ID_PIC_MOVE_LEFT,
  ID_PIC_MOVE_RIGHT,
  ID_PIC_REMOVE,
  ID_PIC_ROTATE_CW,
@@ -80,11 +76,10 @@ from photofilmstrip.core.exceptions import RenderException
  ID_PIC_MOTION_RANDOM,
  ID_PIC_MOTION_CENTER,
  ID_PIC_IMPORT,
- ID_PIC_SLIDE,
- ID_PIC_DURATION_BY_AUDIO,
+ ID_MUSIC,
  ID_RENDER_FILMSTRIP,
  ID_EXPORT, ID_IMPORT,
-] = [wx.NewId() for __ in range(14)]
+] = [wx.NewId() for __ in range(12)]
 
 
 class PnlPfsProject(PnlEditorPage, Observer):
@@ -172,28 +167,23 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
     def _init_sizers(self):
         # generated method, don't edit
-        self.sizerPnlTop = wx.BoxSizer(orient=wx.HORIZONTAL)
+        sizerPnlTop = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerMain = wx.BoxSizer(orient=wx.VERTICAL)
+        sizerMain = wx.BoxSizer(orient=wx.VERTICAL)
 
         self.sizerPictures = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         self.sizerPictureCtrls = wx.BoxSizer(orient=wx.VERTICAL)
 
-        self._init_coll_sizerPnlTop_Items(self.sizerPnlTop)
-        self._init_coll_sizerMain_Items(self.sizerMain)
+        self._init_coll_sizerPnlTop_Items(sizerPnlTop)
+        self._init_coll_sizerMain_Items(sizerMain)
         self._init_coll_sizerPictures_Items(self.sizerPictures)
         self._init_coll_sizerPictureCtrls_Items(self.sizerPictureCtrls)
 
-        self.SetSizer(self.sizerMain)
-        self.panelTop.SetSizer(self.sizerPnlTop)
+        self.SetSizer(sizerMain)
+        self.panelTop.SetSizer(sizerPnlTop)
 
-    def _init_ctrls(self, prnt):
-        # generated method, don't edit
-        PnlEditorPage.__init__(self, id=wxID_PNLPFSPROJECT, name=u'PnlPfsProject',
-              parent=prnt)
-        self.SetClientSize(wx.Size(400, 250))
-
+    def _InitCtrls(self):
         self.panelTop = wx.Panel(id=wxID_PNLPFSPROJECTPANELTOP,
               name=u'panelTop', parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
@@ -255,7 +245,11 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self._init_sizers()
 
     def __init__(self, parent, project):
-        self._init_ctrls(parent)
+        PnlEditorPage.__init__(self, parent, id=wxID_PNLPFSPROJECT,
+                               name=u'PnlPfsProject')
+        self.SetClientSize(wx.Size(400, 250))
+
+        self._InitCtrls()
         Observer.__init__(self)
 
         self.lvPics.SetDropTarget(ImageDropTarget(self))
@@ -265,7 +259,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.__project = project
         self.__usedAltPath = False
 
-        self.__InitImageProxy()
+        self._InitImageProxy()
 
         self.bitmapLeft.SetAspect(project.GetAspect())
         self.bitmapRight.SetAspect(project.GetAspect())
@@ -284,62 +278,19 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.Bind(EVT_CHANGED, self.OnPhotoFilmStripListChanged, id=self.lvPics.GetId())
 
         project.AddObserver(self)
+        self.pnlEditPicture.SetupModeByProject(project)
 
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.SetChanged(False)
 
-    def __InitImageProxy(self):
-        if self.__project.GetTimelapse():
-            self.imgProxyLeft = ImageProxy()
-            self.imgProxyLeft.AddObserver(self.bitmapLeft)
-            self.imgProxyRight = ImageProxy()
-            self.imgProxyRight.AddObserver(self.bitmapRight)
-
-            self.bitmapLeft.SetImgProxy(self.imgProxyLeft)
-            self.bitmapRight.SetImgProxy(self.imgProxyRight)
-        else:
-            self.imgProxyLeft = self.imgProxyRight = ImageProxy()
-            self.imgProxyLeft.AddObserver(self.bitmapLeft)
-            self.imgProxyRight.AddObserver(self.bitmapRight)
-
-            self.bitmapLeft.SetImgProxy(self.imgProxyLeft)
-            self.bitmapRight.SetImgProxy(self.imgProxyRight)
+    def _InitImageProxy(self):
+        raise NotImplementedError()
 
     def GetFileExtension(self):
         return ".pfs"
 
-    def GetStatusText(self, index):
-        project = self.__project
-
-        imgCount = len(project.GetPictures())
-        totalTime = project.GetDuration(False)
-        if project.GetTimelapse():
-            # TODO: calc from image count
-            totalTime = 1
-            imgCount = 0
-        elif totalTime == -1:
-            # TODO: calc from audio files
-            totalTime = 0
-        elif totalTime is None:
-            totalTime = project.GetDuration(True)
-
-        if index == 0:
-            return u"%s: %d" % (_(u"Images"), imgCount)
-
-        elif index == 1:
-            minutes = totalTime // 60
-            seconds = totalTime % 60
-            return u"%s: %02d:%02d" % (_(u"Duration"),
-                                       minutes,
-                                       seconds)
-        else:
-            return u""
-
     def GetSaveFilePath(self):
         return self.__project.GetFilename()
-
-    def _GetEditorName(self):
-        return _(u"Project")
 
     def _Save(self, filepath):
         prjFile = WxProjectFile(self, self.__project, filepath)
@@ -350,9 +301,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
 #        CreateMenuItem(menu, self.ID_IMPORT, _(u"&Import Project"))
 #        CreateMenuItem(menu, self.ID_EXPORT, _(u"&Export Project"))
 #        menu.AppendSeparator()
-        CreateMenuItem(menu, ID_PROJECT_PROPS,
-                       _(u"&Properties"),
-                       wx.ArtProvider.GetBitmap('PFS_PROPERTIES_16'))
+        pass
 
     def AddMenuEditActions(self, menu):
         CreateMenuItem(menu, ID_PIC_IMPORT,
@@ -392,35 +341,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_16'),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
 
-    def AddToolBarActions(self, toolBar):
-        toolBar.AddTool(ID_PIC_IMPORT, '',
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
-                          wx.ITEM_NORMAL,
-                          _(u'Import Pictures'),
-                          _(u'Import Pictures'),
-                          None)
-        toolBar.AddSeparator()
-        toolBar.AddTool(ID_PIC_DURATION_BY_AUDIO, '',
-                          wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION_24'),
-                          wx.NullBitmap,
-                          wx.ITEM_NORMAL,
-                          _(u'Adjust picture durations'),
-                          _(u'Adjust picture durations'),
-                          None)
-        toolBar.AddSeparator()
-        toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
-                          wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
-                          wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
-                          wx.ITEM_NORMAL,
-                          _(u'Render filmstrip'),
-                          _(u'Render filmstrip'),
-                          None)
-
     def ConnectEvents(self, evtHandler):
         evtHandler.Bind(wx.EVT_MENU, self.OnProjectExport, id=ID_EXPORT)
         evtHandler.Bind(wx.EVT_MENU, self.OnProjectImport, id=ID_IMPORT)
-        evtHandler.Bind(wx.EVT_MENU, self.OnProjectProps, id=ID_PROJECT_PROPS)
 
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdMoveLeftButton, id=ID_PIC_MOVE_LEFT)
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdMoveRightButton, id=ID_PIC_MOVE_RIGHT)
@@ -432,7 +355,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdMotionCenter, id=ID_PIC_MOTION_CENTER)
 
         evtHandler.Bind(wx.EVT_MENU, self.OnImportPics, id=ID_PIC_IMPORT)
-        evtHandler.Bind(wx.EVT_MENU, self.OnPicDurationByAudio, id=ID_PIC_DURATION_BY_AUDIO)
+        evtHandler.Bind(wx.EVT_MENU, self.OnConfigureMusic, id=ID_MUSIC)
         evtHandler.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ID_RENDER_FILMSTRIP)
 
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_REMOVE)
@@ -442,13 +365,12 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOVE_RIGHT)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_RANDOM)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckImageSelected, id=ID_PIC_MOTION_CENTER)
-        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_DURATION_BY_AUDIO)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_RENDER_FILMSTRIP)
 
     def DisconnEvents(self, evtHandler):
         for wId in [ID_PIC_MOVE_LEFT, ID_PIC_MOVE_RIGHT, ID_PIC_REMOVE,
                     ID_PIC_ROTATE_CCW, ID_PIC_ROTATE_CW, ID_PIC_MOTION_RANDOM,
-                    ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_PIC_SLIDE]:
+                    ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP]:
             evtHandler.Disconnect(wId)
 
     def GetSelectedImageState(self):
@@ -497,15 +419,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
             prjFile = WxProjectFile(self, filename=filepath)
             prjFile.Load()
 
-    def OnProjectProps(self, event):
-        dlg = DlgProjectProps(self, self.__project)
-        if dlg.ShowModal() == wx.ID_OK:
-            dlg.GetProject()  # Makes changes to self.__project
-            self.bitmapLeft.SetAspect(self.__project.GetAspect())
-            self.bitmapRight.SetAspect(self.__project.GetAspect())
-            self.SetChanged(True)
-        dlg.Destroy()
-
     def OnImportPics(self, event):
         dlg = wx.FileDialog(self, _(u"Import images"),
                             Settings().GetImagePath(), "",
@@ -514,20 +427,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         if dlg.ShowModal() == wx.ID_OK:
             pics = []
             for path in dlg.GetPaths():
-
-                if self.__project.GetTimelapse():
-                    picPattern = PicturePattern.Create(path)
-                    if not picPattern.IsOk():
-                        dlgErr = wx.MessageDialog(
-                            self,
-                            _(u"Filename '%s' does not match a number pattern "
-                              u"which is necessary for a time lapse slide "
-                              u"show!") % path,
-                            _(u"Error"),
-                            wx.OK | wx.ICON_ERROR)
-                        dlgErr.ShowModal()
-                        dlgErr.Destroy()
-                        continue
+                if not self._CheckImportedPic(path):
+                    continue
 
                 pic = Picture(path)
                 pics.append(pic)
@@ -544,8 +445,13 @@ class PnlPfsProject(PnlEditorPage, Observer):
             self.pnlEditPicture.SetPictures(selPics)
         dlg.Destroy()
 
-    def OnPicDurationByAudio(self, event):
-        DlgPicDurationByAudio.Interact(self, self.GetProject())
+    def _CheckImportedPic(self, path):  # pylint: disable=unused-argument
+        return True
+
+    def OnConfigureMusic(self, event):
+        dlg = DlgConfigureAudio(self, self.GetProject())
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def OnRenderFilmstrip(self, event):
         self.PrepareRendering()
@@ -606,39 +512,13 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.bitmapRight.Enable(len(selPics) == 1)
         self.bitmapLeft.Enable(len(selPics) == 1)
 
-        if self.__project.GetTimelapse():
-            self.__OnLvPicsSelectionChangedTimelapse(selItems)
-        else:
-            self.__OnLvPicsSelectionChangedDefault(selPics)
+        self._OnPicsSelectionChanged(selItems, selPics)
 
         if event:
             event.Skip()
 
-    def __OnLvPicsSelectionChangedDefault(self, selPics):
-        if selPics:
-#             assert self.imgProxyLeft is self.imgProxyRight
-            self.imgProxyLeft.SetPicture(selPics[0])
-            self.imgProxyRight.SetPicture(selPics[0])
-
-            self.__CheckAndSetLock(selPics[0])
-            self.bitmapLeft.SetSection(wx.Rect(*selPics[0].GetStartRect()))
-            self.bitmapRight.SetSection(wx.Rect(*selPics[0].GetTargetRect()))
-
-    def __OnLvPicsSelectionChangedTimelapse(self, selItems):
-        if selItems:
-            selIdx = selItems[0]
-            selPic = self.lvPics.GetPicture(selIdx)
-            nextPic = self.lvPics.GetPicture(selIdx + 1)
-            self.__CheckAndSetLock(selPic)
-
-            self.imgProxyLeft.SetPicture(selPic)
-            self.bitmapLeft.SetSection(wx.Rect(*selPic.GetStartRect()))
-            if nextPic:
-                self.imgProxyRight.SetPicture(nextPic)
-                self.bitmapRight.SetSection(wx.Rect(*nextPic.GetStartRect()))
-                self.bitmapRight.Enable(True)
-            else:
-                self.bitmapRight.Enable(False)
+    def _OnPicsSelectionChanged(self, selItems, selPics):
+        raise NotImplementedError()
 
     def OnRectChanged(self, event):
         selItem = self.lvPics.GetSelected()
@@ -654,7 +534,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
             self.__OnRectChangedDefault(event, pic)
 
         if event.CheckImageDimensionLock():
-            self.__CheckAndSetLock(pic)
+            self._CheckAndSetLock(pic)
 
     def __OnRectChangedDefault(self, event, pic):
         if event.GetEventObject() is self.bitmapLeft:
@@ -843,9 +723,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
             self.SetChanged(True)
 
         elif isinstance(obj, Project):
-            if arg == 'timelapse':
-                self.__InitImageProxy()
-                self.OnLvPicsSelectionChanged(None)
+            if arg == 'duration':
+                self.pnlEditPicture.SetupModeByProject(self.__project)
+                self.SetChanged(True)
 
     def IsReady(self):
         return self.lvPics.GetItemCount() > 0
@@ -853,7 +733,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def IsPictureSelected(self):
         return len(self.lvPics.GetSelected()) > 0
 
-    def __CheckAndSetLock(self, pic):
+    def _CheckAndSetLock(self, pic):
         unlocked = False
         for rect in (pic.GetStartRect(), pic.GetTargetRect()):
             if rect[0] < 0 or rect[1] < 0 \

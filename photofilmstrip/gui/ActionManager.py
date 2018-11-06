@@ -29,6 +29,8 @@ class ActionManager:
 
     ID_JOB_QUEUE = wx.NewId()
     ID_PROJECT_CLOSE = wx.NewId()
+    ID_SLIDESHOW = wx.NewId()
+    ID_TIMELAPSE = wx.NewId()
 
     ID_LANG_EN = wx.NewId()
     ID_LANG_FR = wx.NewId()
@@ -82,7 +84,7 @@ class ActionManager:
                 self._menuBar.Check(ident, True)
 
     def __MakeToolBar(self, toolBar):
-        toolBar.AddTool(wx.ID_NEW, "",
+        toolBar.AddTool(ActionManager.ID_SLIDESHOW, "",
                           wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'),
                           kind=wx.ITEM_DROPDOWN,
                           shortHelp=_(u'New Slideshow'))
@@ -117,7 +119,9 @@ class ActionManager:
 
     def __CreateMenuNew(self):
         menu = wx.Menu()
-        CreateMenuItem(menu, wx.ID_NEW, _(u'Slideshow') + '\tCtrl+N',
+        CreateMenuItem(menu, ActionManager.ID_SLIDESHOW, _(u'Slideshow') + '\tCtrl+N',
+                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
+        CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _(u'Timelapse'),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
         return menu
 
@@ -139,8 +143,8 @@ class ActionManager:
         menu.AppendSeparator()
 
         if editor:
-            editor.AddMenuFileActions(menu)
-            menu.AppendSeparator()
+            if editor.AddMenuFileActions(menu):
+                menu.AppendSeparator()
 
         CreateMenuItem(menu, ActionManager.ID_PROJECT_CLOSE,
                        _(u'&Close') + '\tCtrl+W',

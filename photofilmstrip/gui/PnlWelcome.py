@@ -68,8 +68,8 @@ class PnlWelcome(wx.Panel):
 
         self.cmdNew = wx.BitmapButton(self, -1,
                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_64'))
-        self.cmdNew.SetToolTip(_(u"Create new project"))
-        self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectNew)
+        self.cmdNew.SetToolTip(_(u"Create new slideshow"))
+        self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnSlideshow)
 
         self.cmdOpen = wx.BitmapButton(self, -1,
                                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_64'))

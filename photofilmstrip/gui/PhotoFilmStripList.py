@@ -565,7 +565,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             pass
 
         self.Refresh()
-        self._SendChangedEvent()
+        if idxFrom != idxTo:
+            self._SendChangedEvent()
         if evt:
             self.GetEventHandler().ProcessEvent(evt)
 

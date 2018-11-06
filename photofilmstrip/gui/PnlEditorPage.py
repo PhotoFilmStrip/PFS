@@ -150,3 +150,6 @@ class PnlEditorPage(wx.Panel):
 
     def DisconnEvents(self, evtHandler):
         pass
+
+    def OnStatusBarClick(self, index):
+        pass

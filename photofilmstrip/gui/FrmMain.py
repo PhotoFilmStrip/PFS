@@ -44,13 +44,14 @@ from photofilmstrip.lib.jobimpl.PnlJobManager import PnlJobManager
 from photofilmstrip.gui.ActionManager import ActionManager
 from photofilmstrip.gui.PnlWelcome import PnlWelcome
 from photofilmstrip.gui.HelpViewer import HelpViewer
-from photofilmstrip.gui.DlgProjectProps import DlgProjectProps
-from photofilmstrip.gui.PnlPfsProject import PnlPfsProject
+from photofilmstrip.gui.DlgNewProject import DlgNewProject
 from photofilmstrip.gui.WxProjectFile import WxProjectFile
 from photofilmstrip.gui.PnlRenderJobVisual import PnlRenderJobVisual
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 
 from photofilmstrip.res.license import licenseText
+from photofilmstrip.gui.PnlTimelapse import PnlTimelapse
+from photofilmstrip.gui.PnlSlideshow import PnlSlideshow
 
 ID_PAGE_UP = wx.NewId()
 ID_PAGE_DOWN = wx.NewId()
@@ -105,7 +106,8 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-        self.Bind(wx.EVT_MENU, self.OnProjectNew, id=wx.ID_NEW)
+        self.Bind(wx.EVT_MENU, self.OnSlideshow, id=ActionManager.ID_SLIDESHOW)
+        self.Bind(wx.EVT_MENU, self.OnTimelapse, id=ActionManager.ID_TIMELAPSE)
         self.Bind(wx.EVT_MENU, self.OnProjectLoad, id=wx.ID_OPEN)
         self.Bind(wx.EVT_MENU, self.OnProjectSave, id=wx.ID_SAVE)
         self.Bind(wx.EVT_MENU, self.OnProjectSaveAs, id=wx.ID_SAVEAS)
@@ -216,9 +218,19 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
 # Misc
     def OnStatusBarLeftDown(self, event):
-        if self.statusBar.GetFieldRect(3).Contains(event.GetPosition()) \
+        mpos = event.GetPosition()
+
+        if self.statusBar.GetFieldRect(3).Contains(mpos) \
         and self.statusBar.GetStatusText(3) != "":
             self.frmJobManager.Show()
+            return
+
+        pnlEditor = self.__GetCurrentPnlEditor()
+        if pnlEditor:
+            for idx in range(self.statusBar.GetFieldsCount()):
+                if self.statusBar.GetFieldRect(idx).Contains(mpos):
+                    pnlEditor.OnStatusBarClick(idx - 1)
+                    return
 
     def OnClose(self, event):
         while self.notebook.GetPageCount() > 1:
@@ -233,17 +245,25 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         event.Skip()
 
 # Menu
-    def OnProjectNew(self, event):
-        dlg = DlgProjectProps(self)
+    def OnSlideshow(self, event):
+        dlg = DlgNewProject(self, _("Create new slideshow"))
         if dlg.ShowModal() == wx.ID_OK:
             photoFilmStrip = dlg.GetProject()
-            self.NewProject(photoFilmStrip)
+            self._NewSlideshow(photoFilmStrip)
+        dlg.Destroy()
+
+    def OnTimelapse(self, event):
+        dlg = DlgNewProject(self, _("Create new timelapse"))
+        if dlg.ShowModal() == wx.ID_OK:
+            photoFilmStrip = dlg.GetProject()
+            photoFilmStrip.SetTimelapse(True)
+            self._NewTimelapse(photoFilmStrip)
         dlg.Destroy()
 
     def OnProjectLoad(self, event):
         dlg = wx.FileDialog(self, _(u"Select %s-Project") % Constants.APP_NAME,
                             Settings().GetProjectPath(), "",
-                            Constants.APP_NAME + u'-' + _(u"Files") + " (*.pfs)|*.pfs",
+                            Constants.APP_NAME + u'-' + _(u"Files") + " (*.pfs;*.pfsprod)|*.pfs;*.pfsprod",
                             wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath())
@@ -341,8 +361,15 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         else:
             return False
 
-    def NewProject(self, project):
-        pnl = PnlPfsProject(self.notebook, project)
+    def _NewSlideshow(self, project):
+        pnl = PnlSlideshow(self.notebook, project)
+        project.AddObserver(self)
+        filepath = os.path.basename(project.GetFilename())
+        self.notebook.AddPage(pnl, os.path.basename(filepath), True)
+        return pnl
+
+    def _NewTimelapse(self, project):
+        pnl = PnlTimelapse(self.notebook, project)
         project.AddObserver(self)
         filepath = os.path.basename(project.GetFilename())
         self.notebook.AddPage(pnl, os.path.basename(filepath), True)
@@ -367,10 +394,14 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             dlg.Destroy()
             return
 
-        photoFilmStrip = prjFile.GetProject()
-        pics = photoFilmStrip.GetPictures()
+        project = prjFile.GetProject()
+        pics = project.GetPictures()
 
-        pnl = self.NewProject(photoFilmStrip)
+        if project.GetTimelapse():
+            pnl = self._NewTimelapse(project)
+        else:
+            pnl = self._NewSlideshow(project)
+
         pnl.InsertPictures(pics)
         pnl.SetChanged(False)
 

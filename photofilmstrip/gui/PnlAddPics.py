@@ -1,4 +1,3 @@
-# Boa:FramePanel:PnlAddPics
 # encoding: UTF-8
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
@@ -22,76 +21,53 @@
 
 import wx
 
-[wxID_PNLADDPICS, wxID_PNLADDPICSCMDBROWSE, wxID_PNLADDPICSSTINFO,
- wxID_PNLADDPICSSTTITLE,
-] = [wx.NewId() for _init_ctrls in range(4)]
-
 
 class PnlAddPics(wx.Panel):
 
-    def _init_coll_szMain_Items(self, parent):
-        # generated method, don't edit
-
-        parent.Add(self.szCentered, 0, border=0,
-              flag=wx.ALIGN_CENTER_VERTICAL)
-
-    def _init_coll_szCentered_Items(self, parent):
-        # generated method, don't edit
-
-        parent.Add(self.stTitle, 0, border=4,
-              flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.stInfo, 0, border=4,
-              flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.cmdBrowse, 0, border=4,
+    def _InitSizers(self):
+        szCentered = wx.BoxSizer(wx.VERTICAL)
+        szCentered.Add(self.stTitle, 0, border=4,
+              flag=wx.EXPAND | wx.ALL)
+        szCentered.AddSpacer(8)
+        szCentered.Add(self.stInfo, 0, border=4,
+              flag=wx.EXPAND | wx.ALL)
+        szCentered.AddSpacer(8)
+        szCentered.Add(self.cmdBrowse, 0, border=4,
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
-    def _init_sizers(self):
-        # generated method, don't edit
-        self.szCentered = wx.BoxSizer(orient=wx.VERTICAL)
+        szMain = wx.BoxSizer(wx.HORIZONTAL)
+        szMain.Add(szCentered, flag=wx.ALIGN_CENTER_VERTICAL)
 
-        self.szMain = wx.BoxSizer(orient=wx.HORIZONTAL)
-
-        self._init_coll_szCentered_Items(self.szCentered)
-        self._init_coll_szMain_Items(self.szMain)
-
-        self.SetSizer(self.szMain)
-
-    def _init_ctrls(self, prnt):
-        # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLADDPICS, name=u'PnlAddPics',
-              parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(400, 250))
-
-        self.stTitle = wx.StaticText(id=wxID_PNLADDPICSSTTITLE,
-              label=u'staticText1', name=u'stTitle', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
-
-        self.stInfo = wx.StaticText(id=wxID_PNLADDPICSSTINFO,
-              label=u'staticText1', name=u'stInfo', parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-              style=wx.ALIGN_CENTRE)
-
-        self.cmdBrowse = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_32'),
-              id=wxID_PNLADDPICSCMDBROWSE,
-              name=u'cmdBrowse', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-
-        self._init_sizers()
+        self.SetSizer(szMain)
 
     def __init__(self, parent, id=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
-                 style=0, name='panel'):
-        self._init_ctrls(parent)
+                 style=0, name='PnlAddPics'):
+        wx.Panel.__init__(self, id=id, name=name, parent=parent,
+                          pos=pos, size=size, style=style)
+        self.SetClientSize(wx.Size(400, 250))
+
+        self.stTitle = wx.StaticText(
+            self, wx.ID_ANY, name=u'stTitle', style=wx.ALIGN_CENTRE)
+
+        self.stInfo = wx.StaticText(
+            self, wx.ID_ANY, name=u'stInfo', style=wx.ALIGN_CENTRE)
+
+        self.cmdBrowse = wx.BitmapButton(
+            self, wx.ID_ANY, name=u'cmdBrowse',
+            bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_32'))
 
         font = self.stTitle.GetFont()
         font.SetWeight(wx.BOLD)
         self.stTitle.SetFont(font)
 
         self.stTitle.SetLabel(_(u"Welcome to PhotoFilmStrip"))
-        self.stInfo.SetLabel(_(u"Drag some pictures onto this text or\nclick the button below\nto add pictures to your new PhotoFilmStrip."))
+        self.stInfo.SetLabel(
+            _(u"Drag some pictures onto this text or\n"
+              u"click the button below\n"
+              u"to add pictures to your new PhotoFilmStrip."))
+
+        self._InitSizers()
 
     def GetButton(self):
         return self.cmdBrowse
