@@ -221,7 +221,7 @@ class _GStreamerRenderer(BaseRenderer):
         videoQueue2 = Gst.ElementFactory.make("queue")
         self.pipeline.add(videoQueue2)
 
-        videoEncCaps = self._GetVideoEncoderCaps()
+        videoEncCaps = self._GetVideoEncoderCaps()  # pylint: disable=assignment-from-none
         if videoEncCaps:
             videoEnc.link_filtered(videoQueue2, videoEncCaps)
         else:
