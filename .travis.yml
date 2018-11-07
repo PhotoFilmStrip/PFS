@@ -7,13 +7,15 @@ install:
   - pip install sphinx
   - pip install pillow
   - pip install pylint
+virtualenv:
+  system_site_packages: true
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
   - export VERSION=`make versioninfo -s`
   - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
+  - make test
   - make compile
-  - make package
 deploy:
   provider: releases
   api_key:
