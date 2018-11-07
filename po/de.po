@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
 "POT-Creation-Date: 2018-11-07 22:03+CET\n"
-"PO-Revision-Date: 2018-10-30 22:19+0000\n"
+"PO-Revision-Date: 2018-11-07 21:21+0000\n"
 "Last-Translator: jensgoe <mail@jensgoepfert.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: de\n"
@@ -330,10 +330,11 @@ msgstr "Fehler"
 #: photofilmstrip/gui/DlgConfigureAudio.py:55
 msgid "Configure your audio files that are used as a background music."
 msgstr ""
+"Konfigurieren Sie Audio Dateien, die als Hintergrundmusik verwendet werden."
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:90
 msgid "Set the duration of your slideshow to fit your audio files"
-msgstr ""
+msgstr "Länge der Slideshow den Audio Dateien angleichen"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:92
 #: photofilmstrip/gui/DlgDuration.py:70 photofilmstrip/gui/DlgNewProject.py:84
@@ -358,7 +359,7 @@ msgstr "&Ok"
 #: photofilmstrip/gui/PnlSlideshow.py:47 photofilmstrip/gui/PnlSlideshow.py:48
 #: photofilmstrip/gui/PnlTimelapse.py:33 photofilmstrip/gui/PnlTimelapse.py:34
 msgid "Configure music"
-msgstr ""
+msgstr "Hintergrundmusik konfigurieren"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:138
 msgid "Select music"
@@ -391,13 +392,12 @@ msgid "Fit to audio files"
 msgstr "An Audiodateien angleichen"
 
 #: photofilmstrip/gui/DlgDuration.py:80
-#, fuzzy
 msgid "Slideshow duration"
-msgstr "Slideshow erstellt!"
+msgstr "Länge der Slideshow"
 
 #: photofilmstrip/gui/DlgDuration.py:84
 msgid "Configure duration of slideshow"
-msgstr ""
+msgstr "Länge der Slideshow konfigurieren"
 
 #: photofilmstrip/gui/DlgNewProject.py:61
 msgid "Project name:"
@@ -412,9 +412,8 @@ msgid "Aspect ratio:"
 msgstr "Seitenverhältnis:"
 
 #: photofilmstrip/gui/DlgNewProject.py:110
-#, fuzzy
 msgid "Unnamed project"
-msgstr "Projekt kann nicht geladen werden"
+msgstr "Unbenanntes Projekt"
 
 #: photofilmstrip/gui/DlgNewProject.py:116
 msgid "My PhotoFilmStrips"
@@ -535,9 +534,8 @@ msgid "Adjust motion positions directly"
 msgstr "Bewegungspfad manuell anpassen"
 
 #: photofilmstrip/gui/DlgRender.py:96
-#, fuzzy
 msgid "Render project"
-msgstr "Letzte Projekte"
+msgstr "Video erstellen"
 
 #: photofilmstrip/gui/DlgRender.py:107
 msgid "Format:"
@@ -596,14 +594,12 @@ msgid "Rendering in progress..."
 msgstr "Wird erstellt..."
 
 #: photofilmstrip/gui/FrmMain.py:234 photofilmstrip/gui/PnlWelcome.py:57
-#, fuzzy
 msgid "Create new slideshow"
-msgstr "Transportable Slideshow"
+msgstr "Neue Slideshow erstellen"
 
 #: photofilmstrip/gui/FrmMain.py:241
-#, fuzzy
 msgid "Create new timelapse"
-msgstr "Ein neues Projekt erstellen"
+msgstr "Neuen Zeitraffer erstellen"
 
 #: photofilmstrip/gui/FrmMain.py:249
 msgid "Select %s-Project"
@@ -722,11 +718,12 @@ msgstr "Rollen"
 
 #: photofilmstrip/gui/PnlEditPicture.py:354
 msgid "fpp"
-msgstr ""
+msgstr "fpp"
 
 #: photofilmstrip/gui/PnlEditPicture.py:355
 msgid "frames per picture - the number of frames each picture will be shown"
 msgstr ""
+"frames per picture - Die Anzahl der Einzelbilder im Video für jedes Bild"
 
 #: photofilmstrip/gui/PnlEditorPage.py:26
 msgid "Could not save the file '%(file)s': %(errMsg)s"
@@ -862,11 +859,11 @@ msgstr "Dauer"
 
 #: photofilmstrip/gui/PnlTimelapse.py:69
 msgid "Frames"
-msgstr ""
+msgstr "Einzelbilder"
 
 #: photofilmstrip/gui/PnlTimelapse.py:92
 msgid "The picture counter is not increasing: %s"
-msgstr ""
+msgstr "Die Dateinummerierung ist nicht fortlaufend: %s"
 
 #: photofilmstrip/gui/PnlTimelapse.py:110
 msgid ""
