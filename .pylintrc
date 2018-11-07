@@ -10,7 +10,7 @@ module-rgx=[A-Za-z0-9]{2,40}$
 
 [TYPECHECK]
 additional-builtins=_
-ignored-modules=wx,wx.aui,wx.adv,wx.html
+ignored-modules=wx,wx.aui,wx.adv,wx.html,gi
 
 [MESSAGES CONTROL]
 disable=missing-docstring
