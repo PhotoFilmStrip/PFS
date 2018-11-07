@@ -4,7 +4,9 @@ python:
 before_install:
   - sudo apt-get install -y python3-gst-1.0
 install:
-  - pip install -r requirements.txt
+  - pip install sphinx
+  - pip install pillow
+  - pip install pylint
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`

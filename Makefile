@@ -8,7 +8,7 @@ pkgdir = photofilmstrip
 
 
 test:
-	pylint3 --rcfile=.pylintrc --disable=W,R,C $(pkgdir)
+	pylint --rcfile=.pylintrc --disable=W,R,C $(pkgdir)
 
 compile:
 	python3 setup.py build
