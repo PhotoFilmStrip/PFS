@@ -2,7 +2,9 @@ language: python
 python:
   - "3.6"
 before_install:
-  - sudo apt-get install -y python3-sphinx pylint3 python3-gst-1.0
+  - sudo apt-get install -y python3-gst-1.0
+install:
+  - pip install -r requirements.txt
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
