@@ -7,8 +7,6 @@ install:
   - pip install sphinx
   - pip install pillow
   - pip install pylint
-virtualenv:
-  system_site_packages: true
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
