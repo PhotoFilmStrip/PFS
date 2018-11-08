@@ -656,9 +656,12 @@ setup(
     url=Constants.APP_URL,
 
     packages=['photofilmstrip',
-                'photofilmstrip.action', 'photofilmstrip.cli',
-                'photofilmstrip.core', 'photofilmstrip.core.renderer',
-                'photofilmstrip.gui', 'photofilmstrip.gui.ctrls', 'photofilmstrip.gui.util',
-                'photofilmstrip.lib', 'photofilmstrip.lib.common', 'photofilmstrip.lib.jobimpl',
-                'photofilmstrip.res'],
+              'photofilmstrip.action', 'photofilmstrip.cli',
+              'photofilmstrip.core', 'photofilmstrip.core.renderer',
+              'photofilmstrip.gui', 'photofilmstrip.gui.ctrls',
+              'photofilmstrip.gui.util',
+              'photofilmstrip.lib', 'photofilmstrip.lib.common',
+              'photofilmstrip.lib.jobimpl',
+              'photofilmstrip.res',
+              'photofilmstrip.uwp'],
     )
