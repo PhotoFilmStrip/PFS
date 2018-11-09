@@ -6,12 +6,13 @@ displayname = PhotoFilmStrip
 srcdir = .
 pkgdir = photofilmstrip
 
+all: clean test compile
 
 test:
 	pylint --rcfile=.pylintrc --disable=W,R,C $(pkgdir)
 
 compile:
-	python3 setup.py build
+	python3 setup.py build sdist
 
 clean:
 	if [ -e ./dist ] ; then rm -r ./dist ; fi

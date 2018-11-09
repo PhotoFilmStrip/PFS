@@ -1,3 +1,2 @@
-sphinx
 pillow
 wxpython

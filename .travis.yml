@@ -10,10 +10,7 @@ install:
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
-  - export VERSION=`make versioninfo -s`
-  - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
-  - make test
-  - make compile
+  - make
 deploy:
   provider: releases
   api_key:
