@@ -13,27 +13,23 @@ import sys
 
 from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
-from photofilmstrip.lib.DestructionManager import Destroyable
-from photofilmstrip.core.ux import Ux
+from photofilmstrip.ux.Ux import UxAdapter, Ux, UxPreventStartupSignal
 
 
-class UwpService(Destroyable, IVisualJobManager):
+class UwpAdapter(UxAdapter, IVisualJobManager):
 
-    __instance = None
-
-    def __init__(self):
-        Destroyable.__init__(self)
-        pfsPath = os.path.dirname(sys.argv[0])
-        svcClientPath = os.path.join(pfsPath, "..", "Tools", "UwpBridge.exe")
-        logging.getLogger('UwpService').debug("trying UwpBridge.exe in '%s'", svcClientPath)
-
+    def __init__(self, svcClientPath):
+        self.svcClientPath = svcClientPath
         self.svcClient = None
-        if os.path.isfile(svcClientPath):
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            self.svcClient = subprocess.Popen([svcClientPath], stdin=subprocess.PIPE, startupinfo=startupinfo)
 
-            JobManager().AddVisual(self)
+    def OnInit(self):
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        self.svcClient = subprocess.Popen(
+            [self.svcClientPath], stdin=subprocess.PIPE,
+            startupinfo=startupinfo)
+
+        JobManager().AddVisual(self)
 
     def __SendLines(self, lines):
         if self.svcClient is None:
@@ -46,13 +42,7 @@ class UwpService(Destroyable, IVisualJobManager):
             self.svcClient.stdin.write("\r\n".encode("utf-8"))
         self.svcClient.stdin.flush()
 
-    @classmethod
-    def GetInstance(cls):
-        if cls.__instance is None:
-            cls.__instance = UwpService()
-        return cls.__instance
-
-    def Destroy(self):
+    def OnDestroy(self):
         lines = ["exit"]
         self.__SendLines(lines)
 
@@ -77,16 +67,24 @@ class UwpService(Destroyable, IVisualJobManager):
                            job.GetOutputFile(),
                            job.GetOutputFile())
 
+    def OnStart(self):
+        parser = optparse.OptionParser(usage=optparse.SUPPRESS_USAGE)
+        parser.error = lambda msg: None
+        parser.add_option("-u", "--uwp-open", help="opens a folder from uwp-bridge")
+        options = parser.parse_args()[0]
 
-def ProcessCommandArgs():
-    parser = optparse.OptionParser(usage=optparse.SUPPRESS_USAGE)
-    parser.error = lambda msg: None
-    parser.add_option("-u", "--uwp-open", help="opens a folder from uwp-bridge")
-    options = parser.parse_args()[0]
+        if options.uwp_open:
+            from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
+            ActionOpenFolder(options.uwp_open).Execute()
 
-    if options.uwp_open:
-        from photofilmstrip.action.ActionOpenFolder import ActionOpenFolder
-        ActionOpenFolder(options.uwp_open).Execute()
-        return True
+            raise UxPreventStartupSignal()
 
-    return False
+
+def ux_init():
+    pfsPath = os.path.dirname(sys.argv[0])
+    svcClientPath = os.path.join(pfsPath, "..", "Tools", "UwpBridge.exe")
+    logging.getLogger('UwpAdapter').debug(
+        "trying UwpBridge.exe in '%s'", svcClientPath)
+
+    if os.path.isfile(svcClientPath):
+        return UwpAdapter(svcClientPath)

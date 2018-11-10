@@ -663,5 +663,5 @@ setup(
               'photofilmstrip.lib', 'photofilmstrip.lib.common',
               'photofilmstrip.lib.jobimpl',
               'photofilmstrip.res',
-              'photofilmstrip.uwp'],
+              'photofilmstrip.ux'],
     )

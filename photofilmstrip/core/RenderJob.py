@@ -8,7 +8,7 @@
 import logging
 import threading
 
-from photofilmstrip.core.ux import Ux
+from photofilmstrip.ux.Ux import Ux
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 from photofilmstrip.lib.jobimpl.Worker import JobAbortedException
 from photofilmstrip.lib.jobimpl.WorkLoad import WorkLoad

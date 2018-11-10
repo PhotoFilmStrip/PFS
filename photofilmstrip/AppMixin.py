@@ -14,7 +14,7 @@ from photofilmstrip.lib.DestructionManager import DestructionManager
 class AppMixin:
 
     def __init__(self):
-        pass
+        self.InitLogging()
 
     def InitLogging(self):
         if "-d" in sys.argv:
@@ -38,7 +38,6 @@ class AppMixin:
         Gst.init(None)
 
     def Start(self):
-        self.InitLogging()
         self.InitI18N()
         self.InitGStreamer()
 

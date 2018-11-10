@@ -11,6 +11,7 @@ import tempfile
 import sys
 
 from photofilmstrip.AppMixin import AppMixin
+from photofilmstrip.ux.Ux import UxService, UxPreventStartupSignal
 from photofilmstrip import Constants
 
 
@@ -20,8 +21,8 @@ class GuiApp(AppMixin):
         import wx
         assert wx.VERSION[0] == 4
 
-        from photofilmstrip.uwp.UwpService import UwpService
-        UwpService.GetInstance()
+        from photofilmstrip.ux.Ux import UxService
+        UxService.GetInstance().Initialize()
 
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp
         app = PhotoFilmStripApp(0)
@@ -36,11 +37,12 @@ class GuiApp(AppMixin):
 
 
 def main():
-    from photofilmstrip.uwp.UwpService import ProcessCommandArgs
-    if ProcessCommandArgs():
+    guiApp = GuiApp()
+    try:
+        UxService.GetInstance().Start()
+    except UxPreventStartupSignal:
         return
 
-    guiApp = GuiApp()
     guiApp.Start()
 
 
