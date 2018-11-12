@@ -584,7 +584,7 @@ setup(
                                            "libpng16-16.dll",
                                            "libwinpthread-1.dll",
                                            "libzzz.dll]"],
-                          "packages": ["gi"],
+                          "packages": ["gi", "photofilmstrip.ux"],
                           "includes": ["gi",
                                        "PIL.Image",
                                        "PIL.BmpImagePlugin",
