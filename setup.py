@@ -376,6 +376,10 @@ class pfs_exe(Command):
             self.copy_file(os.path.join(dllDirGnome, dll),
                            os.path.join(targetDir, os.path.basename(dll)))
 
+        targetDir = os.path.join(self.target_dir, "etc", "fonts")
+        self.copy_tree(os.path.join(dllDirGnome, "etc", "fonts"),
+                       targetDir)
+
         targetDir = os.path.join(self.target_dir, "lib", "gstreamer-1.0")
         self.copy_tree(os.path.join(dllDirGnome, "lib", "gstreamer-1.0"),
                        targetDir)
