@@ -187,8 +187,8 @@ msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr "Απαιτείται MKV-Muxer (gstreamer1.0-plugins-good)!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:539
-msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
-msgstr "Απαιτείται FLV-Muxer (gstreamer1.0-plugins-good)!"
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "Απαιτείται MP4-Muxer (gstreamer1.0-plugins-good)!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:647
 msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"

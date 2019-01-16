@@ -534,9 +534,9 @@ class Mp4X264AAC(_GStreamerRenderer):
             if vEnc is None:
                 msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
 
-            mux = Gst.ElementFactory.find("flvmux")
+            mux = Gst.ElementFactory.find("mp4mux")
             if mux is None:
-                msgList.append(_(u"FLV-Muxer (gstreamer1.0-plugins-good) required!"))
+                msgList.append(_(u"MP4-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
     def GetDefaultProperty(prop):
@@ -556,7 +556,7 @@ class Mp4X264AAC(_GStreamerRenderer):
         return "mp4"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("flvmux")
+        mux = Gst.ElementFactory.make("mp4mux")
         return mux
 
     def _GetAudioEncoder(self):

@@ -187,7 +187,7 @@ msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr ""
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:539
-msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr ""
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:647
