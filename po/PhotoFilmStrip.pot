@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2018-11-07 22:03+CET\n"
+"POT-Creation-Date: 2019-02-19 17:47+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,6 +36,7 @@ msgstr ""
 
 #: ./photofilmstrip/action/ActionPlayVideo.py:20
 #: ./photofilmstrip/gui/PnlRenderJobVisual.py:22
+#: ./photofilmstrip/ux/gnome.py:42
 msgid "Play video"
 msgstr ""
 
@@ -929,7 +930,7 @@ msgstr ""
 msgid "Aborting..."
 msgstr ""
 
-#: ./photofilmstrip/uwp/UwpService.py:76
+#: ./photofilmstrip/ux/gnome.py:50 ./photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
 msgstr ""
 
