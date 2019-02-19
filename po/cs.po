@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2018-11-07 22:03+CET\n"
-"PO-Revision-Date: 2019-02-02 17:58+0100\n"
+"POT-Creation-Date: 2019-02-19 17:47+CET\n"
+"PO-Revision-Date: 2019-02-19 17:48+0100\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs_CZ\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Poedit 2.1.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:23
@@ -37,7 +37,7 @@ msgid "Open folder"
 msgstr "Otevřít složku"
 
 #: photofilmstrip/action/ActionPlayVideo.py:20
-#: photofilmstrip/gui/PnlRenderJobVisual.py:22
+#: photofilmstrip/gui/PnlRenderJobVisual.py:22 photofilmstrip/ux/gnome.py:42
 msgid "Play video"
 msgstr "Přehrát obrazový záznam"
 
@@ -76,8 +76,7 @@ msgstr "Cesta, kam ukládat výstupní soubory. Použít pro standardní výstup
 #: photofilmstrip/cli/Main.py:106 photofilmstrip/cli/Main.py:129
 msgid "Option videonorm is deprecated, use an appropriate profile!"
 msgstr ""
-"Volba videonorm se už nepoužívá (zastaralá). Použijte "
-"odpovídající profil!"
+"Volba videonorm se už nepoužívá (zastaralá). Použijte odpovídající profil!"
 
 #: photofilmstrip/cli/Main.py:108
 msgid "enable draft mode"
@@ -88,8 +87,8 @@ msgid ""
 "Activate this option to generate a preview of your PhotoFilmStrip. The "
 "rendering process will speed up dramatically, but results in lower quality."
 msgstr ""
-"Zapněte tuto volbu pro vytvoření náhledu vašeho filmového pásu. "
-"postup zpracování se podstatně zrychlí, ale vede k nižší jakosti."
+"Zapněte tuto volbu pro vytvoření náhledu vašeho filmového pásu. postup "
+"zpracování se podstatně zrychlí, ale vede k nižší jakosti."
 
 #: photofilmstrip/cli/Main.py:120
 msgid "project file does not exist: %s"
@@ -187,8 +186,8 @@ msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr "Požadován MKV-Muxer (gstreamer1.0-plugins-good)!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:539
-msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
-msgstr "Požadován FLV-Muxer (gstreamer1.0-plugins-good)!"
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "Požadován MP4-Muxer (gstreamer1.0-plugins-good)!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:647
 msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
@@ -378,8 +377,8 @@ msgid ""
 "Overrides the duration of single pictures and gives the project this total "
 "length."
 msgstr ""
-"Potlačí dobu trvání jednotlivých obrázků a nastaví obrazovému záznamu tuto"
-" celkovou délku."
+"Potlačí dobu trvání jednotlivých obrázků a nastaví obrazovému záznamu tuto "
+"celkovou délku."
 
 #: photofilmstrip/gui/DlgDuration.py:54
 msgid "User defined:"
@@ -493,8 +492,8 @@ msgid ""
 "Your project uses more than one audio file. Currently the durations can be "
 "adjusted only for one audio file."
 msgstr ""
-"Váš projekt používá více než jeden zvukový soubor. V současnosti mohou být"
-" doby trvání přizpůsobeny jen pro jeden zvukový soubor."
+"Váš projekt používá více než jeden zvukový soubor. V současnosti mohou být "
+"doby trvání přizpůsobeny jen pro jeden zvukový soubor."
 
 #: photofilmstrip/gui/DlgPositionInput.py:140
 msgid "Motion positions"
@@ -613,9 +612,8 @@ msgid ""
 "are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr ""
 "PhotoFilmStrip vytváří filmy z vašich fotek v pouhých 3 krocích. Nejprve "
-"vyberte vaše fotky, upravte cesty pohybu a zpracujte obrazový záznam. Lze"
-" použít "
-"mnoho výstupních možností pro VCD, SVCD, DVD, až po FULL-HD."
+"vyberte vaše fotky, upravte cesty pohybu a zpracujte obrazový záznam. Lze "
+"použít mnoho výstupních možností pro VCD, SVCD, DVD, až po FULL-HD."
 
 #: photofilmstrip/gui/FrmMain.py:303
 msgid "online"
@@ -716,8 +714,8 @@ msgstr "SNO"
 #: photofilmstrip/gui/PnlEditPicture.py:355
 msgid "frames per picture - the number of frames each picture will be shown"
 msgstr ""
-"snímků na obrázek - počet jednotlivých snímků, kterými bude každý obrázek"
-" ukazován"
+"snímků na obrázek - počet jednotlivých snímků, kterými bude každý obrázek "
+"ukazován"
 
 #: photofilmstrip/gui/PnlEditorPage.py:26
 msgid "Could not save the file '%(file)s': %(errMsg)s"
@@ -864,8 +862,8 @@ msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a time "
 "lapse slide show!"
 msgstr ""
-"Název souboru '%s' neodpovídá číselnému vzoru, který je nezbytný pro"
-" promítaní časových úseků!"
+"Název souboru '%s' neodpovídá číselnému vzoru, který je nezbytný pro "
+"promítaní časových úseků!"
 
 #: photofilmstrip/gui/PnlWelcome.py:37 photofilmstrip/gui/PnlWelcome.py:103
 msgid "Recent projects"
@@ -954,9 +952,12 @@ msgstr "Hotovo"
 msgid "Aborting..."
 msgstr "Přerušuje se..."
 
-#: photofilmstrip/uwp/UwpService.py:76
+#: photofilmstrip/ux/gnome.py:50 photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
 msgstr "Promítání vytvořeno!"
+
+#~ msgid "FLV-Muxer (gstreamer1.0-plugins-good) required!"
+#~ msgstr "Požadován FLV-Muxer (gstreamer1.0-plugins-good)!"
 
 #, fuzzy
 #~ msgid "Audio files:"
