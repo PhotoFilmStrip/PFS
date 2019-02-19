@@ -398,7 +398,7 @@ msgstr "Nastavit dobu trvání promítání"
 
 #: photofilmstrip/gui/DlgNewProject.py:61
 msgid "Project name:"
-msgstr "Název projektu"
+msgstr "Název projektu:"
 
 #: photofilmstrip/gui/DlgNewProject.py:66
 msgid "Folder:"
@@ -439,7 +439,7 @@ msgstr "Nelze vytvořit složku: %s"
 
 #: photofilmstrip/gui/DlgNewProject.py:166
 msgid "Cannot write into folder!"
-msgstr "Nelze zapisovat do složky: %s"
+msgstr "Nelze zapisovat do složky!"
 
 #: photofilmstrip/gui/DlgNewProject.py:180
 msgid "The project name must be filled."
@@ -776,7 +776,7 @@ msgstr "Posunout obrázek do&leva"
 
 #: photofilmstrip/gui/PnlPfsProject.py:303
 msgid "Move picture &right"
-msgstr "Posunout obrázek do&prava "
+msgstr "Posunout obrázek do&prava"
 
 #: photofilmstrip/gui/PnlPfsProject.py:308
 msgid "R&emove Picture"
