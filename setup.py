@@ -8,7 +8,7 @@
 import glob
 import sys, os
 import sqlite3
-
+import unittest
 import zipfile
 
 from distutils import log
@@ -96,7 +96,7 @@ class pfs_scm_info(Command):
             # building deb with fakeroot has no SCM_REV var anymore
             try:
                 import photofilmstrip._scmInfo
-                scmRev = photofilmstrip._scmInfo.SCM_REV
+                scmRev = photofilmstrip._scmInfo.SCM_REV  # pylint: disable=no-member, protected-access
             except ImportError:
                 scmRev = "src"
 
@@ -292,9 +292,11 @@ class pfs_build(build):
                         ("REMOVE_16", "remove_16.png"),
                         ("REMOVE_D_16", "remove_d_16.png"),
                         ("VIDEO_FORMAT_16", "video_format_16.png"),
+                        ("VIDEO_FORMAT_24", "video_format_24.png"),
                         ("VIDEO_FORMAT_32", "video_format_32.png"),
 
                         ("ALERT_16", "alert_16.png"),
+                        ("ALERT_24", "alert_24.png"),
                         ("PROPERTIES_16", "properties_16.png"),
                         ("EXIT_16", "exit_16.png"),
                         ("HELP_16", "help_16.png"),
@@ -331,6 +333,26 @@ class pfs_build(build):
                 self.distribution.data_files.append(
                     (targetPath, (moFile,))
                 )
+
+
+class pfs_test(Command):
+
+    description = "runs unit tests"
+
+    user_options = []
+    sub_commands = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        loader = unittest.TestLoader()
+        suite = loader.discover("tests")
+        runner = unittest.TextTestRunner()
+        runner.run(suite)
 
 
 class pfs_exe(Command):
@@ -389,7 +411,16 @@ class pfs_exe(Command):
         for giTypeLib in ["GLib-2.0.typelib",
                           "GModule-2.0.typelib",
                           "GObject-2.0.typelib",
-                          "Gst-1.0.typelib"]:
+                          "Gst-1.0.typelib",
+                          "GES-1.0.typelib",
+                          "Gio-2.0.typelib",
+                          "GstAudio-1.0.typelib",
+                          "GstBase-1.0.typelib",
+                          "GstController-1.0.typelib",
+                          "GstPbutils-1.0.typelib",
+                          "GstTag-1.0.typelib",
+                          "GstVideo-1.0.typelib",
+                         ]:
             self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
                            os.path.join(targetDir, giTypeLib))
 
@@ -570,6 +601,7 @@ setup(
                 "bdist_winport" : pfs_win_portable,
                 "scm_info"      : pfs_scm_info,
                 'build_sphinx'  : pfs_docs,
+                'test'          : pfs_test,
               },
     verbose=False,
     options={"py2exe": {"compressed": 2,

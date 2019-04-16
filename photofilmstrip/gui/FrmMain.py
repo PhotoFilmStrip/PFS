@@ -17,6 +17,8 @@ from photofilmstrip import Constants
 from photofilmstrip.action.ActionI18N import ActionI18N
 
 from photofilmstrip.core.RenderJob import RenderJob
+from photofilmstrip.core.Story import Story
+from photofilmstrip.core.StoryFile import StoryFile
 
 from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.lib.Settings import Settings
@@ -32,6 +34,7 @@ from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgNewProject import DlgNewProject
 from photofilmstrip.gui.WxProjectFile import WxProjectFile
 from photofilmstrip.gui.PnlRenderJobVisual import PnlRenderJobVisual
+from photofilmstrip.gui.PnlStory import PnlStory
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 
 from photofilmstrip.res.license import licenseText
@@ -93,6 +96,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
         self.Bind(wx.EVT_MENU, self.OnSlideshow, id=ActionManager.ID_SLIDESHOW)
         self.Bind(wx.EVT_MENU, self.OnTimelapse, id=ActionManager.ID_TIMELAPSE)
+        self.Bind(wx.EVT_MENU, self.OnStory, id=ActionManager.ID_STORY)
         self.Bind(wx.EVT_MENU, self.OnProjectLoad, id=wx.ID_OPEN)
         self.Bind(wx.EVT_MENU, self.OnProjectSave, id=wx.ID_SAVE)
         self.Bind(wx.EVT_MENU, self.OnProjectSaveAs, id=wx.ID_SAVEAS)
@@ -245,10 +249,14 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             self._NewTimelapse(photoFilmStrip)
         dlg.Destroy()
 
+    def OnStory(self, event):
+        story = Story(_(u"New Story.pfstory"))
+        self._NewStory(story)
+
     def OnProjectLoad(self, event):
         dlg = wx.FileDialog(self, _(u"Select %s-Project") % Constants.APP_NAME,
                             Settings().GetProjectPath(), "",
-                            Constants.APP_NAME + u'-' + _(u"Files") + " (*.pfs;*.pfsprod)|*.pfs;*.pfsprod",
+                            Constants.APP_NAME + u'-' + _(u"Files") + " (*.pfs;*.pfstory)|*.pfs;*.pfstory",
                             wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath())
@@ -323,6 +331,9 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         return None
 
     def AddFileToHistory(self, filename):
+        if os.path.splitext(filename)[1].lower() != ".pfs":
+            return
+
         fileList = Settings().GetFileHistory()
         if filename in fileList:
             fileList.remove(filename)
@@ -360,6 +371,13 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         self.notebook.AddPage(pnl, os.path.basename(filepath), True)
         return pnl
 
+    def _NewStory(self, story):
+        pnl = PnlStory(self.notebook, story)
+        story.AddObserver(self)
+        filepath = os.path.basename(story.GetFilename())
+        self.notebook.AddPage(pnl, os.path.basename(filepath), True)
+        return pnl
+
     def LoadProject(self, filepath, skipHistory=False):
         for idx in range(1, self.notebook.GetPageCount()):
             page = self.notebook.GetPage(idx)
@@ -367,7 +385,10 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                 self.notebook.SetSelection(idx)
                 return
 
-        prjFile = WxProjectFile(self, filename=filepath)
+        if os.path.splitext(filepath)[1].lower() == ".pfstory":
+            prjFile = StoryFile(filename=filepath)
+        else:
+            prjFile = WxProjectFile(self, filename=filepath)
         result = prjFile.Load()
         if not result:
             dlg = wx.MessageDialog(self,
@@ -377,6 +398,12 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
+            return
+
+        if isinstance(prjFile, StoryFile):
+            pnl = self._NewStory(prjFile.GetStory())
+            pnl.Init()
+            pnl.SetChanged(False)
             return
 
         project = prjFile.GetProject()

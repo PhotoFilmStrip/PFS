@@ -9,6 +9,10 @@ import logging
 import os
 import subprocess
 
+FILE_EXTENSIONS_AUDIO = (".mp3", ".wav", ".flac", ".ogg", ".oga")
+FILE_EXTENSIONS_VIDEO = (".avi", ".flv", ".mp4", ".mkv", ".ogg", ".ogv",
+                         ".mts", ".mov", ".mpg", ".m4v")
+
 
 def IsPathWritable(path):
     _path = path

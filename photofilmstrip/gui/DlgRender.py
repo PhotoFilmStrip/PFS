@@ -9,9 +9,9 @@
 import wx
 import wx.adv
 
+from photofilmstrip.core.BaseRenderer import MetaBaseRenderer
 from photofilmstrip.core.OutputProfile import (
         GetOutputProfiles, GetMPEGProfiles)
-from photofilmstrip.core.Renderer import RENDERERS
 
 from photofilmstrip.lib.Settings import Settings
 
@@ -32,7 +32,6 @@ class DlgRender(wx.Dialog):
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
 
-    DEFAULT_FORMAT = u"x264/AC3 (MKV)"
     DEFAULT_PROFILE = u"HD 720p@25.00 fps"
 
     def _init_coll_sizerMain_Items(self, parent):
@@ -157,7 +156,7 @@ class DlgRender(wx.Dialog):
 
         self._init_sizers()
 
-    def __init__(self, parent, aspectRatio):
+    def __init__(self, parent, rendererProvider, aspectRatio):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
@@ -168,14 +167,16 @@ class DlgRender(wx.Dialog):
 
         self.aspectRatio = aspectRatio
         self.__InitProfiles()
+        self.choiceFormat.SetRendererProvider(rendererProvider)
 
-        settings = Settings()
-        if settings.GetUsedRenderer() is None:
-            self.choiceFormat.SetStringSelection(self.DEFAULT_FORMAT)
-        else:
-            self.choiceFormat.SetSelection(settings.GetUsedRenderer())
+        defaultFormat = rendererProvider.GetDefault()
+        if isinstance(defaultFormat, str):
+            self.choiceFormat.SetStringSelection(defaultFormat)
+        elif isinstance(defaultFormat, int):
+            self.choiceFormat.SetSelection(defaultFormat)
         self.OnChoiceFormat(None)
 
+        settings = Settings()
         self.__SelectProfileByName(settings.GetLastProfile())
 
         self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
@@ -185,7 +186,7 @@ class DlgRender(wx.Dialog):
 
         self.profile = None
         self.draftMode = False
-        self.rendererClass = None
+        self.formatData = None
 
     def __GetChoiceDataSelected(self, choice):
         return choice.GetClientData(choice.GetSelection())
@@ -246,16 +247,20 @@ class DlgRender(wx.Dialog):
         if isinstance(formatData, FormatData):
             self.cmdStart.Enable(formatData.IsOk())
             if formatData.IsMPEG():
-                self.__InitProfiles(formatData.GetRendererClass().GetName().split(" ")[0],
+                self.__InitProfiles(formatData.GetName().split(" ")[0],
                                     GetMPEGProfiles())
             else:
                 self.__InitProfiles()
 
+            if isinstance(formatData.GetData(), MetaBaseRenderer):
+                self.cmdRendererProps.Enable(True)
+            else:
+                self.cmdRendererProps.Enable(False)
+
         self.__SelectProfileByName(Settings().GetLastProfile())
 
     def OnCmdStartButton(self, event):
-        formatData = self.__GetChoiceDataSelected(self.choiceFormat)
-        self.rendererClass = formatData.GetRendererClass()
+        self.formatData = self.__GetChoiceDataSelected(self.choiceFormat)
 
         profile = self.__GetChoiceDataSelected(self.choiceProfile)
         if profile is None:
@@ -273,7 +278,7 @@ class DlgRender(wx.Dialog):
         data = self.__GetChoiceDataSelected(self.choiceFormat)
         if data is None:
             return
-        rendererClass = data.GetRendererClass()
+        rendererClass = data.GetData()
 
         dlg = DlgRendererProps(self, rendererClass)
         dlg.ShowModal()
@@ -289,8 +294,8 @@ class DlgRender(wx.Dialog):
     def GetDraftMode(self):
         return self.draftMode
 
-    def GetRendererClass(self):
-        return self.rendererClass
+    def GetFormatData(self):
+        return self.formatData
 
 
 class FormatComboBox(wx.adv.OwnerDrawnComboBox):
@@ -298,14 +303,9 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
     def __init__(self, *args, **kwargs):
         wx.adv.OwnerDrawnComboBox.__init__(self, *args, **kwargs)
 
-        for rend in RENDERERS:
-            self.AddRenderer(rend)
-
-    def AddRenderer(self, rend, altName=None):
-        msgList = []
-        rend.CheckDependencies(msgList)
-        self.Append(altName or rend.GetName(),
-                    FormatData(rend, msgList))
+    def SetRendererProvider(self, provider):
+        for rendInfo in provider.GetItems():
+            self.Append(rendInfo.GetName(), rendInfo)
 
     def SetSelection(self, index):
         if index >= self.GetCount():
@@ -348,8 +348,9 @@ class FormatData:
 
     MPEG_PROFILES = ("VCD", "SVCD", "DVD")
 
-    def __init__(self, rendClass, msgList):
-        self._rendererClass = rendClass
+    def __init__(self, name, msgList, data):
+        self._name = name
+        self._data = data
         self._msgList = msgList
 
     def IsOk(self):
@@ -357,12 +358,15 @@ class FormatData:
 
     def IsMPEG(self):
         for mpegProf in FormatData.MPEG_PROFILES:
-            if self._rendererClass.GetName().startswith(mpegProf):
+            if self._name.startswith(mpegProf):
                 return True
         return False
 
-    def GetRendererClass(self):
-        return self._rendererClass
+    def GetName(self):
+        return self._name
+
+    def GetData(self):
+        return self._data
 
     def GetMessages(self):
         return self._msgList
