@@ -63,7 +63,7 @@ class Worker(threading.Thread, IWorker):
         try:
             self.__logger.debug("<%s> processing work load %s", self.getName(), workLoad)
             ro.result = workLoad._Execute(jobContext)  # IGNORE:W0212
-            self.__logger.debug("<%s> execution done, result = %s", self.getName(), ro.result)
+            self.__logger.debug("<%s> execution done, result = %.100s", self.getName(), ro.result)
         except Exception as inst:  # IGNORE:R0703
             self.__logger.error("<%s> job exception: %s", self.getName(), inst, exc_info=1)
             ro.exception = inst
