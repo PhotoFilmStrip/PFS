@@ -57,8 +57,8 @@ class CliGui(IVisualJobHandler):
 
     def Info(self, project, rendererClass, profile):
         print()
-        print(Constants.APP_NAME, Constants.APP_VERSION_EX)
-        print(u"(C) 2010 Jens G\xf6pfert")
+        print(Constants.APP_NAME, Constants.APP_VERSION_FULL)
+        print("(C) 2019 Jens Göpfert")
         print(Constants.APP_URL)
         print()
         print("%-20s: %s" % (_("processing project"), project))
@@ -90,7 +90,7 @@ class DummyGui(IVisualJobHandler):
 
 def main(showHelp=False):
     parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(),
-                          version="%%prog %s" % Constants.APP_VERSION_EX)
+                          version="%%prog %s" % Constants.APP_VERSION_SUFFIX)
 
     profiles = GetOutputProfiles() + GetMPEGProfiles()
     profStr = ", ".join(["%d=%s" % (

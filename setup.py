@@ -413,7 +413,7 @@ class pfs_win_setup(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        ver = Constants.APP_VERSION
+        ver = Constants.APP_VERSION_SUFFIX
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
 
         is64Bit = sys.maxsize > 2 ** 32
@@ -448,7 +448,7 @@ class pfs_win_portable(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        ver = Constants.APP_VERSION
+        ver = Constants.APP_VERSION_SUFFIX
 
         is64Bit = sys.maxsize > 2 ** 32
         if is64Bit:
@@ -471,10 +471,10 @@ class Target:
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
+        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, "src")
         self.version = "%s.%s" % (Constants.APP_VERSION, 0)
         self.company_name = ""
-        self.copyright = "(c) 2017"
+        self.copyright = "(c) 2019"
         self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
@@ -483,7 +483,7 @@ class Target:
         self.icon_resources = [(1, logo)]
 
     def Update(self, scmRev):
-        self.product_version = "%s-%s" % (Constants.APP_VERSION, scmRev)
+        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, scmRev)
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
@@ -637,7 +637,7 @@ setup(
                           },
                "sdist": {"formats": ["gztar"]},
                'build_sphinx': {"project": Constants.APP_NAME,
-                                "release": Constants.APP_VERSION,
+                                "release": Constants.APP_VERSION_SUFFIX,
                                 "config_dir": 'docs/help',
                                 "builder": ["html"]}
     },
@@ -651,7 +651,7 @@ setup(
     ] + platform_scripts,
 
     name=Constants.APP_NAME.lower(),
-    version=Constants.APP_VERSION,
+    version=Constants.APP_VERSION_SUFFIX,
     license="GPLv2",
     description=Constants.APP_SLOGAN,
     long_description=Constants.APP_DESCRIPTION,
