@@ -420,6 +420,12 @@ class pfs_exe(Command):
                           "GstPbutils-1.0.typelib",
                           "GstTag-1.0.typelib",
                           "GstVideo-1.0.typelib",
+                          "Atk-1.0.typelib",
+                          "cairo-1.0.typelib",
+                          "Gdk-3.0.typelib",
+                          "GdkPixbuf-2.0.typelib",
+                          "Gtk-3.0.typelib",
+                          "Pango-1.0.typelib",
                          ]:
             self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
                            os.path.join(targetDir, giTypeLib))
