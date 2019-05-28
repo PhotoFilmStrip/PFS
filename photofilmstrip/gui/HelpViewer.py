@@ -6,9 +6,8 @@
 #
 
 import os
-import sys
 
-from photofilmstrip.lib.util import StartFile
+from photofilmstrip.lib.util import StartFile, GetDocDir
 
 
 class HelpViewer:
@@ -18,15 +17,8 @@ class HelpViewer:
     ID_RENDER = "renderpfs.html"
 
     def __init__(self):
-        basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
-        docDir = None
-        for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", "html"),  # linux
-                       os.path.join("share", "doc", "photofilmstrip", "html"),  # win
-                       os.path.join("..", "build", "sphinx", "html")):  # source
-            docDir = os.path.join(basedir, docDir)
-            if os.path.isdir(docDir):
-                break
-        else:
+        docDir = GetDocDir("html")
+        if docDir is None:
             raise RuntimeError("helpdir not found!")
         self.docDir = os.path.abspath(docDir)
 
