@@ -675,7 +675,7 @@ setup(
     },
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
-#                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
+                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
     ] + platform_data,
     scripts=[
              "scripts/photofilmstrip",
