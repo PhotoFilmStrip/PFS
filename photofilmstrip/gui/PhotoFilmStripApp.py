@@ -26,7 +26,9 @@ class PhotoFilmStripApp(wx.App):
             wxLang = wx.Locale.GetSystemLanguage()
         else:
             wxLang = wxLangInfo.Language
-        self.locale = wx.Locale(wxLang)
+            if not wx.Locale.IsAvailable(wxLang):
+                wxLang = wx.Locale.GetSystemLanguage()
+        self.locale = wx.Locale(wxLang)  # pylint: disable=attribute-defined-outside-init
 
         ArtProvider.Init()
 
