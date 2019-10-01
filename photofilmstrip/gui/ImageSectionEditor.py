@@ -1,22 +1,8 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2008 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import re
@@ -28,25 +14,31 @@ import wx
 import photofilmstrip.res.cursors as cursors
 
 from photofilmstrip.lib.common.ObserverPattern import Observable, Observer
-from photofilmstrip.lib.util import Encode
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core import PILBackend
 
 from photofilmstrip.gui.util.ImageCache import ImageCache
 
-
 EVT_RECT_CHANGED_TYPE = wx.NewEventType()
 EVT_RECT_CHANGED = wx.PyEventBinder(EVT_RECT_CHANGED_TYPE, 1)
 
 
 class RectChangedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId, rect):
         wx.PyCommandEvent.__init__(self, EVT_RECT_CHANGED_TYPE, wxId)
         self._rect = rect
+        self._checkImageDimensionLock = False
 
     def GetRect(self):
         return self._rect
+
+    def SetCheckImageDimensionLock(self, value):
+        self._checkImageDimensionLock = value
+
+    def CheckImageDimensionLock(self):
+        return self._checkImageDimensionLock
 
 
 class ImageSectionEditor(wx.Panel, Observer):
@@ -62,15 +54,14 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     INFO_TIME_OUT = 2.0
 
-
     def __init__(self, parent, id=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=0, name='panel'):
         wx.Panel.__init__(self, parent, id, pos, size, style, name)
         Observer.__init__(self)
 
-        self.SetMinSize(wx.Size(200, 150))
-        self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+        self.SetSizeHints(200, 150)
+        self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
         self.RATIO = 16.0 / 9.0
@@ -116,8 +107,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         cw, ch = self.GetClientSize().Get()
         iw, ih = self._imgProxy.GetSize()
-        rx = float(cw) / float(iw)
-        ry = float(ch) / float(ih)
+        rx = cw / iw
+        ry = ch / ih
 
         newWidth = cw
         newHeight = ih * rx
@@ -159,10 +150,10 @@ class ImageSectionEditor(wx.Panel, Observer):
         sectRect = self.__SectRectToClientRect()
 
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        iRect = wx.RectPS(sectRect.GetPosition(), sectRect.GetSize())
+        iRect = wx.Rect(sectRect.GetPosition(), sectRect.GetSize())
         dc.SetPen(wx.WHITE_PEN)
         iRect.Inflate(1, 1)
-        dc.DrawRectangleRect(iRect)
+        dc.DrawRectangle(iRect)
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
@@ -182,18 +173,19 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         now = time.time()
         alpha = 255
-        if now - self._lastRectUpdate > self.INFO_TIME_OUT / 2:
-            alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT / 2)) / (self.INFO_TIME_OUT / 2)) * 255
+        if now - self._lastRectUpdate > self.INFO_TIME_OUT // 2:
+            alpha = (1 - ((now - self._lastRectUpdate) - (self.INFO_TIME_OUT // 2)) / (self.INFO_TIME_OUT // 2)) * 255
+            alpha = int(round(alpha))
         if alpha < 0:
             alpha = 0
         dc.SetTextForeground(wx.Colour(255, 255, 255, alpha))
-        font = wx.SystemSettings_GetFont(wx.SYS_SYSTEM_FIXED_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT)
         font.SetPointSize(16)
         font.SetWeight(wx.BOLD)
         dc.SetFont(font)
         dc.SetPen(wx.WHITE_PEN)
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        dc.DrawRectangleRect(sectRect)
+        dc.DrawRectangle(sectRect)
         dc.DrawLabel("%d, %d - %d x %d" % tuple(self._sectRect),
                      sectRect,
                      wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL)
@@ -204,12 +196,23 @@ class ImageSectionEditor(wx.Panel, Observer):
         pdc = wx.BufferedPaintDC(self)
         try:
             dc = wx.GCDC(pdc)
-        except StandardError:
+        except Exception:
             dc = pdc
 
-        dc.SetBrush(wx.GREY_BRUSH)
+        isModalDialogShown = False
+        for win in wx.GetTopLevelWindows():
+            if isinstance(win, wx.Dialog) and win.IsModal():
+                isModalDialogShown = True
+                break
+
+        dc.SetBrush(wx.BLACK_BRUSH)
         dc.DrawRectangle(0, 0, sz[0], sz[1])
-        if not self.IsEnabled():
+        if not self.IsEnabled() and not isModalDialogShown:
+            # a modal dialog set this window to disabled (not enabled), but
+            # this windows is set to disabled if no selection can
+            # be made (multiple selected images)
+            # this rectangle should only be drawn if this windows is set to
+            # disabled programmatically and not when a modal dialog is shown
             dc.SetBrush(wx.Brush(wx.Colour(90, 90, 90, 255),
                                  wx.HORIZONTAL_HATCH))
             dc.DrawRectangle(0, 0, sz[0], sz[1])
@@ -272,7 +275,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         elif abs(cpy - bry) < self.BORDER_TOLERANCE and (tlx < cpx < brx):
             return self.POSITION_BOTTOM
 
-        elif self._sectRect.ContainsXY(cpx, cpy):
+        elif self._sectRect.Contains(cpx, cpy):
             return self.POSITION_INSIDE
         else:
             return None
@@ -290,16 +293,16 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         # the Borders
         elif position in [self.POSITION_LEFT, self.POSITION_RIGHT]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZEWE))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZEWE))
         elif position in [self.POSITION_TOP, self.POSITION_BOTTOM]:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZENS))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZENS))
 
         elif position == self.POSITION_INSIDE:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+            self.SetCursor(wx.Cursor(wx.CURSOR_SIZING))
         else:
-            self.SetCursor(wx.StockCursor(wx.CURSOR_ARROW))
+            self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
 
-    def OnCaptureLost(self, event):
+    def OnCaptureLost(self, event):  # pylint: disable=unused-argument
         if self._action is not None:
             self.__SelectCursor(None)
         self._action = None
@@ -429,7 +432,10 @@ class ImageSectionEditor(wx.Panel, Observer):
                         ny = self._imgProxy.GetHeight()
 
                 # everything should be ok now
-                self._sectRect.Set(nx, ny, width, height)
+                self._sectRect.SetX(nx)
+                self._sectRect.SetY(ny)
+                self._sectRect.SetWidth(width)
+                self._sectRect.SetHeight(height)
 #
             self._SendRectChangedEvent()
 
@@ -449,11 +455,12 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         event.Skip()
 
-    def _SendRectChangedEvent(self):
+    def _SendRectChangedEvent(self, checkImageDimensionLock=False):
         if not self._imgProxy.IsOk():
             return
         self.__KeepRectInImage()
         evt = RectChangedEvent(self.GetId(), self._sectRect)
+        evt.SetCheckImageDimensionLock(checkImageDimensionLock)
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
@@ -490,24 +497,24 @@ class ImageSectionEditor(wx.Panel, Observer):
             self._sectRect = wx.Rect(0, 0, self._imgProxy.GetWidth(), int(round(self._imgProxy.GetWidth() / self.RATIO)))
         elif key == wx.WXK_LEFT:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(-50, 0)
+                self._sectRect.Offset(-50, 0)
             else:
-                self._sectRect.OffsetXY(-10, 0)
+                self._sectRect.Offset(-10, 0)
         elif key == wx.WXK_UP:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(0, -50)
+                self._sectRect.Offset(0, -50)
             else:
-                self._sectRect.OffsetXY(0, -10)
+                self._sectRect.Offset(0, -10)
         elif key == wx.WXK_RIGHT:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(50, 0)
+                self._sectRect.Offset(50, 0)
             else:
-                self._sectRect.OffsetXY(10, 0)
+                self._sectRect.Offset(10, 0)
         elif key == wx.WXK_DOWN:
             if event.ShiftDown():
-                self._sectRect.OffsetXY(0, 50)
+                self._sectRect.Offset(0, 50)
             else:
-                self._sectRect.OffsetXY(0, 10)
+                self._sectRect.Offset(0, 10)
         elif event.GetModifiers() == wx.MOD_CONTROL and key == ord('C'):
             self.OnCopy(event)
         elif event.GetModifiers() == wx.MOD_CONTROL and key == ord('V'):
@@ -565,14 +572,15 @@ class ImageSectionEditor(wx.Panel, Observer):
                 data = None
                 if wx.TheClipboard.GetData(do):
                     data = do.GetText()
-                    sectData = re.findall("(\d+), (\d+) - (\d+) x (\d+)", data)
+                    sectData = re.findall(r"([-]?\d+), ([-]?\d+) - (\d+) x (\d+)", data)
                     if sectData:
                         sectData = sectData[0]
                         try:
                             rect = wx.Rect(int(sectData[0]), int(sectData[1]),
                                            int(sectData[2]), int(sectData[3]))
+                            self._lock = False
                             self.SetSection(rect)
-                            self._SendRectChangedEvent()
+                            self._SendRectChangedEvent(checkImageDimensionLock=True)
                         except ValueError:
                             pass
             finally:
@@ -584,7 +592,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         return self._sectRect
 
     def SetSection(self, rect):
-        self._sectRect = wx.RectPS(rect.GetPosition(), rect.GetSize())
+        self._sectRect = wx.Rect(rect.GetPosition(), rect.GetSize())
         self.Refresh()
 
     def SetLock(self, lock):
@@ -592,8 +600,9 @@ class ImageSectionEditor(wx.Panel, Observer):
 
 
 class ScaleThread(threading.Thread):
+
     def __init__(self, picture, callbackOnDone):
-        threading.Thread.__init__(self, name="reload %s" % Encode(picture.GetFilename()))
+        threading.Thread.__init__(self, name="reload %s" % picture.GetFilename())
         self._picture = picture
         self._abort = False
         self._callbackOnDone = callbackOnDone
@@ -603,13 +612,13 @@ class ScaleThread(threading.Thread):
 
     def run(self):
         self._abort = False
-        for i in range(20):
+        for __ in range(20):
             time.sleep(0.1)
             if self._abort:
                 return
 
         pilImg = PILBackend.GetImage(self._picture)
-        wxImg = wx.ImageFromStream(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
+        wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
 
         if not self._abort:
             self._callbackOnDone(wxImg)
@@ -661,6 +670,8 @@ class ImageProxy(Observable):
         return self.GetWidth(), self.GetHeight()
 
     def Scale(self, width, height):
+        if not (width > 0 and height > 0):
+            return
         img = self._wxImg.Scale(width, height)
         self._wxBmp = img.ConvertToBitmap()
         self._curSize = width, height

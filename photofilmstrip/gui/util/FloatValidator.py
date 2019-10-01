@@ -1,32 +1,18 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2008 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import wx
 import string
 
 
-class FloatValidator(wx.PyValidator):
-    
+class FloatValidator(wx.Validator):
+
     def __init__(self):
-        wx.PyValidator.__init__(self)
+        wx.Validator.__init__(self)
         self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):
@@ -40,7 +26,6 @@ class FloatValidator(wx.PyValidator):
                 return False
         return True
 
-
     def OnChar(self, event):
         key = event.GetKeyCode()
 
@@ -51,7 +36,7 @@ class FloatValidator(wx.PyValidator):
         if chr(key) in string.digits:
             event.Skip()
             return
-        
+
         if chr(key) == '-' and '-' not in self.GetWindow().GetValue():
             self.GetWindow().SetInsertionPoint(0)
             self.GetWindow().WriteText("-")
@@ -62,11 +47,10 @@ class FloatValidator(wx.PyValidator):
             self.GetWindow().WriteText(".")
             return
 
-        if not wx.Validator_IsSilent():
+        if not wx.Validator.IsSilent():
             wx.Bell()
 
         # Returning without calling even.Skip eats the event before it
         # gets to the text control
         return
-
 

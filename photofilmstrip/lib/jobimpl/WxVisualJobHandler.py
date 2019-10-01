@@ -1,4 +1,7 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 Jens Goepfert
+#
 
 import threading
 
@@ -18,49 +21,48 @@ EVT_JOB_UIINTERACT = wx.PyEventBinder(_EVT_JOB_UIINTERACT_TYPE, 1)
 
 
 class WxVisualJobHandler(IVisualJobHandler):
-    
+
     def __init__(self, win=None):
         self.__id = wx.NewId()
         if win is None:
             win = self
         assert isinstance(win, wx.EvtHandler)
         self.__win = win
-        
+
         self.__win.Bind(EVT_JOB_UIINTERACT, self.__OnInteract)
-        
+
     def GetId(self):
         return self.__id
-        
+
     def OnHandleJobBegin(self, jobContext):
         evt = UpdateEvent(self.__win.GetId(), None, UpdateEvent.KIND_BEGIN)
         wx.PostEvent(self.__win, evt)
-    
+
     def OnHandleJobDone(self, jobContext):
         evt = ResultEvent(self.__win.GetId(), jobContext.GetResultObject())
         wx.PostEvent(self.__win, evt)
 
         evt = UpdateEvent(self.__win.GetId(), None, UpdateEvent.KIND_DONE)
         wx.PostEvent(self.__win, evt)
-    
+
     def OnHandleJobUpdate(self, jobContext, fields=None):
         evt = UpdateEvent(self.__win.GetId(), fields, UpdateEvent.KIND_UPDATE)
         wx.PostEvent(self.__win, evt)
-        
+
     def OnHandleJobInteraction(self, jobContext, evt):
         assert isinstance(evt, WxInteractionEvent)
-        evt._threadEvt = threading.Event()
-        evt._job = jobContext
+        evt._threadEvt = threading.Event()  # pylint: disable=protected-access
+        evt._job = jobContext  # pylint: disable=protected-access
         wx.PostEvent(self.__win, evt)
-        evt._threadEvt.wait()
+        evt._threadEvt.wait()  # pylint: disable=protected-access
         return evt.GetSkipped()
-    
+
     def __OnInteract(self, event):
-        assert wx.Thread_IsMain()
+        assert wx.IsMainThread()
         try:
             event.OnProcess(self.__win)
         finally:
-            event._threadEvt.set()
-
+            event._threadEvt.set()  # pylint: disable=protected-access
 
 
 class ResultEvent(wx.PyEvent):
@@ -69,7 +71,7 @@ class ResultEvent(wx.PyEvent):
         wx.PyEvent.__init__(self, ident, _EVT_JOB_RESULT_TYPE)
         assert isinstance(resultObj, ResultObject)
         self.__resultObj = resultObj
-        
+
     def GetResult(self, printTraceback=True):
         return self.__resultObj.GetResult(printTraceback)
 
@@ -78,10 +80,10 @@ class ResultEvent(wx.PyEvent):
 
 
 class UpdateEvent(wx.PyEvent):
-    
+
     KIND_UPDATE = 1
-    KIND_BEGIN  = 2
-    KIND_DONE    = 4
+    KIND_BEGIN = 2
+    KIND_DONE = 4
 
     def __init__(self, ident, fields, kind):
         wx.PyEvent.__init__(self, ident, _EVT_JOB_UPDATE_TYPE)
@@ -109,9 +111,9 @@ class WxInteractionEvent(wx.PyEvent):
         wx.PyEvent.__init__(self, eventType=_EVT_JOB_UIINTERACT_TYPE)
         self._threadEvt = None
         self._job = None
-        
+
     def GetJob(self):
         return self._job
-    
+
     def OnProcess(self, wxParent):
         raise NotImplementedError()

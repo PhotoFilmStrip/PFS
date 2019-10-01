@@ -1,22 +1,8 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2011 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import logging
@@ -26,7 +12,6 @@ from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import CheckFile
-from photofilmstrip.core.OutputProfile import GetOutputProfiles
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow, \
     RenderEngineTimelapse
@@ -37,12 +22,11 @@ from photofilmstrip.core.GPlayer import GPlayer
 class ActionRender(IAction):
 
     def __init__(self, photoFilmStrip,
-                 profile, videoNorm,
+                 profile,
                  rendererClass, draftMode,
                  outpath=None):
         self.__photoFilmStrip = photoFilmStrip
         self.__profile = profile
-        self.__profile.SetVideoNorm(videoNorm)
         self.__rendererClass = rendererClass
         self.__draftMode = draftMode
         self.__outpath = outpath
@@ -52,28 +36,29 @@ class ActionRender(IAction):
     def GetName(self):
         return _(u'Start')
 
-    def _CheckAndGetOutpath(self):
+    def _CheckAndGetOutFile(self):
         if self.__outpath == "-":
             return
 
-        outpath = os.path.dirname(self.__photoFilmStrip.GetFilename())
-        outpath = os.path.join(outpath, self.__profile.GetName())
-        if not os.path.exists(outpath):
-            os.makedirs(outpath)
-        return outpath
+        projFile = self.__photoFilmStrip.GetFilename()
+        baseDir = os.path.dirname(projFile)
+        baseDir = os.path.join(baseDir, self.__profile.GetName())
+        if not os.path.isdir(baseDir):
+            os.makedirs(baseDir)
+
+        outFile = os.path.join(baseDir,
+                               os.path.basename(os.path.splitext(projFile)[0]))
+        return outFile
 
     def _SaveSettings(self):
         settings = Settings()
-        outputProfiles = GetOutputProfiles(self.__photoFilmStrip.GetAspect())
-        idxProfile = 0
-        for idx, prof in enumerate(outputProfiles):
-            if prof.GetName() == self.__profile.GetName():
-                idxProfile = idx
-        settings.SetLastProfile(idxProfile)
+        settings.SetLastProfile(self.__profile.GetName())
 
-        settings.SetVideoType(self.__profile.GetVideoNorm())
+        try:
+            idxRenderer = RENDERERS.index(self.__rendererClass)
+        except ValueError:
+            return
 
-        idxRenderer = RENDERERS.index(self.__rendererClass)
         settings.SetUsedRenderer(idxRenderer)
 
     def Execute(self):
@@ -86,9 +71,9 @@ class ActionRender(IAction):
                 logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
                 audioLength += length
             else:
-                logging.warn("Missing audiofile '%s'!", audioFile)
+                logging.warning("Missing audiofile '%s'!", audioFile)
 
-        outpath = self._CheckAndGetOutpath()
+        outFile = self._CheckAndGetOutFile()
 
         self._SaveSettings()
 
@@ -104,18 +89,18 @@ class ActionRender(IAction):
         renderer = self.__rendererClass()
         renderer.Init(self.__profile,
                       self.__photoFilmStrip.GetAspect(),
-                      outpath)
+                      outFile)
 
         renderer.SetAudioFiles(audioFiles)
 
         if self.__photoFilmStrip.GetTimelapse():
-            renderEngine = RenderEngineTimelapse(outpath,
-                                                 self.__profile,
+            uxEvent = "RenderTimeLapse"
+            renderEngine = RenderEngineTimelapse(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode)
         else:
-            renderEngine = RenderEngineSlideshow(outpath,
-                                                 self.__profile,
+            uxEvent = "RenderSlideshow"
+            renderEngine = RenderEngineSlideshow(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode,
                                                  totalLength)
@@ -125,6 +110,8 @@ class ActionRender(IAction):
 
         self.__renderJob = RenderJob(name, renderer,
                                      renderEngine.GetTasks())
+        self.__renderJob.AddUxEvent(uxEvent)
+        self.__renderJob.AddUxEvent(self.__profile.GetName())
 
     def GetRenderJob(self):
         return self.__renderJob

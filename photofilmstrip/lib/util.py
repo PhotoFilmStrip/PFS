@@ -1,59 +1,69 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2008 Jens Goepfert
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
 
 import logging
 import os
+import subprocess
 import sys
 
+FILE_EXTENSIONS_AUDIO = (".mp3", ".wav", ".flac", ".ogg", ".oga")
+FILE_EXTENSIONS_VIDEO = (".avi", ".flv", ".mp4", ".mkv", ".ogg", ".ogv",
+                         ".mts", ".mov", ".mpg", ".m4v")
 
-def Encode(value, coding="utf-8"):
-    if isinstance(value, unicode):
-        return value.encode(coding)
-    elif isinstance(value, str):
-        return value
-    else:
-        return str(value)
-
-def Decode(value, coding="utf-8"):
-    if isinstance(value, unicode):
-        return value
-    elif isinstance(value, str):
-        return value.decode(coding)
-    else:
-        return unicode(value)
 
 def IsPathWritable(path):
-    _path = Encode(path, sys.getfilesystemencoding())
+    _path = path
     try:
         fd = open(os.path.join(_path, 'test'), 'w')
         fd.write(" ")
         fd.close()
         os.remove(os.path.join(_path, 'test'))
         return True
-    except StandardError, err:
+    except Exception as err:
         logging.debug("IsPathWritable(%s): %s", path, err)
         return False
+
 
 def CheckFile(filename):
     if filename and not os.path.exists(filename):
         return False
     else:
         return True
+
+
+def StartFile(filename):
+    if os.name == "nt":
+        try:
+            os.startfile(filename)  # pylint: disable=no-member
+        except:
+            pass
+    else:
+        subprocess.Popen(["xdg-open", filename])
+
+
+def GetDocDir(subfolder):
+    basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", subfolder),  # linux
+                   os.path.join("share", "doc", "photofilmstrip", subfolder),  # win
+                   os.path.join("..", "build", "sphinx", subfolder)):  # source
+        docDir = os.path.join(basedir, docDir)
+        if os.path.isdir(docDir):
+            return os.path.abspath(docDir)
+    else:
+        return None
+
+
+def GetDataDir(subfolder):
+    basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    for dataDir in (os.path.join("..", "share", "photofilmstrip", subfolder),  # linux
+                   os.path.join("share", "photofilmstrip", subfolder),  # win
+                   os.path.join("..", "data", subfolder)):  # source
+        dataDir = os.path.join(basedir, dataDir)
+        if os.path.isdir(dataDir):
+            return os.path.abspath(dataDir)
+    else:
+        return None

@@ -1,54 +1,40 @@
-#Boa:FramePanel:PnlDlgHeader
-# encoding: UTF-8
+# Boa:FramePanel:PnlDlgHeader
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2010 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import wx
 
 from wx.lib.wordwrap import wordwrap
 
-
-[wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER, 
- wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER, 
+[wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
+ wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
 ] = [wx.NewId() for _init_ctrls in range(6)]
 
 
 class PnlDlgHeader(wx.Panel):
+
     def _init_coll_szHeaderText_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.stHeader, 0, border=0, flag=0)
-        parent.AddWindow(self.stErrMsg, 0, border=4, flag=wx.TOP)
+        parent.Add(self.stHeader, 0, border=0, flag=0)
+        parent.Add(self.stErrMsg, 0, border=4, flag=wx.TOP)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.pnlHeader, 0, border=0, flag=wx.EXPAND)
-        parent.AddWindow(self.slHdr, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.pnlHeader, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.slHdr, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.bmpLogo, 0, border=8,
+        parent.Add(self.bmpLogo, 0, border=8,
               flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
-        parent.AddSizer(self.szHeaderText, 0, border=8,
+        parent.Add(self.szHeaderText, 0, border=8,
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
 
     def _init_sizers(self):
@@ -114,9 +100,9 @@ class PnlDlgHeader(wx.Panel):
         else:
             self.stErrMsg.Show(False)
         self.pnlHeader.Layout()
-        
+
     def SetTitle(self, title):
         self.stHeader.SetLabel(title)
-        
+
     def SetBitmap(self, bmp):
         self.bmpLogo.SetBitmap(bmp)

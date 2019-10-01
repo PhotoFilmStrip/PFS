@@ -1,9 +1,12 @@
 [Desktop Entry]
-Version=2.1.0
+Version=3.4.1
 Name=PhotoFilmStrip
 GenericName=Slideshow Creator
+GenericName[de]=Erstellung von Diashows
 Comment=Create animated slideshows
+Comment[de]=Erstelle animierte Diashows
 Keywords=album;gallery;image;images;photo;photographs;photos;picture;pictures;photography;video;
+Keywords[de]=Album;Gallerie;Bild;Bilder;Foto;Fotos;Fotografie;Fotografien;Dia;Dias;Video;
 Exec=photofilmstrip
 Icon=photofilmstrip
 Terminal=false

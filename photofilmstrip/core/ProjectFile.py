@@ -1,19 +1,21 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
+#
+# PhotoFilmStrip - Creates movies out of your pictures.
+#
+# Copyright (C) 2017 Jens Goepfert
+#
 
 import logging
 import os
 import random
 import sqlite3
 
-from photofilmstrip.lib.util import Encode
-
 from photofilmstrip.core import PILBackend
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 
-from photofilmstrip.gui.util.ImageCache import ImageCache # FIXME: no gui import here
+from photofilmstrip.gui.util.ImageCache import ImageCache  # FIXME: no gui import here
 from photofilmstrip.core.Project import Project
-
 
 SCHEMA_REV = 4
 """
@@ -26,7 +28,6 @@ SCHEMA_REV = 4
 1:
 - initial
 """
-
 
 SCHEMA = """
 CREATE TABLE `picture` (
@@ -68,16 +69,18 @@ CREATE TABLE `thumbnail` (
 );
 """
 
-class ProjectFile(object):
+
+class ProjectFile:
+
     def __init__(self, project=None, filename=None):
         self._project = project
         self._filename = filename
 #        project.GetFilename()
-        
+
         self.__conn = None
         self.__altPaths = {}
         self.__fileRev = 1
-        
+
     def __del__(self):
         if self.__conn is not None:
             logging.debug("database not closed properly: %s", self._filename)
@@ -85,22 +88,22 @@ class ProjectFile(object):
 
     def GetProject(self):
         return self._project
-    
+
     def __Connect(self):
         if self.__conn is None:
-            self.__conn = sqlite3.connect(Encode(self._filename),
+            self.__conn = sqlite3.connect(self._filename,
                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = self.__GetCursor()
 
         try:
             # at the beginning we had no property table
-            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev", ))
+            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev",))
             result = cur.fetchone()
             if result:
                 self.__fileRev = int(result[0])
         except sqlite3.DatabaseError:
             pass
-            
+
     def __Close(self, commit=False):
         if self.__conn is None:
             raise RuntimeError("not connected")
@@ -108,14 +111,14 @@ class ProjectFile(object):
             self.__conn.commit()
         self.__conn.close()
         self.__conn = None
-    
+
     def __GetCursor(self):
         if self.__conn is None:
             raise RuntimeError("not connected")
         cur = self.__conn.cursor()
         cur.row_factory = sqlite3.Row
         return cur
-    
+
     def GetPicCount(self):
         self.IsOk()
         self.__Connect()
@@ -129,11 +132,11 @@ class ProjectFile(object):
         finally:
             self.__Close()
         return -1
-    
+
     def GetPreviewThumb(self):
         if not self.Load():
             return None
-        
+
         img = None
         pics = self._project.GetPictures()
         imgCount = len(pics)
@@ -141,11 +144,11 @@ class ProjectFile(object):
             picIdx = random.randint(0, imgCount - 1)
             pic = pics[picIdx]
             if os.path.exists(pic.GetFilename()):
-                img = PILBackend.GetThumbnail(pic, 64, 64)
+                img = PILBackend.GetThumbnail(pic, width=136, height=70)
                 if pic.IsDummy():
                     img = None
         return img
-    
+
     def IsOk(self):
         self.__Connect()
         try:
@@ -153,15 +156,9 @@ class ProjectFile(object):
                 cur = self.__GetCursor()
                 cur.execute("SELECT * FROM `picture`")
                 return True
-            except sqlite3.DatabaseError:
-                return False
-            except sqlite3.DatabaseError, err:
+            except BaseException as err:
                 logging.debug("IsOk(%s): %s", self._filename, err)
                 return False
-            except BaseException, err:
-                logging.debug("IsOk(%s): %s", self._filename, err)
-                return False
-            return False
         finally:
             self.__Close()
 
@@ -169,11 +166,11 @@ class ProjectFile(object):
     def __PicToQuery(self, pic, includePics):
         if includePics:
             fd = open(pic.GetFilename(), 'rb')
-            picData = buffer(fd.read())
+            picData = fd.read()
             fd.close()
         else:
             picData = None
-            
+
         query = "INSERT INTO `picture` (" \
                     "filename, width, height, " \
                     "start_left, start_top, start_width, start_height, " \
@@ -184,28 +181,28 @@ class ProjectFile(object):
                     "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" \
                 ");"
 
-        values =  (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
+        values = (pic.GetFilename(), pic.GetWidth(), pic.GetHeight(),
                    pic.GetStartRect()[0], pic.GetStartRect()[1], pic.GetStartRect()[2], pic.GetStartRect()[3],
                    pic.GetTargetRect()[0], pic.GetTargetRect()[1], pic.GetTargetRect()[2], pic.GetTargetRect()[3],
                    pic.GetRotation(), pic.GetDuration(), pic.GetMovement(),
-                   pic.GetComment(), pic.GetEffect(), 
-                   pic.GetTransition(), pic.GetTransitionDuration(rawValue=True), 
+                   pic.GetComment(), pic.GetEffect(),
+                   pic.GetTransition(), pic.GetTransitionDuration(rawValue=True),
                    picData)
         return query, values
-    
+
     def __ThumbToQuery(self, picId, pic):
         pilThumb = PILBackend.GetThumbnail(pic, height=120)
         thumbWidth, thumbHeight = pilThumb.size
-        thumbData = buffer(pilThumb.tobytes())
-        
+        thumbData = pilThumb.tobytes()
+
         query = "INSERT INTO `thumbnail` (" \
                     "picture_id, width, height, data" \
                 ") VALUES (" \
                     "?, ?, ?, ?" \
                 ");"
         values = (picId, thumbWidth, thumbHeight, thumbData)
-        return query, values 
-    
+        return query, values
+
     def _StepProgress(self, msg):
         pass
 
@@ -215,20 +212,20 @@ class ProjectFile(object):
             os.makedirs(dirname)
         if os.path.exists(self._filename):
             os.remove(self._filename)
-        
+
         self.__Connect()
         cur = self.__GetCursor()
-        cur.executescript(SCHEMA)    
+        cur.executescript(SCHEMA)
 
         cur = self.__GetCursor()
         for pic in self._project.GetPictures():
             self._StepProgress(_(u"Saving '%s' ...") % pic.GetFilename())
             query, values = self.__PicToQuery(pic, includePics)
             cur.execute(query, values)
-            
+
             query, values = self.__ThumbToQuery(cur.lastrowid, pic)
             cur.execute(query, values)
-        
+
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
         for name, value in [('rev', SCHEMA_REV),
                             ('aspect', self._project.GetAspect()),
@@ -236,12 +233,12 @@ class ProjectFile(object):
                             ('timelapse', int(self._project.GetTimelapse()))]:
             if value is not None:
                 cur.execute(query, (name, value))
-        
+
         for audioFile in self._project.GetAudioFiles():
             cur.execute(query, ('audiofile', audioFile))
 
         self.__Close(commit=True)
-        
+
         self._project.SetFilename(self._filename)
 
 # load methods
@@ -252,26 +249,26 @@ class ProjectFile(object):
         filename = self._filename
         if not os.path.isfile(filename):
             return False
-        
+
         self.__Connect()
         cur = self.__GetCursor()
 
         fileRev = 1
         try:
             # at the beginning we had no property table
-            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev", ))
+            cur.execute("SELECT value FROM `property` WHERE name=?", ("rev",))
             result = cur.fetchone()
             if result:
                 fileRev = int(result[0])
         except sqlite3.DatabaseError:
             pass
-        
+
         try:
             cur.execute("SELECT * FROM `picture`")
         except sqlite3.DatabaseError:
             self.__Close()
             return False
-        
+
         picList = []
         for row in cur:
             imgFile = row["filename"]
@@ -281,26 +278,30 @@ class ProjectFile(object):
             picData = self.__LoadSafe(row, 'data', None)
             if picData is None:
                 if not (os.path.exists(imgPath) and os.path.isfile(imgFile)):
-                    if not self.__altPaths.has_key(imgPath):
+                    if imgPath not in self.__altPaths:
                         self._SelectAlternatePath(imgPath)
-                        
-                    imgFile = os.path.join(self.__altPaths.get(imgPath, imgPath), 
+
+                    imgFile = os.path.join(self.__altPaths.get(imgPath, imgPath),
                                            os.path.basename(imgFile))
-                
+
                 pic = Picture(imgFile)
 
             else:
                 if importPath is None:
                     importPath = os.path.dirname(filename)
-                    
+
                 tmpImg = os.path.join(importPath, os.path.basename(imgFile))
                 if os.path.isfile(tmpImg):
-                    logging.debug('file exists: %s', tmpImg)
+                    logging.debug('overwrite existing file: %s', tmpImg)
+
+                if not os.path.isdir(importPath):
+                    os.makedirs(importPath)
+
                 fd = open(tmpImg, 'wb')
                 fd.write(picData)
                 fd.close()
                 pic = Picture(tmpImg)
-            
+
             pic.SetWidth(self.__LoadSafe(row, 'width', -1))
             pic.SetHeight(self.__LoadSafe(row, 'height', -1))
             rect = (row["start_left"], row["start_top"], row["start_width"], row["start_height"])
@@ -315,35 +316,35 @@ class ProjectFile(object):
 
             pic.SetTransition(self.__LoadSafe(row, 'transition', Picture.TRANS_FADE))
             pic.SetTransitionDuration(self.__LoadSafe(row, 'transition_duration', 1.0))
-            
+
             self.__LoadThumbnail(pic, row["picture_id"])
-            
+
             picList.append(pic)
 
         project = Project(self._filename)
         project.SetPictures(picList)
         if fileRev >= 2:
-            project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", unicode))
+            project.SetAudioFiles(self.__LoadProperties(cur, "audiofile", str))
             project.SetDuration(self.__LoadProperty(cur, "duration", float))
-            project.SetAspect(self.__LoadProperty(cur, "aspect", unicode, Aspect.ASPECT_16_9))
+            project.SetAspect(self.__LoadProperty(cur, "aspect", str, Aspect.ASPECT_16_9))
             project.SetTimelapse(self.__LoadProperty(cur, "timelapse", int, False))
-        
+
         self.__Close()
-        
+
         self._project = project
         return True
-    
+
     def __LoadThumbnail(self, pic, picId):
         ImageCache().RegisterPicture(pic)
         return
         thumbNail = None
         if self.__fileRev >= 3:
             cur = self.__GetCursor()
-            cur.execute("SELECT * FROM `thumbnail` WHERE picture_id=?", (picId, ))
+            cur.execute("SELECT * FROM `thumbnail` WHERE picture_id=?", (picId,))
             row = cur.fetchone()
             if row:
                 thumbWidth = row["width"]
-                thumbHeight = row["height"] 
+                thumbHeight = row["height"]
                 thumbData = row["data"]
                 thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
         if thumbNail is None:
@@ -355,20 +356,20 @@ class ProjectFile(object):
             return row[colName]
         except IndexError:
             return default
-        
+
     def __LoadProperty(self, cur, propName, typ, default=None):
-        cur.execute("SELECT value FROM `property` WHERE name=?", (propName, ))
+        cur.execute("SELECT value FROM `property` WHERE name=?", (propName,))
         result = cur.fetchone()
         if result:
             return typ(result[0])
         else:
             return default
-    
+
     def __LoadProperties(self, cur, propName, typ):
         cur.execute("SELECT value "
                     "FROM `property` "
                     "WHERE name=? "
-                    "ORDER BY property_id ASC", (propName, ))
+                    "ORDER BY property_id ASC", (propName,))
         result = []
         for row in cur:
             if row:

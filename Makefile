@@ -2,48 +2,29 @@
 # Makefile for PhotoFilmStrip
 #
 
-appname = photofilmstrip
 displayname = PhotoFilmStrip
-mkdir = mkdir -p --
 srcdir = .
+pkgdir = photofilmstrip
 
+all: clean test compile
+
+test:
+	pylint --rcfile=.pylintrc --disable=W,R,C $(pkgdir)
 
 compile:
-	python -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
-	python -OO -c "import compileall, re;compileall.compile_dir('.', rx=re.compile('/[.]svn'), force=True, quiet=True)"
-	python setup.py build
+	python3 setup.py build sdist
 
 clean:
 	if [ -e ./dist ] ; then rm -r ./dist ; fi
 	find . -name "*.pyc" -exec rm {} ';'
 	find . -name "*.pyo" -exec rm {} ';'
 	find . -name "_scmInfo.py*" -exec rm {} ';'
-	python setup.py clean
-	
-	rm -f "$(displayname).pot"
+	python3 setup.py clean
 
-pot:
-	pygettext -o "$(displayname).pot" -v "$(srcdir)/photofilmstrip"
+update-po:
+	pygettext -o "po/$(displayname).pot" -v "$(srcdir)/$(pkgdir)"
+	find po/ -name "*.po" -exec msgmerge --backup=none --update {} "po/$(displayname).pot" ';'
 
 
 versioninfo:
-	python -c "from photofilmstrip import Constants;print Constants.APP_VERSION"; \
-
-
-package:
-	curdir=`pwd`; \
-	ver=`python -c "from photofilmstrip import Constants;print Constants.APP_VERSION"`; \
-	appver=`echo $(appname)-$$ver`; \
-	releasedir=`echo release_\`date +"%Y_%m_%d"\``; \
-	targetdir=`echo $$releasedir/$$appver`; \
-	rm -rf $$releasedir; \
-	$(mkdir) "$$releasedir"; \
-	python setup.py sdist; \
-	mv dist/*.tar.gz "$$releasedir/"; \
-	cd "$$releasedir"; \
-	tar -xzf "$$appver.tar.gz"; \
-	cd "$$appver"; \
-	cp -r "../../debian/" .; \
-	dch -d Makefile packaging; \
-	debuild --no-tgz-check -us -uc;
-
+	python3 -c "from photofilmstrip import Constants;print(Constants.APP_VERSION)"; \

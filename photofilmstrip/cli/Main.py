@@ -1,33 +1,20 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2010 Jens Goepfert
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
 
-import os, sys, time, logging
+import os, time, logging
 
 from optparse import OptionParser
 
 from photofilmstrip import Constants
 
-from photofilmstrip.lib.util import Decode, CheckFile
+from photofilmstrip.lib.util import CheckFile
 
-from photofilmstrip.core.OutputProfile import OutputProfile, GetOutputProfiles, GetMPEGProfiles
+from photofilmstrip.core.OutputProfile import (
+    GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
@@ -41,22 +28,22 @@ class CliGui(IVisualJobHandler):
     def __init__(self):
         self._maxProgress = 100
         self._curProgress = 0
-        self._info = u""
+        self._info = ""
 
     def __Output(self):
         percent = float(self._curProgress) / self._maxProgress
         width = 37
-        chars = u"=" * int(width * percent)
+        chars = "=" * int(width * percent)
         chars = chars[:width]
-        line = u"|%-3d%%%-37s| %s" % (int(percent * 100), chars, self._info)
+        line = "|%-3d%%%-37s| %s" % (int(percent * 100), chars, self._info)
         line = line[:80]
-        print u"%-80s\r" % (line),
+        print("%-80s\r" % (line), end=' ')
 
     def OnHandleJobBegin(self, jobContext):
         pass
 
     def OnHandleJobDone(self, jobContext):
-        self._info = _(u"all done")
+        self._info = _("all done")
         self.__Output()
 
     def OnHandleJobUpdate(self, jobContext, fields=None):
@@ -69,47 +56,56 @@ class CliGui(IVisualJobHandler):
         self.__Output()
 
     def Info(self, project, rendererClass, profile):
-        print
-        print Constants.APP_NAME, Constants.APP_VERSION_EX
-        print u"(C) 2010 Jens G\xf6pfert"
-        print Constants.APP_URL
-        print
-        print u"%-20s: %s" % (_(u"processing project"), project)
-        print u"%-20s: %s" % (_(u"using renderer"), rendererClass.GetName())
-        print u"%-20s: %s" % (_(u"output format"), profile.GetName(withRes=True))
-        print u"%-20s: %1.f (%s):" % (_(u"framerate"), profile.GetFramerate(), "PAL" if profile.GetVideoNorm() == OutputProfile.PAL else "NTSC")
-        print
+        print()
+        print(Constants.APP_NAME, Constants.APP_VERSION_FULL)
+        print("(C) 2019 Jens Göpfert")
+        print(Constants.APP_URL)
+        print()
+        print("%-20s: %s" % (_("processing project"), project))
+        print("%-20s: %s" % (_("using renderer"), rendererClass.GetName()))
+        print("%-20s: %s" % (_("output format"), profile.GetName(
+            withRes=True)))
+        print("%-20s: %1.f" % (_("framerate"),
+                               profile.GetFrameRate().AsFloat()))
+        print()
 
     def Write(self, text):
-        print text
+        print(text)
 
 
 class DummyGui(IVisualJobHandler):
 
+    def Info(self, project, rendererClass, profile):
+        pass
+
     def OnHandleJobBegin(self, jobContext):
         pass
+
     def OnHandleJobDone(self, jobContext):
         pass
+
     def OnHandleJobUpdate(self, jobContext, fields=None):
         pass
 
 
 def main(showHelp=False):
     parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(),
-                          version="%%prog %s" % Constants.APP_VERSION_EX)
+                          version="%%prog %s" % Constants.APP_VERSION_SUFFIX)
 
-    profiles = GetOutputProfiles()
-    profStr = ", ".join(["%d=%s" % (idx, prof.GetName()) for idx, prof in enumerate(profiles)])
+    profiles = GetOutputProfiles() + GetMPEGProfiles()
+    profStr = ", ".join(["%d=%s" % (
+        idx,
+        prof.GetName()) for idx, prof in enumerate(profiles)])
 
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
-    parser.add_option("-p", "--project", help=_(u"specifies the project file"))
-    parser.add_option("-o", "--outputpath", help=_(u"The path where to save the output files. Use - for stdout."), metavar="PATH")
+    parser.add_option("-p", "--project", help=_("specifies the project file"))
+    parser.add_option("-o", "--outputpath", help=_("The path where to save the output files. Use - for stdout."), metavar="PATH")
     parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=0, type="int")
-    parser.add_option("-n", "--videonorm", help="n=NTSC, p=PAL [default: %default]", default="p")
+    parser.add_option("-n", "--videonorm", help=_("Option videonorm is deprecated, use an appropriate profile!"))
     parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=4, type="int")
-    parser.add_option("-a", "--draft", action="store_true", default=False, help=u"%s - %s" % (_(u"enable draft mode"), _(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
-    parser.add_option("-d", "--debug", action="store_true", default=False, help=u"enable debug logging")
+    parser.add_option("-a", "--draft", action="store_true", default=False, help="%s - %s" % (_("enable draft mode"), _("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
+    parser.add_option("-d", "--debug", action="store_true", default=False, help="enable debug logging")
 
     if showHelp:
         parser.print_help()
@@ -118,48 +114,36 @@ def main(showHelp=False):
     options = parser.parse_args()[0]
 
     if options.project:
-        options.project = Decode(options.project, sys.getfilesystemencoding())
         options.project = os.path.abspath(options.project)
         if not os.path.isfile(options.project):
-            logging.error(_(u"project file does not exist: %s"), options.project)
+            logging.error(_("project file does not exist: %s"), options.project)
             return 1
     else:
         parser.print_help()
-        logging.error(_(u"no project file specified!"))
+        logging.error(_("no project file specified!"))
         return 2
 
-
-    if options.videonorm == "p":
-        videoNorm = OutputProfile.PAL
-    elif options.videonorm == "n":
-        videoNorm = OutputProfile.NTSC
-    else:
+    if options.videonorm:
         parser.print_help()
-        logging.error(_(u"invalid videonorm specified: %s"), options.videonorm)
+        logging.error(_("Option videonorm is deprecated, use an appropriate profile!"))
         return 4
-
 
     if options.format not in range(len(RENDERERS)):
         parser.print_help()
-        logging.error(_(u"invalid format specified: %s"), options.format)
+        logging.error(_("invalid format specified: %s"), options.format)
         return 5
     rendererClass = RENDERERS[options.format]
 
-
-    profile = GetMPEGProfiles().get(rendererClass.GetName())
-    if profile is None:
-        if options.profile >= len(profiles):
-            parser.print_help()
-            logging.error(_(u"invalid profile specified: %s"), options.profile)
-            return 3
-        profile = profiles[options.profile]
-
+    if options.profile >= len(profiles):
+        parser.print_help()
+        logging.error(_("invalid profile specified: %s"), options.profile)
+        return 3
+    profile = profiles[options.profile]
 
     prjFile = ProjectFile(filename=options.project)
     if not prjFile.Load():
-        logging.error(_(u"cannot load photofilmstrip"))
+        logging.error(_("cannot load project"))
         return 6
-
 
     if options.outputpath:
         if options.outputpath == "-":
@@ -170,19 +154,18 @@ def main(showHelp=False):
             if not os.path.exists(outpath):
                 try:
                     os.makedirs(outpath)
-                except StandardError, err:
-                    logging.error(_(u"cannot create output path: %s"), err)
+                except Exception as err:
+                    logging.error(_("cannot create output path: %s"), err)
                     return 7
     else:
         outpath = None
 
-
     project = prjFile.GetProject()
-    ar = ActionRender(project, profile, videoNorm, rendererClass, False, outpath)
+    ar = ActionRender(project, profile, rendererClass, False, outpath)
 
     audioFile = project.GetAudioFile()
     if not CheckFile(audioFile):
-        logging.error(_(u"Audio file '%s' does not exist!"), audioFile)
+        logging.error(_("Audio file '%s' does not exist!"), audioFile)
         return 8
 
     if rendererClass is StreamRenderer:
@@ -203,12 +186,12 @@ def main(showHelp=False):
             time.sleep(0.1)
     except KeyboardInterrupt:
         renderJob.Abort()
-        cliGui.Write("\n" + _(u"...aborted!"))
+        cliGui.Write("\n" + _("...aborted!"))
         return 10
 
     resultObj = renderJob.GetResultObject()
     result = resultObj.GetResult()
     if result:
-        cliGui.Write(_(u"all done"))
+        cliGui.Write(_("all done"))
 #    else:
-#        logging.error(_(u"Error: %s"), renderEngine.GetErrorMessage())
+#        logging.error(_("Error: %s"), renderEngine.GetErrorMessage())

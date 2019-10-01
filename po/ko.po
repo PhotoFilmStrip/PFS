@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2011-07-10 13:28+CEST\n"
+"POT-Creation-Date: 2019-02-19 17:47+CET\n"
 "PO-Revision-Date: 2011-07-10 13:36+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Choi Youn-Soo <korea3d@gmail.com>\n"
@@ -14,643 +14,623 @@ msgstr ""
 "X-Poedit-Country: KOREA, REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: src/cli/Main.py:65
-#: src/cli/Main.py:221
-#: src/gui/DlgRender.py:374
-msgid "all done"
-msgstr "모두 완성"
+#: photofilmstrip/action/ActionAutoPath.py:23
+#: photofilmstrip/gui/PnlPfsProject.py:115
+msgid "Random motion"
+msgstr "무작위 모션"
 
-#: src/cli/Main.py:78
-msgid "processing project"
-msgstr "프로젝트 처리"
+#: photofilmstrip/action/ActionCenterPath.py:21
+msgid "Centralize motion"
+msgstr ""
 
-#: src/cli/Main.py:79
-msgid "using renderer"
-msgstr "렌더러 사용"
-
-#: src/cli/Main.py:80
-msgid "output format"
-msgstr "출력 포맷"
-
-#: src/cli/Main.py:81
-msgid "framerate"
-msgstr "프레임율"
-
-#: src/cli/Main.py:109
-msgid "specifies the project file"
-msgstr "프로젝트 파일 지정"
-
-#: src/cli/Main.py:110
-msgid "The path where to save the output files. Use - for stdout."
-msgstr "출력 파일을 저장할 경로입니다. 표준 출력 사용."
-
-#: src/cli/Main.py:114
-msgid "enable draft mode"
-msgstr "초안 모드 사용"
-
-#: src/cli/Main.py:114
-#: src/gui/DlgRender.py:233
-msgid "Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."
-msgstr "PhotoFilmStrip의 미리보기를 위해 이 옵션을 활성화하십시오. 렌더링 결과는 낮은 품질이지만, 속도는 매우 빠릅니다."
-
-#: src/cli/Main.py:122
-msgid "project file does not exist: %s"
-msgstr "프로젝트 파일이 존재하지 않습니다: %s"
-
-#: src/cli/Main.py:126
-msgid "no project file specified!"
-msgstr "프로젝트 파일이 지정되지 않았습니다!"
-
-#: src/cli/Main.py:132
-msgid "invalid profile specified: %s"
-msgstr "잘못된 프로필 지정: %s"
-
-#: src/cli/Main.py:143
-msgid "invalid videonorm specified: %s"
-msgstr "잘못된 비디오 표준이 지정되었습니다.: %s"
-
-#: src/cli/Main.py:149
-msgid "invalid format specified: %s"
-msgstr "잘못된 포맷 지정: %s"
-
-#: src/cli/Main.py:156
-msgid "cannot load photofilmstrip"
-msgstr "PhotoFilmStrip를 불러올 수 없습니다."
-
-#: src/cli/Main.py:175
-msgid "cannot create output path: %s"
-msgstr "출력 경로를 만들 수 없습니다: %s"
-
-#: src/cli/Main.py:194
-#: src/gui/DlgProjectProps.py:388
-#: src/gui/DlgProjectProps.py:391
-#: src/gui/DlgProjectProps.py:431
-#: src/gui/DlgRender.py:247
-msgid "Audio file '%s' does not exist!"
-msgstr "'%s' 오디오 파일은 존재하지 않습니다!"
-
-#: src/cli/Main.py:217
-#: src/gui/DlgRender.py:372
-msgid "...aborted!"
-msgstr "...중지되었습니다!"
-
-#: src/cli/Main.py:223
-msgid "Error: %s"
-msgstr "오류: %s"
-
-#: src/core/BaseRenderer.py:66
-msgid "Unknown property: %s"
-msgstr "알 수없는 속성: %s"
-
-#: src/core/BaseRenderer.py:74
-msgid "<default>"
-msgstr "<기본값>"
-
-#: src/core/PhotoFilmStrip.py:154
-msgid "Loading '%s' ..."
-msgstr "'%s' 불러오기..."
-
-#: src/core/ProgressHandler.py:32
-msgid "Please wait..."
-msgstr "기다려주십시오..."
-
-#: src/core/ProgressHandler.py:70
-msgid "aborting..."
-msgstr "중지..."
-
-#: src/core/RenderEngine.py:150
-msgid "initialize renderer"
-msgstr "렌더러 초기화"
-
-#: src/core/RenderEngine.py:171
-msgid "processing transition %d/%d"
-msgstr "전환 처리 %d/%d"
-
-#: src/core/RenderEngine.py:182
-msgid "processing image %d/%d"
-msgstr "이미지 처리 %d/%d"
-
-#: src/core/RenderEngine.py:196
-msgid "creating output..."
-msgstr "출력 만들기..."
-
-#: src/core/RenderEngine.py:226
-msgid "generating subtitle"
-msgstr "자막 만들기"
-
-#: src/core/renderer/MovieRenderer.py:55
-msgid "mencoder (mencoder) required!"
-msgstr "mencoder (mencoder) 가 필요합니다!"
-
-#: src/core/renderer/MovieRenderer.py:90
-#: src/core/renderer/MovieRenderer.py:100
-msgid "no"
-msgstr "아니오"
-
-#: src/core/renderer/MovieRenderer.py:128
-msgid "Bitrate must be a number!"
-msgstr "비트 전송률은 숫자여야 합니다!"
-
-#: src/core/renderer/MovieRenderer.py:139
-msgid "MPEG(1/2)-Video (MPG)"
-msgstr "MPEG(1/2)-비디오 (MPG)"
-
-#: src/core/renderer/MovieRenderer.py:174
-msgid "MPEG format supports only VCD, SVCD and DVD profile!"
-msgstr "MPEG 포맷은 VCD, SVCD와 DVD 프로필만 지원합니다!"
-
-#: src/core/renderer/MovieRenderer.py:199
-msgid "MPEG4-XVid/AC3 (AVI)"
-msgstr "MPEG4-XVid/AC3 (AVI)"
-
-#: src/core/renderer/MovieRenderer.py:245
-#, fuzzy
-msgid "mencoder with MP3 support (mp3lame) required!"
-msgstr "mencoder (mencoder) 가 필요합니다!"
-
-#: src/core/renderer/MovieRenderer.py:255
-msgid "MPEG4-XVid/MP3 (AVI)"
-msgstr "MPEG4-XVid/MP3 (AVI)"
-
-#: src/core/renderer/MovieRenderer.py:288
-msgid "Flash-Video (FLV)"
-msgstr "플래시 비디오 (FLV)"
-
-#: src/core/renderer/MovieRenderer.py:319
-msgid "Motion-JPEG (AVI)"
-msgstr "모션-JPEG (AVI)"
-
-#: src/core/renderer/SingleFileRenderer.py:37
-msgid "Single pictures"
-msgstr "단일 사진"
-
-#: src/gui/ActionManager.py:70
-msgid "&File"
-msgstr "파일(&E)"
-
-#: src/gui/ActionManager.py:71
-msgid "&Edit"
-msgstr "편집(&E)"
-
-#: src/gui/ActionManager.py:72
-msgid "&Tools"
-msgstr "도구(&T)"
-
-#: src/gui/ActionManager.py:73
-#: src/gui/ActionManager.py:202
-#: src/gui/DlgRender.py:188
-#: src/gui/DlgRendererProps.py:101
-msgid "&Help"
-msgstr "도움말(&H)"
-
-#: src/gui/ActionManager.py:87
-msgid "New Project"
-msgstr "새 프로젝트"
-
-#: src/gui/ActionManager.py:90
-msgid "Load Project"
-msgstr "프로젝트 불러오기"
-
-#: src/gui/ActionManager.py:93
-msgid "Save Project"
-msgstr "프로젝트 저장"
-
-#: src/gui/ActionManager.py:100
-msgid "Import Pictures"
-msgstr "사진 수입"
-
-#: src/gui/ActionManager.py:103
-#: src/gui/DlgRender.py:133
-msgid "Render filmstrip"
-msgstr "Filmstrip 렌더"
-
-#: src/gui/ActionManager.py:124
-msgid "&New Project"
-msgstr "새 프로젝트(&N)"
-
-#: src/gui/ActionManager.py:128
-msgid "&Open Project"
-msgstr "프로젝트 열기(&O)"
-
-#: src/gui/ActionManager.py:134
-msgid "&Save Project"
-msgstr "프로젝트 저장(&S)"
-
-#: src/gui/ActionManager.py:138
-msgid "&Close Project"
-msgstr "프로젝트 닫기(&C)"
-
-#: src/gui/ActionManager.py:150
-msgid "&Properties"
-msgstr "환경 설정(&P)"
-
-#: src/gui/ActionManager.py:155
-msgid "E&xit"
-msgstr "종료(&x)"
-
-#: src/gui/ActionManager.py:163
-msgid "Move picture &left"
-msgstr "왼쪽으로 사진 이동(&l)"
-
-#: src/gui/ActionManager.py:167
-msgid "Move picture &right"
-msgstr "오른쪽으로 사진 이동(&r)"
-
-#: src/gui/ActionManager.py:172
-msgid "&Remove Picture"
-msgstr "이미지 제거(&R)"
-
-#: src/gui/ActionManager.py:177
-msgid "Rotate &clockwise"
-msgstr "오른쪽으로 회전(&c)"
-
-#: src/gui/ActionManager.py:181
-msgid "Rotate counter clock&wise"
-msgstr "왼쪽으로 회전(&w)"
-
-#: src/gui/ActionManager.py:189
-msgid "&Import Pictures"
-msgstr "이미지 수입(&I)"
-
-#: src/gui/ActionManager.py:194
-msgid "&Render filmstrip"
-msgstr "Filmstrip 렌더(&R)"
-
-#: src/gui/ActionManager.py:214
+#: photofilmstrip/action/ActionI18N.py:24
+#: photofilmstrip/gui/ActionManager.py:170
 msgid "Language"
 msgstr "언어"
 
-#: src/gui/ActionManager.py:218
-msgid "&About"
-msgstr "정보(&A)"
-
-#: src/gui/DlgBugReport.py:52
-msgid "An unexpected error occured"
-msgstr "예기치 않은 오류가 발생했습니다."
-
-#: src/gui/DlgBugReport.py:55
-msgid "An unexpected error occured. Do you want to send this bug report to the developers of %s?"
-msgstr "예기치 않은 오류가 발생했습니다. 이 버그 리포트를 %s의 개발자에게 보내시겠습니까?"
-
-#: src/gui/DlgBugReport.py:101
-msgid "Bug-Report send. Thank you for your support."
-msgstr "버그 리포트를 보냅니다. 당신의 지원에 감사합니다."
-
-#: src/gui/DlgBugReport.py:102
-#: src/gui/FrmMain.py:177
-msgid "Information"
-msgstr "정보"
-
-#: src/gui/DlgBugReport.py:108
-msgid "Sorry, this function is temporary not available.."
-msgstr "죄송합니다. 이 기능은 일시적으로 사용할 수 없습니다.."
-
-#: src/gui/DlgBugReport.py:109
-#: src/gui/DlgProjectProps.py:392
-#: src/gui/DlgProjectProps.py:421
-#: src/gui/DlgProjectProps.py:432
-#: src/gui/DlgProjectProps.py:479
-#: src/gui/DlgProjectProps.py:490
-#: src/gui/DlgRender.py:381
-#: src/gui/DlgRender.py:420
-#: src/gui/FrmMain.py:457
-msgid "Error"
-msgstr "오류"
-
-#: src/gui/DlgFinalize.py:78
-msgid "Finalizing"
-msgstr "완성"
-
-#: src/gui/DlgFinalize.py:87
-msgid "Choose your next action:"
-msgstr "다음 작업을 선택하십시오:"
-
-#: src/gui/DlgFinalize.py:91
-msgid "Play video"
-msgstr "비디오 재생"
-
-#: src/gui/DlgFinalize.py:96
+#: photofilmstrip/action/ActionOpenFolder.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:28
 msgid "Open folder"
 msgstr "폴더 열기"
 
-#: src/gui/DlgFinalize.py:100
-msgid "Delete unfinished result"
-msgstr "미완성 결과 지우기"
+#: photofilmstrip/action/ActionPlayVideo.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:22 photofilmstrip/ux/gnome.py:42
+msgid "Play video"
+msgstr "비디오 재생"
 
-#: src/gui/DlgFinalize.py:104
-msgid "Do nothing"
-msgstr "아무것도 하지 않음"
+#: photofilmstrip/action/ActionRender.py:37
+#, fuzzy
+msgid "Start"
+msgstr "시작(&S)"
 
-#: src/gui/DlgFinalize.py:108
-#: src/gui/DlgRender.py:193
-#: src/gui/DlgRender.py:386
+#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:196
+msgid "all done"
+msgstr "모두 완성"
+
+#: photofilmstrip/cli/Main.py:64
+msgid "processing project"
+msgstr "프로젝트 처리"
+
+#: photofilmstrip/cli/Main.py:65
+msgid "using renderer"
+msgstr "렌더러 사용"
+
+#: photofilmstrip/cli/Main.py:66
+msgid "output format"
+msgstr "출력 포맷"
+
+#: photofilmstrip/cli/Main.py:69
+msgid "framerate"
+msgstr "프레임율"
+
+#: photofilmstrip/cli/Main.py:103
+msgid "specifies the project file"
+msgstr "프로젝트 파일 지정"
+
+#: photofilmstrip/cli/Main.py:104
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "출력 파일을 저장할 경로입니다. 표준 출력 사용."
+
+#: photofilmstrip/cli/Main.py:106 photofilmstrip/cli/Main.py:129
+msgid "Option videonorm is deprecated, use an appropriate profile!"
+msgstr ""
+
+#: photofilmstrip/cli/Main.py:108
+msgid "enable draft mode"
+msgstr "초안 모드 사용"
+
+#: photofilmstrip/cli/Main.py:108 photofilmstrip/gui/DlgRender.py:167
+msgid ""
+"Activate this option to generate a preview of your PhotoFilmStrip. The "
+"rendering process will speed up dramatically, but results in lower quality."
+msgstr ""
+"PhotoFilmStrip의 미리보기를 위해 이 옵션을 활성화하십시오. 렌더링 결과는 낮"
+"은 품질이지만, 속도는 매우 빠릅니다."
+
+#: photofilmstrip/cli/Main.py:120
+msgid "project file does not exist: %s"
+msgstr "프로젝트 파일이 존재하지 않습니다: %s"
+
+#: photofilmstrip/cli/Main.py:124
+msgid "no project file specified!"
+msgstr "프로젝트 파일이 지정되지 않았습니다!"
+
+#: photofilmstrip/cli/Main.py:134
+msgid "invalid format specified: %s"
+msgstr "잘못된 포맷 지정: %s"
+
+#: photofilmstrip/cli/Main.py:140
+msgid "invalid profile specified: %s"
+msgstr "잘못된 프로필 지정: %s"
+
+#: photofilmstrip/cli/Main.py:146
+#, fuzzy
+msgid "cannot load project"
+msgstr "PhotoFilmStrip를 불러올 수 없습니다."
+
+#: photofilmstrip/cli/Main.py:159
+msgid "cannot create output path: %s"
+msgstr "출력 경로를 만들 수 없습니다: %s"
+
+#: photofilmstrip/cli/Main.py:169 photofilmstrip/gui/DlgConfigureAudio.py:231
+#: photofilmstrip/gui/DlgConfigureAudio.py:253
+msgid "Audio file '%s' does not exist!"
+msgstr "'%s' 오디오 파일은 존재하지 않습니다!"
+
+#: photofilmstrip/cli/Main.py:190
+msgid "...aborted!"
+msgstr "...중지되었습니다!"
+
+#: photofilmstrip/core/BaseRenderer.py:50
+msgid "Unknown property: %s"
+msgstr "알 수없는 속성: %s"
+
+#: photofilmstrip/core/BaseRenderer.py:58
+msgid "<default>"
+msgstr "<기본값>"
+
+#: photofilmstrip/core/BaseRenderer.py:73
+msgid "no"
+msgstr "아니오"
+
+#: photofilmstrip/core/ProjectFile.py:222
+#, fuzzy
+msgid "Saving '%s' ..."
+msgstr "'%s' 불러오기..."
+
+#: photofilmstrip/core/ProjectFile.py:276
+msgid "Loading '%s' ..."
+msgstr "'%s' 불러오기..."
+
+#: photofilmstrip/core/RenderEngine.py:113
+#: photofilmstrip/core/RenderEngine.py:201
+msgid "processing transition %d/%d"
+msgstr "전환 처리 %d/%d"
+
+#: photofilmstrip/core/RenderEngine.py:124
+#: photofilmstrip/core/RenderEngine.py:210
+msgid "processing image %d/%d"
+msgstr "이미지 처리 %d/%d"
+
+#: photofilmstrip/core/renderer/CairoRenderer.py:35
+msgid "Preview"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:50
+msgid "GStreamer (python-gst-1.0) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:287
+msgid "Bitrate must be a number!"
+msgstr "비트 전송률은 숫자여야 합니다!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:455
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:531
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:601
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:690
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:730
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:779
+msgid "libav (gstreamer1.0-libav) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:459
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:535
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:605
+msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:463
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:609
+msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:539
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:647
+msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:651
+msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:655
+msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:686
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:726
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:775
+msgid "MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:694
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:734
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:783
+msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
+msgstr ""
+
+#: photofilmstrip/core/renderer/SingleFileRenderer.py:21
+msgid "Single pictures"
+msgstr "단일 사진"
+
+#: photofilmstrip/core/tasks.py:48
+msgid "generating subtitle"
+msgstr "자막 만들기"
+
+#: photofilmstrip/gui/ActionManager.py:60
+#: photofilmstrip/gui/ActionManager.py:190
+msgid "&File"
+msgstr "파일(&E)"
+
+#: photofilmstrip/gui/ActionManager.py:61
+#: photofilmstrip/gui/ActionManager.py:191
+msgid "&Edit"
+msgstr "편집(&E)"
+
+#: photofilmstrip/gui/ActionManager.py:62
+#: photofilmstrip/gui/ActionManager.py:154 photofilmstrip/gui/DlgRender.py:141
+#: photofilmstrip/gui/DlgRendererProps.py:86
+msgid "&Help"
+msgstr "도움말(&H)"
+
+#: photofilmstrip/gui/ActionManager.py:76
+msgid "New Slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:81
+msgid "Open"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:87
+msgid "Save"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:97
+#: photofilmstrip/gui/ActionManager.py:98
+msgid "Show job queue"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:108
+#: photofilmstrip/gui/PnlSlideshow.py:25
+msgid "Slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:110
+#: photofilmstrip/gui/PnlTimelapse.py:18
+msgid "Timelapse"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:116
+msgid "New"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:118
+msgid "&Open"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:123
+msgid "&Save"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:136
 msgid "&Close"
 msgstr "닫기(&C)"
 
-#: src/gui/DlgFinalize.py:114
-msgid "Show error again and send to developer."
-msgstr "오류가 다시 보이면 개발자에게 보내십시오."
+#: photofilmstrip/gui/ActionManager.py:141
+msgid "E&xit"
+msgstr "종료(&x)"
 
-#: src/gui/DlgFinalize.py:128
-msgid "The rendering process was aborted."
-msgstr "렌더링 과정이 정지되었습니다."
+#: photofilmstrip/gui/ActionManager.py:173
+msgid "&About"
+msgstr "정보(&A)"
 
-#: src/gui/DlgFinalize.py:134
-msgid "The rendering process was interrupted."
-msgstr "렌더링 과정이 일시 정지되었습니다."
+#: photofilmstrip/gui/DlgBugReport.py:41
+msgid "An unexpected error occured"
+msgstr "예기치 않은 오류가 발생했습니다."
 
-#: src/gui/DlgFinalize.py:144
-msgid "The rendering process has been finished."
-msgstr "렌더링 과정이 끝났습니다."
+#: photofilmstrip/gui/DlgBugReport.py:44
+msgid ""
+"An unexpected error occured. Do you want to send this bug report to the "
+"developers of %s?"
+msgstr ""
+"예기치 않은 오류가 발생했습니다. 이 버그 리포트를 %s의 개발자에게 보내시겠습"
+"니까?"
 
-#: src/gui/DlgPositionInput.py:155
-msgid "Motion positions"
-msgstr "모션 위치"
+#: photofilmstrip/gui/DlgBugReport.py:99
+msgid "Bug-Report send. Thank you for your support."
+msgstr "버그 리포트를 보냅니다. 당신의 지원에 감사합니다."
 
-#: src/gui/DlgPositionInput.py:162
-msgid "Start position"
-msgstr "시작 위치"
+#: photofilmstrip/gui/DlgBugReport.py:100 photofilmstrip/gui/FrmMain.py:290
+msgid "Information"
+msgstr "정보"
 
-#: src/gui/DlgPositionInput.py:170
-#: src/gui/DlgPositionInput.py:214
-msgid "Location:"
-msgstr "위치:"
+#: photofilmstrip/gui/DlgBugReport.py:106
+msgid "Sorry, this function is temporary not available.."
+msgstr "죄송합니다. 이 기능은 일시적으로 사용할 수 없습니다.."
 
-#: src/gui/DlgPositionInput.py:188
-#: src/gui/DlgPositionInput.py:230
-msgid "Size:"
-msgstr "크기:"
+#: photofilmstrip/gui/DlgBugReport.py:107
+#: photofilmstrip/gui/DlgConfigureAudio.py:232
+#: photofilmstrip/gui/DlgConfigureAudio.py:244
+#: photofilmstrip/gui/DlgConfigureAudio.py:254
+#: photofilmstrip/gui/DlgNewProject.py:156
+#: photofilmstrip/gui/DlgNewProject.py:167
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:208
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:216
+#: photofilmstrip/gui/FrmMain.py:376 photofilmstrip/gui/PnlPfsProject.py:468
+#: photofilmstrip/gui/PnlTimelapse.py:113
+msgid "Error"
+msgstr "오류"
 
-#: src/gui/DlgPositionInput.py:206
-msgid "End position"
-msgstr "끝 위치"
+#: photofilmstrip/gui/DlgConfigureAudio.py:55
+msgid "Configure your audio files that are used as a background music."
+msgstr ""
 
-#: src/gui/DlgPositionInput.py:248
-msgid "Reset"
-msgstr "재설정"
+#: photofilmstrip/gui/DlgConfigureAudio.py:90
+msgid "Set the duration of your slideshow to fit your audio files"
+msgstr ""
 
-#: src/gui/DlgPositionInput.py:253
-#: src/gui/DlgProjectProps.py:222
-#: src/gui/DlgRender.py:305
-#: src/gui/DlgRendererProps.py:107
+#: photofilmstrip/gui/DlgConfigureAudio.py:92
+#: photofilmstrip/gui/DlgDuration.py:70 photofilmstrip/gui/DlgNewProject.py:84
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:50
+#: photofilmstrip/gui/DlgPositionInput.py:238
+#: photofilmstrip/gui/DlgRender.py:147
+#: photofilmstrip/gui/DlgRendererProps.py:92
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:97
 msgid "&Cancel"
 msgstr "취소(&C)"
 
-#: src/gui/DlgPositionInput.py:259
-#: src/gui/DlgProjectProps.py:228
-#: src/gui/DlgRendererProps.py:112
+#: photofilmstrip/gui/DlgConfigureAudio.py:97
+#: photofilmstrip/gui/DlgDuration.py:72 photofilmstrip/gui/DlgNewProject.py:86
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:51
+#: photofilmstrip/gui/DlgPositionInput.py:244
+#: photofilmstrip/gui/DlgRendererProps.py:97
 msgid "&Ok"
 msgstr "확인(&O)"
 
-#: src/gui/DlgPositionInput.py:267
-msgid "Adjust motion positions directly"
-msgstr "직접 모션 위치 조정"
+#: photofilmstrip/gui/DlgConfigureAudio.py:104
+#: photofilmstrip/gui/DlgConfigureAudio.py:109
+#: photofilmstrip/gui/PnlSlideshow.py:47 photofilmstrip/gui/PnlSlideshow.py:48
+#: photofilmstrip/gui/PnlTimelapse.py:33 photofilmstrip/gui/PnlTimelapse.py:34
+msgid "Configure music"
+msgstr ""
 
-#: src/gui/DlgProjectProps.py:124
-msgid "Project properties"
-msgstr "프로젝트 속성"
-
-#: src/gui/DlgProjectProps.py:133
-msgid "Project name:"
-msgstr "프로젝트명:"
-
-#: src/gui/DlgProjectProps.py:145
-msgid "Folder:"
-msgstr "폴더:"
-
-#: src/gui/DlgProjectProps.py:160
-msgid "Aspect ratio:"
-msgstr "화면 비율:"
-
-#: src/gui/DlgProjectProps.py:168
-msgid "Total length:"
-msgstr "총 길이:"
-
-#: src/gui/DlgProjectProps.py:171
-msgid "Overrides the duration of single pictures and gives the project this total length."
-msgstr "총 길이는 단일 사진의 지속기간과 프로젝트에 우선합니다."
-
-#: src/gui/DlgProjectProps.py:177
-msgid "User defined:"
-msgstr "사용자 정의:"
-
-#: src/gui/DlgProjectProps.py:191
-msgid "Audio file:"
-msgstr "오디오 파일:"
-
-#: src/gui/DlgProjectProps.py:237
-msgid "PhotoFilmStrip project"
-msgstr "PhotoFilmStrip 프로젝트"
-
-#: src/gui/DlgProjectProps.py:268
-msgid "Unnamed PhotoFilmStrip"
-msgstr "Unnamed PhotoFilmStrip"
-
-#: src/gui/DlgProjectProps.py:275
-msgid "My PhotoFilmStrips"
-msgstr "내 PhotoFilmStrips"
-
-#: src/gui/DlgProjectProps.py:319
-msgid "Browse for folder"
-msgstr "폴더 찾기"
-
-#: src/gui/DlgProjectProps.py:333
+#: photofilmstrip/gui/DlgConfigureAudio.py:138
 msgid "Select music"
 msgstr "음악 선택"
 
-#: src/gui/DlgProjectProps.py:335
+#: photofilmstrip/gui/DlgConfigureAudio.py:140
 msgid "Audio files"
 msgstr "오디오 파일"
 
-#: src/gui/DlgProjectProps.py:417
-#: src/gui/DlgProjectProps.py:420
+#: photofilmstrip/gui/DlgConfigureAudio.py:243
 #, fuzzy
 msgid "Audio file not supported!"
 msgstr "'%s' 오디오 파일은 존재하지 않습니다!"
 
-#: src/gui/DlgProjectProps.py:468
+#: photofilmstrip/gui/DlgDuration.py:48
+msgid "Total length:"
+msgstr "총 길이:"
+
+#: photofilmstrip/gui/DlgDuration.py:50
+msgid ""
+"Overrides the duration of single pictures and gives the project this total "
+"length."
+msgstr "총 길이는 단일 사진의 지속기간과 프로젝트에 우선합니다."
+
+#: photofilmstrip/gui/DlgDuration.py:54
+msgid "User defined:"
+msgstr "사용자 정의:"
+
+#: photofilmstrip/gui/DlgDuration.py:65
+#, fuzzy
+msgid "Fit to audio files"
+msgstr "오디오 파일"
+
+#: photofilmstrip/gui/DlgDuration.py:80
+msgid "Slideshow duration"
+msgstr ""
+
+#: photofilmstrip/gui/DlgDuration.py:84
+msgid "Configure duration of slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/DlgNewProject.py:61
+msgid "Project name:"
+msgstr "프로젝트명:"
+
+#: photofilmstrip/gui/DlgNewProject.py:66
+msgid "Folder:"
+msgstr "폴더:"
+
+#: photofilmstrip/gui/DlgNewProject.py:78
+msgid "Aspect ratio:"
+msgstr "화면 비율:"
+
+#: photofilmstrip/gui/DlgNewProject.py:110
+#, fuzzy
+msgid "Unnamed project"
+msgstr "PhotoFilmStrip를 불러올 수 없습니다."
+
+#: photofilmstrip/gui/DlgNewProject.py:116
+msgid "My PhotoFilmStrips"
+msgstr "내 PhotoFilmStrips"
+
+#: photofilmstrip/gui/DlgNewProject.py:126
+msgid "Browse for folder"
+msgstr "폴더 찾기"
+
+#: photofilmstrip/gui/DlgNewProject.py:145
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "폴더가 존재하지 않습니다! %s 폴더를 만드시겠습니까?"
 
-#: src/gui/DlgProjectProps.py:469
-#: src/gui/DlgRender.py:335
-#: src/gui/FrmMain.py:287
-#: src/gui/FrmMain.py:403
-#: src/gui/FrmMain.py:482
-#: src/gui/PnlPfsProject.py:449
+#: photofilmstrip/gui/DlgNewProject.py:146
+#: photofilmstrip/gui/PnlEditorPage.py:29
+#: photofilmstrip/gui/PnlEditorPage.py:49
+#: photofilmstrip/gui/PnlEditorPage.py:88
+#: photofilmstrip/gui/WxProjectFile.py:101
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:224
 msgid "Question"
 msgstr "질문"
 
-#: src/gui/DlgProjectProps.py:478
+#: photofilmstrip/gui/DlgNewProject.py:155
 msgid "Cannot create folder: %s"
 msgstr "폴더를 만들 수 없습니다: %s"
 
-#: src/gui/DlgProjectProps.py:489
+#: photofilmstrip/gui/DlgNewProject.py:166
 msgid "Cannot write into folder!"
 msgstr "폴더에 쓰기 권한이 없습니다!"
 
-#: src/gui/DlgProjectProps.py:503
+#: photofilmstrip/gui/DlgNewProject.py:180
 msgid "The project name must be filled."
 msgstr "프로젝트명을 입력해야 합니다."
 
-#: src/gui/DlgProjectProps.py:509
+#: photofilmstrip/gui/DlgNewProject.py:186
 msgid "The project name contains invalid characters."
 msgstr ""
 
-#: src/gui/DlgRender.py:144
-msgid "Profile:"
-msgstr "프로필:"
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:23
+#: photofilmstrip/gui/PnlSlideshow.py:54 photofilmstrip/gui/PnlSlideshow.py:55
+msgid "Adjust picture durations"
+msgstr ""
 
-#: src/gui/DlgRender.py:153
-msgid "Type:"
-msgstr "종류:"
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:26
+msgid "Adjust picture durations to audio file"
+msgstr ""
 
-#: src/gui/DlgRender.py:163
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:30
+msgid ""
+"Find your picture duration by playing the audio file of your project and\n"
+"pressing the hit button to apply the current playing time."
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:43
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:153
+msgid "Play"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:46
+msgid "Hit"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:100
+msgid "Stop"
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:179
+#, fuzzy
+msgid "Playing time"
+msgstr "비디오 재생"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:207
+msgid "Your project does not have an audio file configured."
+msgstr ""
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:215
+msgid ""
+"Your project uses more than one audio file. Currently the durations can be "
+"adjusted only for one audio file."
+msgstr ""
+
+#: photofilmstrip/gui/DlgPositionInput.py:140
+msgid "Motion positions"
+msgstr "모션 위치"
+
+#: photofilmstrip/gui/DlgPositionInput.py:147
+msgid "Start position"
+msgstr "시작 위치"
+
+#: photofilmstrip/gui/DlgPositionInput.py:155
+#: photofilmstrip/gui/DlgPositionInput.py:199
+msgid "Location:"
+msgstr "위치:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:173
+#: photofilmstrip/gui/DlgPositionInput.py:215
+msgid "Size:"
+msgstr "크기:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:191
+msgid "End position"
+msgstr "끝 위치"
+
+#: photofilmstrip/gui/DlgPositionInput.py:233
+msgid "Reset"
+msgstr "재설정"
+
+#: photofilmstrip/gui/DlgPositionInput.py:252
+msgid "Adjust motion positions directly"
+msgstr "직접 모션 위치 조정"
+
+#: photofilmstrip/gui/DlgRender.py:96
+#, fuzzy
+msgid "Render project"
+msgstr "최근 프로젝트"
+
+#: photofilmstrip/gui/DlgRender.py:107
 msgid "Format:"
 msgstr "포맷:"
 
-#: src/gui/DlgRender.py:179
+#: photofilmstrip/gui/DlgRender.py:122
 msgid "Properties"
 msgstr "속성"
 
-#: src/gui/DlgRender.py:183
+#: photofilmstrip/gui/DlgRender.py:127
+msgid "Profile:"
+msgstr "프로필:"
+
+#: photofilmstrip/gui/DlgRender.py:136
 msgid "Draft"
 msgstr "초안"
 
-#: src/gui/DlgRender.py:200
-msgid "&Batch Job"
-msgstr "일괄 작업(&B)"
-
-#: src/gui/DlgRender.py:205
+#: photofilmstrip/gui/DlgRender.py:152
 msgid "&Start"
 msgstr "시작(&S)"
 
-#: src/gui/DlgRender.py:229
+#: photofilmstrip/gui/DlgRender.py:164
 msgid "Configure output and start render process"
 msgstr "구성 출력 및 렌더링 과정 시작"
 
-#: src/gui/DlgRender.py:281
-msgid "Audio file '%s' does not exist! Continue anyway?"
-msgstr "'%s' 오디오 파일이 존재하지 않습니다! 계속하시겠습니까?"
-
-#: src/gui/DlgRender.py:282
-msgid "Warning"
-msgstr "경고"
-
-#: src/gui/DlgRender.py:334
-msgid "Abort current process?"
-msgstr "현재 과정을 중지시키겠습니까?"
-
-#: src/gui/DlgRender.py:419
-msgid "Project not saved yet. Please save the project first to create a batch job!"
-msgstr "프로젝트가 저장되지 않았습니다. 일괄 작업을 만들 프로젝트를 처음으로 저장하십시오!"
-
-#: src/gui/DlgRender.py:431
-msgid "Batch file"
-msgstr "배치 파일"
-
-#: src/gui/DlgRender.py:438
-msgid "Shell script"
-msgstr "쉘 스크립트"
-
-#: src/gui/DlgRender.py:444
-msgid "Select batch file"
-msgstr "배치 파일 선택"
-
-#: src/gui/DlgRendererProps.py:65
+#: photofilmstrip/gui/DlgRendererProps.py:50
 msgid "Property"
 msgstr "속성"
 
-#: src/gui/DlgRendererProps.py:67
+#: photofilmstrip/gui/DlgRendererProps.py:52
 msgid "Value"
 msgstr "값"
 
-#: src/gui/DlgRendererProps.py:86
+#: photofilmstrip/gui/DlgRendererProps.py:71
 msgid "Output properties"
 msgstr "출력 속성"
 
-#: src/gui/DlgRendererProps.py:128
+#: photofilmstrip/gui/DlgRendererProps.py:113
 msgid "Edit extended output properties"
 msgstr "확장 출력 속성 편집"
 
-#: src/gui/DlgRendererProps.py:164
+#: photofilmstrip/gui/DlgRendererProps.py:147
 msgid "Edit property"
 msgstr "속성 편집"
 
-#: src/gui/FrmMain.py:77
+#: photofilmstrip/gui/FrmMain.py:83
 msgid "Welcome"
 msgstr "환영"
 
-#: src/gui/FrmMain.py:176
-msgid "You must restart %s for your new language setting to take effect."
-msgstr "새 언어 설정을 적용하려면 %s 을 다시 시작해야 합니다."
+#: photofilmstrip/gui/FrmMain.py:85
+msgid "Job queue"
+msgstr ""
 
-#: src/gui/FrmMain.py:236
-msgid "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select your photos, customize the motion path and render the video. There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
-msgstr "PhotoFilmStrip은 3단계로 사진을 영화로 만들 수 있습니다. 처음으로 사진을 선택하고, 사용자 모션 경로를 정의하고 비디오를 렌더합니다. VCD, SVCD, DVD, 풀 HD 등 출력 가능한 몇 가지가 있습니다."
+#: photofilmstrip/gui/FrmMain.py:141
+msgid "Rendering in progress..."
+msgstr ""
 
-#: src/gui/FrmMain.py:239
-msgid "online"
-msgstr "온라인"
+#: photofilmstrip/gui/FrmMain.py:234 photofilmstrip/gui/PnlWelcome.py:57
+#, fuzzy
+msgid "Create new slideshow"
+msgstr "포터블"
 
-#: src/gui/FrmMain.py:255
+#: photofilmstrip/gui/FrmMain.py:241
+#, fuzzy
+msgid "Create new timelapse"
+msgstr "새 프로젝트 만들기"
+
+#: photofilmstrip/gui/FrmMain.py:249
 msgid "Select %s-Project"
 msgstr "%s-프로젝트 선택"
 
-#: src/gui/FrmMain.py:257
-#: src/gui/FrmMain.py:277
-#: src/gui/FrmMain.py:308
-#: src/gui/FrmMain.py:319
-msgid "Project"
-msgstr "프로젝트"
+#: photofilmstrip/gui/FrmMain.py:251
+#, fuzzy
+msgid "Files"
+msgstr "파일(&E)"
 
-#: src/gui/FrmMain.py:274
-msgid "Save %s-Project"
-msgstr "%s-프로젝트 저장"
+#: photofilmstrip/gui/FrmMain.py:289
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "새 언어 설정을 적용하려면 %s 을 다시 시작해야 합니다."
 
-#: src/gui/FrmMain.py:286
-msgid "Overwrite existing file '%s'?"
-msgstr "기존의 '%s' 파일을 덮어 쓰시겠습니까?"
+#: photofilmstrip/gui/FrmMain.py:300
+msgid ""
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
+"select your photos, customize the motion path and render the video. There "
+"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr ""
+"PhotoFilmStrip은 3단계로 사진을 영화로 만들 수 있습니다. 처음으로 사진을 선택"
+"하고, 사용자 모션 경로를 정의하고 비디오를 렌더합니다. VCD, SVCD, DVD, 풀 HD "
+"등 출력 가능한 몇 가지가 있습니다."
 
-#: src/gui/FrmMain.py:305
-msgid "Export %s-Project"
-msgstr "%s-프로젝트 수출"
+#: photofilmstrip/gui/FrmMain.py:303
+msgid "online"
+msgstr "온라인"
 
-#: src/gui/FrmMain.py:308
-#: src/gui/FrmMain.py:319
-msgid "Portable"
-msgstr "포터블"
-
-#: src/gui/FrmMain.py:317
-msgid "Import %s-Project"
-msgstr "%s-프로젝트 수입"
-
-#: src/gui/FrmMain.py:402
-msgid "'%s' has been modified. Save changes?"
-msgstr "'%s' 파일이 수정되었습니다. 저장하시겠습니까?"
-
-#: src/gui/FrmMain.py:425
-msgid "Images"
-msgstr "이미지"
-
-#: src/gui/FrmMain.py:430
-msgid "Duration"
-msgstr "지속기간"
-
-#: src/gui/FrmMain.py:455
+#: photofilmstrip/gui/FrmMain.py:374
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "잘못된 %(app)s-프로젝트 %(file)s"
 
-#: src/gui/FrmMain.py:479
-msgid "Could not save the file '%(file)s': %(errMsg)s"
-msgstr "'%(file)s' 파일을 저장할 수 없습니다: %(errMsg)s"
-
-#: src/gui/PnlAddPics.py:91
-#: src/gui/PnlWelcome.py:43
+#: photofilmstrip/gui/PnlAddPics.py:50 photofilmstrip/gui/PnlWelcome.py:30
 msgid "Welcome to PhotoFilmStrip"
 msgstr "PhotoFilmStrip에 오신 것을 환영합니다"
 
-#: src/gui/PnlAddPics.py:92
+#: photofilmstrip/gui/PnlAddPics.py:52
 msgid ""
 "Drag some pictures onto this text or\n"
 "click the button below\n"
@@ -660,136 +640,481 @@ msgstr ""
 "아래 버튼을 클릭하여\n"
 "PhotoFilmStrip에 새 사진을 추가할 수 있습니다."
 
-#: src/gui/PnlEditPicture.py:154
+#: photofilmstrip/gui/PnlEditPicture.py:142
 msgid "Settings"
 msgstr "설정"
 
-#: src/gui/PnlEditPicture.py:158
+#: photofilmstrip/gui/PnlEditPicture.py:146
 msgid "Rotation:"
 msgstr "회전:"
 
-#: src/gui/PnlEditPicture.py:178
+#: photofilmstrip/gui/PnlEditPicture.py:166
 msgid "Effect:"
 msgstr "효과:"
 
-#: src/gui/PnlEditPicture.py:192
+#: photofilmstrip/gui/PnlEditPicture.py:180
 msgid "Process"
 msgstr "과정"
 
-#: src/gui/PnlEditPicture.py:196
-msgid "Transition:"
-msgstr "전환:"
+#: photofilmstrip/gui/PnlEditPicture.py:184
+msgid "Movement:"
+msgstr ""
 
-#: src/gui/PnlEditPicture.py:208
-#: src/gui/PnlEditPicture.py:220
+#: photofilmstrip/gui/PnlEditPicture.py:196
+#: photofilmstrip/gui/PnlEditPicture.py:212
+#: photofilmstrip/gui/PnlEditPicture.py:359
 msgid "sec"
 msgstr "초"
 
-#: src/gui/PnlEditPicture.py:212
-msgid "Duration:"
-msgstr "지속기간:"
+#: photofilmstrip/gui/PnlEditPicture.py:200
+msgid "Transition:"
+msgstr "전환:"
 
-#: src/gui/PnlEditPicture.py:228
+#: photofilmstrip/gui/PnlEditPicture.py:220
 msgid "Subtitle"
 msgstr "자막"
 
-#: src/gui/PnlEditPicture.py:252
+#: photofilmstrip/gui/PnlEditPicture.py:240
+msgid "Linear"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:241
+msgid "Accelerated"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:242
+msgid "Delayed"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditPicture.py:250
 msgid "No effect"
 msgstr "효과 없음"
 
-#: src/gui/PnlEditPicture.py:253
+#: photofilmstrip/gui/PnlEditPicture.py:251
 msgid "Black and White"
 msgstr "흑백"
 
-#: src/gui/PnlEditPicture.py:254
+#: photofilmstrip/gui/PnlEditPicture.py:252
 msgid "Sepia tone"
 msgstr "암갈색 톤"
 
-#: src/gui/PnlEditPicture.py:260
+#: photofilmstrip/gui/PnlEditPicture.py:258
 msgid "None"
 msgstr "없음"
 
-#: src/gui/PnlEditPicture.py:261
+#: photofilmstrip/gui/PnlEditPicture.py:259
 msgid "Fade"
 msgstr "투명하게"
 
-#: src/gui/PnlEditPicture.py:262
+#: photofilmstrip/gui/PnlEditPicture.py:260
 msgid "Roll"
 msgstr "이동"
 
-#: src/gui/PnlPfsProject.py:104
-msgid "Random motion"
-msgstr "무작위 모션"
+#: photofilmstrip/gui/PnlEditPicture.py:354
+msgid "fpp"
+msgstr ""
 
-#: src/gui/PnlPfsProject.py:109
-msgid "Set motion end to start"
-msgstr "시작 모션을 끝에 설정"
+#: photofilmstrip/gui/PnlEditPicture.py:355
+msgid "frames per picture - the number of frames each picture will be shown"
+msgstr ""
 
-#: src/gui/PnlPfsProject.py:113
+#: photofilmstrip/gui/PnlEditorPage.py:26
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "'%(file)s' 파일을 저장할 수 없습니다: %(errMsg)s"
+
+#: photofilmstrip/gui/PnlEditorPage.py:45
+msgid "New file"
+msgstr ""
+
+#: photofilmstrip/gui/PnlEditorPage.py:48
+msgid "'%s' has been modified. Save changes?"
+msgstr "'%s' 파일이 수정되었습니다. 저장하시겠습니까?"
+
+#: photofilmstrip/gui/PnlEditorPage.py:74
+#, fuzzy
+msgid "Save %s"
+msgstr "%s-프로젝트 저장"
+
+#: photofilmstrip/gui/PnlEditorPage.py:77
+#, fuzzy
+msgid "File"
+msgstr "파일(&E)"
+
+#: photofilmstrip/gui/PnlEditorPage.py:87
+msgid "Overwrite existing file '%s'?"
+msgstr "기존의 '%s' 파일을 덮어 쓰시겠습니까?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:118
+#: photofilmstrip/gui/PnlPfsProject.py:120
 msgid "Set motion start to end"
 msgstr "끝 모션을 시작에 설정"
 
-#: src/gui/PnlPfsProject.py:119
+#: photofilmstrip/gui/PnlPfsProject.py:122
+#: photofilmstrip/gui/PnlPfsProject.py:124
+msgid "Set motion end to start"
+msgstr "시작 모션을 끝에 설정"
+
+#: photofilmstrip/gui/PnlPfsProject.py:126
+#: photofilmstrip/gui/PnlPfsProject.py:128
+#, fuzzy
+msgid "Swap motion"
+msgstr "무작위 모션"
+
+#: photofilmstrip/gui/PnlPfsProject.py:131
+#: photofilmstrip/gui/PnlPfsProject.py:133
 msgid "Adjust motion manual"
 msgstr "모션 수동 조정"
 
-#: src/gui/PnlPfsProject.py:264
+#: photofilmstrip/gui/PnlPfsProject.py:136
+#: photofilmstrip/gui/PnlPfsProject.py:138
+msgid "Preserve image dimension"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:294
+msgid "&Import Pictures"
+msgstr "이미지 수입(&I)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:299
+msgid "Move picture &left"
+msgstr "왼쪽으로 사진 이동(&l)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:303
+msgid "Move picture &right"
+msgstr "오른쪽으로 사진 이동(&r)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:308
+#, fuzzy
+msgid "R&emove Picture"
+msgstr "이미지 제거(&R)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:313
+msgid "Rotate &clockwise"
+msgstr "오른쪽으로 회전(&c)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:317
+msgid "Rotate counter clock&wise"
+msgstr "왼쪽으로 회전(&w)"
+
+#: photofilmstrip/gui/PnlPfsProject.py:322
+#, fuzzy
+msgid "Random &motion"
+msgstr "무작위 모션"
+
+#: photofilmstrip/gui/PnlPfsProject.py:326
+msgid "Centralize m&otion"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:384
+msgid "Export slideshow"
+msgstr ""
+
+#: photofilmstrip/gui/PnlPfsProject.py:387
+#: photofilmstrip/gui/PnlPfsProject.py:400
+#, fuzzy
+msgid "Portable slideshow"
+msgstr "포터블"
+
+#: photofilmstrip/gui/PnlPfsProject.py:398
+#, fuzzy
+msgid "Import Slideshow"
+msgstr "이미지 수입"
+
+#: photofilmstrip/gui/PnlPfsProject.py:409
 msgid "Import images"
 msgstr "이미지 수입"
 
-#: src/gui/PnlPfsProject.py:266
-#: src/gui/PnlPfsProject.py:326
-msgid "Imagefiles"
+#: photofilmstrip/gui/PnlPfsProject.py:411
+#, fuzzy
+msgid "Image files"
 msgstr "이미지 파일"
 
-#: src/gui/PnlPfsProject.py:315
-msgid "Browse"
-msgstr "찾아보기"
+#: photofilmstrip/gui/PnlPfsProject.py:654
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "'%s' 오디오 파일이 존재하지 않습니다! 계속하시겠습니까?"
 
-#: src/gui/PnlPfsProject.py:324
-msgid "Import image"
-msgstr "이미지 수입"
+#: photofilmstrip/gui/PnlPfsProject.py:655
+msgid "Warning"
+msgstr "경고"
 
-#: src/gui/PnlPfsProject.py:448
-msgid "Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?"
-msgstr "일부 이미지는 '%s' 폴더에 더 이상 존재하지 않습니다. 만약 파일이 이동되었다면 새 경로를 선택할 수 있습니다. 새 경로를 선택하시겠습니까?"
+#: photofilmstrip/gui/PnlSlideshow.py:30
+msgid "&Properties"
+msgstr "환경 설정(&P)"
 
-#: src/gui/PnlPfsProject.py:472
-msgid "Please wait"
-msgstr "기다려주십시오"
+#: photofilmstrip/gui/PnlSlideshow.py:39 photofilmstrip/gui/PnlSlideshow.py:40
+#: photofilmstrip/gui/PnlTimelapse.py:25 photofilmstrip/gui/PnlTimelapse.py:26
+msgid "Import Pictures"
+msgstr "사진 수입"
 
-#: src/gui/PnlPfsProject.py:473
-msgid "Loading pictures..."
-msgstr "사진 불러오기..."
+#: photofilmstrip/gui/PnlSlideshow.py:62 photofilmstrip/gui/PnlSlideshow.py:63
+#: photofilmstrip/gui/PnlTimelapse.py:41 photofilmstrip/gui/PnlTimelapse.py:42
+msgid "Render filmstrip"
+msgstr "Filmstrip 렌더"
 
-#: src/gui/PnlWelcome.py:50
-#: src/gui/PnlWelcome.py:105
+#: photofilmstrip/gui/PnlSlideshow.py:89 photofilmstrip/gui/PnlTimelapse.py:66
+msgid "Images"
+msgstr "이미지"
+
+#: photofilmstrip/gui/PnlSlideshow.py:94
+msgid "Duration"
+msgstr "지속기간"
+
+#: photofilmstrip/gui/PnlTimelapse.py:69
+msgid "Frames"
+msgstr ""
+
+#: photofilmstrip/gui/PnlTimelapse.py:92
+msgid "The picture counter is not increasing: %s"
+msgstr ""
+
+#: photofilmstrip/gui/PnlTimelapse.py:110
+msgid ""
+"Filename '%s' does not match a number pattern which is necessary for a time "
+"lapse slide show!"
+msgstr ""
+
+#: photofilmstrip/gui/PnlWelcome.py:37 photofilmstrip/gui/PnlWelcome.py:103
 msgid "Recent projects"
 msgstr "최근 프로젝트"
 
-#: src/gui/PnlWelcome.py:62
-msgid "Create new project"
-msgstr "새 프로젝트 만들기"
-
-#: src/gui/PnlWelcome.py:67
+#: photofilmstrip/gui/PnlWelcome.py:62
 msgid "Open existing project"
 msgstr "기존 프로젝트 열기"
 
-#: src/gui/PnlWelcome.py:108
+#: photofilmstrip/gui/PnlWelcome.py:106
 msgid "How to start..."
 msgstr "시작 방법..."
 
-#: src/gui/PnlWelcome.py:109
+#: photofilmstrip/gui/PnlWelcome.py:107
 msgid "Create a new project or load an existing one."
 msgstr "새 프로젝트를 만들거나 기존의 프로젝트를 불러오십시오."
 
-#: src/gui/PnlWelcome.py:140
+#: photofilmstrip/gui/PnlWelcome.py:138
 msgid "Update available"
 msgstr "사용 가능한 업데이트"
 
-#: src/gui/PnlWelcome.py:143
+#: photofilmstrip/gui/PnlWelcome.py:141
 msgid "The following changes has been made:"
 msgstr "다음과 같이 변경되습니다:"
+
+#: photofilmstrip/gui/WxProjectFile.py:59
+#, fuzzy
+msgid "Loading project %s"
+msgstr "프로젝트 불러오기"
+
+#: photofilmstrip/gui/WxProjectFile.py:75
+#, fuzzy
+msgid "Saving project %s"
+msgstr "프로젝트 저장"
+
+#: photofilmstrip/gui/WxProjectFile.py:100
+msgid ""
+"Some images does not exist in the folder '%s' anymore. If the files has "
+"moved you can select the new path. Do you want to select a new path?"
+msgstr ""
+"일부 이미지는 '%s' 폴더에 더 이상 존재하지 않습니다. 만약 파일이 이동되었다"
+"면 새 경로를 선택할 수 있습니다. 새 경로를 선택하시겠습니까?"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
+msgid "Elapsed time"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:85
+msgid "Remaining time"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:203
+msgid "Unknown"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobManager.py:50
+msgid "&Clear list"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:127
+msgid "Abort"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:133
+msgid "Remove from list"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:223
+#, fuzzy
+msgid "Abort selected process?"
+msgstr "현재 과정을 중지시키겠습니까?"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:29
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:25
+#, fuzzy
+msgid "Waiting..."
+msgstr "중지..."
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:68
+#: photofilmstrip/lib/jobimpl/VisualJob.py:85
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:60
+#, fuzzy
+msgid "Aborted"
+msgstr "...중지되었습니다!"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:70
+msgid "Done"
+msgstr ""
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:79
+#, fuzzy
+msgid "Aborting..."
+msgstr "중지..."
+
+#: photofilmstrip/ux/gnome.py:50 photofilmstrip/ux/uwp.py:66
+msgid "Slideshow created!"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Audio files:"
+#~ msgstr "오디오 파일"
+
+#~ msgid "Project properties"
+#~ msgstr "프로젝트 속성"
+
+#~ msgid "PhotoFilmStrip project"
+#~ msgstr "PhotoFilmStrip 프로젝트"
+
+#~ msgid "Unnamed PhotoFilmStrip"
+#~ msgstr "Unnamed PhotoFilmStrip"
+
+#~ msgid "Project"
+#~ msgstr "프로젝트"
+
+#~ msgid "invalid videonorm specified: %s"
+#~ msgstr "잘못된 비디오 표준이 지정되었습니다.: %s"
+
+#~ msgid "Error: %s"
+#~ msgstr "오류: %s"
+
+#~ msgid "Please wait..."
+#~ msgstr "기다려주십시오..."
+
+#~ msgid "initialize renderer"
+#~ msgstr "렌더러 초기화"
+
+#~ msgid "creating output..."
+#~ msgstr "출력 만들기..."
+
+#~ msgid "mencoder (mencoder) required!"
+#~ msgstr "mencoder (mencoder) 가 필요합니다!"
+
+#~ msgid "MPEG(1/2)-Video (MPG)"
+#~ msgstr "MPEG(1/2)-비디오 (MPG)"
+
+#~ msgid "MPEG format supports only VCD, SVCD and DVD profile!"
+#~ msgstr "MPEG 포맷은 VCD, SVCD와 DVD 프로필만 지원합니다!"
+
+#~ msgid "MPEG4-XVid/AC3 (AVI)"
+#~ msgstr "MPEG4-XVid/AC3 (AVI)"
+
+#, fuzzy
+#~ msgid "mencoder with MP3 support (mp3lame) required!"
+#~ msgstr "mencoder (mencoder) 가 필요합니다!"
+
+#~ msgid "MPEG4-XVid/MP3 (AVI)"
+#~ msgstr "MPEG4-XVid/MP3 (AVI)"
+
+#~ msgid "Flash-Video (FLV)"
+#~ msgstr "플래시 비디오 (FLV)"
+
+#~ msgid "Motion-JPEG (AVI)"
+#~ msgstr "모션-JPEG (AVI)"
+
+#~ msgid "&Tools"
+#~ msgstr "도구(&T)"
+
+#~ msgid "New Project"
+#~ msgstr "새 프로젝트"
+
+#~ msgid "&New Project"
+#~ msgstr "새 프로젝트(&N)"
+
+#~ msgid "&Open Project"
+#~ msgstr "프로젝트 열기(&O)"
+
+#~ msgid "&Save Project"
+#~ msgstr "프로젝트 저장(&S)"
+
+#~ msgid "&Close Project"
+#~ msgstr "프로젝트 닫기(&C)"
+
+#~ msgid "&Render filmstrip"
+#~ msgstr "Filmstrip 렌더(&R)"
+
+#~ msgid "Finalizing"
+#~ msgstr "완성"
+
+#~ msgid "Choose your next action:"
+#~ msgstr "다음 작업을 선택하십시오:"
+
+#~ msgid "Delete unfinished result"
+#~ msgstr "미완성 결과 지우기"
+
+#~ msgid "Do nothing"
+#~ msgstr "아무것도 하지 않음"
+
+#~ msgid "Show error again and send to developer."
+#~ msgstr "오류가 다시 보이면 개발자에게 보내십시오."
+
+#~ msgid "The rendering process was aborted."
+#~ msgstr "렌더링 과정이 정지되었습니다."
+
+#~ msgid "The rendering process was interrupted."
+#~ msgstr "렌더링 과정이 일시 정지되었습니다."
+
+#~ msgid "The rendering process has been finished."
+#~ msgstr "렌더링 과정이 끝났습니다."
+
+#~ msgid "Audio file:"
+#~ msgstr "오디오 파일:"
+
+#~ msgid "Type:"
+#~ msgstr "종류:"
+
+#~ msgid "&Batch Job"
+#~ msgstr "일괄 작업(&B)"
+
+#~ msgid ""
+#~ "Project not saved yet. Please save the project first to create a batch "
+#~ "job!"
+#~ msgstr ""
+#~ "프로젝트가 저장되지 않았습니다. 일괄 작업을 만들 프로젝트를 처음으로 저장"
+#~ "하십시오!"
+
+#~ msgid "Batch file"
+#~ msgstr "배치 파일"
+
+#~ msgid "Shell script"
+#~ msgstr "쉘 스크립트"
+
+#~ msgid "Select batch file"
+#~ msgstr "배치 파일 선택"
+
+#~ msgid "Export %s-Project"
+#~ msgstr "%s-프로젝트 수출"
+
+#~ msgid "Import %s-Project"
+#~ msgstr "%s-프로젝트 수입"
+
+#~ msgid "Duration:"
+#~ msgstr "지속기간:"
+
+#~ msgid "Browse"
+#~ msgstr "찾아보기"
+
+#~ msgid "Import image"
+#~ msgstr "이미지 수입"
+
+#~ msgid "Please wait"
+#~ msgstr "기다려주십시오"
+
+#~ msgid "Loading pictures..."
+#~ msgstr "사진 불러오기..."
 
 #~ msgid "Invalid audio file!"
 #~ msgstr "잘못된 오디오 파일입니다!"

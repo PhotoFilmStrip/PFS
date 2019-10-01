@@ -2,7 +2,11 @@
 
 if %1!==! goto usage
 
-set PYTHON=C:\Python27\python.exe
+set PYTHON=python.exe
+
+git rev-parse --short HEAD > scm_rev.txt
+set /p SCM_REV=<scm_rev.txt
+del scm_rev.txt
 
 if "%1"=="compile" goto compile
 if "%1"=="clean" goto clean
@@ -19,7 +23,7 @@ goto end
 goto end
 
 :versioninfo
-%PYTHON% -c "from photofilmstrip import Constants;print Constants.APP_VERSION"
+%PYTHON% -c "from photofilmstrip import Constants;print(Constants.APP_VERSION)"
 goto end
 
 :package

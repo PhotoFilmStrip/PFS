@@ -1,47 +1,29 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2008 Jens Goepfert
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
 
 import os
-import sys
 
-import wx.html
-
-from photofilmstrip.lib.common.Singleton import Singleton
+from photofilmstrip.lib.util import StartFile, GetDocDir
 
 
-class HelpViewer(Singleton):
-    
-    ID_INDEX      = 1
-    ID_CREATE_PFS = 3
-    ID_RENDER     = 4
-    
+class HelpViewer:
+
+    ID_INDEX = "index.html"
+    ID_CREATE_PFS = "createpfs.html"
+    ID_RENDER = "renderpfs.html"
+
     def __init__(self):
-        self.__htmlCtrl = wx.html.HtmlHelpController()
-        docFile = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), 
-                               "..", "share", "doc", "photofilmstrip", "photofilmstrip.hhp")
-        fn = os.path.abspath(docFile)
-        self.__htmlCtrl.AddBook(fn)
-        
+        docDir = GetDocDir("html")
+        if docDir is None:
+            raise RuntimeError("helpdir not found!")
+        self.docDir = os.path.abspath(docDir)
+
     def DisplayID(self, ident):
-        self.__htmlCtrl.DisplayID(ident)
+        StartFile(os.path.join(self.docDir, ident))
 
     def Show(self):
-        self.__htmlCtrl.DisplayContents()
+        StartFile(os.path.join(self.docDir, self.ID_INDEX))

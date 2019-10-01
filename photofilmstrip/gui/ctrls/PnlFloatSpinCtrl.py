@@ -1,41 +1,27 @@
-#Boa:FramePanel:PnlFloatSpinCtrl
-# encoding: UTF-8
+# Boa:FramePanel:PnlFloatSpinCtrl
+# -*- coding: utf-8 -*-
 #
 # PhotoFilmStrip - Creates movies out of your pictures.
 #
 # Copyright (C) 2010 Jens Goepfert
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
 import wx
 
 from photofilmstrip.gui.util.FloatValidator import FloatValidator
 
-
-[wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE, 
- wxID_PNLFLOATSPINCTRLTCVALUE, 
+[wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE,
+ wxID_PNLFLOATSPINCTRLTCVALUE,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
 
 class PnlFloatSpinCtrl(wx.Panel):
+
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddWindow(self.tcValue, 1, border=0, flag=0)
-        parent.AddWindow(self.spinButtonValue, 0, border=0, flag=0)
+        parent.Add(self.tcValue, 1, border=0, flag=0)
+        parent.Add(self.spinButtonValue, 0, border=0, flag=0)
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -71,22 +57,22 @@ class PnlFloatSpinCtrl(wx.Panel):
     def __init__(self, parent, id, pos, size, style, name):
         self._init_ctrls(parent)
         self.tcValue.SetValidator(FloatValidator())
-        self.spinButtonValue.SetMinSize(wx.Size(-1, self.tcValue.GetSizeTuple()[1]))
+        self.spinButtonValue.SetMinSize(wx.Size(-1, self.tcValue.GetSize()[1]))
 
     def __SendValueChangedEvent(self, value):
         evt = ValueChangedEvent(self.GetId(), value)
         evt.SetEventObject(self)
-        self.GetEventHandler().ProcessEvent(evt)        
+        self.GetEventHandler().ProcessEvent(evt)
 
     def SetRange(self, minVal, maxVal):
         self.spinButtonValue.SetRange(minVal, maxVal)
-        
+
     def OnSpinButtonValueSpin(self, event):
         value = event.GetPosition() / 10.0
         self.tcValue.ChangeValue("%.1f" % value)
         self.__SendValueChangedEvent(value)
         event.Skip()
-    
+
     def __GetValue(self):
         val = self.tcValue.GetValue()
         try:
@@ -94,29 +80,30 @@ class PnlFloatSpinCtrl(wx.Panel):
         except ValueError:
             floatVal = 1.0
         return min(floatVal, 600.0)
-    
+
     def SetValue(self, value):
         self.tcValue.ChangeValue("%.1f" % value)
         self.spinButtonValue.SetValue(int(value * 10))
-    
+
     def OnTextCtrlValueKillFocus(self, event):
         value = self.__GetValue()
         self.spinButtonValue.SetValue(int(value * 10))
         self.tcValue.ChangeValue("%.1f" % value)
         self.__SendValueChangedEvent(value)
         event.Skip()
-        
+
     def OnTextCtrlValueText(self, event):
         value = self.__GetValue()
         self.__SendValueChangedEvent(value)
         event.Skip()
-        
 
-_EVT_VALUE_CHANGED_TYPE  = wx.NewEventType()
-EVT_VALUE_CHANGED        = wx.PyEventBinder(_EVT_VALUE_CHANGED_TYPE, 1)
+
+_EVT_VALUE_CHANGED_TYPE = wx.NewEventType()
+EVT_VALUE_CHANGED = wx.PyEventBinder(_EVT_VALUE_CHANGED_TYPE, 1)
 
 
 class ValueChangedEvent(wx.PyCommandEvent):
+
     def __init__(self, wxId, value):
         wx.PyCommandEvent.__init__(self, _EVT_VALUE_CHANGED_TYPE, wxId)
         self.__value = value

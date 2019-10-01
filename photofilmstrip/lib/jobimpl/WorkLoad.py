@@ -1,10 +1,13 @@
-# encoding: UTF-8
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 Jens Goepfert
+#
 
 from .IWorkLoad import IWorkLoad
 
 
 class WorkLoad(IWorkLoad):
-    
+
     def __init__(self):
         pass
 
@@ -16,6 +19,6 @@ class WorkLoad(IWorkLoad):
             return self.Run(jobContext)
         finally:
             self._Finish()
-            
+
     def _Finish(self):
         pass

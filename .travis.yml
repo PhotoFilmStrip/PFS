@@ -1,13 +1,23 @@
 language: python
+python:
+  - "3.6"
 before_install:
-  - sudo apt-get install -y devscripts
+  - sudo apt-get install -y python3-gst-1.0
+install:
+  - pip install sphinx
+  - pip install pillow
+  - pip install pylint
 script:
   - export SCM_REV=$TRAVIS_COMMIT
   - export SCM_REV=`git rev-parse --short HEAD`
-  - export VERSION=`make versioninfo -s`
-  - export RELEASE_DIR=`echo release_\`date +"%Y_%m_%d"\``
-  - make compile
-  - make package
-after_success:  
-  - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip_$VERSION-1_all.deb" --data-binary @"$RELEASE_DIR/photofilmstrip_$VERSION-1_all.deb"
-  - curl -X PUT -u travis-ci:travis-ci "http://owncloud.sg-dev.de/remote.php/webdav/PFS/photofilmstrip-$VERSION.tar.gz" --data-binary @"$RELEASE_DIR/photofilmstrip-$VERSION.tar.gz"
+  - make
+deploy:
+  provider: releases
+  api_key:
+    secure: Sy4CkTH86aJB2yUIlsoQLErG223xBLzQjjL/kG3T1JpL4T7ECznqyCOXrUUmMJxKwMQiZIIRb9wGGjRPonysMZfjSTC+NMkJI+wA+Q+sbeLjXlZXUK0XwBW+MOVXzsFW5YoGlPmdEuSjoyfVSovotRcZiUTjGUqiuXDVU4KjYfienWcsSo/Adu4gaUU1C/eU3D8iQlSbFpGDu28jxPNUwKPYBIbFcWbc8HRlQlPO5KZblGLNe44Q8TADNm0+/6GhuPGFiqmAYu+YpZH1LH/AqJTkZQ/Id+sTioWopRe9Joo8OsPD75zo3rXgWNuHDTk/v3Il9BLZZojsFeLiszliouQ2R/er/cjg7T4VQWnweKtqkCUIUWSgqEiZQywMBJ562w7wxRzCcb85Qb/ZTO8OqRcoGZe5OpedLDaAaZ29aEAtfBtJJF2abh/1twwx6X/gwwfFr0tgssIQwHHlA7tgPvi0d5ENpnuhh2Q++6Ig1ZgdC21yNMk/zxcNA//Qe61qCf3eFL3NHp4JvqzgCcZgKq4/0mYmQD6sR6ZCStkJKwm7/IHRHIwmhV2rB1XkvOdRXRYqDEj5GnlgblX/vLoanZynMCJTAjL4KOo8hr7b7L2Ux+hgELjF4FpiHTdvtig1UzQG1PR5oRUAYbeNHgyiiUJTGgWu/Sct3ITHBBI2eO0=
+  file_glob: true
+  file: dist/*
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tags: true
