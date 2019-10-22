@@ -1305,6 +1305,17 @@ index.append('VIDEO_FORMAT_16')
 catalog['VIDEO_FORMAT_16'] = VIDEO_FORMAT_16
 
 #----------------------------------------------------------------------
+VIDEO_FORMAT_24 = PyEmbeddedImage(
+    b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlw'
+    b'SFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'
+    b'AACzSURBVEiJ7ZExCsIwFIa/V3OOUrxCHUQUEZcuvULxaNIrOOgiIlZw0CtI8RyROBVKTYXW'
+    b'dMs35eeF/3sh4PH8i9TDJMmuCLOOHcV9ny+qME020e2wLascNHRdywHm1SFOs1DL+1gfBt/3'
+    b'+xGnWSjanEDGzgVt5QDKhQDNGSSyjZy8QMBa7kzwCycCA+WgAhRLMM/BBI9d/jJKVjaJsz9o'
+    b'kzQFRddiEbnUJcqM1j139Hha+ACyfS0ZBZZuQQAAAABJRU5ErkJggg==')
+index.append('VIDEO_FORMAT_24')
+catalog['VIDEO_FORMAT_24'] = VIDEO_FORMAT_24
+
+#----------------------------------------------------------------------
 VIDEO_FORMAT_32 = PyEmbeddedImage(
     b'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlw'
     b'SFlzAAASdAAAEnQB3mYfeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'
@@ -1329,6 +1340,22 @@ ALERT_16 = PyEmbeddedImage(
     b'+AAAAABJRU5ErkJggg==')
 index.append('ALERT_16')
 catalog['ALERT_16'] = ALERT_16
+
+#----------------------------------------------------------------------
+ALERT_24 = PyEmbeddedImage(
+    b'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlw'
+    b'SFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoA'
+    b'AAHGSURBVEiJ5ZKxa1NRFMZ/5740GsTGKTgUXEp1UGntK0EFcbJ9dXF5ItakRcRF6NLaTkIU'
+    b'HRyEaP8BafwbGnGTTppMiogi6ODgaGmL1dh3HGwgSe97uS2d9JvePed+33e+dw/8Vxgenbzo'
+    b'jxXGd8IRZ/Hhmz2S23gLeN/JHv9UXfjpwjPOo+R+TANHgf6srNxypTklOHmhkEt78hHIbpVW'
+    b'RcxAbenpt25cpwT7jDxoEQc4GGl0z4XbNYEfFIeAGuB1tCIjmn+9VKkn8V0SlC3iACaK5HG3'
+    b'IRMN/LHCFeBc7AXhzEhQvJykEet+OgwzjbXMe+BIs1avLgqAHxS15erXX5t67M2LyrpNJzZB'
+    b'Yz0z3yqegL50Sm7HNa0G+WCiD2XWQfwvlLmh8avWYawGv9V7BBxwNoCMp6mHtsa2N/CDybOg'
+    b'y7ZeNwh6vlatvGyttScolQxoeTfiAIqUwzBsW+k2g5FXn28AfpxAvboozU2KweCXtf3XrQb5'
+    b'YKJX0bs7m9kGuT94aepQ85RqfmyKKaEcTqJ27L8VCrnURnQHmIGtf31q9Fq/MeYdkN7t3B1o'
+    b'oNGJ+vNnHwyAMebJHooD9CDewh7q/cv4AwsJash4c+SaAAAAAElFTkSuQmCC')
+index.append('ALERT_24')
+catalog['ALERT_24'] = ALERT_24
 
 #----------------------------------------------------------------------
 PROPERTIES_16 = PyEmbeddedImage(

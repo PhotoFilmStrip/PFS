@@ -81,7 +81,7 @@ class DlgBugReport(wx.Dialog):
                           str(getattr(sys, 'frozen', False))])
         params = urllib.parse.urlencode(
             {'bugreport': "%s-%s\n\n%s\n%s\n" % (Constants.APP_NAME,
-                                                 Constants.APP_VERSION_EX,
+                                                 Constants.APP_VERSION_FULL,
                                                  self.tcMsg.GetValue(),
                                                  info)})
         params = params.encode('utf_8')

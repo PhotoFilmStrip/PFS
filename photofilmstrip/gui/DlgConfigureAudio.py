@@ -14,6 +14,8 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.core.AudioPlayer import AudioPlayer
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.gui.helper import CreateMenuItem
+from photofilmstrip.lib.util import FILE_EXTENSIONS_AUDIO, GetDataDir
 
 
 class DlgConfigureAudio(wx.Dialog):
@@ -36,6 +38,7 @@ class DlgConfigureAudio(wx.Dialog):
         szCtrls.Add(self.lvAudio, 1, flag=wx.EXPAND | wx.RIGHT, border=4)
         szCtrls.Add(szAudioCmds)
 
+        szAudioCmds.Add(self.cmdBrowseMusic, border=2, flag=wx.BOTTOM)
         szAudioCmds.Add(self.cmdBrowseAudio, border=2, flag=wx.BOTTOM)
         szAudioCmds.Add(self.cmdAudioPreview, border=2, flag=wx.BOTTOM)
         szAudioCmds.Add(self.cmdAudioMoveUp, border=2, flag=wx.BOTTOM)
@@ -57,8 +60,13 @@ class DlgConfigureAudio(wx.Dialog):
         self.lvAudio = wx.ListBox(self, style=wx.LB_SINGLE)
         self.lvAudio.Bind(wx.EVT_LISTBOX, self.OnControlStatusAudio)
 
-        self.cmdBrowseAudio = wx.BitmapButton(self,
+        self.cmdBrowseMusic = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_MUSIC_16'),
+              name=u'cmdBrowseMusic', style=wx.BU_AUTODRAW)
+        self.cmdBrowseMusic.Bind(wx.EVT_BUTTON, self.OnCmdBrowseMusicButton)
+
+        self.cmdBrowseAudio = wx.BitmapButton(self,
+              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16'),
               name=u'cmdBrowseAudio', style=wx.BU_AUTODRAW)
         self.cmdBrowseAudio.Bind(wx.EVT_BUTTON, self.OnCmdBrowseAudioButton)
 
@@ -113,6 +121,9 @@ class DlgConfigureAudio(wx.Dialog):
 
         self.__project = project
         self.__mediaCtrl = None
+        self.__musicMap = {}
+
+        self.cmdBrowseMusic.Show(self.__GetAudioDir() is not None)
 
         if project.GetTimelapse():
             self.cbAudio.SetValue(False)
@@ -133,6 +144,25 @@ class DlgConfigureAudio(wx.Dialog):
 
     def OnControlStatusAudio(self, event):  # pylint: disable=unused-argument
         self.__ControlStatusAudio()
+
+    def OnCmdBrowseMusicButton(self, event):  # pylint: disable=unused-argument
+        menu = wx.Menu()
+
+        audioDir = self.__GetAudioDir()
+        for filename in os.listdir(audioDir):
+            fname, fext = os.path.splitext(filename)
+            if fext in FILE_EXTENSIONS_AUDIO:
+                audioFile = os.path.join(audioDir, filename)
+
+                ident = wx.NewId()
+                CreateMenuItem(menu, ident, fname)
+
+                self.__musicMap[ident] = audioFile
+
+                self.Bind(wx.EVT_MENU, self.__AddMusic, id=ident)
+
+        self.PopupMenu(menu, pos=self.cmdBrowseMusic.GetPosition(
+            ) + (0, self.cmdBrowseMusic.GetSize()[1]))
 
     def OnCmdBrowseAudioButton(self, event):  # pylint: disable=unused-argument
         dlg = wx.FileDialog(self, _(u"Select music"),
@@ -265,3 +295,9 @@ class DlgConfigureAudio(wx.Dialog):
             except:
                 pass
         self.__mediaCtrl = None
+
+    def __GetAudioDir(self):
+        return GetDataDir("audio")
+
+    def __AddMusic(self, event):
+        self.lvAudio.Append(self.__musicMap.get(event.GetId()))

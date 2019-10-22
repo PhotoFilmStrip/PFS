@@ -10,6 +10,8 @@ import sys
 
 import wx
 
+from photofilmstrip.lib.Settings import Settings
+
 from photofilmstrip.gui.ArtProvider  import ArtProvider
 from photofilmstrip.gui.FrmMain import FrmMain
 from photofilmstrip.gui.DlgBugReport import DlgBugReport
@@ -18,8 +20,15 @@ from photofilmstrip.gui.DlgBugReport import DlgBugReport
 class PhotoFilmStripApp(wx.App):
 
     def OnInit(self):
-#        self.SetAssertMode(wx.PYAPP_ASSERT_SUPPRESS)
-#        loc = wx.Locale(wx.LANGUAGE_GERMAN)
+        lang = Settings().GetLanguage()
+        wxLangInfo = wx.Locale.FindLanguageInfo(lang)
+        if wxLangInfo is None:
+            wxLang = wx.Locale.GetSystemLanguage()
+        else:
+            wxLang = wxLangInfo.Language
+            if not wx.Locale.IsAvailable(wxLang):
+                wxLang = wx.Locale.GetSystemLanguage()
+        self.locale = wx.Locale(wxLang)  # pylint: disable=attribute-defined-outside-init
 
         ArtProvider.Init()
 

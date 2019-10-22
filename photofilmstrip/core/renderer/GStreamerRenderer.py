@@ -19,6 +19,7 @@ from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.Subtitle import SrtParser
 from photofilmstrip.core.exceptions import RendererException
+from photofilmstrip.core.GtkMainLoop import GtkMainLoop
 
 
 class _GStreamerRenderer(BaseRenderer):
@@ -36,7 +37,6 @@ class _GStreamerRenderer(BaseRenderer):
         self.idxAudioFile = 0
         self.imgDuration = None
         self.finalTime = None
-        self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
         self.concat = None
@@ -83,7 +83,6 @@ class _GStreamerRenderer(BaseRenderer):
 
         self._Log(logging.DEBUG, "waiting for ready event")
         self.ready.wait()
-        self.gtkMainloop.quit()
 
         self.active = None
         self.finished = None
@@ -93,7 +92,6 @@ class _GStreamerRenderer(BaseRenderer):
         self.idxAudioFile = 0
         self.imgDuration = None
         self.finalTime = None
-        self.gtkMainloop = None
         self.textoverlay = None
         self.srtParse = None
         self.concat = None
@@ -246,17 +244,9 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.pipeline.set_state(Gst.State.PLAYING)
 
-        self.gtkMainloop = GObject.MainLoop()
-        gtkMainloopThread = threading.Thread(name="gtkMainLoop",
-                                             target=self._GtkMainloop)
-        gtkMainloopThread.start()
+        GtkMainLoop.EnsureRunning()
 
         self.ready.clear()
-
-    def _GtkMainloop(self):
-        self._Log(logging.DEBUG, "GTK mainloop starting...")
-        self.gtkMainloop.run()
-        self._Log(logging.DEBUG, "GTK mainloop finished")
 
     def _GstAddAudioFile(self, audioFile):
         '''

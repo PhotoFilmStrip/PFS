@@ -8,7 +8,7 @@
 import glob
 import sys, os
 import sqlite3
-
+import unittest
 import zipfile
 
 from distutils import log
@@ -96,7 +96,7 @@ class pfs_scm_info(Command):
             # building deb with fakeroot has no SCM_REV var anymore
             try:
                 import photofilmstrip._scmInfo
-                scmRev = photofilmstrip._scmInfo.SCM_REV
+                scmRev = photofilmstrip._scmInfo.SCM_REV  # pylint: disable=no-member, protected-access
             except ImportError:
                 scmRev = "src"
 
@@ -292,9 +292,11 @@ class pfs_build(build):
                         ("REMOVE_16", "remove_16.png"),
                         ("REMOVE_D_16", "remove_d_16.png"),
                         ("VIDEO_FORMAT_16", "video_format_16.png"),
+                        ("VIDEO_FORMAT_24", "video_format_24.png"),
                         ("VIDEO_FORMAT_32", "video_format_32.png"),
 
                         ("ALERT_16", "alert_16.png"),
+                        ("ALERT_24", "alert_24.png"),
                         ("PROPERTIES_16", "properties_16.png"),
                         ("EXIT_16", "exit_16.png"),
                         ("HELP_16", "help_16.png"),
@@ -331,6 +333,26 @@ class pfs_build(build):
                 self.distribution.data_files.append(
                     (targetPath, (moFile,))
                 )
+
+
+class pfs_test(Command):
+
+    description = "runs unit tests"
+
+    user_options = []
+    sub_commands = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        loader = unittest.TestLoader()
+        suite = loader.discover("tests")
+        runner = unittest.TextTestRunner()
+        runner.run(suite)
 
 
 class pfs_exe(Command):
@@ -389,7 +411,22 @@ class pfs_exe(Command):
         for giTypeLib in ["GLib-2.0.typelib",
                           "GModule-2.0.typelib",
                           "GObject-2.0.typelib",
-                          "Gst-1.0.typelib"]:
+                          "Gst-1.0.typelib",
+                          "GES-1.0.typelib",
+                          "Gio-2.0.typelib",
+                          "GstAudio-1.0.typelib",
+                          "GstBase-1.0.typelib",
+                          "GstController-1.0.typelib",
+                          "GstPbutils-1.0.typelib",
+                          "GstTag-1.0.typelib",
+                          "GstVideo-1.0.typelib",
+                          "Atk-1.0.typelib",
+                          "cairo-1.0.typelib",
+                          "Gdk-3.0.typelib",
+                          "GdkPixbuf-2.0.typelib",
+                          "Gtk-3.0.typelib",
+                          "Pango-1.0.typelib",
+                         ]:
             self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
                            os.path.join(targetDir, giTypeLib))
 
@@ -413,7 +450,7 @@ class pfs_win_setup(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        ver = Constants.APP_VERSION
+        ver = Constants.APP_VERSION_SUFFIX
         open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
 
         is64Bit = sys.maxsize > 2 ** 32
@@ -448,7 +485,7 @@ class pfs_win_portable(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        ver = Constants.APP_VERSION
+        ver = Constants.APP_VERSION_SUFFIX
 
         is64Bit = sys.maxsize > 2 ** 32
         if is64Bit:
@@ -471,10 +508,10 @@ class Target:
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.product_version = "%s-%s" % (Constants.APP_VERSION, "src")
+        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, "src")
         self.version = "%s.%s" % (Constants.APP_VERSION, 0)
         self.company_name = ""
-        self.copyright = "(c) 2017"
+        self.copyright = "(c) 2019"
         self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
         self.description = self.name
 #        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
@@ -483,7 +520,7 @@ class Target:
         self.icon_resources = [(1, logo)]
 
     def Update(self, scmRev):
-        self.product_version = "%s-%s" % (Constants.APP_VERSION, scmRev)
+        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, scmRev)
 
 
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
@@ -570,6 +607,7 @@ setup(
                 "bdist_winport" : pfs_win_portable,
                 "scm_info"      : pfs_scm_info,
                 'build_sphinx'  : pfs_docs,
+                'test'          : pfs_test,
               },
     verbose=False,
     options={"py2exe": {"compressed": 2,
@@ -637,13 +675,13 @@ setup(
                           },
                "sdist": {"formats": ["gztar"]},
                'build_sphinx': {"project": Constants.APP_NAME,
-                                "release": Constants.APP_VERSION,
+                                "release": Constants.APP_VERSION_SUFFIX,
                                 "config_dir": 'docs/help',
                                 "builder": ["html"]}
     },
     data_files=[
                 (os.path.join("share", "doc", "photofilmstrip"), glob.glob("docs/*.*")),
-#                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
+                (os.path.join("share", "photofilmstrip", "audio"), glob.glob("data/audio/*.mp3")),
     ] + platform_data,
     scripts=[
              "scripts/photofilmstrip",
@@ -651,7 +689,7 @@ setup(
     ] + platform_scripts,
 
     name=Constants.APP_NAME.lower(),
-    version=Constants.APP_VERSION,
+    version=Constants.APP_VERSION_SUFFIX,
     license="GPLv2",
     description=Constants.APP_SLOGAN,
     long_description=Constants.APP_DESCRIPTION,

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip v3.0.2\n"
-"POT-Creation-Date: 2018-11-07 22:03+CET\n"
+"POT-Creation-Date: 2019-02-19 17:47+CET\n"
 "PO-Revision-Date: 2018-10-04 23:46+0200\n"
 "Last-Translator: geogeo.gr <geogeo.gr@gmail.com>\n"
 "Language-Team: geogeo.gr <https://www.geogeo.gr>\n"
@@ -34,7 +34,7 @@ msgid "Open folder"
 msgstr "Άνοιγμα φακέλου"
 
 #: photofilmstrip/action/ActionPlayVideo.py:20
-#: photofilmstrip/gui/PnlRenderJobVisual.py:22
+#: photofilmstrip/gui/PnlRenderJobVisual.py:22 photofilmstrip/ux/gnome.py:42
 msgid "Play video"
 msgstr "Αναπαραγωγή βίντεο"
 
@@ -964,7 +964,7 @@ msgstr "Ολοκληρώθηκε"
 msgid "Aborting..."
 msgstr "Ματαίωση..."
 
-#: photofilmstrip/uwp/UwpService.py:76
+#: photofilmstrip/ux/gnome.py:50 photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
 msgstr ""
 

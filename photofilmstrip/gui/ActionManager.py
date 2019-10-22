@@ -17,6 +17,7 @@ class ActionManager:
     ID_PROJECT_CLOSE = wx.NewId()
     ID_SLIDESHOW = wx.NewId()
     ID_TIMELAPSE = wx.NewId()
+    ID_STORY = wx.NewId()
 
     ID_LANG_EN = wx.NewId()
     ID_LANG_FR = wx.NewId()
@@ -111,6 +112,8 @@ class ActionManager:
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
         CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _(u'Timelapse'),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
+        CreateMenuItem(menu, ActionManager.ID_STORY, _(u'Story'),
+                       wx.ArtProvider.GetBitmap(wx.ART_LIST_VIEW, wx.ART_MENU, (16, 16)))
         return menu
 
     def __CreateMenuFile(self, editor=None):

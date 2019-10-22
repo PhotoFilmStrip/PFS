@@ -21,7 +21,6 @@ class GuiApp(AppMixin):
         import wx
         assert wx.VERSION[0] == 4
 
-        from photofilmstrip.ux.Ux import UxService
         UxService.GetInstance().Initialize()
 
         from photofilmstrip.gui.PhotoFilmStripApp import PhotoFilmStripApp

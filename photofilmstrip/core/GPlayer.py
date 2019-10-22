@@ -6,11 +6,11 @@
 #
 
 import logging
-import threading
 import time
 
 from gi.repository import Gst
-from gi.repository import GObject
+
+from photofilmstrip.core.GtkMainLoop import GtkMainLoop
 
 
 class GPlayer:
@@ -19,7 +19,6 @@ class GPlayer:
         self.__filename = filename
         self.__pipeline = None
         self.__length = None
-        self.__gtkMainloop = None
         self.__position = None
 
         self.__Identify()
@@ -94,9 +93,7 @@ class GPlayer:
             bus.add_signal_watch()
             bus.connect("message", self._GstOnMessage)
 
-        gtkMainloopThread = threading.Thread(name="gtkMainLoop",
-                                             target=self._GtkMainloop)
-        gtkMainloopThread.start()
+        GtkMainLoop.EnsureRunning()
 
     def Stop(self):
         self.Close()
@@ -132,16 +129,9 @@ class GPlayer:
 
         elif msg.type == Gst.MessageType.EOS:
             self.__pipeline.set_state(Gst.State.NULL)
-            self.__gtkMainloop.quit()
             self.__pipeline = None
-            self.__gtkMainloop = None
 
     def _GstPadAdded(self, decodebin, pad, audioConv):  # pylint: disable=unused-argument
         caps = pad.get_current_caps()
         compatible_pad = audioConv.get_compatible_pad(pad, caps)
         pad.link(compatible_pad)
-
-    def _GtkMainloop(self):
-        GObject.threads_init()
-        self.__gtkMainloop = GObject.MainLoop()
-        self.__gtkMainloop.run()

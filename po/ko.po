@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2018-11-07 22:03+CET\n"
+"POT-Creation-Date: 2019-02-19 17:47+CET\n"
 "PO-Revision-Date: 2011-07-10 13:36+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
 "Language-Team: Choi Youn-Soo <korea3d@gmail.com>\n"
@@ -34,7 +34,7 @@ msgid "Open folder"
 msgstr "폴더 열기"
 
 #: photofilmstrip/action/ActionPlayVideo.py:20
-#: photofilmstrip/gui/PnlRenderJobVisual.py:22
+#: photofilmstrip/gui/PnlRenderJobVisual.py:22 photofilmstrip/ux/gnome.py:42
 msgid "Play video"
 msgstr "비디오 재생"
 
@@ -965,7 +965,7 @@ msgstr ""
 msgid "Aborting..."
 msgstr "중지..."
 
-#: photofilmstrip/uwp/UwpService.py:76
+#: photofilmstrip/ux/gnome.py:50 photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
 msgstr ""
 

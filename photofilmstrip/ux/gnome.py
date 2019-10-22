@@ -22,6 +22,8 @@ class UxGnome(UxAdapter, IVisualJobManager):
 
     def __init__(self):
         JobManager().AddVisual(self)
+        self.notifications = {}
+        self.notificationKey = 0
 
     def OnInit(self):
         Notify.init(Constants.APP_NAME)
@@ -39,8 +41,17 @@ class UxGnome(UxAdapter, IVisualJobManager):
 
         notification = Notify.Notification.new(title, info)
         notification.set_image_from_pixbuf(icon)
-        notification.add_action("action", _(u'Play video'), lambda: None)
+        notification.add_action(
+            "default", _(u'Play video'),
+            self._PlayVideoAction, self.notificationKey, path)
+        notification.add_action(
+            "play", _(u'Play video'),
+            self._PlayVideoAction, self.notificationKey, path)
         notification.show()
+
+        # keep reference to make callback work
+        self.notifications[self.notificationKey] = notification
+        self.notificationKey += 1
 
     def RemoveJob(self, job):
         if job.GetGroupId() != "render":
@@ -48,6 +59,11 @@ class UxGnome(UxAdapter, IVisualJobManager):
         if not job.IsAborted():
             self.ShowNotification(
                 _("Slideshow created!"), job.GetName(), job.GetOutputFile())
+
+    def _PlayVideoAction(self, notifictn, name, notificationKey, path):  # @UnusedVariable pylint: disable=unused-argument
+        from photofilmstrip.action.ActionPlayVideo import ActionPlayVideo
+        ActionPlayVideo(path).Execute()
+        del self.notifications[notificationKey]
 
 
 def ux_init():

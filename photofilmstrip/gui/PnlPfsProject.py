@@ -14,6 +14,7 @@ from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 from photofilmstrip.action.ActionCenterPath import ActionCenterPath
 from photofilmstrip.action.ActionRender import ActionRender
 
+from photofilmstrip.core.Renderer import RENDERERS
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.core.Project import Project
 
@@ -35,7 +36,7 @@ from photofilmstrip.gui.PnlEditPicture import PnlEditPicture
 from photofilmstrip.gui.PnlAddPics import PnlAddPics
 from photofilmstrip.gui.DlgConfigureAudio import DlgConfigureAudio
 from photofilmstrip.gui.DlgPositionInput import DlgPositionInput
-from photofilmstrip.gui.DlgRender import DlgRender
+from photofilmstrip.gui.DlgRender import DlgRender, FormatData
 from photofilmstrip.gui.WxProjectFile import WxProjectFile
 from photofilmstrip.core.exceptions import RenderException
 
@@ -443,14 +444,14 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.PrepareRendering()
 
         project = self.__project
-        dlg = DlgRender(self, project.GetAspect())
+        dlg = DlgRender(self, RendererProvider(), project.GetAspect())
         try:
             if dlg.ShowModal() != wx.ID_OK:
                 return
 
             profile = dlg.GetProfile()
             draftMode = dlg.GetDraftMode()
-            rendererClass = dlg.GetRendererClass()
+            rendererClass = dlg.GetFormatData().GetData()
         finally:
             dlg.Destroy()
 
@@ -774,3 +775,26 @@ class ImageDropTarget(wx.FileDropTarget):
             self.pnlPfs.InsertPictures(pics, itm + 1 if itm != wx.NOT_FOUND else None, True)
             return True
         return False
+
+
+class RendererProvider:
+
+    DEFAULT_FORMAT = "x264/AC3 (MKV)"
+
+    def __init__(self):
+        pass
+
+    def GetDefault(self):
+        settings = Settings()
+        if settings.GetUsedRenderer() is None:
+            return self.DEFAULT_FORMAT
+        else:
+            return settings.GetUsedRenderer()
+
+    def GetItems(self):
+        result = []
+        for rend in RENDERERS:
+            msgList = []
+            rend.CheckDependencies(msgList)
+            result.append(FormatData(rend.GetName(), msgList, rend))
+        return result
