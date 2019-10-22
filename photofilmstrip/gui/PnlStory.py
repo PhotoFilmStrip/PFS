@@ -25,6 +25,7 @@ from photofilmstrip.gui.ctrls.PnlNotification import PnlNotification
 from photofilmstrip.gui.DlgRender import DlgRender, FormatData
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 from photofilmstrip.gui.helper import CreateMenuItem
+from photofilmstrip.PnlStoryGuide import PnlStoryGuide
 
 [ID_MEDIA_ADD,
  ID_MEDIA_MOVE_UP,
@@ -44,7 +45,9 @@ class PnlStory(PnlEditorPage, Observer):
         Observer.__init__(self)
         self.__story = story
 
-        self.pnlMedias = PnlMediaContainer(self)
+        self.splitWin = wx.SplitterWindow(self)
+
+        self.pnlMedias = PnlMediaContainer(self.splitWin)
         self.pnlMedias.SetupScrolling(scroll_x=False)
         self.pnlMedias.Bind(wx.EVT_CHAR_HOOK, self._OnKeyDown)
 
@@ -52,16 +55,23 @@ class PnlStory(PnlEditorPage, Observer):
 
         self.pnlNotification = PnlNotification(self)
 
+        self.pnlGuide = PnlStoryGuide(self.splitWin)
+        self.pnlGuide.Bind(wx.html.EVT_HTML_LINK_CLICKED, self._OnLinkClicked)
+
         szMain = wx.BoxSizer(wx.VERTICAL)
-        szMain.Add(self.pnlMedias, 1, wx.EXPAND, 0)
+        szMain.Add(self.splitWin, 1, wx.EXPAND, 0)
         szMain.Add(self.pnlNotification, 0, wx.EXPAND)
 
         self.pnlNotification.Show(False)
 
         self.SetSizer(szMain)
+        self.splitWin.SplitVertically(self.pnlMedias, self.pnlGuide, -600)
 
     def ObservableUpdate(self, obj, arg):
         self.SetChanged(True)
+
+    def _OnLinkClicked(self, event):
+        self.splitWin.Unsplit()
 
     def _OnKeyDown(self, event):
         key = event.GetKeyCode()
@@ -254,8 +264,9 @@ class PnlStory(PnlEditorPage, Observer):
     def AddMenuEditActions(self, menu):
         menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         CreateMenuItem(menu, ID_MEDIA_ADD,
-                       _(u'Add clip') + '\tCtrl+I',
-                       wx.ArtProvider.GetBitmap(wx.ART_ADD_BOOKMARK, wx.ART_MENU, menuSize))
+                       _(u'Add media') + '\tCtrl+I',
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_MEDIA_MOVE_UP,
                        _(u'Move up'),
@@ -273,7 +284,7 @@ class PnlStory(PnlEditorPage, Observer):
                         wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
                         wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
                         wx.ITEM_NORMAL,
-                        _(u'Add clip'), _(u'Add clip'))
+                        _(u'Add media'), _(u'Add clip'))
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MEDIA_MOVE_UP, '',
                         wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_TOOLBAR, toolSize),
