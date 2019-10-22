@@ -8,6 +8,7 @@ build/
 dist/
 sdist/
 var/
+locale/
 Tools/
 _scmInfo.py
 
