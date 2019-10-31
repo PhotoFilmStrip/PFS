@@ -631,9 +631,9 @@ setup(
                                        "PIL.XpmImagePlugin",
                                        "PIL.XVThumbImagePlugin"
                                        ],
-                          "excludes": ["Tkconstants", "Tkinter", "tcl",
+                          "excludes": ["Tkconstants", "tkinter", "tcl",
                                        "PIL._imagingtk", "PIL.ImageTk",
-                                       "_ssl"]
+                                       "_ssl", "numpy"]
                           },
                "sdist": {"formats": ["gztar"]},
                'build_sphinx': {"project": Constants.APP_NAME,
