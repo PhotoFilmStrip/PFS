@@ -1,2 +1,3 @@
+py2exe ; python_version == '3.4'
 sphinx
-pylint
+pylint ; platform_system != "Windows"
