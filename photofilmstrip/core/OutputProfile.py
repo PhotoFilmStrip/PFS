@@ -163,6 +163,76 @@ def __Create16_9Profiles():
     return profs
 
 
+def __Create16_10Profiles():
+    profs = []
+
+    for fps in [FPS23996, FPS25]:
+        prof = OutputProfile("640x400", (640, 400), fps, 1000)
+        if fps is FPS25:
+            prof.SetFriendlyName("Medium")
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS59994, FPS60]:
+        prof = OutputProfile("640x400", (640, 400), fps, 1500)
+        profs.append(prof)
+
+    for fps in [FPS24, FPS30]:
+        prof = OutputProfile("768x480", (768, 480), fps, 2500)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("768x480", (768, 480), fps, 4000)
+        profs.append(prof)
+
+    # WXGA
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("1280x800", (1280, 800), fps, 5000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS59994, FPS60]:
+        prof = OutputProfile("1280x800", (1280, 800), fps, 7500)
+        profs.append(prof)
+
+    # WXGA+
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("1440x900", (1440, 900), fps, 6000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS59994, FPS60]:
+        prof = OutputProfile("1440x900", (1440, 900), fps, 8500)
+        profs.append(prof)
+
+    # WSXGA+
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("1680x1050", (1680, 1050), fps, 8000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS60]:
+        prof = OutputProfile("1680x1050", (1920, 1080), fps, 12000)
+        profs.append(prof)
+
+    # WUXGA
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("1920x1200", (1920, 1200), fps, 9000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS60]:
+        prof = OutputProfile("1920x1200", (1920, 1200), fps, 13000)
+        profs.append(prof)
+
+    # WQXGA
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("2560x1600", (2560, 1600), fps, 15000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS60]:
+        prof = OutputProfile("2560x1600", (2560, 1600), fps, 30000)
+        profs.append(prof)
+
+    # WQUXGA
+    for fps in [FPS23996, FPS24, FPS25]:
+        prof = OutputProfile("3840x2400", (3840, 2400), fps, 30000)
+        profs.append(prof)
+    for fps in [FPS29997, FPS30, FPS50, FPS60]:
+        prof = OutputProfile("3840x2400", (3840, 2400), fps, 60000)
+        profs.append(prof)
+
+    return profs
+
+
 def __Create4_3Profiles():
     profs = []
 
@@ -285,6 +355,8 @@ def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
         return __Create4_3Profiles()
     elif aspect == Aspect.ASPECT_3_2:
         return __Create3_2Profiles()
+    elif aspect == Aspect.ASPECT_16_10:
+        return __Create16_10Profiles()
     else:
         return __Create16_9Profiles()
 

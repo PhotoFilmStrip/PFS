@@ -99,6 +99,7 @@ class DlgNewProject(wx.Dialog):
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON_32'))
 
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
+        self.choiceAspect.Append(Aspect.ASPECT_16_10)
         self.choiceAspect.Append(Aspect.ASPECT_4_3)
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
         self.choiceAspect.Select(0)
