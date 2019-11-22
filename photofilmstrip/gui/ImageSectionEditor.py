@@ -149,11 +149,17 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         sectRect = self.__SectRectToClientRect()
 
+        # draw main rectangle
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
         iRect = wx.Rect(sectRect.GetPosition(), sectRect.GetSize())
         dc.SetPen(wx.WHITE_PEN)
         iRect.Inflate(1, 1)
         dc.DrawRectangle(iRect)
+
+        # draw rule of thirds guides
+        ss=sectRect.GetSize()
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition()+wx.Size((0,ss[1]/3)), wx.Size((ss[0], ss[1]/3))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition()+wx.Size((ss[0]/3,0)), wx.Size((ss[0]/3, ss[1]))))
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
