@@ -208,7 +208,7 @@ class ProjectFile:
 
     def Save(self, includePics=False):
         dirname = os.path.dirname(self._filename)
-        if not os.path.exists(dirname):
+        if dirname and not os.path.exists(dirname):
             os.makedirs(dirname)
         if os.path.exists(self._filename):
             os.remove(self._filename)
