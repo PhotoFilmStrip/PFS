@@ -70,6 +70,7 @@ class SrtParser(object):
             self.Parse()
 
     def Parse(self):
+        self.__data = []
         fd = codecs.open(self.__path, 'r', "utf-8")
         fd.read(len(codecs.BOM_UTF8.decode("utf-8")))
         try:
@@ -100,7 +101,7 @@ class SrtParser(object):
         minutes = int(text[3:5])
         seconds = float(text[6:].replace(",", "."))
 
-        millis = ((((hours * 60) + minutes) * 60) + seconds * 1000.0)
+        millis = ((((hours * 60) + minutes) * 60) + seconds) * 1000.0
 
         return millis
 
