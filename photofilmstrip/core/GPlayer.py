@@ -44,9 +44,10 @@ class GPlayer:
 
         pipeline.set_state(Gst.State.PLAYING)
 
+        bus = pipeline.get_bus()
         hasResult = False
         while not hasResult:
-            msg = pipeline.get_bus().pop()
+            msg = bus.pop()
             if msg is None:
                 time.sleep(0.001)
                 continue
@@ -74,15 +75,18 @@ class GPlayer:
 
             audioDec = Gst.ElementFactory.make("decodebin")
             audioConv = Gst.ElementFactory.make("audioconvert")
+            audioResample = Gst.ElementFactory.make("audioresample")
             audioSink = Gst.ElementFactory.make("autoaudiosink")
 
             pipeline.add(fileSrc)
             pipeline.add(audioDec)
             pipeline.add(audioConv)
+            pipeline.add(audioResample)
             pipeline.add(audioSink)
 
             fileSrc.link(audioDec)
-            audioConv.link(audioSink)
+            audioConv.link(audioResample)
+            audioResample.link(audioSink)
 
             audioDec.connect("pad-added", self._GstPadAdded, audioConv)
 
