@@ -592,7 +592,7 @@ class MkvX265AC3(_GStreamerRenderer):
 
             vEnc = Gst.ElementFactory.find("x265enc")
             if vEnc is None:
-                msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
+                msgList.append(_(u"x265-Codec (gstreamer1.0-plugins-ugly) required!"))
 
             mux = Gst.ElementFactory.find("matroskamux")
             if mux is None:
