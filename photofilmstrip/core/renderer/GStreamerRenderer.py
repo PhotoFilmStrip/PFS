@@ -13,6 +13,7 @@ import queue
 
 from gi.repository import Gst
 from gi.repository import GObject
+from gi.repository import Pango
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
@@ -351,9 +352,23 @@ class _GStreamerRenderer(BaseRenderer):
                     srtPath, self.GetProfile().GetFrameRate().AsFloat())
 
             subtitle = self.srtParse.Get(self.idxFrame)
-            self.textoverlay.set_property("text", subtitle)
+            escaped_subtitle = self._GetPangoEscapedSubtitle(subtitle)
+
+            self.textoverlay.set_property("text", escaped_subtitle)
 
         self.idxFrame += 1
+
+    def _GetPangoEscapedSubtitle(self, text):
+        try:
+            Pango.parse_markup(text, -1, "&")
+            return text
+        except GObject.GError as err:
+            text_escaped = GObject.markup_escape_text(text)
+            if err.domain != "g-markup-error-quark":
+                self._Log(logging.ERROR, "Unexpected error while parsing subtitle '%s' with pango! Using escaped text '%s'", text, text_escaped)
+            else:
+                self._Log(logging.WARNING, "Subtitle '%s' is not well formed pango markup. Using escaped text '%s'", text, text_escaped)
+            return text_escaped
 
     def _GstPadAddedAudio(self, decodebin, pad):
         '''
