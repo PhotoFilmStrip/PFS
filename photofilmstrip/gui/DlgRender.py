@@ -323,10 +323,17 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
 
         if data.GetMessages():
             bmp = wx.ArtProvider.GetBitmap('PFS_ALERT_16')
-            dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
+            if flags & wx.adv.ODCB_PAINTING_CONTROL:
+                dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
+            elif flags & wx.adv.ODCB_PAINTING_SELECTED:
+                dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
+            else:
+                dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
         else:
             bmp = wx.NullBitmap
-            if flags & wx.adv.ODCB_PAINTING_SELECTED:
+            if flags & wx.adv.ODCB_PAINTING_CONTROL:
+                dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
+            elif flags & wx.adv.ODCB_PAINTING_SELECTED:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT))
             else:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT))
