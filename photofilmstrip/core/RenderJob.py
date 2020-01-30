@@ -48,6 +48,12 @@ class RenderJob(VisualJob, Ux):
     def Begin(self):
         # prepare task queue
         self.__logger.debug("%s: prepare task queue", self.GetName())
+
+        # dirty hack to get subtitle file created before renderer got prepared
+        if self.tasks and self.tasks[0].GetKey() == "subtitle":
+            task = self.tasks.pop(0)
+            task.Run(self)
+
         for idx, task in enumerate(self.tasks):
             for subTask in task.IterSubTasks():
                 self._RegisterTaskResult(subTask, True)

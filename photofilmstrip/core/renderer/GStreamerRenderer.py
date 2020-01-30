@@ -166,6 +166,10 @@ class _GStreamerRenderer(BaseRenderer):
         subtitleEnc = None
         if self._GetSubtitleFile():
             if self.GetTypedProperty("RenderSubtitle", bool) and Gst.ElementFactory.find("textoverlay"):
+                self.srtParse = SrtParser(
+                    self._GetSubtitleFile(),
+                    self.GetProfile().GetFrameRate().AsFloat())
+
                 self.textoverlay = Gst.ElementFactory.make("textoverlay")
                 self.textoverlay.set_property("text", "")
                 self._SetupTextOverlay()
@@ -374,11 +378,6 @@ class _GStreamerRenderer(BaseRenderer):
 
         if self.textoverlay:
 #             self.textoverlay.set_property("text", "Frame: %s" % self.idxFrame)
-            if self.srtParse is None:
-                srtPath = self._outFile + ".srt"
-                self.srtParse = SrtParser(
-                    srtPath, self.GetProfile().GetFrameRate().AsFloat())
-
             subtitle = self.srtParse.Get(self.idxFrame)
             escaped_subtitle = self._GetPangoEscapedSubtitle(subtitle)
 
