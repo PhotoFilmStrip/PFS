@@ -44,7 +44,7 @@ Properties
 ''''''''''
 
 - Bitrate (overrides profile specific)
-- RenderSubtitle (true, false)
+- Subtitle (file, render)
 - SubtitleSettings
 
 
@@ -57,7 +57,7 @@ Properties
 ''''''''''
 
 - Bitrate (overrides profile specific)
-- RenderSubtitle (true, false)
+- Subtitle (file, render)
 - SubtitleSettings
 
 
@@ -70,7 +70,8 @@ Properties
 ''''''''''
 
 - Bitrate (overrides profile specific)
-- RenderSubtitle (true, false)
+- Subtitle (file, render, embed)
+- SubtitleLanguage
 - SubtitleSettings
 
 
@@ -83,7 +84,8 @@ Properties
 ''''''''''
 
 - Bitrate (overrides profile specific)
-- RenderSubtitle (true, false)
+- Subtitle (file, render, embed)
+- SubtitleLanguage
 - SubtitleSettings
 - SpeedPreset: default is medium (6)
 - Profile (main, **high**, baseline, constrained-baseline)
@@ -98,7 +100,8 @@ Properties
 ''''''''''
 
 - Bitrate (overrides profile specific)
-- RenderSubtitle (true, false)
+- Subtitle (file, render, embed)
+- SubtitleLanguage
 - SubtitleSettings
 - SpeedPreset: default is medium (6)
 
@@ -119,6 +122,19 @@ Common properties
   - (8): slower
   - (9): veryslow
   - (10): placebo
+
+
+- Subtitle:
+
+  - file: to save the subtitles as a separte srt-file
+  - render: bo burn the subtitle into the video
+  - embed: to embed the subtitle into the video container, if supported
+
+
+- SubtitleLanguage:
+
+  Use language code like de, en, etc., to specify the language if mode embed is used.
+
 
 - SubtitleSettings:
 

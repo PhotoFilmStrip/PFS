@@ -60,12 +60,12 @@ class _GStreamerRenderer(BaseRenderer):
     @staticmethod
     def GetProperties():
         return ["Bitrate",
-                "RenderSubtitle", "SubtitleSettings", "SubtitleLanguage"]
+                "Subtitle", "SubtitleSettings", "SubtitleLanguage"]
 
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "RenderSubtitle":
-            return "false"
+        if prop == "Subtitle":
+            return "file"
         if prop == "SubtitleSettings":
             return ""
         if prop == "SubtitleLanguage":
@@ -106,7 +106,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.ptsOffset = 0
         self.ptsLast = -1
 
-        if self.GetTypedProperty("RenderSubtitle", bool):
+        if self.GetTypedProperty("Subtitle", str) != "file":
             # delete subtitle file, if subtitle is rendered in video
             srtPath = self._GetSubtitleFile()
             if srtPath:
@@ -173,12 +173,12 @@ class _GStreamerRenderer(BaseRenderer):
             self.srtParse = SrtParser(
                 self._GetSubtitleFile(),
                 self.GetProfile().GetFrameRate().AsFloat())
-            if self.GetTypedProperty("RenderSubtitle", bool) and Gst.ElementFactory.find("textoverlay"):
+            if self.GetTypedProperty("Subtitle", str) == "render" and Gst.ElementFactory.find("textoverlay"):
                 self.textoverlay = Gst.ElementFactory.make("textoverlay")
                 self.textoverlay.set_property("text", "")
                 self._SetupTextOverlay()
                 self.pipeline.add(self.textoverlay)
-            else:
+            elif self.GetTypedProperty("Subtitle", str) == "embed":
                 muxSubtitle = True
                 subtitleEnc = self._GetSubtitleEncoder()  # pylint: disable=assignment-from-none
 
