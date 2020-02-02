@@ -157,9 +157,9 @@ class ImageSectionEditor(wx.Panel, Observer):
         dc.DrawRectangle(iRect)
 
         # draw rule of thirds guides
-        ss=sectRect.GetSize()
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition()+wx.Size((0,ss[1]/3)), wx.Size((ss[0], ss[1]/3))))
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition()+wx.Size((ss[0]/3,0)), wx.Size((ss[0]/3, ss[1]))))
+        ss = sectRect.GetSize()
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((0, ss[1] / 3)), wx.Size((ss[0], ss[1] / 3))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((ss[0] / 3, 0)), wx.Size((ss[0] / 3, ss[1]))))
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
@@ -304,7 +304,7 @@ class ImageSectionEditor(wx.Panel, Observer):
             self.SetCursor(wx.Cursor(wx.CURSOR_SIZENS))
 
         elif position == self.POSITION_INSIDE:
-            self.SetCursor(wx.Cursor(wx.CURSOR_SIZING))
+            self.SetCursor(cursors.GetMOVE())
         else:
             self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
 
