@@ -49,7 +49,7 @@ Großstadtrevier
 """
 
 
-class TestGeom(unittest.TestCase):
+class TestSrt(unittest.TestCase):
 
     def setUp(self):
         td = tempfile.gettempdir()

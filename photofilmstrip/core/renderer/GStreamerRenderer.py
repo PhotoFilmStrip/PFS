@@ -36,6 +36,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.pipeline = None
         self.idxFrame = 0
         self.idxAudioFile = 0
+        self.idxSub = 0
         self.imgDuration = None
         self.finalTime = None
         self.textoverlay = None
@@ -43,6 +44,8 @@ class _GStreamerRenderer(BaseRenderer):
         self.concat = None
         self.ptsOffset = 0
         self.ptsLast = -1
+
+        self.usePangoSubtitle = False
 
     @staticmethod
     def CheckDependencies(msgList):
@@ -56,14 +59,17 @@ class _GStreamerRenderer(BaseRenderer):
 
     @staticmethod
     def GetProperties():
-        return ["Bitrate", "RenderSubtitle", "SubtitleSettings"]
+        return ["Bitrate",
+                "Subtitle", "SubtitleSettings", "SubtitleLanguage"]
 
     @staticmethod
     def GetDefaultProperty(prop):
-        if prop == "RenderSubtitle":
-            return "false"
+        if prop == "Subtitle":
+            return "file"
         if prop == "SubtitleSettings":
             return ""
+        if prop == "SubtitleLanguage":
+            return "en"
         return BaseRenderer.GetDefaultProperty(prop)
 
     def ToSink(self, data):
@@ -91,6 +97,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.pipeline = None
         self.idxFrame = 0
         self.idxAudioFile = 0
+        self.idxSub = 0
         self.imgDuration = None
         self.finalTime = None
         self.textoverlay = None
@@ -99,11 +106,18 @@ class _GStreamerRenderer(BaseRenderer):
         self.ptsOffset = 0
         self.ptsLast = -1
 
-        if self.GetTypedProperty("RenderSubtitle", bool):
+        if self.GetTypedProperty("Subtitle", str) != "file":
             # delete subtitle file, if subtitle is rendered in video
-            srtPath = self._outFile + ".srt"
-            if os.path.exists(srtPath):
+            srtPath = self._GetSubtitleFile()
+            if srtPath:
                 os.remove(srtPath)
+
+    def _GetSubtitleFile(self):
+        srtPath = self._outFile + ".srt"
+        if os.path.exists(srtPath):
+            return srtPath
+        else:
+            return None
 
     def ProcessAbort(self):
         '''
@@ -153,11 +167,20 @@ class _GStreamerRenderer(BaseRenderer):
         videoEnc = self._GetVideoEncoder()
         self.pipeline.add(videoEnc)
 
-        if self.GetTypedProperty("RenderSubtitle", bool) and Gst.ElementFactory.find("textoverlay"):
-            self.textoverlay = Gst.ElementFactory.make("textoverlay")
-            self.textoverlay.set_property("text", "")
-            self._SetupTextOverlay()
-            self.pipeline.add(self.textoverlay)
+        muxSubtitle = False
+        subtitleEnc = None
+        if self._GetSubtitleFile():
+            self.srtParse = SrtParser(
+                self._GetSubtitleFile(),
+                self.GetProfile().GetFrameRate().AsFloat())
+            if self.GetTypedProperty("Subtitle", str) == "render" and Gst.ElementFactory.find("textoverlay"):
+                self.textoverlay = Gst.ElementFactory.make("textoverlay")
+                self.textoverlay.set_property("text", "")
+                self._SetupTextOverlay()
+                self.pipeline.add(self.textoverlay)
+            elif self.GetTypedProperty("Subtitle", str) == "embed":
+                muxSubtitle = True
+                subtitleEnc = self._GetSubtitleEncoder()  # pylint: disable=assignment-from-none
 
         # link elements for video stream
         videoSrc.link(jpegDecoder)
@@ -232,6 +255,34 @@ class _GStreamerRenderer(BaseRenderer):
             self.pipeline.add(audioQueue2)
             audioEnc.link(audioQueue2)
             audioQueue2.link(mux)
+
+        if muxSubtitle:
+            subCaps = self._GetSubtitleEncoderCaps()
+            subPad = None
+            if subCaps:
+                subPad = mux.get_request_pad("subtitle_%u")
+            if subPad:
+                # muxer has subtitle pad, so initialize subtitle processing
+                self.usePangoSubtitle = subCaps.find("pango-markup") != -1
+
+                subSrc = Gst.ElementFactory.make("appsrc")
+                subCaps = Gst.caps_from_string(subCaps)
+                subSrc.set_property("caps", subCaps)
+                subSrc.set_property("format", Gst.Format.TIME)
+                subSrc.connect("need-data", self._GstNeedSubtitleData)
+                self.pipeline.add(subSrc)
+
+                if subtitleEnc:
+                    self.pipeline.add(subtitleEnc)
+                    subSrc.link(subtitleEnc)
+                    srcPad = subtitleEnc.get_static_pad("src")
+                else:
+                    srcPad = subSrc.get_static_pad("src")
+
+                srcPad.link(subPad)
+            else:
+                self._Log(logging.WARNING,
+                          "Want to mux subtitle but container does not support it!")
 
         sink = Gst.ElementFactory.make("filesink")
         sink.set_property("location", self.GetOutputFile())
@@ -346,11 +397,6 @@ class _GStreamerRenderer(BaseRenderer):
 
         if self.textoverlay:
 #             self.textoverlay.set_property("text", "Frame: %s" % self.idxFrame)
-            if self.srtParse is None:
-                srtPath = self._outFile + ".srt"
-                self.srtParse = SrtParser(
-                    srtPath, self.GetProfile().GetFrameRate().AsFloat())
-
             subtitle = self.srtParse.Get(self.idxFrame)
             escaped_subtitle = self._GetPangoEscapedSubtitle(subtitle)
 
@@ -358,17 +404,50 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.idxFrame += 1
 
-    def _GetPangoEscapedSubtitle(self, text):
+    def _GetPangoEscapedSubtitle(self, text, rawText=False):
         try:
-            Pango.parse_markup(text, -1, "&")
-            return text
+            parseResult = Pango.parse_markup(text, -1, "&")
+            if rawText:
+                return parseResult.text
+            else:
+                return text
         except GObject.GError as err:
             text_escaped = GObject.markup_escape_text(text)
-            if err.domain != "g-markup-error-quark":
+            if err.domain != "g-markup-error-quark":  # pylint: disable=no-member
                 self._Log(logging.ERROR, "Unexpected error while parsing subtitle '%s' with pango! Using escaped text '%s'", text, text_escaped)
             else:
                 self._Log(logging.WARNING, "Subtitle '%s' is not well formed pango markup. Using escaped text '%s'", text, text_escaped)
             return text_escaped
+
+    def _GstNeedSubtitleData(self, src, need_bytes):  # pylint: disable=unused-argument
+        self._Log(logging.DEBUG,
+                  "_GstNeedSubtitleData: %s, pango=%s",
+                  self.idxSub, self.usePangoSubtitle)
+        while 1:
+            subtitle, start, duration = self.srtParse.GetByIndex(self.idxSub)
+            if start is not None and not subtitle:
+                self._Log(
+                    logging.WARNING,
+                    "_GstNeedSubtitleData: skipping empty subtitle: %s-%s",
+                    start, duration)
+                self.idxSub += 1
+            else:
+                break
+        if duration is None:
+            src.emit("end-of-stream")
+            return
+        else:
+            subtitle = self._GetPangoEscapedSubtitle(
+                subtitle, not self.usePangoSubtitle)
+
+            subText = subtitle.encode()
+            subBuf = Gst.Buffer.new_allocate(None, len(subText), None)
+            subBuf.fill(0, subText)
+            subBuf.pts = subBuf.dts = start * Gst.MSECOND
+            subBuf.duration = duration * Gst.MSECOND
+            src.emit("push-buffer", subBuf)
+
+        self.idxSub += 1
 
     def _GstPadAddedAudio(self, decodebin, pad):
         '''
@@ -443,6 +522,12 @@ class _GStreamerRenderer(BaseRenderer):
 
     def _GetVideoEncoderCaps(self):
         return None
+
+    def _GetSubtitleEncoder(self):
+        return None
+
+    def _GetSubtitleEncoderCaps(self):
+        return "text/x-raw,format=(string)utf8"
 
 
 class MkvX264AC3(_GStreamerRenderer):
@@ -519,6 +604,17 @@ class MkvX264AC3(_GStreamerRenderer):
                       "value '%s' for profile not supported!",
                       profile)
         return None
+
+    def _GetSubtitleEncoder(self):
+        kateEnc = Gst.ElementFactory.make("kateenc")
+        if kateEnc:
+            kateEnc.set_property("category", "SUB")
+            kateEnc.set_property("language",
+                                 self.GetTypedProperty("SubtitleLanguage", str))
+        return kateEnc
+
+    def _GetSubtitleEncoderCaps(self):
+        return "text/x-raw,format=(string)pango-markup"
 
 
 class Mp4X264AAC(_GStreamerRenderer):
@@ -636,6 +732,17 @@ class MkvX265AC3(_GStreamerRenderer):
             videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
 
+    def _GetSubtitleEncoder(self):
+        kateEnc = Gst.ElementFactory.make("kateenc")
+        if kateEnc:
+            kateEnc.set_property("category", "SUB")
+            kateEnc.set_property("language",
+                                 self.GetTypedProperty("SubtitleLanguage", str))
+        return kateEnc
+
+    def _GetSubtitleEncoderCaps(self):
+        return "text/x-raw,format=(string)pango-markup"
+
 
 class OggTheoraVorbis(_GStreamerRenderer):
 
@@ -674,6 +781,17 @@ class OggTheoraVorbis(_GStreamerRenderer):
         videoEnc = Gst.ElementFactory.make("theoraenc")
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
+
+    def _GetSubtitleEncoder(self):
+        kateEnc = Gst.ElementFactory.make("kateenc")
+        if kateEnc:
+            kateEnc.set_property("category", "SUB")
+            kateEnc.set_property("language",
+                                 self.GetTypedProperty("SubtitleLanguage", str))
+        return kateEnc
+
+    def _GetSubtitleEncoderCaps(self):
+        return "text/x-raw,format=(string)pango-markup"
 
 
 class VCDFormat(_GStreamerRenderer):
@@ -714,6 +832,9 @@ class VCDFormat(_GStreamerRenderer):
         videoEnc.set_property("format", 1)
         videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
         return videoEnc
+
+    def _GetSubtitleEncoderCaps(self):
+        return None
 
 
 class SVCDFormat(_GStreamerRenderer):
@@ -764,6 +885,9 @@ class SVCDFormat(_GStreamerRenderer):
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
 
+    def _GetSubtitleEncoderCaps(self):
+        return None
+
 
 class DVDFormat(_GStreamerRenderer):
 
@@ -811,3 +935,6 @@ class DVDFormat(_GStreamerRenderer):
         videoEnc.set_property("aspect", gstAspect)
         videoEnc.set_property("bitrate", self._GetBitrate())
         return videoEnc
+
+    def _GetSubtitleEncoderCaps(self):
+        return None

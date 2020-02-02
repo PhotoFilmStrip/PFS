@@ -13,7 +13,6 @@ class SubtitleSrt(object):
 
     def __init__(self, outFile, factor=1.0):
         self.__outFile = outFile
-        self.__index = 0
         self.__curTime = 0.0
         self.__factor = factor
 
@@ -27,30 +26,35 @@ class SubtitleSrt(object):
     def __GetPicDuration(self, pic):
         return pic.GetDuration() * self.__factor
 
-    def __ProcessPic(self, pic):
+    def __ProcessPic(self, idx, pic):
+        text = pic.GetComment().strip()
+        if not text:
+            return None
+
         start = self.__FormatTime(self.__curTime)
         end = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic))
 
         result = u"%(idx)d\n" \
                  u"%(start)s --> %(end)s\n" \
                  u"%(text)s\n" \
-                 u"\n" % {'idx': self.__index,
+                 u"\n" % {'idx': idx,
                           'start': start,
                           'end': end,
-                          'text': pic.GetComment().strip()}
+                          'text': text}
 
         return result
 
     def Start(self, pics):
         if self.__outFile is None:
             return
+        idx = 1
         fd = codecs.open(self.__outFile + ".srt", 'w', "utf-8", "replace")
         fd.write(codecs.BOM_UTF8.decode("utf-8"))
         for pic in pics:
-            self.__index += 1
-
-            data = self.__ProcessPic(pic)
-            fd.write(data)
+            data = self.__ProcessPic(idx, pic)
+            if data is not None:
+                idx += 1
+                fd.write(data)
 
             self.__curTime += self.__GetPicDuration(pic) + \
                               (pic.GetTransitionDuration() * self.__factor)
@@ -106,11 +110,32 @@ class SrtParser(object):
         return millis
 
     def Get(self, pic):
+        '''
+        Returns the subtitle for the given frame number considering the frame
+        rate.
+        :param pic: the frame number
+        :type pic: int
+        :rtype: int
+        '''
         msec = pic * (1.0 / self.__framerate) * 1000.0
         for start, end, text in self.__data:
             if msec >= start and msec <= end:
                 return text
         return ""
+
+    def GetByIndex(self, idx):
+        '''
+        Returns a result tuple with the text, start time and end time for the
+        given index. time stamps are in milliseconds
+        :param idx: the index in the srt file
+        :type idx: int
+        :rtype: tuple
+        :return: (text, start, end)
+        '''
+        for dIdx, (start, end, text) in enumerate(self.__data):
+            if dIdx == idx:
+                return text, start, end - start
+        return None, None, None
 
 
 def testWrite():
