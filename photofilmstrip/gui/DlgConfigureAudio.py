@@ -108,7 +108,7 @@ class DlgConfigureAudio(wx.Dialog):
 
     def __init__(self, parent, project):
         wx.Dialog.__init__(self, parent, name=u'DlgConfigureAudio',
-                           style=wx.DEFAULT_DIALOG_STYLE,
+                           style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
                            title=_(u'Configure music'))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
@@ -139,6 +139,7 @@ class DlgConfigureAudio(wx.Dialog):
         self.__ControlStatusAudio()
 
         self._InitSizers()
+        self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CenterOnParent()
 

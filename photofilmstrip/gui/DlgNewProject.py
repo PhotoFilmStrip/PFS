@@ -89,7 +89,7 @@ class DlgNewProject(wx.Dialog):
 
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, name=u'DlgNewProject',
-                           style=wx.DEFAULT_DIALOG_STYLE,
+                           style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
                            title=title)
 
         self._InitCtrls()
@@ -118,6 +118,7 @@ class DlgNewProject(wx.Dialog):
             Settings().SetProjectPath(projPath)
         self.tcFolder.SetValue(projPath)
 
+        self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CenterOnParent()
         self.SetFocus()

@@ -92,7 +92,8 @@ class DlgRender(wx.Dialog):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
             parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
-            style=wx.DEFAULT_DIALOG_STYLE, title=_(u'Render project'))
+            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
+            title=_(u'Render project'))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
             parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
@@ -180,6 +181,7 @@ class DlgRender(wx.Dialog):
         self.__SelectProfileByName(settings.GetLastProfile())
 
         self.SetEscapeId(wxID_DLGRENDERCMDCANCEL)
+        self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CentreOnParent()
         self.SetFocus()

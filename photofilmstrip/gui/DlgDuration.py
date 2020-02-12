@@ -76,7 +76,7 @@ class DlgDuration(wx.Dialog):
 
     def __init__(self, parent, project=None):
         wx.Dialog.__init__(self, parent, name=u'DlgDuration',
-                           style=wx.DEFAULT_DIALOG_STYLE,
+                           style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
                            title=_(u'Slideshow duration'))
 
         self._InitCtrls()
@@ -122,6 +122,7 @@ class DlgDuration(wx.Dialog):
         self.__ControlStatusTotalLength()
 
         self._InitSizers()
+        self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CenterOnParent()
         self.SetFocus()
