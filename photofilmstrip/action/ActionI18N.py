@@ -40,6 +40,6 @@ class ActionI18N(IAction):
             lang = gettext.translation(Constants.APP_NAME,
                                        localeDir,
                                        languages=[curLang, "en"])
-            lang.install(True)
+            lang.install()
         except IOError:
             gettext.install(Constants.APP_NAME)
