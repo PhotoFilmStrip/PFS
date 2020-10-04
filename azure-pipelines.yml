@@ -1,0 +1,77 @@
+
+name: $(Date:yyyyMMdd).$(Rev:r)
+
+trigger:
+- master
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - master
+
+jobs:
+- job: Windows_CI
+  timeoutInMinutes: 90
+  displayName: 'Windows CI'
+  pool:
+    vmImage: 'vs2017-win2016'
+  strategy:
+    matrix:
+#      Py37_x86:
+#        python.version: '3.7'
+#        python.arch: x86
+#        addToPath: true
+      Py37_x64:
+        python.version: '3.7'
+        python.arch: x64
+        addToPath: true
+    maxParallel: 4
+
+  steps:
+  - checkout: self
+
+  - script: |
+     git rev-parse --short HEAD > scm_rev.txt
+     set /p SCM_REV=<scm_rev.txt
+     del scm_rev.txt
+     git describe --tags > scm_ver.txt
+     set /p SCM_VER=<scm_ver.txt
+     del scm_ver.txt
+     
+     mkdir dist
+     
+     echo "##vso[task.setvariable variable=SCM_REV]%SCM_REV%
+     echo "##vso[task.setvariable variable=SCM_VER]%SCM_VER%
+   
+    displayName: 'Update Version Infos'
+
+  - task: UsePythonVersion@0
+    displayName: 'Use Python $(python.version) $(python.arch)'
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture: '$(python.arch)'
+
+  - task: PipAuthenticate@1
+    displayName: 'Pip Authenticate'
+    inputs:
+      artifactFeeds: pylibs
+    
+  - script: |
+     python -m pip install pfs-gi
+     python -m pip install -r requirements.txt 
+     python -m pip install -r requirements_dev.txt
+     
+    displayName: 'Install dependencies'
+
+  - script: |
+     set
+     python.exe setup.py --verbose clean bdist_win --target-dir=win32_$(python.arch)
+     python.exe -m zipfile -c dist\win32_$(python.arch).zip win32_$(python.arch)
+    displayName: 'Build dist $(python.arch)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: dist'
+    inputs:
+      PathtoPublish: dist
+      ArtifactName: dist
