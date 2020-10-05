@@ -48,7 +48,7 @@ class PnlWelcome(wx.Panel):
         self.htmlWin.SetSizeHints(650, -1, 650, -1)
 
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
-        sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
+        sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL, 8)
 
         self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
 
