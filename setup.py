@@ -50,7 +50,7 @@ else:
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 INNO = os.path.join(PROGRAMFILES, "Inno Setup 5", "ISCC.exe")
 MSGFMT = os.path.join(getattr(sys,
-                              "real_prefix",
+                              "base_prefix",
                               os.path.dirname(sys.executable)),
                       "Tools", "i18n", "msgfmt.py")
 if os.path.isfile(MSGFMT):
