@@ -103,7 +103,11 @@ class StoryEngine(object):
 
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect("message", self._GstOnMessage)
+        # Workaound: connecting to all messages results in "Python int too large to convert to C long" ???
+        bus.connect("message::error", self._GstOnMessage)
+        bus.connect("message::eos", self._GstOnMessage)
+        bus.connect("message::state-changed", self._GstOnMessage)
+        bus.connect("message::warning", self._GstOnMessage)
 
         self.layer_video = GES.Layer()
         self.layer_vertical_effect = GES.Layer()
@@ -456,10 +460,12 @@ class PositionPoller(threading.Thread):
     def run(self):
         while self._active:
             if self._job.IsAborted():
+                logging.getLogger("PositionPoller").log(logging.DEBUG, "Job is aborted")
                 self._pipeline.set_state(Gst.State.PAUSED)
             if self._enabled:
                 try:
                     res, cur = self._pipeline.query_position(Gst.Format.TIME)
+                    logging.getLogger("PositionPoller").log(logging.DEBUG, "query_position returned %s %s", res, cur)
                 except Exception:  # pylint: disable=broad-except
                     res = False
 
