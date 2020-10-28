@@ -16,7 +16,7 @@ from gi.repository import GstPbutils
 
 from photofilmstrip.core.geom import Rect
 from photofilmstrip.core.Media import MediaOrientation
-from photofilmstrip.core.GtkMainLoop import GtkMainLoop
+from photofilmstrip.core.GMainLoop import GMainLoop
 
 
 class StoryEngine(object):
@@ -61,7 +61,7 @@ class StoryEngine(object):
             vaapi_rank = vaapi_ele.get_rank()
             vaapi_ele.set_rank(255)
 
-        GtkMainLoop.EnsureRunning()
+        GMainLoop.EnsureRunning()
 
         self.job.SetInfo(_("Prepare rendering..."))
 

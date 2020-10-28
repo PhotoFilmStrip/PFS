@@ -35,7 +35,6 @@ class AppMixin:
         gi.require_version('Gst', '1.0')
         gi.require_version('GstController', '1.0')
         gi.require_version('GES', '1.0')
-        gi.require_version('Gtk', '3.0')
         gi.require_version('Pango', '1.0')
 
         from gi.repository import Gst, GES

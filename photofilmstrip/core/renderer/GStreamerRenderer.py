@@ -20,7 +20,7 @@ from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.Subtitle import SrtParser
 from photofilmstrip.core.exceptions import RendererException
-from photofilmstrip.core.GtkMainLoop import GtkMainLoop
+from photofilmstrip.core.GMainLoop import GMainLoop
 
 
 class _GStreamerRenderer(BaseRenderer):
@@ -297,7 +297,7 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.pipeline.set_state(Gst.State.PLAYING)
 
-        GtkMainLoop.EnsureRunning()
+        GMainLoop.EnsureRunning()
 
         self.ready.clear()
 

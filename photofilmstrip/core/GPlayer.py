@@ -10,7 +10,7 @@ import time
 
 from gi.repository import Gst
 
-from photofilmstrip.core.GtkMainLoop import GtkMainLoop
+from photofilmstrip.core.GMainLoop import GMainLoop
 
 
 class GPlayer:
@@ -97,7 +97,7 @@ class GPlayer:
             bus.add_signal_watch()
             bus.connect("message", self._GstOnMessage)
 
-        GtkMainLoop.EnsureRunning()
+        GMainLoop.EnsureRunning()
 
     def Stop(self):
         self.Close()
