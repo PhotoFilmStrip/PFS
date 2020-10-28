@@ -231,8 +231,9 @@ class _GStreamerRenderer(BaseRenderer):
                 self.pipeline.add(ap)
                 audioEnc.link(ap)
                 audioEnc = ap
-        elif isinstance(self, MkvX265AC3):
+        elif isinstance(self, Mp4X265AAC):
             vp = Gst.ElementFactory.make("h265parse")
+            vp.set_property("config-interval", -1)
             self.pipeline.add(vp)
             videoEnc.link(vp)
             videoEnc = vp
@@ -412,6 +413,9 @@ class _GStreamerRenderer(BaseRenderer):
             else:
                 return text
         except GObject.GError as err:
+            if rawText:
+                return text
+
             text_escaped = GObject.markup_escape_text(text)
             if err.domain != "g-markup-error-quark":  # pylint: disable=no-member
                 self._Log(logging.ERROR, "Unexpected error while parsing subtitle '%s' with pango! Using escaped text '%s'", text, text_escaped)
@@ -687,17 +691,17 @@ class Mp4X264AAC(_GStreamerRenderer):
         return None
 
 
-class MkvX265AC3(_GStreamerRenderer):
+class Mp4X265AAC(_GStreamerRenderer):
 
     @staticmethod
     def GetName():
-        return "x265/AC3 (MKV)"
+        return "x265/AAC (MP4)"
 
     @staticmethod
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            aEnc = Gst.ElementFactory.find("avenc_ac3")
+            aEnc = Gst.ElementFactory.find("avenc_aac")
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
@@ -705,7 +709,7 @@ class MkvX265AC3(_GStreamerRenderer):
             if vEnc is None:
                 msgList.append(_(u"x265-Codec (gstreamer1.0-plugins-ugly) required!"))
 
-            mux = Gst.ElementFactory.find("matroskamux")
+            mux = Gst.ElementFactory.find("qtmux")
             if mux is None:
                 msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
@@ -714,14 +718,14 @@ class MkvX265AC3(_GStreamerRenderer):
         return _GStreamerRenderer.GetProperties() + ["SpeedPreset"]
 
     def _GetExtension(self):
-        return "mkv"
+        return "mp4"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("matroskamux")
+        mux = Gst.ElementFactory.make("qtmux")
         return mux
 
     def _GetAudioEncoder(self):
-        audioEnc = Gst.ElementFactory.make("avenc_ac3")
+        audioEnc = Gst.ElementFactory.make("avenc_aac")
         return audioEnc
 
     def _GetVideoEncoder(self):
@@ -731,17 +735,6 @@ class MkvX265AC3(_GStreamerRenderer):
         if speedPreset is not None:
             videoEnc.set_property("speed-preset", speedPreset)
         return videoEnc
-
-    def _GetSubtitleEncoder(self):
-        kateEnc = Gst.ElementFactory.make("kateenc")
-        if kateEnc:
-            kateEnc.set_property("category", "SUB")
-            kateEnc.set_property("language",
-                                 self.GetTypedProperty("SubtitleLanguage", str))
-        return kateEnc
-
-    def _GetSubtitleEncoderCaps(self):
-        return "text/x-raw,format=(string)pango-markup"
 
 
 class OggTheoraVorbis(_GStreamerRenderer):
