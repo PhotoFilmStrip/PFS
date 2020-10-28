@@ -1,4 +1,2 @@
 pillow
-numpy==1.15.4 ; python_version == '3.4'
-wxpython ; python_version != '3.4'
-wxpython==4.0.6 ; python_version == '3.4'
+wxpython

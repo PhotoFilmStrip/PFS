@@ -12,7 +12,7 @@ from photofilmstrip.action.IAction import IAction
 
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.util import CheckFile
-from photofilmstrip.core.Renderer import RENDERERS
+from photofilmstrip.core.Renderers import RENDERERS
 from photofilmstrip.core.RenderEngine import RenderEngineSlideshow, \
     RenderEngineTimelapse
 from photofilmstrip.core.RenderJob import RenderJob
