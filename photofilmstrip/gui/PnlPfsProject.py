@@ -14,7 +14,7 @@ from photofilmstrip.action.ActionAutoPath import ActionAutoPath
 from photofilmstrip.action.ActionCenterPath import ActionCenterPath
 from photofilmstrip.action.ActionRender import ActionRender
 
-from photofilmstrip.core.Renderer import RENDERERS
+from photofilmstrip.core.Renderers import RENDERERS
 from photofilmstrip.core.Picture import Picture
 from photofilmstrip.core.Project import Project
 

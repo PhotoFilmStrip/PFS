@@ -16,7 +16,7 @@ from photofilmstrip.lib.util import CheckFile
 from photofilmstrip.core.OutputProfile import (
     GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.ProjectFile import ProjectFile
-from photofilmstrip.core.Renderer import RENDERERS
+from photofilmstrip.core.Renderers import RENDERERS
 from photofilmstrip.core.renderer.StreamRenderer import StreamRenderer
 from photofilmstrip.action.ActionRender import ActionRender
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
