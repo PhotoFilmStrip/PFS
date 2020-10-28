@@ -413,6 +413,9 @@ class _GStreamerRenderer(BaseRenderer):
             else:
                 return text
         except GObject.GError as err:
+            if rawText:
+                return text
+
             text_escaped = GObject.markup_escape_text(text)
             if err.domain != "g-markup-error-quark":  # pylint: disable=no-member
                 self._Log(logging.ERROR, "Unexpected error while parsing subtitle '%s' with pango! Using escaped text '%s'", text, text_escaped)
