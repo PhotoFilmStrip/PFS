@@ -5,6 +5,7 @@
 # Copyright (C) 2011 Jens Goepfert
 #
 
+import datetime
 import glob
 import sys, os
 import sqlite3
@@ -26,19 +27,10 @@ except ImportError:
     Sphinx = None
 
 try:
-    import py2exe
-    import py2exe.dllfinder
-    orig_determine_dll_type = py2exe.dllfinder.DllFinder.determine_dll_type
-
-    def determine_dll_type(self, imagename):
-        if imagename.lower().find("msvcr100.dll") != -1 or imagename.lower().find("msvcp100.dll") != -1:
-            return "DLL"
-        else:
-            return orig_determine_dll_type(self, imagename)
-
-    py2exe.dllfinder.DllFinder.determine_dll_type = determine_dll_type
+    from cx_Freeze.dist import build_exe
+    from cx_Freeze import Executable
 except ImportError:
-    py2exe = None
+    build_exe = None
 
 from photofilmstrip import Constants
 
@@ -80,33 +72,31 @@ class pfs_scm_info(Command):
 
     description = "generates _scmInfo.py in source folder"
 
-    user_options = []
+    user_options = [
+        ('scm-rev=', None, 'The SCM revision'),
+    ]
+
     sub_commands = []
 
     def initialize_options(self):
-        pass
+        self.scm_rev = os.getenv("SCM_REV")
 
     def finalize_options(self):
         pass
 
     def run(self):
-        scmRev = os.getenv("SCM_REV")
-        if not scmRev:
+        if not self.scm_rev:
             # if not set in environment it hopefully was generated earlier
             # building deb with fakeroot has no SCM_REV var anymore
             try:
                 import photofilmstrip._scmInfo
-                scmRev = photofilmstrip._scmInfo.SCM_REV  # pylint: disable=no-member, protected-access
+                self.scm_rev = photofilmstrip._scmInfo.SCM_REV  # pylint: disable=no-member, protected-access
             except ImportError:
-                scmRev = "src"
+                self.scm_rev = "src"
 
-        for target in getattr(self.distribution, "windows", []) + \
-                      getattr(self.distribution, "console", []):
-            target.Update(scmRev)
-
-        if scmRev != "src":
+        if self.scm_rev != "src":
             fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
-            fd.write("SCM_REV = \"%s\"\n" % scmRev)
+            fd.write("SCM_REV = \"%s\"\n" % self.scm_rev)
             fd.close()
 
 
@@ -177,6 +167,18 @@ class pfs_build(build):
         ('scm_info', lambda x: True),
         ('build_sphinx', lambda x: True if Sphinx else False),
     ] + build.sub_commands
+
+    user_options = [
+        ('build-exe=', None, 'Location of the configuration directory'),
+    ]
+
+    def initialize_options(self):
+        build.initialize_options(self)
+        self.build_exe = None
+
+    def finalize_options(self):
+        build.finalize_options(self)
+        self.build_exe = "build"
 
     def run(self):
         self._make_resources()
@@ -362,7 +364,9 @@ class pfs_exe(Command):
     user_options = [
         ('target-dir=', 't', 'target directory'),
     ]
-    sub_commands = [('py2exe', lambda x: True if py2exe else False)
+    sub_commands = [
+        ('build', lambda x: True),
+        ('build_exe', lambda x: True if build_exe else False)
                    ]
 
     def initialize_options(self):
@@ -372,34 +376,48 @@ class pfs_exe(Command):
         self.mkpath(self.target_dir)
 
     def run(self):
-        py2exe = self.get_finalized_command('py2exe')
-        py2exe.dist_dir = self.target_dir
+        build_exe = self.get_finalized_command('build_exe')
+        build_exe.build_exe = self.target_dir
 
-        self.distribution.windows = [
-                 Target(script=os.path.join("photofilmstrip", "GUI.py"),
-                        dest_base=Constants.APP_NAME
-                        ),
+        self.distribution.executables = [
+                 Executable(os.path.join("photofilmstrip", "GUI.py"),
+                            base="Win32GUI",
+                            targetName=Constants.APP_NAME + ".exe",
+                            icon=os.path.join("res", "icon", "photofilmstrip.ico")
+                            )
         ]
-        self.distribution.console = [
-                 Target(script=os.path.join("photofilmstrip", "CLI.py"),
-                        dest_base=Constants.APP_NAME + "-cli"
-                        )
-        ]
-        self.distribution.zipfile = "modules"
+        self.distribution.executables.append(
+                 Executable(os.path.join("photofilmstrip", "CLI.py"),
+                            targetName=Constants.APP_NAME + "-cli.exe",
+                            icon=os.path.join("res", "icon", "photofilmstrip.ico")
+                            )
+        )
 
         # Run all sub-commands (at least those that need to be run)
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
+        for targetDir, filelist in self.distribution.data_files:
+            targetDir = os.path.join(self.target_dir, targetDir)
+            if not os.path.exists(targetDir):
+                os.makedirs(targetDir)
+
+            for f in filelist:
+                self.copy_file(f, targetDir)
+
         site_packages = get_python_lib()
         targetDir = self.target_dir
-        dllDirGnome = os.path.join(site_packages, "gnome")
-        for dll in glob.glob(os.path.join(dllDirGnome, "*.dll")):
-            self.copy_file(os.path.join(dllDirGnome, dll),
+        dllDirGnome = os.path.join(site_packages, "gst-dist")
+        for dll in glob.glob(os.path.join(dllDirGnome, "bin", "*")):
+            self.copy_file(os.path.join(dllDirGnome, "bin", dll),
                            os.path.join(targetDir, os.path.basename(dll)))
 
-        targetDir = os.path.join(self.target_dir, "etc", "fonts")
-        self.copy_tree(os.path.join(dllDirGnome, "etc", "fonts"),
+        targetDir = os.path.join(self.target_dir, "etc")
+        self.copy_tree(os.path.join(dllDirGnome, "etc"),
+                       targetDir)
+
+        targetDir = os.path.join(self.target_dir, "share")
+        self.copy_tree(os.path.join(dllDirGnome, "share"),
                        targetDir)
 
         targetDir = os.path.join(self.target_dir, "lib", "gstreamer-1.0")
@@ -420,15 +438,42 @@ class pfs_exe(Command):
                           "GstPbutils-1.0.typelib",
                           "GstTag-1.0.typelib",
                           "GstVideo-1.0.typelib",
-                          "Atk-1.0.typelib",
                           "cairo-1.0.typelib",
-                          "Gdk-3.0.typelib",
                           "GdkPixbuf-2.0.typelib",
-                          "Gtk-3.0.typelib",
                           "Pango-1.0.typelib",
                          ]:
             self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
                            os.path.join(targetDir, giTypeLib))
+
+        for exe in self.distribution.executables:
+            self.add_exe_resources(exe.targetName, exe.icon)
+
+    def add_exe_resources(self, exe_file, exe_icon):
+        scmInfo = self.get_finalized_command('scm_info')
+
+        from py2exe.icons import BuildIcons
+        from py2exe.resources import UpdateResources
+        from py2exe.versioninfo import Version, RT_VERSION
+        from py2exe.runtime import RT_MANIFEST
+
+        version = Version(
+            version="%s.%s" % (Constants.APP_VERSION, 0),
+            file_description=self.distribution.metadata.description,
+            company_name=self.distribution.metadata.author,
+            legal_copyright="(c) {} by {}".format(datetime.datetime.now().year,
+                                                  self.distribution.metadata.author),
+            original_filename=os.path.basename(exe_file),
+            product_name=Constants.APP_NAME,
+            product_version="%s-%s" % (Constants.APP_VERSION_SUFFIX, scmInfo.scm_rev)
+        )
+        versionBytes = version.resource_bytes()
+
+        with UpdateResources(exe_file, delete_existing=True) as resWriter:
+            resWriter.add(type=RT_VERSION, name=1, value=versionBytes)
+            resWriter.add(type=RT_MANIFEST, name=1, value=MANIFEST_TEMPLATE.encode("utf-8"))
+
+            for res_type, res_name, res_data in BuildIcons([(1, exe_icon)]):
+                resWriter.add(type=res_type, name=res_name, value=res_data)
 
 
 class pfs_win_setup(Command):
@@ -504,25 +549,6 @@ class pfs_win_portable(Command):
         log.info("    done.")
 
 
-class Target:
-
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
-        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, "src")
-        self.version = "%s.%s" % (Constants.APP_VERSION, 0)
-        self.company_name = ""
-        self.copyright = "(c) 2019"
-        self.name = "%s %s" % (Constants.APP_NAME, Constants.APP_VERSION)
-        self.description = self.name
-#        self.other_resources = [(RT_MANIFEST, 1, MANIFEST % dict(prog=Constants.APP_NAME))]
-
-        logo = os.path.join("res", "icon", "photofilmstrip.ico")
-        self.icon_resources = [(1, logo)]
-
-    def Update(self, scmRev):
-        self.product_version = "%s-%s" % (Constants.APP_VERSION_SUFFIX, scmRev)
-
-
 def Zip(zipFile, srcDir, stripFolders=0, virtualFolder=None):
     log.info("zip %s to %s" % (srcDir, zipFile))
     if not os.path.isdir(os.path.dirname(zipFile)):
@@ -578,6 +604,23 @@ def Unzip(zipFile, targetDir, stripFolders=0):
         fd.close()
 
 
+MANIFEST_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+  <assemblyIdentity version="1.0.0.0" processorArchitecture="*" name="PhotoFilmStrip" type="win32"></assemblyIdentity>
+  <description>PhotoFilmStrip</description>
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"/>
+    </dependentAssembly>
+  </dependency>
+  <asmv3:application>
+    <asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
+      <ms_windowsSettings:dpiAware xmlns:ms_windowsSettings="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</ms_windowsSettings:dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
+</assembly>
+"""
+
 platform_scripts = []
 platform_data = []
 if os.name == "nt":
@@ -608,25 +651,14 @@ setup(
                 "scm_info"      : pfs_scm_info,
                 'build_sphinx'  : pfs_docs,
                 'test'          : pfs_test,
+                "build_exe"     : build_exe,
               },
     verbose=False,
-    options={"py2exe": {"compressed": 2,
+    options={"build_exe": {
 #                          "bundle_files":1,
                           "optimize": 2,
-                          "dll_excludes": ["libcairo-gobject-2.dll",
-                                           "libffi-6.dll",
-                                           "libfontconfig-1.dll",
-                                           "libfreetype-6.dll",
-                                           "libgio-2.0-0.dll",
-                                           "libgirepository-1.0-1.dll",
-                                           "libglib-2.0-0.dll",
-                                           "libgmodule-2.0-0.dll",
-                                           "libgobject-2.0-0.dll",
-                                           "libintl-8.dll",
-                                           "libpng16-16.dll",
-                                           "libwinpthread-1.dll",
-                                           "libzzz.dll]"],
-                          "packages": ["gi", "photofilmstrip.ux"],
+                          "include_msvcr": False,
+                          "packages": ["gi", "photofilmstrip"],
                           "includes": ["gi",
                                        "PIL.Image",
                                        "PIL.BmpImagePlugin",
