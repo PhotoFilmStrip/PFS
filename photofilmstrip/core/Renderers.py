@@ -19,7 +19,7 @@ RENDERERS.extend([
         GSR.OggTheoraVorbis,
         GSR.MkvX264AC3,
         GSR.Mp4X264AAC,
-        GSR.MkvX265AC3])
+        GSR.Mp4X265AAC])
 
 RENDERERS.extend([
              CR.CairoRenderer])
