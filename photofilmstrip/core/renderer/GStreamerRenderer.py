@@ -811,7 +811,7 @@ class VCDFormat(_GStreamerRenderer):
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -819,7 +819,8 @@ class VCDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_vcd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
@@ -859,7 +860,7 @@ class SVCDFormat(_GStreamerRenderer):
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -867,7 +868,8 @@ class SVCDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_svcd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
@@ -910,7 +912,7 @@ class DVDFormat(_GStreamerRenderer):
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -918,7 +920,8 @@ class DVDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_dvd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
