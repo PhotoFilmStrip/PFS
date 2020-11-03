@@ -23,3 +23,12 @@ class Aspect:
             return 4.0 / 3.0
         if aspect == cls.ASPECT_3_2:
             return 3.0 / 2.0
+
+    @classmethod
+    def AsStr(cls, aspect):
+        if aspect == cls.ASPECT_16_9:
+            return "16/9"
+        if aspect == cls.ASPECT_4_3:
+            return "4/3"
+        if aspect == cls.ASPECT_3_2:
+            return "3/2"

@@ -91,7 +91,7 @@ def __CreateMPEGProfiles():
 
     svcd_pal = OutputProfile("SVCD-PAL", (480, 576), FPS25, 2500,
                              OutputProfile.PAL)
-    svcd_ntsc = OutputProfile("SVCD-NTSC", (480, 576), FPS29997, 2500,
+    svcd_ntsc = OutputProfile("SVCD-NTSC", (480, 480), FPS29997, 2500,
                               OutputProfile.NTSC)
 
     dvd_pal = OutputProfile("DVD-PAL", (720, 576), FPS25, 8000,

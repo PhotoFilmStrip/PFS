@@ -15,12 +15,12 @@ from gi.repository import Gst
 from gi.repository import GObject
 from gi.repository import Pango
 
-from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import OutputProfile
 from photofilmstrip.core.BaseRenderer import BaseRenderer
 from photofilmstrip.core.Subtitle import SrtParser
 from photofilmstrip.core.exceptions import RendererException
 from photofilmstrip.core.GMainLoop import GMainLoop
+from photofilmstrip.core.Aspect import Aspect
 
 
 class _GStreamerRenderer(BaseRenderer):
@@ -147,8 +147,13 @@ class _GStreamerRenderer(BaseRenderer):
 
         self.pipeline = Gst.Pipeline()
 
-        caps = Gst.caps_from_string(
-            "image/jpeg,framerate={0}".format(frameRate.AsStr()))
+        if self.GetProfile().IsMPEGProfile():
+            caps = Gst.caps_from_string(
+                "image/jpeg,framerate={0},pixel-aspect-ratio={1}".format(
+                    frameRate.AsStr(), Aspect.AsStr(self._aspect)))
+        else:
+            caps = Gst.caps_from_string(
+                "image/jpeg,framerate={0}".format(frameRate.AsStr()))
         videoSrc = Gst.ElementFactory.make("appsrc")
         videoSrc.set_property("block", True)
         videoSrc.set_property("caps", caps)
@@ -182,14 +187,19 @@ class _GStreamerRenderer(BaseRenderer):
                 muxSubtitle = True
                 subtitleEnc = self._GetSubtitleEncoder()  # pylint: disable=assignment-from-none
 
+        vcaps = None
+        if self.GetProfile().IsMPEGProfile():
+            vcaps = Gst.caps_from_string(
+                "video/x-raw,format=I420")
+
         # link elements for video stream
         videoSrc.link(jpegDecoder)
         jpegDecoder.link(colorConverter)
         if self.textoverlay:
-            colorConverter.link(self.textoverlay)
+            colorConverter.link_filtered(self.textoverlay, vcaps)
             self.textoverlay.link(queueVideo)
         else:
-            colorConverter.link(queueVideo)
+            colorConverter.link_filtered(queueVideo, vcaps)
         queueVideo.link(videoEnc)
 
         audioEnc = None
@@ -578,11 +588,7 @@ class MkvX264AC3(_GStreamerRenderer):
         return mux
 
     def _GetAudioEncoder(self):
-#         audioEnc = Gst.ElementFactory.make("lamemp3enc")
         audioEnc = Gst.ElementFactory.make("avenc_ac3")
-#         audioEnc = Gst.ElementFactory.make("lame")
-
-#         audioEnc.set_property("target", "bitrate")
 #         audioEnc.set_property("bitrate", 192)
         return audioEnc
 
@@ -797,15 +803,15 @@ class VCDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            vEnc = Gst.ElementFactory.find("mpeg2enc")
+            vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -813,17 +819,23 @@ class VCDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_vcd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("avenc_mp2")
+        audioEnc.set_property("bitrate", 224000)
+        audioEnc.set_property("ar", 44100)
         return audioEnc
 
     def _GetVideoEncoder(self):
-        videoEnc = Gst.ElementFactory.make("mpeg2enc")
-        videoEnc.set_property("format", 1)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
+        videoEnc = Gst.ElementFactory.make("avenc_mpeg1video")
+        videoEnc.set_property("bitrate", self._GetBitrate() * 1000)
+        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
+            videoEnc.set_property("gop-size", 15)
+        else:
+            videoEnc.set_property("gop-size", 18)
         return videoEnc
 
     def _GetSubtitleEncoderCaps(self):
@@ -840,15 +852,15 @@ class SVCDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            vEnc = Gst.ElementFactory.find("mpeg2enc")
+            vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -856,26 +868,26 @@ class SVCDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_svcd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("avenc_mp2")
+        audioEnc.set_property("bitrate", 256000)
+        audioEnc.set_property("ar", 44100)
         return audioEnc
 
     def _GetVideoEncoder(self):
-        videoEnc = Gst.ElementFactory.make("mpeg2enc")
-        videoEnc.set_property("format", 4)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
-        if self._aspect == Aspect.ASPECT_16_9:
-            gstAspect = 3
-        elif self._aspect == Aspect.ASPECT_4_3:
-            gstAspect = 2
+        videoEnc = Gst.ElementFactory.make("avenc_mpeg2video")
+        videoEnc.set_property("bitrate", self._GetBitrate() * 1000)
+        if self.GetProfile().GetVideoNorm() == OutputProfile.PAL:
+            videoEnc.set_property("video-format", 1)
+            videoEnc.set_property("gop-size", 12)
         else:
-            gstAspect = 0
-        videoEnc.set_property("aspect", gstAspect)
-        videoEnc.set_property("dummy-svcd-sof", 0)
-        videoEnc.set_property("bitrate", self._GetBitrate())
+            videoEnc.set_property("video-format", 2)
+            videoEnc.set_property("gop-size", 15)
+        videoEnc.set_property("scan-offset", 1)
         return videoEnc
 
     def _GetSubtitleEncoderCaps(self):
@@ -892,15 +904,15 @@ class DVDFormat(_GStreamerRenderer):
     def CheckDependencies(msgList):
         _GStreamerRenderer.CheckDependencies(msgList)
         if not msgList:
-            vEnc = Gst.ElementFactory.find("mpeg2enc")
+            vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
                 msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
 
-            mux = Gst.ElementFactory.find("mpegtsmux")
+            mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
                 msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
@@ -908,25 +920,21 @@ class DVDFormat(_GStreamerRenderer):
         return "mpg"
 
     def _GetMux(self):
-        mux = Gst.ElementFactory.make("mpegtsmux")
+        # mux = Gst.ElementFactory.make("avmux_dvd")
+        mux = Gst.ElementFactory.make("mpegpsmux")
         return mux
 
     def _GetAudioEncoder(self):
         audioEnc = Gst.ElementFactory.make("avenc_mp2")
+        audioEnc.set_property("bitrate", 256000)
+        audioEnc.set_property("ar", 48000)
         return audioEnc
 
     def _GetVideoEncoder(self):
-        videoEnc = Gst.ElementFactory.make("mpeg2enc")
-        videoEnc.set_property("format", 8)
-        videoEnc.set_property("norm", "p" if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else "n")
-        if self._aspect == Aspect.ASPECT_16_9:
-            gstAspect = 3
-        elif self._aspect == Aspect.ASPECT_4_3:
-            gstAspect = 2
-        else:
-            gstAspect = 0
-        videoEnc.set_property("aspect", gstAspect)
-        videoEnc.set_property("bitrate", self._GetBitrate())
+        videoEnc = Gst.ElementFactory.make("avenc_mpeg2video")
+        videoEnc.set_property("video-format", 1 if self.GetProfile().GetVideoNorm() == OutputProfile.PAL else 2)
+        videoEnc.set_property("bitrate", self._GetBitrate() * 1000)
+        videoEnc.set_property("gop-size", 15)
         return videoEnc
 
     def _GetSubtitleEncoderCaps(self):
