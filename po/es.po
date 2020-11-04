@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2020-11-04 23:38+0100\n"
+"POT-Creation-Date: 2020-11-04 23:56+0100\n"
 "PO-Revision-Date: 2019-09-26 19:07-0300\n"
 "Last-Translator: Iván A. Werbach\n"
 "Language-Team: Iván A. Werbach\n"
@@ -632,7 +632,7 @@ msgid "Create new timelapse"
 msgstr "Crear nueva secuencia"
 
 #: photofilmstrip/gui/FrmMain.py:253
-msgid "New Story.pfstory"
+msgid "New Story"
 msgstr ""
 
 #: photofilmstrip/gui/FrmMain.py:257

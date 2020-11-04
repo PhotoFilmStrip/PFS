@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: photofilmstrip\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-11-04 23:38+0100\n"
+"POT-Creation-Date: 2020-11-04 23:56+0100\n"
 "PO-Revision-Date: 2012-12-05 23:21+0100\n"
 "Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
 "Language-Team: Tamil <ta@li.org>\n"
@@ -634,7 +634,7 @@ msgid "Create new timelapse"
 msgstr "புதிய திட்டப்பணியை உருவாக்கு"
 
 #: photofilmstrip/gui/FrmMain.py:253
-msgid "New Story.pfstory"
+msgid "New Story"
 msgstr ""
 
 #: photofilmstrip/gui/FrmMain.py:257
