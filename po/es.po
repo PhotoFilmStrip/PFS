@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2018-11-07 22:03+CET\n"
+"POT-Creation-Date: 2020-11-04 23:38+0100\n"
 "PO-Revision-Date: 2019-09-26 19:07-0300\n"
 "Last-Translator: Iván A. Werbach\n"
 "Language-Team: Iván A. Werbach\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 2.0.6\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:23
-#: photofilmstrip/gui/PnlPfsProject.py:115
+#: photofilmstrip/gui/PnlPfsProject.py:116
 msgid "Random motion"
 msgstr "Zoom aleatorio"
 
@@ -27,7 +27,7 @@ msgid "Centralize motion"
 msgstr "Zoom al centro"
 
 #: photofilmstrip/action/ActionI18N.py:24
-#: photofilmstrip/gui/ActionManager.py:170
+#: photofilmstrip/gui/ActionManager.py:176
 msgid "Language"
 msgstr "Idioma"
 
@@ -37,7 +37,8 @@ msgid "Open folder"
 msgstr "Abrir carpeta"
 
 #: photofilmstrip/action/ActionPlayVideo.py:20
-#: photofilmstrip/gui/PnlRenderJobVisual.py:22
+#: photofilmstrip/gui/PnlRenderJobVisual.py:22 photofilmstrip/ux/gnome.py:45
+#: photofilmstrip/ux/gnome.py:48
 msgid "Play video"
 msgstr "Reproducir video"
 
@@ -45,7 +46,7 @@ msgstr "Reproducir video"
 msgid "Start"
 msgstr "Inicio"
 
-#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:196
+#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:195
 msgid "all done"
 msgstr "hecho"
 
@@ -61,28 +62,27 @@ msgstr "usar motor de renderizado"
 msgid "output format"
 msgstr "formato de salida"
 
-#: photofilmstrip/cli/Main.py:69
+#: photofilmstrip/cli/Main.py:68
 msgid "framerate"
 msgstr "vel. de fotogramas"
 
-#: photofilmstrip/cli/Main.py:103
+#: photofilmstrip/cli/Main.py:102
 msgid "specifies the project file"
 msgstr "especificar el archivo de proyecto"
 
-#: photofilmstrip/cli/Main.py:104
+#: photofilmstrip/cli/Main.py:103
 msgid "The path where to save the output files. Use - for stdout."
-msgstr ""
-"El directorio donde guardar los archivos de salida. Use - para stdout."
+msgstr "El directorio donde guardar los archivos de salida. Use - para stdout."
 
-#: photofilmstrip/cli/Main.py:106 photofilmstrip/cli/Main.py:129
+#: photofilmstrip/cli/Main.py:105 photofilmstrip/cli/Main.py:128
 msgid "Option videonorm is deprecated, use an appropriate profile!"
 msgstr "La opción videonorm está en desuso, usar un perfil apropiado!"
 
-#: photofilmstrip/cli/Main.py:108
+#: photofilmstrip/cli/Main.py:107
 msgid "enable draft mode"
 msgstr "activar modo borrador"
 
-#: photofilmstrip/cli/Main.py:108 photofilmstrip/gui/DlgRender.py:167
+#: photofilmstrip/cli/Main.py:107 photofilmstrip/gui/DlgRender.py:167
 msgid ""
 "Activate this option to generate a preview of your PhotoFilmStrip. The "
 "rendering process will speed up dramatically, but results in lower quality."
@@ -90,36 +90,36 @@ msgstr ""
 "Active esta opción para generar una vista previa de su PhotoFilmStrip. El "
 "proceso de renderizado se acelerará, pero resultará de menor calidad."
 
-#: photofilmstrip/cli/Main.py:120
+#: photofilmstrip/cli/Main.py:119
 msgid "project file does not exist: %s"
 msgstr "el archivo %s del proyecto no existe"
 
-#: photofilmstrip/cli/Main.py:124
+#: photofilmstrip/cli/Main.py:123
 msgid "no project file specified!"
 msgstr "¡No se especificó un archivo del proyecto!"
 
-#: photofilmstrip/cli/Main.py:134
+#: photofilmstrip/cli/Main.py:133
 msgid "invalid format specified: %s"
 msgstr "formato inválido: %s"
 
-#: photofilmstrip/cli/Main.py:140
+#: photofilmstrip/cli/Main.py:139
 msgid "invalid profile specified: %s"
 msgstr "perfil inválido: %s"
 
-#: photofilmstrip/cli/Main.py:146
+#: photofilmstrip/cli/Main.py:145
 msgid "cannot load project"
 msgstr "no se puede abrir el proyecto"
 
-#: photofilmstrip/cli/Main.py:159
+#: photofilmstrip/cli/Main.py:158
 msgid "cannot create output path: %s"
 msgstr "no se puede crear el directorio de salida: %s"
 
-#: photofilmstrip/cli/Main.py:169 photofilmstrip/gui/DlgConfigureAudio.py:231
-#: photofilmstrip/gui/DlgConfigureAudio.py:253
+#: photofilmstrip/cli/Main.py:168 photofilmstrip/gui/DlgConfigureAudio.py:262
+#: photofilmstrip/gui/DlgConfigureAudio.py:284
 msgid "Audio file '%s' does not exist!"
 msgstr "¡El archivo %s de audio no existe!"
 
-#: photofilmstrip/cli/Main.py:190
+#: photofilmstrip/cli/Main.py:189
 msgid "...aborted!"
 msgstr "...¡abortado!"
 
@@ -134,6 +134,27 @@ msgstr "<por defecto>"
 #: photofilmstrip/core/BaseRenderer.py:73
 msgid "no"
 msgstr "no"
+
+#: photofilmstrip/core/Media.py:110
+msgid "As is"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:111
+msgid "Auto detect"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:112
+#, fuzzy
+msgid "Rotate left"
+msgstr "Rotar en sentido h&orario"
+
+#: photofilmstrip/core/Media.py:113
+msgid "Rotate right"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:114
+msgid "Upside down"
+msgstr ""
 
 #: photofilmstrip/core/ProjectFile.py:222
 msgid "Saving '%s' ..."
@@ -153,63 +174,77 @@ msgstr "procesando transición %d/%d"
 msgid "processing image %d/%d"
 msgstr "procesando imagen %d/%d"
 
+#: photofilmstrip/core/StoryEngine.py:66
+msgid "Prepare rendering..."
+msgstr ""
+
+#: photofilmstrip/core/StoryEngine.py:79 photofilmstrip/gui/FrmMain.py:145
+msgid "Rendering in progress..."
+msgstr "Proceso en progreso..."
+
 #: photofilmstrip/core/renderer/CairoRenderer.py:35
+#: photofilmstrip/gui/PnlStory.py:308
 msgid "Preview"
 msgstr "Vista previa"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:50
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:54
 msgid "GStreamer (python-gst-1.0) required!"
 msgstr "¡GStreamer (python-gst-1.0) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:287
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:340
 msgid "Bitrate must be a number!"
 msgstr "¡La tasa de bits debe ser un número!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:455
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:531
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:601
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:690
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:730
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:779
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:559
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:642
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:712
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:812
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:861
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:913
 msgid "libav (gstreamer1.0-libav) required!"
 msgstr "¡libav (gstreamer1.0-libav) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:459
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:535
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:605
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:563
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:646
 msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
 msgstr "¡x264-Codec (gstreamer1.0-plugins-ugly) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:463
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:609
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:567
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:720
 msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr "¡MKV-Muxer (gstreamer1.0-plugins-good) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:539
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:650
 msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr "¡MP4-Muxer (gstreamer1.0-plugins-good) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:647
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:716
+#, fuzzy
+msgid "x265-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr "¡x264-Codec (gstreamer1.0-plugins-ugly) requerido!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:758
 msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
 msgstr "¡Theora-Codec (gstreamer1.0-plugins-base) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:651
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:762
 msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
 msgstr "¡Vorbis-Codec (gstreamer1.0-plugins-base) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:655
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:766
 msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
 msgstr "¡OGV-Muxer (gstreamer1.0-plugins-base) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:686
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:726
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:775
-msgid "MPEG-1/2-Codec (gstreamer1.0-plugins-bad) required!"
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:808
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:857
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:909
+#, fuzzy
+msgid "MPEG-1/2-Codec (gstreamer1.0-libav) required!"
 msgstr "¡MPEG-1/2-Codec (gstreamer1.0-plugins-bad) requerido!"
 
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:694
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:734
-#: photofilmstrip/core/renderer/GStreamerRenderer.py:783
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:816
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:865
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:917
 msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
 msgstr "¡MPEG-Muxer (gstreamer1.0-plugins-bad) requerido!"
 
@@ -221,70 +256,74 @@ msgstr "Imágenes individuales"
 msgid "generating subtitle"
 msgstr "generando subtítulos"
 
-#: photofilmstrip/gui/ActionManager.py:60
-#: photofilmstrip/gui/ActionManager.py:190
+#: photofilmstrip/gui/ActionManager.py:63
+#: photofilmstrip/gui/ActionManager.py:196
 msgid "&File"
 msgstr "&Archivo"
 
-#: photofilmstrip/gui/ActionManager.py:61
-#: photofilmstrip/gui/ActionManager.py:191
+#: photofilmstrip/gui/ActionManager.py:64
+#: photofilmstrip/gui/ActionManager.py:197
 msgid "&Edit"
 msgstr "&Editar"
 
-#: photofilmstrip/gui/ActionManager.py:62
-#: photofilmstrip/gui/ActionManager.py:154 photofilmstrip/gui/DlgRender.py:141
+#: photofilmstrip/gui/ActionManager.py:65
+#: photofilmstrip/gui/ActionManager.py:159 photofilmstrip/gui/DlgRender.py:141
 #: photofilmstrip/gui/DlgRendererProps.py:86
 msgid "&Help"
 msgstr "A&yuda"
 
-#: photofilmstrip/gui/ActionManager.py:76
+#: photofilmstrip/gui/ActionManager.py:79
 msgid "New Slideshow"
 msgstr "Nueva presentación"
 
-#: photofilmstrip/gui/ActionManager.py:81
+#: photofilmstrip/gui/ActionManager.py:84
 msgid "Open"
 msgstr "Abrir"
 
-#: photofilmstrip/gui/ActionManager.py:87
+#: photofilmstrip/gui/ActionManager.py:90
 msgid "Save"
 msgstr "Guardar"
 
-#: photofilmstrip/gui/ActionManager.py:97
-#: photofilmstrip/gui/ActionManager.py:98
+#: photofilmstrip/gui/ActionManager.py:100
+#: photofilmstrip/gui/ActionManager.py:101
 msgid "Show job queue"
 msgstr "Mostrar cola de trabajos"
 
-#: photofilmstrip/gui/ActionManager.py:108
+#: photofilmstrip/gui/ActionManager.py:111
 #: photofilmstrip/gui/PnlSlideshow.py:25
 msgid "Slideshow"
 msgstr "Presentación"
 
-#: photofilmstrip/gui/ActionManager.py:110
+#: photofilmstrip/gui/ActionManager.py:113
 #: photofilmstrip/gui/PnlTimelapse.py:18
 msgid "Timelapse"
 msgstr "Línea de tiempo"
 
-#: photofilmstrip/gui/ActionManager.py:116
+#: photofilmstrip/gui/ActionManager.py:115
+msgid "Story"
+msgstr ""
+
+#: photofilmstrip/gui/ActionManager.py:121
 msgid "New"
 msgstr "Nuevo"
 
-#: photofilmstrip/gui/ActionManager.py:118
+#: photofilmstrip/gui/ActionManager.py:123
 msgid "&Open"
 msgstr "A&brir"
 
-#: photofilmstrip/gui/ActionManager.py:123
+#: photofilmstrip/gui/ActionManager.py:128
 msgid "&Save"
 msgstr "&Guardar"
 
-#: photofilmstrip/gui/ActionManager.py:136
+#: photofilmstrip/gui/ActionManager.py:141
 msgid "&Close"
 msgstr "Ce&rrar"
 
-#: photofilmstrip/gui/ActionManager.py:141
+#: photofilmstrip/gui/ActionManager.py:146
 msgid "E&xit"
 msgstr "&Salir"
 
-#: photofilmstrip/gui/ActionManager.py:173
+#: photofilmstrip/gui/ActionManager.py:179
 msgid "&About"
 msgstr "&Sobre"
 
@@ -303,7 +342,7 @@ msgstr ""
 msgid "Bug-Report send. Thank you for your support."
 msgstr "Reporte enviado. Gracias por el soporte."
 
-#: photofilmstrip/gui/DlgBugReport.py:100 photofilmstrip/gui/FrmMain.py:290
+#: photofilmstrip/gui/DlgBugReport.py:100 photofilmstrip/gui/FrmMain.py:298
 msgid "Information"
 msgstr "Información"
 
@@ -312,29 +351,28 @@ msgid "Sorry, this function is temporary not available.."
 msgstr "Lo lamentamos, esta función no está disponible temporalmente."
 
 #: photofilmstrip/gui/DlgBugReport.py:107
-#: photofilmstrip/gui/DlgConfigureAudio.py:232
-#: photofilmstrip/gui/DlgConfigureAudio.py:244
-#: photofilmstrip/gui/DlgConfigureAudio.py:254
-#: photofilmstrip/gui/DlgNewProject.py:156
-#: photofilmstrip/gui/DlgNewProject.py:167
+#: photofilmstrip/gui/DlgConfigureAudio.py:263
+#: photofilmstrip/gui/DlgConfigureAudio.py:275
+#: photofilmstrip/gui/DlgConfigureAudio.py:285
+#: photofilmstrip/gui/DlgNewProject.py:158
+#: photofilmstrip/gui/DlgNewProject.py:169
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:208
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:216
-#: photofilmstrip/gui/FrmMain.py:376 photofilmstrip/gui/PnlPfsProject.py:468
+#: photofilmstrip/gui/FrmMain.py:397 photofilmstrip/gui/PnlPfsProject.py:469
 #: photofilmstrip/gui/PnlTimelapse.py:113
 msgid "Error"
 msgstr "Error"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:55
+#: photofilmstrip/gui/DlgConfigureAudio.py:58
 msgid "Configure your audio files that are used as a background music."
 msgstr "Configure los archivos de audio que se utilizan como música de fondo."
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:90
+#: photofilmstrip/gui/DlgConfigureAudio.py:98
 msgid "Set the duration of your slideshow to fit your audio files"
 msgstr ""
-"Ajustar la duración de la presentación para que se ajuste al archivo de "
-"audio"
+"Ajustar la duración de la presentación para que se ajuste al archivo de audio"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:92
+#: photofilmstrip/gui/DlgConfigureAudio.py:100
 #: photofilmstrip/gui/DlgDuration.py:70 photofilmstrip/gui/DlgNewProject.py:84
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:50
 #: photofilmstrip/gui/DlgPositionInput.py:238
@@ -344,7 +382,7 @@ msgstr ""
 msgid "&Cancel"
 msgstr "&Cancelar"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:97
+#: photofilmstrip/gui/DlgConfigureAudio.py:105
 #: photofilmstrip/gui/DlgDuration.py:72 photofilmstrip/gui/DlgNewProject.py:86
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:51
 #: photofilmstrip/gui/DlgPositionInput.py:244
@@ -352,22 +390,22 @@ msgstr "&Cancelar"
 msgid "&Ok"
 msgstr "&Listo"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:104
-#: photofilmstrip/gui/DlgConfigureAudio.py:109
+#: photofilmstrip/gui/DlgConfigureAudio.py:112
+#: photofilmstrip/gui/DlgConfigureAudio.py:117
 #: photofilmstrip/gui/PnlSlideshow.py:47 photofilmstrip/gui/PnlSlideshow.py:48
 #: photofilmstrip/gui/PnlTimelapse.py:33 photofilmstrip/gui/PnlTimelapse.py:34
 msgid "Configure music"
 msgstr "Configurar música"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:138
+#: photofilmstrip/gui/DlgConfigureAudio.py:169
 msgid "Select music"
 msgstr "Seleccionar música"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:140
+#: photofilmstrip/gui/DlgConfigureAudio.py:171
 msgid "Audio files"
 msgstr "Archivos de audio"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:243
+#: photofilmstrip/gui/DlgConfigureAudio.py:274
 msgid "Audio file not supported!"
 msgstr "¡Archivo de audio no soportado!"
 
@@ -411,23 +449,23 @@ msgstr "Carpeta:"
 msgid "Aspect ratio:"
 msgstr "Relación de aspecto:"
 
-#: photofilmstrip/gui/DlgNewProject.py:110
+#: photofilmstrip/gui/DlgNewProject.py:111
 msgid "Unnamed project"
 msgstr "Proyecto sin nombre"
 
-#: photofilmstrip/gui/DlgNewProject.py:116
+#: photofilmstrip/gui/DlgNewProject.py:117
 msgid "My PhotoFilmStrips"
 msgstr "Mis presentaciones PhotoFilmStrip"
 
-#: photofilmstrip/gui/DlgNewProject.py:126
+#: photofilmstrip/gui/DlgNewProject.py:128
 msgid "Browse for folder"
 msgstr "Buscar por carpeta"
 
-#: photofilmstrip/gui/DlgNewProject.py:145
+#: photofilmstrip/gui/DlgNewProject.py:147
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "¡La carpeta no existe! ¿Quiere que %s la cree?"
 
-#: photofilmstrip/gui/DlgNewProject.py:146
+#: photofilmstrip/gui/DlgNewProject.py:148
 #: photofilmstrip/gui/PnlEditorPage.py:29
 #: photofilmstrip/gui/PnlEditorPage.py:49
 #: photofilmstrip/gui/PnlEditorPage.py:88
@@ -436,19 +474,19 @@ msgstr "¡La carpeta no existe! ¿Quiere que %s la cree?"
 msgid "Question"
 msgstr "Pregunta"
 
-#: photofilmstrip/gui/DlgNewProject.py:155
+#: photofilmstrip/gui/DlgNewProject.py:157
 msgid "Cannot create folder: %s"
 msgstr "No se puede crear la carpeta: %s"
 
-#: photofilmstrip/gui/DlgNewProject.py:166
+#: photofilmstrip/gui/DlgNewProject.py:168
 msgid "Cannot write into folder!"
 msgstr "¡No se puede escribir en la carpeta!"
 
-#: photofilmstrip/gui/DlgNewProject.py:180
+#: photofilmstrip/gui/DlgNewProject.py:182
 msgid "The project name must be filled."
 msgstr "El nombre del proyecto debe estar definido."
 
-#: photofilmstrip/gui/DlgNewProject.py:186
+#: photofilmstrip/gui/DlgNewProject.py:188
 msgid "The project name contains invalid characters."
 msgstr "El nombre del proyecto contiene caracteres inválidos."
 
@@ -577,39 +615,39 @@ msgstr "Editar propiedades extendidas de la salida"
 msgid "Edit property"
 msgstr "Editar propiedad"
 
-#: photofilmstrip/gui/FrmMain.py:83
+#: photofilmstrip/gui/FrmMain.py:86
 msgid "Welcome"
 msgstr "Bienvenido/a"
 
-#: photofilmstrip/gui/FrmMain.py:85
+#: photofilmstrip/gui/FrmMain.py:88
 msgid "Job queue"
 msgstr "Cola de trabajo"
 
-#: photofilmstrip/gui/FrmMain.py:141
-msgid "Rendering in progress..."
-msgstr "Proceso en progreso..."
-
-#: photofilmstrip/gui/FrmMain.py:234 photofilmstrip/gui/PnlWelcome.py:57
+#: photofilmstrip/gui/FrmMain.py:238 photofilmstrip/gui/PnlWelcome.py:57
 msgid "Create new slideshow"
 msgstr "Crear nueva presentación"
 
-#: photofilmstrip/gui/FrmMain.py:241
+#: photofilmstrip/gui/FrmMain.py:245
 msgid "Create new timelapse"
 msgstr "Crear nueva secuencia"
 
-#: photofilmstrip/gui/FrmMain.py:249
+#: photofilmstrip/gui/FrmMain.py:253
+msgid "New Story.pfstory"
+msgstr ""
+
+#: photofilmstrip/gui/FrmMain.py:257
 msgid "Select %s-Project"
 msgstr "Seleccionar %s-Proyecto"
 
-#: photofilmstrip/gui/FrmMain.py:251
+#: photofilmstrip/gui/FrmMain.py:259
 msgid "Files"
 msgstr "Archivos"
 
-#: photofilmstrip/gui/FrmMain.py:289
+#: photofilmstrip/gui/FrmMain.py:297
 msgid "You must restart %s for your new language setting to take effect."
 msgstr "Debe reiniciar %s para que se apliquen los cambios."
 
-#: photofilmstrip/gui/FrmMain.py:300
+#: photofilmstrip/gui/FrmMain.py:308
 msgid ""
 "PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
 "select your photos, customize the motion path and render the video. There "
@@ -619,11 +657,11 @@ msgstr ""
 "Primero seleccione sus fotos, ajuste los movimientos y genere el video. Hay "
 "varios tipos de salidas como VCD, SVCD y DVD hasta en FULL-HD."
 
-#: photofilmstrip/gui/FrmMain.py:303
+#: photofilmstrip/gui/FrmMain.py:311
 msgid "online"
 msgstr "en línea"
 
-#: photofilmstrip/gui/FrmMain.py:374
+#: photofilmstrip/gui/FrmMain.py:395
 #, fuzzy
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "%(app)s-Project inválido: %(file)s"
@@ -746,89 +784,89 @@ msgstr "Archivo"
 msgid "Overwrite existing file '%s'?"
 msgstr "¿Reemplazar archivo existente '%s'?"
 
-#: photofilmstrip/gui/PnlPfsProject.py:118
-#: photofilmstrip/gui/PnlPfsProject.py:120
+#: photofilmstrip/gui/PnlPfsProject.py:119
+#: photofilmstrip/gui/PnlPfsProject.py:121
 msgid "Set motion start to end"
 msgstr "Establecer posición final igual a la de inicio"
 
-#: photofilmstrip/gui/PnlPfsProject.py:122
-#: photofilmstrip/gui/PnlPfsProject.py:124
+#: photofilmstrip/gui/PnlPfsProject.py:123
+#: photofilmstrip/gui/PnlPfsProject.py:125
 msgid "Set motion end to start"
 msgstr "Establecer posición de inicio igual a la del final"
 
-#: photofilmstrip/gui/PnlPfsProject.py:126
-#: photofilmstrip/gui/PnlPfsProject.py:128
+#: photofilmstrip/gui/PnlPfsProject.py:127
+#: photofilmstrip/gui/PnlPfsProject.py:129
 msgid "Swap motion"
 msgstr "Intercambiar posiciones"
 
-#: photofilmstrip/gui/PnlPfsProject.py:131
-#: photofilmstrip/gui/PnlPfsProject.py:133
+#: photofilmstrip/gui/PnlPfsProject.py:132
+#: photofilmstrip/gui/PnlPfsProject.py:134
 msgid "Adjust motion manual"
 msgstr "Ajuste manual del movimiento"
 
-#: photofilmstrip/gui/PnlPfsProject.py:136
-#: photofilmstrip/gui/PnlPfsProject.py:138
+#: photofilmstrip/gui/PnlPfsProject.py:137
+#: photofilmstrip/gui/PnlPfsProject.py:139
 msgid "Preserve image dimension"
 msgstr "Preservar dimensiones de la imagen"
 
-#: photofilmstrip/gui/PnlPfsProject.py:294
+#: photofilmstrip/gui/PnlPfsProject.py:295
 msgid "&Import Pictures"
 msgstr "I&mportar imágenes"
 
-#: photofilmstrip/gui/PnlPfsProject.py:299
+#: photofilmstrip/gui/PnlPfsProject.py:300
 msgid "Move picture &left"
 msgstr "Mover imagen a la &derecha"
 
-#: photofilmstrip/gui/PnlPfsProject.py:303
+#: photofilmstrip/gui/PnlPfsProject.py:304
 msgid "Move picture &right"
 msgstr "Mover imagen a la i&zquierda"
 
-#: photofilmstrip/gui/PnlPfsProject.py:308
+#: photofilmstrip/gui/PnlPfsProject.py:309
 msgid "R&emove Picture"
 msgstr "E&liminar imagen"
 
-#: photofilmstrip/gui/PnlPfsProject.py:313
+#: photofilmstrip/gui/PnlPfsProject.py:314
 msgid "Rotate &clockwise"
 msgstr "Rotar en sentido h&orario"
 
-#: photofilmstrip/gui/PnlPfsProject.py:317
+#: photofilmstrip/gui/PnlPfsProject.py:318
 msgid "Rotate counter clock&wise"
 msgstr "Rotar en sentido a&ntihorario"
 
-#: photofilmstrip/gui/PnlPfsProject.py:322
+#: photofilmstrip/gui/PnlPfsProject.py:323
 msgid "Random &motion"
 msgstr "Movimiento a&leatorio"
 
-#: photofilmstrip/gui/PnlPfsProject.py:326
+#: photofilmstrip/gui/PnlPfsProject.py:327
 msgid "Centralize m&otion"
 msgstr "Mov. al cen&tro"
 
-#: photofilmstrip/gui/PnlPfsProject.py:384
+#: photofilmstrip/gui/PnlPfsProject.py:385
 msgid "Export slideshow"
 msgstr "Exportar presentación"
 
-#: photofilmstrip/gui/PnlPfsProject.py:387
-#: photofilmstrip/gui/PnlPfsProject.py:400
+#: photofilmstrip/gui/PnlPfsProject.py:388
+#: photofilmstrip/gui/PnlPfsProject.py:401
 msgid "Portable slideshow"
 msgstr "Presentación portable"
 
-#: photofilmstrip/gui/PnlPfsProject.py:398
+#: photofilmstrip/gui/PnlPfsProject.py:399
 msgid "Import Slideshow"
 msgstr "Importar presentación"
 
-#: photofilmstrip/gui/PnlPfsProject.py:409
+#: photofilmstrip/gui/PnlPfsProject.py:410
 msgid "Import images"
 msgstr "Importar imágenes"
 
-#: photofilmstrip/gui/PnlPfsProject.py:411
+#: photofilmstrip/gui/PnlPfsProject.py:412
 msgid "Image files"
 msgstr "Archivos de imagen"
 
-#: photofilmstrip/gui/PnlPfsProject.py:654
+#: photofilmstrip/gui/PnlPfsProject.py:655
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "¡El archivo de audio '%s' no existe! ¿Continuar?"
 
-#: photofilmstrip/gui/PnlPfsProject.py:655
+#: photofilmstrip/gui/PnlPfsProject.py:656
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -842,6 +880,7 @@ msgid "Import Pictures"
 msgstr "Importar imágenes"
 
 #: photofilmstrip/gui/PnlSlideshow.py:62 photofilmstrip/gui/PnlSlideshow.py:63
+#: photofilmstrip/gui/PnlStory.py:313 photofilmstrip/gui/PnlStory.py:314
 #: photofilmstrip/gui/PnlTimelapse.py:41 photofilmstrip/gui/PnlTimelapse.py:42
 msgid "Render filmstrip"
 msgstr "Procesar presentación"
@@ -852,6 +891,76 @@ msgstr "Imágenes"
 
 #: photofilmstrip/gui/PnlSlideshow.py:94
 msgid "Duration"
+msgstr "Duración"
+
+#: photofilmstrip/gui/PnlStory.py:97 photofilmstrip/gui/PnlStory.py:267
+#: photofilmstrip/gui/PnlStory.py:287
+msgid "Add media"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:99
+#, fuzzy
+msgid "Media files"
+msgstr "Archivos de audio"
+
+#: photofilmstrip/gui/PnlStory.py:175
+#, fuzzy
+msgid "Video file"
+msgstr "Archivos de audio"
+
+#: photofilmstrip/gui/PnlStory.py:177
+#, fuzzy
+msgid "Video files"
+msgstr "Archivos de audio"
+
+#: photofilmstrip/gui/PnlStory.py:196
+msgid "Generate video %s"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:218
+msgid "An audio stream needs to contain at least one video stream!"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:272 photofilmstrip/gui/PnlStory.py:291
+msgid "Move up"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:275 photofilmstrip/gui/PnlStory.py:294
+msgid "Move down"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:278 photofilmstrip/gui/PnlStory.py:304
+msgid "Remove"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:287
+msgid "Add clip"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:297
+msgid "Move out"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:300
+#, fuzzy
+msgid "Move in"
+msgstr "Movimiento:"
+
+#: photofilmstrip/gui/PnlStory.py:466
+msgid "It's not allowed to create more than two levels!"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:472
+msgid "It's not allowed to put a video stream inside a video stream!"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:474
+msgid "It's not allowed to put an audio stream inside an audio stream!"
+msgstr ""
+
+#: photofilmstrip/gui/PnlStory.py:729
+#, fuzzy
+msgid "Orientation"
 msgstr "Duración"
 
 #: photofilmstrip/gui/PnlTimelapse.py:69
@@ -908,8 +1017,11 @@ msgid ""
 "moved you can select the new path. Do you want to select a new path?"
 msgstr ""
 "Algunas imágenes ya no existen en la carpeta '%s' . Si los archivos fueron "
-"movidos, puede seleccionar la nueva ruta. ¿Quiere seleccionar una nueva "
-"ruta?"
+"movidos, puede seleccionar la nueva ruta. ¿Quiere seleccionar una nueva ruta?"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
+msgid "Info"
+msgstr ""
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
 msgid "Elapsed time"
@@ -958,6 +1070,6 @@ msgstr "Hecho"
 msgid "Aborting..."
 msgstr "Abortando..."
 
-#: photofilmstrip/uwp/UwpService.py:76
+#: photofilmstrip/ux/gnome.py:61 photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
 msgstr "¡Presentación creada!"

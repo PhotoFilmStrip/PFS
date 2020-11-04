@@ -22,7 +22,7 @@ clean:
 	python3 setup.py clean
 
 update-po:
-	pygettext -o "po/$(displayname).pot" -v "$(srcdir)/$(pkgdir)"
+	pygettext3 -o "po/$(displayname).pot" -v "$(srcdir)/$(pkgdir)"
 	find po/ -name "*.po" -exec msgmerge --backup=none --update {} "po/$(displayname).pot" ';'
 
 
