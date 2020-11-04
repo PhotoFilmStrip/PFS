@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip\n"
-"POT-Creation-Date: 2020-11-04 23:38+0100\n"
-"PO-Revision-Date: 2018-11-07 21:21+0000\n"
+"POT-Creation-Date: 2020-11-04 23:56+0100\n"
+"PO-Revision-Date: 2020-11-04 23:57+0100\n"
 "Last-Translator: jensgoe <mail@jensgoepfert.de>\n"
 "Language-Team: Jens <jens@sg-dev.de>\n"
 "Language: de\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.2.2\n"
+"X-Generator: Poedit 2.4.1\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -140,25 +140,23 @@ msgstr "nein"
 
 #: photofilmstrip/core/Media.py:110
 msgid "As is"
-msgstr ""
+msgstr "Beibehalten"
 
 #: photofilmstrip/core/Media.py:111
-#, fuzzy
 msgid "Auto detect"
 msgstr "Automatisch"
 
 #: photofilmstrip/core/Media.py:112
-#, fuzzy
 msgid "Rotate left"
-msgstr "Im Uhrzeigersinn d&rehen"
+msgstr "Drehung nach links"
 
 #: photofilmstrip/core/Media.py:113
 msgid "Rotate right"
-msgstr ""
+msgstr "Drehung nach rechts"
 
 #: photofilmstrip/core/Media.py:114
 msgid "Upside down"
-msgstr ""
+msgstr "Kopfüber"
 
 #: photofilmstrip/core/ProjectFile.py:222
 msgid "Saving '%s' ..."
@@ -180,7 +178,7 @@ msgstr "Verarbeite Bild %d/%d"
 
 #: photofilmstrip/core/StoryEngine.py:66
 msgid "Prepare rendering..."
-msgstr ""
+msgstr "Erstellung vorbereiten..."
 
 #: photofilmstrip/core/StoryEngine.py:79 photofilmstrip/gui/FrmMain.py:145
 msgid "Rendering in progress..."
@@ -223,9 +221,8 @@ msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
 msgstr "MP4-Muxer (gstreamer1.0-plugins-good) nicht gefunden!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:716
-#, fuzzy
 msgid "x265-Codec (gstreamer1.0-plugins-ugly) required!"
-msgstr "x264-Codec (gstreamer1.0-plugins-ugly) nicht gefunden!"
+msgstr "x265-Codec (gstreamer1.0-plugins-ugly) nicht gefunden!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:758
 msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
@@ -242,9 +239,8 @@ msgstr "OGV-Muxer (gstreamer1.0-plugins-base) nicht gefunden!"
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:808
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:857
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:909
-#, fuzzy
 msgid "MPEG-1/2-Codec (gstreamer1.0-libav) required!"
-msgstr "MPEG-1/2-Codec (gstreamer1.0-plugins-bad) nicht gefunden!"
+msgstr "MPEG-1/2-Codec (gstreamer1.0-libav) nicht gefunden!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:816
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:865
@@ -305,7 +301,7 @@ msgstr "Zeitraffer"
 
 #: photofilmstrip/gui/ActionManager.py:115
 msgid "Story"
-msgstr ""
+msgstr "Story"
 
 #: photofilmstrip/gui/ActionManager.py:121
 msgid "New"
@@ -639,8 +635,8 @@ msgid "Create new timelapse"
 msgstr "Neuen Zeitraffer erstellen"
 
 #: photofilmstrip/gui/FrmMain.py:253
-msgid "New Story.pfstory"
-msgstr ""
+msgid "New Story"
+msgstr "Neue Story"
 
 #: photofilmstrip/gui/FrmMain.py:257
 msgid "Select %s-Project"
@@ -902,72 +898,67 @@ msgstr "Dauer"
 #: photofilmstrip/gui/PnlStory.py:97 photofilmstrip/gui/PnlStory.py:267
 #: photofilmstrip/gui/PnlStory.py:287
 msgid "Add media"
-msgstr ""
+msgstr "Medien hinzufügen"
 
 #: photofilmstrip/gui/PnlStory.py:99
-#, fuzzy
 msgid "Media files"
-msgstr "Audiodateien"
+msgstr "Mediadateien"
 
 #: photofilmstrip/gui/PnlStory.py:175
-#, fuzzy
 msgid "Video file"
-msgstr "Audiodateien"
+msgstr "Videodatei"
 
 #: photofilmstrip/gui/PnlStory.py:177
-#, fuzzy
 msgid "Video files"
-msgstr "Audiodateien"
+msgstr "Videodateien"
 
 #: photofilmstrip/gui/PnlStory.py:196
 msgid "Generate video %s"
-msgstr ""
+msgstr "Video %s erstellen"
 
 #: photofilmstrip/gui/PnlStory.py:218
 msgid "An audio stream needs to contain at least one video stream!"
-msgstr ""
+msgstr "Ein Musiktitel muss mindestens einen Videoclip enthalten!"
 
 #: photofilmstrip/gui/PnlStory.py:272 photofilmstrip/gui/PnlStory.py:291
 msgid "Move up"
-msgstr ""
+msgstr "Nach oben schieben"
 
 #: photofilmstrip/gui/PnlStory.py:275 photofilmstrip/gui/PnlStory.py:294
 msgid "Move down"
-msgstr ""
+msgstr "Nach unten schieben"
 
 #: photofilmstrip/gui/PnlStory.py:278 photofilmstrip/gui/PnlStory.py:304
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: photofilmstrip/gui/PnlStory.py:287
 msgid "Add clip"
-msgstr ""
+msgstr "Clip hinzufügen"
 
 #: photofilmstrip/gui/PnlStory.py:297
 msgid "Move out"
-msgstr ""
+msgstr "Herausschieben"
 
 #: photofilmstrip/gui/PnlStory.py:300
-#, fuzzy
 msgid "Move in"
-msgstr "Bewegung:"
+msgstr "Hineinschieben"
 
 #: photofilmstrip/gui/PnlStory.py:466
 msgid "It's not allowed to create more than two levels!"
-msgstr ""
+msgstr "Mehr als zwei Ebenen sind nicht möglich!"
 
 #: photofilmstrip/gui/PnlStory.py:472
 msgid "It's not allowed to put a video stream inside a video stream!"
-msgstr ""
+msgstr "Videoclips können nicht verschachtelt werden!"
 
 #: photofilmstrip/gui/PnlStory.py:474
 msgid "It's not allowed to put an audio stream inside an audio stream!"
-msgstr ""
+msgstr "Musiktitel können nicht verschachtelt werden!"
 
 #: photofilmstrip/gui/PnlStory.py:729
-#, fuzzy
 msgid "Orientation"
-msgstr "Dauer"
+msgstr "Ausrichtung"
 
 #: photofilmstrip/gui/PnlTimelapse.py:69
 msgid "Frames"
@@ -1029,7 +1020,7 @@ msgstr ""
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
 msgid "Elapsed time"
