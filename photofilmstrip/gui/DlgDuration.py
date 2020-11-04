@@ -45,43 +45,43 @@ class DlgDuration(wx.Dialog):
         self.pnlHdr = PnlDlgHeader(self)
 
         self.cbTotalLength = wx.CheckBox(self,
-              label=_(u'Total length:'), name=u'cbTotalLength')
+              label=_("Total length:"), name="cbTotalLength")
         self.cbTotalLength.SetValue(False)
-        self.cbTotalLength.SetToolTip(_(u'Overrides the duration of single pictures and gives the project this total length.'))
+        self.cbTotalLength.SetToolTip(_("Overrides the duration of single pictures and gives the project this total length."))
         self.cbTotalLength.Bind(wx.EVT_CHECKBOX, self.OnControlStatusTotalLength)
 
         self.rbManual = wx.RadioButton(self,
-              label=_(u'User defined:'), name=u'rbManual')
+              label=_("User defined:"), name="rbManual")
         self.rbManual.Bind(wx.EVT_RADIOBUTTON, self.OnControlStatusTotalLength)
 
         self.timeCtrlTotalLength = wx.lib.masked.timectrl.TimeCtrl(self,
               display_seconds=True, fmt24hr=True,
-              name=u'timeCtrlTotalLength', oob_color=wx.YELLOW,
+              name="timeCtrlTotalLength", oob_color=wx.YELLOW,
               style=0, useFixedWidthFont=True, value='12:00:00 AM',
               size=wx.Size(300, -1))
         self.timeCtrlTotalLength.Enable(False)
 
         self.rbAudio = wx.RadioButton(self,
-              label=_(u'Fit to audio files'), name=u'rbAudio')
+              label=_("Fit to audio files"), name="rbAudio")
         self.rbAudio.Bind(wx.EVT_RADIOBUTTON, self.OnControlStatusTotalLength)
 
         self.staticLine = wx.StaticLine(self)
 
-        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_(u'&Cancel'),
-              name=u'cmdCancel')
-        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_(u'&Ok'),
-              name=u'cmdOk')
+        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
+              name="cmdCancel")
+        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_("&Ok"),
+              name="cmdOk")
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton, id=wx.ID_OK)
         self.cmdOk.SetDefault()
 
     def __init__(self, parent, project=None):
-        wx.Dialog.__init__(self, parent, name=u'DlgDuration',
+        wx.Dialog.__init__(self, parent, name="DlgDuration",
                            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
-                           title=_(u'Slideshow duration'))
+                           title=_("Slideshow duration"))
 
         self._InitCtrls()
 
-        self.pnlHdr.SetTitle(_(u'Configure duration of slideshow'))
+        self.pnlHdr.SetTitle(_("Configure duration of slideshow"))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON_32'))
 
         defTime = wx.DateTime.Now()

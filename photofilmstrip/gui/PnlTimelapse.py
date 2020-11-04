@@ -15,32 +15,32 @@ from photofilmstrip.gui.PnlPfsProject import (
 class PnlTimelapse(PnlPfsProject):
 
     def _GetEditorName(self):
-        return _(u"Timelapse")
+        return _("Timelapse")
 
     def AddToolBarActions(self, toolBar):
-        toolBar.AddTool(ID_PIC_IMPORT, '',
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
-                          wx.ITEM_NORMAL,
-                          _(u'Import Pictures'),
-                          _(u'Import Pictures'),
-                          None)
+        toolBar.AddTool(ID_PIC_IMPORT, "",
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
+                        wx.ITEM_NORMAL,
+                        _("Import Pictures"),
+                        _("Import Pictures"),
+                        None)
         toolBar.AddSeparator()
-        toolBar.AddTool(ID_MUSIC, '',
-                          wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
-                          wx.NullBitmap,
-                          wx.ITEM_NORMAL,
-                          _(u'Configure music'),
-                          _(u'Configure music'),
-                          None)
+        toolBar.AddTool(ID_MUSIC, "",
+                        wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
+                        wx.NullBitmap,
+                        wx.ITEM_NORMAL,
+                        _("Configure music"),
+                        _("Configure music"),
+                        None)
         toolBar.AddSeparator()
-        toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
-                          wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
-                          wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
-                          wx.ITEM_NORMAL,
-                          _(u'Render filmstrip'),
-                          _(u'Render filmstrip'),
-                          None)
+        toolBar.AddTool(ID_RENDER_FILMSTRIP, "",
+                        wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
+                        wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
+                        wx.ITEM_NORMAL,
+                        _("Render filmstrip"),
+                        _("Render filmstrip"),
+                        None)
 
     def GetStatusText(self, index):
         project = self.GetProject()
@@ -63,12 +63,12 @@ class PnlTimelapse(PnlPfsProject):
             assert True, "totalTime is invalid"
 
         if index == 0:
-            return u"%s: %d" % (_(u"Images"), imgCount)
+            return "%s: %d" % (_("Images"), imgCount)
 
         elif index == 1:
-            return u"%s: %d" % (_(u"Frames"), frameCount)
+            return "%s: %d" % (_("Frames"), frameCount)
         else:
-            return u""
+            return ""
 
     def __CalcDuration(self):
         pics = self.GetProject().GetPictures()
@@ -89,8 +89,8 @@ class PnlTimelapse(PnlPfsProject):
 
             picCount = nextPicPattern.num - picNum
             if picCount < 0:
-                raise ValueError(_(u"The picture counter is not "
-                                   u"increasing: %s") % nextPic.GetFilename())
+                raise ValueError(_("The picture counter is not "
+                                   "increasing: %s") % nextPic.GetFilename())
 
             picDur = int(pic.GetDuration())
             transDur = int(pic.GetTransitionDuration())
@@ -107,10 +107,10 @@ class PnlTimelapse(PnlPfsProject):
         if not picPattern.IsOk():
             dlgErr = wx.MessageDialog(
                 self,
-                _(u"Filename '%s' does not match a number pattern "
-                  u"which is necessary for a time lapse slide "
-                  u"show!") % path,
-                _(u"Error"),
+                _("Filename '%s' does not match a number pattern "
+                  "which is necessary for a time lapse slide "
+                  "show!") % path,
+                _("Error"),
                 wx.OK | wx.ICON_ERROR)
             dlgErr.ShowModal()
             dlgErr.Destroy()

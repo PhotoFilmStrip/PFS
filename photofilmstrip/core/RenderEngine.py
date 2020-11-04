@@ -110,7 +110,7 @@ class RenderEngineSlideshow(RenderEngine):
 
             if idxPic > 0 and idxPic < len(pics):
                 # first and last pic has no transition
-                infoText = _(u"processing transition %d/%d") % (idxPic + 1, len(pics))
+                infoText = _("processing transition %d/%d") % (idxPic + 1, len(pics))
 
                 if transCountBefore > 0:
                     phase2a = pathRectsBefore[-transCountBefore:]
@@ -121,7 +121,7 @@ class RenderEngineSlideshow(RenderEngine):
                                                 phase2a, phase2b):
                         break
 
-            infoText = _(u"processing image %d/%d") % (idxPic + 1, len(pics))
+            infoText = _("processing image %d/%d") % (idxPic + 1, len(pics))
 
             if transCount > 0:
                 # transition needs pictures, subtract them from movement
@@ -155,9 +155,9 @@ class RenderEngineTimelapse(RenderEngine):
             picPattern = PicturePattern.Create(pic.GetFilename())
             if not picPattern.IsOk():
                 raise RenderException(
-                    (u"Filename '%s' does not match a number pattern "
-                     u"which is necessary for a time lapse "
-                     u"slide show!") % pic.GetFilename())
+                    ("Filename '%s' does not match a number pattern "
+                     "which is necessary for a time lapse "
+                     "slide show!") % pic.GetFilename())
 
             picNum = picPattern.num
             picDur = int(pic.GetDuration())
@@ -173,8 +173,8 @@ class RenderEngineTimelapse(RenderEngine):
             picCount = nextPicPattern.num - picNum
             if picCount < 0:
                 raise RenderException(
-                    (u"The picture counter is not "
-                     u"increasing: %s") % nextPic.GetFilename())
+                    ("The picture counter is not "
+                     "increasing: %s") % nextPic.GetFilename())
 
             if idxPic + 1 == len(pics) - 1:
                 # next pic is the last one so incluse the last pic
@@ -198,7 +198,7 @@ class RenderEngineTimelapse(RenderEngine):
                                          picBefore.Copy(), pathRects[idxRect],
                                          picCopy.Copy(), pathRects[idxRect],
                                          self._profile.GetResolution())
-                        task.SetInfo(_(u"processing transition %d/%d") % (picNum, idxTrans + 1))
+                        task.SetInfo(_("processing transition %d/%d") % (picNum, idxTrans + 1))
                         task.SetDraft(self._draftMode)
                         self._tasks.append(task)
                         idxRect += 1
@@ -207,7 +207,7 @@ class RenderEngineTimelapse(RenderEngine):
                     for __ in range(picDur):
                         task = TaskCropResize(picCopy.Copy(), pathRects[idxRect],
                                               self._profile.GetResolution())
-                        task.SetInfo(_(u"processing image %d/%d") % (picNum, __ + 1))
+                        task.SetInfo(_("processing image %d/%d") % (picNum, __ + 1))
                         task.SetDraft(self._draftMode)
                         self._tasks.append(task)
                         idxRect += 1

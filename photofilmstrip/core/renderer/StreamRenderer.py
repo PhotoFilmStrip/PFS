@@ -18,7 +18,7 @@ class StreamRenderer(SingleFileRenderer):
 
     @staticmethod
     def GetName():
-        return u"Stream output"
+        return "Stream output"
 
     @staticmethod
     def GetProperties():

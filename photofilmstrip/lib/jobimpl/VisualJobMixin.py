@@ -22,7 +22,7 @@ class VisualJobMixin(IVisualJob):
         self.__name = name
         self.__maxProgress = maxProgress
         self.__progress = 0
-        self.__info = _(u"Waiting...")
+        self.__info = _("Waiting...")
 
     def __NotifyHandler(self, funcName, args=None):
         if args is None:
@@ -57,7 +57,7 @@ class VisualJobMixin(IVisualJob):
         self.__NotifyHandler("OnHandleJobDone")
 
     def _VJMAbort(self):
-        self.SetInfo(_(u"Aborted"))
+        self.SetInfo(_("Aborted"))
 
     def GetName(self):
         return self.__name

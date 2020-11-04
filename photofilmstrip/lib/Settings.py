@@ -103,7 +103,7 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "ProjectPath"):
             return self.cp.get("General", "ProjectPath")
-        return u""
+        return ""
 
     def SetImagePath(self, path):
         self.Load()
@@ -114,7 +114,7 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "ImagePath"):
             return self.cp.get("General", "ImagePath")
-        return u""
+        return ""
 
     def SetAudioPath(self, path):
         self.Load()
@@ -125,7 +125,7 @@ class Settings(Singleton):
         self.Load()
         if self.cp.has_option("General", "AudioPath"):
             return self.cp.get("General", "AudioPath")
-        return u""
+        return ""
 
     def SetLastProfile(self, profile):
         self.Load()

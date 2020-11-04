@@ -32,7 +32,7 @@ class CairoRenderer(BaseRenderer):
 
     @staticmethod
     def GetName():
-        return _(u"Preview")
+        return _("Preview")
 
     @staticmethod
     def CheckDependencies(msgList):

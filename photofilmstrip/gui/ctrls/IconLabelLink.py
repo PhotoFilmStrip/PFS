@@ -27,7 +27,7 @@ class IconLabelLink(wx.Panel):
         self.label = label
         self.mouseOver = False
 
-        self.SetToolTip(u'{0}\n{1}'.format(label, descr))
+        self.SetToolTip("{0}\n{1}".format(label, descr))
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvents)

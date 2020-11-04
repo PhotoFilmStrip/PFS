@@ -51,7 +51,7 @@ class _GStreamerRenderer(BaseRenderer):
     def CheckDependencies(msgList):
         if Gst is None or GObject is None:
             _GStreamerRenderer.Log(logging.DEBUG, "checking for gstreamer failed!")
-            msgList.append(_(u"GStreamer (python-gst-1.0) required!"))
+            msgList.append(_("GStreamer (python-gst-1.0) required!"))
         else:
             to = Gst.ElementFactory.find("textoverlay")
             if to is None:
@@ -337,7 +337,7 @@ class _GStreamerRenderer(BaseRenderer):
         bitrate = self.GetTypedProperty("Bitrate", int,
                                         self.GetProfile().GetBitrate())
         if bitrate is None:
-            raise RendererException(_(u"Bitrate must be a number!"))
+            raise RendererException(_("Bitrate must be a number!"))
         return bitrate
 
     def _GstOnMessage(self, bus, msg):  # pylint: disable=unused-argument
@@ -556,15 +556,15 @@ class MkvX264AC3(_GStreamerRenderer):
         if not msgList:
             aEnc = Gst.ElementFactory.find("avenc_ac3")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             vEnc = Gst.ElementFactory.find("x264enc")
             if vEnc is None:
-                msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
+                msgList.append(_("x264-Codec (gstreamer1.0-plugins-ugly) required!"))
 
             mux = Gst.ElementFactory.find("matroskamux")
             if mux is None:
-                msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
+                msgList.append(_("MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
     def GetDefaultProperty(prop):
@@ -639,15 +639,15 @@ class Mp4X264AAC(_GStreamerRenderer):
         if not msgList:
             aEnc = Gst.ElementFactory.find("avenc_aac")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             vEnc = Gst.ElementFactory.find("x264enc")
             if vEnc is None:
-                msgList.append(_(u"x264-Codec (gstreamer1.0-plugins-ugly) required!"))
+                msgList.append(_("x264-Codec (gstreamer1.0-plugins-ugly) required!"))
 
             mux = Gst.ElementFactory.find("mp4mux")
             if mux is None:
-                msgList.append(_(u"MP4-Muxer (gstreamer1.0-plugins-good) required!"))
+                msgList.append(_("MP4-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
     def GetDefaultProperty(prop):
@@ -709,15 +709,15 @@ class Mp4X265AAC(_GStreamerRenderer):
         if not msgList:
             aEnc = Gst.ElementFactory.find("avenc_aac")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             vEnc = Gst.ElementFactory.find("x265enc")
             if vEnc is None:
-                msgList.append(_(u"x265-Codec (gstreamer1.0-plugins-ugly) required!"))
+                msgList.append(_("x265-Codec (gstreamer1.0-plugins-ugly) required!"))
 
             mux = Gst.ElementFactory.find("qtmux")
             if mux is None:
-                msgList.append(_(u"MKV-Muxer (gstreamer1.0-plugins-good) required!"))
+                msgList.append(_("MKV-Muxer (gstreamer1.0-plugins-good) required!"))
 
     @staticmethod
     def GetProperties():
@@ -755,15 +755,15 @@ class OggTheoraVorbis(_GStreamerRenderer):
         if not msgList:
             aEnc = Gst.ElementFactory.find("theoraenc")
             if aEnc is None:
-                msgList.append(_(u"Theora-Codec (gstreamer1.0-plugins-base) required!"))
+                msgList.append(_("Theora-Codec (gstreamer1.0-plugins-base) required!"))
 
             vEnc = Gst.ElementFactory.find("vorbisenc")
             if vEnc is None:
-                msgList.append(_(u"Vorbis-Codec (gstreamer1.0-plugins-base) required!"))
+                msgList.append(_("Vorbis-Codec (gstreamer1.0-plugins-base) required!"))
 
             mux = Gst.ElementFactory.find("oggmux")
             if mux is None:
-                msgList.append(_(u"OGV-Muxer (gstreamer1.0-plugins-base) required!"))
+                msgList.append(_("OGV-Muxer (gstreamer1.0-plugins-base) required!"))
 
     def _GetExtension(self):
         return "ogv"
@@ -805,15 +805,15 @@ class VCDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
+                msgList.append(_("MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
-                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_("MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
     def _GetExtension(self):
         return "mpg"
@@ -854,15 +854,15 @@ class SVCDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
+                msgList.append(_("MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
-                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_("MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
     def _GetExtension(self):
         return "mpg"
@@ -906,15 +906,15 @@ class DVDFormat(_GStreamerRenderer):
         if not msgList:
             vEnc = Gst.ElementFactory.find("avenc_mpeg2video")
             if vEnc is None:
-                msgList.append(_(u"MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
+                msgList.append(_("MPEG-1/2-Codec (gstreamer1.0-libav) required!"))
 
             aEnc = Gst.ElementFactory.find("avenc_mp2")
             if aEnc is None:
-                msgList.append(_(u"libav (gstreamer1.0-libav) required!"))
+                msgList.append(_("libav (gstreamer1.0-libav) required!"))
 
             mux = Gst.ElementFactory.find("mpegpsmux")
             if mux is None:
-                msgList.append(_(u"MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
+                msgList.append(_("MPEG-Muxer (gstreamer1.0-plugins-bad) required!"))
 
     def _GetExtension(self):
         return "mpg"

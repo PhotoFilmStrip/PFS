@@ -20,7 +20,7 @@ class Story(Observable):
 
     def GetName(self):
         if self.__filename is None:
-            return u""
+            return ""
         fname = os.path.splitext(self.__filename)[0]
         return os.path.basename(fname)
 

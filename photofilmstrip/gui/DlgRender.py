@@ -32,7 +32,7 @@ class DlgRender(wx.Dialog):
     _custom_classes = {"wx.Choice": ["FormatComboBox"],
                        "wx.Panel": ["PnlDlgHeader"]}
 
-    DEFAULT_PROFILE = u"HD 720p@25.00 fps"
+    DEFAULT_PROFILE = "HD 720p@25.00 fps"
 
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
@@ -90,25 +90,25 @@ class DlgRender(wx.Dialog):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_DLGRENDER, name=u'DlgRender',
+        wx.Dialog.__init__(self, id=wxID_DLGRENDER, name="DlgRender",
             parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
             style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
-            title=_(u'Render project'))
+            title=_("Render project"))
 
-        self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name=u'pnlHdr',
+        self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERPNLHDR, name="pnlHdr",
             parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
             style=wx.TAB_TRAVERSAL)
 
         self.pnlSettings = wx.Panel(id=wxID_DLGRENDERPNLSETTINGS,
-            name=u'pnlSettings', parent=self, pos=wx.Point(-1, -1),
+            name="pnlSettings", parent=self, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.stFormat = wx.StaticText(id=wxID_DLGRENDERSTFORMAT,
-            label=_(u'Format:'), name=u'stFormat', parent=self.pnlSettings,
+            label=_("Format:"), name="stFormat", parent=self.pnlSettings,
             pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceFormat = FormatComboBox(choices=[],
-            id=wxID_DLGRENDERCHOICEFORMAT, name=u'choiceFormat',
+            id=wxID_DLGRENDERCHOICEFORMAT, name="choiceFormat",
             parent=self.pnlSettings, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=wx.CB_READONLY)
         self.choiceFormat.SetSizeHints(400, -1)
@@ -116,41 +116,41 @@ class DlgRender(wx.Dialog):
             id=wxID_DLGRENDERCHOICEFORMAT)
 
         self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_16'),
-              id=wxID_DLGRENDERCMDRENDERERPROPS, name=u'cmdRendererProps',
+              id=wxID_DLGRENDERCMDRENDERERPROPS, name="cmdRendererProps",
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdRendererProps.SetToolTip(_(u"Properties"))
+        self.cmdRendererProps.SetToolTip(_("Properties"))
         self.cmdRendererProps.Bind(wx.EVT_BUTTON, self.OnCmdRendererPropsButton,
             id=wxID_DLGRENDERCMDRENDERERPROPS)
 
         self.stProfile = wx.StaticText(id=wxID_DLGRENDERSTPROFILE,
-            label=_(u'Profile:'), name=u'stProfile', parent=self.pnlSettings,
+            label=_("Profile:"), name="stProfile", parent=self.pnlSettings,
             pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceProfile = wx.Choice(choices=[],
-            id=wxID_DLGRENDERCHOICEPROFILE, name=u'choiceProfile',
+            id=wxID_DLGRENDERCHOICEPROFILE, name="choiceProfile",
             parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
             -1), style=0)
         self.choiceProfile.SetSizeHints(400, -1)
 
-        self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_(u'Draft'),
-            name=u'cbDraft', parent=self.pnlSettings, pos=wx.Point(-1, -1),
+        self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_("Draft"),
+            name="cbDraft", parent=self.pnlSettings, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=0)
         self.cbDraft.SetValue(False)
 
-        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'),
-            name=u'cmdHelp', parent=self, pos=wx.Point(-1, -1),
+        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_("&Help"),
+            name="cmdHelp", parent=self, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=0)
         self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton, id=wx.ID_HELP)
 
         self.cmdCancel = wx.Button(id=wxID_DLGRENDERCMDCANCEL,
-            label=_(u'&Cancel'), name=u'cmdCancel', parent=self,
+            label=_("&Cancel"), name="cmdCancel", parent=self,
             pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
             id=wxID_DLGRENDERCMDCANCEL)
 
-        self.cmdStart = wx.Button(id=wxID_DLGRENDERCMDSTART, label=_(u'&Start'),
-            name=u'cmdStart', parent=self, pos=wx.Point(-1, -1),
+        self.cmdStart = wx.Button(id=wxID_DLGRENDERCMDSTART, label=_("&Start"),
+            name="cmdStart", parent=self, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=0)
         self.cmdStart.Bind(wx.EVT_BUTTON, self.OnCmdStartButton,
             id=wxID_DLGRENDERCMDSTART)
@@ -161,10 +161,10 @@ class DlgRender(wx.Dialog):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
-        self.pnlHdr.SetTitle(_('Configure output and start render process'))
+        self.pnlHdr.SetTitle(_("Configure output and start render process"))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER_32'))
 
-        self.cbDraft.SetToolTip(_(u"Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
+        self.cbDraft.SetToolTip(_("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
         self.aspectRatio = aspectRatio
         self.__InitProfiles()
@@ -221,7 +221,7 @@ class DlgRender(wx.Dialog):
         useFriendlyName = True
         for profile in profiles:
             if profile == "-":
-                self.choiceProfile.Append(u"----------")
+                self.choiceProfile.Append("----------")
                 useFriendlyName = False
                 continue
 
@@ -233,9 +233,9 @@ class DlgRender(wx.Dialog):
             else:
                 profName = profile.GetName()
 
-            self.choiceProfile.Append(u"%s (%sx%s)" % (profName,
-                                                       profile.GetResolution()[0],
-                                                       profile.GetResolution()[1]),
+            self.choiceProfile.Append("%s (%sx%s)" % (profName,
+                                                      profile.GetResolution()[0],
+                                                      profile.GetResolution()[1]),
                                       profile)
 
         self.choiceProfile.SetStringSelection(selection)

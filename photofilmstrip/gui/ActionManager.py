@@ -46,7 +46,7 @@ class ActionManager:
         ID_LANG_TA: "ta",
         ID_LANG_UK: "uk",
         ID_LANG_EL: "el",
-        ID_LANG_ES: 'es'
+        ID_LANG_ES: "es"
     }
 
     def __init__(self, frame, menuBar, toolBar):
@@ -60,9 +60,9 @@ class ActionManager:
         menuFile = self.__CreateMenuFile()
         menuEdit = self.__CreateMenuEdit()
         menuHelp = self.__CreateMenuHelp()
-        self._menuBar.Append(menuFile, _(u'&File'))
-        self._menuBar.Append(menuEdit, _(u'&Edit'))
-        self._menuBar.Append(menuHelp, _(u'&Help'))
+        self._menuBar.Append(menuFile, _("&File"))
+        self._menuBar.Append(menuEdit, _("&Edit"))
+        self._menuBar.Append(menuHelp, _("&Help"))
 
         self.__MakeToolBar(toolBar)
         self.__SelectLanguage(Settings().GetLanguage())
@@ -76,29 +76,29 @@ class ActionManager:
         toolBar.AddTool(ActionManager.ID_SLIDESHOW, "",
                         wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_24'),
                         kind=wx.ITEM_DROPDOWN,
-                        shortHelp=_(u'New Slideshow'))
+                        shortHelp=_("New Slideshow"))
         toolBar.Bind(wx.EVT_TOOL_DROPDOWN, self.OnDropDownNew)
 
         toolBar.AddTool(wx.ID_OPEN, "",
                         wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_24'),
-                        _(u'Open'),)
+                        _("Open"),)
 
         toolBar.AddTool(wx.ID_SAVE, "",
                         wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_24'),
                         wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_24'),
                         wx.ITEM_NORMAL,
-                        shortHelp=_(u'Save'))
+                        shortHelp=_("Save"))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
 #                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'),
-#                              _(u'Save Project as'), _(u'Save Project as'))
+#                              _("Save Project as"), _("Save Project as"))
         toolBar.AddSeparator()
 
         toolBar.AddTool(self.ID_JOB_QUEUE, '',
                         wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_24'),
                         wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D_24'),
                         wx.ITEM_NORMAL,
-                        _(u'Show job queue'),
-                        _(u'Show job queue'),
+                        _("Show job queue"),
+                        _("Show job queue"),
                         None)
 
         toolBar.AddSeparator()
@@ -108,28 +108,28 @@ class ActionManager:
 
     def __CreateMenuNew(self):
         menu = wx.Menu()
-        CreateMenuItem(menu, ActionManager.ID_SLIDESHOW, _(u'Slideshow') + '\tCtrl+N',
+        CreateMenuItem(menu, ActionManager.ID_SLIDESHOW, _("Slideshow") + "\tCtrl+N",
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
-        CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _(u'Timelapse'),
+        CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _("Timelapse"),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_16'))
-        CreateMenuItem(menu, ActionManager.ID_STORY, _(u'Story'),
+        CreateMenuItem(menu, ActionManager.ID_STORY, _("Story"),
                        wx.ArtProvider.GetBitmap(wx.ART_LIST_VIEW, wx.ART_MENU, (16, 16)))
         return menu
 
     def __CreateMenuFile(self, editor=None):
         menu = wx.Menu()
-        menu.Append(wx.ID_ANY, _(u'New'), self.__CreateMenuNew())
+        menu.Append(wx.ID_ANY, _("New"), self.__CreateMenuNew())
         CreateMenuItem(menu, wx.ID_OPEN,
-                       _(u'&Open') + '\tCtrl+O',
+                       _("&Open") + "\tCtrl+O",
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_16'))
 
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_SAVE,
-                       _(u'&Save') + '\tCtrl+S',
+                       _("&Save") + "\tCtrl+S",
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_16'),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D_16'))
 #        CreateMenuItem(menu, wx.ID_SAVEAS,
-#                       _(u'Save Project &as'),
+#                       _("Save Project &as"),
 #                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'))
         menu.AppendSeparator()
 
@@ -138,12 +138,12 @@ class ActionManager:
                 menu.AppendSeparator()
 
         CreateMenuItem(menu, ActionManager.ID_PROJECT_CLOSE,
-                       _(u'&Close') + '\tCtrl+W',
+                       _("&Close") + "\tCtrl+W",
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE_16'),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_EXIT,
-                       _(u'E&xit') + '\tCtrl+Q',
+                       _("E&xit") + "\tCtrl+Q",
                        wx.ArtProvider.GetBitmap('PFS_EXIT_16'))
         return menu
 
@@ -156,27 +156,27 @@ class ActionManager:
     def __CreateMenuHelp(self):
         menu = wx.Menu()
         CreateMenuItem(menu, wx.ID_HELP,
-                       _(u'&Help') + '\tF1',
+                       _("&Help") + "\tF1",
                        wx.ArtProvider.GetBitmap('PFS_HELP_16'))
         menu.AppendSeparator()
         langMenu = wx.Menu()
-        langMenu.AppendRadioItem(self.ID_LANG_EN, u"English")
-        langMenu.AppendRadioItem(self.ID_LANG_FR, u"Français")
-        langMenu.AppendRadioItem(self.ID_LANG_DE, u"Deutsch")
-        langMenu.AppendRadioItem(self.ID_LANG_NL, u"Nederlands")
-        langMenu.AppendRadioItem(self.ID_LANG_PT_BR, u"Português (Brasil)")
-        langMenu.AppendRadioItem(self.ID_LANG_CS, u"Český")
-        langMenu.AppendRadioItem(self.ID_LANG_IT, u"Italiano")
-        langMenu.AppendRadioItem(self.ID_LANG_KO, u"한국어")
-        langMenu.AppendRadioItem(self.ID_LANG_RU, u"русский")
-        langMenu.AppendRadioItem(self.ID_LANG_TA, u"தமிழ்")
-        langMenu.AppendRadioItem(self.ID_LANG_UK, u"Український")
-        langMenu.AppendRadioItem(self.ID_LANG_EL, u"ελληνικά")
-        langMenu.AppendRadioItem(self.ID_LANG_ES, u"Español")
+        langMenu.AppendRadioItem(self.ID_LANG_EN, "English")
+        langMenu.AppendRadioItem(self.ID_LANG_FR, "Français")
+        langMenu.AppendRadioItem(self.ID_LANG_DE, "Deutsch")
+        langMenu.AppendRadioItem(self.ID_LANG_NL, "Nederlands")
+        langMenu.AppendRadioItem(self.ID_LANG_PT_BR, "Português (Brasil)")
+        langMenu.AppendRadioItem(self.ID_LANG_CS, "Český")
+        langMenu.AppendRadioItem(self.ID_LANG_IT, "Italiano")
+        langMenu.AppendRadioItem(self.ID_LANG_KO, "한국어")
+        langMenu.AppendRadioItem(self.ID_LANG_RU, "русский")
+        langMenu.AppendRadioItem(self.ID_LANG_TA, "தமிழ்")
+        langMenu.AppendRadioItem(self.ID_LANG_UK, "Український")
+        langMenu.AppendRadioItem(self.ID_LANG_EL, "ελληνικά")
+        langMenu.AppendRadioItem(self.ID_LANG_ES, "Español")
         menu.Append(wx.NewId(), _("Language"), langMenu)
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_ABOUT,
-                       _(u'&About'),
+                       _("&About"),
                        wx.ArtProvider.GetBitmap('PFS_ABOUT_16'))
         return menu
 
@@ -193,8 +193,8 @@ class ActionManager:
 
         menuFile = self.__CreateMenuFile(newEditor)
         menuEdit = self.__CreateMenuEdit(newEditor)
-        self._menuBar.Replace(0, menuFile, _(u'&File')).Destroy()
-        self._menuBar.Replace(1, menuEdit, _(u'&Edit')).Destroy()
+        self._menuBar.Replace(0, menuFile, _("&File")).Destroy()
+        self._menuBar.Replace(1, menuEdit, _("&Edit")).Destroy()
 
         if newEditor:
             newEditor.AddToolBarActions(self._toolBar)

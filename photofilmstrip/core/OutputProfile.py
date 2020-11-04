@@ -15,7 +15,7 @@ class FrameRate:
         self.str = strValue
 
     def __str__(self, *args, **kwargs):
-        return u"%.2f fps" % self.num
+        return "%.2f fps" % self.num
 
     def AsFloat(self):
         return self.num

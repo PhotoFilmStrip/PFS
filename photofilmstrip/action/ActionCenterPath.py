@@ -18,7 +18,7 @@ class ActionCenterPath(IAction):
         self.__aspect = aspect
 
     def GetName(self):
-        return _(u'Centralize motion')
+        return _("Centralize motion")
 
     def Execute(self):
         try:

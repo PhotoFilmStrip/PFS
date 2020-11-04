@@ -34,13 +34,13 @@ class SubtitleSrt(object):
         start = self.__FormatTime(self.__curTime)
         end = self.__FormatTime(self.__curTime + self.__GetPicDuration(pic))
 
-        result = u"%(idx)d\n" \
-                 u"%(start)s --> %(end)s\n" \
-                 u"%(text)s\n" \
-                 u"\n" % {'idx': idx,
-                          'start': start,
-                          'end': end,
-                          'text': text}
+        result = "%(idx)d\n" \
+                 "%(start)s --> %(end)s\n" \
+                 "%(text)s\n" \
+                 "\n" % {'idx': idx,
+                         'start': start,
+                         'end': end,
+                         'text': text}
 
         return result
 

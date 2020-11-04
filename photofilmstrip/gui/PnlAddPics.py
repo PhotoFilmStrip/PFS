@@ -28,30 +28,30 @@ class PnlAddPics(wx.Panel):
 
     def __init__(self, parent, id=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
-                 style=0, name='PnlAddPics'):
+                 style=0, name="PnlAddPics"):
         wx.Panel.__init__(self, id=id, name=name, parent=parent,
                           pos=pos, size=size, style=style)
         self.SetClientSize(wx.Size(400, 250))
 
         self.stTitle = wx.StaticText(
-            self, wx.ID_ANY, name=u'stTitle', style=wx.ALIGN_CENTRE)
+            self, wx.ID_ANY, name="stTitle", style=wx.ALIGN_CENTRE)
 
         self.stInfo = wx.StaticText(
-            self, wx.ID_ANY, name=u'stInfo', style=wx.ALIGN_CENTRE)
+            self, wx.ID_ANY, name="stInfo", style=wx.ALIGN_CENTRE)
 
         self.cmdBrowse = wx.BitmapButton(
-            self, wx.ID_ANY, name=u'cmdBrowse',
+            self, wx.ID_ANY, name="cmdBrowse",
             bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_32'))
 
         font = self.stTitle.GetFont()
         font.SetWeight(wx.BOLD)
         self.stTitle.SetFont(font)
 
-        self.stTitle.SetLabel(_(u"Welcome to PhotoFilmStrip"))
+        self.stTitle.SetLabel(_("Welcome to PhotoFilmStrip"))
         self.stInfo.SetLabel(
-            _(u"Drag some pictures onto this text or\n"
-              u"click the button below\n"
-              u"to add pictures to your new PhotoFilmStrip."))
+            _("Drag some pictures onto this text or\n"
+              "click the button below\n"
+              "to add pictures to your new PhotoFilmStrip."))
 
         self._InitSizers()
 

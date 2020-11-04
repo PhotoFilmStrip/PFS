@@ -48,7 +48,7 @@ ID_PAGE_DOWN = wx.NewId()
 class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
     def __init__(self):
-        wx.Frame.__init__(self, None, -1, name=u'FrmMain',
+        wx.Frame.__init__(self, None, -1, name="FrmMain",
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
         WxVisualJobManager.__init__(self)
@@ -83,9 +83,9 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         self.pnlWelcome = PnlWelcome(self.notebook, self)
         self.pnlWelcome.SetDropTarget(ProjectDropTarget(self))
 
-        self.notebook.AddPage(self.pnlWelcome, _(u"Welcome"), True)
+        self.notebook.AddPage(self.pnlWelcome, _("Welcome"), True)
 
-        self.frmJobManager = wx.Frame(self, -1, _(u"Job queue"),
+        self.frmJobManager = wx.Frame(self, -1, _("Job queue"),
                                       size=wx.Size(600, 400),
                                       style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
         self.frmJobManager.SetIcon(wx.ArtProvider.GetIcon("PFS_JOB_QUEUE_16", wx.ART_OTHER))
@@ -142,7 +142,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
     def OnRegisterJob(self, event):
         job = event.GetJob()
         if isinstance(job, RenderJob):
-            self.statusBar.SetStatusText(_(u"Rendering in progress..."), 3)
+            self.statusBar.SetStatusText(_("Rendering in progress..."), 3)
 
     def OnRemoveJob(self, event):
         self.statusBar.SetStatusText("", 3)
@@ -165,7 +165,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
 
             filepath = page.GetProject().GetFilename()
-            self.SetTitle(Constants.APP_NAME + u' - ' + filepath)
+            self.SetTitle(Constants.APP_NAME + ' - ' + filepath)
 
         self._actionMgr.UpdateActions(page)
         self.UpdateStatusText()
@@ -250,13 +250,13 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         dlg.Destroy()
 
     def OnStory(self, event):
-        story = Story(_(u"New Story.pfstory"))
+        story = Story(_("New Story.pfstory"))
         self._NewStory(story)
 
     def OnProjectLoad(self, event):
-        dlg = wx.FileDialog(self, _(u"Select %s-Project") % Constants.APP_NAME,
+        dlg = wx.FileDialog(self, _("Select %s-Project") % Constants.APP_NAME,
                             Settings().GetProjectPath(), "",
-                            Constants.APP_NAME + u'-' + _(u"Files") + " (*.pfs;*.pfstory)|*.pfs;*.pfstory",
+                            Constants.APP_NAME + "-" + _("Files") + " (*.pfs;*.pfstory)|*.pfs;*.pfstory",
                             wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.LoadProject(dlg.GetPath())
@@ -294,8 +294,8 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         Settings().SetLanguage(lang)
         ActionI18N().Execute()
         dlg = wx.MessageDialog(self,
-                               _(u"You must restart %s for your new language setting to take effect.") % Constants.APP_NAME,
-                               _(u"Information"),
+                               _("You must restart %s for your new language setting to take effect.") % Constants.APP_NAME,
+                               _("Information"),
                                wx.ICON_INFORMATION | wx.OK)
         dlg.ShowModal()
         dlg.Destroy()
@@ -392,9 +392,9 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         result = prjFile.Load()
         if not result:
             dlg = wx.MessageDialog(self,
-                                   _(u"Invalid %(app)s-Project: %(file)s") % {"app": Constants.APP_NAME,
-                                                                              "file": filepath},
-                                   _(u"Error"),
+                                   _("Invalid %(app)s-Project: %(file)s") % {"app": Constants.APP_NAME,
+                                                                             "file": filepath},
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()

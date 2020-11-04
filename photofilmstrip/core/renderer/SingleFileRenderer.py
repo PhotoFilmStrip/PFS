@@ -18,7 +18,7 @@ class SingleFileRenderer(BaseRenderer):
 
     @staticmethod
     def GetName():
-        return _(u"Single pictures")
+        return _("Single pictures")
 
     @staticmethod
     def GetProperties():

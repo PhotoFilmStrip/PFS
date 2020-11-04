@@ -23,10 +23,10 @@ class PnlEditorPage(wx.Panel):
             return self._Save(filepath)
         except Exception as err:
             dlg = wx.MessageDialog(self.GetParent(),
-                                   _(u"Could not save the file '%(file)s': %(errMsg)s") % \
-                                            {'file': filepath,
-                                             'errMsg': str(err)},
-                                   _(u"Question"),
+                                   _("Could not save the file '%(file)s': %(errMsg)s") % \
+                                           {'file': filepath,
+                                            'errMsg': str(err)},
+                                   _("Question"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
@@ -42,11 +42,11 @@ class PnlEditorPage(wx.Panel):
         if self.HasChanged():
             filepath = self.GetSaveFilePath()
             if filepath is None:
-                filepath = _(u"New file")
+                filepath = _("New file")
 
             dlg = wx.MessageDialog(self.GetParent(),
-                                   _(u"'%s' has been modified. Save changes?") % filepath,
-                                   _(u"Question"),
+                                   _("'%s' has been modified. Save changes?") % filepath,
+                                   _("Question"),
                                    wx.YES_NO | wx.CANCEL | wx.ICON_EXCLAMATION)
             response = dlg.ShowModal()
             dlg.Destroy()
@@ -71,10 +71,10 @@ class PnlEditorPage(wx.Panel):
         curFilePath = self.GetSaveFilePath()
         if curFilePath is None:
             curFilePath = "{0}{1}".format(self._GetEditorName(), self.GetFileExtension())
-        dlg = wx.FileDialog(self.GetParent(), _(u"Save %s") % self._GetEditorName(),
+        dlg = wx.FileDialog(self.GetParent(), _("Save %s") % self._GetEditorName(),
                             self._GetDefaultSaveFolder(),
                             curFilePath,
-                            self._GetEditorName() + u'-' + _(u"File") + " (*{0})|*{0}".format(self.GetFileExtension()),
+                            self._GetEditorName() + "-" + _("File") + " (*{0})|*{0}".format(self.GetFileExtension()),
                             wx.FD_SAVE)
         try:
             if dlg.ShowModal() == wx.ID_OK:
@@ -84,8 +84,8 @@ class PnlEditorPage(wx.Panel):
 
                 if os.path.isfile(filepath):
                     dlg2 = wx.MessageDialog(self.GetParent(),
-                                            _(u"Overwrite existing file '%s'?") % filepath,
-                                            _(u"Question"),
+                                            _("Overwrite existing file '%s'?") % filepath,
+                                            _("Question"),
                                             wx.YES_NO | wx.ICON_QUESTION)
                     try:
                         if dlg2.ShowModal() == wx.ID_NO:

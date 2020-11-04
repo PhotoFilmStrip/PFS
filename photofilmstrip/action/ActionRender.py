@@ -34,7 +34,7 @@ class ActionRender(IAction):
         self.__renderJob = None
 
     def GetName(self):
-        return _(u'Start')
+        return _("Start")
 
     def _CheckAndGetOutFile(self):
         if self.__outpath == "-":

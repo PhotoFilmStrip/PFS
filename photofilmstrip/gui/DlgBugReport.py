@@ -38,10 +38,10 @@ class DlgBugReport(wx.Dialog):
 
     def __init__(self, parent, msg):
         wx.Dialog.__init__(self, parent, -1,
-                           _(u"An unexpected error occured"),
-                           name=u'DlgBugReport')
+                           _("An unexpected error occured"),
+                           name="DlgBugReport")
 
-        text = _(u"An unexpected error occured. Do you want to send this bug report to the developers of %s?") % Constants.APP_NAME
+        text = _("An unexpected error occured. Do you want to send this bug report to the developers of %s?") % Constants.APP_NAME
 
         stBmp = wx.StaticBitmap(
             self, -1,
@@ -96,15 +96,15 @@ class DlgBugReport(wx.Dialog):
         if result and result.find("Result 1") != -1:
             dlg = wx.MessageDialog(
                 self,
-                _(u"Bug-Report send. Thank you for your support."),
-                _(u"Information"),
+                _("Bug-Report send. Thank you for your support."),
+                _("Information"),
                 wx.OK | wx.ICON_INFORMATION)
             dlg.ShowModal()
             dlg.Destroy()
         else:
             dlg = wx.MessageDialog(self,
-                                   _(u"Sorry, this function is temporary not available.."),
-                                   _(u"Error"),
+                                   _("Sorry, this function is temporary not available.."),
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()

@@ -133,21 +133,21 @@ class PnlEditPicture(wx.Panel):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name=u'PnlEditPicture',
+        wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name="PnlEditPicture",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
         self.SetClientSize(wx.Size(827, 137))
 
         self.stSettings = wx.StaticText(id=wxID_PNLEDITPICTURESTSETTINGS,
-              label=_(u'Settings'), name=u'stSettings', parent=self,
+              label=_("Settings"), name="stSettings", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRotation = wx.StaticText(id=wxID_PNLEDITPICTURESTROTATION,
-              label=_(u'Rotation:'), name=u'stRotation', parent=self,
+              label=_("Rotation:"), name="stRotation", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdRotateLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_16'),
-              id=wxID_PNLEDITPICTURECMDROTATELEFT, name=u'cmdRotateLeft',
+              id=wxID_PNLEDITPICTURECMDROTATELEFT, name="cmdRotateLeft",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
         self.cmdRotateLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
@@ -155,7 +155,7 @@ class PnlEditPicture(wx.Panel):
               id=wxID_PNLEDITPICTURECMDROTATELEFT)
 
         self.cmdRotateRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_16'),
-              id=wxID_PNLEDITPICTURECMDROTATERIGHT, name=u'cmdRotateRight',
+              id=wxID_PNLEDITPICTURECMDROTATERIGHT, name="cmdRotateRight",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
         self.cmdRotateRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D_16'))
@@ -163,11 +163,11 @@ class PnlEditPicture(wx.Panel):
               id=wxID_PNLEDITPICTURECMDROTATERIGHT)
 
         self.stEffect = wx.StaticText(id=wxID_PNLEDITPICTURESTEFFECT,
-              label=_(u'Effect:'), name=u'stEffect', parent=self,
+              label=_("Effect:"), name="stEffect", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceEffect = wx.Choice(choices=[],
-              id=wxID_PNLEDITPICTURECHOICEEFFECT, name=u'choiceEffect',
+              id=wxID_PNLEDITPICTURECHOICEEFFECT, name="choiceEffect",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.choiceEffect.Bind(wx.EVT_CHOICE, self.OnChoiceEffectChoice,
               id=wxID_PNLEDITPICTURECHOICEEFFECT)
@@ -177,39 +177,39 @@ class PnlEditPicture(wx.Panel):
               size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
 
         self.stProcess = wx.StaticText(id=wxID_PNLEDITPICTURESTPROCESS,
-              label=_(u'Process'), name=u'stProcess', parent=self,
+              label=_("Process"), name="stProcess", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stMovement = wx.StaticText(id=wxID_PNLEDITPICTURESTMOVEMENT,
-              label=_(u'Movement:'), name=u'stMovement', parent=self,
+              label=_("Movement:"), name='stMovement', parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceMovement = wx.Choice(choices=[],
-              id=wxID_PNLEDITPICTURECHOICEMOVEMENT, name=u'choiceMovement',
+              id=wxID_PNLEDITPICTURECHOICEMOVEMENT, name="choiceMovement",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.pnlImgDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLIMGDURATION,
-              name=u'pnlImgDuration', parent=self, pos=wx.Point(-1, -1),
+              name="pnlImgDuration", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.stDurationUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTDURATIONUNIT,
-              label=_(u'sec'), name=u'stDurationUnit', parent=self,
+              label=_("sec"), name="stDurationUnit", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stTrans = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANS,
-              label=_(u'Transition:'), name=u'stTrans', parent=self,
+              label=_("Transition:"), name="stTrans", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.choiceTrans = wx.Choice(choices=[],
-              id=wxID_PNLEDITPICTURECHOICETRANS, name=u'choiceTrans',
+              id=wxID_PNLEDITPICTURECHOICETRANS, name="choiceTrans",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.pnlTransDuration = PnlFloatSpinCtrl(id=wxID_PNLEDITPICTUREPNLTRANSDURATION,
-              name=u'pnlTransDuration', parent=self, pos=wx.Point(-1, -1),
+              name="pnlTransDuration", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.stTransUnit = wx.StaticText(id=wxID_PNLEDITPICTURESTTRANSUNIT,
-              label=_(u'sec'), name=u'stTransUnit', parent=self,
+              label=_("sec"), name="stTransUnit", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.staticLine2 = wx.StaticLine(id=wxID_PNLEDITPICTURESTATICLINE2,
@@ -217,11 +217,11 @@ class PnlEditPicture(wx.Panel):
               size=wx.Size(-1, -1), style=wx.LI_VERTICAL)
 
         self.stSubtitle = wx.StaticText(id=wxID_PNLEDITPICTURESTSUBTITLE,
-              label=_(u'Subtitle'), name=u'stSubtitle', parent=self,
+              label=_("Subtitle"), name="stSubtitle", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.tcComment = wx.TextCtrl(id=wxID_PNLEDITPICTURETCCOMMENT,
-              name=u'tcComment', parent=self, pos=wx.Point(-1, -1),
+              name="tcComment", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TE_MULTILINE, value='')
         self.tcComment.Bind(wx.EVT_TEXT, self.OnTextCtrlCommentText,
               id=wxID_PNLEDITPICTURETCCOMMENT)
@@ -237,9 +237,9 @@ class PnlEditPicture(wx.Panel):
         self.stProcess.SetFont(font)
         self.stSubtitle.SetFont(font)
 
-        self.choiceMovement.Append(_(u"Linear"), Picture.MOVE_LINEAR)
-        self.choiceMovement.Append(_(u"Accelerated"), Picture.MOVE_ACCEL)
-        self.choiceMovement.Append(_(u"Delayed"), Picture.MOVE_DELAYED)
+        self.choiceMovement.Append(_("Linear"), Picture.MOVE_LINEAR)
+        self.choiceMovement.Append(_("Accelerated"), Picture.MOVE_ACCEL)
+        self.choiceMovement.Append(_("Delayed"), Picture.MOVE_DELAYED)
         self.choiceMovement.SetSelection(1)
         self.choiceMovement.Bind(wx.EVT_CHOICE, self.OnChoiceMvmntChoice)
 
@@ -247,17 +247,17 @@ class PnlEditPicture(wx.Panel):
         self.pnlImgDuration.SetValue(7)
         self.pnlImgDuration.Bind(EVT_VALUE_CHANGED, self.OnImgDurationChanged)
 
-        self.choiceEffect.Append(_(u"No effect"), Picture.EFFECT_NONE)
-        self.choiceEffect.Append(_(u"Black and White"), Picture.EFFECT_BLACK_WHITE)
-        self.choiceEffect.Append(_(u"Sepia tone"), Picture.EFFECT_SEPIA)
+        self.choiceEffect.Append(_("No effect"), Picture.EFFECT_NONE)
+        self.choiceEffect.Append(_("Black and White"), Picture.EFFECT_BLACK_WHITE)
+        self.choiceEffect.Append(_("Sepia tone"), Picture.EFFECT_SEPIA)
         self.choiceEffect.SetSelection(0)
 
         self.pnlTransDuration.SetRange(5, 200)
         self.pnlTransDuration.SetValue(1)
         self.pnlTransDuration.Bind(EVT_VALUE_CHANGED, self.OnTransDurationChanged)
-        self.choiceTrans.Append(_(u"None"), Picture.TRANS_NONE)
-        self.choiceTrans.Append(_(u"Fade"), Picture.TRANS_FADE)
-        self.choiceTrans.Append(_(u"Roll"), Picture.TRANS_ROLL)
+        self.choiceTrans.Append(_("None"), Picture.TRANS_NONE)
+        self.choiceTrans.Append(_("Fade"), Picture.TRANS_FADE)
+        self.choiceTrans.Append(_("Roll"), Picture.TRANS_ROLL)
         self.choiceTrans.SetSelection(1)
         self.choiceTrans.Bind(wx.EVT_CHOICE, self.OnChoiceTransChoice)
 

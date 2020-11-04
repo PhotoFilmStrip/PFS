@@ -17,7 +17,7 @@ class ActionPlayVideo(IAction):
         self.outFile = outFile
 
     def GetName(self):
-        return _(u'Play video')
+        return _("Play video")
 
     def Execute(self):
         if os.path.isfile(self.outFile):

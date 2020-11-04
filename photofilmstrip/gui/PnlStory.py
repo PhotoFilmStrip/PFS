@@ -94,9 +94,9 @@ class PnlStory(PnlEditorPage, Observer):
         event.Skip()
 
     def _OnAddMedia(self, event):  # pylint: disable=unused-argument
-        dlg = wx.FileDialog(self, _(u"Add media"),
+        dlg = wx.FileDialog(self, _("Add media"),
                             Settings().GetProjectPath(), "",
-                            _(u"Media files") + " (*.*)|*.*",
+                            _("Media files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_PREVIEW | wx.FD_MULTIPLE)
         if dlg.ShowModal() == wx.ID_OK:
             itmParent, offset = self.treeCtrlr.GetInsertInfo()
@@ -172,9 +172,9 @@ class PnlStory(PnlEditorPage, Observer):
         finally:
             dlg.Destroy()
 
-        dlg = wx.FileDialog(self, _(u"Video file"),
+        dlg = wx.FileDialog(self, _("Video file"),
                             Settings().GetProjectPath(), "",
-                            _(u"Video files") + " (*.*)|*.*",
+                            _("Video files") + " (*.*)|*.*",
                             wx.FD_SAVE)
         try:
             if dlg.ShowModal() == wx.ID_OK:
@@ -233,7 +233,7 @@ class PnlStory(PnlEditorPage, Observer):
         return result
 
     def GetStatusText(self, index):
-        return u""
+        return ""
 
     def GetSaveFilePath(self):
         fp = self.__story.GetFilename()
@@ -244,7 +244,7 @@ class PnlStory(PnlEditorPage, Observer):
         return fp
 
     def _GetEditorName(self):
-        return u"Story"
+        return "Story"
 
     def _Save(self, filepath):
         self._UpdateProject()
@@ -264,54 +264,54 @@ class PnlStory(PnlEditorPage, Observer):
     def AddMenuEditActions(self, menu):
         menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         CreateMenuItem(menu, ID_MEDIA_ADD,
-                       _(u'Add media') + '\tCtrl+I',
+                       _("Add media") + "\tCtrl+I",
                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_MEDIA_MOVE_UP,
-                       _(u'Move up'),
+                       _("Move up"),
                        wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_MENU, menuSize))
         CreateMenuItem(menu, ID_MEDIA_MOVE_DOWN,
-                       _(u'Move down'),
+                       _("Move down"),
                        wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_MENU, menuSize))
         CreateMenuItem(menu, ID_MEDIA_REMOVE,
-                       _(u'Remove') + '\tCtrl+Del',
+                       _("Remove") + "\tCtrl+Del",
                        wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU, menuSize))
 
     def AddToolBarActions(self, toolBar):
         toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
-        toolBar.AddTool(ID_MEDIA_ADD, '',
+        toolBar.AddTool(ID_MEDIA_ADD, "",
                         wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
                         wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
                         wx.ITEM_NORMAL,
-                        _(u'Add media'), _(u'Add clip'))
+                        _("Add media"), _("Add clip"))
         toolBar.AddSeparator()
-        toolBar.AddTool(ID_MEDIA_MOVE_UP, '',
+        toolBar.AddTool(ID_MEDIA_MOVE_UP, "",
                         wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_TOOLBAR, toolSize),
-                        shortHelp=_(u'Move up'))
-        toolBar.AddTool(ID_MEDIA_MOVE_DOWN, '',
+                        shortHelp=_("Move up"))
+        toolBar.AddTool(ID_MEDIA_MOVE_DOWN, "",
                         wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_TOOLBAR, toolSize),
-                        shortHelp=_(u'Move down'))
-        toolBar.AddTool(ID_MEDIA_MOVE_OUT, '',
+                        shortHelp=_("Move down"))
+        toolBar.AddTool(ID_MEDIA_MOVE_OUT, "",
                         wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR, toolSize),
-                        shortHelp=_(u'Move out'))
-        toolBar.AddTool(ID_MEDIA_MOVE_IN, '',
+                        shortHelp=_("Move out"))
+        toolBar.AddTool(ID_MEDIA_MOVE_IN, "",
                         wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR, toolSize),
-                        shortHelp=_(u'Move in'))
+                        shortHelp=_("Move in"))
         toolBar.AddSeparator()
-        toolBar.AddTool(ID_MEDIA_REMOVE, '',
+        toolBar.AddTool(ID_MEDIA_REMOVE, "",
                         wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_TOOLBAR, toolSize),
-                        shortHelp=_(u'Remove'))
+                        shortHelp=_("Remove"))
         toolBar.AddSeparator()
-        toolBar.AddTool(ID_PREVIEW, '',
+        toolBar.AddTool(ID_PREVIEW, "",
                         wx.ArtProvider.GetBitmap('PFS_PLAY_24'),
-                        shortHelp=_(u'Preview'))
-        toolBar.AddTool(ID_RENDER, '',
+                        shortHelp=_("Preview"))
+        toolBar.AddTool(ID_RENDER, "",
                         wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
                         wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
                         wx.ITEM_NORMAL,
-                        _(u'Render filmstrip'),
-                        _(u'Render filmstrip'))
+                        _("Render filmstrip"),
+                        _("Render filmstrip"))
 
     def ConnectEvents(self, evtHandler):
         evtHandler.Bind(wx.EVT_MENU, self._OnAddMedia, id=ID_MEDIA_ADD)
@@ -571,7 +571,7 @@ class PnlMediaContainer(wx.lib.scrolledpanel.ScrolledPanel, TreeIF):
 
     def __init__(self, parent):
         wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, wx.ID_ANY,
-            name=u'pnlMediaContainer', style=wx.SUNKEN_BORDER)
+            name="pnlMediaContainer", style=wx.SUNKEN_BORDER)
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.root = TreeItm()
@@ -719,10 +719,10 @@ class PnlMediaItem(wx.Panel):
               bitmap=bmp)
 
         self.stName = wx.StaticText(self, id=wx.ID_ANY,
-              label=media.GetFilename(), name='stName')
+              label=media.GetFilename(), name="stName")
 
         self.stInfo = wx.StaticText(self, id=wx.ID_ANY,
-              label='00:00:00', name=u'stInfo')
+              label="'00:00:00", name="stInfo")
 
         self.pnlOptOrientation = None
         if media.IsVideo():
@@ -740,7 +740,7 @@ class PnlMediaItem(wx.Panel):
                 self.pnlOptOrientation.SetValue(value)
 
         self.staticLine = wx.StaticLine(self, id=wx.ID_ANY,
-              name=u'staticLine')
+              name="staticLine")
 
         szCol0Content = wx.BoxSizer(wx.VERTICAL)
         szCol0Content.Add(self.stName, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)

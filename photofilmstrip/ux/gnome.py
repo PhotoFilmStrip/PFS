@@ -42,10 +42,10 @@ class UxGnome(UxAdapter, IVisualJobManager):
         notification = Notify.Notification.new(title, info)
         notification.set_image_from_pixbuf(icon)
         notification.add_action(
-            "default", _(u'Play video'),
+            "default", _("Play video"),
             self._PlayVideoAction, self.notificationKey, path)
         notification.add_action(
-            "play", _(u'Play video'),
+            "play", _("Play video"),
             self._PlayVideoAction, self.notificationKey, path)
         notification.show()
 

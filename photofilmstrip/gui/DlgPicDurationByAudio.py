@@ -20,10 +20,10 @@ class DlgPicDurationByAudio(wx.Dialog):
         :type expectedSteps: int
         '''
         wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-        self.SetTitle(_(u'Adjust picture durations'))
+        self.SetTitle(_("Adjust picture durations"))
 
         self.pnlHdr = PnlDlgHeader(self)
-        self.pnlHdr.SetTitle(_(u'Adjust picture durations to audio file'))
+        self.pnlHdr.SetTitle(_("Adjust picture durations to audio file"))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION_32'))
 
         szMsg = self.CreateTextSizer(
@@ -204,16 +204,16 @@ class DlgPicDurationByAudio(wx.Dialog):
             return
         if len(project.GetAudioFiles()) == 0:
             dlg = wx.MessageDialog(parent,
-                                   _(u"Your project does not have an audio file configured."),
-                                   _(u"Error"),
+                                   _("Your project does not have an audio file configured."),
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
             return
         if len(project.GetAudioFiles()) > 1:
             dlg = wx.MessageDialog(parent,
-                                   _(u"Your project uses more than one audio file. Currently the durations can be adjusted only for one audio file."),
-                                   _(u"Error"),
+                                   _("Your project uses more than one audio file. Currently the durations can be adjusted only for one audio file."),
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()

@@ -27,17 +27,17 @@ class PnlWelcome(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
-        self.title = _(u"Welcome to PhotoFilmStrip")
+        self.title = _("Welcome to PhotoFilmStrip")
 
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_SIZE, self.OnSize)
 
         self.__frmMain = frmMain
 
-        self.htmlTitle = _(u"Recent projects")
-        self.htmlText = u""
-        self.htmlRecentProjects = u""
-        self.htmlUpdate = u""
+        self.htmlTitle = _("Recent projects")
+        self.htmlText = ""
+        self.htmlRecentProjects = ""
+        self.htmlUpdate = ""
 
         self.pnlHtmlBackground = wx.Panel(self)
         self.pnlHtmlBackground.SetBackgroundColour(wx.Colour(52, 73, 94))
@@ -54,12 +54,12 @@ class PnlWelcome(wx.Panel):
 
         self.cmdNew = wx.BitmapButton(self, -1,
                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW_64'))
-        self.cmdNew.SetToolTip(_(u"Create new slideshow"))
+        self.cmdNew.SetToolTip(_("Create new slideshow"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnSlideshow)
 
         self.cmdOpen = wx.BitmapButton(self, -1,
                                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN_64'))
-        self.cmdOpen.SetToolTip(_(u"Open existing project"))
+        self.cmdOpen.SetToolTip(_("Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
 
         sizerCmd = wx.BoxSizer(wx.HORIZONTAL)
@@ -100,11 +100,11 @@ class PnlWelcome(wx.Panel):
                 htmlParts.insert(idx + ((idx + 1) * breakAt), "</tr><tr>")
 
             if htmlParts:
-                self.htmlTitle = _(u"Recent projects")
+                self.htmlTitle = _("Recent projects")
                 self.htmlText = ""
             else:
-                self.htmlTitle = _(u"How to start...")
-                self.htmlText = _(u"Create a new project or load an existing one.")
+                self.htmlTitle = _("How to start...")
+                self.htmlText = _("Create a new project or load an existing one.")
 
             self.htmlRecentProjects = "".join(htmlParts)
 
@@ -138,7 +138,7 @@ class PnlWelcome(wx.Panel):
   <pre>%(changes)s</pre>""" % {"title": _("Update available"),
                                "appname": Constants.APP_NAME,
                                "version": self.__updateChecker.GetVersion(),
-                               "msg": _(u'The following changes has been made:'),
+                               "msg": _("The following changes has been made:"),
                                "changes": self.__updateChecker.GetChanges(),
                                "url": Constants.APP_URL}
 

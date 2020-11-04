@@ -62,59 +62,59 @@ class DlgConfigureAudio(wx.Dialog):
 
         self.cmdBrowseMusic = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_MUSIC_16'),
-              name=u'cmdBrowseMusic', style=wx.BU_AUTODRAW)
+              name="cmdBrowseMusic", style=wx.BU_AUTODRAW)
         self.cmdBrowseMusic.Bind(wx.EVT_BUTTON, self.OnCmdBrowseMusicButton)
 
         self.cmdBrowseAudio = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16'),
-              name=u'cmdBrowseAudio', style=wx.BU_AUTODRAW)
+              name="cmdBrowseAudio", style=wx.BU_AUTODRAW)
         self.cmdBrowseAudio.Bind(wx.EVT_BUTTON, self.OnCmdBrowseAudioButton)
 
         self.cmdAudioPreview = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE_16'),
-              name=u'cmdAudioPreview', style=wx.BU_AUTODRAW)
+              name="cmdAudioPreview", style=wx.BU_AUTODRAW)
         self.cmdAudioPreview.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE_D_16'))
         self.cmdAudioPreview.Bind(wx.EVT_BUTTON, self.OnCmdAudioPreviewButton)
 
         self.cmdAudioMoveUp = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_ARROW_UP_16'),
-              name=u'cmdAudioMoveUp', style=wx.BU_AUTODRAW)
+              name="cmdAudioMoveUp", style=wx.BU_AUTODRAW)
         self.cmdAudioMoveUp.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_ARROW_UP_D_16'))
         self.cmdAudioMoveUp.Bind(wx.EVT_BUTTON, self.OnCmdAudioMove)
 
         self.cmdAudioMoveDown = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_ARROW_DOWN_16'),
-              name=u'cmdAudioMoveDown', style=wx.BU_AUTODRAW)
+              name="cmdAudioMoveDown", style=wx.BU_AUTODRAW)
         self.cmdAudioMoveDown.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_ARROW_DOWN_D_16'))
         self.cmdAudioMoveDown.Bind(wx.EVT_BUTTON, self.OnCmdAudioMove)
 
         self.cmdAudioDel = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_REMOVE_16'),
-              name=u'cmdAudioDel', style=wx.BU_AUTODRAW)
+              name="cmdAudioDel", style=wx.BU_AUTODRAW)
         self.cmdAudioDel.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_REMOVE_D_16'))
         self.cmdAudioDel.Bind(wx.EVT_BUTTON, self.OnCmdAudioDel)
 
         self.cbAudio = wx.CheckBox(self, wx.ID_ANY,
-              label=_(u'Set the duration of your slideshow to fit your audio files'))
+              label=_("Set the duration of your slideshow to fit your audio files"))
 
-        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_(u'&Cancel'),
-              name=u'cmdCancel')
+        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
+              name="cmdCancel")
         self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
               id=wx.ID_CANCEL)
 
-        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_(u'&Ok'),
-              name=u'cmdOk')
+        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_("&Ok"),
+              name="cmdOk")
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton, id=wx.ID_OK)
 
     def __init__(self, parent, project):
-        wx.Dialog.__init__(self, parent, name=u'DlgConfigureAudio',
+        wx.Dialog.__init__(self, parent, name="DlgConfigureAudio",
                            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
-                           title=_(u'Configure music'))
+                           title=_("Configure music"))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
         self._InitCtrls()
 
-        self.pnlHdr.SetTitle(_(u'Configure music'))
+        self.pnlHdr.SetTitle(_("Configure music"))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_32'))
 
         self.lvAudio.SetMinSize(wx.Size(300, -1))
@@ -166,9 +166,9 @@ class DlgConfigureAudio(wx.Dialog):
             ) + (0, self.cmdBrowseMusic.GetSize()[1]))
 
     def OnCmdBrowseAudioButton(self, event):  # pylint: disable=unused-argument
-        dlg = wx.FileDialog(self, _(u"Select music"),
+        dlg = wx.FileDialog(self, _("Select music"),
                             Settings().GetAudioPath(), "",
-                            _(u"Audio files") + " (*.*)|*.*",
+                            _("Audio files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -259,8 +259,8 @@ class DlgConfigureAudio(wx.Dialog):
 
         if not os.path.exists(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Audio file '%s' does not exist!") % path,
-                                   _(u"Error"),
+                                   _("Audio file '%s' does not exist!") % path,
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
@@ -271,8 +271,8 @@ class DlgConfigureAudio(wx.Dialog):
             self.__mediaCtrl.Play()
         else:
             dlg = wx.MessageDialog(self,
-                                   _(u"Audio file not supported!"),
-                                   _(u"Error"),
+                                   _("Audio file not supported!"),
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
@@ -281,8 +281,8 @@ class DlgConfigureAudio(wx.Dialog):
         for path in self.lvAudio.GetItems():
             if not os.path.exists(path):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Audio file '%s' does not exist!") % path,
-                                       _(u"Error"),
+                                       _("Audio file '%s' does not exist!") % path,
+                                       _("Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
                 dlg.Destroy()

@@ -47,9 +47,9 @@ class DlgRendererProps(wx.Dialog):
         # generated method, don't edit
 
         parent.InsertColumn(col=0, format=wx.LIST_FORMAT_LEFT,
-              heading=_(u'Property'), width=200)
+              heading=_("Property"), width=200)
         parent.InsertColumn(col=1, format=wx.LIST_FORMAT_LEFT,
-              heading=_(u'Value'), width=200)
+              heading=_("Value"), width=200)
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -65,43 +65,43 @@ class DlgRendererProps(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DLGRENDERERPROPS,
-              name=u'DlgRendererProps', parent=prnt, pos=wx.Point(-1, -1),
+              name="DlgRendererProps", parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
-              title=_(u'Output properties'))
+              title=_("Output properties"))
         self.SetClientSize(wx.Size(400, 250))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERERPROPSPNLHDR,
-              name=u'pnlHdr', parent=self, pos=wx.Point(-1, -1),
+              name="pnlHdr", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERERPROPSLCPROPS,
-              name=u'lcProps', parent=self, pos=wx.Point(-1, -1),
+              name="lcProps", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.LC_REPORT | wx.SUNKEN_BORDER)
         self.lcProps.SetMinSize(wx.Size(500, 120))
         self._init_coll_lcProps_Columns(self.lcProps)
         self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
               id=wxID_DLGRENDERERPROPSLCPROPS)
 
-        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_(u'&Help'),
-              name=u'cmdHelp', parent=self, pos=wx.Point(-1, -1),
+        self.cmdHelp = wx.Button(id=wx.ID_HELP, label=_("&Help"),
+              name="cmdHelp", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdHelp.Bind(wx.EVT_BUTTON, self.OnCmdHelpButton, id=wx.ID_HELP)
 
         self.cmdCancel = wx.Button(id=wxID_DLGRENDERERPROPSCMDCANCEL,
-              label=_(u'&Cancel'), name=u'cmdCancel', parent=self,
+              label=_("&Cancel"), name="cmdCancel", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdCancel.Bind(wx.EVT_BUTTON, self.OnCmdCancelButton,
               id=wxID_DLGRENDERERPROPSCMDCANCEL)
 
-        self.cmdOk = wx.Button(id=wxID_DLGRENDERERPROPSCMDOK, label=_(u'&Ok'),
-              name=u'cmdOk', parent=self, pos=wx.Point(-1, -1),
+        self.cmdOk = wx.Button(id=wxID_DLGRENDERERPROPSCMDOK, label=_("&Ok"),
+              name="cmdOk", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton,
               id=wxID_DLGRENDERERPROPSCMDOK)
 
         self.staticLine = wx.StaticLine(id=wxID_DLGRENDERERPROPSSTATICLINE,
-              name=u'staticLine', parent=self, pos=wx.Point(-1, -1),
+              name="staticLine", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()
@@ -110,7 +110,7 @@ class DlgRendererProps(wx.Dialog):
         self._init_ctrls(parent)
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
-        self.pnlHdr.SetTitle(_(u'Edit extended output properties'))
+        self.pnlHdr.SetTitle(_("Edit extended output properties"))
         self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_32'))
         self.rendererClass = rendererClass
 
@@ -144,7 +144,7 @@ class DlgRendererProps(wx.Dialog):
         idx = event.GetIndex()
         prop = self.lcProps.GetItemText(idx)
         dlg = wx.TextEntryDialog(self,
-                                 _(u"Edit property"),
+                                 _("Edit property"),
                                  prop,
                                  str(self.rendererClass.GetProperty(prop)))
         if dlg.ShowModal() == wx.ID_OK:

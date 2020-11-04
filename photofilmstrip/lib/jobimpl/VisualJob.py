@@ -26,7 +26,7 @@ class VisualJob(Job, IVisualJob):
         self.__name = name
         self.__maxProgress = maxProgress
         self.__progress = 0
-        self.__info = _(u"Waiting...")
+        self.__info = _("Waiting...")
 
     def __NotifyHandler(self, funcName, args=None):
         if args is None:
@@ -65,9 +65,9 @@ class VisualJob(Job, IVisualJob):
 
     def _Done(self):
         if self.IsAborted():
-            self.SetInfo(_(u"Aborted"))
+            self.SetInfo(_("Aborted"))
         else:
-            self.SetInfo(_(u"Done"))
+            self.SetInfo(_("Done"))
         try:
             Job._Done(self)
         finally:
@@ -76,13 +76,13 @@ class VisualJob(Job, IVisualJob):
     def Abort(self, msg=None):
         if Job.Abort(self, msg):
             if msg is None:
-                msg = _(u"Aborting...")
+                msg = _("Aborting...")
             self.SetInfo(msg)
             return True
         else:
             if self.IsDone() and self.IsAborted():
                 if msg is None:
-                    msg = _(u"Aborted")
+                    msg = _("Aborted")
                 self.SetInfo(msg)
             return False
 

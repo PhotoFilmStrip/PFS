@@ -17,7 +17,7 @@ class ActionOpenFolder(IAction):
         self.outFile = outFile
 
     def GetName(self):
-        return _(u'Open folder')
+        return _("Open folder")
 
     def GetBitmap(self):
         import wx

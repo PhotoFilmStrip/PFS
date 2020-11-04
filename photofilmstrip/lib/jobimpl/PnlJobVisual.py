@@ -64,7 +64,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name=u'PnlJobVisual',
+        wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name="PnlJobVisual",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
@@ -72,37 +72,37 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.bmpJob = wx.StaticBitmap(
               bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
               id=wxID_PNLJOBVISUALBMPJOB,
-              name=u'bmpJob', parent=self, pos=wx.Point(-1, -1),
+              name="bmpJob", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self.stJobName = wx.StaticText(id=wxID_PNLJOBVISUALSTJOBNAME,
-              label=u'job name', name=u'stJobName', parent=self,
+              label="job name", name="stJobName", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.gaugeProgress = wx.Gauge(id=wxID_PNLJOBVISUALGAUGEPROGRESS,
-              name=u'gaugeProgress', parent=self, pos=wx.Point(-1, -1),
+              name="gaugeProgress", parent=self, pos=wx.Point(-1, -1),
               range=100, size=wx.Size(-1, -1), style=wx.GA_HORIZONTAL)
 
         self.stJobInfo = wx.StaticText(id=wxID_PNLJOBVISUALSTJOBINFO,
-              label=u'job info', name=u'stJobInfo', parent=self,
+              label="job info", name="stJobInfo", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAction = wx.StaticBitmap(
               bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_24'),
               id=wxID_PNLJOBVISUALCMDACTION,
-              name=u'cmdAction', parent=self, pos=wx.Point(-1, -1),
+              name="cmdAction", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
         self.cmdMenu = wx.StaticBitmap(
               bitmap=wx.ArtProvider.GetBitmap('PFS_MENU_24'),
               id=wxID_PNLJOBVISUALCMDMENU,
-              name=u'cmdMenu', parent=self, pos=wx.Point(-1, -1),
+              name="cmdMenu", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdMenu.Bind(wx.EVT_LEFT_DOWN, self.OnCmdMenuLeftDown)
 
         self.staticLine = wx.StaticLine(id=wxID_PNLJOBVISUALSTATICLINE,
-              name=u'staticLine', parent=self, pos=wx.Point(-1, -1),
+              name="staticLine", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()
@@ -124,7 +124,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.jobContext = jobContext
 
         self._actAbort = WxAction(
-                 _(u"Abort"),
+                 _("Abort"),
                 self._Abort,
                 bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT_16'),
                      wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT_24')}
@@ -220,8 +220,8 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
 
     def _Abort(self):
         dlg = wx.MessageDialog(self,
-                               _(u"Abort selected process?"),
-                               _(u"Question"),
+                               _("Abort selected process?"),
+                               _("Question"),
                                wx.YES_NO | wx.ICON_EXCLAMATION)
         try:
             if dlg.ShowModal() == wx.ID_YES:

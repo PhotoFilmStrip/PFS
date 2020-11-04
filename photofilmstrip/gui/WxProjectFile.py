@@ -97,8 +97,8 @@ class SelectAlternatePathEvent(WxInteractionEvent):
 
     def OnProcess(self, wxParent):
         dlg = wx.MessageDialog(wxParent,
-                               _(u"Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % self.__imgPath,
-                               _(u"Question"),
+                               _("Some images does not exist in the folder '%s' anymore. If the files has moved you can select the new path. Do you want to select a new path?") % self.__imgPath,
+                               _("Question"),
                                wx.YES_NO | wx.ICON_QUESTION)
         try:
             if dlg.ShowModal() == wx.ID_NO:

@@ -34,7 +34,7 @@ class Picture(Observable):
         self._duration = 7.0
         self._movement = Picture.MOVE_ACCEL
         self._rotation = 0
-        self._comment = u""
+        self._comment = ""
         self._effect = Picture.EFFECT_NONE
         self._width = -1
         self._height = -1

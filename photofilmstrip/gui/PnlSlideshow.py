@@ -22,12 +22,12 @@ from photofilmstrip.gui.ImageSectionEditor import ImageProxy
 class PnlSlideshow(PnlPfsProject):
 
     def _GetEditorName(self):
-        return _(u"Slideshow")
+        return _("Slideshow")
 
     def AddMenuFileActions(self, menu):
         PnlPfsProject.AddMenuFileActions(self, menu)
         CreateMenuItem(menu, ID_PROJECT_PROPS,
-                       _(u"&Properties"),
+                       _("&Properties"),
                        wx.ArtProvider.GetBitmap('PFS_PROPERTIES_16'))
         return True
 
@@ -36,31 +36,31 @@ class PnlSlideshow(PnlPfsProject):
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
                           wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
                           wx.ITEM_NORMAL,
-                          _(u'Import Pictures'),
-                          _(u'Import Pictures'),
+                          _("Import Pictures"),
+                          _("Import Pictures"),
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MUSIC, '',
                           wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
                           wx.NullBitmap,
                           wx.ITEM_NORMAL,
-                          _(u'Configure music'),
-                          _(u'Configure music'),
+                          _("Configure music"),
+                          _("Configure music"),
                           None)
         toolBar.AddTool(ID_PIC_DURATION_BY_AUDIO, '',
                           wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION_24'),
                           wx.NullBitmap,
                           wx.ITEM_NORMAL,
-                          _(u'Adjust picture durations'),
-                          _(u'Adjust picture durations'),
+                          _("Adjust picture durations"),
+                          _("Adjust picture durations"),
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
                           wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
                           wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
                           wx.ITEM_NORMAL,
-                          _(u'Render filmstrip'),
-                          _(u'Render filmstrip'),
+                          _("Render filmstrip"),
+                          _("Render filmstrip"),
                           None)
 
     def ConnectEvents(self, evtHandler):
@@ -86,16 +86,16 @@ class PnlSlideshow(PnlPfsProject):
             totalTime = project.GetDuration(True)
 
         if index == 0:
-            return u"%s: %d" % (_(u"Images"), imgCount)
+            return "%s: %d" % (_("Images"), imgCount)
 
         elif index == 1:
             minutes = totalTime // 60
             seconds = totalTime % 60
-            return u"%s: %02d:%02d" % (_(u"Duration"),
-                                       minutes,
-                                       seconds)
+            return "%s: %02d:%02d" % (_("Duration"),
+                                      minutes,
+                                      seconds)
         else:
-            return u""
+            return ""
 
     def OnStatusBarClick(self, index):
         if index == 1:

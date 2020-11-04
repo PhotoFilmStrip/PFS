@@ -14,7 +14,7 @@ from photofilmstrip.core import PILBackend
 class Task:
 
     def __init__(self):
-        self.info = u""
+        self.info = ""
         self.subTasks = []
 
     def __str__(self):
@@ -45,7 +45,7 @@ class TaskSubtitle(Task):
         Task.__init__(self)
         self.__picCountFactor = picCountFactor
         self.__pics = pics
-        self.SetInfo(_(u"generating subtitle"))
+        self.SetInfo(_("generating subtitle"))
 
     def __HasComments(self):
         for pic in self.__pics:

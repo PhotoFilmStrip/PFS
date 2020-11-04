@@ -58,37 +58,37 @@ class DlgNewProject(wx.Dialog):
         self.pnlHdr = PnlDlgHeader(self)
 
         self.stProject = wx.StaticText(self,
-              label=_(u'Project name:'), name=u'stProject')
+              label=_("Project name:"), name="stProject")
 
-        self.tcProject = wx.TextCtrl(self, name=u'tcProject', value=u'')
+        self.tcProject = wx.TextCtrl(self, name="tcProject", value="")
 
         self.stFolder = wx.StaticText(self,
-              label=_(u'Folder:'), name=u'stFolder')
+              label=_("Folder:"), name="stFolder")
 
         self.tcFolder = wx.TextCtrl(self,
-              name=u'tcFolder', style=wx.TE_READONLY, value=u'')
+              name="tcFolder", style=wx.TE_READONLY, value="")
 
         self.cmdBrowseFolder = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16'),
-              name=u'cmdBrowseFolder',
+              name="cmdBrowseFolder",
               style=wx.BU_AUTODRAW)
         self.cmdBrowseFolder.Bind(wx.EVT_BUTTON, self.OnCmdBrowseFolderButton)
 
         self.stAspect = wx.StaticText(self,
-              label=_(u'Aspect ratio:'), name=u'stAspect')
+              label=_("Aspect ratio:"), name="stAspect")
 
-        self.choiceAspect = wx.Choice(self, choices=[], name=u'choiceAspect')
+        self.choiceAspect = wx.Choice(self, choices=[], name="choiceAspect")
 
         self.staticLine = wx.StaticLine(self)
 
-        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_(u'&Cancel'),
-              name=u'cmdCancel')
-        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_(u'&Ok'),
-              name=u'cmdOk')
+        self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
+              name="cmdCancel")
+        self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_("&Ok"),
+              name="cmdOk")
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton, id=wx.ID_OK)
 
     def __init__(self, parent, title):
-        wx.Dialog.__init__(self, parent, name=u'DlgNewProject',
+        wx.Dialog.__init__(self, parent, name="DlgNewProject",
                            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
                            title=title)
 
@@ -108,13 +108,13 @@ class DlgNewProject(wx.Dialog):
         self.tcFolder.SetMinSize(wx.Size(300, -1))
         self.choiceAspect.SetMinSize(wx.Size(300, -1))
 
-        self.tcProject.SetValue(_(u"Unnamed project"))
+        self.tcProject.SetValue(_("Unnamed project"))
         self.tcProject.SelectAll()
         self.tcProject.SetFocus()
 
         projPath = Settings().GetProjectPath()
         if not projPath:
-            projPath = os.path.join(wx.GetHomeDir(), _(u"My PhotoFilmStrips"))
+            projPath = os.path.join(wx.GetHomeDir(), _("My PhotoFilmStrips"))
             Settings().SetProjectPath(projPath)
         self.tcFolder.SetValue(projPath)
 
@@ -125,7 +125,7 @@ class DlgNewProject(wx.Dialog):
 
     def OnCmdBrowseFolderButton(self, event):
         dlg = wx.DirDialog(self,
-                           _(u"Browse for folder"),
+                           _("Browse for folder"),
                            defaultPath=self.tcFolder.GetValue())
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -144,8 +144,8 @@ class DlgNewProject(wx.Dialog):
 
         if not os.path.isdir(path):
             dlg = wx.MessageDialog(self,
-                                   _(u"Folder does not exists! Do you want %s to create it?") % Constants.APP_NAME,
-                                   _(u"Question"),
+                                   _("Folder does not exists! Do you want %s to create it?") % Constants.APP_NAME,
+                                   _("Question"),
                                    wx.YES_NO | wx.ICON_QUESTION)
             resp = dlg.ShowModal()
             dlg.Destroy()
@@ -154,8 +154,8 @@ class DlgNewProject(wx.Dialog):
                     os.makedirs(path)
                 except Exception as err:
                     dlg = wx.MessageDialog(self,
-                                           _(u"Cannot create folder: %s") % str(err),
-                                           _(u"Error"),
+                                           _("Cannot create folder: %s") % str(err),
+                                           _("Error"),
                                            wx.OK | wx.ICON_ERROR)
                     dlg.ShowModal()
                     dlg.Destroy()
@@ -165,8 +165,8 @@ class DlgNewProject(wx.Dialog):
         else:
             if not IsPathWritable(path):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Cannot write into folder!"),
-                                       _(u"Error"),
+                                       _("Cannot write into folder!"),
+                                       _("Error"),
                                        wx.OK | wx.ICON_ERROR)
                 dlg.ShowModal()
                 dlg.Destroy()
@@ -176,26 +176,26 @@ class DlgNewProject(wx.Dialog):
 
     def __ValidateProjName(self):
         projName = self.tcProject.GetValue().strip()
-        projName = projName.strip(u".")
+        projName = projName.strip(".")
         projPath = os.path.join(self.tcFolder.GetValue().strip(), projName)
         if not projName:
-            self.pnlHdr.SetErrorMessage(_(u"The project name must be filled."))
+            self.pnlHdr.SetErrorMessage(_("The project name must be filled."))
             return False
         elif not os.path.exists(projPath):
             try:
                 os.makedirs(projPath)
             except Exception:
-                self.pnlHdr.SetErrorMessage(_(u"The project name contains invalid characters."))
+                self.pnlHdr.SetErrorMessage(_("The project name contains invalid characters."))
                 return False
             os.removedirs(projPath)
             return True
         else:
-            self.pnlHdr.SetErrorMessage(u"")
+            self.pnlHdr.SetErrorMessage("")
             return True
 
     def __GetProjectPath(self):
         projName = self.tcProject.GetValue().strip()
-        projName = projName.strip(u".")
+        projName = projName.strip(".")
         filepath = os.path.join(self.tcFolder.GetValue().strip(),
                                 projName,
                                 "%s.pfs" % projName)

@@ -37,17 +37,17 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLJOBMANAGER, name=u'PnlJobManager',
+        wx.Panel.__init__(self, id=wxID_PNLJOBMANAGER, name="PnlJobManager",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
         self.SetClientSize(wx.Size(400, 250))
 
         self.pnlJobs = wx.lib.scrolledpanel.ScrolledPanel(id=wxID_PNLJOBMANAGERPNLJOBS,
-              name=u'pnlJobs', parent=self, pos=wx.Point(-1, -1),
+              name="pnlJobs", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.SUNKEN_BORDER)
 
         self.cmdClear = wx.Button(id=wxID_PNLJOBMANAGERCMDCLEAR,
-              label=_(u'&Clear list'), name=u'cmdClear', parent=self,
+              label=_("&Clear list"), name="cmdClear", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdClear.Bind(wx.EVT_BUTTON, self.OnCmdClearButton,
               id=wxID_PNLJOBMANAGERCMDCLEAR)

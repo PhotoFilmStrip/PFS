@@ -47,7 +47,7 @@ class BaseRenderer(metaclass=MetaBaseRenderer):
         if prop in cls.GetProperties():
             cls.PROP_VALUES[prop] = value  # pylint: disable=no-member
         else:
-            logging.getLogger(cls.GetName()).warning(_(u"Unknown property: %s"), prop)
+            logging.getLogger(cls.GetName()).warning(_("Unknown property: %s"), prop)
 
     @classmethod
     def GetProperty(cls, prop):
@@ -55,7 +55,7 @@ class BaseRenderer(metaclass=MetaBaseRenderer):
 
     @staticmethod
     def GetDefaultProperty(prop):  # pylint: disable=unused-argument
-        return _(u"<default>")
+        return _("<default>")
 
     @classmethod
     def Log(cls, level, *args, **kwargs):
@@ -70,7 +70,7 @@ class BaseRenderer(metaclass=MetaBaseRenderer):
             warn = False
 
         if pyType is bool:
-            if value.lower() in ["0", _(u"no"), "false"]:
+            if value.lower() in ["0", _("no"), "false"]:
                 value = False
             else:
                 value = True

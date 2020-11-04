@@ -54,38 +54,38 @@ class PnlDlgHeader(wx.Panel):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PNLDLGHEADER, name=u'PnlDlgHeader',
+        wx.Panel.__init__(self, id=wxID_PNLDLGHEADER, name="PnlDlgHeader",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
 
         self.pnlHeader = wx.Panel(id=wxID_PNLDLGHEADERPNLHEADER,
-              name=u'pnlHeader', parent=self, pos=wx.Point(-1, -1),
+              name="pnlHeader", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
         self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpLogo = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_HOME',
               wx.ART_TOOLBAR, (32, 32)), id=wxID_PNLDLGHEADERBMPLOGO,
-              name=u'bmpLogo', parent=self.pnlHeader, pos=wx.Point(-1, -1),
+              name="bmpLogo", parent=self.pnlHeader, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self.stHeader = wx.StaticText(id=wxID_PNLDLGHEADERSTHEADER,
-              label=u'', name=u'stHeader', parent=self.pnlHeader,
+              label="", name="stHeader", parent=self.pnlHeader,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.stErrMsg = wx.StaticText(id=wxID_PNLDLGHEADERSTERRMSG, label=u'',
-              name=u'stErrMsg', parent=self.pnlHeader, pos=wx.Point(-1, -1),
+        self.stErrMsg = wx.StaticText(id=wxID_PNLDLGHEADERSTERRMSG, label="",
+              name="stErrMsg", parent=self.pnlHeader, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.stErrMsg.Show(False)
         self.stErrMsg.SetForegroundColour(wx.Colour(255, 0, 0))
 
-        self.slHdr = wx.StaticLine(id=wxID_PNLDLGHEADERSLHDR, name=u'slHdr',
+        self.slHdr = wx.StaticLine(id=wxID_PNLDLGHEADERSLHDR, name="slHdr",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self._init_sizers()
 
     def __init__(self, parent, id=wx.ID_ANY,
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
-                 style=wx.TAB_TRAVERSAL, name=u'PnlDlgHeader'):
+                 style=wx.TAB_TRAVERSAL, name="PnlDlgHeader"):
         self._init_ctrls(parent)
 
         font = self.stHeader.GetFont()

@@ -34,20 +34,20 @@ class PnlFloatSpinCtrl(wx.Panel):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PNLFLOATSPINCTRL,
-              name=u'PnlFloatSpinCtrl', parent=prnt, pos=wx.Point(-1, -1),
+              name="PnlFloatSpinCtrl", parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
         self.SetClientSize(wx.Size(169, 31))
 
         self.tcValue = wx.TextCtrl(id=wxID_PNLFLOATSPINCTRLTCVALUE,
-              name=u'tcValue', parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=0, value=u'5.0')
+              name="tcValue", parent=self, pos=wx.Point(-1, -1),
+              size=wx.Size(-1, -1), style=0, value="5.0")
         self.tcValue.Bind(wx.EVT_KILL_FOCUS, self.OnTextCtrlValueKillFocus,
               id=wxID_PNLFLOATSPINCTRLTCVALUE)
         self.tcValue.Bind(wx.EVT_TEXT, self.OnTextCtrlValueText,
               id=wxID_PNLFLOATSPINCTRLTCVALUE)
 
         self.spinButtonValue = wx.SpinButton(id=wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE,
-              name=u'spinButtonValue', parent=self, pos=wx.Point(-1, -1),
+              name="spinButtonValue", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.SP_VERTICAL)
         self.spinButtonValue.Bind(wx.EVT_SPIN, self.OnSpinButtonValueSpin,
               id=wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE)

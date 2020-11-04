@@ -55,46 +55,46 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 
     def _init_ctrls(self, prnt):
         # generated method, don't edit
-        wx.Dialog.__init__(self, id=wxID_DLGJOBVISUAL, name=u'DlgJobVisual',
+        wx.Dialog.__init__(self, id=wxID_DLGJOBVISUAL, name="DlgJobVisual",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE, title='')
         self.SetClientSize(wx.Size(400, 250))
         self.SetSizeHints(350, -1, -1, -1)
 
-        self.stInfo = wx.StaticText(id=wxID_DLGJOBVISUALSTINFO, label=u'Info',
-              name=u'stInfo', parent=self, pos=wx.Point(-1, -1),
+        self.stInfo = wx.StaticText(id=wxID_DLGJOBVISUALSTINFO, label=_("Info"),
+              name="stInfo", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
-        self.gauge = wx.Gauge(id=wxID_DLGJOBVISUALGAUGE, name=u'gauge',
+        self.gauge = wx.Gauge(id=wxID_DLGJOBVISUALGAUGE, name="gauge",
               parent=self, pos=wx.Point(-1, -1), range=100,
               size=wx.Size(-1, -1), style=wx.GA_HORIZONTAL)
 
         self.stElapsedLabel = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDLABEL,
-              label=_(u'Elapsed time'), name=u'stElapsedLabel', parent=self,
+              label=_("Elapsed time"), name="stElapsedLabel", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=wx.ALIGN_RIGHT)
 
         self.stElapsedDiv = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDDIV,
-              label=u':', name=u'stElapsedDiv', parent=self,
+              label=":", name="stElapsedDiv", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stElapsedValue = wx.StaticText(id=wxID_DLGJOBVISUALSTELAPSEDVALUE,
-              label=u'0:00:00', name=u'stElapsedValue', parent=self,
+              label="0:00:00", name="stElapsedValue", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRemainingLabel = wx.StaticText(id=wxID_DLGJOBVISUALSTREMAININGLABEL,
-              label=_(u'Remaining time'), name=u'stRemainingLabel', parent=self,
+              label=_("Remaining time"), name="stRemainingLabel", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRemainingDiv = wx.StaticText(id=wxID_DLGJOBVISUALSTREMAININGDIV,
-              label=u':', name=u'stRemainingDiv', parent=self,
+              label=":", name="stRemainingDiv", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.stRemainingValue = wx.StaticText(id=wxID_DLGJOBVISUALSTREMAININGVALUE,
-              label=u'0:00:00', name=u'stRemainingValue', parent=self,
+              label="0:00:00", name="stRemainingValue", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAbort = wx.Button(id=wxID_DLGJOBVISUALCMDABORT,
-              label=_(u'&Cancel'), name=u'cmdAbort', parent=self,
+              label=_("&Cancel"), name="cmdAbort", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
         self.cmdAbort.Show(False)
         self.cmdAbort.Bind(wx.EVT_BUTTON, self.__OnCancel,

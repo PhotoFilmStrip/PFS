@@ -20,7 +20,7 @@ class ActionAutoPath(IAction):
         self.__aspect = aspect
 
     def GetName(self):
-        return _(u'Random motion')
+        return _("Random motion")
 
     def Execute(self):
         try:

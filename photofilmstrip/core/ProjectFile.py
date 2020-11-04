@@ -219,7 +219,7 @@ class ProjectFile:
 
         cur = self.__GetCursor()
         for pic in self._project.GetPictures():
-            self._StepProgress(_(u"Saving '%s' ...") % pic.GetFilename())
+            self._StepProgress(_("Saving '%s' ...") % pic.GetFilename())
             query, values = self.__PicToQuery(pic, includePics)
             cur.execute(query, values)
 
@@ -273,7 +273,7 @@ class ProjectFile:
         for row in cur:
             imgFile = row["filename"]
             imgPath = os.path.dirname(imgFile)
-            self._StepProgress(_(u"Loading '%s' ...") % (os.path.basename(imgFile)))
+            self._StepProgress(_("Loading '%s' ...") % (os.path.basename(imgFile)))
 
             picData = self.__LoadSafe(row, 'data', None)
             if picData is None:

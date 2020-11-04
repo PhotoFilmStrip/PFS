@@ -113,30 +113,30 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, "",
                        wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24'),
-                       _(u'Random motion'))
+                       _("Random motion"))
         parent.AddSeparator()
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT,
-                       _(u'Set motion start to end'),
+                       _("Set motion start to end"),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
-                       _(u'Set motion start to end'))
+                       _("Set motion start to end"))
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT,
-                       _(u'Set motion end to start'),
+                       _("Set motion end to start"),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
-                       _(u'Set motion end to start'))
+                       _("Set motion end to start"))
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP,
-                       _(u'Swap motion'),
+                       _("Swap motion"),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP_24'),
-                       _(u'Swap motion'))
+                       _("Swap motion"))
         parent.AddSeparator()
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST,
-                       _(u'Adjust motion manual'),
+                       _("Adjust motion manual"),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL_24'),
-                       _(u'Adjust motion manual'))
+                       _("Adjust motion manual"))
         parent.AddSeparator()
         parent.AddCheckTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
-                            _(u'Preserve image dimension'),
+                            _("Preserve image dimension"),
                             wx.ArtProvider.GetBitmap('PFS_LOCK_24'),
-                            shortHelp=_(u'Preserve image dimension'))
+                            shortHelp=_("Preserve image dimension"))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolLeftToRight,
@@ -172,32 +172,32 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
     def _InitCtrls(self):
         self.panelTop = wx.Panel(id=wxID_PNLPFSPROJECTPANELTOP,
-              name=u'panelTop', parent=self, pos=wx.Point(-1, -1),
+              name="panelTop", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.bitmapLeft = ImageSectionEditor(id=wxID_PNLPFSPROJECTBITMAPLEFT,
-              name=u'bitmapLeft', parent=self.panelTop, pos=wx.Point(-1, -1),
+              name="bitmapLeft", parent=self.panelTop, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self.toolBarImgSect = wx.ToolBar(id=wxID_PNLPFSPROJECTTOOLBARIMGSECT,
-              name=u'toolBarImgSect', parent=self.panelTop,
+              name="toolBarImgSect", parent=self.panelTop,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TB_VERTICAL | wx.NO_BORDER | wx.TB_NODIVIDER)
 
         self.bitmapRight = ImageSectionEditor(id=wxID_PNLPFSPROJECTBITMAPRIGHT,
-              name=u'bitmapRight', parent=self.panelTop, pos=wx.Point(-1, -1),
+              name="bitmapRight", parent=self.panelTop, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
         self.pnlAddPics = PnlAddPics(id=wxID_PNLPFSPROJECTPNLADDPICS,
-              name=u'pnlAddPics', parent=self, pos=wx.Point(-1, -1),
+              name="pnlAddPics", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.pnlEditPicture = PnlEditPicture(id=wxID_PNLPFSPROJECTPNLEDITPICTURE,
-              name=u'pnlEditPicture', parent=self, pos=wx.Point(-1, -1),
+              name="pnlEditPicture", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
 
         self.lvPics = PhotoFilmStripList(id=wxID_PNLPFSPROJECTLVPICS,
-              name=u'lvPics', parent=self, pos=wx.Point(-1, -1),
+              name="lvPics", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1),
               style=wx.HSCROLL)  # | wx.ALWAYS_SHOW_SB)
         self.lvPics.Bind(wx.EVT_LIST_ITEM_SELECTED,
@@ -205,14 +205,14 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_32'),
               id=wxID_PNLPFSPROJECTCMDMOVELEFT,
-              name=u'cmdMoveLeft', parent=self, pos=wx.Point(-1, -1),
+              name="cmdMoveLeft", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdMoveLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D_32'))
         self.cmdMoveLeft.Bind(wx.EVT_BUTTON, self.OnCmdMoveLeftButton,
               id=wxID_PNLPFSPROJECTCMDMOVELEFT)
 
         self.cmdMoveRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_32'),
-              id=wxID_PNLPFSPROJECTCMDMOVERIGHT, name=u'cmdMoveRight',
+              id=wxID_PNLPFSPROJECTCMDMOVERIGHT, name="cmdMoveRight",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
         self.cmdMoveRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D_32'))
@@ -221,7 +221,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         self.cmdRemove = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_32'),
               id=wxID_PNLPFSPROJECTCMDREMOVE,
-              name=u'cmdRemove', parent=self, pos=wx.Point(-1, -1),
+              name="cmdRemove", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
         self.cmdRemove.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D_32'))
         self.cmdRemove.Bind(wx.EVT_BUTTON, self.OnCmdRemoveButton,
@@ -233,7 +233,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
     def __init__(self, parent, project):
         PnlEditorPage.__init__(self, parent, id=wxID_PNLPFSPROJECT,
-                               name=u'PnlPfsProject')
+                               name="PnlPfsProject")
         self.SetClientSize(wx.Size(400, 250))
 
         self._InitCtrls()
@@ -285,46 +285,46 @@ class PnlPfsProject(PnlEditorPage, Observer):
         return True
 
     def AddMenuFileActions(self, menu):
-#        CreateMenuItem(menu, self.ID_IMPORT, _(u"&Import Project"))
-#        CreateMenuItem(menu, self.ID_EXPORT, _(u"&Export Project"))
+#        CreateMenuItem(menu, self.ID_IMPORT, _("&Import Project"))
+#        CreateMenuItem(menu, self.ID_EXPORT, _("&Export Project"))
 #        menu.AppendSeparator()
         pass
 
     def AddMenuEditActions(self, menu):
         CreateMenuItem(menu, ID_PIC_IMPORT,
-                       _(u'&Import Pictures') + '\tCtrl+I',
+                       _("&Import Pictures") + "\tCtrl+I",
                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOVE_LEFT,
-                       _(u'Move picture &left'),
+                       _("Move picture &left"),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D_16'))
         CreateMenuItem(menu, ID_PIC_MOVE_RIGHT,
-                       _(u'Move picture &right'),
+                       _("Move picture &right"),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_REMOVE,
-                       _(u'R&emove Picture') + '\tCtrl+Del',
+                       _("R&emove Picture") + "\tCtrl+Del",
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_ROTATE_CW,
-                       _(u'Rotate &clockwise') + '\tCtrl+r',
+                       _("Rotate &clockwise") + "\tCtrl+r",
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D_16'))
         CreateMenuItem(menu, ID_PIC_ROTATE_CCW,
-                       _(u'Rotate counter clock&wise') + '\tCtrl+l',
+                       _("Rotate counter clock&wise") + "\tCtrl+l",
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_16'),
                        wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOTION_RANDOM,
-                       _(u'Random &motion') + '\tCtrl+d',
+                       _("Random &motion") + "\tCtrl+d",
                        wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_16'),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_D_16'))
         CreateMenuItem(menu, ID_PIC_MOTION_CENTER,
-                       _(u'Centralize m&otion') + '\tCtrl+f',
+                       _("Centralize m&otion") + "\tCtrl+f",
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_16'),
                        wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
 
@@ -382,10 +382,10 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def OnProjectExport(self, event):
         prj = self.__project
         curFilePath = prj.GetFilename()
-        dlg = wx.FileDialog(self, _(u"Export slideshow"),
+        dlg = wx.FileDialog(self, _("Export slideshow"),
                             Settings().GetProjectPath(),
                             curFilePath,
-                            u"%s %s" % (_(u"Portable slideshow"), "(*.ppfs)|*.ppfs"),
+                            "%s %s" % (_("Portable slideshow"), "(*.ppfs)|*.ppfs"),
                             wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
@@ -396,9 +396,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
             prjFile.Save(True)
 
     def OnProjectImport(self, event):
-        dlg = wx.FileDialog(self, _(u"Import Slideshow"),
+        dlg = wx.FileDialog(self, _("Import Slideshow"),
                             Settings().GetProjectPath(), "",
-                            u"%s %s" % (_(u"Portable slideshow"), "(*.ppfs)|*.ppfs"),
+                            "%s %s" % (_("Portable slideshow"), "(*.ppfs)|*.ppfs"),
                             wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             filepath = dlg.GetPath()
@@ -407,9 +407,9 @@ class PnlPfsProject(PnlEditorPage, Observer):
             prjFile.Load()
 
     def OnImportPics(self, event):
-        dlg = wx.FileDialog(self, _(u"Import images"),
+        dlg = wx.FileDialog(self, _("Import images"),
                             Settings().GetImagePath(), "",
-                            _(u"Image files") + " (*.*)|*.*",
+                            _("Image files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
             pics = []
@@ -466,7 +466,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         except RenderException as exc:
             dlg = wx.MessageDialog(self,
                                    exc.GetMessage(),
-                                   _(u"Error"),
+                                   _("Error"),
                                    wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
@@ -652,8 +652,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         for audioFile in self.__project.GetAudioFiles():
             if not CheckFile(audioFile):
                 dlg = wx.MessageDialog(self,
-                                       _(u"Audio file '%s' does not exist! Continue anyway?") % audioFile,
-                                       _(u"Warning"),
+                                       _("Audio file '%s' does not exist! Continue anyway?") % audioFile,
+                                       _("Warning"),
                                        wx.YES_NO | wx.ICON_WARNING)
                 dlgResult = dlg.ShowModal()
                 dlg.Destroy()
