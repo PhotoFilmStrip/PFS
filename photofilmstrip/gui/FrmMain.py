@@ -250,7 +250,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         dlg.Destroy()
 
     def OnStory(self, event):
-        story = Story(_("New Story.pfstory"))
+        story = Story(_("New Story") + ".pfstory")
         self._NewStory(story)
 
     def OnProjectLoad(self, event):
