@@ -93,9 +93,11 @@ class ActionManager:
 #                              _("Save Project as"), _("Save Project as"))
         toolBar.AddSeparator()
 
-        toolBar.AddTool(self.ID_JOB_QUEUE, '',
+        toolBar.AddTool(self.ID_JOB_QUEUE, "",
                         wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE', wx.ART_TOOLBAR),
-                        _("Show job queue"))
+                        wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D', wx.ART_TOOLBAR),
+                        wx.ITEM_NORMAL,
+                        shortHelp=_("Show job queue"))
 
         toolBar.AddSeparator()
         self._toolFix = toolBar.GetToolsCount()
