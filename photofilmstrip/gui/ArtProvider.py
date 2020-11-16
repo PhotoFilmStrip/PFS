@@ -39,11 +39,7 @@ class Res2PyArtProvider(wx.ArtProvider):
 
     def CreateBitmap(self, artId, artClient, size):
         if size[0] == -1 or size[1] == -1:
-            try:
-                sz = int(artId.split("_")[-1])
-                size = wx.Size(sz, sz)
-            except:
-                size = wx.ArtProvider.GetSizeHint(artClient)
+            size = wx.ArtProvider.GetSizeHint(artClient)
 
         if artId.startswith(self.artIdPrefix):
             name = artId[len(self.artIdPrefix):]
@@ -56,8 +52,6 @@ class Res2PyArtProvider(wx.ArtProvider):
         data = base64.b64decode(data)
         if data.startswith(b"<?xml"):
             svgImg = wx.svg.SVGimage.CreateFromBytes(data, units='px', dpi=96)
-            if size[0] == -1 or size[1] == -1:
-                size = wx.Size(24, 24)
             bmp = svgImg.ConvertToScaledBitmap(size)
             if bmp.IsOk():
                 return bmp
