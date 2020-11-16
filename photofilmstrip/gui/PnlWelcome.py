@@ -188,7 +188,7 @@ class LinkOpenPfs(IconLabelLink):
                 wxImg = wx.Image(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
             else:
-                bmp = wx.ArtProvider.GetBitmap("PFS_ICON_48", wx.ART_OTHER)
+                bmp = wx.ArtProvider.GetBitmap("PFS_ICON", size=wx.Size(48, 48))
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
 

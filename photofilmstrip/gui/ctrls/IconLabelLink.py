@@ -21,8 +21,8 @@ class IconLabelLink(wx.Panel):
         wx.Panel.__init__(self, parent, -1, wx.DefaultPosition, (150, 150), 0, "IconLabelLink")
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
 
-        self.bmpDia = wx.ArtProvider.GetBitmap('PFS_DIA')
-        self.bmpDiaSelected = wx.ArtProvider.GetBitmap('PFS_DIA_S')
+        self.bmpDia = wx.ArtProvider.GetBitmap('PFS_DIA', size=wx.Size(150, 138))
+        self.bmpDiaSelected = wx.ArtProvider.GetBitmap('PFS_DIA_S', size=wx.Size(150, 138))
         self.bmpThumb = bmp
         self.label = label
         self.mouseOver = False

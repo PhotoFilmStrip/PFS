@@ -82,7 +82,7 @@ class DlgDuration(wx.Dialog):
         self._InitCtrls()
 
         self.pnlHdr.SetTitle(_("Configure duration of slideshow"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON_32'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON', size=wx.Size(32, 32)))
 
         defTime = wx.DateTime.Now()
         defTime.SetHMS(0, 0, 30)
