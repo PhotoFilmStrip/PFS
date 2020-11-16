@@ -122,7 +122,7 @@ class ActionManager:
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_SAVE,
                        _("&Save") + "\tCtrl+S",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE', wx.ART_MENU)
+                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE', wx.ART_MENU),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D', wx.ART_MENU))
 #        CreateMenuItem(menu, wx.ID_SAVEAS,
 #                       _("Save Project &as"),
@@ -135,7 +135,7 @@ class ActionManager:
 
         CreateMenuItem(menu, ActionManager.ID_PROJECT_CLOSE,
                        _("&Close") + "\tCtrl+W",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE', wx.ART_MENU)
+                       wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE', wx.ART_MENU),
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_EXIT,
