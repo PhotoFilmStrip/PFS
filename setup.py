@@ -206,12 +206,7 @@ class pfs_build(build):
         target_mtime = os.path.getmtime(target)
 
         imgResources = (
-                        ("ICON_16", "photofilmstrip_16.png"),
-                        ("ICON_24", "photofilmstrip_24.png"),
-                        ("ICON_32", "photofilmstrip_32.png"),
-                        ("ICON_48", "photofilmstrip_48.png"),
-                        ("ICON_64", "photofilmstrip_64.png"),
-                        ("ICON_128", "photofilmstrip_128.png"),
+                        ("ICON", "photofilmstrip.svg"),
 
                         ("PROJECT_NEW_16", "project_new.svg"),
                         ("PROJECT_NEW_24", "project_new.svg"),

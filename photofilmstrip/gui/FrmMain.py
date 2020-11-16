@@ -55,12 +55,12 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         self.SetTitle(Constants.APP_NAME)
 
         iconBundle = wx.IconBundle()
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_16", wx.ART_OTHER))
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_24", wx.ART_OTHER))
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_32", wx.ART_OTHER))
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_48", wx.ART_OTHER))
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_64", wx.ART_OTHER))
-        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON_128", wx.ART_OTHER))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(16, 16)))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(24, 24)))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(32, 32)))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(48, 48)))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(64, 64)))
+        iconBundle.AddIcon(wx.ArtProvider.GetIcon("PFS_ICON", wx.ART_OTHER, wx.Size(128, 128)))
         self.SetIcons(iconBundle)
 
         self.statusBar = wx.StatusBar(self)
