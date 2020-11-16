@@ -146,19 +146,19 @@ class PnlEditPicture(wx.Panel):
               label=_("Rotation:"), name="stRotation", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.cmdRotateLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_16'),
+        self.cmdRotateLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT', wx.ART_TOOLBAR),
               id=wxID_PNLEDITPICTURECMDROTATELEFT, name="cmdRotateLeft",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
-        self.cmdRotateLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
+        self.cmdRotateLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D', wx.ART_TOOLBAR))
         self.cmdRotateLeft.Bind(wx.EVT_BUTTON, self.OnCmdRotateLeftButton,
               id=wxID_PNLEDITPICTURECMDROTATELEFT)
 
-        self.cmdRotateRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_16'),
+        self.cmdRotateRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT', wx.ART_TOOLBAR),
               id=wxID_PNLEDITPICTURECMDROTATERIGHT, name="cmdRotateRight",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
-        self.cmdRotateRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D_16'))
+        self.cmdRotateRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D', wx.ART_TOOLBAR))
         self.cmdRotateRight.Bind(wx.EVT_BUTTON, self.OnCmdRotateRightButton,
               id=wxID_PNLEDITPICTURECMDROTATERIGHT)
 

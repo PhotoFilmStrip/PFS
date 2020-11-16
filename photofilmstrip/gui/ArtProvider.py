@@ -43,7 +43,7 @@ class Res2PyArtProvider(wx.ArtProvider):
                 sz = int(artId.split("_")[-1])
                 size = wx.Size(sz, sz)
             except:
-                pass
+                size = wx.ArtProvider.GetSizeHint(artClient)
 
         if artId.startswith(self.artIdPrefix):
             name = artId[len(self.artIdPrefix):]
@@ -59,7 +59,10 @@ class Res2PyArtProvider(wx.ArtProvider):
             if size[0] == -1 or size[1] == -1:
                 size = wx.Size(24, 24)
             bmp = svgImg.ConvertToScaledBitmap(size)
-            return bmp
+            if bmp.IsOk():
+                return bmp
+            else:
+                return wx.NullBitmap
         else:
             stream = io.BytesIO(data)
             wxImg = wx.Image(stream)

@@ -262,53 +262,51 @@ class PnlStory(PnlEditorPage, Observer):
         return ".pfstory"
 
     def AddMenuEditActions(self, menu):
-        menuSize = wx.ArtProvider.GetSizeHint(wx.ART_MENU)
         CreateMenuItem(menu, ID_MEDIA_ADD,
                        _("Add media") + "\tCtrl+I",
-                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_MEDIA_MOVE_UP,
                        _("Move up"),
-                       wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_MENU, menuSize))
+                       wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_MENU))
         CreateMenuItem(menu, ID_MEDIA_MOVE_DOWN,
                        _("Move down"),
-                       wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_MENU, menuSize))
+                       wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_MENU))
         CreateMenuItem(menu, ID_MEDIA_REMOVE,
                        _("Remove") + "\tCtrl+Del",
-                       wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU, menuSize))
+                       wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_MENU))
 
     def AddToolBarActions(self, toolBar):
-        toolSize = wx.ArtProvider.GetSizeHint(wx.ART_TOOLBAR)
         toolBar.AddTool(ID_MEDIA_ADD, "",
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Add media"), _("Add clip"))
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MEDIA_MOVE_UP, "",
-                        wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_TOOLBAR, toolSize),
+                        wx.ArtProvider.GetBitmap(wx.ART_GO_UP, wx.ART_TOOLBAR),
                         shortHelp=_("Move up"))
         toolBar.AddTool(ID_MEDIA_MOVE_DOWN, "",
-                        wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_TOOLBAR, toolSize),
+                        wx.ArtProvider.GetBitmap(wx.ART_GO_DOWN, wx.ART_TOOLBAR),
                         shortHelp=_("Move down"))
         toolBar.AddTool(ID_MEDIA_MOVE_OUT, "",
-                        wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR, toolSize),
+                        wx.ArtProvider.GetBitmap(wx.ART_GO_BACK, wx.ART_TOOLBAR),
                         shortHelp=_("Move out"))
         toolBar.AddTool(ID_MEDIA_MOVE_IN, "",
-                        wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR, toolSize),
+                        wx.ArtProvider.GetBitmap(wx.ART_GO_FORWARD, wx.ART_TOOLBAR),
                         shortHelp=_("Move in"))
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MEDIA_REMOVE, "",
-                        wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_TOOLBAR, toolSize),
+                        wx.ArtProvider.GetBitmap(wx.ART_DELETE, wx.ART_TOOLBAR),
                         shortHelp=_("Remove"))
         toolBar.AddSeparator()
         toolBar.AddTool(ID_PREVIEW, "",
-                        wx.ArtProvider.GetBitmap('PFS_PLAY_24'),
+                        wx.ArtProvider.GetBitmap('PFS_PLAY', wx.ART_TOOLBAR),
                         shortHelp=_("Preview"))
         toolBar.AddTool(ID_RENDER, "",
-                        wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
-                        wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
+                        wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
+                        wx.ArtProvider.GetBitmap('PFS_RENDER_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Render filmstrip"),
                         _("Render filmstrip"))
@@ -708,12 +706,12 @@ class PnlMediaItem(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, name='PnlMediaItem')
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        bmp = wx.ArtProvider.GetBitmap("PFS_ALERT_24", wx.ART_OTHER, wx.Size(24, 24))
+        bmp = wx.ArtProvider.GetBitmap("PFS_ALERT", size=wx.Size(24, 24))
         if media.IsOk():
             if media.IsAudio():
-                bmp = wx.ArtProvider.GetBitmap("PFS_MUSIC_24", wx.ART_OTHER, wx.Size(24, 24))
+                bmp = wx.ArtProvider.GetBitmap("PFS_MUSIC", size=wx.Size(24, 24))
             elif media.IsVideo():
-                bmp = wx.ArtProvider.GetBitmap("PFS_RENDER_24", wx.ART_OTHER, wx.Size(24, 24))
+                bmp = wx.ArtProvider.GetBitmap("PFS_RENDER", size=wx.Size(24, 24))
 
         self.bmp = wx.StaticBitmap(self, wx.ID_ANY,
               bitmap=bmp)

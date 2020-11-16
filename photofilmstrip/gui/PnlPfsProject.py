@@ -112,30 +112,30 @@ class PnlPfsProject(PnlEditorPage, Observer):
         # generated method, don't edit
 
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH, "",
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_24'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM', wx.ART_TOOLBAR),
                        _("Random motion"))
         parent.AddSeparator()
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT,
                        _("Set motion start to end"),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END_24'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_START_TO_END', wx.ART_TOOLBAR),
                        _("Set motion start to end"))
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT,
                        _("Set motion end to start"),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START_24'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_END_TO_START', wx.ART_TOOLBAR),
                        _("Set motion end to start"))
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP,
                        _("Swap motion"),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP_24'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_SWAP', wx.ART_TOOLBAR),
                        _("Swap motion"))
         parent.AddSeparator()
         parent.AddTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST,
                        _("Adjust motion manual"),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL_24'),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL', wx.ART_TOOLBAR),
                        _("Adjust motion manual"))
         parent.AddSeparator()
         parent.AddCheckTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
                             _("Preserve image dimension"),
-                            wx.ArtProvider.GetBitmap('PFS_LOCK_24'),
+                            wx.ArtProvider.GetBitmap('PFS_LOCK', wx.ART_TOOLBAR),
                             shortHelp=_("Preserve image dimension"))
         self.Bind(wx.EVT_TOOL, self.OnToolBarImgSectToolAutoPath,
               id=wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH)
@@ -203,27 +203,27 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.lvPics.Bind(wx.EVT_LIST_ITEM_SELECTED,
               self.OnLvPicsSelectionChanged, id=wxID_PNLPFSPROJECTLVPICS)
 
-        self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_32'),
+        self.cmdMoveLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT', wx.ART_TOOLBAR),
               id=wxID_PNLPFSPROJECTCMDMOVELEFT,
               name="cmdMoveLeft", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdMoveLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D_32'))
+        self.cmdMoveLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D', wx.ART_TOOLBAR))
         self.cmdMoveLeft.Bind(wx.EVT_BUTTON, self.OnCmdMoveLeftButton,
               id=wxID_PNLPFSPROJECTCMDMOVELEFT)
 
-        self.cmdMoveRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_32'),
+        self.cmdMoveRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT', wx.ART_TOOLBAR),
               id=wxID_PNLPFSPROJECTCMDMOVERIGHT, name="cmdMoveRight",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
-        self.cmdMoveRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D_32'))
+        self.cmdMoveRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D', wx.ART_TOOLBAR))
         self.cmdMoveRight.Bind(wx.EVT_BUTTON, self.OnCmdMoveRightButton,
               id=wxID_PNLPFSPROJECTCMDMOVERIGHT)
 
-        self.cmdRemove = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_32'),
+        self.cmdRemove = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE', wx.ART_TOOLBAR),
               id=wxID_PNLPFSPROJECTCMDREMOVE,
               name="cmdRemove", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
-        self.cmdRemove.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D_32'))
+        self.cmdRemove.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D', wx.ART_TOOLBAR))
         self.cmdRemove.Bind(wx.EVT_BUTTON, self.OnCmdRemoveButton,
               id=wxID_PNLPFSPROJECTCMDREMOVE)
 
@@ -293,40 +293,40 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def AddMenuEditActions(self, menu):
         CreateMenuItem(menu, ID_PIC_IMPORT,
                        _("&Import Pictures") + "\tCtrl+I",
-                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOVE_LEFT,
                        _("Move picture &left"),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_LEFT_D', wx.ART_MENU))
         CreateMenuItem(menu, ID_PIC_MOVE_RIGHT,
                        _("Move picture &right"),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_MOVING_RIGHT_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_REMOVE,
                        _("R&emove Picture") + "\tCtrl+Del",
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_REMOVE_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_ROTATE_CW,
                        _("Rotate &clockwise") + "\tCtrl+r",
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D', wx.ART_MENU))
         CreateMenuItem(menu, ID_PIC_ROTATE_CCW,
                        _("Rotate counter clock&wise") + "\tCtrl+l",
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_16'),
-                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOTION_RANDOM,
                        _("Random &motion") + "\tCtrl+d",
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_16'),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_RANDOM_D', wx.ART_MENU))
         CreateMenuItem(menu, ID_PIC_MOTION_CENTER,
                        _("Centralize m&otion") + "\tCtrl+f",
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_16'),
-                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D_16'))
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER', wx.ART_MENU),
+                       wx.ArtProvider.GetBitmap('PFS_MOTION_CENTER_D', wx.ART_MENU))
 
     def ConnectEvents(self, evtHandler):
         evtHandler.Bind(wx.EVT_MENU, self.OnProjectExport, id=ID_EXPORT)
@@ -732,23 +732,23 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.toolBarImgSect.ToggleTool(wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
                                        unlocked)
         if unlocked:
-            resName = 'PFS_UNLOCK_24'
+            resName = 'PFS_UNLOCK'
         else:
-            resName = 'PFS_LOCK_24'
+            resName = 'PFS_LOCK'
         self.toolBarImgSect.SetToolNormalBitmap(
             wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
-            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR, wx.DefaultSize))
+            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR))
         self.bitmapLeft.SetLock(not unlocked)
         self.bitmapRight.SetLock(not unlocked)
 
     def OnToolBarImgSectUnlockTool(self, event):
         if event.IsChecked():
-            resName = 'PFS_UNLOCK_24'
+            resName = 'PFS_UNLOCK'
         else:
-            resName = 'PFS_LOCK_24'
+            resName = 'PFS_LOCK'
         self.toolBarImgSect.SetToolNormalBitmap(
             wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK,
-            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR, wx.DefaultSize))
+            wx.ArtProvider.GetBitmap(resName, wx.ART_TOOLBAR))
 
         self.bitmapLeft.SetLock(not event.IsChecked())
         self.bitmapRight.SetLock(not event.IsChecked())

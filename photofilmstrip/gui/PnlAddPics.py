@@ -41,7 +41,7 @@ class PnlAddPics(wx.Panel):
 
         self.cmdBrowse = wx.BitmapButton(
             self, wx.ID_ANY, name="cmdBrowse",
-            bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_32'))
+            bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', size=wx.Size(32, 32)))
 
         font = self.stTitle.GetFont()
         font.SetWeight(wx.BOLD)

@@ -111,7 +111,7 @@ class DlgRendererProps(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Edit extended output properties"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_32'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', size=wx.Size(32, 32)))
         self.rendererClass = rendererClass
 
         self.lcProps.DeleteAllItems()

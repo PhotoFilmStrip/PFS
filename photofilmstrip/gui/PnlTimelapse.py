@@ -19,15 +19,15 @@ class PnlTimelapse(PnlPfsProject):
 
     def AddToolBarActions(self, toolBar):
         toolBar.AddTool(ID_PIC_IMPORT, "",
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_24'),
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D_24'),
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
+                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Import Pictures"),
                         _("Import Pictures"),
                         None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MUSIC, "",
-                        wx.ArtProvider.GetBitmap('PFS_MUSIC_24'),
+                        wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_TOOLBAR),
                         wx.NullBitmap,
                         wx.ITEM_NORMAL,
                         _("Configure music"),
@@ -35,8 +35,8 @@ class PnlTimelapse(PnlPfsProject):
                         None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_RENDER_FILMSTRIP, "",
-                        wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
-                        wx.ArtProvider.GetBitmap('PFS_RENDER_D_24'),
+                        wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
+                        wx.ArtProvider.GetBitmap('PFS_RENDER_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Render filmstrip"),
                         _("Render filmstrip"),
