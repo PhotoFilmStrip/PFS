@@ -28,8 +28,7 @@ class GuiApp(AppMixin):
         app.MainLoop()
 
     def _GetLogFilename(self):
-        if getattr(sys, 'frozen', None) == "windows_exe":
-            sys.stderr = sys.stdout
+        if getattr(sys, 'frozen', None):
             return os.path.join(tempfile.gettempdir(), Constants.APP_NAME + ".log")
         else:
             return None
