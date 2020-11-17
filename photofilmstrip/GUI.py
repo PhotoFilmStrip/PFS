@@ -6,11 +6,13 @@
 # Copyright (C) 2008 Jens Goepfert
 #
 
+import logging
 import os
 import tempfile
 import sys
 
 from photofilmstrip.AppMixin import AppMixin
+from photofilmstrip.lib.util import StreamToLogger
 from photofilmstrip.ux.Ux import UxService, UxPreventStartupSignal
 from photofilmstrip import Constants
 
@@ -29,6 +31,11 @@ class GuiApp(AppMixin):
 
     def _GetLogFilename(self):
         if getattr(sys, 'frozen', None):
+            stdOutLogger = StreamToLogger("OUT", logging.INFO)
+            stdErrLogger = StreamToLogger("ERR", logging.ERROR)
+            sys.stdout = stdOutLogger
+            sys.stderr = stdErrLogger
+
             return os.path.join(tempfile.gettempdir(), Constants.APP_NAME + ".log")
         else:
             return None
