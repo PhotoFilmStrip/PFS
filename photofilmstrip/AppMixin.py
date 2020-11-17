@@ -20,7 +20,7 @@ class AppMixin:
         if "-d" in sys.argv:
             lvl = logging.DEBUG
         else:
-            lvl = logging.WARNING
+            lvl = logging.INFO
         logging.basicConfig(level=lvl,
                             format=self._GetLogFormat(),
                             datefmt='%d.%m.%Y %H:%M:%S',
@@ -57,7 +57,7 @@ class AppMixin:
             DestructionManager().Destroy()
 
     def _GetLogFormat(self):
-        return '%(asctime)s (%(levelname)s) %(name)s: %(message)s'
+        return '%(asctime)s (%(levelname)s) [%(process)d:%(threadName)s] %(name)s: %(message)s'
 
     def _GetLogFilename(self):
         return None

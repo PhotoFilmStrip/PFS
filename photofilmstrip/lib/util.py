@@ -67,3 +67,22 @@ def GetDataDir(subfolder):
             return os.path.abspath(dataDir)
     else:
         return None
+
+
+class StreamToLogger(object):
+
+    def __init__(self, loggerName, logLevel):
+        self.logger = logging.getLogger(loggerName)
+        self.logLevel = logLevel
+        self.buffer = []
+
+    def write(self, value):
+        if value == "\n":
+            current = self.buffer
+            self.buffer = []
+            self.logger.log(self.logLevel, "".join(current))
+        else:
+            self.buffer.append(value)
+
+    def flush(self):
+        pass
