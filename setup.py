@@ -5,6 +5,7 @@
 # Copyright (C) 2011 Jens Goepfert
 #
 
+import base64
 import datetime
 import glob
 import sys, os
@@ -205,118 +206,78 @@ class pfs_build(build):
         target_mtime = os.path.getmtime(target)
 
         imgResources = (
-                        ("ICON_16", "photofilmstrip_16.png"),
-                        ("ICON_24", "photofilmstrip_24.png"),
-                        ("ICON_32", "photofilmstrip_32.png"),
-                        ("ICON_48", "photofilmstrip_48.png"),
-                        ("ICON_64", "photofilmstrip_64.png"),
-                        ("ICON_128", "photofilmstrip_128.png"),
+                        ("ICON", "photofilmstrip.svg"),
 
-                        ("PROJECT_NEW_16", "project_new_16.png"),
-                        ("PROJECT_NEW_24", "project_new_24.png"),
-                        ("PROJECT_NEW_64", "project_new_64.png"),
-                        ("PROJECT_OPEN_16", "project_open_16.png"),
-                        ("PROJECT_OPEN_24", "project_open_24.png"),
-                        ("PROJECT_OPEN_64", "project_open_64.png"),
-                        ("PROJECT_SAVE_16", "project_save_16.png"),
-                        ("PROJECT_SAVE_D_16", "project_save_d_16.png"),
-                        ("PROJECT_SAVE_24", "project_save_24.png"),
-                        ("PROJECT_SAVE_D_24", "project_save_d_24.png"),
-                        ("PROJECT_CLOSE_16", "project_close_16.png"),
-                        ("PROJECT_CLOSE_D_16", "project_close_d_16.png"),
-                        ("FOLDER_OPEN_16", "folder_open_16.png"),
-                        ("FOLDER_OPEN_24", "folder_open_24.png"),
+                        ("PROJECT_NEW", "project_new.svg"),
+                        ("PROJECT_OPEN", "project_open.svg"),
+                        ("PROJECT_SAVE", "project_save.svg"),
+                        ("PROJECT_SAVE_D", "project_save_d.svg"),
+                        ("PROJECT_CLOSE", "project_close.svg"),
+                        ("PROJECT_CLOSE_D", "project_close_d.svg"),
+                        ("FOLDER_OPEN", "folder_open.svg"),
 
-                        ("MOTION_START_TO_END_24", "motion_start_to_end_24.png"),
-                        ("MOTION_END_TO_START_24", "motion_end_to_start_24.png"),
-                        ("MOTION_SWAP_24", "motion_swap_24.png"),
-                        ("MOTION_MANUAL_24", "motion_manual_24.png"),
-                        ("MOTION_MANUAL_32", "motion_manual_32.png"),
-                        ("MOTION_RANDOM_16", "motion_random_16.png"),
-                        ("MOTION_RANDOM_D_16", "motion_random_d_16.png"),
-                        ("MOTION_RANDOM_24", "motion_random_24.png"),
-                        ("MOTION_CENTER_16", "motion_center_16.png"),
-                        ("MOTION_CENTER_D_16", "motion_center_d_16.png"),
-                        ("LOCK_24", "lock_24.png"),
-                        ("UNLOCK_24", "unlock_24.png"),
+                        ("MOTION_START_TO_END", "motion_start_to_end.svg"),
+                        ("MOTION_END_TO_START", "motion_end_to_start.svg"),
+                        ("MOTION_SWAP", "motion_swap.svg"),
+                        ("MOTION_MANUAL", "motion_manual.svg"),
+                        ("MOTION_RANDOM", "motion_random.svg"),
+                        ("MOTION_RANDOM_D", "motion_random_d.svg"),
+                        ("MOTION_CENTER", "motion_center.svg"),
+                        ("MOTION_CENTER_D", "motion_center_d.svg"),
+                        ("LOCK", "lock.svg"),
+                        ("UNLOCK", "unlock.svg"),
 
-                        ("MENU_24", "menu_24.png"),
-                        ("ABORT_16", "abort_16.png"),
-                        ("ABORT_24", "abort_24.png"),
-                        ("LIST_REMOVE_16", "list_remove_16.png"),
-                        ("LIST_REMOVE_24", "list_remove_24.png"),
+                        ("MENU", "menu.svg"),
+                        ("ABORT", "abort.svg"),
+                        ("LIST_REMOVE", "list_remove.svg"),
 
-                        ("RENDER_16", "render_16.png"),
-                        ("RENDER_D_16", "render_d_16.png"),
-                        ("RENDER_24", "render_24.png"),
-                        ("RENDER_D_24", "render_d_24.png"),
-                        ("RENDER_32", "render_32.png"),
-                        ("IMPORT_PICTURES_16", "import_pictures_16.png"),
-                        ("IMPORT_PICTURES_D_16", "import_pictures_d_16.png"),
-                        ("IMPORT_PICTURES_24", "import_pictures_24.png"),
-                        ("IMPORT_PICTURES_D_24", "import_pictures_d_24.png"),
-                        ("IMPORT_PICTURES_32", "import_pictures_32.png"),
-                        ("JOB_QUEUE_16", "job_queue_16.png"),
-                        ("JOB_QUEUE_D_16", "job_queue_d_16.png"),
-                        ("JOB_QUEUE_24", "job_queue_24.png"),
-                        ("JOB_QUEUE_D_24", "job_queue_d_24.png"),
+                        ("RENDER", "render.svg"),
+                        ("RENDER_D", "render_d.svg"),
+                        ("IMPORT_PICTURES", "import_pictures.svg"),
+                        ("IMPORT_PICTURES_D", "import_pictures_d.svg"),
+                        ("JOB_QUEUE", "job_queue.svg"),
+                        ("JOB_QUEUE_D", "job_queue_d.svg"),
 
-                        ("IMAGE_ROTATION_LEFT_16", "image_rotation_left_16.png"),
-                        ("IMAGE_ROTATION_LEFT_D_16", "image_rotation_left_d_16.png"),
-                        ("IMAGE_ROTATION_RIGHT_16", "image_rotation_right_16.png"),
-                        ("IMAGE_ROTATION_RIGHT_D_16", "image_rotation_right_d_16.png"),
-                        ("IMAGE_MOVING_LEFT_16", "image_moving_left_16.png"),
-                        ("IMAGE_MOVING_LEFT_D_16", "image_moving_left_d_16.png"),
-                        ("IMAGE_MOVING_LEFT_32", "image_moving_left_32.png"),
-                        ("IMAGE_MOVING_LEFT_D_32", "image_moving_left_d_32.png"),
-                        ("IMAGE_MOVING_RIGHT_16", "image_moving_right_16.png"),
-                        ("IMAGE_MOVING_RIGHT_D_16", "image_moving_right_d_16.png"),
-                        ("IMAGE_MOVING_RIGHT_32", "image_moving_right_32.png"),
-                        ("IMAGE_MOVING_RIGHT_D_32", "image_moving_right_d_32.png"),
-                        ("IMAGE_REMOVE_16", "image_remove_16.png"),
-                        ("IMAGE_REMOVE_D_16", "image_remove_d_16.png"),
-                        ("IMAGE_REMOVE_32", "image_remove_32.png"),
-                        ("IMAGE_REMOVE_D_32", "image_remove_d_32.png"),
+                        ("IMAGE_ROTATION_LEFT", "image_rotation_left.svg"),
+                        ("IMAGE_ROTATION_LEFT_D", "image_rotation_left_d.svg"),
+                        ("IMAGE_ROTATION_RIGHT", "image_rotation_right.svg"),
+                        ("IMAGE_ROTATION_RIGHT_D", "image_rotation_right_d.svg"),
+                        ("IMAGE_MOVING_LEFT", "image_moving_left.svg"),
+                        ("IMAGE_MOVING_LEFT_D", "image_moving_left_d.svg"),
+                        ("IMAGE_MOVING_RIGHT", "image_moving_right.svg"),
+                        ("IMAGE_MOVING_RIGHT_D", "image_moving_right_d.svg"),
+                        ("IMAGE_REMOVE", "image_remove.svg"),
+                        ("IMAGE_REMOVE_D", "image_remove_d.svg"),
 
-                        ("MUSIC_16", "music_16.png"),
-                        ("MUSIC_24", "music_24.png"),
-                        ("MUSIC_32", "music_32.png"),
-                        ("MUSIC_DURATION_24", "music_duration_24.png"),
-                        ("MUSIC_DURATION_32", "music_duration_32.png"),
-                        ("PLAY_16", "play_16.png"),
-                        ("PLAY_24", "play_24.png"),
-                        ("PLAY_PAUSE_16", "play_pause_16.png"),
-                        ("PLAY_PAUSE_d_16", "play_pause_d_16.png"),
-                        ("ARROW_UP_16", "arrow_up_16.png"),
-                        ("ARROW_UP_D_16", "arrow_up_d_16.png"),
-                        ("ARROW_DOWN_16", "arrow_down_16.png"),
-                        ("ARROW_DOWN_D_16", "arrow_down_d_16.png"),
-                        ("REMOVE_16", "remove_16.png"),
-                        ("REMOVE_D_16", "remove_d_16.png"),
-                        ("VIDEO_FORMAT_16", "video_format_16.png"),
-                        ("VIDEO_FORMAT_24", "video_format_24.png"),
-                        ("VIDEO_FORMAT_32", "video_format_32.png"),
+                        ("MUSIC", "music.svg"),
+                        ("MUSIC_DURATION", "music_duration.svg"),
+                        ("PLAY", "play.svg"),
+                        ("PLAY_PAUSE", "play_pause.svg"),
+                        ("PLAY_PAUSE_d", "play_pause_d.svg"),
+                        ("ARROW_UP", "arrow_up.svg"),
+                        ("ARROW_UP_D", "arrow_up_d.svg"),
+                        ("ARROW_DOWN", "arrow_down.svg"),
+                        ("ARROW_DOWN_D", "arrow_down_d.svg"),
+                        ("REMOVE", "remove.svg"),
+                        ("REMOVE_D", "remove_d.svg"),
+                        ("VIDEO_FORMAT", "video_format.svg"),
 
-                        ("ALERT_16", "alert_16.png"),
-                        ("ALERT_24", "alert_24.png"),
-                        ("PROPERTIES_16", "properties_16.png"),
-                        ("EXIT_16", "exit_16.png"),
-                        ("HELP_16", "help_16.png"),
-                        ("ABOUT_16", "about_16.png"),
+                        ("ALERT", "alert.svg"),
+                        ("PROPERTIES", "properties.svg"),
+                        ("EXIT", "exit.svg"),
+                        ("HELP", "help.svg"),
+                        ("ABOUT", "about.svg"),
 
                         ("FILMSTRIP", "filmstrip.png"),
-                        ("DIA", "dia.png"),
-                        ("DIA_S", "dia_s.png"),
+                        ("DIA", "dia.svg"),
+                        ("DIA_S", "dia_s.svg"),
 
                        )
 
         for idx, (imgName, imgFile) in enumerate(imgResources):
-            img2py(os.path.join(imgDir, imgFile),
-                   target, append=idx > 0,
-                   imgName=imgName,
-                   icon=True,
-                   compressed=True,
-                   catalog=True)
+            file2py(os.path.join(imgDir, imgFile),
+                    target, append=idx > 0,
+                    resName=imgName)
 
     def _make_locale(self):
         for filename in os.listdir("po"):
@@ -602,6 +563,36 @@ def Unzip(zipFile, targetDir, stripFolders=0):
         fd = open(os.path.join(eleFldr, fname), "wb")
         fd.write(data)
         fd.close()
+
+
+def file2py(source, python_file, append, resName):
+    lines = []
+    with open(source, "rb") as fid:
+        raw_data = fid.read()
+        data = base64.b64encode(raw_data)
+    while data:
+        part = data[:72]
+        data = data[72:]
+        output = '    %s' % part
+        if not data:
+            output += ")"
+        lines.append(output)
+    data = "\n".join(lines)
+
+    mode = "a" if append else "w"
+    with open(python_file, mode) as out:
+        if not append:
+            out.write("# This file was generated by %s\n#\n" % os.path.basename(sys.argv[0]))
+            out.write("catalog = {}\n")
+            out.write("index = []\n\n")
+
+        varName = resName
+        out.write("%s = (\n%s\n" % (varName, data))
+        out.write("index.append('%s')\n" % resName)
+        out.write("catalog['%s'] = %s\n" % (resName, varName))
+        out.write("\n")
+
+    print("Embedded %s using %s into %s" % (source, resName, python_file))
 
 
 MANIFEST_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

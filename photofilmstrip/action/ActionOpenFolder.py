@@ -19,10 +19,6 @@ class ActionOpenFolder(IAction):
     def GetName(self):
         return _("Open folder")
 
-    def GetBitmap(self):
-        import wx
-        return wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_16')
-
     def Execute(self):
         outDir = os.path.dirname(self.outFile)
         if not os.path.isdir(outDir):

@@ -115,7 +115,7 @@ class DlgRender(wx.Dialog):
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
             id=wxID_DLGRENDERCHOICEFORMAT)
 
-        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT_16'),
+        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', wx.ART_TOOLBAR),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name="cmdRendererProps",
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
@@ -130,7 +130,7 @@ class DlgRender(wx.Dialog):
         self.choiceProfile = wx.Choice(choices=[],
             id=wxID_DLGRENDERCHOICEPROFILE, name="choiceProfile",
             parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
-            -1), style=0)
+            - 1), style=0)
         self.choiceProfile.SetSizeHints(400, -1)
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_("Draft"),
@@ -162,7 +162,7 @@ class DlgRender(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Configure output and start render process"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER_32'))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER', size=wx.Size(32, 32)))
 
         self.cbDraft.SetToolTip(_("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
@@ -324,7 +324,7 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
         rect2.Deflate(5, 0)
 
         if data.GetMessages():
-            bmp = wx.ArtProvider.GetBitmap('PFS_ALERT_16')
+            bmp = wx.ArtProvider.GetBitmap('PFS_ALERT', size=wx.Size(16, 16))
             if flags & wx.adv.ODCB_PAINTING_CONTROL:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
             elif flags & wx.adv.ODCB_PAINTING_SELECTED:
