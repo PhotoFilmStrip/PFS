@@ -16,6 +16,9 @@ from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip import Constants
 
+EVT_PYTHON_TRACEBACK_TYPE = wx.NewEventType()
+EVT_PYTHON_TRACEBACK = wx.PyEventBinder(EVT_PYTHON_TRACEBACK_TYPE, 1)
+
 
 class DlgBugReport(wx.Dialog):
 
@@ -30,11 +33,19 @@ class DlgBugReport(wx.Dialog):
                 traceback.print_exception(etype, value, tb)
             output = io.StringIO()
             traceback.print_exception(etype, value, tb, file=output)
-            dlg = DlgBugReport(cls.PARENT, output.getvalue())
-            dlg.ShowModal()
-            dlg.Destroy()
+
+            evt = PythonTracebackEvent(cls.PARENT.GetId(), output.getvalue())
+            evt.SetEventObject(cls.PARENT)
+            cls.PARENT.GetEventHandler().ProcessEvent(evt)
 
         sys.excepthook = excepthook
+
+        parent.Bind(EVT_PYTHON_TRACEBACK, cls.OnShowBugReport)
+
+    @classmethod
+    def OnShowBugReport(cls, event):
+        dlg = DlgBugReport(cls.PARENT, event.GetValue())
+        dlg.Show()
 
     def __init__(self, parent, msg):
         wx.Dialog.__init__(self, parent, -1,
@@ -109,8 +120,17 @@ class DlgBugReport(wx.Dialog):
             dlg.ShowModal()
             dlg.Destroy()
 
-        self.EndModal(wx.ID_YES)
+        self.Destroy()
 
     def OnNo(self, event):
-        self.EndModal(wx.ID_NO)
-        event.Skip()
+        self.Destroy()
+
+
+class PythonTracebackEvent(wx.PyCommandEvent):
+
+    def __init__(self, wxId, value):
+        wx.PyCommandEvent.__init__(self, EVT_PYTHON_TRACEBACK_TYPE, wxId)
+        self._value = value
+
+    def GetValue(self):
+        return self._value
