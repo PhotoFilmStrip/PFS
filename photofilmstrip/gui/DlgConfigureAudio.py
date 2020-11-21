@@ -14,8 +14,8 @@ from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.core.AudioPlayer import AudioPlayer
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
-from photofilmstrip.gui.helper import CreateMenuItem
 from photofilmstrip.lib.util import FILE_EXTENSIONS_AUDIO, GetDataDir
+from docutils.parsers.rst.directives import path
 
 
 class DlgConfigureAudio(wx.Dialog):
@@ -23,7 +23,8 @@ class DlgConfigureAudio(wx.Dialog):
     def _InitSizers(self):
         szMain = wx.BoxSizer(orient=wx.VERTICAL)
 
-        szCtrls = wx.BoxSizer(orient=wx.HORIZONTAL)
+        szAudioChoice = wx.BoxSizer(orient=wx.HORIZONTAL)
+        szAudioList = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         szAudioCmds = wx.BoxSizer(orient=wx.VERTICAL)
 
@@ -31,15 +32,17 @@ class DlgConfigureAudio(wx.Dialog):
 
         szMain.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
         szMain.Add(self.szMsg, 0, border=8, flag=wx.ALL | wx.EXPAND)
-        szMain.Add(szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
+        szMain.Add(szAudioChoice, 0, border=8, flag=wx.ALL | wx.EXPAND)
+        szMain.Add(szAudioList, 1, border=8, flag=wx.ALL | wx.EXPAND)
         szMain.Add(self.cbAudio, 0, border=8, flag=wx.ALL | wx.EXPAND)
         szMain.Add(szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
 
-        szCtrls.Add(self.lvAudio, 1, flag=wx.EXPAND | wx.RIGHT, border=4)
-        szCtrls.Add(szAudioCmds)
+        szAudioChoice.Add(self.choiceAudioFiles, 1, flag=wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, border=4)
+        szAudioChoice.Add(self.cmdAddMusic)
 
-        szAudioCmds.Add(self.cmdBrowseMusic, border=2, flag=wx.BOTTOM)
-        szAudioCmds.Add(self.cmdBrowseAudio, border=2, flag=wx.BOTTOM)
+        szAudioList.Add(self.lvAudio, 1, flag=wx.EXPAND | wx.RIGHT, border=4)
+        szAudioList.Add(szAudioCmds)
+
         szAudioCmds.Add(self.cmdAudioPreview, border=2, flag=wx.BOTTOM)
         szAudioCmds.Add(self.cmdAudioMoveUp, border=2, flag=wx.BOTTOM)
         szAudioCmds.Add(self.cmdAudioMoveDown, border=2, flag=wx.BOTTOM)
@@ -57,18 +60,15 @@ class DlgConfigureAudio(wx.Dialog):
         self.szMsg = self.CreateTextSizer(
             _("Configure your audio files that are used as a background music."))
 
+        self.choiceAudioFiles = wx.Choice(self)
+
         self.lvAudio = wx.ListBox(self, style=wx.LB_SINGLE)
         self.lvAudio.Bind(wx.EVT_LISTBOX, self.OnControlStatusAudio)
 
-        self.cmdBrowseMusic = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_TOOLBAR),
-              name="cmdBrowseMusic", style=wx.BU_AUTODRAW)
-        self.cmdBrowseMusic.Bind(wx.EVT_BUTTON, self.OnCmdBrowseMusicButton)
-
-        self.cmdBrowseAudio = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
-              name="cmdBrowseAudio", style=wx.BU_AUTODRAW)
-        self.cmdBrowseAudio.Bind(wx.EVT_BUTTON, self.OnCmdBrowseAudioButton)
+        self.cmdAddMusic = wx.BitmapButton(self,
+              bitmap=wx.ArtProvider.GetBitmap("PFS_ADD", wx.ART_TOOLBAR),
+              name="cmdAddMusic", style=wx.BU_AUTODRAW)
+        self.cmdAddMusic.Bind(wx.EVT_BUTTON, self.OnCmdAddMusicButton)
 
         self.cmdAudioPreview = wx.BitmapButton(self,
               bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE', wx.ART_TOOLBAR),
@@ -123,7 +123,14 @@ class DlgConfigureAudio(wx.Dialog):
         self.__mediaCtrl = None
         self.__musicMap = {}
 
-        self.cmdBrowseMusic.Show(self.__GetAudioDir() is not None)
+        self.__idxSelectOption = self.choiceAudioFiles.Append("~ {} ~".format(_("Select an entry")))
+        self.__idxBrowseAudio = self.choiceAudioFiles.Append("~ {} ~".format(_("Browse for audio files")))
+
+        self.__CreateProvidedMusicEntries()
+
+        self.cmdAddMusic.Enable(False)
+        self.choiceAudioFiles.Select(self.__idxSelectOption)
+        self.choiceAudioFiles.Bind(wx.EVT_CHOICE, self.OnChoiceAudio)
 
         if project.GetTimelapse():
             self.cbAudio.SetValue(False)
@@ -133,9 +140,7 @@ class DlgConfigureAudio(wx.Dialog):
             self.cbAudio.SetValue(duration == -1)
 
         for audioFile in project.GetAudioFiles():
-            idx = self.lvAudio.Append("")
-            self.__UpdateAudioItem(idx, audioFile)
-            self.lvAudio.Select(idx)
+            self.__AddAudioItem(audioFile, select=True)
 
         self.__ControlStatusAudio()
 
@@ -147,24 +152,34 @@ class DlgConfigureAudio(wx.Dialog):
     def OnControlStatusAudio(self, event):  # pylint: disable=unused-argument
         self.__ControlStatusAudio()
 
-    def OnCmdBrowseMusicButton(self, event):  # pylint: disable=unused-argument
-        menu = wx.Menu()
+    def OnChoiceAudio(self, event):
+        selIdx = event.GetInt()
+        self.cmdAddMusic.Enable(selIdx not in (self.__idxBrowseAudio, self.__idxSelectOption))
+        if selIdx == self.__idxBrowseAudio:
+            self.OnCmdBrowseAudioButton(event)
+            self.choiceAudioFiles.Select(self.__idxSelectOption)
+        elif selIdx != self.__idxSelectOption:
+            self.OnCmdAddMusicButton(event)
+        else:
+            pass
 
+    def OnCmdAddMusicButton(self, event):  # pylint: disable=unused-argument
+        selIdx = self.choiceAudioFiles.GetSelection()
+        if selIdx == wx.NOT_FOUND:
+            return
+
+        audioFile = self.choiceAudioFiles.GetClientData(selIdx)
+        if audioFile:
+            self.__AddAudioItem(audioFile, select=True)
+
+    def __CreateProvidedMusicEntries(self):
         audioDir = self.__GetAudioDir()
         for filename in os.listdir(audioDir):
             fname, fext = os.path.splitext(filename)
             if fext in FILE_EXTENSIONS_AUDIO:
                 audioFile = os.path.join(audioDir, filename)
 
-                ident = wx.NewId()
-                CreateMenuItem(menu, ident, fname)
-
-                self.__musicMap[ident] = audioFile
-
-                self.Bind(wx.EVT_MENU, self.__AddMusic, id=ident)
-
-        self.PopupMenu(menu, pos=self.cmdBrowseMusic.GetPosition(
-            ) + (0, self.cmdBrowseMusic.GetSize()[1]))
+                self.choiceAudioFiles.Append(fname, audioFile)
 
     def OnCmdBrowseAudioButton(self, event):  # pylint: disable=unused-argument
         dlg = wx.FileDialog(self, _("Select music"),
@@ -176,8 +191,7 @@ class DlgConfigureAudio(wx.Dialog):
             Settings().SetAudioPath(os.path.dirname(path))
 
             for path in dlg.GetPaths():
-                idx = self.lvAudio.Append("")
-                self.__UpdateAudioItem(idx, path)
+                self.__AddAudioItem(path, select=True)
 
         dlg.Destroy()
 
@@ -246,6 +260,15 @@ class DlgConfigureAudio(wx.Dialog):
 
             event.Skip()
 
+    def __AddAudioItem(self, audioFile, select=False):
+        idx = self.lvAudio.Append("")
+        self.__UpdateAudioItem(idx, audioFile)
+        if select:
+            self.lvAudio.Select(idx)
+
+            self.__ControlStatusAudio()
+        return idx
+
     def __UpdateAudioItem(self, idx, audioFile):
         self.lvAudio.SetString(idx, os.path.basename(audioFile))
         self.lvAudio.SetClientData(idx, audioFile)
@@ -307,7 +330,3 @@ class DlgConfigureAudio(wx.Dialog):
 
     def __GetAudioDir(self):
         return GetDataDir("audio")
-
-    def __AddMusic(self, event):
-        audioFile = self.__musicMap.get(event.GetId())
-        self.lvAudio.Append(os.path.basename(audioFile), audioFile)
