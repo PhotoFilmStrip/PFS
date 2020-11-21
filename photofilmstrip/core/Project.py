@@ -46,8 +46,10 @@ class Project(Observable):
             self.Notify("duration")
 
     def SetAudioFiles(self, audioFiles):
+        oldAudioFiles = self.__audioFiles
         self.__audioFiles = audioFiles
-        self.Notify("audiofile")
+        if self.__audioFiles != oldAudioFiles:
+            self.Notify("audiofile")
 
     def GetAudioFile(self):
         '''
