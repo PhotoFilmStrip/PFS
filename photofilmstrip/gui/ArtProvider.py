@@ -50,7 +50,7 @@ class Res2PyArtProvider(wx.ArtProvider):
 
     def DataToBitmap(self, data, size):
         data = base64.b64decode(data)
-        if data.startswith(b"<?xml"):
+        if data.startswith(b"<?xml") or data.startswith(b"<svg"):
             svgImg = wx.svg.SVGimage.CreateFromBytes(data, units='px', dpi=96)
             bmp = svgImg.ConvertToScaledBitmap(size)
             if bmp.IsOk():
