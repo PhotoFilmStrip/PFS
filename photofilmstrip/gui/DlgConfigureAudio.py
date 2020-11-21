@@ -133,7 +133,8 @@ class DlgConfigureAudio(wx.Dialog):
             self.cbAudio.SetValue(duration == -1)
 
         for audioFile in project.GetAudioFiles():
-            idx = self.lvAudio.Append(audioFile)
+            idx = self.lvAudio.Append("")
+            self.__UpdateAudioItem(idx, audioFile)
             self.lvAudio.Select(idx)
 
         self.__ControlStatusAudio()
@@ -175,7 +176,8 @@ class DlgConfigureAudio(wx.Dialog):
             Settings().SetAudioPath(os.path.dirname(path))
 
             for path in dlg.GetPaths():
-                self.lvAudio.Append(path)
+                idx = self.lvAudio.Append("")
+                self.__UpdateAudioItem(idx, path)
 
         dlg.Destroy()
 
@@ -184,7 +186,7 @@ class DlgConfigureAudio(wx.Dialog):
         if selIdx == wx.NOT_FOUND:
             return
 
-        filename = self.lvAudio.GetString(selIdx)
+        filename = self.lvAudio.GetClientData(selIdx)
         if self.__mediaCtrl and self.__mediaCtrl.GetFilename() == filename:
             if self.__mediaCtrl.IsPlaying():
                 self.__mediaCtrl.Stop()
@@ -198,22 +200,20 @@ class DlgConfigureAudio(wx.Dialog):
         if selIdx == wx.NOT_FOUND:
             return
 
-        selAudio = self.lvAudio.GetString(selIdx)
+        selAudio = self.lvAudio.GetClientData(selIdx)
 
         evtObj = event.GetEventObject()
         if evtObj is self.cmdAudioMoveUp:
             if selIdx > 0:
-                prevAudio = self.lvAudio.GetString(selIdx - 1)
-
-                self.lvAudio.SetString(selIdx, prevAudio)
-                self.lvAudio.SetString(selIdx - 1, selAudio)
+                prevAudio = self.lvAudio.GetClientData(selIdx - 1)
+                self.__UpdateAudioItem(selIdx, prevAudio)
+                self.__UpdateAudioItem(selIdx - 1, selAudio)
                 self.lvAudio.SetSelection(selIdx - 1)
         elif evtObj is self.cmdAudioMoveDown:
             if selIdx < self.lvAudio.GetCount() - 1:
-                nextAudio = self.lvAudio.GetString(selIdx + 1)
-
-                self.lvAudio.SetString(selIdx, nextAudio)
-                self.lvAudio.SetString(selIdx + 1, selAudio)
+                nextAudio = self.lvAudio.GetClientData(selIdx + 1)
+                self.__UpdateAudioItem(selIdx, nextAudio)
+                self.__UpdateAudioItem(selIdx + 1, selAudio)
                 self.lvAudio.SetSelection(selIdx + 1)
 
         self.__ControlStatusAudio()
@@ -237,7 +237,7 @@ class DlgConfigureAudio(wx.Dialog):
     def OnCmdOkButton(self, event):
         self.__CloseMediaCtrl()
         if self.__ValidateAudioFile():
-            self.__project.SetAudioFiles(self.lvAudio.GetItems())
+            self.__project.SetAudioFiles([ai[2] for ai in self.__IterAudioItems()])
             if self.cbAudio.GetValue():
                 self.__project.SetDuration(-1)
             elif self.__project.GetDuration(False) == -1:
@@ -245,6 +245,14 @@ class DlgConfigureAudio(wx.Dialog):
                 self.__project.SetDuration(None)
 
             event.Skip()
+
+    def __UpdateAudioItem(self, idx, audioFile):
+        self.lvAudio.SetString(idx, os.path.basename(audioFile))
+        self.lvAudio.SetClientData(idx, audioFile)
+
+    def __IterAudioItems(self):
+        for idx in range(self.lvAudio.GetCount()):
+            yield idx, self.lvAudio.GetString(idx), self.lvAudio.GetClientData(idx)
 
     def __ControlStatusAudio(self):
         selected = self.lvAudio.GetSelection()
@@ -278,7 +286,7 @@ class DlgConfigureAudio(wx.Dialog):
             dlg.Destroy()
 
     def __ValidateAudioFile(self):
-        for path in self.lvAudio.GetItems():
+        for idx, basename, path in self.__IterAudioItems():
             if not os.path.exists(path):
                 dlg = wx.MessageDialog(self,
                                        _("Audio file '%s' does not exist!") % path,
@@ -301,4 +309,5 @@ class DlgConfigureAudio(wx.Dialog):
         return GetDataDir("audio")
 
     def __AddMusic(self, event):
-        self.lvAudio.Append(self.__musicMap.get(event.GetId()))
+        audioFile = self.__musicMap.get(event.GetId())
+        self.lvAudio.Append(os.path.basename(audioFile), audioFile)
