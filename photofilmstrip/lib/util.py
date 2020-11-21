@@ -29,7 +29,7 @@ def IsPathWritable(path):
 
 
 def CheckFile(filename):
-    if filename and not os.path.exists(filename):
+    if filename and not os.path.isfile(filename):
         return False
     else:
         return True
