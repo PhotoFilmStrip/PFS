@@ -20,6 +20,7 @@ class GPlayer:
         self.__pipeline = None
         self.__length = None
         self.__position = None
+        self.__log = logging.getLogger("GPlayer").log
 
         self.__Identify()
 
@@ -46,16 +47,27 @@ class GPlayer:
 
         bus = pipeline.get_bus()
         hasResult = False
+        duration = None
         while not hasResult:
             msg = bus.pop()
             if msg is None:
                 time.sleep(0.001)
                 continue
+
+            if msg.type == Gst.MessageType.ERROR:
+                duration = None
+                err, debug = msg.parse_error()
+                self.__log(logging.ERROR, "Error received from element %s: %s",
+                              msg.src.get_name(), err)
+                self.__log(logging.DEBUG, "Debugging information: %s", debug)
+                break
+
             hasResult, duration = pipeline.query_duration(Gst.Format.TIME)
 
         pipeline.set_state(Gst.State.NULL)
 
-        self.__length = duration // Gst.MSECOND
+        if duration is not None:
+            self.__length = duration // Gst.MSECOND
 
     def GetFilename(self):
         return self.__filename
@@ -123,13 +135,13 @@ class GPlayer:
                           Gst.SeekType.NONE, 0)
 
     def _GstOnMessage(self, bus, msg):  # pylint: disable=unused-argument
-        logging.debug('_GstOnMessage: %s', msg.type)
+        self.__log(logging.DEBUG, '_GstOnMessage: %s', msg.type)
 
         if msg.type == Gst.MessageType.ERROR:
             err, debug = msg.parse_error()
-            logging.error("Error received from element %s: %s",
-                          msg.src.get_name(), err)
-            logging.debug("Debugging information: %s", debug)
+            self.__log(logging.ERROR, "Error received from element %s: %s",
+                       msg.src.get_name(), err)
+            self.__log(logging.DEBUG, "Debugging information: %s", debug)
 
         elif msg.type == Gst.MessageType.EOS:
             self.__pipeline.set_state(Gst.State.NULL)
@@ -138,4 +150,5 @@ class GPlayer:
     def _GstPadAdded(self, decodebin, pad, audioConv):  # pylint: disable=unused-argument
         caps = pad.get_current_caps()
         compatible_pad = audioConv.get_compatible_pad(pad, caps)
-        pad.link(compatible_pad)
+        if compatible_pad:
+            pad.link(compatible_pad)

@@ -262,6 +262,7 @@ class pfs_build(build):
                         ("REMOVE_D", "remove_d.svg"),
                         ("VIDEO_FORMAT", "video_format.svg"),
 
+                        ("ADD", "add.svg"),
                         ("ALERT", "alert.svg"),
                         ("PROPERTIES", "properties.svg"),
                         ("EXIT", "exit.svg"),

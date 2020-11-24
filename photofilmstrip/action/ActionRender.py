@@ -17,6 +17,7 @@ from photofilmstrip.core.RenderEngine import RenderEngineSlideshow, \
     RenderEngineTimelapse
 from photofilmstrip.core.RenderJob import RenderJob
 from photofilmstrip.core.GPlayer import GPlayer
+from photofilmstrip.core.exceptions import RenderException
 
 
 class ActionRender(IAction):
@@ -63,15 +64,25 @@ class ActionRender(IAction):
 
     def Execute(self):
         audioFiles = []
+        invalidAudioFiles = []
         audioLength = 0
         for audioFile in self.__photoFilmStrip.GetAudioFiles():
             if CheckFile(audioFile):
                 length = GPlayer(audioFile).GetLength()
-                audioFiles.append(audioFile)
-                logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
-                audioLength += length
+                if length is None:
+                    logging.warning("Invalid audiofile '%s'", audioFile)
+                    invalidAudioFiles.append(audioFile)
+                else:
+                    audioFiles.append(audioFile)
+                    logging.debug("Using audiofile '%s' with length: %s", audioFile, length)
+                    audioLength += length
             else:
                 logging.warning("Missing audiofile '%s'!", audioFile)
+
+        if len(audioFiles) != len(self.__photoFilmStrip.GetAudioFiles()):
+            raise RenderException(
+                _("The following audio files are invalid or missing:") + "\n\n" + "\n".join(
+                    invalidAudioFiles))
 
         outFile = self._CheckAndGetOutFile()
 
