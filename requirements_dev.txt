@@ -1,4 +1,4 @@
-cx_freeze ; platform_system == "Windows"
+cx_freeze==6.4.2 ; platform_system == "Windows"
 py2exe ; platform_system == "Windows"
 sphinx
 pylint
