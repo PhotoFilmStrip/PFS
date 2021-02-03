@@ -115,7 +115,8 @@ class GPlayer:
         self.Close()
 
     def Close(self):
-        self.__pipeline.send_event(Gst.Event.new_eos())
+        if self.__pipeline:
+            self.__pipeline.send_event(Gst.Event.new_eos())
 
     def GetLength(self):
         return self.__length

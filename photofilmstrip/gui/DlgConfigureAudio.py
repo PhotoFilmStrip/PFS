@@ -15,7 +15,6 @@ from photofilmstrip.core.AudioPlayer import AudioPlayer
 
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.lib.util import FILE_EXTENSIONS_AUDIO, GetDataDir
-from docutils.parsers.rst.directives import path
 
 
 class DlgConfigureAudio(wx.Dialog):
@@ -187,10 +186,8 @@ class DlgConfigureAudio(wx.Dialog):
                             _("Audio files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE)
         if dlg.ShowModal() == wx.ID_OK:
-            path = dlg.GetPath()
-            Settings().SetAudioPath(os.path.dirname(path))
-
             for path in dlg.GetPaths():
+                Settings().SetAudioPath(os.path.dirname(path))
                 self.__AddAudioItem(path, select=True)
 
         dlg.Destroy()
