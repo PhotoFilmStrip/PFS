@@ -289,7 +289,7 @@ class JobManager(Singleton, Destroyable):
             for worker in jcGroup.Workers():
                 self.__logger.debug("<%s> joining...", worker.getName())
                 worker.join(3)
-                if worker.isAlive():
+                if worker.is_alive():
                     self.__logger.warning("<%s> join failed", worker.getName())
                 else:
                     self.__logger.debug("<%s> joined!", worker.getName())
