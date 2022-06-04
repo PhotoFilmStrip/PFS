@@ -67,8 +67,8 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
 
         ImageCache().RegisterWin(self)
-        ImageCache().thumb = wx.ArtProvider.GetBitmap(
-            wx.ART_NORMAL_FILE, size=wx.Size(120, 120))
+        ImageCache().thumb = wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE,
+              wx.ART_TOOLBAR, (120, 120))
         self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
 
     def Freeze(self, *args):

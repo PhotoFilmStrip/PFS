@@ -70,7 +70,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpJob = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
+              bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER_24'),
               id=wxID_PNLJOBVISUALBMPJOB,
               name="bmpJob", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -88,14 +88,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAction = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
+              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN_24'),
               id=wxID_PNLJOBVISUALCMDACTION,
               name="cmdAction", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
         self.cmdMenu = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_MENU', wx.ART_TOOLBAR),
+              bitmap=wx.ArtProvider.GetBitmap('PFS_MENU_24'),
               id=wxID_PNLJOBVISUALCMDMENU,
               name="cmdMenu", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -126,14 +126,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self._actAbort = WxAction(
                  _("Abort"),
                 self._Abort,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT_16'),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT_24')}
         )
         self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE_16'),
+                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE_24')}
         )
 
         self.curAction = None

@@ -250,7 +250,7 @@ class DlgPositionInput(wx.Dialog):
         self._init_ctrls(parent)
 
         self.pnlHdr.SetTitle(_("Adjust motion positions directly"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL_32'))
 
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)
