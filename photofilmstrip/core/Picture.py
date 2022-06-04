@@ -63,7 +63,7 @@ class Picture(Observable):
     def SetStartRect(self, rect):
         if rect == self._startRect or self._isDummy:
             return
-        self._startRect = rect
+        self._startRect = [round(int(v)) for v in rect]
         self.Notify("start")
 
     def GetStartRect(self):
@@ -72,7 +72,7 @@ class Picture(Observable):
     def SetTargetRect(self, rect):
         if rect == self._targetRect or self._isDummy:
             return
-        self._targetRect = rect
+        self._targetRect = [round(int(v)) for v in rect]
         self.Notify("target")
 
     def GetTargetRect(self):

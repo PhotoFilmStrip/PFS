@@ -119,7 +119,7 @@ class ImageSectionEditor(wx.Panel, Observer):
             newWidth = iw * ry
             self._zoom = ry
 
-        self._imgProxy.Scale(newWidth, newHeight)
+        self._imgProxy.Scale(int(round(newWidth)), int(round(newHeight)))
 
     def __DrawBitmap(self, dc):
         if self._imgProxy.IsOk():
@@ -137,10 +137,10 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def __SectRectToClientRect(self):
         left, top = self.__GetBmpTopLeft()
-        sectRect = wx.Rect(left + (self._sectRect.GetLeft() * self._zoom),
-                           top + (self._sectRect.GetTop() * self._zoom),
-                           self._sectRect.GetWidth() * self._zoom,
-                           self._sectRect.GetHeight() * self._zoom)
+        sectRect = wx.Rect(left + int(round(self._sectRect.GetLeft() * self._zoom)),
+                           top + int(round(self._sectRect.GetTop() * self._zoom)),
+                           int(round(self._sectRect.GetWidth() * self._zoom)),
+                           int(round(self._sectRect.GetHeight() * self._zoom)))
         return sectRect
 
     def __DrawSection(self, dc):
@@ -158,8 +158,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         # draw rule of thirds guides
         ss = sectRect.GetSize()
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((0, ss[1] / 3)), wx.Size((ss[0], ss[1] / 3))))
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((ss[0] / 3, 0)), wx.Size((ss[0] / 3, ss[1]))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((0, ss[1] // 3)), wx.Size((ss[0], ss[1] // 3))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((ss[0] // 3, 0)), wx.Size((ss[0] // 3, ss[1]))))
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
@@ -245,8 +245,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def __ClientToImage(self, px, py):
         bmpLeft, bmpTop = self.__GetBmpTopLeft()
-        nx = (px - bmpLeft) / self._zoom
-        ny = (py - bmpTop) / self._zoom
+        nx = int(round((px - bmpLeft) / self._zoom))
+        ny = int(round((py - bmpTop) / self._zoom))
         return nx, ny
 
     def __FindPosition(self, cpx, cpy):
@@ -438,10 +438,10 @@ class ImageSectionEditor(wx.Panel, Observer):
                         ny = self._imgProxy.GetHeight()
 
                 # everything should be ok now
-                self._sectRect.SetX(nx)
-                self._sectRect.SetY(ny)
-                self._sectRect.SetWidth(width)
-                self._sectRect.SetHeight(height)
+                self._sectRect.SetX(int(round(nx)))
+                self._sectRect.SetY(int(round(ny)))
+                self._sectRect.SetWidth(int(round(width)))
+                self._sectRect.SetHeight(int(round(height)))
 #
             self._SendRectChangedEvent()
 
