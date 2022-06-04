@@ -441,7 +441,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         dlg.Destroy()
 
     def OnRenderFilmstrip(self, event):
-        self.PrepareRendering()
+        if not self.PrepareRendering():
+            return
 
         project = self.__project
         dlg = DlgRender(self, RendererProvider(), project.GetAspect())
@@ -658,9 +659,10 @@ class PnlPfsProject(PnlEditorPage, Observer):
                 dlgResult = dlg.ShowModal()
                 dlg.Destroy()
                 if dlgResult == wx.ID_NO:
-                    return
+                    return False
                 else:
                     break
+        return True
 
     def InsertPictures(self, pics, position=None, autopath=False):
         logging.debug("InsertPictures(pos=%s)", position)
