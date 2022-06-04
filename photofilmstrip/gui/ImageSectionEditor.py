@@ -158,8 +158,8 @@ class ImageSectionEditor(wx.Panel, Observer):
 
         # draw rule of thirds guides
         ss = sectRect.GetSize()
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((0, ss[1] / 3)), wx.Size((ss[0], ss[1] / 3))))
-        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((ss[0] / 3, 0)), wx.Size((ss[0] / 3, ss[1]))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((0, ss[1] // 3)), wx.Size((ss[0], ss[1] // 3))))
+        dc.DrawRectangle(wx.Rect(sectRect.GetPosition() + wx.Size((ss[0] // 3, 0)), wx.Size((ss[0] // 3, ss[1]))))
 
         # draw background
         color = wx.Colour(0, 0, 0, 153)
