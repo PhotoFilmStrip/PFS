@@ -12,6 +12,8 @@ class Aspect:
     ASPECT_3_2 = "3:2"
     ASPECT_16_9 = "16:9"
     ASPECT_16_10 = "16:10"
+    ASPECT_2_3 = "2:3"
+    ASPECT_9_16 = "9:16"
 
     @classmethod
     def ToFloat(cls, aspect):
@@ -23,6 +25,10 @@ class Aspect:
             return 4.0 / 3.0
         if aspect == cls.ASPECT_3_2:
             return 3.0 / 2.0
+        if aspect == cls.ASPECT_2_3:
+            return 2.0 / 3.0
+        if aspect == cls.ASPECT_9_16:
+            return 9.0 / 16.0
 
     @classmethod
     def AsStr(cls, aspect):
@@ -32,3 +38,7 @@ class Aspect:
             return "4/3"
         if aspect == cls.ASPECT_3_2:
             return "3/2"
+        if aspect == cls.ASPECT_2_3:
+            return "2/3"
+        if aspect == cls.ASPECT_9_16:
+            return "9/16"

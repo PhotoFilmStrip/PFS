@@ -102,6 +102,8 @@ class DlgNewProject(wx.Dialog):
         self.choiceAspect.Append(Aspect.ASPECT_16_10)
         self.choiceAspect.Append(Aspect.ASPECT_4_3)
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
+        self.choiceAspect.Append(Aspect.ASPECT_2_3)
+        self.choiceAspect.Append(Aspect.ASPECT_9_16)
         self.choiceAspect.Select(0)
 
         self.tcProject.SetMinSize(wx.Size(300, -1))

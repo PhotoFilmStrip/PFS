@@ -350,6 +350,17 @@ def __Create3_2Profiles():
     return profs
 
 
+def _ConvertPortrait(profiles):
+    result = []
+    for prof in profiles:
+        portraitProf = OutputProfile("Portrait {}".format(prof._OutputProfile__name),
+                                     (prof.GetResolution()[1], prof.GetResolution()[0]),
+                                     prof.GetFrameRate(),
+                                     prof.GetBitrate())
+        result.append(portraitProf)
+    return result
+
+
 def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
     if aspect == Aspect.ASPECT_4_3:
         return __Create4_3Profiles()
@@ -357,8 +368,12 @@ def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
         return __Create3_2Profiles()
     elif aspect == Aspect.ASPECT_16_10:
         return __Create16_10Profiles()
-    else:
-        return __Create16_9Profiles()
+    elif aspect == Aspect.ASPECT_2_3:
+        return _ConvertPortrait(__Create3_2Profiles())
+    elif aspect == Aspect.ASPECT_9_16:
+        return _ConvertPortrait(__Create16_9Profiles())
+
+    return __Create16_9Profiles()
 
 
 def GetMPEGProfiles():
