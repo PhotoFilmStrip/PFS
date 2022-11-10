@@ -66,3 +66,8 @@ class Aspect:
         if aspect == cls.ASPECT_3_2:
             return cls.ASPECT_2_3
         raise ValueError("Not a valid landscape aspect string!")
+
+    @classmethod
+    def IsPortraitMode(cls, aspect):
+        return aspect in (cls.ASPECT_10_16, cls.ASPECT_9_16,
+                          cls.ASPECT_3_4, cls.ASPECT_2_3)
