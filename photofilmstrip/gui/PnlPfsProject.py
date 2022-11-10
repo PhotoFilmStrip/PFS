@@ -237,7 +237,6 @@ class PnlPfsProject(PnlEditorPage, Observer):
         self.SetClientSize(wx.Size(400, 250))
 
         self._InitCtrls()
-        Observer.__init__(self)
 
         self.lvPics.SetDropTarget(ImageDropTarget(self))
 

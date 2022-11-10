@@ -42,7 +42,6 @@ class PnlStory(PnlEditorPage, Observer):
 
     def __init__(self, parent, story):
         PnlEditorPage.__init__(self, parent)
-        Observer.__init__(self)
         self.__story = story
 
         self.splitWin = wx.SplitterWindow(self)
