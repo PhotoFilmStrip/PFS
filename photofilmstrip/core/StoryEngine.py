@@ -48,6 +48,8 @@ class StoryEngine(object):
         self.assets_added_ctr = 0
         self.outResolution = Rect(*profile.GetResolution())
         self.assets = {}
+        self.encoderSettings = {}
+        self.encoderSettings["bitrate"] = profile.GetBitrate()
 
     def Execute(self, job):
         self.job = job
@@ -76,6 +78,11 @@ class StoryEngine(object):
 
             self.pipeline.set_mode(GES.PipelineFlags.RENDER)
 
+            encodebin = self.pipeline.get_by_name("internal-encodebin")
+            encodebin.connect("element-added", self.__element_added_cb)
+            for element in encodebin.iterate_recurse():
+                self.__set_properties(element)
+
         self.job.SetInfo(_("Rendering in progress..."))
 
         self.posPoller = PositionPoller(
@@ -89,6 +96,20 @@ class StoryEngine(object):
         if vaapi_ele:
             vaapi_ele.set_rank(vaapi_rank)
         self.posPoller.Stop()
+
+    def __element_added_cb(self, unused_bin, gst_element):
+        self.__set_properties(gst_element)
+
+    def __set_properties(self, gst_element):
+        """Sets properties on the specified Gst.Element."""
+        factory = gst_element.get_factory()
+        for propname, value in self.encoderSettings.items():
+            if factory and factory.get_name() == "x264enc":
+                self._Log(logging.DEBUG, "Current value for property %s: %s",
+                          propname, gst_element.get_property(propname))
+                self._Log(logging.DEBUG, "Setting %s to %s",
+                          propname, value)
+                gst_element.set_property(propname, value)
 
     def _CreateGesElements(self):
         self.timeline = GES.Timeline.new()
