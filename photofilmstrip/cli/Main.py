@@ -13,6 +13,7 @@ from photofilmstrip import Constants
 
 from photofilmstrip.lib.util import CheckFile
 
+from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.OutputProfile import (
     GetOutputProfiles, GetMPEGProfiles)
 from photofilmstrip.core.ProjectFile import ProjectFile
@@ -161,6 +162,9 @@ def main(showHelp=False):
         outpath = None
 
     project = prjFile.GetProject()
+    if Aspect.IsPortraitMode(project.GetAspect()):
+        profile = profile.ToPortraitMode()
+
     ar = ActionRender(project, profile, rendererClass, False, outpath)
 
     audioFile = project.GetAudioFile()

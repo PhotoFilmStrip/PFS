@@ -71,6 +71,13 @@ class OutputProfile:
     def GetFriendlyName(self):
         return self.__friendlyName
 
+    def ToPortraitMode(self):
+        portraitProf = OutputProfile("Portrait {}".format(self.__name),
+                                     (self.__resolution[1], self.__resolution[0]),
+                                     self.__frameRate,
+                                     self.__bitrate)
+        return portraitProf
+
 
 FPS15 = FrameRate(15.0, "15/1")
 FPS23996 = FrameRate(24000.0 / 1001.0, "24000/1001")
@@ -351,14 +358,19 @@ def __Create3_2Profiles():
 
 
 def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
+    result = __Create16_9Profiles()
+
     if aspect == Aspect.ASPECT_4_3:
-        return __Create4_3Profiles()
+        result = __Create4_3Profiles()
     elif aspect == Aspect.ASPECT_3_2:
-        return __Create3_2Profiles()
+        result = __Create3_2Profiles()
     elif aspect == Aspect.ASPECT_16_10:
-        return __Create16_10Profiles()
-    else:
-        return __Create16_9Profiles()
+        result = __Create16_10Profiles()
+
+    if Aspect.IsPortraitMode(aspect):
+        result = [p.ToPortraitMode() for p in result]
+
+    return result
 
 
 def GetMPEGProfiles():

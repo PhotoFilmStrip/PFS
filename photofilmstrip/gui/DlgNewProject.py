@@ -46,6 +46,8 @@ class DlgNewProject(wx.Dialog):
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
         szCtrls.Add(self.choiceAspect, (2, 1), border=0, flag=wx.EXPAND, span=(1,
               1))
+        szCtrls.Add(self.cbPortraitMode, (3, 1), border=0, flag=wx.EXPAND, span=(1,
+              1))
         szCtrls.AddGrowableCol(1)
 
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
@@ -79,6 +81,8 @@ class DlgNewProject(wx.Dialog):
 
         self.choiceAspect = wx.Choice(self, choices=[], name="choiceAspect")
 
+        self.cbPortraitMode = wx.CheckBox(self, label=_("Portrait mode"), name="cbPortraitMode")
+
         self.staticLine = wx.StaticLine(self)
 
         self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
@@ -102,6 +106,7 @@ class DlgNewProject(wx.Dialog):
         self.choiceAspect.Append(Aspect.ASPECT_16_10)
         self.choiceAspect.Append(Aspect.ASPECT_4_3)
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
+
         self.choiceAspect.Select(0)
 
         self.tcProject.SetMinSize(wx.Size(300, -1))
@@ -204,5 +209,8 @@ class DlgNewProject(wx.Dialog):
     def GetProject(self):
         project = Project(self.__GetProjectPath())
         project.SetTimelapse(False)
-        project.SetAspect(self.choiceAspect.GetStringSelection())
+        aspect = self.choiceAspect.GetStringSelection()
+        if self.cbPortraitMode.GetValue():
+            aspect = Aspect.ToPortraitMode(aspect)
+        project.SetAspect(aspect)
         return project

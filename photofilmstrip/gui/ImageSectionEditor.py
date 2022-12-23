@@ -58,7 +58,6 @@ class ImageSectionEditor(wx.Panel, Observer):
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=0, name='panel'):
         wx.Panel.__init__(self, parent, id, pos, size, style, name)
-        Observer.__init__(self)
 
         self.SetSizeHints(200, 150)
         self.SetCursor(wx.Cursor(wx.CURSOR_ARROW))
