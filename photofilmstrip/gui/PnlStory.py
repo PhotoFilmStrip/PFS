@@ -14,6 +14,7 @@ from photofilmstrip.lib.common.ObserverPattern import Observer
 from photofilmstrip.lib.Settings import Settings
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
 from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
+from photofilmstrip.lib.util import StartFile
 
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Media import Media, MediaOrientation
@@ -50,6 +51,7 @@ class PnlStory(PnlEditorPage, Observer):
         self.pnlMedias = PnlMediaContainer(self.splitWin)
         self.pnlMedias.SetupScrolling(scroll_x=False)
         self.pnlMedias.Bind(wx.EVT_CHAR_HOOK, self._OnKeyDown)
+        self.pnlMedias.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self._OnActivateMedia)
 
         self.treeCtrlr = TreeController(story, self.pnlMedias, self)
 
@@ -201,6 +203,12 @@ class PnlStory(PnlEditorPage, Observer):
         if outpath:
             wxvJob.GetOutputFile = lambda: outpath
         JobManager().EnqueueContext(wxvJob)
+
+    def _OnActivateMedia(self, event):
+        selItm = self.treeCtrlr.GetSelectedItem()
+        if selItm.IsOk():
+            media = selItm.data
+            StartFile(media.GetFilename())
 
     def GetProject(self):
         return self.__story
@@ -772,6 +780,7 @@ class PnlMediaItem(wx.Panel):
         for ctrl in [self, self.stName, self.stInfo, self.pnlOptOrientation]:
             if ctrl:
                 ctrl.Bind(wx.EVT_LEFT_DOWN, self.__OnLeftDown)
+                ctrl.Bind(wx.EVT_LEFT_DCLICK, self.__OnLeftDoubleClick)
 
         font = self.stName.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)
@@ -779,6 +788,13 @@ class PnlMediaItem(wx.Panel):
 
     def __OnLeftDown(self, event):  # pylint: disable=unused-argument
         evt = wx.ListEvent(wx.EVT_LIST_ITEM_SELECTED.typeId, self.GetId())
+        evt.SetEventObject(self)
+        self.GetEventHandler().ProcessEvent(evt)
+        if isinstance(event.GetEventObject(), wx.Control):
+            event.Skip()
+
+    def __OnLeftDoubleClick(self, event):
+        evt = wx.ListEvent(wx.EVT_LIST_ITEM_ACTIVATED.typeId, self.GetId())
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
         if isinstance(event.GetEventObject(), wx.Control):
