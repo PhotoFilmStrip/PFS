@@ -46,11 +46,21 @@ class Media(Observable):
 
     def GetProperty(self, name):
         value = self._properties.get(name)
-        if name == "orientation":
+        if name == MediaOrientation.KEY():
             value = MediaOrientation.Create(value)
             if value is None:
-                value = MediaOrientation.AS_IS
+                value = MediaOrientation.AUTO_DETECT
+        elif name == MediaAudioLevel.KEY():
+            value = MediaAudioLevel.Create(value)
+            if value is None:
+                value = MediaAudioLevel.PERCENT_50
         return value
+
+    def GetAllProperties(self):
+        return {
+            MediaOrientation.KEY(): self.GetProperty(MediaOrientation.KEY()),
+            MediaAudioLevel.KEY(): self.GetProperty(MediaAudioLevel.KEY())
+        }
 
     def GetProperties(self):
         return self._properties
@@ -99,7 +109,6 @@ class MediaType(enum.Enum):
 
 class MediaOrientation(enum.Enum):
 
-    AS_IS = "as-is"
     AUTO_DETECT = "auto-detect"
     ROTATE_LEFT = "rotate-left"
     ROTATE_RIGHT = "rotate-right"
@@ -107,7 +116,6 @@ class MediaOrientation(enum.Enum):
 
     def GetLabel(self):
         i18nDict = {
-            MediaOrientation.AS_IS: _("As is"),
             MediaOrientation.AUTO_DETECT: _("Auto detect"),
             MediaOrientation.ROTATE_LEFT: _("Rotate left"),
             MediaOrientation.ROTATE_RIGHT: _("Rotate right"),
@@ -120,3 +128,46 @@ class MediaOrientation(enum.Enum):
         for item in cls:
             if item.value == value:
                 return item
+
+    @classmethod
+    def KEY(cls):
+        return "orientation"
+
+
+class MediaAudioLevel(enum.Enum):
+
+    PERCENT_00 = "mute"
+    PERCENT_25 = "25"
+    PERCENT_50 = "50"
+    PERCENT_75 = "75"
+    PERCENT_100 = "100"
+
+    def GetLabel(self):
+        i18nDict = {
+            MediaAudioLevel.PERCENT_00: _("Muted"),
+            MediaAudioLevel.PERCENT_25: _("Silent"),
+            MediaAudioLevel.PERCENT_50: _("Medium"),
+            MediaAudioLevel.PERCENT_75: _("Loud"),
+            MediaAudioLevel.PERCENT_100: _("Full")
+        }
+        return i18nDict[self]
+
+    def GetValue(self):
+        valueDict = {
+            MediaAudioLevel.PERCENT_00: 0.0,
+            MediaAudioLevel.PERCENT_25: 0.25,
+            MediaAudioLevel.PERCENT_50: 0.5,
+            MediaAudioLevel.PERCENT_75: 0.75,
+            MediaAudioLevel.PERCENT_100: 1.0
+        }
+        return valueDict[self]
+
+    @classmethod
+    def Create(cls, value):
+        for item in cls:
+            if item.value == value:
+                return item
+
+    @classmethod
+    def KEY(cls):
+        return "audio-level"

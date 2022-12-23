@@ -77,7 +77,8 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
 
         self.stJobName = wx.StaticText(id=wxID_PNLJOBVISUALSTJOBNAME,
               label="job name", name="stJobName", parent=self,
-              pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
+              pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
+              style=wx.ST_NO_AUTORESIZE | wx.ST_ELLIPSIZE_START)
 
         self.gaugeProgress = wx.Gauge(id=wxID_PNLJOBVISUALGAUGEPROGRESS,
               name="gaugeProgress", parent=self, pos=wx.Point(-1, -1),

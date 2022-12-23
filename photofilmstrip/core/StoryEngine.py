@@ -15,7 +15,7 @@ from gi.repository import Gst, GES
 from gi.repository import GstPbutils
 
 from photofilmstrip.core.geom import Rect
-from photofilmstrip.core.Media import MediaOrientation
+from photofilmstrip.core.Media import MediaOrientation, MediaAudioLevel
 from photofilmstrip.core.GMainLoop import GMainLoop
 
 
@@ -48,6 +48,8 @@ class StoryEngine(object):
         self.assets_added_ctr = 0
         self.outResolution = Rect(*profile.GetResolution())
         self.assets = {}
+        self.encoderSettings = {}
+        self.encoderSettings["bitrate"] = profile.GetBitrate()
 
     def Execute(self, job):
         self.job = job
@@ -76,6 +78,11 @@ class StoryEngine(object):
 
             self.pipeline.set_mode(GES.PipelineFlags.RENDER)
 
+            encodebin = self.pipeline.get_by_name("internal-encodebin")
+            encodebin.connect("element-added", self.__element_added_cb)
+            for element in encodebin.iterate_recurse():
+                self.__set_properties(element)
+
         self.job.SetInfo(_("Rendering in progress..."))
 
         self.posPoller = PositionPoller(
@@ -89,6 +96,20 @@ class StoryEngine(object):
         if vaapi_ele:
             vaapi_ele.set_rank(vaapi_rank)
         self.posPoller.Stop()
+
+    def __element_added_cb(self, unused_bin, gst_element):
+        self.__set_properties(gst_element)
+
+    def __set_properties(self, gst_element):
+        """Sets properties on the specified Gst.Element."""
+        factory = gst_element.get_factory()
+        for propname, value in self.encoderSettings.items():
+            if factory and factory.get_name() == "x264enc":
+                self._Log(logging.DEBUG, "Current value for property %s: %s",
+                          propname, gst_element.get_property(propname))
+                self._Log(logging.DEBUG, "Setting %s to %s",
+                          propname, value)
+                gst_element.set_property(propname, value)
 
     def _CreateGesElements(self):
         self.timeline = GES.Timeline.new()
@@ -259,13 +280,13 @@ class StoryEngine(object):
         videos = []
         audios = []
         if media.IsVideo():
-            videos.append((media.GetFilename(), media.GetProperty("orientation")))
+            videos.append((media.GetFilename(), media.GetAllProperties()))
         else:
             audios.append(media.GetFilename())
         for subMedia in media.GetChildren():
             assert subMedia.IsVideo() != media.IsVideo()
             if subMedia.IsVideo():
-                videos.append((subMedia.GetFilename(), subMedia.GetProperty("orientation")))
+                videos.append((subMedia.GetFilename(), subMedia.GetAllProperties()))
             else:
                 audios.append(subMedia.GetFilename())
         return videos, audios
@@ -275,19 +296,22 @@ class StoryEngine(object):
             startTime = self.timeline.get_duration()
 
             videos, audios = self._GetVideoAndAudioFiles(media)
+            self._Log(logging.INFO, "%s: %s %s", media.GetFilename(), videos, audios)
 
             videoDuration = 0
             videoHasAudio = False
             videoStartTime = startTime
 
-            for videoFile, videoOrientation in videos:
+            for videoFile, props in videos:
                 assetInfo = self.assets[videoFile]
 
                 asset = self.project.get_asset(assetInfo.uri, GES.UriClip)
                 discovererInfo = asset.get_info()
                 clipInfo = self._GetClipInfo(discovererInfo)
-                self._Log(logging.INFO, "%s: %s", media.GetFilename(), clipInfo)
+                self._Log(logging.INFO, "%s: %s", videoFile, clipInfo)
                 clipSize = Rect(clipInfo.width, clipInfo.height)
+                if clipInfo.isVertical:
+                    clipSize = clipSize.Invert()
 
                 assetDuration = asset.get_duration()
 
@@ -306,13 +330,9 @@ class StoryEngine(object):
                     0, assetDuration,
                     asset.get_supported_formats())
 
+                videoOrientation = props.get(MediaOrientation.KEY())
                 videoDirection = None
-                if videoOrientation != MediaOrientation.AS_IS:
-                    if videoOrientation == MediaOrientation.AUTO_DETECT:
-                        if clipInfo.isVertical:
-                            clipSize = clipSize.Invert()
-                            videoDirection = 8
-
+                if videoOrientation != MediaOrientation.AUTO_DETECT:
                     if videoOrientation == MediaOrientation.ROTATE_LEFT:
                         clipSize = clipSize.Invert()
                         videoDirection = 3
@@ -327,12 +347,16 @@ class StoryEngine(object):
                     effect.set_child_property("video-direction", videoDirection)
                     clip.add(effect)
 
+                if clipSize.CheckIsVertical():
                     self._MakeVerticalClipEffect(
                         asset, videoStartTime, assetDuration, clipSize,
                         videoDirection)
 
                 if clipInfo.hasAudio:
                     videoHasAudio = True
+
+                    clip_audio_source = clip.find_track_element(None, GES.AudioSource)
+                    clip_audio_source.set_child_property("volume", props.get(MediaAudioLevel.KEY()).GetValue())
 
                 clipSize = clipSize.FitInside(self.outResolution)
 
@@ -383,9 +407,10 @@ class StoryEngine(object):
             asset, startTime,
             0, duration, asset.get_supported_formats())
 
-        effect = GES.Effect.new("videoflip")
-        effect.set_child_property("video-direction", videoDirection)
-        clip_vert.add(effect)
+        if videoDirection is not None:
+            effect = GES.Effect.new("videoflip")
+            effect.set_child_property("video-direction", videoDirection)
+            clip_vert.add(effect)
 
         if not self.isPreview:
             # to slow for real time
