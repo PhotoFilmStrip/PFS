@@ -17,7 +17,7 @@ from photofilmstrip.lib.jobimpl.VisualJob import VisualJob
 from photofilmstrip.lib.util import StartFile
 
 from photofilmstrip.core.Aspect import Aspect
-from photofilmstrip.core.Media import Media, MediaOrientation
+from photofilmstrip.core.Media import Media, MediaOrientation, MediaAudioLevel
 from photofilmstrip.core.OutputProfile import OutputProfile, FPS25
 from photofilmstrip.core.StoryFile import StoryFile
 from photofilmstrip.core.StoryEngine import StoryEngine
@@ -728,9 +728,10 @@ class PnlMediaItem(wx.Panel):
               label=media.GetFilename(), name="stName")
 
         self.stInfo = wx.StaticText(self, id=wx.ID_ANY,
-              label="'00:00:00", name="stInfo")
+              label="00:00:00", name="stInfo")
 
         self.pnlOptOrientation = None
+        self.pnlOptAudio = None
         if media.IsVideo():
             self.pnlOptOrientation = PnlOptSelect(self, _("Orientation"))
             self.pnlOptOrientation.SetItemCaptionGenerator(
@@ -741,9 +742,18 @@ class PnlMediaItem(wx.Panel):
                 ctrl.Bind(wx.EVT_LEFT_DOWN, self.__OnLeftDown)
 
             self.pnlOptOrientation.Bind(EVT_VALUE_CHANGE, self.__OnOrientationChange)
-            value = media.GetProperty("orientation")
+            value = media.GetProperty(MediaOrientation.KEY())
             if value:
                 self.pnlOptOrientation.SetValue(value)
+
+            self.pnlOptAudio = PnlOptSelect(self, _("Audio"))
+            self.pnlOptAudio.SetItemCaptionGenerator(
+                lambda x: x.GetLabel())
+            self.pnlOptAudio.SetItems(list(MediaAudioLevel))
+            self.pnlOptAudio.Bind(EVT_VALUE_CHANGE, self.__OnAudioLevelChange)
+            value = media.GetProperty(MediaAudioLevel.KEY())
+            if value:
+                self.pnlOptAudio.SetValue(value)
 
         self.staticLine = wx.StaticLine(self, id=wx.ID_ANY,
               name="staticLine")
@@ -763,6 +773,8 @@ class PnlMediaItem(wx.Panel):
         szCol1 = wx.BoxSizer(wx.VERTICAL)
         if self.pnlOptOrientation:
             szCol1.Add(self.pnlOptOrientation)
+        if self.pnlOptAudio:
+            szCol1.Add(self.pnlOptAudio)
 
         szRow = wx.BoxSizer(wx.HORIZONTAL)
         szRow.Add(szCol0, 3, border=0, flag=0)
@@ -801,7 +813,10 @@ class PnlMediaItem(wx.Panel):
             event.Skip()
 
     def __OnOrientationChange(self, event):
-        self.media.SetProperty("orientation", event.GetValue().value)
+        self.media.SetProperty(MediaOrientation.KEY(), event.GetValue().value)
+
+    def __OnAudioLevelChange(self, event):
+        self.media.SetProperty(MediaAudioLevel.KEY(), event.GetValue().value)
 
     def SetData(self, data):
         self.data = data
@@ -820,6 +835,8 @@ class PnlMediaItem(wx.Panel):
         self.stInfo.SetForegroundColour(txtCol)
         if self.pnlOptOrientation:
             self.pnlOptOrientation.SetActive(value)
+        if self.pnlOptAudio:
+            self.pnlOptAudio.SetActive(value)
 
         self.Refresh()
 
