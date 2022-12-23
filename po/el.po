@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip v3.0.2\n"
-"POT-Creation-Date: 2020-11-04 23:56+0100\n"
+"POT-Creation-Date: 2022-12-23 14:58+0100\n"
 "PO-Revision-Date: 2018-10-04 23:46+0200\n"
 "Last-Translator: geogeo.gr <geogeo.gr@gmail.com>\n"
 "Language-Team: geogeo.gr <https://www.geogeo.gr>\n"
@@ -24,7 +24,7 @@ msgid "Centralize motion"
 msgstr "&Συγκεντρωτική κίνηση"
 
 #: photofilmstrip/action/ActionI18N.py:24
-#: photofilmstrip/gui/ActionManager.py:176
+#: photofilmstrip/gui/ActionManager.py:174
 msgid "Language"
 msgstr "Γλώσσα / Language"
 
@@ -39,48 +39,52 @@ msgstr "Άνοιγμα φακέλου"
 msgid "Play video"
 msgstr "Αναπαραγωγή βίντεο"
 
-#: photofilmstrip/action/ActionRender.py:37
+#: photofilmstrip/action/ActionRender.py:38
 msgid "Start"
 msgstr "Έναρξη"
 
-#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:195
+#: photofilmstrip/action/ActionRender.py:84
+msgid "The following audio files are invalid or missing:"
+msgstr ""
+
+#: photofilmstrip/cli/Main.py:47 photofilmstrip/cli/Main.py:199
 msgid "all done"
 msgstr "Ολοκλήρωση όλων"
 
-#: photofilmstrip/cli/Main.py:64
+#: photofilmstrip/cli/Main.py:65
 msgid "processing project"
 msgstr "Επεξεργασία έργου"
 
-#: photofilmstrip/cli/Main.py:65
+#: photofilmstrip/cli/Main.py:66
 msgid "using renderer"
 msgstr "Χρήση απόδοσης"
 
-#: photofilmstrip/cli/Main.py:66
+#: photofilmstrip/cli/Main.py:67
 msgid "output format"
 msgstr "μορφή εξόδου"
 
-#: photofilmstrip/cli/Main.py:68
+#: photofilmstrip/cli/Main.py:69
 msgid "framerate"
 msgstr "Ρυθμός καρέ"
 
-#: photofilmstrip/cli/Main.py:102
+#: photofilmstrip/cli/Main.py:103
 msgid "specifies the project file"
 msgstr "Καθορίζει το αρχείο έργου"
 
-#: photofilmstrip/cli/Main.py:103
+#: photofilmstrip/cli/Main.py:104
 msgid "The path where to save the output files. Use - for stdout."
 msgstr ""
 "Η διαδρομή όπου θα αποθηκευθούν τα εξαγόμενα αρχεία. Χρήση - για stdout."
 
-#: photofilmstrip/cli/Main.py:105 photofilmstrip/cli/Main.py:128
+#: photofilmstrip/cli/Main.py:106 photofilmstrip/cli/Main.py:129
 msgid "Option videonorm is deprecated, use an appropriate profile!"
 msgstr ""
 
-#: photofilmstrip/cli/Main.py:107
+#: photofilmstrip/cli/Main.py:108
 msgid "enable draft mode"
 msgstr "Ενεργοποίηση λειτουργίας προσχεδίου"
 
-#: photofilmstrip/cli/Main.py:107 photofilmstrip/gui/DlgRender.py:167
+#: photofilmstrip/cli/Main.py:108 photofilmstrip/gui/DlgRender.py:167
 msgid ""
 "Activate this option to generate a preview of your PhotoFilmStrip. The "
 "rendering process will speed up dramatically, but results in lower quality."
@@ -90,37 +94,37 @@ msgstr ""
 "Η διαδικασία απόδοσης θα επιταχυνθεί δραστικά, αλλά με αποτέλεσμα τη "
 "χαμηλότερη ποιότητα."
 
-#: photofilmstrip/cli/Main.py:119
+#: photofilmstrip/cli/Main.py:120
 msgid "project file does not exist: %s"
 msgstr "Το αρχείο έργου δεν υπάρχει: %s"
 
-#: photofilmstrip/cli/Main.py:123
+#: photofilmstrip/cli/Main.py:124
 msgid "no project file specified!"
 msgstr "Δεν καθορίστηκε αρχείο έργου!"
 
-#: photofilmstrip/cli/Main.py:133
+#: photofilmstrip/cli/Main.py:134
 msgid "invalid format specified: %s"
 msgstr "Καθορίστηκε μη έγκυρη μορφή: %s"
 
-#: photofilmstrip/cli/Main.py:139
+#: photofilmstrip/cli/Main.py:140
 msgid "invalid profile specified: %s"
 msgstr "Καθορίστηκε μη έγκυρo προφιλ: %s"
 
-#: photofilmstrip/cli/Main.py:145
+#: photofilmstrip/cli/Main.py:146
 #, fuzzy
 msgid "cannot load project"
 msgstr "Αδυναμία φόρτωσης της ταινίας"
 
-#: photofilmstrip/cli/Main.py:158
+#: photofilmstrip/cli/Main.py:159
 msgid "cannot create output path: %s"
 msgstr "Δεν είναι δυνατή η δημιουργία του φακέλου εξόδου: %s"
 
-#: photofilmstrip/cli/Main.py:168 photofilmstrip/gui/DlgConfigureAudio.py:262
-#: photofilmstrip/gui/DlgConfigureAudio.py:284
+#: photofilmstrip/cli/Main.py:172 photofilmstrip/gui/DlgConfigureAudio.py:290
+#: photofilmstrip/gui/DlgConfigureAudio.py:312
 msgid "Audio file '%s' does not exist!"
 msgstr "Το αρχείο ήχου '%s' δεν υπάρχει!"
 
-#: photofilmstrip/cli/Main.py:189
+#: photofilmstrip/cli/Main.py:193
 msgid "...aborted!"
 msgstr "...ματαιώθηκε!"
 
@@ -136,26 +140,42 @@ msgstr "<προεπιλογή>"
 msgid "no"
 msgstr "όχι"
 
-#: photofilmstrip/core/Media.py:110
-msgid "As is"
-msgstr ""
-
-#: photofilmstrip/core/Media.py:111
+#: photofilmstrip/core/Media.py:119
 #, fuzzy
 msgid "Auto detect"
 msgstr "Αυτόματα"
 
-#: photofilmstrip/core/Media.py:112
+#: photofilmstrip/core/Media.py:120
 #, fuzzy
 msgid "Rotate left"
 msgstr "Περιστροφή δε&ξιόστροφα"
 
-#: photofilmstrip/core/Media.py:113
+#: photofilmstrip/core/Media.py:121
 msgid "Rotate right"
 msgstr ""
 
-#: photofilmstrip/core/Media.py:114
+#: photofilmstrip/core/Media.py:122
 msgid "Upside down"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:147
+msgid "Muted"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:148
+msgid "Silent"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:149
+msgid "Medium"
+msgstr "Μέσο"
+
+#: photofilmstrip/core/Media.py:150
+msgid "Loud"
+msgstr ""
+
+#: photofilmstrip/core/Media.py:151
+msgid "Full"
 msgstr ""
 
 #: photofilmstrip/core/ProjectFile.py:222
@@ -177,16 +197,16 @@ msgstr "Επεξεργασία μετάβασης  %d/%d"
 msgid "processing image %d/%d"
 msgstr "Επεξεργασία εικόνας %d/%d"
 
-#: photofilmstrip/core/StoryEngine.py:66
+#: photofilmstrip/core/StoryEngine.py:68
 msgid "Prepare rendering..."
 msgstr ""
 
-#: photofilmstrip/core/StoryEngine.py:79 photofilmstrip/gui/FrmMain.py:145
+#: photofilmstrip/core/StoryEngine.py:86 photofilmstrip/gui/FrmMain.py:145
 msgid "Rendering in progress..."
 msgstr "Απόδοση σε εξέλιξη..."
 
 #: photofilmstrip/core/renderer/CairoRenderer.py:35
-#: photofilmstrip/gui/PnlStory.py:308
+#: photofilmstrip/gui/PnlStory.py:313
 msgid "Preview"
 msgstr "Προεπισκόπηση"
 
@@ -260,17 +280,17 @@ msgid "generating subtitle"
 msgstr "Δημιουργία υπότιτλου"
 
 #: photofilmstrip/gui/ActionManager.py:63
-#: photofilmstrip/gui/ActionManager.py:196
+#: photofilmstrip/gui/ActionManager.py:194
 msgid "&File"
 msgstr "&Αρχείο"
 
 #: photofilmstrip/gui/ActionManager.py:64
-#: photofilmstrip/gui/ActionManager.py:197
+#: photofilmstrip/gui/ActionManager.py:195
 msgid "&Edit"
 msgstr "&Επεξεργασία"
 
 #: photofilmstrip/gui/ActionManager.py:65
-#: photofilmstrip/gui/ActionManager.py:159 photofilmstrip/gui/DlgRender.py:141
+#: photofilmstrip/gui/ActionManager.py:157 photofilmstrip/gui/DlgRender.py:141
 #: photofilmstrip/gui/DlgRendererProps.py:86
 msgid "&Help"
 msgstr "&Βοήθεια"
@@ -288,53 +308,52 @@ msgid "Save"
 msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:100
-#: photofilmstrip/gui/ActionManager.py:101
 msgid "Show job queue"
 msgstr "Εμφάνιση ουράς εργασιών"
 
-#: photofilmstrip/gui/ActionManager.py:111
+#: photofilmstrip/gui/ActionManager.py:109
 #: photofilmstrip/gui/PnlSlideshow.py:25
 msgid "Slideshow"
 msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:113
+#: photofilmstrip/gui/ActionManager.py:111
 #: photofilmstrip/gui/PnlTimelapse.py:18
 msgid "Timelapse"
 msgstr "Παρέλευση χρόνου"
 
-#: photofilmstrip/gui/ActionManager.py:115
+#: photofilmstrip/gui/ActionManager.py:113
 msgid "Story"
 msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:121
+#: photofilmstrip/gui/ActionManager.py:119
 msgid "New"
 msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:123
+#: photofilmstrip/gui/ActionManager.py:121
 msgid "&Open"
 msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:128
+#: photofilmstrip/gui/ActionManager.py:126
 msgid "&Save"
 msgstr ""
 
-#: photofilmstrip/gui/ActionManager.py:141
+#: photofilmstrip/gui/ActionManager.py:139
 msgid "&Close"
 msgstr "&Κλείσιμο"
 
-#: photofilmstrip/gui/ActionManager.py:146
+#: photofilmstrip/gui/ActionManager.py:144
 msgid "E&xit"
 msgstr "Έ&ξοδος"
 
-#: photofilmstrip/gui/ActionManager.py:179
+#: photofilmstrip/gui/ActionManager.py:177
 msgid "&About"
 msgstr "&Περί"
 
-#: photofilmstrip/gui/DlgBugReport.py:41
+#: photofilmstrip/gui/DlgBugReport.py:52
 msgid "An unexpected error occured"
 msgstr "Παρουσιάστηκε μη αναμενόμενο σφάλμα"
 
-#: photofilmstrip/gui/DlgBugReport.py:44
+#: photofilmstrip/gui/DlgBugReport.py:55
 msgid ""
 "An unexpected error occured. Do you want to send this bug report to the "
 "developers of %s?"
@@ -342,24 +361,24 @@ msgstr ""
 "Παρουσιάστηκε μη αναμενόμενο σφάλμα. \n"
 "Θέλετε να στείλετε αυτή την αναφορά σφάλματος στους δημιουργούς του %s;"
 
-#: photofilmstrip/gui/DlgBugReport.py:99
+#: photofilmstrip/gui/DlgBugReport.py:110
 msgid "Bug-Report send. Thank you for your support."
 msgstr "Αποστολή αναφοράς σφάλματος. Ευχαριστούμε για την υποστήριξή σας."
 
-#: photofilmstrip/gui/DlgBugReport.py:100 photofilmstrip/gui/FrmMain.py:298
+#: photofilmstrip/gui/DlgBugReport.py:111 photofilmstrip/gui/FrmMain.py:298
 msgid "Information"
 msgstr "Πληροφορίες"
 
-#: photofilmstrip/gui/DlgBugReport.py:106
+#: photofilmstrip/gui/DlgBugReport.py:117
 msgid "Sorry, this function is temporary not available.."
 msgstr "Συγνώμη, αυτή η λειτουργία προσωρινά δεν είναι διαθέσιμη."
 
-#: photofilmstrip/gui/DlgBugReport.py:107
-#: photofilmstrip/gui/DlgConfigureAudio.py:263
-#: photofilmstrip/gui/DlgConfigureAudio.py:275
-#: photofilmstrip/gui/DlgConfigureAudio.py:285
-#: photofilmstrip/gui/DlgNewProject.py:158
-#: photofilmstrip/gui/DlgNewProject.py:169
+#: photofilmstrip/gui/DlgBugReport.py:118
+#: photofilmstrip/gui/DlgConfigureAudio.py:291
+#: photofilmstrip/gui/DlgConfigureAudio.py:303
+#: photofilmstrip/gui/DlgConfigureAudio.py:313
+#: photofilmstrip/gui/DlgNewProject.py:163
+#: photofilmstrip/gui/DlgNewProject.py:174
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:208
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:216
 #: photofilmstrip/gui/FrmMain.py:397 photofilmstrip/gui/PnlPfsProject.py:469
@@ -367,16 +386,16 @@ msgstr "Συγνώμη, αυτή η λειτουργία προσωρινά δε
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:58
+#: photofilmstrip/gui/DlgConfigureAudio.py:60
 msgid "Configure your audio files that are used as a background music."
 msgstr ""
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:98
+#: photofilmstrip/gui/DlgConfigureAudio.py:97
 msgid "Set the duration of your slideshow to fit your audio files"
 msgstr ""
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:100
-#: photofilmstrip/gui/DlgDuration.py:70 photofilmstrip/gui/DlgNewProject.py:84
+#: photofilmstrip/gui/DlgConfigureAudio.py:99
+#: photofilmstrip/gui/DlgDuration.py:70 photofilmstrip/gui/DlgNewProject.py:88
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:50
 #: photofilmstrip/gui/DlgPositionInput.py:238
 #: photofilmstrip/gui/DlgRender.py:147
@@ -385,30 +404,40 @@ msgstr ""
 msgid "&Cancel"
 msgstr "Ά&κυρο"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:105
-#: photofilmstrip/gui/DlgDuration.py:72 photofilmstrip/gui/DlgNewProject.py:86
+#: photofilmstrip/gui/DlgConfigureAudio.py:104
+#: photofilmstrip/gui/DlgDuration.py:72 photofilmstrip/gui/DlgNewProject.py:90
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:51
 #: photofilmstrip/gui/DlgPositionInput.py:244
 #: photofilmstrip/gui/DlgRendererProps.py:97
 msgid "&Ok"
 msgstr "&Εντάξει"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:112
-#: photofilmstrip/gui/DlgConfigureAudio.py:117
+#: photofilmstrip/gui/DlgConfigureAudio.py:111
+#: photofilmstrip/gui/DlgConfigureAudio.py:116
 #: photofilmstrip/gui/PnlSlideshow.py:47 photofilmstrip/gui/PnlSlideshow.py:48
 #: photofilmstrip/gui/PnlTimelapse.py:33 photofilmstrip/gui/PnlTimelapse.py:34
 msgid "Configure music"
 msgstr ""
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:169
+#: photofilmstrip/gui/DlgConfigureAudio.py:125
+#, fuzzy
+msgid "Select an entry"
+msgstr "Επιλέξτε αρχείο δέσμης"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:126
+#, fuzzy
+msgid "Browse for audio files"
+msgstr "Αναζήτηση για φάκελο"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:184
 msgid "Select music"
 msgstr "Επιλέξτε μουσική"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:171
+#: photofilmstrip/gui/DlgConfigureAudio.py:186
 msgid "Audio files"
 msgstr "Αρχεία ήχου"
 
-#: photofilmstrip/gui/DlgConfigureAudio.py:274
+#: photofilmstrip/gui/DlgConfigureAudio.py:302
 msgid "Audio file not supported!"
 msgstr "Το αρχείο ήχου δεν υποστηρίζεται!"
 
@@ -440,57 +469,61 @@ msgstr ""
 msgid "Configure duration of slideshow"
 msgstr ""
 
-#: photofilmstrip/gui/DlgNewProject.py:61
+#: photofilmstrip/gui/DlgNewProject.py:63
 msgid "Project name:"
 msgstr "Όνομα έργου:"
 
-#: photofilmstrip/gui/DlgNewProject.py:66
+#: photofilmstrip/gui/DlgNewProject.py:68
 msgid "Folder:"
 msgstr "Φάκελος:"
 
-#: photofilmstrip/gui/DlgNewProject.py:78
+#: photofilmstrip/gui/DlgNewProject.py:80
 msgid "Aspect ratio:"
 msgstr "Αναλογία πλευρών:"
 
-#: photofilmstrip/gui/DlgNewProject.py:111
+#: photofilmstrip/gui/DlgNewProject.py:84
+msgid "Portrait mode"
+msgstr ""
+
+#: photofilmstrip/gui/DlgNewProject.py:116
 #, fuzzy
 msgid "Unnamed project"
 msgstr "Αδυναμία φόρτωσης της ταινίας"
 
-#: photofilmstrip/gui/DlgNewProject.py:117
+#: photofilmstrip/gui/DlgNewProject.py:122
 msgid "My PhotoFilmStrips"
 msgstr "Οι ταινίες μου"
 
-#: photofilmstrip/gui/DlgNewProject.py:128
+#: photofilmstrip/gui/DlgNewProject.py:133
 msgid "Browse for folder"
 msgstr "Αναζήτηση για φάκελο"
 
-#: photofilmstrip/gui/DlgNewProject.py:147
+#: photofilmstrip/gui/DlgNewProject.py:152
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "Ο φάκελος δεν υπάρχει. Θέλετε το %s να τον δημιουργήσει;"
 
-#: photofilmstrip/gui/DlgNewProject.py:148
+#: photofilmstrip/gui/DlgNewProject.py:153
 #: photofilmstrip/gui/PnlEditorPage.py:29
 #: photofilmstrip/gui/PnlEditorPage.py:49
 #: photofilmstrip/gui/PnlEditorPage.py:88
 #: photofilmstrip/gui/WxProjectFile.py:101
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:224
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:225
 msgid "Question"
 msgstr "Ερώτηση"
 
-#: photofilmstrip/gui/DlgNewProject.py:157
+#: photofilmstrip/gui/DlgNewProject.py:162
 msgid "Cannot create folder: %s"
 msgstr "Δεν είναι δυνατή η δημιουργία του φακέλου: %s"
 
-#: photofilmstrip/gui/DlgNewProject.py:168
+#: photofilmstrip/gui/DlgNewProject.py:173
 msgid "Cannot write into folder!"
 msgstr "Δεν είναι δυνατή η εγγραφή στο φάκελο!"
 
-#: photofilmstrip/gui/DlgNewProject.py:182
+#: photofilmstrip/gui/DlgNewProject.py:187
 msgid "The project name must be filled."
 msgstr "Πρέπει να συμπληρωθεί ένα όνομα για το έργο."
 
-#: photofilmstrip/gui/DlgNewProject.py:188
+#: photofilmstrip/gui/DlgNewProject.py:193
 msgid "The project name contains invalid characters."
 msgstr "Το όνομα του έργου περιέχει μη έγκυρους χαρακτήρες."
 
@@ -816,58 +849,58 @@ msgstr "Ρύθμιση κίνησης χειροκίνητα"
 msgid "Preserve image dimension"
 msgstr "Διατήρηση διάστασης εικόνας"
 
-#: photofilmstrip/gui/PnlPfsProject.py:295
+#: photofilmstrip/gui/PnlPfsProject.py:294
 msgid "&Import Pictures"
 msgstr "&Εισαγωγή εικόνων"
 
-#: photofilmstrip/gui/PnlPfsProject.py:300
+#: photofilmstrip/gui/PnlPfsProject.py:299
 msgid "Move picture &left"
 msgstr "Μετακίνηση εικόνας &αριστερά"
 
-#: photofilmstrip/gui/PnlPfsProject.py:304
+#: photofilmstrip/gui/PnlPfsProject.py:303
 msgid "Move picture &right"
 msgstr "Μετακίνηση εικόνας &δεξιά"
 
-#: photofilmstrip/gui/PnlPfsProject.py:309
+#: photofilmstrip/gui/PnlPfsProject.py:308
 msgid "R&emove Picture"
 msgstr "Α&φαίρεση εικόνας"
 
-#: photofilmstrip/gui/PnlPfsProject.py:314
+#: photofilmstrip/gui/PnlPfsProject.py:313
 msgid "Rotate &clockwise"
 msgstr "Περιστροφή δε&ξιόστροφα"
 
-#: photofilmstrip/gui/PnlPfsProject.py:318
+#: photofilmstrip/gui/PnlPfsProject.py:317
 msgid "Rotate counter clock&wise"
 msgstr "Περιστροφή α&ριστερόστροφα"
 
-#: photofilmstrip/gui/PnlPfsProject.py:323
+#: photofilmstrip/gui/PnlPfsProject.py:322
 msgid "Random &motion"
 msgstr "Τυ&χαία κίνηση"
 
-#: photofilmstrip/gui/PnlPfsProject.py:327
+#: photofilmstrip/gui/PnlPfsProject.py:326
 msgid "Centralize m&otion"
 msgstr "Συγκεντρωτική κίνηση"
 
-#: photofilmstrip/gui/PnlPfsProject.py:385
+#: photofilmstrip/gui/PnlPfsProject.py:384
 msgid "Export slideshow"
 msgstr ""
 
-#: photofilmstrip/gui/PnlPfsProject.py:388
-#: photofilmstrip/gui/PnlPfsProject.py:401
+#: photofilmstrip/gui/PnlPfsProject.py:387
+#: photofilmstrip/gui/PnlPfsProject.py:400
 #, fuzzy
 msgid "Portable slideshow"
 msgstr "Φορητό"
 
-#: photofilmstrip/gui/PnlPfsProject.py:399
+#: photofilmstrip/gui/PnlPfsProject.py:398
 #, fuzzy
 msgid "Import Slideshow"
 msgstr "Εισαγωγή εικόνων"
 
-#: photofilmstrip/gui/PnlPfsProject.py:410
+#: photofilmstrip/gui/PnlPfsProject.py:409
 msgid "Import images"
 msgstr "Εισαγωγή εικόνων"
 
-#: photofilmstrip/gui/PnlPfsProject.py:412
+#: photofilmstrip/gui/PnlPfsProject.py:411
 #, fuzzy
 msgid "Image files"
 msgstr "Αρχεία εικόνων"
@@ -890,7 +923,7 @@ msgid "Import Pictures"
 msgstr "Εισαγωγή φωτογραφιών"
 
 #: photofilmstrip/gui/PnlSlideshow.py:62 photofilmstrip/gui/PnlSlideshow.py:63
-#: photofilmstrip/gui/PnlStory.py:313 photofilmstrip/gui/PnlStory.py:314
+#: photofilmstrip/gui/PnlStory.py:318 photofilmstrip/gui/PnlStory.py:319
 #: photofilmstrip/gui/PnlTimelapse.py:41 photofilmstrip/gui/PnlTimelapse.py:42
 msgid "Render filmstrip"
 msgstr "Απόδοση ταινίας"
@@ -903,75 +936,80 @@ msgstr "Εικόνες"
 msgid "Duration"
 msgstr "Διάρκεια"
 
-#: photofilmstrip/gui/PnlStory.py:97 photofilmstrip/gui/PnlStory.py:267
-#: photofilmstrip/gui/PnlStory.py:287
+#: photofilmstrip/gui/PnlStory.py:98 photofilmstrip/gui/PnlStory.py:273
+#: photofilmstrip/gui/PnlStory.py:292
 msgid "Add media"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:99
+#: photofilmstrip/gui/PnlStory.py:100
 #, fuzzy
 msgid "Media files"
 msgstr "Αρχεία ήχου"
 
-#: photofilmstrip/gui/PnlStory.py:175
+#: photofilmstrip/gui/PnlStory.py:176
 #, fuzzy
 msgid "Video file"
 msgstr "Αρχεία ήχου"
 
-#: photofilmstrip/gui/PnlStory.py:177
+#: photofilmstrip/gui/PnlStory.py:178
 #, fuzzy
 msgid "Video files"
 msgstr "Αρχεία ήχου"
 
-#: photofilmstrip/gui/PnlStory.py:196
+#: photofilmstrip/gui/PnlStory.py:197
 msgid "Generate video %s"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:218
+#: photofilmstrip/gui/PnlStory.py:225
 msgid "An audio stream needs to contain at least one video stream!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:272 photofilmstrip/gui/PnlStory.py:291
+#: photofilmstrip/gui/PnlStory.py:278 photofilmstrip/gui/PnlStory.py:296
 msgid "Move up"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:275 photofilmstrip/gui/PnlStory.py:294
+#: photofilmstrip/gui/PnlStory.py:281 photofilmstrip/gui/PnlStory.py:299
 msgid "Move down"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:278 photofilmstrip/gui/PnlStory.py:304
+#: photofilmstrip/gui/PnlStory.py:284 photofilmstrip/gui/PnlStory.py:309
 msgid "Remove"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:287
+#: photofilmstrip/gui/PnlStory.py:292
 msgid "Add clip"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:297
+#: photofilmstrip/gui/PnlStory.py:302
 msgid "Move out"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:300
+#: photofilmstrip/gui/PnlStory.py:305
 #, fuzzy
 msgid "Move in"
 msgstr "Κίνηση:"
 
-#: photofilmstrip/gui/PnlStory.py:466
+#: photofilmstrip/gui/PnlStory.py:471
 msgid "It's not allowed to create more than two levels!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:472
+#: photofilmstrip/gui/PnlStory.py:477
 msgid "It's not allowed to put a video stream inside a video stream!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:474
+#: photofilmstrip/gui/PnlStory.py:479
 msgid "It's not allowed to put an audio stream inside an audio stream!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlStory.py:729
+#: photofilmstrip/gui/PnlStory.py:735
 #, fuzzy
 msgid "Orientation"
 msgstr "Διάρκεια"
+
+#: photofilmstrip/gui/PnlStory.py:748
+#, fuzzy
+msgid "Audio"
+msgstr "Αρχεία ήχου"
 
 #: photofilmstrip/gui/PnlTimelapse.py:69
 msgid "Frames"
@@ -1049,15 +1087,15 @@ msgstr "Άγνωστο"
 msgid "&Clear list"
 msgstr "Ε&κκαθάριση λίστας"
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:127
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:128
 msgid "Abort"
 msgstr "Ματαίωση"
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:133
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:134
 msgid "Remove from list"
 msgstr "Αφαίρεση από τη λίστα"
 
-#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:223
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:224
 msgid "Abort selected process?"
 msgstr "Ματαίωση της επιλεγμένης διαδικασίας;"
 
@@ -1180,9 +1218,6 @@ msgstr ""
 #~ msgid "MP3-Codec (gstreamer0.10-plugins-ugly-multiverse) required!"
 #~ msgstr "Απαιτείται MP3-Codec (gstreamer0.10-plugins-ugly-multiverse)!"
 
-#~ msgid "Medium"
-#~ msgstr "Μέσο"
-
 #~ msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 #~ msgstr "Η μορφή MPEG υποστηρίζει μόνο προφίλ VCD, SVCD και DVD!"
 
@@ -1231,9 +1266,6 @@ msgstr ""
 
 #~ msgid "See the logfile '%s' for details"
 #~ msgstr "Δείτε το αρχείο καταγραφής '%s' για λεπτομέρειες"
-
-#~ msgid "Select batch file"
-#~ msgstr "Επιλέξτε αρχείο δέσμης"
 
 #~ msgid "Shell script"
 #~ msgstr "Δέσμη ενεργειών κελύφους"
