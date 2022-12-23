@@ -5,6 +5,7 @@
 # Copyright (C) 2018 Jens Goepfert
 #
 
+
 class Point:
 
     def __init__(self, x, y):
@@ -47,6 +48,9 @@ class Rect:
 
     def Invert(self):
         return Rect(self.height, self.width)
+
+    def CheckIsVertical(self):
+        return self.height > self.width
 
     def FitInside(self, targetRect):
         new_width = targetRect.height * self.ratio

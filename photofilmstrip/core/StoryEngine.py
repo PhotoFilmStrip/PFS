@@ -310,6 +310,8 @@ class StoryEngine(object):
                 clipInfo = self._GetClipInfo(discovererInfo)
                 self._Log(logging.INFO, "%s: %s", videoFile, clipInfo)
                 clipSize = Rect(clipInfo.width, clipInfo.height)
+                if clipInfo.isVertical:
+                    clipSize = clipSize.Invert()
 
                 assetDuration = asset.get_duration()
 
@@ -330,12 +332,7 @@ class StoryEngine(object):
 
                 videoOrientation = props.get(MediaOrientation.KEY())
                 videoDirection = None
-                if videoOrientation != MediaOrientation.AS_IS:
-                    if videoOrientation == MediaOrientation.AUTO_DETECT:
-                        if clipInfo.isVertical:
-                            clipSize = clipSize.Invert()
-                            videoDirection = 8
-
+                if videoOrientation != MediaOrientation.AUTO_DETECT:
                     if videoOrientation == MediaOrientation.ROTATE_LEFT:
                         clipSize = clipSize.Invert()
                         videoDirection = 3
@@ -350,6 +347,7 @@ class StoryEngine(object):
                     effect.set_child_property("video-direction", videoDirection)
                     clip.add(effect)
 
+                if clipSize.CheckIsVertical():
                     self._MakeVerticalClipEffect(
                         asset, videoStartTime, assetDuration, clipSize,
                         videoDirection)
@@ -409,9 +407,10 @@ class StoryEngine(object):
             asset, startTime,
             0, duration, asset.get_supported_formats())
 
-        effect = GES.Effect.new("videoflip")
-        effect.set_child_property("video-direction", videoDirection)
-        clip_vert.add(effect)
+        if videoDirection is not None:
+            effect = GES.Effect.new("videoflip")
+            effect.set_child_property("video-direction", videoDirection)
+            clip_vert.add(effect)
 
         if not self.isPreview:
             # to slow for real time

@@ -49,7 +49,7 @@ class Media(Observable):
         if name == MediaOrientation.KEY():
             value = MediaOrientation.Create(value)
             if value is None:
-                value = MediaOrientation.AS_IS
+                value = MediaOrientation.AUTO_DETECT
         elif name == MediaAudioLevel.KEY():
             value = MediaAudioLevel.Create(value)
             if value is None:
@@ -109,7 +109,6 @@ class MediaType(enum.Enum):
 
 class MediaOrientation(enum.Enum):
 
-    AS_IS = "as-is"
     AUTO_DETECT = "auto-detect"
     ROTATE_LEFT = "rotate-left"
     ROTATE_RIGHT = "rotate-right"
@@ -117,7 +116,6 @@ class MediaOrientation(enum.Enum):
 
     def GetLabel(self):
         i18nDict = {
-            MediaOrientation.AS_IS: _("As is"),
             MediaOrientation.AUTO_DETECT: _("Auto detect"),
             MediaOrientation.ROTATE_LEFT: _("Rotate left"),
             MediaOrientation.ROTATE_RIGHT: _("Rotate right"),
