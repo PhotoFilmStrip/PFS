@@ -5,9 +5,8 @@
 # Copyright (C) 2010 Jens Goepfert
 #
 
+import argparse
 import os, time, logging
-
-from optparse import OptionParser
 
 from photofilmstrip import Constants
 
@@ -90,8 +89,7 @@ class DummyGui(IVisualJobHandler):
 
 
 def main(showHelp=False):
-    parser = OptionParser(prog="%s-cli" % Constants.APP_NAME.lower(),
-                          version="%%prog %s" % Constants.APP_VERSION_SUFFIX)
+    parser = argparse.ArgumentParser(prog="%s-cli" % Constants.APP_NAME.lower())
 
     profiles = GetOutputProfiles() + GetMPEGProfiles()
     profStr = ", ".join(["%d=%s" % (
@@ -100,19 +98,20 @@ def main(showHelp=False):
 
     formatStr = ", ".join(["%d=%s" % (idx, rdr.GetName()) for idx, rdr in enumerate(RENDERERS)])
 
-    parser.add_option("-p", "--project", help=_("specifies the project file"))
-    parser.add_option("-o", "--outputpath", help=_("The path where to save the output files. Use - for stdout."), metavar="PATH")
-    parser.add_option("-t", "--profile", help=profStr + " [default: %default]", default=0, type="int")
-    parser.add_option("-n", "--videonorm", help=_("Option videonorm is deprecated, use an appropriate profile!"))
-    parser.add_option("-f", "--format", help=formatStr + " [default: %default]", default=4, type="int")
-    parser.add_option("-a", "--draft", action="store_true", default=False, help="%s - %s" % (_("enable draft mode"), _("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
-    parser.add_option("-d", "--debug", action="store_true", default=False, help="enable debug logging")
+    parser.add_argument("-p", "--project", help=_("specifies the project file"))
+    parser.add_argument("-o", "--outputpath", help=_("The path where to save the output files. Use - for stdout."), metavar="PATH")
+    parser.add_argument("-t", "--profile", help=profStr + " [default: %(default)s]", default=0, type=int)
+    parser.add_argument("-n", "--videonorm", help=_("Option videonorm is deprecated, use an appropriate profile!"))
+    parser.add_argument("-f", "--format", help=formatStr + " [default: %(default)s]", default=4, type=int)
+    parser.add_argument("-a", "--draft", action="store_true", default=False, help="%s - %s" % (_("enable draft mode"), _("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality.")))
+    parser.add_argument("-d", "--debug", action="store_true", default=False, help="enable debug logging")
+    parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=Constants.APP_VERSION_SUFFIX))
 
     if showHelp:
         parser.print_help()
         return 0
 
-    options = parser.parse_args()[0]
+    options = parser.parse_args()
 
     if options.project:
         options.project = os.path.abspath(options.project)
