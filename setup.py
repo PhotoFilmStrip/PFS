@@ -374,38 +374,10 @@ class pfs_exe(Command):
             self.copy_file(os.path.join(dllDirGnome, "bin", dll),
                            os.path.join(targetDir, os.path.basename(dll)))
 
-        targetDir = os.path.join(self.target_dir, "etc")
-        self.copy_tree(os.path.join(dllDirGnome, "etc"),
-                       targetDir)
-
-        targetDir = os.path.join(self.target_dir, "share")
-        self.copy_tree(os.path.join(dllDirGnome, "share"),
-                       targetDir)
-
-        targetDir = os.path.join(self.target_dir, "lib", "gstreamer-1.0")
-        self.copy_tree(os.path.join(dllDirGnome, "lib", "gstreamer-1.0"),
-                       targetDir)
-
-        targetDir = os.path.join(self.target_dir, "lib", "girepository-1.0")
-        self.mkpath(targetDir)
-        for giTypeLib in ["GLib-2.0.typelib",
-                          "GModule-2.0.typelib",
-                          "GObject-2.0.typelib",
-                          "Gst-1.0.typelib",
-                          "GES-1.0.typelib",
-                          "Gio-2.0.typelib",
-                          "GstAudio-1.0.typelib",
-                          "GstBase-1.0.typelib",
-                          "GstController-1.0.typelib",
-                          "GstPbutils-1.0.typelib",
-                          "GstTag-1.0.typelib",
-                          "GstVideo-1.0.typelib",
-                          "cairo-1.0.typelib",
-                          "GdkPixbuf-2.0.typelib",
-                          "Pango-1.0.typelib",
-                         ]:
-            self.copy_file(os.path.join(dllDirGnome, "lib", "girepository-1.0", giTypeLib),
-                           os.path.join(targetDir, giTypeLib))
+        for subFolder in ("etc", "share", "lib"):
+            targetDir = os.path.join(self.target_dir, subFolder)
+            self.copy_tree(os.path.join(dllDirGnome, subFolder),
+                           targetDir)
 
         for exe in self.distribution.executables:
             self.add_exe_resources(exe.targetName, exe.icon)
@@ -634,16 +606,16 @@ else:
 
 setup(
     cmdclass={
-                "clean"         : pfs_clean,
-                "sdist"         : pfs_sdist,
-                "build"         : pfs_build,
-                "bdist_win"     : pfs_exe,
-                "bdist_wininst" : pfs_win_setup,
-                "bdist_winport" : pfs_win_portable,
-                "scm_info"      : pfs_scm_info,
-                'build_sphinx'  : pfs_docs,
-                'test'          : pfs_test,
-                "build_exe"     : build_exe,
+                "clean": pfs_clean,
+                "sdist": pfs_sdist,
+                "build": pfs_build,
+                "bdist_win": pfs_exe,
+                "bdist_wininst": pfs_win_setup,
+                "bdist_winport": pfs_win_portable,
+                "scm_info": pfs_scm_info,
+                'build_sphinx': pfs_docs,
+                'test': pfs_test,
+                "build_exe": build_exe,
               },
     verbose=False,
     options={"build_exe": {
