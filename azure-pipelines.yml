@@ -22,10 +22,10 @@ jobs:
 #        python.version: '3.7'
 #        python.arch: x86
 #        addToPath: true
-      Py37_x64:
-        python.version: '3.7'
-        python.arch: x64
-        addToPath: true
+#      Py37_x64:
+#        python.version: '3.7'
+#        python.arch: x64
+#        addToPath: true
       Py39_x64:
         python.version: '3.9'
         python.arch: x64
