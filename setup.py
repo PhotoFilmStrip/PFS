@@ -588,6 +588,9 @@ MANIFEST_TEMPLATE = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 platform_scripts = []
 platform_data = []
 if os.name == "nt":
+    platform_scripts.append(os.path.join("windows", "photofilmstrip-auto.bat"))
+    platform_data.append(os.path.join("share", "doc", "photofilmstrip"))
+    platform_scripts.append(os.path.join("windows", "photofilmstrip.chm"))
     platform_scripts.append(os.path.join("windows", "photofilmstrip.bat"))
     platform_scripts.append(os.path.join("windows", "photofilmstrip-cli.bat"))
 else:
@@ -682,6 +685,7 @@ setup(
     scripts=[
              "scripts/photofilmstrip",
              "scripts/photofilmstrip-cli",
+             "scripts/photofilmstrip-auto"
     ] + platform_scripts,
 
     name=Constants.APP_NAME.lower(),
