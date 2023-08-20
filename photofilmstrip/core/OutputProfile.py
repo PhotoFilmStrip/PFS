@@ -358,14 +358,14 @@ def __Create3_2Profiles():
 
 
 def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
-    result = __Create16_9Profiles()
-
-    if aspect == Aspect.ASPECT_4_3:
+    if aspect in (Aspect.ASPECT_4_3, Aspect.ASPECT_3_4):
         result = __Create4_3Profiles()
-    elif aspect == Aspect.ASPECT_3_2:
+    elif aspect in (Aspect.ASPECT_3_2, Aspect.ASPECT_2_3):
         result = __Create3_2Profiles()
-    elif aspect == Aspect.ASPECT_16_10:
+    elif aspect in (Aspect.ASPECT_16_10, Aspect.ASPECT_10_16):
         result = __Create16_10Profiles()
+    else:
+        result = __Create16_9Profiles()
 
     if Aspect.IsPortraitMode(aspect):
         result = [p.ToPortraitMode() for p in result]
