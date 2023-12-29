@@ -1,2 +1,2 @@
-pillow==9.5.0
-wxpython==4.1.1
+pillow==10.1.0
+wxpython==4.2.1

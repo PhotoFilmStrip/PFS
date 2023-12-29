@@ -18,18 +18,18 @@ jobs:
     vmImage: 'windows-2019'
   strategy:
     matrix:
-#      Py37_x86:
-#        python.version: '3.7'
-#        python.arch: x86
-#        addToPath: true
-#      Py37_x64:
-#        python.version: '3.7'
-#        python.arch: x64
-#        addToPath: true
-      Py39_x64:
-        python.version: '3.9'
+      Py311_x86:
+        python.version: '3.11'
+        python.arch: x86
+        addToPath: true
+      Py311_x64:
+        python.version: '3.11'
         python.arch: x64
         addToPath: true
+#      Py39_x64:
+#        python.version: '3.9'
+#        python.arch: x64
+#        addToPath: true
     maxParallel: 4
 
   steps:

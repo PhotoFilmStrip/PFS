@@ -28,20 +28,14 @@ except ImportError:
     Sphinx = None
 
 try:
-    from cx_Freeze.dist import build_exe
+    from cx_Freeze.command.build_exe import BuildEXE
     from cx_Freeze import Executable
 except ImportError:
-    build_exe = None
+    BuildEXE = None
 
 from photofilmstrip import Constants
 
-if os.getenv("ProgramFiles(x86)"):
-    PROGRAMFILES = os.path.expandvars("%ProgramFiles(x86)%")
-else:
-    PROGRAMFILES = os.path.expandvars("%ProgramFiles%")
-
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-INNO = os.path.join(PROGRAMFILES, "Inno Setup 5", "ISCC.exe")
 MSGFMT = os.path.join(getattr(sys,
                               "base_prefix",
                               os.path.dirname(sys.executable)),
@@ -328,7 +322,7 @@ class pfs_exe(Command):
     ]
     sub_commands = [
         ('build', lambda x: True),
-        ('build_exe', lambda x: True if build_exe else False)
+        ('build_exe', lambda x: True if BuildEXE else False)
                    ]
 
     def initialize_options(self):
@@ -344,13 +338,14 @@ class pfs_exe(Command):
         self.distribution.executables = [
                  Executable(os.path.join("photofilmstrip", "GUI.py"),
                             base="Win32GUI",
-                            targetName=Constants.APP_NAME + ".exe",
+                            target_name=Constants.APP_NAME + ".exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
         ]
+        self.distribution.executables[0]._manifest = MANIFEST_TEMPLATE.encode("utf-8")
         self.distribution.executables.append(
                  Executable(os.path.join("photofilmstrip", "CLI.py"),
-                            targetName=Constants.APP_NAME + "-cli.exe",
+                            target_name=Constants.APP_NAME + "-cli.exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
         )
@@ -378,71 +373,6 @@ class pfs_exe(Command):
             targetDir = os.path.join(self.target_dir, subFolder)
             self.copy_tree(os.path.join(dllDirGnome, subFolder),
                            targetDir)
-
-        for exe in self.distribution.executables:
-            self.add_exe_resources(exe.targetName, exe.icon)
-
-    def add_exe_resources(self, exe_file, exe_icon):
-        scmInfo = self.get_finalized_command('scm_info')
-
-        from py2exe.icons import BuildIcons
-        from py2exe.resources import UpdateResources
-        from py2exe.versioninfo import Version, RT_VERSION
-        from py2exe.runtime import RT_MANIFEST
-
-        version = Version(
-            version="%s.%s" % (Constants.APP_VERSION, 0),
-            file_description=self.distribution.metadata.description,
-            company_name=self.distribution.metadata.author,
-            legal_copyright="(c) {} by {}".format(datetime.datetime.now().year,
-                                                  self.distribution.metadata.author),
-            original_filename=os.path.basename(exe_file),
-            product_name=Constants.APP_NAME,
-            product_version="%s-%s" % (Constants.APP_VERSION_SUFFIX, scmInfo.scm_rev)
-        )
-        versionBytes = version.resource_bytes()
-
-        with UpdateResources(exe_file, delete_existing=True) as resWriter:
-            resWriter.add(type=RT_VERSION, name=1, value=versionBytes)
-            resWriter.add(type=RT_MANIFEST, name=1, value=MANIFEST_TEMPLATE.encode("utf-8"))
-
-            for res_type, res_name, res_data in BuildIcons([(1, exe_icon)]):
-                resWriter.add(type=res_type, name=res_name, value=res_data)
-
-
-class pfs_win_setup(Command):
-
-    description = "create an executable installer for MS Windows (InnoSetup)"
-
-    user_options = []
-    sub_commands = [('bdist_win', lambda x: True),
-                   ]
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        # Run all sub-commands (at least those that need to be run)
-        for cmdName in self.get_sub_commands():
-            self.run_command(cmdName)
-
-        ver = Constants.APP_VERSION_SUFFIX
-        open(os.path.join(WORKDIR, "version.info"), "w").write(ver)
-
-        is64Bit = sys.maxsize > 2 ** 32
-        if is64Bit:
-            bitSuffix = "win64"
-        else:
-            bitSuffix = "win32"
-
-        log.info("building installer...")
-        self.spawn([INNO, "/Q",
-                    "/F%s-%s-%s" % ("setup_photofilmstrip", ver, bitSuffix),
-                    os.path.join("windows", "photofilmstrip_%s.iss" % bitSuffix)])
-        log.info("    done.")
 
 
 class pfs_win_portable(Command):
@@ -610,12 +540,11 @@ setup(
                 "sdist": pfs_sdist,
                 "build": pfs_build,
                 "bdist_win": pfs_exe,
-                "bdist_wininst": pfs_win_setup,
                 "bdist_winport": pfs_win_portable,
                 "scm_info": pfs_scm_info,
                 'build_sphinx': pfs_docs,
                 'test': pfs_test,
-                "build_exe": build_exe,
+                "build_exe": BuildEXE,
               },
     verbose=False,
     options={"build_exe": {
@@ -625,14 +554,17 @@ setup(
                           "packages": ["gi", "photofilmstrip"],
                           "includes": ["gi",
                                        "PIL.Image",
+                                       "PIL.BlpImagePlugin",
                                        "PIL.BmpImagePlugin",
                                        "PIL.BufrStubImagePlugin",
                                        "PIL.CurImagePlugin",
                                        "PIL.DcxImagePlugin",
+                                       "PIL.DdsImagePlugin",
                                        "PIL.EpsImagePlugin",
-                                       "PIL.FitsStubImagePlugin",
+                                       "PIL.FitsImagePlugin",
                                        "PIL.FliImagePlugin",
                                        "PIL.FpxImagePlugin",
+                                       "PIL.FtexImagePlugin",
                                        "PIL.GbrImagePlugin",
                                        "PIL.GifImagePlugin",
                                        "PIL.GribStubImagePlugin",
@@ -643,9 +575,11 @@ setup(
                                        "PIL.ImtImagePlugin",
                                        "PIL.IptcImagePlugin",
                                        "PIL.JpegImagePlugin",
+                                       "PIL.Jpeg2KImagePlugin",
                                        "PIL.McIdasImagePlugin",
                                        "PIL.MicImagePlugin",
                                        "PIL.MpegImagePlugin",
+                                       "PIL.MpoImagePlugin",
                                        "PIL.MspImagePlugin",
                                        "PIL.PalmImagePlugin",
                                        "PIL.PcdImagePlugin",
@@ -655,15 +589,17 @@ setup(
                                        "PIL.PngImagePlugin",
                                        "PIL.PpmImagePlugin",
                                        "PIL.PsdImagePlugin",
+                                       "PIL.QoiImagePlugin",
                                        "PIL.SgiImagePlugin",
                                        "PIL.SpiderImagePlugin",
                                        "PIL.SunImagePlugin",
                                        "PIL.TgaImagePlugin",
                                        "PIL.TiffImagePlugin",
+                                       "PIL.WebPImagePlugin",
                                        "PIL.WmfImagePlugin",
                                        "PIL.XbmImagePlugin",
                                        "PIL.XpmImagePlugin",
-                                       "PIL.XVThumbImagePlugin"
+                                       "PIL.XVThumbImagePlugin",
                                        ],
                           "excludes": ["Tkconstants", "tkinter", "tcl",
                                        "PIL._imagingtk", "PIL.ImageTk",
