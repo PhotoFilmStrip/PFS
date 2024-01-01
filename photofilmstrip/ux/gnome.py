@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2018 Jens Goepfert
 #
+import base64
 
 import gi
 gi.require_version('Notify', '0.7')
@@ -14,7 +15,7 @@ from gi.repository import GdkPixbuf, Gio, GLib, Notify
 from photofilmstrip import Constants
 from photofilmstrip.lib.jobimpl.IVisualJobManager import IVisualJobManager
 from photofilmstrip.lib.jobimpl.JobManager import JobManager
-from photofilmstrip.res.images import ICON_16
+from photofilmstrip.res.images import ICON
 from photofilmstrip.ux.Ux import UxAdapter
 
 
@@ -32,9 +33,9 @@ class UxGnome(UxAdapter, IVisualJobManager):
         pass
 
     def ShowNotification(self, title, info, path):
-        data = ICON_16.GetData()
+        data = base64.b64decode(ICON)
 
-        data_bytes = GLib.Bytes.new(list(data))
+        data_bytes = GLib.Bytes.new(data)
         data_stream = Gio.MemoryInputStream.new_from_bytes(data_bytes)
 
         icon = GdkPixbuf.Pixbuf.new_from_stream(data_stream)
