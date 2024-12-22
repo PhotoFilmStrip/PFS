@@ -53,12 +53,12 @@ class PnlWelcome(wx.Panel):
         self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
 
         self.cmdNew = wx.BitmapButton(self, -1,
-                                      wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', size=wx.Size(64, 64)))
+                                      wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', size=parent.FromDIP(wx.Size(64, 64))))
         self.cmdNew.SetToolTip(_("Create new slideshow"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnSlideshow)
 
         self.cmdOpen = wx.BitmapButton(self, -1,
-                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', size=wx.Size(64, 64)))
+                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', size=parent.FromDIP(wx.Size(64, 64))))
         self.cmdOpen.SetToolTip(_("Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
 
@@ -183,12 +183,13 @@ class LinkOpenPfs(IconLabelLink):
         if filename not in LinkOpenPfs.BMP_MAP:
             prjFile = ProjectFile(filename=filename)
             imgCount = prjFile.GetPicCount()
-            img = prjFile.GetPreviewThumb()
+            img = prjFile.GetPreviewThumb(parent.FromDIP(136), parent.FromDIP(70))
             if img is not None:
                 wxImg = wx.Image(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
+                bmp.SetScaleFactor(parent.GetDPIScaleFactor())
             else:
-                bmp = wx.ArtProvider.GetBitmap("PFS_ICON", size=wx.Size(48, 48))
+                bmp = wx.ArtProvider.GetBitmap("PFS_ICON", size=parent.FromDIP(wx.Size(48, 48)))
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
 

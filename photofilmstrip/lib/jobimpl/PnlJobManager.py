@@ -22,7 +22,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         # generated method, don't edit
 
         parent.Add(self.pnlJobs, 1, border=0, flag=wx.EXPAND)
-        parent.Add(self.cmdClear, 0, border=4, flag=wx.ALL)
+        parent.Add(self.cmdClear, 0, border=self.FromDIP(8), flag=wx.ALL)
 
     def _init_sizers(self):
         # generated method, don't edit

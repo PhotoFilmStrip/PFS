@@ -89,7 +89,7 @@ class ActionManager:
                         wx.ITEM_NORMAL,
                         shortHelp=_("Save"))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
-#                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'),
+#                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS', wx.ART_MENU),
 #                              _("Save Project as"), _("Save Project as"))
         toolBar.AddSeparator()
 
@@ -128,7 +128,7 @@ class ActionManager:
                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D', wx.ART_MENU))
 #        CreateMenuItem(menu, wx.ID_SAVEAS,
 #                       _("Save Project &as"),
-#                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS_16'))
+#                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS', wx.ART_MENU))
         menu.AppendSeparator()
 
         if editor:

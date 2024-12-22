@@ -30,25 +30,25 @@ class DlgConfigureAudio(wx.Dialog):
         szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         szMain.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        szMain.Add(self.szMsg, 0, border=8, flag=wx.ALL | wx.EXPAND)
-        szMain.Add(szAudioChoice, 0, border=8, flag=wx.ALL | wx.EXPAND)
-        szMain.Add(szAudioList, 1, border=8, flag=wx.ALL | wx.EXPAND)
-        szMain.Add(self.cbAudio, 0, border=8, flag=wx.ALL | wx.EXPAND)
-        szMain.Add(szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
+        szMain.Add(self.szMsg, 0, border=self.FromDIP(8), flag=wx.ALL | wx.EXPAND)
+        szMain.Add(szAudioChoice, 0, border=self.FromDIP(8), flag=wx.LEFT | wx.RIGHT | wx.EXPAND)
+        szMain.Add(szAudioList, 1, border=self.FromDIP(8), flag=wx.ALL | wx.EXPAND)
+        szMain.Add(self.cbAudio, 0, border=self.FromDIP(8), flag=wx.LEFT | wx.RIGHT | wx.EXPAND)
+        szMain.Add(szCmds, 0, border=self.FromDIP(8), flag=wx.ALL | wx.ALIGN_RIGHT)
 
-        szAudioChoice.Add(self.choiceAudioFiles, 1, flag=wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, border=4)
+        szAudioChoice.Add(self.choiceAudioFiles, 1, flag=wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, border=self.FromDIP(4))
         szAudioChoice.Add(self.cmdAddMusic)
 
-        szAudioList.Add(self.lvAudio, 1, flag=wx.EXPAND | wx.RIGHT, border=4)
+        szAudioList.Add(self.lvAudio, 1, flag=wx.EXPAND | wx.RIGHT, border=self.FromDIP(4))
         szAudioList.Add(szAudioCmds)
 
-        szAudioCmds.Add(self.cmdAudioPreview, border=2, flag=wx.BOTTOM)
-        szAudioCmds.Add(self.cmdAudioMoveUp, border=2, flag=wx.BOTTOM)
-        szAudioCmds.Add(self.cmdAudioMoveDown, border=2, flag=wx.BOTTOM)
-        szAudioCmds.Add(self.cmdAudioDel, border=2, flag=wx.BOTTOM)
+        szAudioCmds.Add(self.cmdAudioPreview, border=self.FromDIP(2), flag=wx.BOTTOM)
+        szAudioCmds.Add(self.cmdAudioMoveUp, border=self.FromDIP(2), flag=wx.BOTTOM)
+        szAudioCmds.Add(self.cmdAudioMoveDown, border=self.FromDIP(2), flag=wx.BOTTOM)
+        szAudioCmds.Add(self.cmdAudioDel, border=self.FromDIP(2), flag=wx.BOTTOM)
 
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
-        szCmds.AddSpacer(8)
+        szCmds.AddSpacer(self.FromDIP(8))
         szCmds.Add(self.cmdOk, 0, border=0, flag=0)
 
         self.SetSizer(szMain)
@@ -114,7 +114,7 @@ class DlgConfigureAudio(wx.Dialog):
         self._InitCtrls()
 
         self.pnlHdr.SetTitle(_("Configure music"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC', size=(32, 32)))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_MESSAGE_BOX))
 
         self.lvAudio.SetMinSize(wx.Size(300, -1))
 

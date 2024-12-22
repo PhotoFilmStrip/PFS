@@ -713,12 +713,12 @@ class PnlMediaItem(wx.Panel):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, name='PnlMediaItem')
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        bmp = wx.ArtProvider.GetBitmap("PFS_ALERT", size=wx.Size(24, 24))
+        bmp = wx.ArtProvider.GetBitmap("PFS_ALERT", wx.ART_BUTTON)
         if media.IsOk():
             if media.IsAudio():
-                bmp = wx.ArtProvider.GetBitmap("PFS_MUSIC", size=wx.Size(24, 24))
+                bmp = wx.ArtProvider.GetBitmap("PFS_MUSIC", wx.ART_BUTTON)
             elif media.IsVideo():
-                bmp = wx.ArtProvider.GetBitmap("PFS_RENDER", size=wx.Size(24, 24))
+                bmp = wx.ArtProvider.GetBitmap("PFS_RENDER", wx.ART_BUTTON)
 
         self.bmp = wx.StaticBitmap(self, wx.ID_ANY,
               bitmap=bmp)

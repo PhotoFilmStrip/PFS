@@ -12,8 +12,7 @@ class PnlNotification(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.bmp = wx.StaticBitmap(
-            self, bitmap=wx.ArtProvider.GetBitmap("PFS_ALERT", size=wx.Size(24, 24)))
+        self.bmp = wx.StaticBitmap(self, bitmap=wx.ArtProvider.GetBitmap("PFS_ALERT", wx.ART_BUTTON))
         self.msg = wx.StaticText(self, wx.ID_ANY)
 
         self.timer = wx.Timer(self)

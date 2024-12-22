@@ -100,7 +100,7 @@ class DlgNewProject(wx.Dialog):
         self._InitSizers()
 
         self.pnlHdr.SetTitle(title)
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON', size=(32, 32)))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON', wx.ART_MESSAGE_BOX))
 
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
         self.choiceAspect.Append(Aspect.ASPECT_16_10)

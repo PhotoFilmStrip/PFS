@@ -64,7 +64,7 @@ class PnlDlgHeader(wx.Panel):
         self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpLogo = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_HOME',
-              size=wx.Size(32, 32)), id=wxID_PNLDLGHEADERBMPLOGO,
+              wx.ART_MESSAGE_BOX), id=wxID_PNLDLGHEADERBMPLOGO,
               name="bmpLogo", parent=self.pnlHeader, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 

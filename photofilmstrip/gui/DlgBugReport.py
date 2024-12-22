@@ -56,8 +56,8 @@ class DlgBugReport(wx.Dialog):
 
         stBmp = wx.StaticBitmap(
             self, -1,
-            wx.ArtProvider.GetBitmap(wx.ART_ERROR, size=wx.Size(32, 32)))
-        stMsg = wx.StaticText(self, -1, wordwrap(text, 300, wx.ClientDC(self)))
+            wx.ArtProvider.GetBitmap(wx.ART_ERROR, wx.ART_MESSAGE_BOX))
+        stMsg = wx.StaticText(self, -1, wordwrap(text, self.FromDIP(300), wx.ClientDC(self)))
 
         szTop = wx.BoxSizer(wx.HORIZONTAL)
         szTop.Add(stBmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 8)

@@ -24,7 +24,7 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.pnlHdr = PnlDlgHeader(self)
         self.pnlHdr.SetTitle(_("Adjust picture durations to audio file"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
 
         szMsg = self.CreateTextSizer(
             _("Find your picture duration by playing the audio file of your project and\n"

@@ -31,7 +31,7 @@ class DlgRendererProps(wx.Dialog):
         parent.Add(self.cmdHelp, 0, border=0, flag=0)
         parent.AddStretchSpacer(1)
         parent.Add(self.cmdCancel, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cmdOk, 0, border=0, flag=0)
 
     def _init_coll_sizerMain_Items(self, parent):
@@ -39,17 +39,18 @@ class DlgRendererProps(wx.Dialog):
 
         parent.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
         parent.Add(self.lcProps, 1, border=0, flag=wx.EXPAND)
-        parent.Add(self.staticLine, 0, border=8,
+        parent.Add(self.staticLine, 0, border=self.FromDIP(8),
               flag=wx.TOP | wx.BOTTOM | wx.EXPAND)
-        parent.Add(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.sizerCmd, 0, border=self.FromDIP(8),
+                   flag=wx.EXPAND | wx.ALL)
 
     def _init_coll_lcProps_Columns(self, parent):
         # generated method, don't edit
 
         parent.InsertColumn(col=0, format=wx.LIST_FORMAT_LEFT,
-              heading=_("Property"), width=200)
+              heading=_("Property"), width=self.FromDIP(200))
         parent.InsertColumn(col=1, format=wx.LIST_FORMAT_LEFT,
-              heading=_("Value"), width=200)
+              heading=_("Value"), width=self.FromDIP(200))
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -69,7 +70,7 @@ class DlgRendererProps(wx.Dialog):
               size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
               title=_("Output properties"))
-        self.SetClientSize(wx.Size(400, 250))
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
 
         self.pnlHdr = PnlDlgHeader(id=wxID_DLGRENDERERPROPSPNLHDR,
               name="pnlHdr", parent=self, pos=wx.Point(-1, -1),
@@ -78,7 +79,7 @@ class DlgRendererProps(wx.Dialog):
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERERPROPSLCPROPS,
               name="lcProps", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.LC_REPORT | wx.SUNKEN_BORDER)
-        self.lcProps.SetMinSize(wx.Size(500, 120))
+        self.lcProps.SetMinSize(self.FromDIP(wx.Size(500, 120)))
         self._init_coll_lcProps_Columns(self.lcProps)
         self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,
               id=wxID_DLGRENDERERPROPSLCPROPS)
@@ -111,7 +112,7 @@ class DlgRendererProps(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Edit extended output properties"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', wx.ART_MESSAGE_BOX))
         self.rendererClass = rendererClass
 
         self.lcProps.DeleteAllItems()

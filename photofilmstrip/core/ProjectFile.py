@@ -133,7 +133,7 @@ class ProjectFile:
             self.__Close()
         return -1
 
-    def GetPreviewThumb(self):
+    def GetPreviewThumb(self, width, height):
         if not self.Load():
             return None
 
@@ -144,7 +144,7 @@ class ProjectFile:
             picIdx = random.randint(0, imgCount - 1)
             pic = pics[picIdx]
             if os.path.exists(pic.GetFilename()):
-                img = PILBackend.GetThumbnail(pic, width=136, height=70)
+                img = PILBackend.GetThumbnail(pic, width=width, height=height)
                 if pic.IsDummy():
                     img = None
         return img
