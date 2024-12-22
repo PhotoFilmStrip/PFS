@@ -10,7 +10,9 @@ import wx
 
 from photofilmstrip.core.Aspect import Aspect
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+
 
 [wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL,
  wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET,
@@ -250,7 +252,7 @@ class DlgPositionInput(wx.Dialog):
         self._init_ctrls(parent)
 
         self.pnlHdr.SetTitle(_("Adjust motion positions directly"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MOTION_MANUAL', wx.ART_MESSAGE_BOX))
 
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)

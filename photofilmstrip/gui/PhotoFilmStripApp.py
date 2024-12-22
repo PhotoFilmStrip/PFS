@@ -12,7 +12,7 @@ import wx
 
 from photofilmstrip.lib.Settings import Settings
 
-from photofilmstrip.gui.ArtProvider  import ArtProvider
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.FrmMain import FrmMain
 from photofilmstrip.gui.DlgBugReport import DlgBugReport
 
@@ -30,7 +30,7 @@ class PhotoFilmStripApp(wx.App):
                 wxLang = wx.Locale.GetSystemLanguage()
         self.locale = wx.Locale(wxLang)  # pylint: disable=attribute-defined-outside-init
 
-        ArtProvider.Init()
+        Art.Init()
 
         frame = FrmMain()
         frame.Show()

@@ -10,6 +10,7 @@ import wx
 
 from photofilmstrip.lib.Settings import Settings
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
@@ -112,7 +113,7 @@ class DlgRendererProps(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Edit extended output properties"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_VIDEO_FORMAT', wx.ART_MESSAGE_BOX))
         self.rendererClass = rendererClass
 
         self.lcProps.DeleteAllItems()

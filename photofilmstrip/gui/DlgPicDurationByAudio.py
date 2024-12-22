@@ -8,6 +8,7 @@
 import wx
 
 from photofilmstrip.core.GPlayer import GPlayer
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
@@ -24,7 +25,7 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.pnlHdr = PnlDlgHeader(self)
         self.pnlHdr.SetTitle(_("Adjust picture durations to audio file"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
 
         szMsg = self.CreateTextSizer(
             _("Find your picture duration by playing the audio file of your project and\n"

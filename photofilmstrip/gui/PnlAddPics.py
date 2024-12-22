@@ -7,6 +7,8 @@
 
 import wx
 
+from photofilmstrip.gui.Art import Art
+
 
 class PnlAddPics(wx.Panel):
 
@@ -41,7 +43,7 @@ class PnlAddPics(wx.Panel):
 
         self.cmdBrowse = wx.BitmapButton(
             self, wx.ID_ANY, name="cmdBrowse",
-            bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_MESSAGE_BOX))
+            bitmap=Art.GetBitmapBundle('PFS_IMPORT_PICTURES', wx.ART_MESSAGE_BOX))
 
         font = self.stTitle.GetFont()
         font.SetWeight(wx.BOLD)

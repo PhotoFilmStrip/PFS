@@ -18,6 +18,7 @@ from photofilmstrip.lib.UpdateChecker import UpdateChecker
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core import PILBackend
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.IconLabelLink import IconLabelLink
 
 
@@ -50,15 +51,13 @@ class PnlWelcome(wx.Panel):
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
         sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL, 8)
 
-        self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
+        self.bmpFilmstrip = Art.GetBitmap('PFS_FILMSTRIP', size=(407, 493))
 
-        self.cmdNew = wx.BitmapButton(self, -1,
-                                      wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', size=parent.FromDIP(wx.Size(64, 64))))
+        self.cmdNew = wx.BitmapButton(self, -1, Art.GetBitmap('PFS_PROJECT_NEW', size=(64, 64)))
         self.cmdNew.SetToolTip(_("Create new slideshow"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnSlideshow)
 
-        self.cmdOpen = wx.BitmapButton(self, -1,
-                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', size=parent.FromDIP(wx.Size(64, 64))))
+        self.cmdOpen = wx.BitmapButton(self, -1, Art.GetBitmap('PFS_PROJECT_OPEN', size=(64, 64)))
         self.cmdOpen.SetToolTip(_("Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
 
@@ -189,7 +188,7 @@ class LinkOpenPfs(IconLabelLink):
                 bmp = wxImg.ConvertToBitmap()
                 bmp.SetScaleFactor(parent.GetDPIScaleFactor())
             else:
-                bmp = wx.ArtProvider.GetBitmap("PFS_ICON", size=parent.FromDIP(wx.Size(48, 48)))
+                bmp = Art.GetBitmap("PFS_ICON", size=parent.FromDIP(wx.Size(48, 48)))
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
 

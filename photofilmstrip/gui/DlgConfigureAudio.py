@@ -13,6 +13,7 @@ from photofilmstrip.lib.Settings import Settings
 
 from photofilmstrip.core.AudioPlayer import AudioPlayer
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.lib.util import FILE_EXTENSIONS_AUDIO, GetDataDir
 
@@ -65,32 +66,32 @@ class DlgConfigureAudio(wx.Dialog):
         self.lvAudio.Bind(wx.EVT_LISTBOX, self.OnControlStatusAudio)
 
         self.cmdAddMusic = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap("PFS_ADD", wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle("PFS_ADD", wx.ART_TOOLBAR),
               name="cmdAddMusic", style=wx.BU_AUTODRAW)
         self.cmdAddMusic.Bind(wx.EVT_BUTTON, self.OnCmdAddMusicButton)
 
         self.cmdAudioPreview = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_PLAY_PAUSE', wx.ART_TOOLBAR),
               name="cmdAudioPreview", style=wx.BU_AUTODRAW)
-        self.cmdAudioPreview.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_PLAY_PAUSE_D', wx.ART_TOOLBAR))
+        self.cmdAudioPreview.SetBitmapDisabled(Art.GetBitmapBundle('PFS_PLAY_PAUSE_D', wx.ART_TOOLBAR))
         self.cmdAudioPreview.Bind(wx.EVT_BUTTON, self.OnCmdAudioPreviewButton)
 
         self.cmdAudioMoveUp = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_ARROW_UP', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_ARROW_UP', wx.ART_TOOLBAR),
               name="cmdAudioMoveUp", style=wx.BU_AUTODRAW)
-        self.cmdAudioMoveUp.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_ARROW_UP_D', wx.ART_TOOLBAR))
+        self.cmdAudioMoveUp.SetBitmapDisabled(Art.GetBitmapBundle('PFS_ARROW_UP_D', wx.ART_TOOLBAR))
         self.cmdAudioMoveUp.Bind(wx.EVT_BUTTON, self.OnCmdAudioMove)
 
         self.cmdAudioMoveDown = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_ARROW_DOWN', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_ARROW_DOWN', wx.ART_TOOLBAR),
               name="cmdAudioMoveDown", style=wx.BU_AUTODRAW)
-        self.cmdAudioMoveDown.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_ARROW_DOWN_D', wx.ART_TOOLBAR))
+        self.cmdAudioMoveDown.SetBitmapDisabled(Art.GetBitmapBundle('PFS_ARROW_DOWN_D', wx.ART_TOOLBAR))
         self.cmdAudioMoveDown.Bind(wx.EVT_BUTTON, self.OnCmdAudioMove)
 
         self.cmdAudioDel = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_REMOVE', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_REMOVE', wx.ART_TOOLBAR),
               name="cmdAudioDel", style=wx.BU_AUTODRAW)
-        self.cmdAudioDel.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_REMOVE_D', wx.ART_TOOLBAR))
+        self.cmdAudioDel.SetBitmapDisabled(Art.GetBitmapBundle('PFS_REMOVE_D', wx.ART_TOOLBAR))
         self.cmdAudioDel.Bind(wx.EVT_BUTTON, self.OnCmdAudioDel)
 
         self.cbAudio = wx.CheckBox(self, wx.ID_ANY,
@@ -114,7 +115,7 @@ class DlgConfigureAudio(wx.Dialog):
         self._InitCtrls()
 
         self.pnlHdr.SetTitle(_("Configure music"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC', wx.ART_MESSAGE_BOX))
 
         self.lvAudio.SetMinSize(wx.Size(300, -1))
 

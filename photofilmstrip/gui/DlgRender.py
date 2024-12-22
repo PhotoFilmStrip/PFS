@@ -15,6 +15,7 @@ from photofilmstrip.core.OutputProfile import (
 
 from photofilmstrip.lib.Settings import Settings
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
@@ -115,7 +116,7 @@ class DlgRender(wx.Dialog):
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
             id=wxID_DLGRENDERCHOICEFORMAT)
 
-        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', wx.ART_TOOLBAR),
+        self.cmdRendererProps = wx.BitmapButton(bitmap=Art.GetBitmapBundle('PFS_VIDEO_FORMAT', wx.ART_TOOLBAR),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name="cmdRendererProps",
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
@@ -162,7 +163,7 @@ class DlgRender(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Configure output and start render process"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_RENDER', wx.ART_MESSAGE_BOX))
 
         self.cbDraft.SetToolTip(_("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
@@ -324,7 +325,7 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
         rect2.Deflate(5, 0)
 
         if data.GetMessages():
-            bmp = wx.ArtProvider.GetBitmap('PFS_ALERT', wx.ART_MENU)
+            bmp = Art.GetBitmapBundle('PFS_ALERT', wx.ART_MENU)
             if flags & wx.adv.ODCB_PAINTING_CONTROL:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
             elif flags & wx.adv.ODCB_PAINTING_SELECTED:

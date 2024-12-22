@@ -16,6 +16,7 @@ from photofilmstrip.lib.util import IsPathWritable
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Project import Project
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
@@ -71,7 +72,7 @@ class DlgNewProject(wx.Dialog):
               name="tcFolder", style=wx.TE_READONLY, value="")
 
         self.cmdBrowseFolder = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
               name="cmdBrowseFolder",
               style=wx.BU_AUTODRAW)
         self.cmdBrowseFolder.Bind(wx.EVT_BUTTON, self.OnCmdBrowseFolderButton)
@@ -100,7 +101,7 @@ class DlgNewProject(wx.Dialog):
         self._InitSizers()
 
         self.pnlHdr.SetTitle(title)
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_ICON', wx.ART_MESSAGE_BOX))
 
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
         self.choiceAspect.Append(Aspect.ASPECT_16_10)

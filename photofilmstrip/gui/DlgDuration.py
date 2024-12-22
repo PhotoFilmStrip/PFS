@@ -8,6 +8,7 @@
 import wx
 import wx.lib.masked.timectrl
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
@@ -82,7 +83,7 @@ class DlgDuration(wx.Dialog):
         self._InitCtrls()
 
         self.pnlHdr.SetTitle(_("Configure duration of slideshow"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
 
         defTime = wx.DateTime.Now()
         defTime.SetHMS(0, 0, 30)

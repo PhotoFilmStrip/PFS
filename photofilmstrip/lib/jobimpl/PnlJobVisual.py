@@ -10,6 +10,9 @@ from photofilmstrip.action.WxAction import WxAction
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
     WxVisualJobHandler, EVT_JOB_UPDATE)
 
+from photofilmstrip.gui.Art import Art
+
+
 [wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION,
  wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
  wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
@@ -70,7 +73,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpJob = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_RENDER', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALBMPJOB,
               name="bmpJob", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -89,14 +92,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAction = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALCMDACTION,
               name="cmdAction", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
         self.cmdMenu = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_MENU', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_MENU', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALCMDMENU,
               name="cmdMenu", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -127,14 +130,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self._actAbort = WxAction(
                  _("Abort"),
                 self._Abort,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: Art.GetBitmapBundle('PFS_ABORT', wx.ART_MENU),
+                     wx.ART_TOOLBAR: Art.GetBitmapBundle('PFS_ABORT', wx.ART_TOOLBAR)}
         )
         self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_MENU),
+                     wx.ART_TOOLBAR: Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_TOOLBAR)}
         )
 
         self.curAction = None

@@ -8,6 +8,7 @@
 import wx
 
 from photofilmstrip.lib.Settings import Settings
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.helper import CreateMenuItem
 
 
@@ -74,28 +75,28 @@ class ActionManager:
 
     def __MakeToolBar(self, toolBar):
         toolBar.AddTool(ActionManager.ID_SLIDESHOW, "",
-                        wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_PROJECT_NEW', wx.ART_TOOLBAR),
                         kind=wx.ITEM_DROPDOWN,
                         shortHelp=_("New Slideshow"))
         toolBar.Bind(wx.EVT_TOOL_DROPDOWN, self.OnDropDownNew)
 
         toolBar.AddTool(wx.ID_OPEN, "",
-                        wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_PROJECT_OPEN', wx.ART_TOOLBAR),
                         _("Open"))
 
         toolBar.AddTool(wx.ID_SAVE, "",
-                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE', wx.ART_TOOLBAR),
-                        wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_PROJECT_SAVE', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_PROJECT_SAVE_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         shortHelp=_("Save"))
 #        toolBar.AddSimpleTool(wx.ID_SAVEAS,
-#                              wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS', wx.ART_MENU),
+#                              Art.GetBitmapBundle('PFS_PROJECT_SAVEAS', wx.ART_MENU),
 #                              _("Save Project as"), _("Save Project as"))
         toolBar.AddSeparator()
 
         toolBar.AddTool(self.ID_JOB_QUEUE, "",
-                        wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE', wx.ART_TOOLBAR),
-                        wx.ArtProvider.GetBitmap('PFS_JOB_QUEUE_D', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_JOB_QUEUE', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_JOB_QUEUE_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         shortHelp=_("Show job queue"))
 
@@ -107,11 +108,12 @@ class ActionManager:
     def __CreateMenuNew(self):
         menu = wx.Menu()
         CreateMenuItem(menu, ActionManager.ID_SLIDESHOW, _("Slideshow") + "\tCtrl+N",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROJECT_NEW', wx.ART_MENU))
         CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _("Timelapse"),
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', wx.ART_MENU))
-        CreateMenuItem(menu, ActionManager.ID_STORY, _("Story"),
-                       wx.ArtProvider.GetBitmap(wx.ART_LIST_VIEW, wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROJECT_NEW', wx.ART_MENU))
+        bmp = Art.GetBitmapBundle(wx.ART_LIST_VIEW, wx.ART_MENU)
+#        bmp.SetScaleFactor(self._frame.GetDPIScaleFactor())
+        CreateMenuItem(menu, ActionManager.ID_STORY, _("Story"), bmp)
         return menu
 
     def __CreateMenuFile(self, editor=None):
@@ -119,16 +121,16 @@ class ActionManager:
         menu.Append(wx.ID_ANY, _("New"), self.__CreateMenuNew())
         CreateMenuItem(menu, wx.ID_OPEN,
                        _("&Open") + "\tCtrl+O",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROJECT_OPEN', wx.ART_MENU))
 
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_SAVE,
                        _("&Save") + "\tCtrl+S",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE', wx.ART_MENU),
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVE_D', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROJECT_SAVE', wx.ART_MENU),
+                       Art.GetBitmapBundle('PFS_PROJECT_SAVE_D', wx.ART_MENU))
 #        CreateMenuItem(menu, wx.ID_SAVEAS,
 #                       _("Save Project &as"),
-#                       wx.ArtProvider.GetBitmap('PFS_PROJECT_SAVEAS', wx.ART_MENU))
+#                       Art.GetBitmapBundle('PFS_PROJECT_SAVEAS', wx.ART_MENU))
         menu.AppendSeparator()
 
         if editor:
@@ -137,12 +139,12 @@ class ActionManager:
 
         CreateMenuItem(menu, ActionManager.ID_PROJECT_CLOSE,
                        _("&Close") + "\tCtrl+W",
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE', wx.ART_MENU),
-                       wx.ArtProvider.GetBitmap('PFS_PROJECT_CLOSE_D', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROJECT_CLOSE', wx.ART_MENU),
+                       Art.GetBitmapBundle('PFS_PROJECT_CLOSE_D', wx.ART_MENU))
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_EXIT,
                        _("E&xit") + "\tCtrl+Q",
-                       wx.ArtProvider.GetBitmap('PFS_EXIT', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_EXIT', wx.ART_MENU))
         return menu
 
     def __CreateMenuEdit(self, editor=None):
@@ -155,7 +157,7 @@ class ActionManager:
         menu = wx.Menu()
         CreateMenuItem(menu, wx.ID_HELP,
                        _("&Help") + "\tF1",
-                       wx.ArtProvider.GetBitmap('PFS_HELP', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_HELP', wx.ART_MENU))
         menu.AppendSeparator()
         langMenu = wx.Menu()
         langMenu.AppendRadioItem(self.ID_LANG_EN, "English")
@@ -175,7 +177,7 @@ class ActionManager:
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_ABOUT,
                        _("&About"),
-                       wx.ArtProvider.GetBitmap('PFS_ABOUT', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_ABOUT', wx.ART_MENU))
         return menu
 
     def OnDropDownNew(self, event):  # pylint: disable=unused-argument
