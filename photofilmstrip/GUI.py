@@ -42,7 +42,7 @@ class GuiApp(AppMixin):
 
 
 def main():
-    if not getattr(sys, 'frozen', None):
+    if os.name == "nt" and not getattr(sys, 'frozen', None):
         import ctypes
         ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
