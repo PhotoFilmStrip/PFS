@@ -12,7 +12,6 @@ from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip.gui.Art import Art
 
-
 [wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
  wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
 ] = [wx.NewId() for _init_ctrls in range(6)]
@@ -64,7 +63,6 @@ class PnlDlgHeader(wx.Panel):
         self.pnlHeader = wx.Panel(id=wxID_PNLDLGHEADERPNLHEADER,
               name="pnlHeader", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-        self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
 
         self.bmpLogo = wx.StaticBitmap(bitmap=Art.GetBitmapBundle(wx.ART_GO_HOME,
               wx.ART_MESSAGE_BOX), id=wxID_PNLDLGHEADERBMPLOGO,
@@ -90,6 +88,8 @@ class PnlDlgHeader(wx.Panel):
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=wx.TAB_TRAVERSAL, name="PnlDlgHeader"):
         self._init_ctrls(parent)
+        bgColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_APPWORKSPACE)
+        self.pnlHeader.SetBackgroundColour(bgColor)
 
         font = self.stHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)

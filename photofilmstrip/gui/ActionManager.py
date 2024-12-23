@@ -112,7 +112,6 @@ class ActionManager:
         CreateMenuItem(menu, ActionManager.ID_TIMELAPSE, _("Timelapse"),
                        Art.GetBitmapBundle('PFS_PROJECT_NEW', wx.ART_MENU))
         bmp = Art.GetBitmapBundle(wx.ART_LIST_VIEW, wx.ART_MENU)
-#        bmp.SetScaleFactor(self._frame.GetDPIScaleFactor())
         CreateMenuItem(menu, ActionManager.ID_STORY, _("Story"), bmp)
         return menu
 

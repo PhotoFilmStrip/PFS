@@ -70,6 +70,23 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         ImageCache().RegisterWin(self)
         ImageCache().thumb = Art.GetBitmap(wx.ART_NORMAL_FILE, size=wx.Size(120, 120)) # TODO: PFS_ART
         self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
+        self.Bind(wx.EVT_DPI_CHANGED, self.OnDpiChanged)
+
+    def OnDpiChanged(self, event):
+        self.GAP = self.FromDIP(10)
+        self.BORDER = self.FromDIP(45)
+        self.THUMB_HEIGHT = 120
+        self.HOLE_WIDTH = self.FromDIP(11)
+        self.HOLE_HEIGHT = self.FromDIP(16)
+        self.HOLE_PADDING = self.FromDIP(13)  # distance between holes
+        self.HOLE_MARGIN = self.FromDIP(6)  # distance to thumb
+        self.LABEL_MARGIN = self.FromDIP(8)
+
+        self.STRIP_HEIGHT = self.THUMB_HEIGHT + 2 * self.BORDER
+        clientSize = wx.Size(-1, self.STRIP_HEIGHT + wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
+        self.SetSizeHints(clientSize, clientSize)
+
+        self.Layout()
 
     def Freeze(self, *args):
         self.__frozen = True

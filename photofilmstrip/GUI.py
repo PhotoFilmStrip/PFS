@@ -6,6 +6,7 @@
 # Copyright (C) 2008 Jens Goepfert
 #
 
+import ctypes
 import logging
 import os
 import tempfile
@@ -20,6 +21,8 @@ from photofilmstrip import Constants
 class GuiApp(AppMixin):
 
     def _OnStart(self):
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        
         import wx
         assert wx.VERSION[0] == 4
 

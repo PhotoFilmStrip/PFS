@@ -17,10 +17,12 @@ import photofilmstrip.res.images
 class Art:
 
     artIdPrefix = "PFS_"
+    isDark = False
 
     @classmethod
     def Init(cls):
         cls.catalog = photofilmstrip.res.images.catalog
+        cls.isDark = wx.SystemSettings.GetAppearance().IsDark()
 
     @classmethod
     def GetBitmap(cls, artId, artClient=wx.ART_OTHER, size=(-1, -1)):
@@ -62,9 +64,9 @@ class Art:
         if cls.IsSvg(data):
             data = cls.PrepareSvg(data)
             result = wx.BitmapBundle.FromSVG(data, size)
-            return result
         else:
-             return wx.ArtProvider.GetBitmapBundle(artId, artClient, size)
+            result = wx.ArtProvider.GetBitmapBundle(artId, artClient, size)
+        return result
 
     @classmethod
     def GetIcon(cls, artId, artClient=wx.ART_OTHER, size=(-1, -1)):
@@ -76,19 +78,21 @@ class Art:
 
     @classmethod
     def GetIconBundle(cls, artId, artClient=wx.ART_OTHER, size=(-1, -1)):
+        assert artClient == wx.ART_OTHER
+        assert size == (-1, -1)
         iconBundle = wx.IconBundle()
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (16, 16)))
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (24, 24)))
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (32, 32)))
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (48, 48)))
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (64, 64)))
-        iconBundle.AddIcon(Art.GetIcon("PFS_ICON", wx.ART_OTHER, (128, 128)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (16, 16)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (24, 24)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (32, 32)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (48, 48)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (64, 64)))
+        iconBundle.AddIcon(Art.GetIcon(artId, wx.ART_OTHER, (128, 128)))
         return iconBundle
 
     @classmethod
     def GetData(cls, artId):
         if isinstance(artId, bytes):
-                artId = artId.decode()
+            artId = artId.decode()
         result = None
         if artId.startswith(cls.artIdPrefix):
             name = artId[len(cls.artIdPrefix):]
@@ -102,14 +106,16 @@ class Art:
             artClient = artClient.decode()
         if artClient == wx.ART_TOOLBAR.decode():
             logging.debug("Art.PrepareArtClient(%s) -> wx.ART_MENU", artClient)
-            artClient = wx.ART_MENU
+#            artClient = wx.ART_MENU
         return artClient
-    
+
     @staticmethod
     def IsSvg(data):
         return data and (data.startswith(b"<?xml") or data.startswith(b"<svg"))
 
     @classmethod
     def PrepareSvg(cls, data):
-        result = data#.replace(b"#34495e", b"#ff0000")
+        result = data
+        if cls.isDark:
+            result = data.replace(b"#34495e", b"#ffffff")
         return result
