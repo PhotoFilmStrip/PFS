@@ -22,7 +22,14 @@ class Art:
     @classmethod
     def Init(cls):
         cls.catalog = photofilmstrip.res.images.catalog
-        cls.isDark = wx.SystemSettings.GetAppearance().IsDark()
+        cls.UpdateFromSystem()
+
+    @classmethod
+    def UpdateFromSystem(cls, which=None):
+        osDescr = wx.GetOsDescription()
+        logging.debug("UpdateFromSystem: %s", osDescr)
+        if not osDescr.lower().startswith("windows"):
+            cls.isDark = wx.SystemSettings.GetAppearance().IsDark()
 
     @classmethod
     def GetBitmap(cls, artId, artClient=wx.ART_OTHER, size=(-1, -1)):
@@ -117,5 +124,24 @@ class Art:
     def PrepareSvg(cls, data):
         result = data
         if cls.isDark:
-            result = data.replace(b"#34495e", b"#ffffff")
+            result = result.replace(b"#34495e", b"#ffffff")
+            result = result.replace(b"#34495f", b"#34495e") # accent color is slighty different
         return result
+
+    @classmethod
+    def ThemeColor(cls, color):
+        if ((255 - color.Red()) +
+            (255 - color.Green()) +
+            (255 - color.Blue()) < 60):
+            color = color.ChangeLightness(92)
+        if cls.isDark:
+            gradient = color.ChangeLightness(70);
+            return gradient
+        return color
+
+    @classmethod
+    def GetColour(cls, client='wx'):
+        if client == 'wx':
+            return wx.Colour(52, 73, 94) # #34495e
+        elif client == 'html':
+            return "#34495e"

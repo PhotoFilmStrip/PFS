@@ -41,7 +41,7 @@ class PnlWelcome(wx.Panel):
         self.htmlUpdate = ""
 
         self.pnlHtmlBackground = wx.Panel(self)
-        self.pnlHtmlBackground.SetBackgroundColour(wx.Colour(52, 73, 94))
+        self.pnlHtmlBackground.SetBackgroundColour(Art.GetColour())
 
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.SetBackgroundStyle(wx.BG_STYLE_SYSTEM)

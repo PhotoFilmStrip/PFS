@@ -6,7 +6,6 @@
 # Copyright (C) 2008 Jens Goepfert
 #
 
-import ctypes
 import logging
 import os
 import tempfile
@@ -21,8 +20,7 @@ from photofilmstrip import Constants
 class GuiApp(AppMixin):
 
     def _OnStart(self):
-        ctypes.windll.shcore.SetProcessDpiAwareness(1)
-        
+        logging.info("main")
         import wx
         assert wx.VERSION[0] == 4
 
@@ -45,6 +43,10 @@ class GuiApp(AppMixin):
 
 
 def main():
+    if not getattr(sys, 'frozen', None):
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+
     guiApp = GuiApp()
     try:
         UxService.GetInstance().Start()

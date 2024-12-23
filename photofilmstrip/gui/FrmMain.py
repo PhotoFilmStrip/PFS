@@ -128,15 +128,28 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
 
         self.Bind(EVT_REGISTER_JOB, self.OnRegisterJob)
         self.Bind(EVT_REMOVE_JOB, self.OnRemoveJob)
+
         self.Bind(wx.EVT_DPI_CHANGED, self.OnDpiChanged)
+        self.Bind(wx.EVT_SYS_COLOUR_CHANGED, self.OnSysColourChanged)
+
+    def OnSysColourChanged(self, event):
+        logging.info("OnSysColourChanged")
+
+        Art.UpdateFromSystem('color')
+
+        event.Skip()
 
     def OnDpiChanged(self, event):
         logging.info("OnDpiChanged %s %s", event.GetNewDPI(), event.GetOldDPI())
 
-        Art.Init()
+        Art.UpdateFromSystem('dpi')
 
         self.toolBar.Realize()
+        tabart = wx.aui.AuiDefaultTabArt()
+        self.notebook.SetArtProvider(tabart)
+        self.notebook.Layout()
         self.Layout()
+        event.Skip()
 
     def ObservableUpdate(self, obj, arg):
         if obj is self.__GetCurrentProject():
