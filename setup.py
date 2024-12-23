@@ -28,10 +28,10 @@ except ImportError:
     Sphinx = None
 
 try:
-    from cx_Freeze.command.build_exe import BuildEXE
+    from cx_Freeze.command.build_exe import build_exe
     from cx_Freeze import Executable
 except ImportError:
-    BuildEXE = None
+    build_exe = None
 
 from photofilmstrip import Constants
 
@@ -322,7 +322,7 @@ class pfs_exe(Command):
     ]
     sub_commands = [
         ('build', lambda x: True),
-        ('build_exe', lambda x: True if BuildEXE else False)
+        ('build_exe', lambda x: True if build_exe else False)
                    ]
 
     def initialize_options(self):
@@ -545,7 +545,7 @@ setup(
                 "scm_info": pfs_scm_info,
                 'build_sphinx': pfs_docs,
                 'test': pfs_test,
-                "build_exe": BuildEXE,
+                "build_exe": build_exe,
               },
     verbose=False,
     options={"build_exe": {
