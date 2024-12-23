@@ -20,8 +20,8 @@ class PnlNotification(wx.Panel):
         self.timer = wx.Timer(self)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.bmp, 0, border=8, flag=wx.ALL)
-        sizer.Add(self.msg, 1, border=8, flag=wx.TOP | wx.BOTTOM | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(self.bmp, 0, self.FromDIP(8), flag=wx.ALL)
+        sizer.Add(self.msg, 1, border=self.FromDIP(8), flag=wx.TOP | wx.BOTTOM | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL)
         self.SetSizer(sizer)
 
         self.notifications = {}

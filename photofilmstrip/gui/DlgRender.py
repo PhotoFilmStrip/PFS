@@ -63,8 +63,8 @@ class DlgRender(wx.Dialog):
         parent.Add(self.stProfile, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(8)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cbDraft, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Growables(self, parent):

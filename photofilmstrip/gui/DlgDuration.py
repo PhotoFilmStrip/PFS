@@ -18,27 +18,27 @@ class DlgDuration(wx.Dialog):
 
         szManual = wx.BoxSizer(wx.HORIZONTAL)
         szManual.Add(self.rbManual, flag=wx.ALIGN_CENTER_VERTICAL)
-        szManual.AddSpacer(8)
+        szManual.AddSpacer(self.FromDIP(8))
         szManual.Add(self.timeCtrlTotalLength, 1)
 
         szCtrls = wx.BoxSizer(orient=wx.VERTICAL)
-        szCtrls.AddSpacer(8)
-        szCtrls.Add(self.cbTotalLength, border=8, flag=wx.LEFT)
-        szCtrls.AddSpacer(8)
-        szCtrls.Add(self.rbAudio, border=32, flag=wx.LEFT | wx.EXPAND)
-        szCtrls.AddSpacer(8)
-        szCtrls.Add(szManual, border=32, flag=wx.LEFT | wx.EXPAND)
+        szCtrls.AddSpacer(self.FromDIP(8))
+        szCtrls.Add(self.cbTotalLength, border=self.FromDIP(8), flag=wx.LEFT)
+        szCtrls.AddSpacer(self.FromDIP(8))
+        szCtrls.Add(self.rbAudio, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
+        szCtrls.AddSpacer(self.FromDIP(8))
+        szCtrls.Add(szManual, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
 
         szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
-        szCmds.AddSpacer(8)
+        szCmds.AddSpacer(self.FromDIP(8))
         szCmds.Add(self.cmdOk, 0, border=0, flag=0)
 
         szMain = wx.BoxSizer(orient=wx.VERTICAL)
         szMain.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        szMain.Add(szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
+        szMain.Add(szCtrls, 0, border=self.FromDIP(8), flag=wx.ALL | wx.EXPAND)
         szMain.Add(self.staticLine, 0, border=0, flag=wx.EXPAND)
-        szMain.Add(szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
+        szMain.Add(szCmds, 0, border=self.FromDIP(8), flag=wx.ALL | wx.ALIGN_RIGHT)
 
         self.SetSizer(szMain)
 
@@ -59,7 +59,7 @@ class DlgDuration(wx.Dialog):
               display_seconds=True, fmt24hr=True,
               name="timeCtrlTotalLength", oob_color=wx.YELLOW,
               style=0, useFixedWidthFont=True, value='12:00:00 AM',
-              size=wx.Size(300, -1))
+              size=self.FromDIP(wx.Size(300, -1)))
         self.timeCtrlTotalLength.Enable(False)
 
         self.rbAudio = wx.RadioButton(self,

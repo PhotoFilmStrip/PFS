@@ -117,7 +117,7 @@ class DlgConfigureAudio(wx.Dialog):
         self.pnlHdr.SetTitle(_("Configure music"))
         self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC', wx.ART_MESSAGE_BOX))
 
-        self.lvAudio.SetMinSize(wx.Size(300, -1))
+        self.lvAudio.SetMinSize(self.FromDIP(wx.Size(300, -1)))
 
         self.__project = project
         self.__mediaCtrl = None

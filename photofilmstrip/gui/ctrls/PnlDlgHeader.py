@@ -23,7 +23,7 @@ class PnlDlgHeader(wx.Panel):
         # generated method, don't edit
 
         parent.Add(self.stHeader, 0, border=0, flag=0)
-        parent.Add(self.stErrMsg, 0, border=4, flag=wx.TOP)
+        parent.Add(self.stErrMsg, 0, border=self.FromDIP(4), flag=wx.TOP)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
@@ -34,9 +34,9 @@ class PnlDlgHeader(wx.Panel):
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.bmpLogo, 0, border=8,
+        parent.Add(self.bmpLogo, 0, border=self.FromDIP(8),
               flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
-        parent.Add(self.szHeaderText, 0, border=8,
+        parent.Add(self.szHeaderText, 0, border=self.FromDIP(8),
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
 
     def _init_sizers(self):
@@ -88,7 +88,7 @@ class PnlDlgHeader(wx.Panel):
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=wx.TAB_TRAVERSAL, name="PnlDlgHeader"):
         self._init_ctrls(parent)
-        bgColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_APPWORKSPACE)
+        bgColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
         self.pnlHeader.SetBackgroundColour(bgColor)
 
         font = self.stHeader.GetFont()

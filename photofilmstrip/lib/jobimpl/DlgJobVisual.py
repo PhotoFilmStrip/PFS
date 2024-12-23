@@ -23,30 +23,30 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.stInfo, 0, border=8, flag=wx.ALL)
-        parent.Add(self.gauge, 0, border=8, flag=wx.EXPAND | wx.ALL)
-        parent.Add(self.szTiming, 0, border=8, flag=wx.EXPAND | wx.ALL)
-        parent.Add(self.cmdAbort, 0, border=8,
+        parent.Add(self.stInfo, 0, border=self.FromDIP(8), flag=wx.ALL)
+        parent.Add(self.gauge, 0, border=self.FromDIP(8), flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.szTiming, 0, border=self.FromDIP(8), flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.cmdAbort, 0, border=self.FromDIP(8),
               flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
 
     def _init_coll_szTiming_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.stElapsedLabel, 0, border=0, flag=wx.ALIGN_RIGHT)
-        parent.Add(self.stElapsedDiv, 0, border=4,
+        parent.Add(self.stElapsedDiv, 0, border=self.FromDIP(4),
               flag=wx.RIGHT | wx.LEFT)
-        parent.Add(self.stElapsedValue, 0, border=8, flag=wx.LEFT)
+        parent.Add(self.stElapsedValue, 0, border=self.FromDIP(8), flag=wx.LEFT)
         parent.Add(self.stRemainingLabel, 0, border=0,
               flag=wx.ALIGN_RIGHT)
-        parent.Add(self.stRemainingDiv, 0, border=4,
+        parent.Add(self.stRemainingDiv, 0, border=self.FromDIP(4),
               flag=wx.RIGHT | wx.LEFT)
-        parent.Add(self.stRemainingValue, 0, border=8, flag=wx.LEFT)
+        parent.Add(self.stRemainingValue, 0, border=self.FromDIP(8), flag=wx.LEFT)
 
     def _init_sizers(self):
         # generated method, don't edit
         self.szMain = wx.BoxSizer(orient=wx.VERTICAL)
 
-        self.szTiming = wx.FlexGridSizer(cols=3, hgap=0, rows=2, vgap=8)
+        self.szTiming = wx.FlexGridSizer(cols=3, hgap=0, rows=2, vgap=self.FromDIP(8))
 
         self._init_coll_szMain_Items(self.szMain)
         self._init_coll_szTiming_Items(self.szTiming)
@@ -58,8 +58,8 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
         wx.Dialog.__init__(self, id=wxID_DLGJOBVISUAL, name="DlgJobVisual",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_DIALOG_STYLE, title='')
-        self.SetClientSize(wx.Size(400, 250))
-        self.SetSizeHints(350, -1, -1, -1)
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
+        self.SetSizeHints(self.FromDIP(350), -1, -1, -1)
 
         self.stInfo = wx.StaticText(id=wxID_DLGJOBVISUALSTINFO, label=_("Info"),
               name="stInfo", parent=self, pos=wx.Point(-1, -1),

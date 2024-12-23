@@ -40,7 +40,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         wx.Panel.__init__(self, id=wxID_PNLJOBMANAGER, name="PnlJobManager",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(400, 250))
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
 
         self.pnlJobs = wx.lib.scrolledpanel.ScrolledPanel(id=wxID_PNLJOBMANAGERPNLJOBS,
               name="pnlJobs", parent=self, pos=wx.Point(-1, -1),

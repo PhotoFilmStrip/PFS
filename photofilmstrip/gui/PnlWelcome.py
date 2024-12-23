@@ -46,7 +46,7 @@ class PnlWelcome(wx.Panel):
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.SetBackgroundStyle(wx.BG_STYLE_SYSTEM)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
-        self.htmlWin.SetSizeHints(650, -1, 650, -1)
+        self.htmlWin.SetSizeHints(self.FromDIP(650), -1, self.FromDIP(650), -1)
 
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
         sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL, 8)
@@ -80,6 +80,15 @@ class PnlWelcome(wx.Panel):
 
         self.__updateChecker = UpdateChecker()
         wx.CallLater(500, self.__NotifyUpdate)
+
+        self.Bind(wx.EVT_DPI_CHANGED, self.OnDpiChanged)
+
+    def OnDpiChanged(self, event):
+        self.htmlWin.SetSizeHints(self.FromDIP(650), -1, self.FromDIP(650), -1)
+        LinkOpenPfs.BMP_MAP = {}
+        self.Layout()
+        self.RefreshPage()
+        event.Skip()
 
     def RefreshPage(self, withHistory=True):
         if withHistory:
@@ -186,7 +195,6 @@ class LinkOpenPfs(IconLabelLink):
             if img is not None:
                 wxImg = wx.Image(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
-                bmp.SetScaleFactor(parent.GetDPIScaleFactor())
             else:
                 bmp = Art.GetBitmap("PFS_ICON", size=parent.FromDIP(wx.Size(48, 48)))
             descr = "%d images" % imgCount

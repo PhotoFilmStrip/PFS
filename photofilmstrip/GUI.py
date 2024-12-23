@@ -20,7 +20,6 @@ from photofilmstrip import Constants
 class GuiApp(AppMixin):
 
     def _OnStart(self):
-        logging.info("main")
         import wx
         assert wx.VERSION[0] == 4
 

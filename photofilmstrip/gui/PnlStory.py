@@ -759,15 +759,15 @@ class PnlMediaItem(wx.Panel):
               name="staticLine")
 
         szCol0Content = wx.BoxSizer(wx.VERTICAL)
-        szCol0Content.Add(self.stName, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
-        szCol0Content.AddSpacer(4)
-        szCol0Content.Add(self.stInfo, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        szCol0Content.Add(self.stName, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        szCol0Content.AddSpacer(self.FromDIP(4))
+        szCol0Content.Add(self.stInfo, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
 
         szCol0 = wx.BoxSizer(wx.HORIZONTAL)
         if media.GetParent().GetFilename() != "":
-            szCol0.AddSpacer(24)
+            szCol0.AddSpacer(self.FromDIP(24))
         szCol0.Add(self.bmp, 0, border=0, flag=wx.ALIGN_CENTER_VERTICAL)
-        szCol0.AddSpacer(4)
+        szCol0.AddSpacer(self.FromDIP(4))
         szCol0.Add(szCol0Content)
 
         szCol1 = wx.BoxSizer(wx.VERTICAL)
@@ -778,11 +778,11 @@ class PnlMediaItem(wx.Panel):
 
         szRow = wx.BoxSizer(wx.HORIZONTAL)
         szRow.Add(szCol0, 3, border=0, flag=0)
-        szRow.AddSpacer(4)
+        szRow.AddSpacer(self.FromDIP(4))
         szRow.Add(szCol1, 1, border=0, flag=0)
 
         szMain = wx.BoxSizer(wx.VERTICAL)
-        szMain.Add(szRow, 0, border=4, flag=wx.EXPAND | wx.RIGHT | wx.LEFT)
+        szMain.Add(szRow, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.RIGHT | wx.LEFT)
         szMain.Add(self.staticLine, 0, border=0, flag=wx.EXPAND)
         self.SetSizerAndFit(szMain)
 
@@ -866,7 +866,7 @@ class PnlOptSelect(wx.Panel):
 
         sz = wx.BoxSizer(wx.HORIZONTAL)
         sz.Add(self.stName, flag=wx.ALIGN_CENTER_VERTICAL)
-        sz.AddSpacer(4)
+        sz.AddSpacer(self.FromDIP(4))
         sz.Add(self.stValue, flag=wx.ALIGN_CENTER_VERTICAL)
         sz.Add(self.cbOptions, flag=wx.EXPAND)
         self.SetSizeHints(wx.Size(-1, self.cbOptions.GetSize()[1]))

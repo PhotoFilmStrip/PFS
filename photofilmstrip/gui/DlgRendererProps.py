@@ -79,7 +79,7 @@ class DlgRendererProps(wx.Dialog):
 
         self.lcProps = wx.ListCtrl(id=wxID_DLGRENDERERPROPSLCPROPS,
               name="lcProps", parent=self, pos=wx.Point(-1, -1),
-              size=wx.Size(-1, -1), style=wx.LC_REPORT | wx.SUNKEN_BORDER)
+              size=wx.Size(-1, -1), style=wx.LC_REPORT | wx.SIMPLE_BORDER)
         self.lcProps.SetMinSize(self.FromDIP(wx.Size(500, 120)))
         self._init_coll_lcProps_Columns(self.lcProps)
         self.lcProps.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnActivateProperty,

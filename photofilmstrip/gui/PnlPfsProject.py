@@ -87,11 +87,11 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def _init_coll_sizerPictureCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.cmdMoveLeft, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdMoveLeft, 0, border=self.FromDIP(2), flag=wx.ALL)
         parent.AddStretchSpacer(1)
-        parent.Add(self.cmdMoveRight, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdMoveRight, 0, border=self.FromDIP(2), flag=wx.ALL)
         parent.AddStretchSpacer(1)
-        parent.Add(self.cmdRemove, 0, border=2, flag=wx.ALL)
+        parent.Add(self.cmdRemove, 0, border=self.FromDIP(2), flag=wx.ALL)
 
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
@@ -235,7 +235,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
     def __init__(self, parent, project):
         PnlEditorPage.__init__(self, parent, id=wxID_PNLPFSPROJECT,
                                name="PnlPfsProject")
-        self.SetClientSize(wx.Size(400, 250))
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
 
         self._InitCtrls()
 

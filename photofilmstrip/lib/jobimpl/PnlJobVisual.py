@@ -25,31 +25,31 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.szTop, 0, border=4,
+        parent.Add(self.szTop, 0, border=self.FromDIP(4),
               flag=wx.EXPAND | wx.RIGHT | wx.LEFT)
         parent.Add(self.staticLine, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szMiddle_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.stJobName, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        parent.Add(self.stJobName, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
         parent.Add(self.gaugeProgress, 0, border=0, flag=wx.EXPAND)
-        parent.Add(self.stJobInfo, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        parent.Add(self.stJobInfo, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
 
     def _init_coll_szTop_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.bmpJob, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.szMiddle, 1, border=0, flag=0)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.cmdAction, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.cmdMenu, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
 
     def _init_sizers(self):
         # generated method, don't edit
