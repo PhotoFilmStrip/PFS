@@ -18,10 +18,10 @@ if getattr(sys, "frozen", False):
 else:
     APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
-VERSION_SUFFIX = 'b4'
+VERSION_SUFFIX = ''
 
 APP_NAME = "PhotoFilmStrip"
-APP_VERSION = "4.0.0"
+APP_VERSION = "4.1.0"
 APP_VERSION_SUFFIX = "%s%s" % (APP_VERSION, VERSION_SUFFIX)
 APP_VERSION_FULL = "%s-%s" % (APP_VERSION_SUFFIX, SCM_REV)
 APP_SLOGAN = "PhotoFilmStrip - Creates movies out of your pictures."
@@ -30,4 +30,4 @@ PhotoFilmStrip creates movies out of your pictures in just 3 steps. First select
 """
 APP_URL = "http://www.photofilmstrip.org"
 DEVELOPERS = ["Jens Göpfert"]
-TRANSLATORS = ["Teza Lprod - http://lprod.org", "geogeo - http://www.geogeo.gr"]
+TRANSLATORS = ["Jens Göpfert"]
