@@ -578,7 +578,7 @@ class PnlMediaContainer(wx.lib.scrolledpanel.ScrolledPanel, TreeIF):
     def __init__(self, parent):
         wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, wx.ID_ANY,
             name="pnlMediaContainer", style=wx.SUNKEN_BORDER)
-        self.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX))
 
         self.root = TreeItm()
 
@@ -712,7 +712,7 @@ class PnlMediaItem(wx.Panel):
 
     def __init__(self, parent, media):
         wx.Panel.__init__(self, parent, id=wx.ID_ANY, name='PnlMediaItem')
-        self.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX))
 
         bmp = Art.GetBitmapBundle("PFS_ALERT", wx.ART_BUTTON)
         if media.IsOk():

@@ -12,7 +12,6 @@ from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
 
 from photofilmstrip.gui.Art import Art
 
-
 [wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION,
  wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
  wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
@@ -70,7 +69,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name="PnlJobVisual",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX))
 
         self.bmpJob = wx.StaticBitmap(
               bitmap=Art.GetBitmapBundle('PFS_RENDER', wx.ART_TOOLBAR),
@@ -169,7 +168,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
             bgCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:
-            bgCol = wx.WHITE
+            bgCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX)
             txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOXTEXT)
         self.SetBackgroundColour(bgCol)
         self.stJobName.SetForegroundColour(txtCol)
