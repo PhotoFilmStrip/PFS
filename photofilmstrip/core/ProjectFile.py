@@ -223,8 +223,11 @@ class ProjectFile:
             query, values = self.__PicToQuery(pic, includePics)
             cur.execute(query, values)
 
-            query, values = self.__ThumbToQuery(cur.lastrowid, pic)
-            cur.execute(query, values)
+            try:
+                query, values = self.__ThumbToQuery(cur.lastrowid, pic)
+                cur.execute(query, values)
+            except Exception as err:
+                logging.warning("error while embedding thumbnail: %s", err, exc_info=err)
 
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
         for name, value in [('rev', SCHEMA_REV),

@@ -109,6 +109,9 @@ class Job(IJobContext):
     def GetResultObject(self):  # , block=True):
         return self.__resultObject
 
+    def GetName(self):
+        return "generic job"
+
 
 class SingleWorkLoad(WorkLoad):
     '''

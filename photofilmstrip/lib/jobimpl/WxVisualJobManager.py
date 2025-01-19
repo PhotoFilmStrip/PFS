@@ -30,10 +30,14 @@ class WxVisualJobManager(IVisualJobManager):
         return self.__id
 
     def RegisterJob(self, job):
+        if not self.__win:
+            return
         evt = JobEvent(self.__win.GetId(), job, _EVT_REGISTER_JOB_TYPE)
         wx.PostEvent(self.__win, evt)
 
     def RemoveJob(self, job):
+        if not self.__win:
+            return
         evt = JobEvent(self.__win.GetId(), job, _EVT_REMOVE_JOB_TYPE)
         wx.PostEvent(self.__win, evt)
 
