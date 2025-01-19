@@ -39,24 +39,24 @@ def RotateExif(pilImg):
 
     if rotation == 2:
         # flip horizontal
-        return pilImg.transpose(Image.FLIP_LEFT_RIGHT)
+        return pilImg.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     elif rotation == 3:
         # rotate 180
         return pilImg.rotate(-180)
     elif rotation == 4:
         # flip vertical
-        return pilImg.transpose(Image.FLIP_TOP_BOTTOM)
+        return pilImg.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
     elif rotation == 5:
         # transpose
         pilImg = pilImg.rotate(-90, expand=1)
-        return pilImg.transpose(Image.FLIP_LEFT_RIGHT)
+        return pilImg.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     elif rotation == 6:
         # rotate 90
         return pilImg.rotate(-90, expand=1)
     elif rotation == 7:
         # transverse
         pilImg = pilImg.rotate(-90, expand=1)
-        return pilImg.transpose(Image.FLIP_TOP_BOTTOM)
+        return pilImg.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
     elif rotation == 8:
         # rotate 270
         return pilImg.rotate(-270, expand=1)
@@ -66,11 +66,11 @@ def RotateExif(pilImg):
 
 def CropAndResize(pilImg, rect, size, draft=False):
     if draft:
-        filtr = Image.NEAREST
+        filtr = Image.Resampling.NEAREST
     else:
-        filtr = Image.BILINEAR
+        filtr = Image.Resampling.BILINEAR
     img = pilImg.transform(size,
-                           Image.AFFINE,
+                           Image.Transform.AFFINE,
                            [rect[2] / size[0], 0, rect[0],
                             0, rect[3] / size[1], rect[1]],
                            filtr)
@@ -94,15 +94,33 @@ def Transition(kind, pilImg1, pilImg2, percentage):
 
 
 def __CreateDummyImage(message):
-    width = 400
-    height = 300
+    width = 800
+    height = 600
+    border = 40
+    fontSize = 14
     img = Image.new("RGB", (width, height), (255, 255, 255))
 
     draw = ImageDraw.Draw(img)
-    textWidth, textHeight = draw.textsize(message)
-    x = (width - textWidth) // 2
-    y = (height - textHeight * 2)
-    draw.text((x, y), message, fill=(0, 0, 0))
+    font = draw.getfont()
+    font.size = int(round(font.size * 1.4))
+
+    blankCount = message.count(" ")
+    for splitCount in range(blankCount):
+        splittedMsg = message.rsplit(" ", splitCount)
+        for line in splittedMsg:
+            tl = draw.textlength(text=line, font_size=fontSize)
+            if tl > width - border * 2:
+                break
+        else:
+            break
+
+    lines = message.rsplit(" ", splitCount)
+    draw.multiline_text(
+        (border, height - (fontSize + 1) * len(lines)),
+        "\n".join(lines),
+        fill=(0, 0, 0),
+        spacing=0,
+        font_size=fontSize)
 
     sz = width // 2
     draw.ellipse(((width - sz) // 2, (height - sz) // 2,
@@ -226,11 +244,11 @@ def GetThumbnail(picture, width=None, height=None):
         thumbWidth = int(round(thumbHeight * aspect))
 
     # prescale image to speed up processing
-    img.thumbnail((max(thumbWidth, thumbHeight), max(thumbWidth, thumbHeight)), Image.NEAREST)
+    img.thumbnail((max(thumbWidth, thumbHeight), max(thumbWidth, thumbHeight)), Image.Resampling.NEAREST)
     img = __ProcessImage(img, picture)
 
     # make the real thumbnail
-    img.thumbnail((thumbWidth, thumbHeight), Image.NEAREST)
+    img.thumbnail((thumbWidth, thumbHeight), Image.Resampling.NEAREST)
 
 #    newImg = Image.new("RGB", (thumbWidth, thumbHeight), 0)
 #    newImg.paste(img, (abs(thumbWidth - img.size[0]) / 2,
