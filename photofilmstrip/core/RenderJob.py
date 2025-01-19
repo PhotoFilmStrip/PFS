@@ -21,6 +21,7 @@ class RenderJob(VisualJob, Ux):
         Ux.__init__(self)
         self.renderer = renderer
         self.tasks = tasks
+        self.outputFile = renderer.GetOutputFile()
 
         self.SetMaxProgress(len(tasks))
 
@@ -34,7 +35,7 @@ class RenderJob(VisualJob, Ux):
         self.__logger = logging.getLogger("RenderJob")
 
     def GetOutputFile(self):
-        return self.renderer.GetOutputFile()
+        return self.outputFile
 
     def Done(self):
         if self.IsAborted():
@@ -44,6 +45,11 @@ class RenderJob(VisualJob, Ux):
         self.__logger.debug("task cache: %s; result cache: %s",
                            len(self.taskResultCache),
                            len(self.resultsForRendererCache))
+        self.taskResultCache = {}
+        self.resultsForRendererCache = {}
+        self.finalizeHandler = None
+        self.renderer = None
+        self.tasks = None
 
     def Begin(self):
         # prepare task queue

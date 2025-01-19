@@ -241,6 +241,12 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         self.lvPics.SetDropTarget(ImageDropTarget(self))
 
+        self._imageCache = ImageCache(
+            self.lvPics,
+            PhotoFilmStripList.THUMB_HEIGHT,
+            Art.GetBitmap(wx.ART_NORMAL_FILE, size=wx.Size(120, 120)))  # TODO: PFS_ART)
+        self.lvPics.SetImageCache(self._imageCache)
+
         self.imgProxyLeft = None
         self.imgProxyRight = None
         self.__project = project
@@ -355,10 +361,12 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_RENDER_FILMSTRIP)
 
     def DisconnEvents(self, evtHandler):
-        for wId in [ID_PIC_MOVE_LEFT, ID_PIC_MOVE_RIGHT, ID_PIC_REMOVE,
+        for wId in [ID_EXPORT, ID_IMPORT,
+                    ID_PIC_MOVE_LEFT, ID_PIC_MOVE_RIGHT, ID_PIC_REMOVE,
                     ID_PIC_ROTATE_CCW, ID_PIC_ROTATE_CW, ID_PIC_MOTION_RANDOM,
                     ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP]:
-            evtHandler.Disconnect(wId)
+            while evtHandler.Disconnect(wId):
+                pass
 
     def GetSelectedImageState(self):
         items = self.lvPics.GetSelected()
@@ -419,7 +427,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
                 pic = Picture(path)
                 pics.append(pic)
-                ImageCache().RegisterPicture(pic)
+                self._imageCache.RegisterPicture(pic)
 
             selItms = self.lvPics.GetSelected()
             self.InsertPictures(pics,
@@ -641,6 +649,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
             actCp.Execute()
 
     def Close(self):
+        self._imageCache.Destroy()
+        self._imageCache = None
         self.imgProxyLeft.RemoveObserver(self.bitmapLeft)
         self.imgProxyRight.RemoveObserver(self.bitmapRight)
         self.imgProxyLeft.Destroy()

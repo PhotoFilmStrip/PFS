@@ -14,7 +14,6 @@ from photofilmstrip.core import PILBackend
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 
-from photofilmstrip.gui.util.ImageCache import ImageCache  # FIXME: no gui import here
 from photofilmstrip.core.Project import Project
 
 SCHEMA_REV = 4
@@ -338,8 +337,6 @@ class ProjectFile:
         return True
 
     def __LoadThumbnail(self, pic, picId):
-        ImageCache().RegisterPicture(pic)
-        return
         thumbNail = None
         if self.__fileRev >= 3:
             cur = self.__GetCursor()
@@ -352,7 +349,6 @@ class ProjectFile:
                 thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
         if thumbNail is None:
             thumbNail = PILBackend.GetThumbnail(pic, height=120)
-        ImageCache().RegisterPicture(pic, thumbNail)
 
     def __LoadSafe(self, row, colName, default):
         try:

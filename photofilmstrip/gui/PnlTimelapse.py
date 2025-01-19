@@ -121,9 +121,9 @@ class PnlTimelapse(PnlPfsProject):
             return True
 
     def _InitImageProxy(self):
-        self.imgProxyLeft = ImageProxy()
+        self.imgProxyLeft = ImageProxy(self.__imageCache)
         self.imgProxyLeft.AddObserver(self.bitmapLeft)
-        self.imgProxyRight = ImageProxy()
+        self.imgProxyRight = ImageProxy(self.__imageCache)
         self.imgProxyRight.AddObserver(self.bitmapRight)
 
         self.bitmapLeft.SetImgProxy(self.imgProxyLeft)

@@ -10,7 +10,7 @@ import os
 import wx
 
 from photofilmstrip.gui.Art import Art
-from photofilmstrip.gui.util.ImageCache import ImageCache, EVT_THUMB_READY
+from photofilmstrip.gui.util.ImageCache import EVT_THUMB_READY
 from photofilmstrip.gui.helper import ChopText
 
 EVT_CHANGED_TYPE = wx.NewEventType()
@@ -43,6 +43,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         clientSize = wx.Size(-1, self.THUMB_HEIGHT + self.FromDIP(2 * self.BORDER) + wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
         self.SetSizeHints(clientSize, clientSize)
 
+        self.__imageCache = None
         self.__frozen = False
         self.__pictures = []
         self.__selIdxs = []
@@ -64,17 +65,19 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
         self.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.Bind(wx.EVT_MOUSE_CAPTURE_LOST, self.OnCaptureLost)
-
-        ImageCache().RegisterWin(self)
-        ImageCache().thumb = Art.GetBitmap(wx.ART_NORMAL_FILE, size=wx.Size(120, 120)) # TODO: PFS_ART
-        self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
         self.Bind(wx.EVT_DPI_CHANGED, self.OnDpiChanged)
+
+        self.Bind(EVT_THUMB_READY, self.__OnThumbReady)
 
     def OnDpiChanged(self, event):
         clientSize = wx.Size(-1, self.THUMB_HEIGHT + self.FromDIP(2 * self.BORDER) + wx.SystemSettings.GetMetric(wx.SYS_HSCROLL_Y))
         self.SetSizeHints(clientSize, clientSize)
 
         self.Layout()
+        event.Skip()
+
+    def SetImageCache(self, imageCache):
+        self.__imageCache = imageCache
 
     def Freeze(self, *args):
         self.__frozen = True
@@ -105,7 +108,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         diaRect = wx.Rect(-vx, 0, 0, self.THUMB_HEIGHT + self.FromDIP(2 * self.BORDER))
 
         for idx, pic in enumerate(self.__pictures):
-            bmp = ImageCache().GetThumbBmp(pic)
+            bmp = self.__imageCache.GetThumbBmp(pic)
 
             # if the picture cannot be loaded GetWidth may return -1
             bmpWidth = bmp.GetWidth()
@@ -141,7 +144,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
 
     def __CreateDiaBmp(self, picIdx, selected=False, highlighted=False, dropIdx=None):
         pic = self.__pictures[picIdx]
-        thumbBmp = ImageCache().GetThumbBmp(pic)
+        thumbBmp = self.__imageCache.GetThumbBmp(pic)
         diaRect = self.GetDiaRect(picIdx)
         holeOffset = diaRect.x
 
@@ -368,7 +371,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def __UpdateVirtualSize(self):
         width = 0
         for pic in self.__pictures:
-            bmp = ImageCache().GetThumbBmp(pic)
+            bmp = self.__imageCache.GetThumbBmp(pic)
             # if the picture cannot be loaded GetWidth may return -1
             width += bmp.GetWidth() + self.FromDIP(self.GAP)
 
@@ -384,7 +387,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
     def GetDiaRect(self, idx):
         sx = 0
         for picIdx, pic in enumerate(self.__pictures):
-            thumbWidth = ImageCache().GetThumbBmp(pic).GetWidth()
+            thumbWidth = self.__imageCache.GetThumbBmp(pic).GetWidth()
 
             if idx == picIdx:
                 rect = wx.Rect(sx, 0, thumbWidth + self.FromDIP(self.GAP), self.THUMB_HEIGHT + self.FromDIP(2 * self.BORDER))
@@ -396,7 +399,7 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         pos = self.CalcUnscrolledPosition(pos)
         sx = 0
         for idx, pic in enumerate(self.__pictures):
-            thumbWidth = ImageCache().GetThumbBmp(pic).GetWidth()
+            thumbWidth = self.__imageCache.GetThumbBmp(pic).GetWidth()
 
             rect = wx.Rect(sx, 0, thumbWidth + self.FromDIP(self.GAP), self.THUMB_HEIGHT + self.FromDIP(2 * self.BORDER))
             if rect.Contains(pos):
@@ -560,7 +563,3 @@ class PhotoFilmStripList(wx.ScrolledWindow):
             self._SendChangedEvent()
         if evt:
             self.GetEventHandler().ProcessEvent(evt)
-
-
-# FIXME: should be fixed height
-ImageCache.THUMB_SIZE = PhotoFilmStripList.THUMB_HEIGHT

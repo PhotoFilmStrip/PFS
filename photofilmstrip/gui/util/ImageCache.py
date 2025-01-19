@@ -5,45 +5,40 @@
 # Copyright (C) 2011 Jens Goepfert
 #
 
-import threading
-import time
-
 import wx
 
-from photofilmstrip.lib.common.Singleton import Singleton
 from photofilmstrip.lib.common.ObserverPattern import Observer
+from photofilmstrip.lib.jobimpl.Job import Job
+from photofilmstrip.lib.jobimpl.JobManager import JobManager
 
 from photofilmstrip.core import PILBackend
-from photofilmstrip.lib.DestructionManager import Destroyable
 
 
-class ImageCache(Singleton, Observer):
+class ImageCache(Observer):
 
     SIZE = 400
-    THUMB_SIZE = 100
 
-    def __init__(self):
+    def __init__(self, win, thumbSize, thumb=None):
         self._picRegistry = {}
         self._wxImgCache = {}
         self._wxBmpCache = {}
         self._pilCache = {}
         self._inScalingQueue = object()
 
-        self.scaleThread = ScaleThread(self)
-        self.scaleThread.start()
-        self.win = None
-        self.thumb = None
-
-    def RegisterWin(self, win):
         self.win = win
+        self.thumbDefault = thumb
+        self.thumbSize = thumbSize
+
+    def Destroy(self):
+        self.win = None
+        self._wxImgCache.clear()
+        self._wxBmpCache.clear()
+        self._picRegistry.clear()
+        self._pilCache.clear()
 
     def ObservableUpdate(self, obj, arg):
         if arg == 'bitmap':
             self.UpdatePicture(obj)
-
-    def ClearCache(self):
-        self._wxImgCache.clear()
-        self._wxBmpCache.clear()
 
     def RegisterPicture(self, picture, pilThumb=None):
 #        if pilThumb is None:
@@ -80,44 +75,33 @@ class ImageCache(Singleton, Observer):
             pilImg = self._pilCache.get(key)
             if pilImg is None:
                 self._pilCache[key] = self._inScalingQueue
-                self.scaleThread.queue.append(picture)
-                return self.thumb
+                tgj = ThumbnailGeneratorJob(picture, self)
+                JobManager().EnqueueContext(tgj)
+                return self.thumbDefault
             elif pilImg is self._inScalingQueue:
-                return self.thumb
+                return self.thumbDefault
             else:
-#                pilImg = self._pilCache[key]
                 wxImg = wx.Image(PILBackend.ImageToStream(pilImg), wx.BITMAP_TYPE_JPEG)
                 self._wxBmpCache[key] = wxImg.ConvertToBitmap()
         return self._wxBmpCache[key]
 
 
-class ScaleThread(threading.Thread, Destroyable):
+class ThumbnailGeneratorJob(Job):
 
-    def __init__(self, imgCache):
-        threading.Thread.__init__(self, name="ScaleThread")
-        Destroyable.__init__(self)
+    def __init__(self, pic, imgCache):
+        Job.__init__(self, groupId="scale" )
+        self.pic = pic
         self.imgCache = imgCache
-        self.active = True
-        self.queue = []
+        self.pilImg = None
 
-    def Destroy(self):
-        self.active = False
+    def Begin(self):
+        self.pilImg = PILBackend.GetThumbnail(self.pic, self.imgCache.thumbSize)
 
-    def run(self):
-        while self.active:
-            pic = None
-            try:
-                pic = self.queue.pop(0)
-            except IndexError:
-                time.sleep(0.1)
-                continue
-
-            pilImg = PILBackend.GetThumbnail(pic, height=ImageCache.THUMB_SIZE)
-            self.imgCache.RegisterPicture(pic, pilImg)
-
-            if self.imgCache.win:
-                evt = ThumbnailReadyEvent(pic)
-                wx.PostEvent(self.imgCache.win, evt)
+    def Done(self):
+        self.imgCache.RegisterPicture(self.pic, self.pilImg)
+        if self.imgCache.win:
+            evt = ThumbnailReadyEvent(self.pic)
+            wx.PostEvent(self.imgCache.win, evt)
 
 
 _EVT_THUMB_READY_TYPE = wx.NewEventType()

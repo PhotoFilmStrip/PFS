@@ -15,7 +15,6 @@ from photofilmstrip.gui.DlgPicDurationByAudio import DlgPicDurationByAudio
 from photofilmstrip.gui.helper import CreateMenuItem
 from photofilmstrip.gui.ImageSectionEditor import ImageProxy
 
-
 [ID_PROJECT_PROPS,
  ID_PIC_DURATION_BY_AUDIO,
 ] = [wx.NewId() for __ in range(2)]
@@ -73,8 +72,9 @@ class PnlSlideshow(PnlPfsProject):
 
     def DisconnEvents(self, evtHandler):
         PnlPfsProject.DisconnEvents(self, evtHandler)
-        for wId in [ID_PIC_DURATION_BY_AUDIO]:
-            evtHandler.Disconnect(wId)
+        for wId in [ID_PROJECT_PROPS, ID_PIC_DURATION_BY_AUDIO]:
+            while evtHandler.Disconnect(wId):
+                pass
 
     def GetStatusText(self, index):
         project = self.GetProject()
@@ -112,7 +112,7 @@ class PnlSlideshow(PnlPfsProject):
         DlgPicDurationByAudio.Interact(self, self.GetProject())
 
     def _InitImageProxy(self):
-        self.imgProxyLeft = self.imgProxyRight = ImageProxy()
+        self.imgProxyLeft = self.imgProxyRight = ImageProxy(self._imageCache)
         self.imgProxyLeft.AddObserver(self.bitmapLeft)
         self.imgProxyRight.AddObserver(self.bitmapRight)
 
