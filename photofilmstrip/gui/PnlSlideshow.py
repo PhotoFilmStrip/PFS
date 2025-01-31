@@ -7,6 +7,7 @@
 
 import wx
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.PnlPfsProject import (
     PnlPfsProject, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP)
 from photofilmstrip.gui.DlgDuration import DlgDuration
@@ -28,27 +29,27 @@ class PnlSlideshow(PnlPfsProject):
         PnlPfsProject.AddMenuFileActions(self, menu)
         CreateMenuItem(menu, ID_PROJECT_PROPS,
                        _("&Properties"),
-                       wx.ArtProvider.GetBitmap('PFS_PROPERTIES', wx.ART_MENU))
+                       Art.GetBitmapBundle('PFS_PROPERTIES', wx.ART_MENU))
         return True
 
     def AddToolBarActions(self, toolBar):
         toolBar.AddTool(ID_PIC_IMPORT, '',
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
-                          wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
                           wx.ITEM_NORMAL,
                           _("Import Pictures"),
                           _("Import Pictures"),
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MUSIC, '',
-                          wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_MUSIC', wx.ART_TOOLBAR),
                           wx.NullBitmap,
                           wx.ITEM_NORMAL,
                           _("Configure music"),
                           _("Configure music"),
                           None)
         toolBar.AddTool(ID_PIC_DURATION_BY_AUDIO, '',
-                          wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_MUSIC_DURATION', wx.ART_TOOLBAR),
                           wx.NullBitmap,
                           wx.ITEM_NORMAL,
                           _("Adjust picture durations"),
@@ -56,8 +57,8 @@ class PnlSlideshow(PnlPfsProject):
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_RENDER_FILMSTRIP, '',
-                          wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
-                          wx.ArtProvider.GetBitmap('PFS_RENDER_D', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_RENDER', wx.ART_TOOLBAR),
+                          Art.GetBitmapBundle('PFS_RENDER_D', wx.ART_TOOLBAR),
                           wx.ITEM_NORMAL,
                           _("Render filmstrip"),
                           _("Render filmstrip"),
@@ -71,8 +72,9 @@ class PnlSlideshow(PnlPfsProject):
 
     def DisconnEvents(self, evtHandler):
         PnlPfsProject.DisconnEvents(self, evtHandler)
-        for wId in [ID_PIC_DURATION_BY_AUDIO]:
-            evtHandler.Disconnect(wId)
+        for wId in [ID_PROJECT_PROPS, ID_PIC_DURATION_BY_AUDIO]:
+            while evtHandler.Disconnect(wId):
+                pass
 
     def GetStatusText(self, index):
         project = self.GetProject()
@@ -110,7 +112,7 @@ class PnlSlideshow(PnlPfsProject):
         DlgPicDurationByAudio.Interact(self, self.GetProject())
 
     def _InitImageProxy(self):
-        self.imgProxyLeft = self.imgProxyRight = ImageProxy()
+        self.imgProxyLeft = self.imgProxyRight = ImageProxy(self._imageCache)
         self.imgProxyLeft.AddObserver(self.bitmapLeft)
         self.imgProxyRight.AddObserver(self.bitmapRight)
 

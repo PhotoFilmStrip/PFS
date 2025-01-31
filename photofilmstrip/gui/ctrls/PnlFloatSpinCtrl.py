@@ -36,7 +36,6 @@ class PnlFloatSpinCtrl(wx.Panel):
         wx.Panel.__init__(self, id=wxID_PNLFLOATSPINCTRL,
               name="PnlFloatSpinCtrl", parent=prnt, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(169, 31))
 
         self.tcValue = wx.TextCtrl(id=wxID_PNLFLOATSPINCTRLTCVALUE,
               name="tcValue", parent=self, pos=wx.Point(-1, -1),

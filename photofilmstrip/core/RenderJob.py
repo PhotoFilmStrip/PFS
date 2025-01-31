@@ -21,6 +21,7 @@ class RenderJob(VisualJob, Ux):
         Ux.__init__(self)
         self.renderer = renderer
         self.tasks = tasks
+        self.outputFile = renderer.GetOutputFile()
 
         self.SetMaxProgress(len(tasks))
 
@@ -34,7 +35,7 @@ class RenderJob(VisualJob, Ux):
         self.__logger = logging.getLogger("RenderJob")
 
     def GetOutputFile(self):
-        return self.renderer.GetOutputFile()
+        return self.outputFile
 
     def Done(self):
         if self.IsAborted():
@@ -44,6 +45,11 @@ class RenderJob(VisualJob, Ux):
         self.__logger.debug("task cache: %s; result cache: %s",
                            len(self.taskResultCache),
                            len(self.resultsForRendererCache))
+        self.taskResultCache = {}
+        self.resultsForRendererCache = {}
+        self.finalizeHandler = None
+        self.renderer = None
+        self.tasks = None
 
     def Begin(self):
         # prepare task queue
@@ -91,7 +97,7 @@ class RenderJob(VisualJob, Ux):
         self.SetInfo(task.GetInfo())
 
         self.__logger.debug("%s: %s: %s - start",
-                            threading.current_thread().getName(),
+                            threading.current_thread().name,
                             self.GetName(), task.GetKey())
 
         return task
@@ -102,7 +108,7 @@ class RenderJob(VisualJob, Ux):
         '''
         task = resultObject.GetSource()
         self.__logger.debug("%s: %s: %s - done",
-                            threading.current_thread().getName(),
+                            threading.current_thread().name,
                             self.GetName(), task.GetKey())
 
         try:
@@ -115,7 +121,7 @@ class RenderJob(VisualJob, Ux):
                 idx = self.resultForRendererIdx
 
                 self.__logger.debug("%s: %s: resultToFetch: %s",
-                                    threading.current_thread().getName(),
+                                    threading.current_thread().name,
                                     self.GetName(), idx)
 
                 imgData = self.resultsForRendererCache[idx]
@@ -132,12 +138,12 @@ class RenderJob(VisualJob, Ux):
         result = trce.GetResult()
         if trce.refCount == 0:
             self.__logger.debug("%s: %s: clear cached result %s",
-                                threading.current_thread().getName(),
+                                threading.current_thread().name,
                                 self.GetName(), key)
             del self.taskResultCache[key]
         else:
             self.__logger.debug("%s: %s: result ref count %s %s",
-                                threading.current_thread().getName(),
+                                threading.current_thread().name,
                                 self.GetName(), trce.refCount, key)
 
         return result

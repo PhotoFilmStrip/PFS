@@ -10,7 +10,9 @@ import wx
 
 from photofilmstrip.core.Aspect import Aspect
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+
 
 [wxID_DLGPOSITIONINPUT, wxID_DLGPOSITIONINPUTCMDCANCEL,
  wxID_DLGPOSITIONINPUTCMDOK, wxID_DLGPOSITIONINPUTCMDRESET,
@@ -35,25 +37,25 @@ class DlgPositionInput(wx.Dialog):
 
         parent.Add(self.stStartLocation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.Add(self.spinStartX, 0, border=0, flag=0)
-        parent.Add(self.spinStartY, 0, border=0, flag=0)
+        parent.Add(self.spinStartX, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.spinStartY, 0, border=0, flag=wx.EXPAND)
         parent.Add(self.stStartSize, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.Add(self.spinStartWidth, 0, border=0, flag=0)
-        parent.Add(self.spinStartHeight, 0, border=0, flag=0)
+        parent.Add(self.spinStartWidth, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.spinStartHeight, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szStartHdr_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.stStartPos, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.slStartPos, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
     def _init_coll_szEndCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSpacer(16)
+        parent.AddSpacer(self.FromDIP(16))
         parent.Add(self.szEnd, 1, border=0, flag=0)
 
     def _init_coll_szEnd_Items(self, parent):
@@ -61,45 +63,45 @@ class DlgPositionInput(wx.Dialog):
 
         parent.Add(self.stEndLocation, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.Add(self.spinEndX, 0, border=0, flag=0)
-        parent.Add(self.spinEndY, 0, border=0, flag=0)
+        parent.Add(self.spinEndX, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.spinEndY, 0, border=0, flag=wx.EXPAND)
         parent.Add(self.stEndSize, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.Add(self.spinEndWidth, 0, border=0, flag=0)
-        parent.Add(self.spinEndHeight, 0, border=0, flag=0)
+        parent.Add(self.spinEndWidth, 0, border=0, flag=wx.EXPAND)
+        parent.Add(self.spinEndHeight, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szCmds_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.cmdReset, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cmdCancel, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cmdOk, 0, border=0, flag=0)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.Add(self.szStartHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.Add(self.szStartCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(16)
-        parent.Add(self.szEndHdr, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.Add(self.szEndCtrls, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(16)
-        parent.Add(self.szCmds, 0, border=4, flag=wx.ALL | wx.ALIGN_RIGHT)
+        parent.Add(self.szStartHdr, 0, border=self.FromDIP(4), flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szStartCtrls, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(self.FromDIP(16))
+        parent.Add(self.szEndHdr, 0, border=self.FromDIP(4), flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szEndCtrls, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(self.FromDIP(16))
+        parent.Add(self.szCmds, 0, border=self.FromDIP(4), flag=wx.ALL | wx.ALIGN_RIGHT)
 
     def _init_coll_szStartCtrls_Items(self, parent):
         # generated method, don't edit
 
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.szStart, 1, border=0, flag=0)
 
     def _init_coll_szEndHdr_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.stEndPos, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.slEndPos, 1, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
 
@@ -107,7 +109,9 @@ class DlgPositionInput(wx.Dialog):
         # generated method, don't edit
         self.szMain = wx.BoxSizer(orient=wx.VERTICAL)
 
-        self.szStart = wx.FlexGridSizer(cols=3, hgap=4, rows=2, vgap=8)
+        self.szStart = wx.FlexGridSizer(cols=3, hgap=self.FromDIP(4), rows=2, vgap=self.FromDIP(8))
+        self.szStart.AddGrowableCol(1, 1)
+        self.szStart.AddGrowableCol(2, 1)
 
         self.szStartHdr = wx.BoxSizer(orient=wx.HORIZONTAL)
 
@@ -115,7 +119,9 @@ class DlgPositionInput(wx.Dialog):
 
         self.szStartCtrls = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.szEnd = wx.FlexGridSizer(cols=3, hgap=4, rows=2, vgap=8)
+        self.szEnd = wx.FlexGridSizer(cols=3, hgap=self.FromDIP(4), rows=2, vgap=self.FromDIP(8))
+        self.szEnd.AddGrowableCol(1, 1)
+        self.szEnd.AddGrowableCol(2, 1)
 
         self.szEndCtrls = wx.BoxSizer(orient=wx.HORIZONTAL)
 
@@ -250,7 +256,7 @@ class DlgPositionInput(wx.Dialog):
         self._init_ctrls(parent)
 
         self.pnlHdr.SetTitle(_("Adjust motion positions directly"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MOTION_MANUAL', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MOTION_MANUAL', wx.ART_MESSAGE_BOX))
 
         self.__pic = pic
         self.__ratio = Aspect.ToFloat(aspect)

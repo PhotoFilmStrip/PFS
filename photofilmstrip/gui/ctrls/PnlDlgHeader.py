@@ -10,6 +10,8 @@ import wx
 
 from wx.lib.wordwrap import wordwrap
 
+from photofilmstrip.gui.Art import Art
+
 [wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
  wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
 ] = [wx.NewId() for _init_ctrls in range(6)]
@@ -21,7 +23,7 @@ class PnlDlgHeader(wx.Panel):
         # generated method, don't edit
 
         parent.Add(self.stHeader, 0, border=0, flag=0)
-        parent.Add(self.stErrMsg, 0, border=4, flag=wx.TOP)
+        parent.Add(self.stErrMsg, 0, border=self.FromDIP(4), flag=wx.TOP)
 
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
@@ -32,9 +34,9 @@ class PnlDlgHeader(wx.Panel):
     def _init_coll_szHeader_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.bmpLogo, 0, border=8,
+        parent.Add(self.bmpLogo, 0, border=self.FromDIP(8),
               flag=wx.ALIGN_CENTER_VERTICAL | wx.ALL)
-        parent.Add(self.szHeaderText, 0, border=8,
+        parent.Add(self.szHeaderText, 0, border=self.FromDIP(8),
               flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL)
 
     def _init_sizers(self):
@@ -61,10 +63,9 @@ class PnlDlgHeader(wx.Panel):
         self.pnlHeader = wx.Panel(id=wxID_PNLDLGHEADERPNLHEADER,
               name="pnlHeader", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
-        self.pnlHeader.SetBackgroundColour(wx.Colour(255, 255, 255))
 
-        self.bmpLogo = wx.StaticBitmap(bitmap=wx.ArtProvider.GetBitmap('wxART_GO_HOME',
-              size=wx.Size(32, 32)), id=wxID_PNLDLGHEADERBMPLOGO,
+        self.bmpLogo = wx.StaticBitmap(bitmap=Art.GetBitmapBundle(wx.ART_GO_HOME,
+              wx.ART_MESSAGE_BOX), id=wxID_PNLDLGHEADERBMPLOGO,
               name="bmpLogo", parent=self.pnlHeader, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
 
@@ -87,6 +88,8 @@ class PnlDlgHeader(wx.Panel):
                  pos=wx.DefaultPosition, size=wx.DefaultSize,
                  style=wx.TAB_TRAVERSAL, name="PnlDlgHeader"):
         self._init_ctrls(parent)
+        bgColor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
+        self.pnlHeader.SetBackgroundColour(bgColor)
 
         font = self.stHeader.GetFont()
         font.SetWeight(wx.FONTWEIGHT_BOLD)

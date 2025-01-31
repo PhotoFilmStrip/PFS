@@ -6,9 +6,9 @@
 #
 
 import os
-import subprocess
 
 from photofilmstrip.action.IAction import IAction
+from photofilmstrip.lib.util import StartFile
 
 
 class ActionOpenFolder(IAction):
@@ -24,7 +24,4 @@ class ActionOpenFolder(IAction):
         if not os.path.isdir(outDir):
             return
 
-        if os.name == "nt":
-            os.startfile(outDir)  # pylint: disable=no-member
-        else:
-            subprocess.Popen(["xdg-open", outDir])
+        StartFile(outDir)

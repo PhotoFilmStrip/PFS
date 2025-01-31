@@ -7,20 +7,21 @@
 
 import wx
 
+from photofilmstrip.gui.Art import Art
+
 
 class PnlNotification(wx.Panel):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.bmp = wx.StaticBitmap(
-            self, bitmap=wx.ArtProvider.GetBitmap("PFS_ALERT", size=wx.Size(24, 24)))
+        self.bmp = wx.StaticBitmap(self, bitmap=Art.GetBitmapBundle("PFS_ALERT", wx.ART_BUTTON))
         self.msg = wx.StaticText(self, wx.ID_ANY)
 
         self.timer = wx.Timer(self)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.bmp, 0, border=8, flag=wx.ALL)
-        sizer.Add(self.msg, 1, border=8, flag=wx.TOP | wx.BOTTOM | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(self.bmp, 0, border=self.FromDIP(8), flag=wx.ALL)
+        sizer.Add(self.msg, 1, border=self.FromDIP(8), flag=wx.TOP | wx.BOTTOM | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL)
         self.SetSizer(sizer)
 
         self.notifications = {}

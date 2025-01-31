@@ -15,6 +15,7 @@ from photofilmstrip.core.OutputProfile import (
 
 from photofilmstrip.lib.Settings import Settings
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 from photofilmstrip.gui.HelpViewer import HelpViewer
 from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
@@ -38,9 +39,9 @@ class DlgRender(wx.Dialog):
         # generated method, don't edit
 
         parent.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        parent.Add(self.pnlSettings, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.sizerCmd, 0, border=4, flag=wx.EXPAND | wx.ALL)
+        parent.Add(self.pnlSettings, 0, border=self.FromDIP(4), flag=wx.ALL)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.Add(self.sizerCmd, 0, border=self.FromDIP(8), flag=wx.EXPAND | wx.ALL)
 
     def _init_coll_sizerCmd_Items(self, parent):
         # generated method, don't edit
@@ -48,7 +49,7 @@ class DlgRender(wx.Dialog):
         parent.Add(self.cmdHelp, 0, border=0, flag=0)
         parent.AddStretchSpacer(1)
         parent.Add(self.cmdCancel, 0, border=0, flag=0)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cmdStart, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Items(self, parent):
@@ -62,8 +63,8 @@ class DlgRender(wx.Dialog):
         parent.Add(self.stProfile, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
         parent.Add(self.choiceProfile, 0, border=0, flag=wx.EXPAND)
-        parent.AddSpacer(8)
-        parent.AddSpacer(8)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.AddSpacer(self.FromDIP(8))
         parent.Add(self.cbDraft, 0, border=0, flag=0)
 
     def _init_coll_sizerSettings_Growables(self, parent):
@@ -77,7 +78,7 @@ class DlgRender(wx.Dialog):
 
         self.sizerCmd = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerSettings = wx.FlexGridSizer(cols=3, hgap=8, rows=5, vgap=8)
+        self.sizerSettings = wx.FlexGridSizer(cols=3, hgap=self.FromDIP(8), rows=5, vgap=self.FromDIP(8))
         self.sizerSettings.SetFlexibleDirection(wx.BOTH)
 
         self._init_coll_sizerMain_Items(self.sizerMain)
@@ -111,11 +112,11 @@ class DlgRender(wx.Dialog):
             id=wxID_DLGRENDERCHOICEFORMAT, name="choiceFormat",
             parent=self.pnlSettings, pos=wx.Point(-1, -1),
             size=wx.Size(-1, -1), style=wx.CB_READONLY)
-        self.choiceFormat.SetSizeHints(400, -1)
+        self.choiceFormat.SetSizeHints(self.FromDIP(400), -1)
         self.choiceFormat.Bind(wx.EVT_COMBOBOX, self.OnChoiceFormat,
             id=wxID_DLGRENDERCHOICEFORMAT)
 
-        self.cmdRendererProps = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_VIDEO_FORMAT', wx.ART_TOOLBAR),
+        self.cmdRendererProps = wx.BitmapButton(bitmap=Art.GetBitmapBundle('PFS_VIDEO_FORMAT', wx.ART_TOOLBAR),
               id=wxID_DLGRENDERCMDRENDERERPROPS, name="cmdRendererProps",
               parent=self.pnlSettings, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=wx.BU_AUTODRAW)
@@ -131,7 +132,7 @@ class DlgRender(wx.Dialog):
             id=wxID_DLGRENDERCHOICEPROFILE, name="choiceProfile",
             parent=self.pnlSettings, pos=wx.Point(-1, -1), size=wx.Size(-1,
             - 1), style=0)
-        self.choiceProfile.SetSizeHints(400, -1)
+        self.choiceProfile.SetSizeHints(self.FromDIP(400), -1)
 
         self.cbDraft = wx.CheckBox(id=wxID_DLGRENDERCBDRAFT, label=_("Draft"),
             name="cbDraft", parent=self.pnlSettings, pos=wx.Point(-1, -1),
@@ -162,7 +163,7 @@ class DlgRender(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnCmdCancelButton)
 
         self.pnlHdr.SetTitle(_("Configure output and start render process"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_RENDER', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_RENDER', wx.ART_MESSAGE_BOX))
 
         self.cbDraft.SetToolTip(_("Activate this option to generate a preview of your PhotoFilmStrip. The rendering process will speed up dramatically, but results in lower quality."))
 
@@ -324,7 +325,7 @@ class FormatComboBox(wx.adv.OwnerDrawnComboBox):
         rect2.Deflate(5, 0)
 
         if data.GetMessages():
-            bmp = wx.ArtProvider.GetBitmap('PFS_ALERT', size=wx.Size(16, 16))
+            bmp = Art.GetBitmap('PFS_ALERT', wx.ART_MENU)
             if flags & wx.adv.ODCB_PAINTING_CONTROL:
                 dc.SetTextForeground(wx.SystemSettings.GetColour(wx.SYS_COLOUR_GRAYTEXT))
             elif flags & wx.adv.ODCB_PAINTING_SELECTED:

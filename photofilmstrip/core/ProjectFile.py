@@ -14,7 +14,6 @@ from photofilmstrip.core import PILBackend
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Picture import Picture
 
-from photofilmstrip.gui.util.ImageCache import ImageCache  # FIXME: no gui import here
 from photofilmstrip.core.Project import Project
 
 SCHEMA_REV = 4
@@ -133,7 +132,7 @@ class ProjectFile:
             self.__Close()
         return -1
 
-    def GetPreviewThumb(self):
+    def GetPreviewThumb(self, width, height):
         if not self.Load():
             return None
 
@@ -144,7 +143,7 @@ class ProjectFile:
             picIdx = random.randint(0, imgCount - 1)
             pic = pics[picIdx]
             if os.path.exists(pic.GetFilename()):
-                img = PILBackend.GetThumbnail(pic, width=136, height=70)
+                img = PILBackend.GetThumbnail(pic, width=width, height=height)
                 if pic.IsDummy():
                     img = None
         return img
@@ -223,8 +222,11 @@ class ProjectFile:
             query, values = self.__PicToQuery(pic, includePics)
             cur.execute(query, values)
 
-            query, values = self.__ThumbToQuery(cur.lastrowid, pic)
-            cur.execute(query, values)
+            try:
+                query, values = self.__ThumbToQuery(cur.lastrowid, pic)
+                cur.execute(query, values)
+            except Exception as err:
+                logging.warning("error while embedding thumbnail: %s", err, exc_info=err)
 
         query = "INSERT INTO `property` (name, value) VALUES (?, ?);"
         for name, value in [('rev', SCHEMA_REV),
@@ -335,8 +337,6 @@ class ProjectFile:
         return True
 
     def __LoadThumbnail(self, pic, picId):
-        ImageCache().RegisterPicture(pic)
-        return
         thumbNail = None
         if self.__fileRev >= 3:
             cur = self.__GetCursor()
@@ -349,7 +349,6 @@ class ProjectFile:
                 thumbNail = PILBackend.ImageFromBuffer((thumbWidth, thumbHeight), thumbData)
         if thumbNail is None:
             thumbNail = PILBackend.GetThumbnail(pic, height=120)
-        ImageCache().RegisterPicture(pic, thumbNail)
 
     def __LoadSafe(self, row, colName, default):
         try:

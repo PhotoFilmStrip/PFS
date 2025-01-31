@@ -22,7 +22,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         # generated method, don't edit
 
         parent.Add(self.pnlJobs, 1, border=0, flag=wx.EXPAND)
-        parent.Add(self.cmdClear, 0, border=4, flag=wx.ALL)
+        parent.Add(self.cmdClear, 0, border=self.FromDIP(8), flag=wx.ALL)
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -40,7 +40,7 @@ class PnlJobManager(wx.Panel, WxVisualJobManager):
         wx.Panel.__init__(self, id=wxID_PNLJOBMANAGER, name="PnlJobManager",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(400, 250))
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
 
         self.pnlJobs = wx.lib.scrolledpanel.ScrolledPanel(id=wxID_PNLJOBMANAGERPNLJOBS,
               name="pnlJobs", parent=self, pos=wx.Point(-1, -1),

@@ -44,6 +44,7 @@ class _GStreamerRenderer(BaseRenderer):
         self.concat = None
         self.ptsOffset = 0
         self.ptsLast = -1
+        self.connectIds = []
 
         self.usePangoSubtitle = False
 
@@ -90,6 +91,10 @@ class _GStreamerRenderer(BaseRenderer):
 
         self._Log(logging.DEBUG, "waiting for ready event")
         self.ready.wait()
+
+        while self.connectIds:
+            obj, ident = self.connectIds.pop(0)
+            obj.disconnect(ident)
 
         self.active = None
         self.finished = None
@@ -303,7 +308,8 @@ class _GStreamerRenderer(BaseRenderer):
 
         bus = self.pipeline.get_bus()
         bus.add_signal_watch()
-        bus.connect("message", self._GstOnMessage)
+        ident = bus.connect("message", self._GstOnMessage)
+        self.connectIds.append((bus, ident))
 
         self.pipeline.set_state(Gst.State.PLAYING)
 

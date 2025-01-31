@@ -18,8 +18,6 @@ from photofilmstrip.lib.common.ObserverPattern import Observable, Observer
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core import PILBackend
 
-from photofilmstrip.gui.util.ImageCache import ImageCache
-
 EVT_RECT_CHANGED_TYPE = wx.NewEventType()
 EVT_RECT_CHANGED = wx.PyEventBinder(EVT_RECT_CHANGED_TYPE, 1)
 
@@ -123,7 +121,9 @@ class ImageSectionEditor(wx.Panel, Observer):
     def __DrawBitmap(self, dc):
         if self._imgProxy.IsOk():
             left, top = self.__GetBmpTopLeft()
-            dc.DrawBitmap(self._imgProxy.GetBitmap(), left, top)
+            bmp = self._imgProxy.GetBitmap()
+            if bmp:
+                dc.DrawBitmap(bmp, left, top)
 
     def __GetBmpTopLeft(self):
         if not self._imgProxy.IsOk():
@@ -631,9 +631,10 @@ class ScaleThread(threading.Thread):
 
 class ImageProxy(Observable):
 
-    def __init__(self):
+    def __init__(self, imageCache):
         Observable.__init__(self)
         self._curThread = None
+        self._imageCache = imageCache
 
         self._picture = None
         self._wxImg = None
@@ -655,7 +656,7 @@ class ImageProxy(Observable):
     def SetPicture(self, picture):
         self._picture = picture
         if self._picture is not None:
-            self._wxImg = ImageCache().GetImage(picture)
+            self._wxImg = self._imageCache.GetImage(picture)
 
             if self._curThread is not None:
                 self._curThread.Abort()

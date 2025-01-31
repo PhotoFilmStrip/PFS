@@ -16,6 +16,7 @@ from photofilmstrip.lib.util import IsPathWritable
 from photofilmstrip.core.Aspect import Aspect
 from photofilmstrip.core.Project import Project
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
@@ -24,14 +25,14 @@ class DlgNewProject(wx.Dialog):
     def _InitSizers(self):
         szMain = wx.BoxSizer(orient=wx.VERTICAL)
 
-        szCtrls = wx.GridBagSizer(hgap=8, vgap=8)
+        szCtrls = wx.GridBagSizer(hgap=self.FromDIP(8), vgap=self.FromDIP(8))
 
         szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
 
         szMain.Add(self.pnlHdr, 0, border=0, flag=wx.EXPAND)
-        szMain.Add(szCtrls, 0, border=8, flag=wx.ALL | wx.EXPAND)
+        szMain.Add(szCtrls, 0, border=self.FromDIP(8), flag=wx.ALL | wx.EXPAND)
         szMain.Add(self.staticLine, 0, border=0, flag=wx.EXPAND)
-        szMain.Add(szCmds, 0, border=8, flag=wx.ALL | wx.ALIGN_RIGHT)
+        szMain.Add(szCmds, 0, border=self.FromDIP(8), flag=wx.ALL | wx.ALIGN_RIGHT)
 
         szCtrls.Add(self.stProject, (0, 0), border=0,
               flag=wx.ALIGN_CENTER_VERTICAL, span=(1, 1))
@@ -51,7 +52,7 @@ class DlgNewProject(wx.Dialog):
         szCtrls.AddGrowableCol(1)
 
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
-        szCmds.AddSpacer(8)
+        szCmds.AddSpacer(self.FromDIP(8))
         szCmds.Add(self.cmdOk, 0, border=0, flag=0)
 
         self.SetSizer(szMain)
@@ -71,7 +72,7 @@ class DlgNewProject(wx.Dialog):
               name="tcFolder", style=wx.TE_READONLY, value="")
 
         self.cmdBrowseFolder = wx.BitmapButton(self,
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
               name="cmdBrowseFolder",
               style=wx.BU_AUTODRAW)
         self.cmdBrowseFolder.Bind(wx.EVT_BUTTON, self.OnCmdBrowseFolderButton)
@@ -100,7 +101,7 @@ class DlgNewProject(wx.Dialog):
         self._InitSizers()
 
         self.pnlHdr.SetTitle(title)
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_ICON', size=(32, 32)))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_ICON', wx.ART_MESSAGE_BOX))
 
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
         self.choiceAspect.Append(Aspect.ASPECT_16_10)
@@ -109,9 +110,9 @@ class DlgNewProject(wx.Dialog):
 
         self.choiceAspect.Select(0)
 
-        self.tcProject.SetMinSize(wx.Size(300, -1))
-        self.tcFolder.SetMinSize(wx.Size(300, -1))
-        self.choiceAspect.SetMinSize(wx.Size(300, -1))
+        self.tcProject.SetMinSize(self.FromDIP(wx.Size(300, -1)))
+        self.tcFolder.SetMinSize(self.FromDIP(wx.Size(300, -1)))
+        self.choiceAspect.SetMinSize(self.FromDIP(wx.Size(300, -1)))
 
         self.tcProject.SetValue(_("Unnamed project"))
         self.tcProject.SelectAll()

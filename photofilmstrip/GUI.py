@@ -42,6 +42,10 @@ class GuiApp(AppMixin):
 
 
 def main():
+    if os.name == "nt" and not getattr(sys, 'frozen', None):
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+
     guiApp = GuiApp()
     try:
         UxService.GetInstance().Start()

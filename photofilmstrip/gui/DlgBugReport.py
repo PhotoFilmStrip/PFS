@@ -15,6 +15,8 @@ import wx
 from wx.lib.wordwrap import wordwrap
 
 from photofilmstrip import Constants
+from photofilmstrip.gui.Art import Art
+
 
 EVT_PYTHON_TRACEBACK_TYPE = wx.NewEventType()
 EVT_PYTHON_TRACEBACK = wx.PyEventBinder(EVT_PYTHON_TRACEBACK_TYPE, 1)
@@ -56,8 +58,8 @@ class DlgBugReport(wx.Dialog):
 
         stBmp = wx.StaticBitmap(
             self, -1,
-            wx.ArtProvider.GetBitmap(wx.ART_ERROR, size=wx.Size(32, 32)))
-        stMsg = wx.StaticText(self, -1, wordwrap(text, 300, wx.ClientDC(self)))
+            Art.GetBitmapBundle(wx.ART_ERROR, wx.ART_MESSAGE_BOX))
+        stMsg = wx.StaticText(self, -1, wordwrap(text, self.FromDIP(300), wx.ClientDC(self)))
 
         szTop = wx.BoxSizer(wx.HORIZONTAL)
         szTop.Add(stBmp, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 8)

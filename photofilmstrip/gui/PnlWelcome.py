@@ -18,6 +18,7 @@ from photofilmstrip.lib.UpdateChecker import UpdateChecker
 from photofilmstrip.core.ProjectFile import ProjectFile
 from photofilmstrip.core import PILBackend
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.IconLabelLink import IconLabelLink
 
 
@@ -40,25 +41,23 @@ class PnlWelcome(wx.Panel):
         self.htmlUpdate = ""
 
         self.pnlHtmlBackground = wx.Panel(self)
-        self.pnlHtmlBackground.SetBackgroundColour(wx.Colour(52, 73, 94))
+        self.pnlHtmlBackground.SetBackgroundColour(Art.GetColour())
 
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.SetBackgroundStyle(wx.BG_STYLE_SYSTEM)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
-        self.htmlWin.SetSizeHints(650, -1, 650, -1)
+        self.htmlWin.SetSizeHints(self.FromDIP(650), -1, self.FromDIP(650), -1)
 
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
         sizerHtmlBackground.Add(self.htmlWin, 1, wx.EXPAND | wx.ALL, 8)
 
-        self.bmpFilmstrip = wx.ArtProvider.GetBitmap('PFS_FILMSTRIP')
+        self.bmpFilmstrip = Art.GetBitmap('PFS_FILMSTRIP', size=(407, 493))
 
-        self.cmdNew = wx.BitmapButton(self, -1,
-                                      wx.ArtProvider.GetBitmap('PFS_PROJECT_NEW', size=wx.Size(64, 64)))
+        self.cmdNew = wx.BitmapButton(self, -1, Art.GetBitmap('PFS_PROJECT_NEW', size=(64, 64)))
         self.cmdNew.SetToolTip(_("Create new slideshow"))
         self.cmdNew.Bind(wx.EVT_BUTTON, self.__frmMain.OnSlideshow)
 
-        self.cmdOpen = wx.BitmapButton(self, -1,
-                                       wx.ArtProvider.GetBitmap('PFS_PROJECT_OPEN', size=wx.Size(64, 64)))
+        self.cmdOpen = wx.BitmapButton(self, -1, Art.GetBitmap('PFS_PROJECT_OPEN', size=(64, 64)))
         self.cmdOpen.SetToolTip(_("Open existing project"))
         self.cmdOpen.Bind(wx.EVT_BUTTON, self.__frmMain.OnProjectLoad)
 
@@ -81,6 +80,15 @@ class PnlWelcome(wx.Panel):
 
         self.__updateChecker = UpdateChecker()
         wx.CallLater(500, self.__NotifyUpdate)
+
+        self.Bind(wx.EVT_DPI_CHANGED, self.OnDpiChanged)
+
+    def OnDpiChanged(self, event):
+        self.htmlWin.SetSizeHints(self.FromDIP(650), -1, self.FromDIP(650), -1)
+        LinkOpenPfs.BMP_MAP = {}
+        self.Layout()
+        self.RefreshPage()
+        event.Skip()
 
     def RefreshPage(self, withHistory=True):
         if withHistory:
@@ -183,12 +191,12 @@ class LinkOpenPfs(IconLabelLink):
         if filename not in LinkOpenPfs.BMP_MAP:
             prjFile = ProjectFile(filename=filename)
             imgCount = prjFile.GetPicCount()
-            img = prjFile.GetPreviewThumb()
+            img = prjFile.GetPreviewThumb(parent.FromDIP(136), parent.FromDIP(70))
             if img is not None:
                 wxImg = wx.Image(PILBackend.ImageToStream(img), wx.BITMAP_TYPE_JPEG)
                 bmp = wxImg.ConvertToBitmap()
             else:
-                bmp = wx.ArtProvider.GetBitmap("PFS_ICON", size=wx.Size(48, 48))
+                bmp = Art.GetBitmap("PFS_ICON", size=parent.FromDIP(wx.Size(48, 48)))
             descr = "%d images" % imgCount
             LinkOpenPfs.BMP_MAP[filename] = (bmp, descr)
 

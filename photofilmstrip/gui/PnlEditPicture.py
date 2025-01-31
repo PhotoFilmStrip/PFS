@@ -10,6 +10,7 @@ import wx
 
 from photofilmstrip.core.Picture import Picture
 
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlFloatSpinCtrl import (
         PnlFloatSpinCtrl,
         EVT_VALUE_CHANGED)
@@ -34,27 +35,27 @@ class PnlEditPicture(wx.Panel):
     def _init_coll_sizerMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.szSettings, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.staticLine1, 0, border=4, flag=wx.ALL | wx.EXPAND)
-        parent.AddSpacer(8)
-        parent.Add(self.szTimes, 0, border=4, flag=wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.staticLine2, 0, border=4, flag=wx.EXPAND | wx.ALL)
-        parent.AddSpacer(8)
-        parent.Add(self.szSubtitle, 1, border=4, flag=wx.ALL | wx.EXPAND)
+        parent.Add(self.szSettings, 0, border=self.FromDIP(4), flag=wx.ALL)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.Add(self.staticLine1, 0, border=self.FromDIP(4), flag=wx.ALL | wx.EXPAND)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.Add(self.szTimes, 0, border=self.FromDIP(4), flag=wx.ALL)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.Add(self.staticLine2, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.ALL)
+        parent.AddSpacer(self.FromDIP(8))
+        parent.Add(self.szSubtitle, 1, border=self.FromDIP(4), flag=wx.ALL | wx.EXPAND)
 
     def _init_coll_szTimes_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.stProcess, 0, border=0, flag=0)
-        parent.Add(self.sizerTimesCtrls, 0, border=16, flag=wx.LEFT)
+        parent.Add(self.sizerTimesCtrls, 0, border=self.FromDIP(16), flag=wx.LEFT)
 
     def _init_coll_szSubtitle_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.stSubtitle, 0, border=0, flag=0)
-        parent.Add(self.tcComment, 1, border=16, flag=wx.LEFT | wx.EXPAND)
+        parent.Add(self.tcComment, 1, border=self.FromDIP(16), flag=wx.LEFT | wx.EXPAND)
 
     def _init_coll_sizerTimesCtrls_Items(self, parent):
         # generated method, don't edit
@@ -80,7 +81,7 @@ class PnlEditPicture(wx.Panel):
         # generated method, don't edit
 
         parent.Add(self.stSettings, 0, border=0, flag=0)
-        parent.Add(self.szSettingsCtrls, 0, border=16, flag=wx.LEFT)
+        parent.Add(self.szSettingsCtrls, 0, border=self.FromDIP(16), flag=wx.LEFT)
 
     def _init_coll_szSettingsCtrls_Growables(self, parent):
         # generated method, don't edit
@@ -108,13 +109,13 @@ class PnlEditPicture(wx.Panel):
         # generated method, don't edit
         self.sizerMain = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.szSettingsCtrls = wx.FlexGridSizer(cols=2, hgap=8, rows=2, vgap=8)
+        self.szSettingsCtrls = wx.FlexGridSizer(cols=2, hgap=self.FromDIP(8), rows=2, vgap=self.FromDIP(8))
 
         self.szSubtitle = wx.BoxSizer(orient=wx.VERTICAL)
 
         self.sizerRotationTools = wx.BoxSizer(orient=wx.HORIZONTAL)
 
-        self.sizerTimesCtrls = wx.FlexGridSizer(cols=4, hgap=8, rows=2, vgap=8)
+        self.sizerTimesCtrls = wx.FlexGridSizer(cols=4, hgap=self.FromDIP(8), rows=2, vgap=self.FromDIP(8))
 
         self.szTimes = wx.BoxSizer(orient=wx.VERTICAL)
 
@@ -136,7 +137,6 @@ class PnlEditPicture(wx.Panel):
         wx.Panel.__init__(self, id=wxID_PNLEDITPICTURE, name="PnlEditPicture",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetClientSize(wx.Size(827, 137))
 
         self.stSettings = wx.StaticText(id=wxID_PNLEDITPICTURESTSETTINGS,
               label=_("Settings"), name="stSettings", parent=self,
@@ -146,19 +146,19 @@ class PnlEditPicture(wx.Panel):
               label=_("Rotation:"), name="stRotation", parent=self,
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
-        self.cmdRotateLeft = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT', wx.ART_TOOLBAR),
+        self.cmdRotateLeft = wx.BitmapButton(bitmap=Art.GetBitmapBundle('PFS_IMAGE_ROTATION_LEFT', wx.ART_TOOLBAR),
               id=wxID_PNLEDITPICTURECMDROTATELEFT, name="cmdRotateLeft",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
-        self.cmdRotateLeft.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_LEFT_D', wx.ART_TOOLBAR))
+        self.cmdRotateLeft.SetBitmapDisabled(Art.GetBitmapBundle('PFS_IMAGE_ROTATION_LEFT_D', wx.ART_TOOLBAR))
         self.cmdRotateLeft.Bind(wx.EVT_BUTTON, self.OnCmdRotateLeftButton,
               id=wxID_PNLEDITPICTURECMDROTATELEFT)
 
-        self.cmdRotateRight = wx.BitmapButton(bitmap=wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT', wx.ART_TOOLBAR),
+        self.cmdRotateRight = wx.BitmapButton(bitmap=Art.GetBitmapBundle('PFS_IMAGE_ROTATION_RIGHT', wx.ART_TOOLBAR),
               id=wxID_PNLEDITPICTURECMDROTATERIGHT, name="cmdRotateRight",
               parent=self, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.BU_AUTODRAW)
-        self.cmdRotateRight.SetBitmapDisabled(wx.ArtProvider.GetBitmap('PFS_IMAGE_ROTATION_RIGHT_D', wx.ART_TOOLBAR))
+        self.cmdRotateRight.SetBitmapDisabled(Art.GetBitmapBundle('PFS_IMAGE_ROTATION_RIGHT_D', wx.ART_TOOLBAR))
         self.cmdRotateRight.Bind(wx.EVT_BUTTON, self.OnCmdRotateRightButton,
               id=wxID_PNLEDITPICTURECMDROTATERIGHT)
 

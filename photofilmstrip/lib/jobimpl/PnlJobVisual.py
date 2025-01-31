@@ -10,6 +10,8 @@ from photofilmstrip.action.WxAction import WxAction
 from photofilmstrip.lib.jobimpl.WxVisualJobHandler import (
     WxVisualJobHandler, EVT_JOB_UPDATE)
 
+from photofilmstrip.gui.Art import Art
+
 [wxID_PNLJOBVISUAL, wxID_PNLJOBVISUALBMPJOB, wxID_PNLJOBVISUALCMDACTION,
  wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
  wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
@@ -22,31 +24,31 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
     def _init_coll_szMain_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.szTop, 0, border=4,
+        parent.Add(self.szTop, 0, border=self.FromDIP(4),
               flag=wx.EXPAND | wx.RIGHT | wx.LEFT)
         parent.Add(self.staticLine, 0, border=0, flag=wx.EXPAND)
 
     def _init_coll_szMiddle_Items(self, parent):
         # generated method, don't edit
 
-        parent.Add(self.stJobName, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        parent.Add(self.stJobName, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
         parent.Add(self.gaugeProgress, 0, border=0, flag=wx.EXPAND)
-        parent.Add(self.stJobInfo, 0, border=4, flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
+        parent.Add(self.stJobInfo, 0, border=self.FromDIP(4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM)
 
     def _init_coll_szTop_Items(self, parent):
         # generated method, don't edit
 
         parent.Add(self.bmpJob, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.szMiddle, 1, border=0, flag=0)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.cmdAction, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
         parent.Add(self.cmdMenu, 0, border=0,
               flag=wx.ALIGN_CENTER_VERTICAL)
-        parent.AddSpacer(4)
+        parent.AddSpacer(self.FromDIP(4))
 
     def _init_sizers(self):
         # generated method, don't edit
@@ -67,10 +69,10 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         wx.Panel.__init__(self, id=wxID_PNLJOBVISUAL, name="PnlJobVisual",
               parent=prnt, pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.TAB_TRAVERSAL)
-        self.SetBackgroundColour(wx.Colour(255, 255, 255))
+        self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX))
 
         self.bmpJob = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_RENDER', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALBMPJOB,
               name="bmpJob", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -89,14 +91,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1), style=0)
 
         self.cmdAction = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_FOLDER_OPEN', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALCMDACTION,
               name="cmdAction", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
         self.cmdAction.Bind(wx.EVT_LEFT_DOWN, self.OnCmdActionLeftDown)
 
         self.cmdMenu = wx.StaticBitmap(
-              bitmap=wx.ArtProvider.GetBitmap('PFS_MENU', wx.ART_TOOLBAR),
+              bitmap=Art.GetBitmapBundle('PFS_MENU', wx.ART_TOOLBAR),
               id=wxID_PNLJOBVISUALCMDMENU,
               name="cmdMenu", parent=self, pos=wx.Point(-1, -1),
               size=wx.Size(-1, -1), style=0)
@@ -127,14 +129,14 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
         self._actAbort = WxAction(
                  _("Abort"),
                 self._Abort,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_ABORT', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: Art.GetBitmapBundle('PFS_ABORT', wx.ART_MENU),
+                     wx.ART_TOOLBAR: Art.GetBitmapBundle('PFS_ABORT', wx.ART_TOOLBAR)}
         )
         self._actRemove = WxAction(
                 _("Remove from list"),
                 self._Remove,
-                bmp={wx.ART_MENU: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_MENU),
-                     wx.ART_TOOLBAR: wx.ArtProvider.GetBitmap('PFS_LIST_REMOVE', wx.ART_TOOLBAR)}
+                bmp={wx.ART_MENU: Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_MENU),
+                     wx.ART_TOOLBAR: Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_TOOLBAR)}
         )
 
         self.curAction = None
@@ -166,7 +168,7 @@ class PnlJobVisual(wx.Panel, WxVisualJobHandler):
             bgCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
             txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:
-            bgCol = wx.WHITE
+            bgCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOX)
             txtCol = wx.SystemSettings.GetColour(wx.SYS_COLOUR_LISTBOXTEXT)
         self.SetBackgroundColour(bgCol)
         self.stJobName.SetForegroundColour(txtCol)

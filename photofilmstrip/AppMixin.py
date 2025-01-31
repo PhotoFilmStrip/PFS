@@ -50,6 +50,7 @@ class AppMixin:
         from photofilmstrip.lib.jobimpl.JobManager import JobManager
         JobManager().Init(workerCount=2)
         JobManager().Init("render")
+        JobManager().Init("scale", workerCount=1)
 
         try:
             return self._OnStart()

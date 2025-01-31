@@ -7,18 +7,20 @@
 
 import wx
 
+from photofilmstrip.gui.Art import Art
+
 
 class PnlAddPics(wx.Panel):
 
     def _InitSizers(self):
         szCentered = wx.BoxSizer(wx.VERTICAL)
-        szCentered.Add(self.stTitle, 0, border=4,
+        szCentered.Add(self.stTitle, 0, border=self.FromDIP(4),
               flag=wx.EXPAND | wx.ALL)
-        szCentered.AddSpacer(8)
-        szCentered.Add(self.stInfo, 0, border=4,
+        szCentered.AddSpacer(self.FromDIP(8))
+        szCentered.Add(self.stInfo, 0, border=self.FromDIP(4),
               flag=wx.EXPAND | wx.ALL)
-        szCentered.AddSpacer(8)
-        szCentered.Add(self.cmdBrowse, 0, border=4,
+        szCentered.AddSpacer(self.FromDIP(8))
+        szCentered.Add(self.cmdBrowse, 0, border=self.FromDIP(4),
               flag=wx.ALIGN_CENTER_HORIZONTAL | wx.ALL)
 
         szMain = wx.BoxSizer(wx.HORIZONTAL)
@@ -31,7 +33,7 @@ class PnlAddPics(wx.Panel):
                  style=0, name="PnlAddPics"):
         wx.Panel.__init__(self, id=id, name=name, parent=parent,
                           pos=pos, size=size, style=style)
-        self.SetClientSize(wx.Size(400, 250))
+        self.SetClientSize(self.FromDIP(wx.Size(400, 250)))
 
         self.stTitle = wx.StaticText(
             self, wx.ID_ANY, name="stTitle", style=wx.ALIGN_CENTRE)
@@ -41,7 +43,7 @@ class PnlAddPics(wx.Panel):
 
         self.cmdBrowse = wx.BitmapButton(
             self, wx.ID_ANY, name="cmdBrowse",
-            bitmap=wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', size=wx.Size(32, 32)))
+            bitmap=Art.GetBitmapBundle('PFS_IMPORT_PICTURES', wx.ART_MESSAGE_BOX))
 
         font = self.stTitle.GetFont()
         font.SetWeight(wx.BOLD)

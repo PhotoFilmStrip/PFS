@@ -7,6 +7,8 @@
 import wx
 
 from photofilmstrip.core.PicturePattern import PicturePattern
+
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ImageSectionEditor import ImageProxy
 from photofilmstrip.gui.PnlPfsProject import (
     PnlPfsProject, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP)
@@ -19,15 +21,15 @@ class PnlTimelapse(PnlPfsProject):
 
     def AddToolBarActions(self, toolBar):
         toolBar.AddTool(ID_PIC_IMPORT, "",
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
-                        wx.ArtProvider.GetBitmap('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_IMPORT_PICTURES', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_IMPORT_PICTURES_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Import Pictures"),
                         _("Import Pictures"),
                         None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MUSIC, "",
-                        wx.ArtProvider.GetBitmap('PFS_MUSIC', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_MUSIC', wx.ART_TOOLBAR),
                         wx.NullBitmap,
                         wx.ITEM_NORMAL,
                         _("Configure music"),
@@ -35,8 +37,8 @@ class PnlTimelapse(PnlPfsProject):
                         None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_RENDER_FILMSTRIP, "",
-                        wx.ArtProvider.GetBitmap('PFS_RENDER', wx.ART_TOOLBAR),
-                        wx.ArtProvider.GetBitmap('PFS_RENDER_D', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_RENDER', wx.ART_TOOLBAR),
+                        Art.GetBitmapBundle('PFS_RENDER_D', wx.ART_TOOLBAR),
                         wx.ITEM_NORMAL,
                         _("Render filmstrip"),
                         _("Render filmstrip"),
@@ -119,9 +121,9 @@ class PnlTimelapse(PnlPfsProject):
             return True
 
     def _InitImageProxy(self):
-        self.imgProxyLeft = ImageProxy()
+        self.imgProxyLeft = ImageProxy(self._imageCache)
         self.imgProxyLeft.AddObserver(self.bitmapLeft)
-        self.imgProxyRight = ImageProxy()
+        self.imgProxyRight = ImageProxy(self._imageCache)
         self.imgProxyRight.AddObserver(self.bitmapRight)
 
         self.bitmapLeft.SetImgProxy(self.imgProxyLeft)

@@ -8,6 +8,7 @@
 import wx
 
 from photofilmstrip.core.GPlayer import GPlayer
+from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
@@ -24,7 +25,7 @@ class DlgPicDurationByAudio(wx.Dialog):
 
         self.pnlHdr = PnlDlgHeader(self)
         self.pnlHdr.SetTitle(_("Adjust picture durations to audio file"))
-        self.pnlHdr.SetBitmap(wx.ArtProvider.GetBitmap('PFS_MUSIC_DURATION', size=wx.Size(32, 32)))
+        self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
 
         szMsg = self.CreateTextSizer(
             _("Find your picture duration by playing the audio file of your project and\n"
@@ -36,7 +37,7 @@ class DlgPicDurationByAudio(wx.Dialog):
         self.stAudio.SetFont(font)
 
         self.listbox = wx.ListBox(self, wx.ID_ANY)
-        self.listbox.SetSizeHints(wx.Size(-1, 200))
+        self.listbox.SetSizeHints(self.FromDIP(wx.Size(-1, 200)))
         self.listbox.Bind(wx.EVT_KEY_DOWN, self.__OnStepListKeyDown)
         self.listbox.Bind(wx.EVT_LISTBOX_DCLICK, self.__OnStepListDClickDown)
 
@@ -51,18 +52,18 @@ class DlgPicDurationByAudio(wx.Dialog):
         self.btnOk = wx.Button(self, wx.ID_OK, _('&Ok'))
 
         szButtons = wx.BoxSizer(wx.HORIZONTAL)
-        szButtons.Add(self.btnPlay, flag=wx.RIGHT, border=8)
-        szButtons.Add(self.btnHit, flag=wx.RIGHT, border=8)
+        szButtons.Add(self.btnPlay, flag=wx.RIGHT, border=self.FromDIP(8))
+        szButtons.Add(self.btnHit, flag=wx.RIGHT, border=self.FromDIP(8))
         szButtons.AddStretchSpacer()
-        szButtons.Add(self.btnCancel, flag=wx.RIGHT, border=8)
+        szButtons.Add(self.btnCancel, flag=wx.RIGHT, border=self.FromDIP(8))
         szButtons.Add(self.btnOk)
 
         sz = wx.BoxSizer(wx.VERTICAL)
         sz.Add(self.pnlHdr, flag=wx.EXPAND)
-        sz.Add(szMsg, flag=wx.EXPAND | wx.ALL, border=8)
-        sz.Add(self.stAudio, flag=wx.EXPAND | wx.ALL, border=8)
-        sz.Add(self.listbox, 1, wx.EXPAND | wx.ALL, border=8)
-        sz.Add(szButtons, flag=wx.ALL | wx.ALIGN_RIGHT, border=8)
+        sz.Add(szMsg, flag=wx.EXPAND | wx.ALL, border=self.FromDIP(8))
+        sz.Add(self.stAudio, flag=wx.EXPAND | wx.ALL, border=self.FromDIP(8))
+        sz.Add(self.listbox, 1, wx.EXPAND | wx.ALL, border=self.FromDIP(8))
+        sz.Add(szButtons, flag=wx.ALL | wx.ALIGN_RIGHT, border=self.FromDIP(8))
 
         self.SetSizerAndFit(sz)
 

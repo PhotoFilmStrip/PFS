@@ -16,7 +16,7 @@ class FloatValidator(wx.Validator):
         self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):
-        return FloatValidator()
+        return self
 
     def Validate(self, win):
         tc = self.GetWindow()
