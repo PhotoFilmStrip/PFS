@@ -263,26 +263,6 @@ class pfs_build(build):
                 )
 
 
-class pfs_test(Command):
-
-    description = "runs unit tests"
-
-    user_options = []
-    sub_commands = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        loader = unittest.TestLoader()
-        suite = loader.discover("tests")
-        runner = unittest.TextTestRunner()
-        runner.run(suite)
-
-
 class pfs_exe(Command):
 
     description = "create an executable dist for MS Windows (py2exe)"
@@ -514,7 +494,6 @@ setup(
                 "bdist_winport": pfs_win_portable,
                 "scm_info": pfs_scm_info,
                 'build_sphinx': pfs_docs,
-                'test': pfs_test,
                 "build_exe": build_exe,
               },
     verbose=False,
