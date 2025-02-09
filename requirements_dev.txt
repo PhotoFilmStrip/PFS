@@ -1,4 +1,5 @@
-cx_freeze==7.2.7 ; platform_system == "Windows"
+cx_freeze==7.2.10 ; platform_system == "Windows"
 sphinx
 pylint
 python-gettext
+setuptools
