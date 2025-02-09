@@ -22,6 +22,8 @@ from distutils.core import Command
 from distutils.dir_util import remove_tree
 from distutils.sysconfig import get_python_lib
 
+import pythongettext.msgfmt
+
 try:
     from sphinx.application import Sphinx
 except ImportError:
@@ -36,14 +38,6 @@ except ImportError:
 from photofilmstrip import Constants
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-MSGFMT = os.path.join(getattr(sys,
-                              "base_prefix",
-                              os.path.dirname(sys.executable)),
-                      "Tools", "i18n", "msgfmt.py")
-if os.path.isfile(MSGFMT):
-    MSGFMT = [sys.executable, MSGFMT]
-else:
-    MSGFMT = ["msgfmt"]
 
 
 class pfs_clean(clean):
@@ -283,9 +277,9 @@ class pfs_build(build):
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
 
-                self.spawn(MSGFMT + ["-o",
-                                     moFile,
-                                     os.path.join("po", filename)])
+                msgfmt = pythongettext.msgfmt.Msgfmt(os.path.join("po", filename))
+                with open(moFile, "wb") as moFd:
+                    moFd.write(msgfmt.getAsFile().getbuffer())
 
                 targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
