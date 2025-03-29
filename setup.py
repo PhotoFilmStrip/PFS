@@ -6,21 +6,17 @@
 #
 
 import base64
-import datetime
 import glob
 import sys, os
-import sqlite3
 import unittest
 import zipfile
+import logging
 
-from distutils import log
-from distutils.command.build import build
-from distutils.command.clean import clean
-from distutils.command.sdist import sdist
-from distutils.core import setup
-from distutils.core import Command
-from distutils.dir_util import remove_tree
-from distutils.sysconfig import get_python_lib
+from setuptools import setup, Command
+from setuptools.command.build import build
+from setuptools.command.sdist import sdist
+
+import pythongettext.msgfmt
 
 try:
     from sphinx.application import Sphinx
@@ -36,31 +32,7 @@ except ImportError:
 from photofilmstrip import Constants
 
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
-MSGFMT = os.path.join(getattr(sys,
-                              "base_prefix",
-                              os.path.dirname(sys.executable)),
-                      "Tools", "i18n", "msgfmt.py")
-if os.path.isfile(MSGFMT):
-    MSGFMT = [sys.executable, MSGFMT]
-else:
-    MSGFMT = ["msgfmt"]
-
-
-class pfs_clean(clean):
-
-    def run(self):
-        clean.run(self)
-
-        for directory in (os.path.join(WORKDIR, "build"),
-                          ):
-            if os.path.exists(directory):
-                remove_tree(directory, 1)
-
-        for fname in (os.path.join(WORKDIR, "version.info"),
-                      os.path.join(WORKDIR, "MANIFEST"),
-                      ):
-            if os.path.exists(fname):
-                os.remove(fname)
+log = logging.getLogger()
 
 
 class pfs_scm_info(Command):
@@ -90,9 +62,8 @@ class pfs_scm_info(Command):
                 self.scm_rev = "src"
 
         if self.scm_rev != "src":
-            fd = open(os.path.join("photofilmstrip", "_scmInfo.py"), "w")
-            fd.write("SCM_REV = \"%s\"\n" % self.scm_rev)
-            fd.close()
+            with open(os.path.join("photofilmstrip", "_scmInfo.py"), "w") as fd:
+                fd.write(f'SCM_REV = "{self.scm_rev}"\n')
 
 
 class pfs_sdist(sdist):
@@ -197,7 +168,6 @@ class pfs_build(build):
             return
 
         target = os.path.join("photofilmstrip", "res", "images.py")
-        target_mtime = os.path.getmtime(target)
 
         imgResources = (
                         ("ICON", "photofilmstrip.svg"),
@@ -283,34 +253,14 @@ class pfs_build(build):
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
 
-                self.spawn(MSGFMT + ["-o",
-                                     moFile,
-                                     os.path.join("po", filename)])
+                msgfmt = pythongettext.msgfmt.Msgfmt(os.path.join("po", filename))
+                with open(moFile, "wb") as moFd:
+                    moFd.write(msgfmt.getAsFile().getbuffer())
 
                 targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
                     (targetPath, (moFile,))
                 )
-
-
-class pfs_test(Command):
-
-    description = "runs unit tests"
-
-    user_options = []
-    sub_commands = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        loader = unittest.TestLoader()
-        suite = loader.discover("tests")
-        runner = unittest.TextTestRunner()
-        runner.run(suite)
 
 
 class pfs_exe(Command):
@@ -362,7 +312,8 @@ class pfs_exe(Command):
             for f in filelist:
                 self.copy_file(f, targetDir)
 
-        site_packages = get_python_lib()
+        exec_prefix = os.path.normpath(sys.exec_prefix)
+        site_packages = os.path.join(exec_prefix, "Lib", "site-packages")
         targetDir = self.target_dir
         dllDirGnome = os.path.join(site_packages, "gst-dist")
         for dll in glob.glob(os.path.join(dllDirGnome, "bin", "*")):
@@ -537,14 +488,12 @@ else:
 
 setup(
     cmdclass={
-                "clean": pfs_clean,
                 "sdist": pfs_sdist,
                 "build": pfs_build,
                 "bdist_win": pfs_exe,
                 "bdist_winport": pfs_win_portable,
                 "scm_info": pfs_scm_info,
                 'build_sphinx': pfs_docs,
-                'test': pfs_test,
                 "build_exe": build_exe,
               },
     verbose=False,
