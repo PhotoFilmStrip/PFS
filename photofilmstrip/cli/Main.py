@@ -162,7 +162,11 @@ def main(showHelp=False):
 
     project = prjFile.GetProject()
     if Aspect.IsPortraitMode(project.GetAspect()):
-        profile = profile.ToPortraitMode()
+        try:
+            profile = profile.ToPortraitMode()
+        except ValueError:
+            logging.error(_("The selected profile '%s' is not available in portrait mode!") % profile.GetName())
+            return 9
 
     ar = ActionRender(project, profile, rendererClass, False, outpath)
 

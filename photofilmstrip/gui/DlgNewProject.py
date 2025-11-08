@@ -105,8 +105,11 @@ class DlgNewProject(wx.Dialog):
 
         self.choiceAspect.Append(Aspect.ASPECT_16_9)
         self.choiceAspect.Append(Aspect.ASPECT_16_10)
+        self.choiceAspect.Append(Aspect.ASPECT_21_9)
+        self.choiceAspect.Append(Aspect.ASPECT_5_4)
         self.choiceAspect.Append(Aspect.ASPECT_4_3)
         self.choiceAspect.Append(Aspect.ASPECT_3_2)
+        self.choiceAspect.Append(Aspect.ASPECT_1_1)
 
         self.choiceAspect.Select(0)
 
@@ -124,10 +127,22 @@ class DlgNewProject(wx.Dialog):
             Settings().SetProjectPath(projPath)
         self.tcFolder.SetValue(projPath)
 
+        self.choiceAspect.Bind(wx.EVT_CHOICE, self.__OnAspectChanged)
+
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CenterOnParent()
         self.SetFocus()
+
+    def __OnAspectChanged(self, event):
+        aspect = self.choiceAspect.GetStringSelection()
+        try:
+            Aspect.ToPortraitMode(aspect)
+            self.cbPortraitMode.Enable(True)
+        except ValueError:
+            self.cbPortraitMode.SetValue(False)
+            self.cbPortraitMode.Enable(False)
+        event.Skip()
 
     def OnCmdBrowseFolderButton(self, event):
         dlg = wx.DirDialog(self,

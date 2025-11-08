@@ -111,6 +111,36 @@ def __CreateMPEGProfiles():
     return result
 
 
+def __Create21_9Profiles() -> list[OutputProfile]:
+    profs = []
+
+    # 1080p
+    for fps in [FPS24, FPS25, FPS30]:
+        prof = OutputProfile("HD 1080p", (2560, 1080), fps, 8000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("HD 1080p", (2560, 1080), fps, 12000)
+        profs.append(prof)
+
+    # 1440p
+    for fps in [FPS24, FPS25, FPS30]:
+        prof = OutputProfile("1440p", (3440, 1440), fps, 12000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("1440p", (3440, 1440), fps, 15000)
+        profs.append(prof)
+
+    # 2160p
+    for fps in [FPS24, FPS25, FPS30]:
+        prof = OutputProfile("UHD 2160p", (5120 , 2160), fps, 25000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("UHD 2160p", (5120, 2160), fps, 50000)
+        profs.append(prof)
+
+    return profs
+
+
 def __Create16_9Profiles():
     profs = []
 
@@ -240,6 +270,36 @@ def __Create16_10Profiles():
     return profs
 
 
+def __Create5_4Profiles():
+    profs = []
+
+    # 1024p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("1024p", (1280, 1024), fps, 5000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("1024p", (1280, 1024), fps, 7500)
+        profs.append(prof)
+
+    # 1080p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("HD 1080p", (1350, 1080), fps, 8000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("HD 1080p", (1350, 1080), fps, 12000)
+        profs.append(prof)
+
+    # 2048p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("QSXGA 2048p", (2560 , 2048), fps, 25000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("QSXGA 2048p", (2560, 2048), fps, 50000)
+        profs.append(prof)
+
+    return profs
+
+
 def __Create4_3Profiles():
     profs = []
 
@@ -357,13 +417,49 @@ def __Create3_2Profiles():
     return profs
 
 
+def __Create1_1Profiles():
+    profs = []
+
+    # 1080p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("HD 1080p", (1080, 1080), fps, 8000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("HD 1080p", (1080, 1080), fps, 12000)
+        profs.append(prof)
+
+    # 1440p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("1440p", (1440, 1440), fps, 12000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("1440p", (1440, 1440), fps, 1500)
+        profs.append(prof)
+
+    # 2160p
+    for fps in [FPS25, FPS30]:
+        prof = OutputProfile("UHD 2160p", (2160 , 2160), fps, 25000)
+        profs.append(prof)
+    for fps in [FPS50, FPS60]:
+        prof = OutputProfile("UHD 2160p", (2160, 2160), fps, 50000)
+        profs.append(prof)
+
+    return profs
+
+
 def GetOutputProfiles(aspect=Aspect.ASPECT_16_9):
-    if aspect in (Aspect.ASPECT_4_3, Aspect.ASPECT_3_4):
+    if aspect in (Aspect.ASPECT_5_4, Aspect.ASPECT_4_5):
+        result = __Create5_4Profiles()
+    elif aspect in (Aspect.ASPECT_4_3, Aspect.ASPECT_3_4):
         result = __Create4_3Profiles()
     elif aspect in (Aspect.ASPECT_3_2, Aspect.ASPECT_2_3):
         result = __Create3_2Profiles()
     elif aspect in (Aspect.ASPECT_16_10, Aspect.ASPECT_10_16):
         result = __Create16_10Profiles()
+    elif aspect == Aspect.ASPECT_21_9:
+        result = __Create21_9Profiles()
+    elif aspect == Aspect.ASPECT_1_1:
+        result = __Create1_1Profiles()
     else:
         result = __Create16_9Profiles()
 
