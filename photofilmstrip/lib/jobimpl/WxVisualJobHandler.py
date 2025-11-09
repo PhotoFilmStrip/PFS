@@ -23,7 +23,7 @@ EVT_JOB_UIINTERACT = wx.PyEventBinder(_EVT_JOB_UIINTERACT_TYPE, 1)
 class WxVisualJobHandler(IVisualJobHandler):
 
     def __init__(self, win=None):
-        self.__id = wx.NewId()
+        self.__id = wx.NewIdRef()
         if win is None:
             win = self
         assert isinstance(win, wx.EvtHandler)

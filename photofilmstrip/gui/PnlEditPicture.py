@@ -25,7 +25,7 @@ from photofilmstrip.gui.ctrls.PnlFloatSpinCtrl import (
  wxID_PNLEDITPICTURESTROTATION, wxID_PNLEDITPICTURESTSETTINGS,
  wxID_PNLEDITPICTURESTSUBTITLE, wxID_PNLEDITPICTURESTTRANS,
  wxID_PNLEDITPICTURESTTRANSUNIT, wxID_PNLEDITPICTURETCCOMMENT,
-] = [wx.NewId() for _init_ctrls in range(20)]
+] = [wx.NewIdRef() for _init_ctrls in range(20)]
 
 
 class PnlEditPicture(wx.Panel):

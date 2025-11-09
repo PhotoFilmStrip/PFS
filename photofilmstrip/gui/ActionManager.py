@@ -14,25 +14,25 @@ from photofilmstrip.gui.helper import CreateMenuItem
 
 class ActionManager:
 
-    ID_JOB_QUEUE = wx.NewId()
-    ID_PROJECT_CLOSE = wx.NewId()
-    ID_SLIDESHOW = wx.NewId()
-    ID_TIMELAPSE = wx.NewId()
-    ID_STORY = wx.NewId()
+    ID_JOB_QUEUE = wx.NewIdRef()
+    ID_PROJECT_CLOSE = wx.NewIdRef()
+    ID_SLIDESHOW = wx.NewIdRef()
+    ID_TIMELAPSE = wx.NewIdRef()
+    ID_STORY = wx.NewIdRef()
 
-    ID_LANG_EN = wx.NewId()
-    ID_LANG_FR = wx.NewId()
-    ID_LANG_DE = wx.NewId()
-    ID_LANG_PT_BR = wx.NewId()
-    ID_LANG_CS = wx.NewId()
-    ID_LANG_IT = wx.NewId()
-    ID_LANG_KO = wx.NewId()
-    ID_LANG_NL = wx.NewId()
-    ID_LANG_RU = wx.NewId()
-    ID_LANG_TA = wx.NewId()
-    ID_LANG_UK = wx.NewId()
-    ID_LANG_EL = wx.NewId()
-    ID_LANG_ES = wx.NewId()
+    ID_LANG_EN = wx.NewIdRef()
+    ID_LANG_FR = wx.NewIdRef()
+    ID_LANG_DE = wx.NewIdRef()
+    ID_LANG_PT_BR = wx.NewIdRef()
+    ID_LANG_CS = wx.NewIdRef()
+    ID_LANG_IT = wx.NewIdRef()
+    ID_LANG_KO = wx.NewIdRef()
+    ID_LANG_NL = wx.NewIdRef()
+    ID_LANG_RU = wx.NewIdRef()
+    ID_LANG_TA = wx.NewIdRef()
+    ID_LANG_UK = wx.NewIdRef()
+    ID_LANG_EL = wx.NewIdRef()
+    ID_LANG_ES = wx.NewIdRef()
 
     LANG_MAP = {
         ID_LANG_EN: "en",
@@ -117,7 +117,7 @@ class ActionManager:
 
     def __CreateMenuFile(self, editor=None):
         menu = wx.Menu()
-        menu.Append(wx.ID_ANY, _("New"), self.__CreateMenuNew())
+        menu.AppendSubMenu(self.__CreateMenuNew(), _("New"))
         CreateMenuItem(menu, wx.ID_OPEN,
                        _("&Open") + "\tCtrl+O",
                        Art.GetBitmapBundle('PFS_PROJECT_OPEN', wx.ART_MENU))
@@ -172,7 +172,7 @@ class ActionManager:
         langMenu.AppendRadioItem(self.ID_LANG_UK, "Український")
         langMenu.AppendRadioItem(self.ID_LANG_EL, "ελληνικά")
         langMenu.AppendRadioItem(self.ID_LANG_ES, "Español")
-        menu.Append(wx.NewId(), _("Language"), langMenu)
+        menu.AppendSubMenu(langMenu, _("Language"))
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_ABOUT,
                        _("&About"),

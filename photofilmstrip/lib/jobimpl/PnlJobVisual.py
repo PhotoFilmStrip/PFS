@@ -16,7 +16,7 @@ from photofilmstrip.gui.Art import Art
  wxID_PNLJOBVISUALCMDMENU, wxID_PNLJOBVISUALGAUGEPROGRESS,
  wxID_PNLJOBVISUALSTATICLINE, wxID_PNLJOBVISUALSTJOBINFO,
  wxID_PNLJOBVISUALSTJOBNAME,
-] = [wx.NewId() for _init_ctrls in range(8)]
+] = [wx.NewIdRef() for _init_ctrls in range(8)]
 
 
 class PnlJobVisual(wx.Panel, WxVisualJobHandler):

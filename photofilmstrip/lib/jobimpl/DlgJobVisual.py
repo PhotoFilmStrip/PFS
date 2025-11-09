@@ -15,7 +15,7 @@ from .WxVisualJobHandler import WxVisualJobHandler, EVT_JOB_UPDATE
  wxID_DLGJOBVISUALSTELAPSEDVALUE, wxID_DLGJOBVISUALSTINFO,
  wxID_DLGJOBVISUALSTREMAININGDIV, wxID_DLGJOBVISUALSTREMAININGLABEL,
  wxID_DLGJOBVISUALSTREMAININGVALUE,
-] = [wx.NewId() for _init_ctrls in range(10)]
+] = [wx.NewIdRef() for _init_ctrls in range(10)]
 
 
 class DlgJobVisual(wx.Dialog, WxVisualJobHandler):

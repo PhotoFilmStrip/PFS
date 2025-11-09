@@ -25,7 +25,7 @@ from photofilmstrip.gui.DlgRendererProps import DlgRendererProps
  wxID_DLGRENDERCMDCANCEL, wxID_DLGRENDERCMDHELP,
  wxID_DLGRENDERCMDRENDERERPROPS, wxID_DLGRENDERCMDSTART, wxID_DLGRENDERPNLHDR,
  wxID_DLGRENDERPNLSETTINGS, wxID_DLGRENDERSTFORMAT, wxID_DLGRENDERSTPROFILE,
-] = [wx.NewId() for _init_ctrls in range(12)]
+] = [wx.NewIdRef() for _init_ctrls in range(12)]
 
 
 class DlgRender(wx.Dialog):

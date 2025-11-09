@@ -17,7 +17,7 @@ from photofilmstrip.gui.ImageSectionEditor import ImageProxy
 
 [ID_PROJECT_PROPS,
  ID_PIC_DURATION_BY_AUDIO,
-] = [wx.NewId() for __ in range(2)]
+] = [wx.NewIdRef() for __ in range(2)]
 
 
 class PnlSlideshow(PnlPfsProject):

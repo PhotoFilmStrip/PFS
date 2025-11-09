@@ -18,7 +18,7 @@ from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
  wxID_DLGRENDERERPROPSCMDHELP, wxID_DLGRENDERERPROPSCMDOK,
  wxID_DLGRENDERERPROPSLCPROPS, wxID_DLGRENDERERPROPSPNLHDR,
  wxID_DLGRENDERERPROPSSTATICLINE,
-] = [wx.NewId() for _init_ctrls in range(7)]
+] = [wx.NewIdRef() for _init_ctrls in range(7)]
 
 
 class DlgRendererProps(wx.Dialog):

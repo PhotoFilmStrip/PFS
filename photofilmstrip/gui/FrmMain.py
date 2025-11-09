@@ -43,8 +43,8 @@ from photofilmstrip.gui.PnlSlideshow import PnlSlideshow
 
 from photofilmstrip.res.license import licenseText
 
-ID_PAGE_UP = wx.NewId()
-ID_PAGE_DOWN = wx.NewId()
+ID_PAGE_UP = wx.NewIdRef()
+ID_PAGE_DOWN = wx.NewIdRef()
 
 
 class FrmMain(wx.Frame, Observer, WxVisualJobManager):

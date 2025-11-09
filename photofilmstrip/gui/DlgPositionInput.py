@@ -25,7 +25,7 @@ from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
  wxID_DLGPOSITIONINPUTSTENDPOS, wxID_DLGPOSITIONINPUTSTENDSIZE,
  wxID_DLGPOSITIONINPUTSTSTARTLOCATION, wxID_DLGPOSITIONINPUTSTSTARTPOS,
  wxID_DLGPOSITIONINPUTSTSTARTSIZE,
-] = [wx.NewId() for _init_ctrls in range(21)]
+] = [wx.NewIdRef() for _init_ctrls in range(21)]
 
 
 class DlgPositionInput(wx.Dialog):

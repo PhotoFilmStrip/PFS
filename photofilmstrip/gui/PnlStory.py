@@ -37,7 +37,7 @@ from photofilmstrip.gui.PnlStoryGuide import PnlStoryGuide
  ID_MEDIA_REMOVE,
  ID_RENDER,
  ID_PREVIEW,
-] = [wx.NewId() for __ in range(8)]
+] = [wx.NewIdRef() for __ in range(8)]
 
 
 class PnlStory(PnlEditorPage, Observer):

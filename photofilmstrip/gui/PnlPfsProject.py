@@ -47,14 +47,14 @@ from photofilmstrip.core.exceptions import RenderException
  wxID_PNLPFSPROJECTLVPICS, wxID_PNLPFSPROJECTPANELTOP,
  wxID_PNLPFSPROJECTPNLADDPICS, wxID_PNLPFSPROJECTPNLEDITPICTURE,
  wxID_PNLPFSPROJECTTOOLBARIMGSECT,
-] = [wx.NewId() for _init_ctrls in range(11)]
+] = [wx.NewIdRef() for _init_ctrls in range(11)]
 
 [wxID_PNLPFSPROJECTTOOLBARIMGSECTADJUST,
  wxID_PNLPFSPROJECTTOOLBARIMGSECTFTTORIGHT,
  wxID_PNLPFSPROJECTTOOLBARIMGSECTGHTTOLEFT,
  wxID_PNLPFSPROJECTTOOLBARIMGSECTUNLOCK, wxID_PNLPFSPROJECTTOOLBARIMGSECTSWAP,
  wxID_PNLPFSPROJECTTOOLBARIMGSECTTOPATH,
-] = [wx.NewId() for _init_coll_toolBarImgSect_Tools in range(6)]
+] = [wx.NewIdRef() for _init_coll_toolBarImgSect_Tools in range(6)]
 
 [ID_PIC_MOVE_LEFT,
  ID_PIC_MOVE_RIGHT,
@@ -67,7 +67,7 @@ from photofilmstrip.core.exceptions import RenderException
  ID_MUSIC,
  ID_RENDER_FILMSTRIP,
  ID_EXPORT, ID_IMPORT,
-] = [wx.NewId() for __ in range(12)]
+] = [wx.NewIdRef() for __ in range(12)]
 
 
 class PnlPfsProject(PnlEditorPage, Observer):

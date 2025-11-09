@@ -14,7 +14,7 @@ from photofilmstrip.gui.Art import Art
 
 [wxID_PNLDLGHEADER, wxID_PNLDLGHEADERBMPLOGO, wxID_PNLDLGHEADERPNLHEADER,
  wxID_PNLDLGHEADERSLHDR, wxID_PNLDLGHEADERSTERRMSG, wxID_PNLDLGHEADERSTHEADER,
-] = [wx.NewId() for _init_ctrls in range(6)]
+] = [wx.NewIdRef() for _init_ctrls in range(6)]
 
 
 class PnlDlgHeader(wx.Panel):

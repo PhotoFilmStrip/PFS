@@ -20,7 +20,7 @@ class WxAbstractAction(IAction):
 
     def ToMenu(self, evtHandler, menu, ident=None):
         if ident is None:
-            ident = wx.NewId()
+            ident = wx.NewIdRef()
         mitm = wx.MenuItem(menu, ident, self.GetName())
 
         try:

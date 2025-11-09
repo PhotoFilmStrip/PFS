@@ -12,7 +12,7 @@ from photofilmstrip.gui.util.FloatValidator import FloatValidator
 
 [wxID_PNLFLOATSPINCTRL, wxID_PNLFLOATSPINCTRLSPINBUTTONVALUE,
  wxID_PNLFLOATSPINCTRLTCVALUE,
-] = [wx.NewId() for _init_ctrls in range(3)]
+] = [wx.NewIdRef() for _init_ctrls in range(3)]
 
 
 class PnlFloatSpinCtrl(wx.Panel):
