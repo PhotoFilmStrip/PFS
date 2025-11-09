@@ -12,3 +12,42 @@ pythonpath = "."
 testpaths = [
     "tests",
 ]
+
+
+[tool.poe]
+envfile = ".env"
+
+[tool.poe.tasks]
+pfs-gui = "python photofilmstrip/GUI.py"
+pfs-cli = "python photofilmstrip/CLI.py"
+win-port = "python setup.py bdist_winport"
+win-exe = "python setup.py bdist_win"
+tests = "pytest"
+
+
+[tool.poetry]
+package-mode = false
+
+[[tool.poetry.source]]
+name = "azure_pylibs"
+url = "https://pkgs.dev.azure.com/PhotoFilmStrip/_packaging/pylibs/pypi/simple/"
+priority = "explicit"
+
+[tool.poetry.dependencies]
+python ="~3.11 | ~3.12"
+pillow = "11.1.0"
+wxpython = "4.2.2"
+# pfs_gi is a custom gstreamer-cerbero build with additional plugins
+# - pygobject; gst-python; x265
+# - enabled introspection for pango, json-glib, harfbuzz, gdk-pixbuf
+pfs_gi = { version = "2.5", markers = "sys_platform == 'win32'", source = "azure_pylibs" }
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+cx_freeze = { version = "7.2.10", markers = "sys_platform == 'win32'" }
+python-gettext = ">=5"
+sphinx = ">=8"
+pytest = ">=8"
+pylint = ">=3"
