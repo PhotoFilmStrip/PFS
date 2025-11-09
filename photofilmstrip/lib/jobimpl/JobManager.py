@@ -215,11 +215,11 @@ class JobManager(Singleton, Destroyable):
 
             if jcGroup.CheckBusy():
                 self.__logger.debug("<%s> block until ready... %s",
-                                    threading.currentThread().getName(),
+                                    threading.current_thread().name,
                                     jcGroup.DoneCount())
                 jcGroup.WaitDoneEvent()
                 self.__logger.debug("<%s> block released continuing... %s",
-                                    threading.currentThread().getName(),
+                                    threading.current_thread().name,
                                     jcGroup.DoneCount())
             else:
                 with jcGroup:
@@ -229,7 +229,7 @@ class JobManager(Singleton, Destroyable):
                         self.__FinishCtx(jobCtxActive)
 
                 self.__logger.debug("<%s> set done... %s",
-                                    threading.currentThread().getName(),
+                                    threading.current_thread().name,
                                     jcGroup.DoneCount())
                 jcGroup.SetDoneEvent()
 
@@ -240,36 +240,36 @@ class JobManager(Singleton, Destroyable):
 
     def __StartCtx(self, ctx):
         self.__logger.debug("<%s> starting %s...",
-                            threading.currentThread().getName(), ctx.GetName())
+                            threading.current_thread().name, ctx.GetName())
         try:
             ctx._Begin()  # pylint: disable=protected-access
         except JobAbortedException:
             return False
         except Exception as exc:
             self.__logger.error("<%s> not started %s",  # IGNORE:W0702
-                                threading.currentThread().getName(), ctx.GetName(), exc_info=1)
+                                threading.current_thread().name, ctx.GetName(), exc_info=1)
             try:
                 ctx.Abort("Error: %s" % exc)
             except:
                 self.__logger.error("<%s> error while aborting faulty started %s",  # IGNORE:W0702
-                                    threading.currentThread().getName(), ctx.GetName(), exc_info=1)
+                                    threading.current_thread().name, ctx.GetName(), exc_info=1)
             return False
 
         self.__logger.debug("<%s> started %s",
-                            threading.currentThread().getName(), ctx.GetName())
+                            threading.current_thread().name, ctx.GetName())
         return True
 
     def __FinishCtx(self, ctx):
         self.__logger.debug("<%s> finalizing %s...",
-                            threading.currentThread().getName(), ctx.GetName())
+                            threading.current_thread().name, ctx.GetName())
         try:
             ctx._Done()  # pylint: disable=protected-access
         except:
             self.__logger.error("<%s> error %s",  # IGNORE:W0702
-                                threading.currentThread().getName(), ctx.GetName(), exc_info=1)
+                                threading.current_thread().name, ctx.GetName(), exc_info=1)
         finally:
             self.__logger.debug("<%s> finished %s",
-                                threading.currentThread().getName(), ctx.GetName())
+                                threading.current_thread().name, ctx.GetName())
 
         for visual in self.__visuals:
             try:
@@ -287,12 +287,12 @@ class JobManager(Singleton, Destroyable):
                 jcGroup.Put(None)
 
             for worker in jcGroup.Workers():
-                self.__logger.debug("<%s> joining...", worker.getName())
+                self.__logger.debug("<%s> joining...", worker.name)
                 worker.join(3)
                 if worker.is_alive():
-                    self.__logger.warning("<%s> join failed", worker.getName())
+                    self.__logger.warning("<%s> join failed", worker.name)
                 else:
-                    self.__logger.debug("<%s> joined!", worker.getName())
+                    self.__logger.debug("<%s> joined!", worker.name)
 
         self.__logger.debug("destroyed")
 
