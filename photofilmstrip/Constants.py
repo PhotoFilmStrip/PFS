@@ -21,7 +21,7 @@ else:
 VERSION_SUFFIX = ''
 
 APP_NAME = "PhotoFilmStrip"
-APP_VERSION = "4.2.0"
+APP_VERSION = "4.2.1"
 APP_VERSION_SUFFIX = "%s%s" % (APP_VERSION, VERSION_SUFFIX)
 APP_VERSION_FULL = "%s-%s" % (APP_VERSION_SUFFIX, SCM_REV)
 APP_SLOGAN = "PhotoFilmStrip - Creates movies out of your pictures."
