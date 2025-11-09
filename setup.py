@@ -16,7 +16,10 @@ from setuptools import setup, Command
 from setuptools.command.build import build
 from setuptools.command.sdist import sdist
 
-import pythongettext.msgfmt
+try:
+    from pythongettext.msgfmt import Msgfmt
+except ImportError:
+    Msgfmt = None
 
 try:
     from sphinx.application import Sphinx
@@ -253,9 +256,12 @@ class pfs_build(build):
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
 
-                msgfmt = pythongettext.msgfmt.Msgfmt(os.path.join("po", filename))
-                with open(moFile, "wb") as moFd:
-                    moFd.write(msgfmt.getAsFile().getbuffer())
+                if Msgfmt is None:
+                    self.spawn(["msgfmt", "-o", moFile, os.path.join("po", filename)])
+                else:
+                    msgfmt = Msgfmt(os.path.join("po", filename))
+                    with open(moFile, "wb") as moFd:
+                        moFd.write(msgfmt.getAsFile().getbuffer())
 
                 targetPath = os.path.join("share", "locale", lang, "LC_MESSAGES")
                 self.distribution.data_files.append(
