@@ -27,7 +27,7 @@ from photofilmstrip.gui.ctrls.PnlNotification import PnlNotification
 from photofilmstrip.gui.DlgRender import DlgRender, FormatData
 from photofilmstrip.gui.PnlEditorPage import PnlEditorPage
 from photofilmstrip.gui.helper import CreateMenuItem
-from photofilmstrip.PnlStoryGuide import PnlStoryGuide
+from photofilmstrip.gui.PnlStoryGuide import PnlStoryGuide
 
 [ID_MEDIA_ADD,
  ID_MEDIA_MOVE_UP,
