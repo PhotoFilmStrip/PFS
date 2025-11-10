@@ -19,9 +19,13 @@ else:
     APP_DIR = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "..")
 
 VERSION_SUFFIX = ''
+try:
+    from photofilmstrip._pkgInfo import VERSION  # IGNORE:F0401
+except ImportError:
+    VERSION = "4.2.1"
 
 APP_NAME = "PhotoFilmStrip"
-APP_VERSION = "4.2.1"
+APP_VERSION = VERSION
 APP_VERSION_SUFFIX = "%s%s" % (APP_VERSION, VERSION_SUFFIX)
 APP_VERSION_FULL = "%s-%s" % (APP_VERSION_SUFFIX, SCM_REV)
 APP_SLOGAN = "PhotoFilmStrip - Creates movies out of your pictures."

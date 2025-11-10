@@ -32,15 +32,13 @@ try:
 except ImportError:
     build_exe = None
 
-from photofilmstrip import Constants
-
 WORKDIR = os.path.dirname(os.path.abspath(sys.argv[0]))
 log = logging.getLogger()
 
 
-class pfs_scm_info(Command):
+class pfs_version_info(Command):
 
-    description = "generates _scmInfo.py in source folder"
+    description = "generates _scmInfo.py and _pkgInfo.py in source folder"
 
     user_options = [
         ('scm-rev=', None, 'The SCM revision'),
@@ -58,21 +56,29 @@ class pfs_scm_info(Command):
         if not self.scm_rev:
             # if not set in environment it hopefully was generated earlier
             # building deb with fakeroot has no SCM_REV var anymore
-            try:
-                import photofilmstrip._scmInfo
-                self.scm_rev = photofilmstrip._scmInfo.SCM_REV  # pylint: disable=no-member, protected-access
-            except ImportError:
+            scm_info_path = os.path.join("photofilmstrip", "_scmInfo.py")
+            if os.path.exists(scm_info_path):
+                with open(scm_info_path, "r") as f:
+                    content = f.read()
+                    if 'SCM_REV' in content:
+                        self.scm_rev = content.split('=')[1].strip().strip('"\'')
+                    else:
+                        self.scm_rev = "src"
+            else:
                 self.scm_rev = "src"
 
         if self.scm_rev != "src":
             with open(os.path.join("photofilmstrip", "_scmInfo.py"), "w") as fd:
                 fd.write(f'SCM_REV = "{self.scm_rev}"\n')
 
+        with open(os.path.join("photofilmstrip", "_pkgInfo.py"), "w") as fd:
+            fd.write(f'VERSION = "{self.distribution.metadata.version}"\n')
+
 
 class pfs_sdist(sdist):
 
     sub_commands = [
-        ('scm_info', lambda x: True),
+        ('version_info', lambda x: True),
     ] + sdist.sub_commands
 
 
@@ -82,18 +88,12 @@ class pfs_docs(Command):
 
     user_options = [
         ('config-dir=', 'c', 'Location of the configuration directory'),
-        ('project=', None, 'The documented project\'s name'),
-        ('version=', None, 'The short X.Y version'),
-        ('release=', None, 'The full version, including alpha/beta/rc tags'),
         ('builder=', 'b', 'The builder (or builders) to use.')
     ]
     sub_commands = []
 
     def initialize_options(self):
         self.config_dir = None
-        self.project = ''
-        self.version = ''
-        self.release = ''
         self.builder = ['html']
 
     def finalize_options(self):
@@ -105,13 +105,11 @@ class pfs_docs(Command):
         doctree_dir = os.path.join(build_dir, 'doctrees')
         self.mkpath(build_dir)
         self.mkpath(doctree_dir)
+        version_split = self.distribution.metadata.version.split("-")
         confoverrides = {}
-        if self.project:
-            confoverrides['project'] = self.project
-        if self.version:
-            confoverrides['version'] = self.version
-        if self.release:
-            confoverrides['release'] = self.release
+        confoverrides['project'] = self.distribution.metadata.name
+        confoverrides['version'] = version_split[0]
+        confoverrides['release'] = self.distribution.metadata.version
 
         for builder in self.builder:
             builder_target_dir = os.path.join(build_dir, builder)
@@ -133,7 +131,7 @@ class pfs_docs(Command):
 class pfs_build(build):
 
     sub_commands = [
-        ('scm_info', lambda x: True),
+        ('version_info', lambda x: True),
         ('build_sphinx', lambda x: True if Sphinx else False),
     ] + build.sub_commands
 
@@ -248,11 +246,12 @@ class pfs_build(build):
                     resName=imgName)
 
     def _make_locale(self):
+        app_name = self.distribution.metadata.name
         for filename in os.listdir("po"):
             lang, ext = os.path.splitext(filename)
             if ext.lower() == ".po":
                 moDir = os.path.join("build", "mo", lang, "LC_MESSAGES")
-                moFile = os.path.join(moDir, "%s.mo" % Constants.APP_NAME)
+                moFile = os.path.join(moDir, "%s.mo" % app_name)
                 if not os.path.exists(moDir):
                     os.makedirs(moDir)
 
@@ -291,17 +290,19 @@ class pfs_exe(Command):
         build_exe = self.get_finalized_command('build_exe')
         build_exe.build_exe = self.target_dir
 
+        app_name = self.distribution.metadata.name
+
         self.distribution.executables = [
                  Executable(os.path.join("photofilmstrip", "GUI.py"),
                             base="Win32GUI",
-                            target_name=Constants.APP_NAME + ".exe",
+                            target_name=app_name + ".exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
         ]
         self.distribution.executables[0]._manifest = MANIFEST_TEMPLATE.encode("utf-8")
         self.distribution.executables.append(
                  Executable(os.path.join("photofilmstrip", "CLI.py"),
-                            target_name=Constants.APP_NAME + "-cli.exe",
+                            target_name=app_name + "-cli.exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
         )
@@ -351,7 +352,7 @@ class pfs_win_portable(Command):
         for cmdName in self.get_sub_commands():
             self.run_command(cmdName)
 
-        ver = Constants.APP_VERSION_SUFFIX
+        ver = self.distribution.metadata.version
 
         is64Bit = sys.maxsize > 2 ** 32
         if is64Bit:
@@ -498,7 +499,7 @@ setup(
                 "build": pfs_build,
                 "bdist_win": pfs_exe,
                 "bdist_winport": pfs_win_portable,
-                "scm_info": pfs_scm_info,
+                "version_info": pfs_version_info,
                 'build_sphinx': pfs_docs,
                 "build_exe": build_exe,
               },
@@ -562,9 +563,7 @@ setup(
                                        "_ssl", "numpy"]
                           },
                "sdist": {"formats": ["gztar"]},
-               'build_sphinx': {"project": Constants.APP_NAME,
-                                "release": Constants.APP_VERSION_SUFFIX,
-                                "config_dir": 'docs/help',
+               'build_sphinx': {"config_dir": 'docs/help',
                                 "builder": ["html"]}
     },
     data_files=[
@@ -575,23 +574,4 @@ setup(
              "scripts/photofilmstrip",
              "scripts/photofilmstrip-cli",
     ] + platform_scripts,
-
-    name=Constants.APP_NAME.lower(),
-    version=Constants.APP_VERSION_SUFFIX,
-    license="GPLv2",
-    description=Constants.APP_SLOGAN,
-    long_description=Constants.APP_DESCRIPTION,
-    author=Constants.DEVELOPERS[0],
-    author_email="info@photofilmstrip.org",
-    url=Constants.APP_URL,
-
-    packages=['photofilmstrip',
-              'photofilmstrip.action', 'photofilmstrip.cli',
-              'photofilmstrip.core', 'photofilmstrip.core.renderer',
-              'photofilmstrip.gui', 'photofilmstrip.gui.ctrls',
-              'photofilmstrip.gui.util',
-              'photofilmstrip.lib', 'photofilmstrip.lib.common',
-              'photofilmstrip.lib.jobimpl',
-              'photofilmstrip.res',
-              'photofilmstrip.ux'],
-    )
+)

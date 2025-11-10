@@ -19,6 +19,7 @@ clean:
 	find . -name "*.pyc" -exec rm {} ';'
 	find . -name "*.pyo" -exec rm {} ';'
 	find . -name "_scmInfo.py*" -exec rm {} ';'
+	find . -name "_pkgInfo.py*" -exec rm {} ';'
 	python3 setup.py clean
 
 update-po:

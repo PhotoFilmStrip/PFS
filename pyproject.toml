@@ -1,18 +1,44 @@
+[project]
+name = "PhotoFilmStrip"
+description = "PhotoFilmStrip - Creates movies out of your pictures."
+version = "4.2.1"
+authors = [
+  {name = "Jens Göpfert", email = "info@photofilmstrip.org"}
+]
+readme = "README"
+#license = {text = "GPL-2.0"}
+#license = "GPL-2.0"
+#license-files = ["LICENSE"]
+requires-python = ">= 3.9"
+
+[project.urls]
+Homepage = "https://www.photofilmstrip.org"
+
+#[project.scripts]
+#photofilmstrip = "photofilmstrip.GUI:main"
+#photofilmstrip-cli = "photofilmstrip.CLI:main"
+
+
 [build-system]
 requires = [
-    "setuptools",
+    "setuptools>=77",
+    "wheel",
     "python-gettext",
     "sphinx",
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["photofilmstrip*"]
+namespaces = false
+
 
 [tool.pytest.ini_options]
 pythonpath = "."
 testpaths = [
-    "tests",
+    "tests"
 ]
-
 
 [tool.poe]
 envfile = ".env"
@@ -46,7 +72,7 @@ pfs_gi = { version = "2.5", markers = "sys_platform == 'win32'", source = "azure
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-cx_freeze = { version = "7.2.10", markers = "sys_platform == 'win32'" }
+cx_freeze = { version = "8.4.1", markers = "sys_platform == 'win32'" }
 python-gettext = ">=5"
 sphinx = ">=8"
 pytest = ">=8"

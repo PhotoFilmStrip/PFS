@@ -11,9 +11,12 @@ var/
 locale/
 Tools/
 _scmInfo.py
+_pkgInfo.py
 
 .settings
 .PhotoFilmStrip
 
 
 /win32_x64
+/.pytest_cache/
+/.venv
