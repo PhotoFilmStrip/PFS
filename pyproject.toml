@@ -60,9 +60,9 @@ url = "https://pkgs.dev.azure.com/PhotoFilmStrip/_packaging/pylibs/pypi/simple/"
 priority = "explicit"
 
 [tool.poetry.dependencies]
-python ="~3.11 | ~3.12"
-pillow = "11.1.0"
-wxpython = "4.2.2"
+python =">=3.11"
+pillow = "11.3.0"
+wxpython = ">=4.2.2"
 # pfs_gi is a custom gstreamer-cerbero build with additional plugins
 # - pygobject; gst-python; x265
 # - enabled introspection for pango, json-glib, harfbuzz, gdk-pixbuf
