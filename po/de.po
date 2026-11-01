@@ -1019,6 +1019,14 @@ msgstr ""
 msgid "Recent projects"
 msgstr "Letzte Projekte"
 
+#: photofilmstrip/gui/PnlWelcome.py
+msgid "Clear list"
+msgstr "Liste leeren"
+
+#: photofilmstrip/gui/PnlWelcome.py
+msgid "Removes all entries from this list. The project files are kept."
+msgstr "Entfernt alle Einträge aus dieser Liste. Die Projektdateien bleiben erhalten."
+
 #: photofilmstrip/gui/PnlWelcome.py:61
 msgid "Open existing project"
 msgstr "Ein bestehendes Projekt laden"

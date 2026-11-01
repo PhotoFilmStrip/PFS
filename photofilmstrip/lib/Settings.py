@@ -94,6 +94,12 @@ class Settings(Singleton):
 
         return fileList
 
+    def ClearFileHistory(self):
+        self.Load()
+        self.cp.remove_section("History")
+        self.cp.add_section("History")
+        self.Save()
+
     def SetProjectPath(self, path):
         self.Load()
         self.cp.set("General", "ProjectPath", path)

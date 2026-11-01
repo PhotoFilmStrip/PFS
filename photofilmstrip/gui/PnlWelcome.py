@@ -38,6 +38,7 @@ class PnlWelcome(wx.Panel):
         self.htmlTitle = _("Recent projects")
         self.htmlText = ""
         self.htmlRecentProjects = ""
+        self.htmlHistoryAction = ""
         self.htmlUpdate = ""
 
         self.pnlHtmlBackground = wx.Panel(self)
@@ -46,6 +47,7 @@ class PnlWelcome(wx.Panel):
         self.htmlWin = wx.html.HtmlWindow(self.pnlHtmlBackground, -1, style=wx.NO_BORDER)
         self.htmlWin.SetBackgroundStyle(wx.BG_STYLE_SYSTEM)
         self.htmlWin.Bind(EVT_LINK, self.OnLinkClicked)
+        self.htmlWin.Bind(wx.adv.EVT_HYPERLINK, self.OnClearHistory)
         self.htmlWin.SetSizeHints(self.FromDIP(650), -1, self.FromDIP(650), -1)
 
         sizerHtmlBackground = wx.BoxSizer(wx.HORIZONTAL)
@@ -110,15 +112,20 @@ class PnlWelcome(wx.Panel):
             if htmlParts:
                 self.htmlTitle = _("Recent projects")
                 self.htmlText = ""
+                self.htmlHistoryAction = """
+                    <wxp module="photofilmstrip.gui.PnlWelcome" class="ClearHistoryLink">
+                    </wxp>"""
             else:
                 self.htmlTitle = _("How to start...")
                 self.htmlText = _("Create a new project or load an existing one.")
+                self.htmlHistoryAction = ""
 
             self.htmlRecentProjects = "".join(htmlParts)
 
         html = HTML_TEMPLATE % {'title': self.htmlTitle,
                                  'text': self.htmlText,
                                  'htmlRecentProjects': self.htmlRecentProjects,
+                                 'htmlHistoryAction': self.htmlHistoryAction,
                                  'htmlUpdate': self.htmlUpdate}
 
         self.htmlWin.SetPage(html)
@@ -180,6 +187,14 @@ class PnlWelcome(wx.Panel):
         filename = event.GetFilename()
         self.__frmMain.LoadProject(filename)
 
+    def OnClearHistory(self, event):
+        if event.GetURL() != "clear-history":
+            event.Skip()
+            return
+        Settings().ClearFileHistory()
+        # SetPage destroys the embedded link; wait until its event has finished.
+        wx.CallAfter(self.RefreshPage)
+
 
 class LinkOpenPfs(IconLabelLink):
 
@@ -226,6 +241,18 @@ class LinkClickedEvent(wx.PyCommandEvent):
         return self._filename
 
 
+class ClearHistoryLink(wx.adv.HyperlinkCtrl):
+
+    def __init__(self, parent, size=wx.DefaultSize):
+        wx.adv.HyperlinkCtrl.__init__(self, parent, -1, _("Clear list"),
+                                     "clear-history", size=size)
+        self.SetBackgroundColour(parent.GetBackgroundColour())
+        self.SetToolTip(_("Removes all entries from this list. The project files are kept."))
+
+    def AcceptsFocus(self):
+        return False
+
+
 class PfsHyperlink(wx.adv.HyperlinkCtrl):
 
     def __init__(self, parent, size=wx.DefaultSize, label=""):
@@ -237,7 +264,12 @@ class PfsHyperlink(wx.adv.HyperlinkCtrl):
 HTML_TEMPLATE = """<html>
   <body bgcolor="#EBEBEB" witdth="650px">
   <font color="#63666A" face="Tahoma">
-    <h3 align="center">%(title)s</h3>
+    <table width="100%%" border="0" cellspacing="0" cellpadding="4">
+        <tr>
+            <td valign="middle"><h3>%(title)s</h3></td>
+            <td align="right" valign="middle">%(htmlHistoryAction)s</td>
+        </tr>
+    </table>
 
     <center>
         <table border="0" cellspacing="0" cellpadding="0">
