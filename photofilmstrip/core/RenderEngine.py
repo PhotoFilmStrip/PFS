@@ -32,10 +32,11 @@ class RenderEngine:
 
 class RenderEngineSlideshow(RenderEngine):
 
-    def __init__(self, profile, pics, draftMode, totalLength):
+    def __init__(self, profile, pics, draftMode, totalLength, loop=False):
         RenderEngine.__init__(self, profile, pics, draftMode)
         self.__targetLengthSecs = totalLength
         self.__picCountFactor = None
+        self.__loop = loop
 
     def __GetPicCountFactor(self, pics):
         if self.__targetLengthSecs is None:
@@ -46,7 +47,7 @@ class RenderEngineSlideshow(RenderEngine):
             totalSecs = 0
             for idxPic, pic in enumerate(pics):
                 totalSecs += pic.GetDuration()
-                if idxPic < (len(pics) - 1):
+                if self.__loop or idxPic < (len(pics) - 1):
                     totalSecs += pic.GetTransitionDuration()
             result = targetLengthSecs / totalSecs
 
@@ -89,37 +90,45 @@ class RenderEngineSlideshow(RenderEngine):
         return True
 
     def _PrepareTasks(self, pics):
+        if not pics:
+            return
+
         self.__picCountFactor = self.__GetPicCountFactor(pics)
 
         taskSub = TaskSubtitle(self.__picCountFactor, pics)
         self._tasks.append(taskSub)
 
         pathRectsBefore = []
+        pathRectsFirst = []
         picBefore = None
-        transCountBefore = 0
+
+        if self.__loop:
+            transCountBefore = self.__GetTransCount(pics[-1])
+        else:
+            transCountBefore = 0
 
         for idxPic, pic in enumerate(pics):
             picCount = self.__GetPicCount(pic)
             transCount = 0
-            if idxPic < (len(pics) - 1):
-                # last pic has no transition
+            if self.__loop or idxPic < (len(pics) - 1):
+                # Only a non-looping slideshow omits the last transition.
                 transCount = self.__GetTransCount(pic)
 
             cp = ComputePath(pic, picCount + transCount + transCountBefore)
             pathRects = cp.GetPathRects()
+            if idxPic == 0:
+                pathRectsFirst = pathRects
 
-            if idxPic > 0 and idxPic < len(pics):
-                # first and last pic has no transition
+            if idxPic > 0:
                 infoText = _("processing transition %d/%d") % (idxPic + 1, len(pics))
 
                 if transCountBefore > 0:
                     phase2a = pathRectsBefore[-transCountBefore:]
                     phase2b = pathRects[:transCountBefore]
-                    if not self.__TransAndFinal(infoText,
-                                                pics[idxPic - 1].GetTransition(),
-                                                picBefore, pic,
-                                                phase2a, phase2b):
-                        break
+                    self.__TransAndFinal(infoText,
+                                         pics[idxPic - 1].GetTransition(),
+                                         picBefore, pic,
+                                         phase2a, phase2b)
 
             infoText = _("processing image %d/%d") % (idxPic + 1, len(pics))
 
@@ -140,6 +149,14 @@ class RenderEngineSlideshow(RenderEngine):
             picBefore = pic
             pathRectsBefore = pathRects
             transCountBefore = transCount
+
+        if self.__loop and transCountBefore > 0:
+            # Continue the first image's original movement across the loop boundary.
+            self.__TransAndFinal(_("processing loop transition"),
+                                 picBefore.GetTransition(),
+                                 picBefore, pics[0],
+                                 pathRectsBefore[-transCountBefore:],
+                                 pathRectsFirst[:transCountBefore])
 
 
 class RenderEngineTimelapse(RenderEngine):
@@ -318,4 +335,3 @@ class DelayedMovement(AccelMovement):
         elif t < (self._t * 2) - self._t4th:
             self._sAccel = AccelMovement.Get(self, t - self._t4th)
         return self._sAccel
-

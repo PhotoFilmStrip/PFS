@@ -12,7 +12,7 @@ from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
 
 
-class DlgDuration(wx.Dialog):
+class DlgSlideshowProperties(wx.Dialog):
 
     def _InitSizers(self):
 
@@ -28,6 +28,8 @@ class DlgDuration(wx.Dialog):
         szCtrls.Add(self.rbAudio, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
         szCtrls.AddSpacer(self.FromDIP(8))
         szCtrls.Add(szManual, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
+        szCtrls.AddSpacer(self.FromDIP(8))
+        szCtrls.Add(self.cbLoop, border=self.FromDIP(8), flag=wx.LEFT | wx.EXPAND)
 
         szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
@@ -66,6 +68,10 @@ class DlgDuration(wx.Dialog):
               label=_("Fit to audio files"), name="rbAudio")
         self.rbAudio.Bind(wx.EVT_RADIOBUTTON, self.OnControlStatusTotalLength)
 
+        self.cbLoop = wx.CheckBox(self,
+              label=_("Create seamless loop"), name="cbLoop")
+        self.cbLoop.SetToolTip(_("Last image transitions back to first image"))
+
         self.staticLine = wx.StaticLine(self)
 
         self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
@@ -76,13 +82,13 @@ class DlgDuration(wx.Dialog):
         self.cmdOk.SetDefault()
 
     def __init__(self, parent, project=None):
-        wx.Dialog.__init__(self, parent, name="DlgDuration",
+        wx.Dialog.__init__(self, parent, name="DlgSlideshowProperties",
                            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
-                           title=_("Slideshow duration"))
+                           title=_("Slideshow properties"))
 
         self._InitCtrls()
 
-        self.pnlHdr.SetTitle(_("Configure duration of slideshow"))
+        self.pnlHdr.SetTitle(_("Configure slideshow properties"))
         self.pnlHdr.SetBitmap(Art.GetBitmapBundle('PFS_MUSIC_DURATION', wx.ART_MESSAGE_BOX))
 
         defTime = wx.DateTime.Now()
@@ -120,6 +126,8 @@ class DlgDuration(wx.Dialog):
             # duration is invalid if there are no photos
             pass
 
+        self.cbLoop.SetValue(project.GetLoop())
+
         self.__ControlStatusTotalLength()
 
         self._InitSizers()
@@ -134,6 +142,7 @@ class DlgDuration(wx.Dialog):
 
     def OnCmdOkButton(self, event):
         self.__project.SetDuration(self.__GetTotalLength())
+        self.__project.SetLoop(self.cbLoop.GetValue())
         event.Skip()
 
     def __ControlStatusTotalLength(self):

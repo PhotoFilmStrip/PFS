@@ -22,6 +22,7 @@ class Project(Observable):
         self.__aspect = Aspect.ASPECT_16_9
         self.__duration = None
         self.__timelapse = False
+        self.__loop = False
 
     def GetName(self):
         if self.__filename is None:
@@ -81,8 +82,10 @@ class Project(Observable):
     def GetDuration(self, calc=True):
         if calc:
             totalTime = 0
-            for pic in self.__pictures:
-                totalTime += pic.GetDuration() + pic.GetTransitionDuration()
+            for idx, pic in enumerate(self.__pictures):
+                totalTime += pic.GetDuration()
+                if idx < len(self.__pictures) - 1 or self.__loop:
+                    totalTime += pic.GetTransitionDuration()
         else:
             totalTime = self.__duration
         return totalTime
@@ -95,3 +98,12 @@ class Project(Observable):
 
     def GetTimelapse(self):
         return self.__timelapse
+
+    def GetLoop(self):
+        return self.__loop
+
+    def SetLoop(self, value):
+        if value == self.__loop:
+            return
+        self.__loop = value
+        self.Notify("loop")

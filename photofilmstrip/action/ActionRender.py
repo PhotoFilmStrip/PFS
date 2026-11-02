@@ -114,7 +114,8 @@ class ActionRender(IAction):
             renderEngine = RenderEngineSlideshow(self.__profile,
                                                  self.__photoFilmStrip.GetPictures(),
                                                  self.__draftMode,
-                                                 totalLength)
+                                                 totalLength,
+                                                 self.__photoFilmStrip.GetLoop())
 
         name = "%s (%s)" % (self.__photoFilmStrip.GetName(),
                             self.__profile.GetName())

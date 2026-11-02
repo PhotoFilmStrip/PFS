@@ -725,7 +725,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
             if arg == 'duration':
                 self.pnlEditPicture.SetupModeByProject(self.__project)
                 self.SetChanged(True)
-            elif arg == 'audiofile':
+            elif arg in ('audiofile', 'loop'):
                 self.SetChanged(True)
 
     def IsReady(self):

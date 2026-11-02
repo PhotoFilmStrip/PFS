@@ -10,7 +10,7 @@ import wx
 from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.PnlPfsProject import (
     PnlPfsProject, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP)
-from photofilmstrip.gui.DlgDuration import DlgDuration
+from photofilmstrip.gui.DlgSlideshowProperties import DlgSlideshowProperties
 from photofilmstrip.gui.DlgPicDurationByAudio import DlgPicDurationByAudio
 from photofilmstrip.gui.helper import CreateMenuItem
 from photofilmstrip.gui.ImageSectionEditor import ImageProxy
@@ -104,7 +104,7 @@ class PnlSlideshow(PnlPfsProject):
             self.OnProperties(None)
 
     def OnProperties(self, event):  # pylint: disable=unused-argument
-        dlg = DlgDuration(self, self.GetProject())
+        dlg = DlgSlideshowProperties(self, self.GetProject())
         dlg.ShowModal()
         dlg.Destroy()
 
