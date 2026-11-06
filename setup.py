@@ -107,9 +107,9 @@ class pfs_docs(Command):
         self.mkpath(doctree_dir)
         version_split = self.distribution.metadata.version.split("-")
         confoverrides = {}
-        confoverrides['project'] = self.distribution.metadata.name
+        confoverrides['project'] = str(self.distribution.metadata.name)
         confoverrides['version'] = version_split[0]
-        confoverrides['release'] = self.distribution.metadata.version
+        confoverrides['release'] = str(self.distribution.metadata.version)
 
         for builder in self.builder:
             builder_target_dir = os.path.join(build_dir, builder)
