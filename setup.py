@@ -294,7 +294,8 @@ class pfs_exe(Command):
 
         self.distribution.executables = [
                  Executable(os.path.join("photofilmstrip", "GUI.py"),
-                            base="Win32GUI",
+                            base="gui",
+                            init_script=os.path.join(os.path.dirname(__file__), "windows", "cx_init_pygi.py"),
                             target_name=app_name + ".exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
@@ -302,6 +303,7 @@ class pfs_exe(Command):
         self.distribution.executables[0]._manifest = MANIFEST_TEMPLATE.encode("utf-8")
         self.distribution.executables.append(
                  Executable(os.path.join("photofilmstrip", "CLI.py"),
+                            init_script=os.path.join(os.path.dirname(__file__), "windows", "cx_init_pygi.py"),
                             target_name=app_name + "-cli.exe",
                             icon=os.path.join("res", "icon", "photofilmstrip.ico")
                             )
