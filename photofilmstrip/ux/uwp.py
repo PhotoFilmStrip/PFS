@@ -82,7 +82,7 @@ class UwpAdapter(UxAdapter, IVisualJobManager):
 
 def ux_init():
     pfsPath = os.path.dirname(sys.argv[0])
-    svcClientPath = os.path.join(pfsPath, "..", "Tools", "UwpBridge.exe")
+    svcClientPath = os.path.join(pfsPath, "..", "UwpBridge", "UwpBridge.exe")
     logging.getLogger('UwpAdapter').debug(
         "trying UwpBridge.exe in '%s'", svcClientPath)
 
