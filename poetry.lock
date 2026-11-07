@@ -957,7 +957,7 @@ version = "2.6"
 description = ""
 optional = false
 python-versions = "*"
-groups = ["main"]
+groups = ["gst"]
 markers = "sys_platform == \"win32\""
 files = [
     {file = "pfs_gi-2.6-cp314-none-win_amd64.whl", hash = "sha256:7dbe6fc22a0840837aa188e90d76c39fe3cc2ea053f9ab80005be7e4445fcd22"},
@@ -1530,4 +1530,4 @@ numpy = "*"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.16"
-content-hash = "acc97ef544194422a6ec32e85bb3976adf6988628bab7e2efe99a0db00731bfb"
+content-hash = "aab40aa4db5c0fd91a76c368f0e1a4e544fb5278d23ace9081143d8c0c6a239c"

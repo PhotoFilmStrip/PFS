@@ -66,6 +66,11 @@ wxpython = ">=4.2.2"
 # pfs_gi is a custom gstreamer-cerbero build with additional plugins
 # - pygobject; gst-python; x265
 # - enabled introspection for pango, json-glib, harfbuzz, gdk-pixbuf
+
+[tool.poetry.group.gst]
+optional = true
+
+[tool.poetry.group.gst.dependencies]
 pfs_gi = { version = "2.6", markers = "sys_platform == 'win32'", source = "azure_pylibs" }
 
 [tool.poetry.group.dev]

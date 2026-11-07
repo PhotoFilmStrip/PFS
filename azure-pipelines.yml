@@ -15,15 +15,15 @@ jobs:
   timeoutInMinutes: 90
   displayName: 'Windows CI'
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'windows-2025-vs2026'
   strategy:
     matrix:
-      Py311_x86:
-        python.version: '3.11'
-        python.arch: x86
-        addToPath: true
-      Py311_x64:
-        python.version: '3.11'
+#      Py311_x86:
+#        python.version: '3.11'
+#        python.arch: x86
+#        addToPath: true
+      Py314_x64:
+        python.version: '3.14'
         python.arch: x64
         addToPath: true
 #      Py39_x64:
@@ -62,15 +62,15 @@ jobs:
       artifactFeeds: pylibs
     
   - script: |
-     python -m pip install pfs-gi
-     python -m pip install -r requirements.txt 
-     python -m pip install -r requirements_dev.txt
+     pipx install poetry poethepoet
+     poetry sync --with dev
+     poetry run pip install pfs_gi
      
     displayName: 'Install dependencies'
 
   - script: |
      set
-     python.exe setup.py --verbose clean bdist_win --target-dir=win32_$(python.arch)
+     poe win-exe --target-dir=win32_$(python.arch)
      python.exe -m zipfile -c dist\win32_$(python.arch).zip win32_$(python.arch)
     displayName: 'Build dist $(python.arch)'
 
