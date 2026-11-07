@@ -22,7 +22,7 @@ VERSION_SUFFIX = ''
 try:
     from photofilmstrip._pkgInfo import VERSION  # IGNORE:F0401
 except ImportError:
-    VERSION = "4.2.1"
+    VERSION = "4.3.0"
 
 APP_NAME = "PhotoFilmStrip"
 APP_VERSION = VERSION

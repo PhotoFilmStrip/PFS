@@ -1,7 +1,7 @@
 [project]
 name = "PhotoFilmStrip"
 description = "PhotoFilmStrip - Creates movies out of your pictures."
-version = "4.2.1"
+version = "4.3.0"
 authors = [
   {name = "Jens Göpfert", email = "info@photofilmstrip.org"}
 ]
