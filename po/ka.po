@@ -1,0 +1,1105 @@
+# Georgian translation for PhotoFilmStrip.
+# Copyright (C) 2026 PhotoFilmStrip's authors.
+# This file is distributed under the same license as the PhotoFilmStrip package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2025-11-09 14:39+0100\n"
+"PO-Revision-Date: 2026-09-01 17:41+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.9\n"
+
+#: photofilmstrip/action/ActionAutoPath.py:23
+#: photofilmstrip/gui/PnlPfsProject.py:117
+msgid "Random motion"
+msgstr "შემთხვევითი მოძრაობა"
+
+#: photofilmstrip/action/ActionCenterPath.py:21
+msgid "Centralize motion"
+msgstr "მოძრაობის ცენტრალიზაცია"
+
+#: photofilmstrip/action/ActionI18N.py:24
+#: photofilmstrip/gui/ActionManager.py:175
+msgid "Language"
+msgstr "ენა"
+
+#: photofilmstrip/action/ActionOpenFolder.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:29
+msgid "Open folder"
+msgstr "საქაღალდის გახსნა"
+
+#: photofilmstrip/action/ActionPlayVideo.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:23 photofilmstrip/ux/gnome.py:46
+#: photofilmstrip/ux/gnome.py:49
+msgid "Play video"
+msgstr "ვიდეოს დაკვრა"
+
+#: photofilmstrip/action/ActionRender.py:38
+msgid "Start"
+msgstr "დაწყება"
+
+#: photofilmstrip/action/ActionRender.py:84
+msgid "The following audio files are invalid or missing:"
+msgstr "შემდეგი აუდიოფაილები არასწორია, ან არ არსებობს:"
+
+#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:202
+msgid "all done"
+msgstr "ყველაფერი მზადაა"
+
+#: photofilmstrip/cli/Main.py:64
+msgid "processing project"
+msgstr "პროექტის დამუშავება"
+
+#: photofilmstrip/cli/Main.py:65
+msgid "using renderer"
+msgstr "გამოიყენება რენდერერი"
+
+#: photofilmstrip/cli/Main.py:66
+msgid "output format"
+msgstr "გამოტანის ფორმატი"
+
+#: photofilmstrip/cli/Main.py:68
+msgid "framerate"
+msgstr "კადრების სიხშირე"
+
+#: photofilmstrip/cli/Main.py:101
+msgid "specifies the project file"
+msgstr "მიუთითებს პროექტის ფაილს"
+
+#: photofilmstrip/cli/Main.py:102
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "ბილიკი გამოტანის ფაილების შესანახად. stdout-ისთვის გამოიყენეთ -."
+
+#: photofilmstrip/cli/Main.py:104 photofilmstrip/cli/Main.py:128
+msgid "Option videonorm is deprecated, use an appropriate profile!"
+msgstr "პარამეტრი videonorm მოძველებულია. გამოიყენეთ შესაბამისი პროფილი!"
+
+#: photofilmstrip/cli/Main.py:106
+msgid "enable draft mode"
+msgstr "მონახაზის რეჟიმის ჩართვა"
+
+#: photofilmstrip/cli/Main.py:106 photofilmstrip/gui/DlgRender.py:168
+msgid ""
+"Activate this option to generate a preview of your PhotoFilmStrip. The "
+"rendering process will speed up dramatically, but results in lower quality."
+msgstr ""
+"ჩართეთ ეს პარამეტრი თქვენი PhotoFilmStrip-ის მინიატურის გენერაციისთვის. "
+"რენდერის პროცესი ძალიან გაჩქარდება, მაგრამ შედეგი დაბალი ხარისხით იქნება."
+
+#: photofilmstrip/cli/Main.py:119
+msgid "project file does not exist: %s"
+msgstr "პროექტის ფაილი არ არსებობს: %s"
+
+#: photofilmstrip/cli/Main.py:123
+msgid "no project file specified!"
+msgstr "პროექტის ფაილი მითითებული არაა!"
+
+#: photofilmstrip/cli/Main.py:133
+msgid "invalid format specified: %s"
+msgstr "მითითებულია არასწორი ფორმატი: %s"
+
+#: photofilmstrip/cli/Main.py:139
+msgid "invalid profile specified: %s"
+msgstr "მითითებულია არასწორი პროფილი: %s"
+
+#: photofilmstrip/cli/Main.py:145
+msgid "cannot load project"
+msgstr "პროექტის ჩატვირთვა შეუძლებელია"
+
+#: photofilmstrip/cli/Main.py:158
+msgid "cannot create output path: %s"
+msgstr "გამოტანის ბილიკის შექმნა შეუძლებელია: %s"
+
+#: photofilmstrip/cli/Main.py:168
+msgid "The selected profile '%s' is not available in portrait mode!"
+msgstr "არჩეული პროფილი '%s' პორტრეტის რეჟიმში ხელმისაწვდომი არაა!"
+
+#: photofilmstrip/cli/Main.py:175 photofilmstrip/gui/DlgConfigureAudio.py:291
+#: photofilmstrip/gui/DlgConfigureAudio.py:313
+msgid "Audio file '%s' does not exist!"
+msgstr "აუდიოფაილი '%s' არ არსებობს!"
+
+#: photofilmstrip/cli/Main.py:196
+msgid "...aborted!"
+msgstr "...შეწყდა!"
+
+#: photofilmstrip/core/BaseRenderer.py:50
+msgid "Unknown property: %s"
+msgstr "უცნობ თვისება: %s"
+
+#: photofilmstrip/core/BaseRenderer.py:58
+msgid "<default>"
+msgstr "<ნაგულისხმევი>"
+
+#: photofilmstrip/core/BaseRenderer.py:73
+msgid "no"
+msgstr "არა"
+
+#: photofilmstrip/core/Media.py:119
+msgid "Auto detect"
+msgstr "ავტომატური გამოცნობა"
+
+#: photofilmstrip/core/Media.py:120
+msgid "Rotate left"
+msgstr "მარცხნივ მოტრიალება"
+
+#: photofilmstrip/core/Media.py:121
+msgid "Rotate right"
+msgstr "მარჯვნივ მოტრიალება"
+
+#: photofilmstrip/core/Media.py:122
+msgid "Upside down"
+msgstr "ამოყირავებული"
+
+#: photofilmstrip/core/Media.py:147
+msgid "Muted"
+msgstr "ხმა გამორთული"
+
+#: photofilmstrip/core/Media.py:148
+msgid "Silent"
+msgstr "ჩუმი"
+
+#: photofilmstrip/core/Media.py:149
+msgid "Medium"
+msgstr "საშუალო"
+
+#: photofilmstrip/core/Media.py:150
+msgid "Loud"
+msgstr "ხმამაღალი"
+
+#: photofilmstrip/core/Media.py:151
+msgid "Full"
+msgstr "სრული"
+
+#: photofilmstrip/core/ProjectFile.py:221
+msgid "Saving '%s' ..."
+msgstr "'%s'-ის შენახვა ..."
+
+#: photofilmstrip/core/ProjectFile.py:278
+msgid "Loading '%s' ..."
+msgstr "'%s'-ის ჩატვირთვა ..."
+
+#: photofilmstrip/core/RenderEngine.py:113
+#: photofilmstrip/core/RenderEngine.py:201
+msgid "processing transition %d/%d"
+msgstr "მუშავდება გადასვლა %d/%d"
+
+#: photofilmstrip/core/RenderEngine.py:124
+#: photofilmstrip/core/RenderEngine.py:210
+msgid "processing image %d/%d"
+msgstr "მუშავდება გამოსახულება %d/%d"
+
+#: photofilmstrip/core/StoryEngine.py:68
+msgid "Prepare rendering..."
+msgstr "რენდერის მომზადება..."
+
+#: photofilmstrip/core/StoryEngine.py:86 photofilmstrip/gui/FrmMain.py:163
+msgid "Rendering in progress..."
+msgstr "რენდერი..."
+
+#: photofilmstrip/core/renderer/CairoRenderer.py:35
+#: photofilmstrip/gui/PnlStory.py:314
+msgid "Preview"
+msgstr "მინიატურა"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:55
+msgid "GStreamer (python-gst-1.0) required!"
+msgstr "საჭიროა GStreamer (python-gst-1.0)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:346
+msgid "Bitrate must be a number!"
+msgstr "დისკრეტული სიხშირე რიცხვი უნდა იყოს!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:565
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:648
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:718
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:818
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:867
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:919
+msgid "libav (gstreamer1.0-libav) required!"
+msgstr "საჭიროა libav (gstreamer1.0-libav)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:569
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:652
+msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr "საჭიროა x264-Codec (gstreamer1.0-plugins-ugly)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:573
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:726
+msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "საჭიროა MKV-Muxer (gstreamer1.0-plugins-good)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:656
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "საჭიროა MP4-Muxer (gstreamer1.0-plugins-good)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:722
+msgid "x265-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr "საჭიროა x265-Codec (gstreamer1.0-plugins-ugly)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:764
+msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
+msgstr "საჭიროა Theora-Codec (gstreamer1.0-plugins-base)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:768
+msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
+msgstr "საჭიროა Vorbis-Codec (gstreamer1.0-plugins-base)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:772
+msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
+msgstr "საჭიროა OGV-Muxer (gstreamer1.0-plugins-base)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:814
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:863
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:915
+msgid "MPEG-1/2-Codec (gstreamer1.0-libav) required!"
+msgstr "საჭიროა MPEG-1/2-Codec (gstreamer1.0-libav)!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:822
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:871
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:923
+msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
+msgstr "საჭიროა MPEG-Muxer (gstreamer1.0-plugins-bad)!"
+
+#: photofilmstrip/core/renderer/SingleFileRenderer.py:21
+msgid "Single pictures"
+msgstr "ცალკეული სურათები"
+
+#: photofilmstrip/core/tasks.py:48
+msgid "generating subtitle"
+msgstr "სუბტიტრების გენერაცია"
+
+#: photofilmstrip/gui/ActionManager.py:64
+#: photofilmstrip/gui/ActionManager.py:195
+msgid "&File"
+msgstr "&ფაილი"
+
+#: photofilmstrip/gui/ActionManager.py:65
+#: photofilmstrip/gui/ActionManager.py:196
+msgid "&Edit"
+msgstr "ჩასწორ&ება"
+
+#: photofilmstrip/gui/ActionManager.py:66
+#: photofilmstrip/gui/ActionManager.py:158 photofilmstrip/gui/DlgRender.py:142
+#: photofilmstrip/gui/DlgRendererProps.py:88
+msgid "&Help"
+msgstr "&დახმარება"
+
+#: photofilmstrip/gui/ActionManager.py:80
+msgid "New Slideshow"
+msgstr "ახალი სლაიდშოუ"
+
+#: photofilmstrip/gui/ActionManager.py:85
+msgid "Open"
+msgstr "გახსნა"
+
+#: photofilmstrip/gui/ActionManager.py:91
+msgid "Save"
+msgstr "შენახვა"
+
+#: photofilmstrip/gui/ActionManager.py:101
+msgid "Show job queue"
+msgstr "დავალებების რიგის ჩვენება"
+
+#: photofilmstrip/gui/ActionManager.py:110
+#: photofilmstrip/gui/PnlSlideshow.py:26
+msgid "Slideshow"
+msgstr "სლაიდშოუ"
+
+#: photofilmstrip/gui/ActionManager.py:112
+#: photofilmstrip/gui/PnlTimelapse.py:20
+msgid "Timelapse"
+msgstr "ცაიტრაფერული გადაღება"
+
+#: photofilmstrip/gui/ActionManager.py:115
+msgid "Story"
+msgstr "ისტორია"
+
+#: photofilmstrip/gui/ActionManager.py:120
+msgid "New"
+msgstr "ახალი"
+
+#: photofilmstrip/gui/ActionManager.py:122
+msgid "&Open"
+msgstr "&გახსნა"
+
+#: photofilmstrip/gui/ActionManager.py:127
+msgid "&Save"
+msgstr "&შენახვა"
+
+#: photofilmstrip/gui/ActionManager.py:140
+msgid "&Close"
+msgstr "&დახურვა"
+
+#: photofilmstrip/gui/ActionManager.py:145
+msgid "E&xit"
+msgstr "&გასვლა"
+
+#: photofilmstrip/gui/ActionManager.py:178
+msgid "&About"
+msgstr "&შესახებ"
+
+#: photofilmstrip/gui/DlgBugReport.py:54
+msgid "An unexpected error occured"
+msgstr "აღმოჩენილია მოულოდნელი შეცდომა"
+
+#: photofilmstrip/gui/DlgBugReport.py:57
+msgid ""
+"An unexpected error occured. Do you want to send this bug report to the "
+"developers of %s?"
+msgstr ""
+"აღმოჩენილია მოულოდნელი შეცდომა. გნებავთ ამ შეცდომის ანგარიშის %s-ის "
+"პროგრამისტებისთვის გაგზავნა?"
+
+#: photofilmstrip/gui/DlgBugReport.py:112
+msgid "Bug-Report send. Thank you for your support."
+msgstr "შეცდომის ანგარიში გაიგზავნა. მადლობა მხარდაჭერისთვის."
+
+#: photofilmstrip/gui/DlgBugReport.py:113 photofilmstrip/gui/FrmMain.py:316
+msgid "Information"
+msgstr "ინფორმაცია"
+
+#: photofilmstrip/gui/DlgBugReport.py:119
+msgid "Sorry, this function is temporary not available.."
+msgstr "უკაცრავად, მაგრამ ეს ფუნქცია დროებით ხელმიუწვდომელია."
+
+#: photofilmstrip/gui/DlgBugReport.py:120
+#: photofilmstrip/gui/DlgConfigureAudio.py:292
+#: photofilmstrip/gui/DlgConfigureAudio.py:304
+#: photofilmstrip/gui/DlgConfigureAudio.py:314
+#: photofilmstrip/gui/DlgNewProject.py:179
+#: photofilmstrip/gui/DlgNewProject.py:190
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:209
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:217
+#: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
+#: photofilmstrip/gui/PnlTimelapse.py:115
+msgid "Error"
+msgstr "შეცდომა"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:61
+msgid "Configure your audio files that are used as a background music."
+msgstr ""
+"მოირგეთ თქვენი აუდიოფაილები, რომლებიც ფონური მუსიკის სახით იქნება "
+"გამოყენებული."
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:98
+msgid "Set the duration of your slideshow to fit your audio files"
+msgstr "დააყენეთ თქვენი სლაიდშოუს ხანგრძლივობა, რომ ის აუდიოფაილებს დაემთხვეს"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:100
+#: photofilmstrip/gui/DlgDuration.py:71 photofilmstrip/gui/DlgNewProject.py:89
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:51
+#: photofilmstrip/gui/DlgPositionInput.py:244
+#: photofilmstrip/gui/DlgRender.py:148
+#: photofilmstrip/gui/DlgRendererProps.py:94
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:97
+msgid "&Cancel"
+msgstr "&გაუქმება"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:105
+#: photofilmstrip/gui/DlgDuration.py:73 photofilmstrip/gui/DlgNewProject.py:91
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:52
+#: photofilmstrip/gui/DlgPositionInput.py:250
+#: photofilmstrip/gui/DlgRendererProps.py:99
+msgid "&Ok"
+msgstr "&დიახ"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:112
+#: photofilmstrip/gui/DlgConfigureAudio.py:117
+#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
+#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
+msgid "Configure music"
+msgstr "მუსიკის მორგება"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:126
+msgid "Select an entry"
+msgstr "აირჩიეთ ჩანაწერი"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:127
+msgid "Browse for audio files"
+msgstr "აუდიოფაილების ძებნა"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:185
+msgid "Select music"
+msgstr "მუსიკის არჩევა"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:187
+msgid "Audio files"
+msgstr "აუდიო ფაილები"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:303
+msgid "Audio file not supported!"
+msgstr "აუდიოფაილი მხარდაჭერილი არაა!"
+
+#: photofilmstrip/gui/DlgDuration.py:49
+msgid "Total length:"
+msgstr "ჯამური სიგრძე:"
+
+#: photofilmstrip/gui/DlgDuration.py:51
+msgid ""
+"Overrides the duration of single pictures and gives the project this total "
+"length."
+msgstr ""
+"გადაფარავს ერთი სურათის ხანგრძლივობას და პროექტს ამ სიგრძეს მიანიჭებს."
+
+#: photofilmstrip/gui/DlgDuration.py:55
+msgid "User defined:"
+msgstr "მომხმარებლის აღწერილი:"
+
+#: photofilmstrip/gui/DlgDuration.py:66
+msgid "Fit to audio files"
+msgstr "ჩატევა აუდიოფაილებში"
+
+#: photofilmstrip/gui/DlgDuration.py:81
+msgid "Slideshow duration"
+msgstr "სლაიდშოუს ხანგრძლივობა"
+
+#: photofilmstrip/gui/DlgDuration.py:85
+msgid "Configure duration of slideshow"
+msgstr "სლაიდშოუს ხანგრძლივობის მორგება"
+
+#: photofilmstrip/gui/DlgNewProject.py:64
+msgid "Project name:"
+msgstr "პროექტის სახელი:"
+
+#: photofilmstrip/gui/DlgNewProject.py:69
+msgid "Folder:"
+msgstr "საქაღალდე:"
+
+#: photofilmstrip/gui/DlgNewProject.py:81
+msgid "Aspect ratio:"
+msgstr "თანაფარდობა:"
+
+#: photofilmstrip/gui/DlgNewProject.py:85
+msgid "Portrait mode"
+msgstr "პორტრეტის რეჟიმი"
+
+#: photofilmstrip/gui/DlgNewProject.py:120
+msgid "Unnamed project"
+msgstr "უსახელო პროექტი"
+
+#: photofilmstrip/gui/DlgNewProject.py:126
+msgid "My PhotoFilmStrips"
+msgstr "ჩემი PhotoFilmStrip-ები"
+
+#: photofilmstrip/gui/DlgNewProject.py:149
+msgid "Browse for folder"
+msgstr "საქაღალდის დათვალიერება"
+
+#: photofilmstrip/gui/DlgNewProject.py:168
+msgid "Folder does not exists! Do you want %s to create it?"
+msgstr "საქაღალდე არ არსებობს! გნებავთ, %s-მა შექმნას ის?"
+
+#: photofilmstrip/gui/DlgNewProject.py:169
+#: photofilmstrip/gui/PnlEditorPage.py:29
+#: photofilmstrip/gui/PnlEditorPage.py:49
+#: photofilmstrip/gui/PnlEditorPage.py:88
+#: photofilmstrip/gui/WxProjectFile.py:101
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:227
+msgid "Question"
+msgstr "კითხვა"
+
+#: photofilmstrip/gui/DlgNewProject.py:178
+msgid "Cannot create folder: %s"
+msgstr "საქაღალდის შექმნის შეცდომა: %s"
+
+#: photofilmstrip/gui/DlgNewProject.py:189
+msgid "Cannot write into folder!"
+msgstr "საქაღალდეში ჩაწერა შეუძლებელია!"
+
+#: photofilmstrip/gui/DlgNewProject.py:203
+msgid "The project name must be filled."
+msgstr "პროექტის სახელის შევსება აუცილებელია."
+
+#: photofilmstrip/gui/DlgNewProject.py:209
+msgid "The project name contains invalid characters."
+msgstr "პროექტის სახელი არასწორ სიმბოლოებს შეიცავს."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:24
+#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
+msgid "Adjust picture durations"
+msgstr "სურათის ხანგრძლივობების გასწორება"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:27
+msgid "Adjust picture durations to audio file"
+msgstr "სურათის ხანგრძლივობის გასწორება აუდიოფაილზე"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:31
+msgid ""
+"Find your picture duration by playing the audio file of your project and\n"
+"pressing the hit button to apply the current playing time."
+msgstr ""
+"იპოვეთ თქვენი სურათის ხანგრძლივობა თქვენი პროექტის აუდიოფაილის დაკვრით\n"
+"და ღილაკზე 'დარტყმა' დაჭერით მიმდინარე დაკვრის დროის გამოსაყენებლად."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:44
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:154
+msgid "Play"
+msgstr "დაკვრა"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:47
+msgid "Hit"
+msgstr "დარტყმა"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:101
+msgid "Stop"
+msgstr "გაჩერება"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:180
+msgid "Playing time"
+msgstr "დაკვრის დრო"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:208
+msgid "Your project does not have an audio file configured."
+msgstr "თქვენს პროექტს აუდიოფაილი მორგებული არ აქვს."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:216
+msgid ""
+"Your project uses more than one audio file. Currently the durations can be "
+"adjusted only for one audio file."
+msgstr ""
+"თქვენი პროექტი ერთზე მეტ აუდიოფაილს იყენებს. ამჟამად ხანგრძლივობის "
+"გასწორება, მხოლოდ, ერთი აუდიოფაილისთვის შეიძლება."
+
+#: photofilmstrip/gui/DlgPositionInput.py:146
+msgid "Motion positions"
+msgstr "მოძრაობის პოზიციები"
+
+#: photofilmstrip/gui/DlgPositionInput.py:153
+msgid "Start position"
+msgstr "საწყისი მდებარეობა"
+
+#: photofilmstrip/gui/DlgPositionInput.py:161
+#: photofilmstrip/gui/DlgPositionInput.py:205
+msgid "Location:"
+msgstr "მდებარეობა:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:179
+#: photofilmstrip/gui/DlgPositionInput.py:221
+msgid "Size:"
+msgstr "ზომა:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:197
+msgid "End position"
+msgstr "დასრულების პოზიცია"
+
+#: photofilmstrip/gui/DlgPositionInput.py:239
+msgid "Reset"
+msgstr "ჩამოყრა"
+
+#: photofilmstrip/gui/DlgPositionInput.py:258
+msgid "Adjust motion positions directly"
+msgstr "მოძრაობის პირდაპირ გასწორება"
+
+#: photofilmstrip/gui/DlgRender.py:97
+msgid "Render project"
+msgstr "პროექტის რენდერი"
+
+#: photofilmstrip/gui/DlgRender.py:108
+msgid "Format:"
+msgstr "ფორმატი:"
+
+#: photofilmstrip/gui/DlgRender.py:123
+msgid "Properties"
+msgstr "თვისებები"
+
+#: photofilmstrip/gui/DlgRender.py:128
+msgid "Profile:"
+msgstr "პროფილი:"
+
+#: photofilmstrip/gui/DlgRender.py:137
+msgid "Draft"
+msgstr "მონახაზი"
+
+#: photofilmstrip/gui/DlgRender.py:153
+msgid "&Start"
+msgstr "&გაშვება"
+
+#: photofilmstrip/gui/DlgRender.py:165
+msgid "Configure output and start render process"
+msgstr "გამოტანის მორგება და რენდერის პროცესის დაწყება"
+
+#: photofilmstrip/gui/DlgRendererProps.py:52
+msgid "Property"
+msgstr "თვისება"
+
+#: photofilmstrip/gui/DlgRendererProps.py:54
+msgid "Value"
+msgstr "მნიშვნელობა"
+
+#: photofilmstrip/gui/DlgRendererProps.py:73
+msgid "Output properties"
+msgstr "გამოტანის თვისებები"
+
+#: photofilmstrip/gui/DlgRendererProps.py:115
+msgid "Edit extended output properties"
+msgstr "გამოტანის გაფართოებული თვისებების ჩასწორება"
+
+#: photofilmstrip/gui/DlgRendererProps.py:149
+msgid "Edit property"
+msgstr "თვისების ჩასწორება"
+
+#: photofilmstrip/gui/FrmMain.py:82
+msgid "Welcome"
+msgstr "მოგესალმებით"
+
+#: photofilmstrip/gui/FrmMain.py:84
+msgid "Job queue"
+msgstr "დავალებების რიგი"
+
+#: photofilmstrip/gui/FrmMain.py:256 photofilmstrip/gui/PnlWelcome.py:57
+msgid "Create new slideshow"
+msgstr "ახალი სლაიდშოუს შექმნა"
+
+#: photofilmstrip/gui/FrmMain.py:263
+msgid "Create new timelapse"
+msgstr "ახალი ცაიტრაფერული გადაღების შექმნა"
+
+#: photofilmstrip/gui/FrmMain.py:271
+msgid "New Story"
+msgstr "ახალი ისტორია"
+
+#: photofilmstrip/gui/FrmMain.py:275
+msgid "Select %s-Project"
+msgstr "%s-პროექტის არჩევა"
+
+#: photofilmstrip/gui/FrmMain.py:277
+msgid "Files"
+msgstr "ფაილები"
+
+#: photofilmstrip/gui/FrmMain.py:315
+msgid "You must restart %s for your new language setting to take effect."
+msgstr "ენის ცვლილების ძალაში შესასვლელად %s უნდა გადატვირთოთ."
+
+#: photofilmstrip/gui/FrmMain.py:326
+msgid ""
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
+"select your photos, customize the motion path and render the video. There "
+"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr ""
+"PhotoFilmStrip ქმნის ფილმებს თქვენი სურათებიდან სულ 3 ნაბიჯში. ჯერ აირჩიეთ "
+"სურათები, მოირგეთ მოძრაობის ბილიკი და დაარენდერეთ ვიდეო. არის გამოტანის "
+"რამდენიმე ვარიანტი: VCD, SVCD და DVD FullHD-მდე."
+
+#: photofilmstrip/gui/FrmMain.py:329
+msgid "online"
+msgstr "ონლაინ"
+
+#: photofilmstrip/gui/FrmMain.py:413
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr "არასწორი %(app)s-პროექტი: %(file)s"
+
+#: photofilmstrip/gui/PnlAddPics.py:52 photofilmstrip/gui/PnlWelcome.py:31
+msgid "Welcome to PhotoFilmStrip"
+msgstr "მოგესალმებათ PhotoFilmStrip"
+
+#: photofilmstrip/gui/PnlAddPics.py:54
+msgid ""
+"Drag some pictures onto this text or\n"
+"click the button below\n"
+"to add pictures to your new PhotoFilmStrip."
+msgstr ""
+"გადაათრიეთ ზოგიერთი სურათი ამ ტექსტზე,\n"
+"ან დააწკაპუნეთ ქვედა ღილაკზე\n"
+"თქვენს ახალ PhotoFilmStrip-სურათების დასამატებლად."
+
+#: photofilmstrip/gui/PnlEditPicture.py:142
+msgid "Settings"
+msgstr "მორგება"
+
+#: photofilmstrip/gui/PnlEditPicture.py:146
+msgid "Rotation:"
+msgstr "შემობრუნება:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:166
+msgid "Effect:"
+msgstr "ეფექტი:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:180
+msgid "Process"
+msgstr "პროცესი"
+
+#: photofilmstrip/gui/PnlEditPicture.py:184
+msgid "Movement:"
+msgstr "მიმართულება:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:196
+#: photofilmstrip/gui/PnlEditPicture.py:212
+#: photofilmstrip/gui/PnlEditPicture.py:359
+msgid "sec"
+msgstr "წმ"
+
+#: photofilmstrip/gui/PnlEditPicture.py:200
+msgid "Transition:"
+msgstr "გადასვლა:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:220
+msgid "Subtitle"
+msgstr "სუბტიტრები"
+
+#: photofilmstrip/gui/PnlEditPicture.py:240
+msgid "Linear"
+msgstr "წრფივი"
+
+#: photofilmstrip/gui/PnlEditPicture.py:241
+msgid "Accelerated"
+msgstr "აჩქარებული"
+
+#: photofilmstrip/gui/PnlEditPicture.py:242
+msgid "Delayed"
+msgstr "დაყოვნებული"
+
+#: photofilmstrip/gui/PnlEditPicture.py:250
+msgid "No effect"
+msgstr "ეფექტების გარეშე"
+
+#: photofilmstrip/gui/PnlEditPicture.py:251
+msgid "Black and White"
+msgstr "შავთეთრი"
+
+#: photofilmstrip/gui/PnlEditPicture.py:252
+msgid "Sepia tone"
+msgstr "სეპიას ტონი"
+
+#: photofilmstrip/gui/PnlEditPicture.py:258
+msgid "None"
+msgstr "არცერთი"
+
+#: photofilmstrip/gui/PnlEditPicture.py:259
+msgid "Fade"
+msgstr "მინავლება"
+
+#: photofilmstrip/gui/PnlEditPicture.py:260
+msgid "Roll"
+msgstr "გაგორება"
+
+#: photofilmstrip/gui/PnlEditPicture.py:354
+msgid "fpp"
+msgstr "fpp"
+
+#: photofilmstrip/gui/PnlEditPicture.py:355
+msgid "frames per picture - the number of frames each picture will be shown"
+msgstr ""
+"კადრი თითოეული სურათისთვის - ნაჩვენები იქნება კადრების რაოდენობა თითოეული "
+"სურათისთვის"
+
+#: photofilmstrip/gui/PnlEditorPage.py:26
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "ვერ შევინახე ფაილი '%(file)s': %(errMsg)s"
+
+#: photofilmstrip/gui/PnlEditorPage.py:45
+msgid "New file"
+msgstr "ახალი ფაილი"
+
+#: photofilmstrip/gui/PnlEditorPage.py:48
+msgid "'%s' has been modified. Save changes?"
+msgstr "\"%s\" შეიცვალა. გნებავთ, შეინახოთ ცვლილებები?"
+
+#: photofilmstrip/gui/PnlEditorPage.py:74
+msgid "Save %s"
+msgstr "%s-ის შენახვა"
+
+#: photofilmstrip/gui/PnlEditorPage.py:77
+msgid "File"
+msgstr "ფაილი"
+
+#: photofilmstrip/gui/PnlEditorPage.py:87
+msgid "Overwrite existing file '%s'?"
+msgstr "გადავაწერო თავზე არსებულ ფაილს '%s'?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:120
+#: photofilmstrip/gui/PnlPfsProject.py:122
+msgid "Set motion start to end"
+msgstr "მოძრაობის დაყენება დასაწყისიდან დასასრულამდე"
+
+#: photofilmstrip/gui/PnlPfsProject.py:124
+#: photofilmstrip/gui/PnlPfsProject.py:126
+msgid "Set motion end to start"
+msgstr "მოძრაობის დაყენება დასასრულიდან დასაწყისამდე"
+
+#: photofilmstrip/gui/PnlPfsProject.py:128
+#: photofilmstrip/gui/PnlPfsProject.py:130
+msgid "Swap motion"
+msgstr "მოძრაობის მიმოცვლა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:133
+#: photofilmstrip/gui/PnlPfsProject.py:135
+msgid "Adjust motion manual"
+msgstr "მოძრაობის ხელით გასწორება"
+
+#: photofilmstrip/gui/PnlPfsProject.py:138
+#: photofilmstrip/gui/PnlPfsProject.py:140
+msgid "Preserve image dimension"
+msgstr "გამოსახულების ზომების შენარჩუნება"
+
+#: photofilmstrip/gui/PnlPfsProject.py:301
+msgid "&Import Pictures"
+msgstr "სურათებ&ის შემოტანა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:306
+msgid "Move picture &left"
+msgstr "სურათის მარცხნივ გადატა&ნა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:310
+msgid "Move picture &right"
+msgstr "სუ&რათის მარჯვნივ გადატანა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:315
+msgid "R&emove Picture"
+msgstr "ს&ურათის წაშლა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:320
+msgid "Rotate &clockwise"
+msgstr "&საათის ისრის მიმართულებით შებრუნება"
+
+#: photofilmstrip/gui/PnlPfsProject.py:324
+msgid "Rotate counter clock&wise"
+msgstr "მობრუნება საათის ისრის სა&წინააღმდეგოდ"
+
+#: photofilmstrip/gui/PnlPfsProject.py:329
+msgid "Random &motion"
+msgstr "შემთხვევითი &მოძრაობა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:333
+msgid "Centralize m&otion"
+msgstr "მ&ოძრაობის ცენტრალიზაცია"
+
+#: photofilmstrip/gui/PnlPfsProject.py:393
+msgid "Export slideshow"
+msgstr "სლაიდშოუს გატანა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:396
+#: photofilmstrip/gui/PnlPfsProject.py:409
+msgid "Portable slideshow"
+msgstr "პორტატული სლაიდშოუ"
+
+#: photofilmstrip/gui/PnlPfsProject.py:407
+msgid "Import Slideshow"
+msgstr "სლაიდშოუს შემოტანა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:418
+msgid "Import images"
+msgstr "გამოსახულებების შემოტანა"
+
+#: photofilmstrip/gui/PnlPfsProject.py:420
+msgid "Image files"
+msgstr "გამოსახულების ფაილები"
+
+#: photofilmstrip/gui/PnlPfsProject.py:666
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "აუდიო ფაილი '%s' არ არსებობს! გააგრძელებთ მაინც?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:667
+msgid "Warning"
+msgstr "გაფრთხილება"
+
+#: photofilmstrip/gui/PnlSlideshow.py:31
+msgid "&Properties"
+msgstr "&თვისებები"
+
+#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
+#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
+msgid "Import Pictures"
+msgstr "სურათების შემოტანა"
+
+#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
+#: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
+#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
+msgid "Render filmstrip"
+msgstr "ვიდეოს შექმნა"
+
+#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
+msgid "Images"
+msgstr "გამოსახულებები"
+
+#: photofilmstrip/gui/PnlSlideshow.py:96
+msgid "Duration"
+msgstr "ხანგრძლივობა"
+
+#: photofilmstrip/gui/PnlStory.py:99 photofilmstrip/gui/PnlStory.py:274
+#: photofilmstrip/gui/PnlStory.py:293
+msgid "Add media"
+msgstr "მედიის დამატება"
+
+#: photofilmstrip/gui/PnlStory.py:101
+msgid "Media files"
+msgstr "მედიაფაილები"
+
+#: photofilmstrip/gui/PnlStory.py:177
+msgid "Video file"
+msgstr "ვიდეოფაილი"
+
+#: photofilmstrip/gui/PnlStory.py:179
+msgid "Video files"
+msgstr "ვიდეო ფაილები"
+
+#: photofilmstrip/gui/PnlStory.py:198
+msgid "Generate video %s"
+msgstr "ვიდეოს %s გენერაცია"
+
+#: photofilmstrip/gui/PnlStory.py:226
+msgid "An audio stream needs to contain at least one video stream!"
+msgstr "აუდიოს ნაკადი, სულ ცოტა, ერთ ვიდეონაკადს უნდა შეიცავდეს!"
+
+#: photofilmstrip/gui/PnlStory.py:279 photofilmstrip/gui/PnlStory.py:297
+msgid "Move up"
+msgstr "აწევა"
+
+#: photofilmstrip/gui/PnlStory.py:282 photofilmstrip/gui/PnlStory.py:300
+msgid "Move down"
+msgstr "ჩამოწევა"
+
+#: photofilmstrip/gui/PnlStory.py:285 photofilmstrip/gui/PnlStory.py:310
+msgid "Remove"
+msgstr "წაშლა"
+
+#: photofilmstrip/gui/PnlStory.py:293
+msgid "Add clip"
+msgstr "კლიპის დამატება"
+
+#: photofilmstrip/gui/PnlStory.py:303
+msgid "Move out"
+msgstr "გარეთ გატანა"
+
+#: photofilmstrip/gui/PnlStory.py:306
+msgid "Move in"
+msgstr "შიგნით შემოტანა"
+
+#: photofilmstrip/gui/PnlStory.py:472
+msgid "It's not allowed to create more than two levels!"
+msgstr "ორზე მეტი დონის შექმნა დაუშვებელია!"
+
+#: photofilmstrip/gui/PnlStory.py:478
+msgid "It's not allowed to put a video stream inside a video stream!"
+msgstr "ვიდეონაკადს ვიდეონაკადში ვერ ჩადებთ!"
+
+#: photofilmstrip/gui/PnlStory.py:480
+msgid "It's not allowed to put an audio stream inside an audio stream!"
+msgstr "აუდიონაკადს აუდიონაკადში ვერ ჩადებთ!"
+
+#: photofilmstrip/gui/PnlStory.py:736
+msgid "Orientation"
+msgstr "ორიენტაცია"
+
+#: photofilmstrip/gui/PnlStory.py:749
+msgid "Audio"
+msgstr "აუდიო"
+
+#: photofilmstrip/gui/PnlTimelapse.py:71
+msgid "Frames"
+msgstr "ჩარჩოები"
+
+#: photofilmstrip/gui/PnlTimelapse.py:94
+msgid "The picture counter is not increasing: %s"
+msgstr "სურათების მთვლელი არ იზრდება: %s"
+
+#: photofilmstrip/gui/PnlTimelapse.py:112
+msgid ""
+"Filename '%s' does not match a number pattern which is necessary for a time "
+"lapse slide show!"
+msgstr ""
+"ფაილის სახელი '%s' არ ემთხვევა რიცხვის ნიმუშს, რომელიც საჭიროა ცაიტრაფერული "
+"გადაღების სლაიდშოუსთვის!"
+
+#: photofilmstrip/gui/PnlWelcome.py:38 photofilmstrip/gui/PnlWelcome.py:111
+msgid "Recent projects"
+msgstr "უახლესი პროექტები"
+
+#: photofilmstrip/gui/PnlWelcome.py:61
+msgid "Open existing project"
+msgstr "არსებული პროექტის გახსნა"
+
+#: photofilmstrip/gui/PnlWelcome.py:114
+msgid "How to start..."
+msgstr "როგორ დავიწყოთ..."
+
+#: photofilmstrip/gui/PnlWelcome.py:115
+msgid "Create a new project or load an existing one."
+msgstr "ახალი პროექტის შექმნა ან არსებულის ჩატვირთვა."
+
+#: photofilmstrip/gui/PnlWelcome.py:146
+msgid "Update available"
+msgstr "განახლება ხელმისაწვდომია"
+
+#: photofilmstrip/gui/PnlWelcome.py:149
+msgid "The following changes has been made:"
+msgstr "განხორციელდა შემდეგი ცვლილებები:"
+
+#: photofilmstrip/gui/WxProjectFile.py:59
+msgid "Loading project %s"
+msgstr "იტვირთება პროექტი %s"
+
+#: photofilmstrip/gui/WxProjectFile.py:75
+msgid "Saving project %s"
+msgstr "პროექტის %s შენახვა"
+
+#: photofilmstrip/gui/WxProjectFile.py:100
+msgid ""
+"Some images does not exist in the folder '%s' anymore. If the files has "
+"moved you can select the new path. Do you want to select a new path?"
+msgstr ""
+"ზოგიერთი გამოსახულება საქაღალდეში '%s' აღარ არსებობს. თუ ფაილები "
+"გადატანილია, შეგიძლიათ, ახალი ბილიკი აირჩიოთ. გნებავთ ახალი ბილიკის არჩევა?"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
+msgid "Info"
+msgstr "ინფორმაცია"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
+msgid "Elapsed time"
+msgstr "გასული დრო"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:85
+msgid "Remaining time"
+msgstr "დარჩენილი დრო"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:203
+msgid "Unknown"
+msgstr "უცნობი"
+
+#: photofilmstrip/lib/jobimpl/PnlJobManager.py:50
+msgid "&Clear list"
+msgstr "სიის გასუფთავე&ბა"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:130
+msgid "Abort"
+msgstr "შეწყვეტა"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:136
+msgid "Remove from list"
+msgstr "სიიდან წაშლა"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:226
+msgid "Abort selected process?"
+msgstr "შეწყდეს მონიშნული პროცესი?"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:29
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:25
+msgid "Waiting..."
+msgstr "მოლოდინი…"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:68
+#: photofilmstrip/lib/jobimpl/VisualJob.py:85
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:60
+msgid "Aborted"
+msgstr "შეწყვეტილია"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:70
+msgid "Done"
+msgstr "მზადაა"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:79
+msgid "Aborting..."
+msgstr "გაუქმება..."
+
+#: photofilmstrip/ux/gnome.py:62 photofilmstrip/ux/uwp.py:66
+msgid "Slideshow created!"
+msgstr "სლაიდშოუს შეიქმნა!"
