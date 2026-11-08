@@ -1,22 +1,23 @@
 # Tamil translation for photofilmstrip
 # Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
-# This file is distributed under the same license as the photofilmstrip package.
+# This file is distributed under the same license as the photofilmstrip
+# package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: photofilmstrip\n"
+"Project-Id-Version:  photofilmstrip\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-11-09 14:39+0100\n"
+"POT-Creation-Date: 2026-11-08 17:34+0100\n"
 "PO-Revision-Date: 2012-12-05 23:21+0100\n"
 "Last-Translator: Jens Göpfert <mail@jensgoepfert.de>\n"
-"Language-Team: Tamil <ta@li.org>\n"
 "Language: ta\n"
+"Language-Team: Tamil <ta@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2012-12-05 22:12+0000\n"
-"X-Generator: Launchpad (build 16341)\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: photofilmstrip/action/ActionAutoPath.py:23
 #: photofilmstrip/gui/PnlPfsProject.py:117
@@ -79,7 +80,8 @@ msgstr "திட்டப்பணிக் கோப்பை குறிப�
 #: photofilmstrip/cli/Main.py:102
 msgid "The path where to save the output files. Use - for stdout."
 msgstr ""
-"வெளிப்பாட்டுக் கோப்புகளை சேமிக்க வேண்டிய இடம். திட்ட வெளிப்பாட்டுக்கு '-' பயன்படுத்தவும்."
+"வெளிப்பாட்டுக் கோப்புகளை சேமிக்க வேண்டிய இடம். திட்ட வெளிப்பாட்டுக்கு '-'"
+" பயன்படுத்தவும்."
 
 #: photofilmstrip/cli/Main.py:104 photofilmstrip/cli/Main.py:128
 msgid "Option videonorm is deprecated, use an appropriate profile!"
@@ -92,12 +94,15 @@ msgstr "வரைவு நிலையை செயல்படுத்து"
 #: photofilmstrip/cli/Main.py:106 photofilmstrip/gui/DlgRender.py:168
 msgid ""
 "Activate this option to generate a preview of your PhotoFilmStrip. The "
-"rendering process will speed up dramatically, but results in lower quality."
+"rendering process will speed up dramatically, but results in lower "
+"quality."
 msgstr ""
-"உங்கள் போடோபிலம்ஸ்டிரிப்பின் மூன்னோட்டத்தை உருவாக்க இந்த தேர்வை செயல்படுத்தவும். செயலாக்க "
-"வேகம் வியப்பூட்டும் அளவுக்கு கூடும், ஆனால் தரம் குறையும்."
+"உங்கள் போடோபிலம்ஸ்டிரிப்பின் மூன்னோட்டத்தை உருவாக்க இந்த தேர்வை "
+"செயல்படுத்தவும். செயலாக்க வேகம் வியப்பூட்டும் அளவுக்கு கூடும், ஆனால் தரம்"
+" குறையும்."
 
 #: photofilmstrip/cli/Main.py:119
+#, python-format
 msgid "project file does not exist: %s"
 msgstr "திட்டப்பணி கோப்பு இல்லை: %s"
 
@@ -106,10 +111,12 @@ msgid "no project file specified!"
 msgstr "திட்டப்பணி கோப்பு குறிப்பிடப்படவில்லை!"
 
 #: photofilmstrip/cli/Main.py:133
+#, python-format
 msgid "invalid format specified: %s"
 msgstr "தவறான வடிவம் குறிப்பிடப்பட்டுள்ளது: %s"
 
 #: photofilmstrip/cli/Main.py:139
+#, python-format
 msgid "invalid profile specified: %s"
 msgstr "குறிப்பிடப்பட்ட தன்விவரம் ஏற்றுக்கொள்ளத்தக்கது இல்லை: %s"
 
@@ -119,15 +126,18 @@ msgid "cannot load project"
 msgstr "போடோபில்ம்ஸ்டிரிப்பை ஏற்ற முடியவில்லை"
 
 #: photofilmstrip/cli/Main.py:158
+#, python-format
 msgid "cannot create output path: %s"
 msgstr "வெளிப்பாட்டு பாதையை உருவாக்க முடியவில்லை: %s"
 
 #: photofilmstrip/cli/Main.py:168
+#, python-format
 msgid "The selected profile '%s' is not available in portrait mode!"
 msgstr ""
 
 #: photofilmstrip/cli/Main.py:175 photofilmstrip/gui/DlgConfigureAudio.py:291
 #: photofilmstrip/gui/DlgConfigureAudio.py:313
+#, python-format
 msgid "Audio file '%s' does not exist!"
 msgstr "ஒலிக் கோப்பு '%s' கோப்பமைப்பில் இல்லை!"
 
@@ -136,6 +146,7 @@ msgid "...aborted!"
 msgstr "...நிறுத்தப்பட்டது!"
 
 #: photofilmstrip/core/BaseRenderer.py:50
+#, python-format
 msgid "Unknown property: %s"
 msgstr "தெரியாத பண்பு: %s"
 
@@ -185,23 +196,31 @@ msgid "Full"
 msgstr ""
 
 #: photofilmstrip/core/ProjectFile.py:221
-#, fuzzy
+#, fuzzy, python-format
 msgid "Saving '%s' ..."
 msgstr "'%s' ஏற்றப்படுகிறது..."
 
-#: photofilmstrip/core/ProjectFile.py:278
+#: photofilmstrip/core/ProjectFile.py:279
+#, python-format
 msgid "Loading '%s' ..."
 msgstr "'%s' ஏற்றப்படுகிறது..."
 
-#: photofilmstrip/core/RenderEngine.py:113
-#: photofilmstrip/core/RenderEngine.py:201
+#: photofilmstrip/core/RenderEngine.py:123
+#: photofilmstrip/core/RenderEngine.py:218
+#, python-format
 msgid "processing transition %d/%d"
 msgstr "சீர்மாற்றம் %d/%d செயலாக்கப்படுகிறது"
 
-#: photofilmstrip/core/RenderEngine.py:124
-#: photofilmstrip/core/RenderEngine.py:210
+#: photofilmstrip/core/RenderEngine.py:133
+#: photofilmstrip/core/RenderEngine.py:227
+#, python-format
 msgid "processing image %d/%d"
 msgstr "நிழற்படம் %d/%d செயலாக்கப்படுகிறது"
+
+#: photofilmstrip/core/RenderEngine.py:155
+#, fuzzy, python-format
+msgid "processing loop transition"
+msgstr "சீர்மாற்றம் %d/%d செயலாக்கப்படுகிறது"
 
 #: photofilmstrip/core/StoryEngine.py:68
 msgid "Prepare rendering..."
@@ -210,6 +229,10 @@ msgstr ""
 #: photofilmstrip/core/StoryEngine.py:86 photofilmstrip/gui/FrmMain.py:163
 msgid "Rendering in progress..."
 msgstr ""
+
+#: photofilmstrip/core/tasks.py:48
+msgid "generating subtitle"
+msgstr "துனை உரை உருவாக்கப்படுகிறது"
 
 #: photofilmstrip/core/renderer/CairoRenderer.py:35
 #: photofilmstrip/gui/PnlStory.py:314
@@ -279,10 +302,6 @@ msgstr ""
 msgid "Single pictures"
 msgstr "ஒற்றைப் படங்கள்"
 
-#: photofilmstrip/core/tasks.py:48
-msgid "generating subtitle"
-msgstr "துனை உரை உருவாக்கப்படுகிறது"
-
 #: photofilmstrip/gui/ActionManager.py:64
 #: photofilmstrip/gui/ActionManager.py:195
 msgid "&File"
@@ -316,12 +335,12 @@ msgid "Show job queue"
 msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:110
-#: photofilmstrip/gui/PnlSlideshow.py:26
+#: photofilmstrip/gui/PnlSlideshow.py:27
 msgid "Slideshow"
 msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:112
-#: photofilmstrip/gui/PnlTimelapse.py:20
+#: photofilmstrip/gui/PnlTimelapse.py:21
 msgid "Timelapse"
 msgstr ""
 
@@ -358,12 +377,13 @@ msgid "An unexpected error occured"
 msgstr "எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது"
 
 #: photofilmstrip/gui/DlgBugReport.py:57
+#, python-format
 msgid ""
 "An unexpected error occured. Do you want to send this bug report to the "
 "developers of %s?"
 msgstr ""
-"எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது. இப்பிழையின் அறிக்கையை %s இன் உருவாக்குநர்களுக்கு அனுப்ப "
-"விரும்புகிறீர்களா?"
+"எதிர்பார்க்காத பிழை ஏற்பட்டுள்ளது. இப்பிழையின் அறிக்கையை %s இன் "
+"உருவாக்குநர்களுக்கு அனுப்ப விரும்புகிறீர்களா?"
 
 #: photofilmstrip/gui/DlgBugReport.py:112
 msgid "Bug-Report send. Thank you for your support."
@@ -381,12 +401,12 @@ msgstr "மன்னிக்கவும், இச்செயல்பாட�
 #: photofilmstrip/gui/DlgConfigureAudio.py:292
 #: photofilmstrip/gui/DlgConfigureAudio.py:304
 #: photofilmstrip/gui/DlgConfigureAudio.py:314
-#: photofilmstrip/gui/DlgNewProject.py:179
-#: photofilmstrip/gui/DlgNewProject.py:190
+#: photofilmstrip/gui/DlgNewProject.py:180
+#: photofilmstrip/gui/DlgNewProject.py:191
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:209
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:217
 #: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
-#: photofilmstrip/gui/PnlTimelapse.py:115
+#: photofilmstrip/gui/PnlTimelapse.py:116
 msgid "Error"
 msgstr "பிழை"
 
@@ -399,27 +419,29 @@ msgid "Set the duration of your slideshow to fit your audio files"
 msgstr ""
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:100
-#: photofilmstrip/gui/DlgDuration.py:71 photofilmstrip/gui/DlgNewProject.py:89
+#: photofilmstrip/gui/DlgNewProject.py:89
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:51
 #: photofilmstrip/gui/DlgPositionInput.py:244
 #: photofilmstrip/gui/DlgRender.py:148
 #: photofilmstrip/gui/DlgRendererProps.py:94
+#: photofilmstrip/gui/DlgSlideshowProperties.py:77
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:97
 msgid "&Cancel"
 msgstr "&இரத்து"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:105
-#: photofilmstrip/gui/DlgDuration.py:73 photofilmstrip/gui/DlgNewProject.py:91
+#: photofilmstrip/gui/DlgNewProject.py:91
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:52
 #: photofilmstrip/gui/DlgPositionInput.py:250
 #: photofilmstrip/gui/DlgRendererProps.py:99
+#: photofilmstrip/gui/DlgSlideshowProperties.py:79
 msgid "&Ok"
 msgstr "&சரி"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:112
 #: photofilmstrip/gui/DlgConfigureAudio.py:117
-#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
-#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
+#: photofilmstrip/gui/PnlSlideshow.py:49 photofilmstrip/gui/PnlSlideshow.py:50
+#: photofilmstrip/gui/PnlTimelapse.py:36 photofilmstrip/gui/PnlTimelapse.py:37
 msgid "Configure music"
 msgstr ""
 
@@ -445,33 +467,6 @@ msgstr "ஒலி கோப்புகள்"
 msgid "Audio file not supported!"
 msgstr "ஒலிக் கோப்பு ஆதரிக்கப்படவில்லை!"
 
-#: photofilmstrip/gui/DlgDuration.py:49
-msgid "Total length:"
-msgstr "மொத்த நீளம்:"
-
-#: photofilmstrip/gui/DlgDuration.py:51
-msgid ""
-"Overrides the duration of single pictures and gives the project this total "
-"length."
-msgstr "தனிப் படங்களின் நேரங்களை புறக்கணித்து திட்டப்பணிக்கு இந்த மொத்த நீளத்தை கொடுக்கிறது."
-
-#: photofilmstrip/gui/DlgDuration.py:55
-msgid "User defined:"
-msgstr "பயனர் வரையறுத்தது:"
-
-#: photofilmstrip/gui/DlgDuration.py:66
-#, fuzzy
-msgid "Fit to audio files"
-msgstr "ஒலி கோப்புகள்"
-
-#: photofilmstrip/gui/DlgDuration.py:81
-msgid "Slideshow duration"
-msgstr ""
-
-#: photofilmstrip/gui/DlgDuration.py:85
-msgid "Configure duration of slideshow"
-msgstr ""
-
 #: photofilmstrip/gui/DlgNewProject.py:64
 msgid "Project name:"
 msgstr "திட்டப்பணியின் பெயர்"
@@ -488,24 +483,25 @@ msgstr "உருவ விகிதம்:"
 msgid "Portrait mode"
 msgstr ""
 
-#: photofilmstrip/gui/DlgNewProject.py:120
+#: photofilmstrip/gui/DlgNewProject.py:121
 #, fuzzy
 msgid "Unnamed project"
 msgstr "போடோபில்ம்ஸ்டிரிப்பை ஏற்ற முடியவில்லை"
 
-#: photofilmstrip/gui/DlgNewProject.py:126
+#: photofilmstrip/gui/DlgNewProject.py:125
 msgid "My PhotoFilmStrips"
 msgstr "எனது நிழற்படத்தொடர்கள்"
 
-#: photofilmstrip/gui/DlgNewProject.py:149
+#: photofilmstrip/gui/DlgNewProject.py:150
 msgid "Browse for folder"
 msgstr "அடைவுக்கு உலாவவும்"
 
-#: photofilmstrip/gui/DlgNewProject.py:168
+#: photofilmstrip/gui/DlgNewProject.py:169
+#, python-format
 msgid "Folder does not exists! Do you want %s to create it?"
 msgstr "அடைவை காணமுடியவில்லை!  அடைவை %s உருவாக்க விரும்புகிறீர்களா?"
 
-#: photofilmstrip/gui/DlgNewProject.py:169
+#: photofilmstrip/gui/DlgNewProject.py:170
 #: photofilmstrip/gui/PnlEditorPage.py:29
 #: photofilmstrip/gui/PnlEditorPage.py:49
 #: photofilmstrip/gui/PnlEditorPage.py:88
@@ -514,24 +510,25 @@ msgstr "அடைவை காணமுடியவில்லை!  அடை�
 msgid "Question"
 msgstr "வினா"
 
-#: photofilmstrip/gui/DlgNewProject.py:178
+#: photofilmstrip/gui/DlgNewProject.py:179
+#, python-format
 msgid "Cannot create folder: %s"
 msgstr "அடைவை உருவாக்க முடியவில்லை: %s"
 
-#: photofilmstrip/gui/DlgNewProject.py:189
+#: photofilmstrip/gui/DlgNewProject.py:190
 msgid "Cannot write into folder!"
 msgstr "அடைவில் எழுத முடியவில்லை!"
 
-#: photofilmstrip/gui/DlgNewProject.py:203
+#: photofilmstrip/gui/DlgNewProject.py:204
 msgid "The project name must be filled."
 msgstr "திட்டப்பணியின் பெயர் நிரப்பப்பட வேண்டும்"
 
-#: photofilmstrip/gui/DlgNewProject.py:209
+#: photofilmstrip/gui/DlgNewProject.py:210
 msgid "The project name contains invalid characters."
 msgstr "திட்டப்பணிப் பெயரில் ஏற்கமுடியாத எழுத்துக்கள் உள்ளன."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:24
-#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
+#: photofilmstrip/gui/PnlSlideshow.py:56 photofilmstrip/gui/PnlSlideshow.py:57
 msgid "Adjust picture durations"
 msgstr ""
 
@@ -569,8 +566,8 @@ msgstr ""
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:216
 msgid ""
-"Your project uses more than one audio file. Currently the durations can be "
-"adjusted only for one audio file."
+"Your project uses more than one audio file. Currently the durations can "
+"be adjusted only for one audio file."
 msgstr ""
 
 #: photofilmstrip/gui/DlgPositionInput.py:146
@@ -652,6 +649,45 @@ msgstr "நீட்டித்த வெளிப்பாட்டு பண�
 msgid "Edit property"
 msgstr "பண்பை திருத்து"
 
+#: photofilmstrip/gui/DlgSlideshowProperties.py:51
+msgid "Total length:"
+msgstr "மொத்த நீளம்:"
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:53
+msgid ""
+"Overrides the duration of single pictures and gives the project this "
+"total length."
+msgstr ""
+"தனிப் படங்களின் நேரங்களை புறக்கணித்து திட்டப்பணிக்கு இந்த மொத்த நீளத்தை "
+"கொடுக்கிறது."
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:57
+msgid "User defined:"
+msgstr "பயனர் வரையறுத்தது:"
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:68
+#, fuzzy
+msgid "Fit to audio files"
+msgstr "ஒலி கோப்புகள்"
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:72
+#, fuzzy
+msgid "Create seamless loop"
+msgstr "கையடக்கமான"
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:73
+msgid "Last image transitions back to first image"
+msgstr ""
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:87
+#, fuzzy
+msgid "Slideshow properties"
+msgstr "பண்புகள்"
+
+#: photofilmstrip/gui/DlgSlideshowProperties.py:91
+msgid "Configure slideshow properties"
+msgstr ""
+
 #: photofilmstrip/gui/FrmMain.py:82
 msgid "Welcome"
 msgstr "நல்வரவு"
@@ -660,7 +696,7 @@ msgstr "நல்வரவு"
 msgid "Job queue"
 msgstr ""
 
-#: photofilmstrip/gui/FrmMain.py:256 photofilmstrip/gui/PnlWelcome.py:57
+#: photofilmstrip/gui/FrmMain.py:256 photofilmstrip/gui/PnlWelcome.py:59
 #, fuzzy
 msgid "Create new slideshow"
 msgstr "கையடக்கமான"
@@ -675,6 +711,7 @@ msgid "New Story"
 msgstr ""
 
 #: photofilmstrip/gui/FrmMain.py:275
+#, python-format
 msgid "Select %s-Project"
 msgstr "%s-திட்டப்பணியை தேர்ந்தெடு"
 
@@ -684,24 +721,27 @@ msgid "Files"
 msgstr "&கோப்பு"
 
 #: photofilmstrip/gui/FrmMain.py:315
+#, python-format
 msgid "You must restart %s for your new language setting to take effect."
 msgstr "உங்கள் புதிய மொழி அமைப்பு செயல்பட %s ஐ மறுதுவக்க வேண்டும்."
 
 #: photofilmstrip/gui/FrmMain.py:326
 msgid ""
-"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
-"select your photos, customize the motion path and render the video. There "
-"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First"
+" select your photos, customize the motion path and render the video. "
+"There are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
 msgstr ""
-"நிழற்படத்தொடர் உங்கள் படங்களிலிருந்து மூன்றே செய்படிகளில் நிகழ்படங்களை உருவாக்குகிறது. "
-"முதலில் படங்களை  தேர்வுசெய்யவும். பிறகு நகர்ச்சிகளை தக்கபடி மாற்றிக்கொண்டு நிகழ்படத்தை "
-"உருவாக்கவும். விசிடி, எஸ்விசிடி, டிவிடி என்று முழு எச்டி வரை பல வெளிப்பாட்டு  உள்ளன."
+"நிழற்படத்தொடர் உங்கள் படங்களிலிருந்து மூன்றே செய்படிகளில் நிகழ்படங்களை "
+"உருவாக்குகிறது. முதலில் படங்களை  தேர்வுசெய்யவும். பிறகு நகர்ச்சிகளை "
+"தக்கபடி மாற்றிக்கொண்டு நிகழ்படத்தை உருவாக்கவும். விசிடி, எஸ்விசிடி, "
+"டிவிடி என்று முழு எச்டி வரை பல வெளிப்பாட்டு  உள்ளன."
 
 #: photofilmstrip/gui/FrmMain.py:329
 msgid "online"
 msgstr "இணைப்பில்"
 
 #: photofilmstrip/gui/FrmMain.py:413
+#, python-format
 msgid "Invalid %(app)s-Project: %(file)s"
 msgstr "பிழையுற்ற %(app)s-திட்டப்பணி: %(file)s"
 
@@ -797,6 +837,7 @@ msgid "frames per picture - the number of frames each picture will be shown"
 msgstr ""
 
 #: photofilmstrip/gui/PnlEditorPage.py:26
+#, python-format
 msgid "Could not save the file '%(file)s': %(errMsg)s"
 msgstr "கோப்பு '%(file)s' ஐ சேமிக்க முடியவில்லை: %(errMsg)s"
 
@@ -805,11 +846,12 @@ msgid "New file"
 msgstr ""
 
 #: photofilmstrip/gui/PnlEditorPage.py:48
+#, python-format
 msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' மாற்றப்பட்டுள்ளது. மாற்றங்களை சேமிக்க வேண்டுமா?"
 
 #: photofilmstrip/gui/PnlEditorPage.py:74
-#, fuzzy
+#, fuzzy, python-format
 msgid "Save %s"
 msgstr "%s-திட்டப்பணியை சேமி"
 
@@ -819,6 +861,7 @@ msgid "File"
 msgstr "&கோப்பு"
 
 #: photofilmstrip/gui/PnlEditorPage.py:87
+#, python-format
 msgid "Overwrite existing file '%s'?"
 msgstr "ஏற்கனவே உள்ள '%s' கோப்பை மேலெழுத வேண்டுமா?"
 
@@ -907,6 +950,7 @@ msgid "Image files"
 msgstr "படக்கோப்புகள்"
 
 #: photofilmstrip/gui/PnlPfsProject.py:666
+#, python-format
 msgid "Audio file '%s' does not exist! Continue anyway?"
 msgstr "ஒலிக் கோப்பு '%s' காணப்படவில்லை! எப்படியும் தொடர வேண்டுமா?"
 
@@ -914,26 +958,26 @@ msgstr "ஒலிக் கோப்பு '%s' காணப்படவில�
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: photofilmstrip/gui/PnlSlideshow.py:31
+#: photofilmstrip/gui/PnlSlideshow.py:32
 msgid "&Properties"
 msgstr "&பண்புகள்"
 
-#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
-#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
+#: photofilmstrip/gui/PnlSlideshow.py:41 photofilmstrip/gui/PnlSlideshow.py:42
+#: photofilmstrip/gui/PnlTimelapse.py:28 photofilmstrip/gui/PnlTimelapse.py:29
 msgid "Import Pictures"
 msgstr "படங்களை இறக்குமதி செய்"
 
-#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
+#: photofilmstrip/gui/PnlSlideshow.py:64 photofilmstrip/gui/PnlSlideshow.py:65
 #: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
-#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
+#: photofilmstrip/gui/PnlTimelapse.py:44 photofilmstrip/gui/PnlTimelapse.py:45
 msgid "Render filmstrip"
 msgstr "படத்தொடரை காட்டு"
 
-#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
+#: photofilmstrip/gui/PnlSlideshow.py:92 photofilmstrip/gui/PnlTimelapse.py:69
 msgid "Images"
 msgstr "படங்கள்"
 
-#: photofilmstrip/gui/PnlSlideshow.py:96
+#: photofilmstrip/gui/PnlSlideshow.py:97
 msgid "Duration"
 msgstr "நேர அளவு"
 
@@ -958,6 +1002,7 @@ msgid "Video files"
 msgstr "ஒலி கோப்புகள்"
 
 #: photofilmstrip/gui/PnlStory.py:198
+#, python-format
 msgid "Generate video %s"
 msgstr ""
 
@@ -1011,61 +1056,73 @@ msgstr "நேர அளவு"
 msgid "Audio"
 msgstr "ஒலி கோப்புகள்"
 
-#: photofilmstrip/gui/PnlTimelapse.py:71
+#: photofilmstrip/gui/PnlTimelapse.py:72
 msgid "Frames"
 msgstr ""
 
-#: photofilmstrip/gui/PnlTimelapse.py:94
+#: photofilmstrip/gui/PnlTimelapse.py:95
+#, python-format
 msgid "The picture counter is not increasing: %s"
 msgstr ""
 
-#: photofilmstrip/gui/PnlTimelapse.py:112
+#: photofilmstrip/gui/PnlTimelapse.py:113
+#, python-format
 msgid ""
-"Filename '%s' does not match a number pattern which is necessary for a time "
-"lapse slide show!"
+"Filename '%s' does not match a number pattern which is necessary for a "
+"time lapse slide show!"
 msgstr ""
 
-#: photofilmstrip/gui/PnlWelcome.py:38 photofilmstrip/gui/PnlWelcome.py:111
+#: photofilmstrip/gui/PnlWelcome.py:38 photofilmstrip/gui/PnlWelcome.py:113
 msgid "Recent projects"
 msgstr "அண்மைய திட்டப்பணிகள்"
 
-#: photofilmstrip/gui/PnlWelcome.py:61
+#: photofilmstrip/gui/PnlWelcome.py:63
 msgid "Open existing project"
 msgstr "இருக்கும் திட்டப்பணியை திற"
 
-#: photofilmstrip/gui/PnlWelcome.py:114
+#: photofilmstrip/gui/PnlWelcome.py:119
 msgid "How to start..."
 msgstr "தொடங்குவது எப்படி..."
 
-#: photofilmstrip/gui/PnlWelcome.py:115
+#: photofilmstrip/gui/PnlWelcome.py:120
 msgid "Create a new project or load an existing one."
 msgstr "புதிய திட்டப்பணியை உருவாக்கு அல்லது இருக்கும் ஒன்றை ஏற்று."
 
-#: photofilmstrip/gui/PnlWelcome.py:146
+#: photofilmstrip/gui/PnlWelcome.py:153
 msgid "Update available"
 msgstr "மேம்பாடு இருக்கிறது"
 
-#: photofilmstrip/gui/PnlWelcome.py:149
+#: photofilmstrip/gui/PnlWelcome.py:156
 msgid "The following changes has been made:"
 msgstr "பின்வரும் மாற்றங்கள் செய்யப்பட்டுள்ளன:"
 
+#: photofilmstrip/gui/PnlWelcome.py:247
+msgid "Clear list"
+msgstr ""
+
+#: photofilmstrip/gui/PnlWelcome.py:250
+msgid "Removes all entries from this list. The project files are kept."
+msgstr ""
+
 #: photofilmstrip/gui/WxProjectFile.py:59
-#, fuzzy
+#, fuzzy, python-format
 msgid "Loading project %s"
 msgstr "திட்டப்பணியை ஏற்று"
 
 #: photofilmstrip/gui/WxProjectFile.py:75
-#, fuzzy
+#, fuzzy, python-format
 msgid "Saving project %s"
 msgstr "திட்டப்பணியை சேமி"
 
 #: photofilmstrip/gui/WxProjectFile.py:100
+#, python-format
 msgid ""
 "Some images does not exist in the folder '%s' anymore. If the files has "
 "moved you can select the new path. Do you want to select a new path?"
 msgstr ""
-"சில படங்கள் '%s' அடைவில் இனியும் காணப்படவில்லை. படங்கள் நகர்த்தப்பட்டிருந்தால் புதிய "
-"இருப்பிடத்தை தேர்ந்தெடுக்கவும். புதிய அடைவின் பாதையை தேரந்தெடுக்க விரும்புகிறீர்களா?"
+"சில படங்கள் '%s' அடைவில் இனியும் காணப்படவில்லை. படங்கள் "
+"நகர்த்தப்பட்டிருந்தால் புதிய இருப்பிடத்தை தேர்ந்தெடுக்கவும். புதிய "
+"அடைவின் பாதையை தேரந்தெடுக்க விரும்புகிறீர்களா?"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
 msgid "Info"
@@ -1124,7 +1181,6 @@ msgstr "நிறுத்துகிறது..."
 msgid "Slideshow created!"
 msgstr ""
 
-#, fuzzy
 #~ msgid "Audio files:"
 #~ msgstr "ஒலி கோப்புகள்"
 
@@ -1157,7 +1213,8 @@ msgstr ""
 
 #~ msgid "MPEG format supports only VCD, SVCD and DVD profile!"
 #~ msgstr ""
-#~ "எம்.பி.இ.ஜி வடிவம் விசிடி, சூப்பர் விசிடி, டிவிடி தன்விவரங்களை மட்டுமே ஆதரிக்கும்"
+#~ "எம்.பி.இ.ஜி வடிவம் விசிடி, சூப்பர் விசிடி, "
+#~ "டிவிடி தன்விவரங்களை மட்டுமே ஆதரிக்கும்"
 
 #~ msgid "MPEG4-XVid/AC3 (AVI)"
 #~ msgstr "எம்.பி.இ.ஜி 4-XVid/AC3 (AVI)"
@@ -1253,10 +1310,12 @@ msgstr ""
 #~ msgstr "&தொகுதிச் செயல்"
 
 #~ msgid ""
-#~ "Project not saved yet. Please save the project first to create a batch "
-#~ "job!"
+#~ "Project not saved yet. Please save "
+#~ "the project first to create a "
+#~ "batch job!"
 #~ msgstr ""
-#~ "திட்டப்பணி இன்னும் சேமிக்கப்படவில்லை. தொகுதிச் செயலை உருவாக்க திட்டப்பணியை முதலில் "
+#~ "திட்டப்பணி இன்னும் சேமிக்கப்படவில்லை. தொகுதிச் "
+#~ "செயலை உருவாக்க திட்டப்பணியை முதலில் "
 #~ "சேமிக்கவும்!"
 
 #~ msgid "Batch file"
@@ -1276,3 +1335,10 @@ msgstr ""
 
 #~ msgid "Loading pictures..."
 #~ msgstr "படங்கள் ஏற்றப்படுகின்றன..."
+
+#~ msgid "Slideshow duration"
+#~ msgstr ""
+
+#~ msgid "Configure duration of slideshow"
+#~ msgstr ""
+
