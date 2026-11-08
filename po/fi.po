@@ -1,0 +1,1102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PhotoFilmStrip\n"
+"POT-Creation-Date: 2025-11-09 14:39+0100\n"
+"PO-Revision-Date: 2026-01-22 19:23+0200\n"
+"Last-Translator: Mika Haaja <mika.haaja@gmail.com>\n"
+"Language-Team: Mika mika.haaja@gmail.com\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: photofilmstrip/action/ActionAutoPath.py:23
+#: photofilmstrip/gui/PnlPfsProject.py:117
+msgid "Random motion"
+msgstr "Satunnainen liike"
+
+#: photofilmstrip/action/ActionCenterPath.py:21
+msgid "Centralize motion"
+msgstr "Keskitetty liike"
+
+#: photofilmstrip/action/ActionI18N.py:24
+#: photofilmstrip/gui/ActionManager.py:175
+msgid "Language"
+msgstr "Kieli"
+
+#: photofilmstrip/action/ActionOpenFolder.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:29
+msgid "Open folder"
+msgstr "Avaa kansio"
+
+#: photofilmstrip/action/ActionPlayVideo.py:20
+#: photofilmstrip/gui/PnlRenderJobVisual.py:23 photofilmstrip/ux/gnome.py:46
+#: photofilmstrip/ux/gnome.py:49
+msgid "Play video"
+msgstr "Toista video"
+
+#: photofilmstrip/action/ActionRender.py:38
+msgid "Start"
+msgstr "Aloita"
+
+#: photofilmstrip/action/ActionRender.py:84
+msgid "The following audio files are invalid or missing:"
+msgstr "Listatut äänitiedostot eivät kelpaa tai puuttuvat:"
+
+#: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:202
+msgid "all done"
+msgstr "valmis"
+
+#: photofilmstrip/cli/Main.py:64
+msgid "processing project"
+msgstr "muodostetaan projektia"
+
+#: photofilmstrip/cli/Main.py:65
+msgid "using renderer"
+msgstr "käytä renderöintiä"
+
+#: photofilmstrip/cli/Main.py:66
+msgid "output format"
+msgstr "tallennusmuoto"
+
+#: photofilmstrip/cli/Main.py:68
+msgid "framerate"
+msgstr "kuvataajuus"
+
+#: photofilmstrip/cli/Main.py:101
+msgid "specifies the project file"
+msgstr "määrittää projektitiedoston"
+
+#: photofilmstrip/cli/Main.py:102
+msgid "The path where to save the output files. Use - for stdout."
+msgstr "Polku, johon ulostulo tallennetaan. Käyttö - oletuspolkuna."
+
+#: photofilmstrip/cli/Main.py:104 photofilmstrip/cli/Main.py:128
+msgid "Option videonorm is deprecated, use an appropriate profile!"
+msgstr "Valintaa Video-standardi ei enää tueta, käytä sopivaa profiilia!"
+
+#: photofilmstrip/cli/Main.py:106
+msgid "enable draft mode"
+msgstr "käytä luonnos tilaa"
+
+#: photofilmstrip/cli/Main.py:106 photofilmstrip/gui/DlgRender.py:168
+msgid ""
+"Activate this option to generate a preview of your PhotoFilmStrip. The "
+"rendering process will speed up dramatically, but results in lower quality."
+msgstr ""
+"Aktivoi tämä asetus tehdäksesi PhotoFilmStrip esikatselu. "
+"Renderöintiprosessi nopeutuu huomattavasti, mutta lopputulos on "
+"huonompilaatuinen."
+
+#: photofilmstrip/cli/Main.py:119
+msgid "project file does not exist: %s"
+msgstr "projektitiedostoa ei löydy: %s"
+
+#: photofilmstrip/cli/Main.py:123
+msgid "no project file specified!"
+msgstr "projektitiedostoa ei ole valittu!"
+
+#: photofilmstrip/cli/Main.py:133
+msgid "invalid format specified: %s"
+msgstr "väärä muoto valittu: %s"
+
+#: photofilmstrip/cli/Main.py:139
+msgid "invalid profile specified: %s"
+msgstr "väärä profiili valittu: %s"
+
+#: photofilmstrip/cli/Main.py:145
+msgid "cannot load project"
+msgstr "projektia ei voi ladata"
+
+#: photofilmstrip/cli/Main.py:158
+msgid "cannot create output path: %s"
+msgstr "tallennuspolkua ei voi luoda: %s"
+
+#: photofilmstrip/cli/Main.py:168
+msgid "The selected profile '%s' is not available in portrait mode!"
+msgstr "Valittu profiili '%s' ei ole saatavilla muotokuvatilassa!"
+
+#: photofilmstrip/cli/Main.py:175 photofilmstrip/gui/DlgConfigureAudio.py:291
+#: photofilmstrip/gui/DlgConfigureAudio.py:313
+msgid "Audio file '%s' does not exist!"
+msgstr "Äänitiedosto'%s' ei löydy!"
+
+#: photofilmstrip/cli/Main.py:196
+msgid "...aborted!"
+msgstr "...peruttu!"
+
+#: photofilmstrip/core/BaseRenderer.py:50
+msgid "Unknown property: %s"
+msgstr "Tuntematon ominaisuus: %s"
+
+#: photofilmstrip/core/BaseRenderer.py:58
+msgid "<default>"
+msgstr "<oletus>"
+
+#: photofilmstrip/core/BaseRenderer.py:73
+msgid "no"
+msgstr "ei"
+
+#: photofilmstrip/core/Media.py:119
+msgid "Auto detect"
+msgstr "Tunnista automaattisesti"
+
+#: photofilmstrip/core/Media.py:120
+msgid "Rotate left"
+msgstr "Käännä vasemmalle"
+
+#: photofilmstrip/core/Media.py:121
+msgid "Rotate right"
+msgstr "Käännä oikealle"
+
+#: photofilmstrip/core/Media.py:122
+msgid "Upside down"
+msgstr "Ylösalaisin"
+
+#: photofilmstrip/core/Media.py:147
+msgid "Muted"
+msgstr "Vaimennettu"
+
+#: photofilmstrip/core/Media.py:148
+msgid "Silent"
+msgstr "Hiljainen"
+
+#: photofilmstrip/core/Media.py:149
+msgid "Medium"
+msgstr "Keskiverto"
+
+#: photofilmstrip/core/Media.py:150
+msgid "Loud"
+msgstr "Äänekäs"
+
+#: photofilmstrip/core/Media.py:151
+msgid "Full"
+msgstr "Täysillä"
+
+#: photofilmstrip/core/ProjectFile.py:221
+msgid "Saving '%s' ..."
+msgstr "Tallentaa '%s' ..."
+
+#: photofilmstrip/core/ProjectFile.py:278
+msgid "Loading '%s' ..."
+msgstr "Lataa '%s' ..."
+
+#: photofilmstrip/core/RenderEngine.py:113
+#: photofilmstrip/core/RenderEngine.py:201
+msgid "processing transition %d/%d"
+msgstr "muodostetaan kuvasiirtymää %d/%d"
+
+#: photofilmstrip/core/RenderEngine.py:124
+#: photofilmstrip/core/RenderEngine.py:210
+msgid "processing image %d/%d"
+msgstr "muodostetaan kuvaa %d/%d"
+
+#: photofilmstrip/core/StoryEngine.py:68
+msgid "Prepare rendering..."
+msgstr "Valmistellaan renderöintiä..."
+
+#: photofilmstrip/core/StoryEngine.py:86 photofilmstrip/gui/FrmMain.py:163
+msgid "Rendering in progress..."
+msgstr "Renderöinti käynnissä..."
+
+#: photofilmstrip/core/renderer/CairoRenderer.py:35
+#: photofilmstrip/gui/PnlStory.py:314
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:55
+msgid "GStreamer (python-gst-1.0) required!"
+msgstr "GStreamer (python-gst-1.0) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:346
+msgid "Bitrate must be a number!"
+msgstr "Bittinopeus pitää olla numero!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:565
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:648
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:718
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:818
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:867
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:919
+msgid "libav (gstreamer1.0-libav) required!"
+msgstr "libav (gstreamer1.0-libav) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:569
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:652
+msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr "x264-Codec (gstreamer1.0-plugins-ugly) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:573
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:726
+msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "MKV-Muxer (gstreamer1.0-plugins-good) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:656
+msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
+msgstr "MP4-Muxer (gstreamer1.0-plugins-good) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:722
+msgid "x265-Codec (gstreamer1.0-plugins-ugly) required!"
+msgstr "x265-Codec (gstreamer1.0-plugins-ugly) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:764
+msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
+msgstr "Theora-Codec (gstreamer1.0-plugins-base) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:768
+msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
+msgstr "Vorbis-Codec (gstreamer1.0-plugins-base) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:772
+msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
+msgstr "OGV-Muxer (gstreamer1.0-plugins-base) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:814
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:863
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:915
+msgid "MPEG-1/2-Codec (gstreamer1.0-libav) required!"
+msgstr "MPEG-1/2-Codec (gstreamer1.0-libav) vaaditaan!"
+
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:822
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:871
+#: photofilmstrip/core/renderer/GStreamerRenderer.py:923
+msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
+msgstr "MPEG-Muxer (gstreamer1.0-plugins-bad) vaaditaan!"
+
+#: photofilmstrip/core/renderer/SingleFileRenderer.py:21
+msgid "Single pictures"
+msgstr "Yksittäiset kuvat"
+
+#: photofilmstrip/core/tasks.py:48
+msgid "generating subtitle"
+msgstr "muodostetaan tekstitystä"
+
+#: photofilmstrip/gui/ActionManager.py:64
+#: photofilmstrip/gui/ActionManager.py:195
+msgid "&File"
+msgstr "&Tiedosto"
+
+#: photofilmstrip/gui/ActionManager.py:65
+#: photofilmstrip/gui/ActionManager.py:196
+msgid "&Edit"
+msgstr "&Muokkaa"
+
+#: photofilmstrip/gui/ActionManager.py:66
+#: photofilmstrip/gui/ActionManager.py:158 photofilmstrip/gui/DlgRender.py:142
+#: photofilmstrip/gui/DlgRendererProps.py:88
+msgid "&Help"
+msgstr "&Apu"
+
+#: photofilmstrip/gui/ActionManager.py:80
+msgid "New Slideshow"
+msgstr "Uusi diaesitys"
+
+#: photofilmstrip/gui/ActionManager.py:85
+msgid "Open"
+msgstr "Avaa"
+
+#: photofilmstrip/gui/ActionManager.py:91
+msgid "Save"
+msgstr "Tallenna"
+
+#: photofilmstrip/gui/ActionManager.py:101
+msgid "Show job queue"
+msgstr "Näytä työjono"
+
+#: photofilmstrip/gui/ActionManager.py:110
+#: photofilmstrip/gui/PnlSlideshow.py:26
+msgid "Slideshow"
+msgstr "Diaesitys"
+
+#: photofilmstrip/gui/ActionManager.py:112
+#: photofilmstrip/gui/PnlTimelapse.py:20
+msgid "Timelapse"
+msgstr "Timelapse"
+
+#: photofilmstrip/gui/ActionManager.py:115
+msgid "Story"
+msgstr "Tarina"
+
+#: photofilmstrip/gui/ActionManager.py:120
+msgid "New"
+msgstr "Uusi"
+
+#: photofilmstrip/gui/ActionManager.py:122
+msgid "&Open"
+msgstr "&Avaa"
+
+#: photofilmstrip/gui/ActionManager.py:127
+msgid "&Save"
+msgstr "&Tallenna"
+
+#: photofilmstrip/gui/ActionManager.py:140
+msgid "&Close"
+msgstr "&Sulje"
+
+#: photofilmstrip/gui/ActionManager.py:145
+msgid "E&xit"
+msgstr "P&oistu"
+
+#: photofilmstrip/gui/ActionManager.py:178
+msgid "&About"
+msgstr "&Tietoja"
+
+#: photofilmstrip/gui/DlgBugReport.py:54
+msgid "An unexpected error occured"
+msgstr "Odottamaton virhe tapahtui"
+
+#: photofilmstrip/gui/DlgBugReport.py:57
+msgid ""
+"An unexpected error occured. Do you want to send this bug report to the "
+"developers of %s?"
+msgstr ""
+"Odottamaton virhe tapahtui. Haluatko lähettää tämän bugiraportin %s "
+"kehittäjille?"
+
+#: photofilmstrip/gui/DlgBugReport.py:112
+msgid "Bug-Report send. Thank you for your support."
+msgstr "Bugiraportti lähetetty. Kiitos tuestanne."
+
+#: photofilmstrip/gui/DlgBugReport.py:113 photofilmstrip/gui/FrmMain.py:316
+msgid "Information"
+msgstr "Tiedot"
+
+#: photofilmstrip/gui/DlgBugReport.py:119
+msgid "Sorry, this function is temporary not available.."
+msgstr "Pahoittelut, tämä toiminto ei ole tilapäisesti saatavilla.."
+
+#: photofilmstrip/gui/DlgBugReport.py:120
+#: photofilmstrip/gui/DlgConfigureAudio.py:292
+#: photofilmstrip/gui/DlgConfigureAudio.py:304
+#: photofilmstrip/gui/DlgConfigureAudio.py:314
+#: photofilmstrip/gui/DlgNewProject.py:179
+#: photofilmstrip/gui/DlgNewProject.py:190
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:209
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:217
+#: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
+#: photofilmstrip/gui/PnlTimelapse.py:115
+msgid "Error"
+msgstr "Virhe"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:61
+msgid "Configure your audio files that are used as a background music."
+msgstr "Taustamusiikkina käytettävien äänitiedostojen määrittäminen."
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:98
+msgid "Set the duration of your slideshow to fit your audio files"
+msgstr "Määritä diaesityksesi pituus vastaamaan äänitiedostoja"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:100
+#: photofilmstrip/gui/DlgDuration.py:71 photofilmstrip/gui/DlgNewProject.py:89
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:51
+#: photofilmstrip/gui/DlgPositionInput.py:244
+#: photofilmstrip/gui/DlgRender.py:148
+#: photofilmstrip/gui/DlgRendererProps.py:94
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:97
+msgid "&Cancel"
+msgstr "&Peruuta"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:105
+#: photofilmstrip/gui/DlgDuration.py:73 photofilmstrip/gui/DlgNewProject.py:91
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:52
+#: photofilmstrip/gui/DlgPositionInput.py:250
+#: photofilmstrip/gui/DlgRendererProps.py:99
+msgid "&Ok"
+msgstr "&Ok"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:112
+#: photofilmstrip/gui/DlgConfigureAudio.py:117
+#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
+#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
+msgid "Configure music"
+msgstr "Taustamusiikin määrittäminen"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:126
+msgid "Select an entry"
+msgstr "Valitse merkintä"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:127
+msgid "Browse for audio files"
+msgstr "Selaa äänitiedostoja"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:185
+msgid "Select music"
+msgstr "Valitse taustamusiikki"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:187
+msgid "Audio files"
+msgstr "Äänitiedostot"
+
+#: photofilmstrip/gui/DlgConfigureAudio.py:303
+msgid "Audio file not supported!"
+msgstr "Äänitiedosto ei ole tuettu!"
+
+#: photofilmstrip/gui/DlgDuration.py:49
+msgid "Total length:"
+msgstr "Kokonaispituus:"
+
+#: photofilmstrip/gui/DlgDuration.py:51
+msgid ""
+"Overrides the duration of single pictures and gives the project this total "
+"length."
+msgstr "Ohita yksittäisten kuvien kesto tällä kokonaispituudella."
+
+#: photofilmstrip/gui/DlgDuration.py:55
+msgid "User defined:"
+msgstr "Käyttäjän määrittämä:"
+
+#: photofilmstrip/gui/DlgDuration.py:66
+msgid "Fit to audio files"
+msgstr "Sovita äänitiedostoihin"
+
+#: photofilmstrip/gui/DlgDuration.py:81
+msgid "Slideshow duration"
+msgstr "Diaesityksen pituus"
+
+#: photofilmstrip/gui/DlgDuration.py:85
+msgid "Configure duration of slideshow"
+msgstr "Määritä diaesityksen pituus"
+
+#: photofilmstrip/gui/DlgNewProject.py:64
+msgid "Project name:"
+msgstr "Projektin nimi:"
+
+#: photofilmstrip/gui/DlgNewProject.py:69
+msgid "Folder:"
+msgstr "Kansio:"
+
+#: photofilmstrip/gui/DlgNewProject.py:81
+msgid "Aspect ratio:"
+msgstr "Kuvasuhde:"
+
+#: photofilmstrip/gui/DlgNewProject.py:85
+msgid "Portrait mode"
+msgstr "Muotokuvatila"
+
+#: photofilmstrip/gui/DlgNewProject.py:120
+msgid "Unnamed project"
+msgstr "Nimeämätön projekti"
+
+#: photofilmstrip/gui/DlgNewProject.py:126
+msgid "My PhotoFilmStrips"
+msgstr "Omat PhotoFilmStripit"
+
+#: photofilmstrip/gui/DlgNewProject.py:149
+msgid "Browse for folder"
+msgstr "Valitse kansio"
+
+#: photofilmstrip/gui/DlgNewProject.py:168
+msgid "Folder does not exists! Do you want %s to create it?"
+msgstr "Kansiota ei ole! Haluatko luoda %s kansion?"
+
+#: photofilmstrip/gui/DlgNewProject.py:169
+#: photofilmstrip/gui/PnlEditorPage.py:29
+#: photofilmstrip/gui/PnlEditorPage.py:49
+#: photofilmstrip/gui/PnlEditorPage.py:88
+#: photofilmstrip/gui/WxProjectFile.py:101
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:227
+msgid "Question"
+msgstr "Kysymys"
+
+#: photofilmstrip/gui/DlgNewProject.py:178
+msgid "Cannot create folder: %s"
+msgstr "Kansiota ei voi luoda: %s"
+
+#: photofilmstrip/gui/DlgNewProject.py:189
+msgid "Cannot write into folder!"
+msgstr "Kansioon ei voi kirjoittaa!"
+
+#: photofilmstrip/gui/DlgNewProject.py:203
+msgid "The project name must be filled."
+msgstr "Projektille tulee antaa nimi."
+
+#: photofilmstrip/gui/DlgNewProject.py:209
+msgid "The project name contains invalid characters."
+msgstr "Projektin nimi sisältää ei sallittuja merkkejä."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:24
+#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
+msgid "Adjust picture durations"
+msgstr "Määritä kuvien näyttöaika"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:27
+msgid "Adjust picture durations to audio file"
+msgstr "Sovita kuvien näyttöaika äänitiedostoon"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:31
+msgid ""
+"Find your picture duration by playing the audio file of your project and\n"
+"pressing the hit button to apply the current playing time."
+msgstr ""
+"Määritä kuvien näyttöaika toistamalla projektisi äänitiedostoa ja\n"
+"Painamalla aseta painiketta määrittääksesi toistoajan."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:44
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:154
+msgid "Play"
+msgstr "Toista"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:47
+msgid "Hit"
+msgstr "Aseta"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:101
+msgid "Stop"
+msgstr "Pysäytä"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:180
+msgid "Playing time"
+msgstr "Toistoaika"
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:208
+msgid "Your project does not have an audio file configured."
+msgstr "Projektin äänitiedostoa ei ole määritetty."
+
+#: photofilmstrip/gui/DlgPicDurationByAudio.py:216
+msgid ""
+"Your project uses more than one audio file. Currently the durations can be "
+"adjusted only for one audio file."
+msgstr ""
+"Projektissa käytetään useampaa äänitiedostoa. Tällä hetkellä pituus voidaan "
+"määrittää vain yhdelle äänitiedostolle."
+
+#: photofilmstrip/gui/DlgPositionInput.py:146
+msgid "Motion positions"
+msgstr "Liikerata"
+
+#: photofilmstrip/gui/DlgPositionInput.py:153
+msgid "Start position"
+msgstr "Aloituskohta"
+
+#: photofilmstrip/gui/DlgPositionInput.py:161
+#: photofilmstrip/gui/DlgPositionInput.py:205
+msgid "Location:"
+msgstr "Sijainti:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:179
+#: photofilmstrip/gui/DlgPositionInput.py:221
+msgid "Size:"
+msgstr "Koko:"
+
+#: photofilmstrip/gui/DlgPositionInput.py:197
+msgid "End position"
+msgstr "Lopetuskohta"
+
+#: photofilmstrip/gui/DlgPositionInput.py:239
+msgid "Reset"
+msgstr "Nollaa"
+
+#: photofilmstrip/gui/DlgPositionInput.py:258
+msgid "Adjust motion positions directly"
+msgstr "Säädä liikeratoja suoraan"
+
+#: photofilmstrip/gui/DlgRender.py:97
+msgid "Render project"
+msgstr "Renderöi projekti"
+
+#: photofilmstrip/gui/DlgRender.py:108
+msgid "Format:"
+msgstr "Muoto:"
+
+#: photofilmstrip/gui/DlgRender.py:123
+msgid "Properties"
+msgstr "Ominaisuudet"
+
+#: photofilmstrip/gui/DlgRender.py:128
+msgid "Profile:"
+msgstr "Profiili:"
+
+#: photofilmstrip/gui/DlgRender.py:137
+msgid "Draft"
+msgstr "Luonnos"
+
+#: photofilmstrip/gui/DlgRender.py:153
+msgid "&Start"
+msgstr "&Aloita"
+
+#: photofilmstrip/gui/DlgRender.py:165
+msgid "Configure output and start render process"
+msgstr "Määritä ulostulo ja aloita renderöinti"
+
+#: photofilmstrip/gui/DlgRendererProps.py:52
+msgid "Property"
+msgstr "Ominaisuus"
+
+#: photofilmstrip/gui/DlgRendererProps.py:54
+msgid "Value"
+msgstr "Arvo"
+
+#: photofilmstrip/gui/DlgRendererProps.py:73
+msgid "Output properties"
+msgstr "Ulostulon ominaisuudet"
+
+#: photofilmstrip/gui/DlgRendererProps.py:115
+msgid "Edit extended output properties"
+msgstr "Määritä ulostulon lisäominaisuudet"
+
+#: photofilmstrip/gui/DlgRendererProps.py:149
+msgid "Edit property"
+msgstr "Muokkaa ominaisuuksia"
+
+#: photofilmstrip/gui/FrmMain.py:82
+msgid "Welcome"
+msgstr "Tervetuloa"
+
+#: photofilmstrip/gui/FrmMain.py:84
+msgid "Job queue"
+msgstr "Työjono"
+
+#: photofilmstrip/gui/FrmMain.py:256 photofilmstrip/gui/PnlWelcome.py:57
+msgid "Create new slideshow"
+msgstr "Luo uusi diaesitys"
+
+#: photofilmstrip/gui/FrmMain.py:263
+msgid "Create new timelapse"
+msgstr "Luo uusi timelapse"
+
+#: photofilmstrip/gui/FrmMain.py:271
+msgid "New Story"
+msgstr "Uusi tarina"
+
+#: photofilmstrip/gui/FrmMain.py:275
+msgid "Select %s-Project"
+msgstr "Valitse %s-Projekti"
+
+#: photofilmstrip/gui/FrmMain.py:277
+msgid "Files"
+msgstr "Tiedostot"
+
+#: photofilmstrip/gui/FrmMain.py:315
+msgid "You must restart %s for your new language setting to take effect."
+msgstr ""
+"Sinun on käynnistettävä %s uudelleen, jotta uusi kieliasetus tulee voimaan."
+
+#: photofilmstrip/gui/FrmMain.py:326
+msgid ""
+"PhotoFilmStrip creates movies out of your pictures in just 3 steps. First "
+"select your photos, customize the motion path and render the video. There "
+"are several output possibilities for VCD, SVCD, DVD up to FULL-HD."
+msgstr ""
+"PhotoFilmStrip luo kuvistasi elokuvia vain kolmessa vaiheessa. Valitse "
+"ensin valokuvat, mukauta liikerata ja renderöi video. Lähtövaihtoehtoja on "
+"useita: VCD, SVCD, DVD aina FULL-HD-formaattiin asti."
+
+#: photofilmstrip/gui/FrmMain.py:329
+msgid "online"
+msgstr "verkossa"
+
+#: photofilmstrip/gui/FrmMain.py:413
+msgid "Invalid %(app)s-Project: %(file)s"
+msgstr "Ei kelvollista %(app)s-Projekti: %(file)s"
+
+#: photofilmstrip/gui/PnlAddPics.py:52 photofilmstrip/gui/PnlWelcome.py:31
+msgid "Welcome to PhotoFilmStrip"
+msgstr "Tervetuloa PhotoFilmStripiin"
+
+#: photofilmstrip/gui/PnlAddPics.py:54
+msgid ""
+"Drag some pictures onto this text or\n"
+"click the button below\n"
+"to add pictures to your new PhotoFilmStrip."
+msgstr ""
+"Vedä kuvia tähän tekstiin tai\n"
+"klikkaa alla olevaa painiketta\n"
+"lisätäksesi kuvia uuteen PhotoFilmStriptiin."
+
+#: photofilmstrip/gui/PnlEditPicture.py:142
+msgid "Settings"
+msgstr "Asetukset"
+
+#: photofilmstrip/gui/PnlEditPicture.py:146
+msgid "Rotation:"
+msgstr "Kääntö:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:166
+msgid "Effect:"
+msgstr "Tehoste:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:180
+msgid "Process"
+msgstr "Menetelmä"
+
+#: photofilmstrip/gui/PnlEditPicture.py:184
+msgid "Movement:"
+msgstr "Liike:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:196
+#: photofilmstrip/gui/PnlEditPicture.py:212
+#: photofilmstrip/gui/PnlEditPicture.py:359
+msgid "sec"
+msgstr "sek"
+
+#: photofilmstrip/gui/PnlEditPicture.py:200
+msgid "Transition:"
+msgstr "Kuvasiirtymä:"
+
+#: photofilmstrip/gui/PnlEditPicture.py:220
+msgid "Subtitle"
+msgstr "Tekstitykset"
+
+#: photofilmstrip/gui/PnlEditPicture.py:240
+msgid "Linear"
+msgstr "Lineaarinen"
+
+#: photofilmstrip/gui/PnlEditPicture.py:241
+msgid "Accelerated"
+msgstr "Kiihdytetty"
+
+#: photofilmstrip/gui/PnlEditPicture.py:242
+msgid "Delayed"
+msgstr "Viivästetty"
+
+#: photofilmstrip/gui/PnlEditPicture.py:250
+msgid "No effect"
+msgstr "Ei tehostetta"
+
+#: photofilmstrip/gui/PnlEditPicture.py:251
+msgid "Black and White"
+msgstr "Mustavalkoinen"
+
+#: photofilmstrip/gui/PnlEditPicture.py:252
+msgid "Sepia tone"
+msgstr "Vanhahtava"
+
+#: photofilmstrip/gui/PnlEditPicture.py:258
+msgid "None"
+msgstr "Ei mikään"
+
+#: photofilmstrip/gui/PnlEditPicture.py:259
+msgid "Fade"
+msgstr "Himmennys"
+
+#: photofilmstrip/gui/PnlEditPicture.py:260
+msgid "Roll"
+msgstr "Vieritys"
+
+#: photofilmstrip/gui/PnlEditPicture.py:354
+msgid "fpp"
+msgstr "fpp"
+
+#: photofilmstrip/gui/PnlEditPicture.py:355
+msgid "frames per picture - the number of frames each picture will be shown"
+msgstr ""
+"kehyksiä kuvaa kohden - kuinka monta kehystä kutakin kuvaa kohden näytetään"
+
+#: photofilmstrip/gui/PnlEditorPage.py:26
+msgid "Could not save the file '%(file)s': %(errMsg)s"
+msgstr "Ei voitu tallentaa tiedostoa '%(file)s': %(errMsg)s"
+
+#: photofilmstrip/gui/PnlEditorPage.py:45
+msgid "New file"
+msgstr "Uusi tiedosto"
+
+#: photofilmstrip/gui/PnlEditorPage.py:48
+msgid "'%s' has been modified. Save changes?"
+msgstr "Kohdetta '%s' on muokattu. Tallennetaanko muutokset?"
+
+#: photofilmstrip/gui/PnlEditorPage.py:74
+msgid "Save %s"
+msgstr "Tallenna %s"
+
+#: photofilmstrip/gui/PnlEditorPage.py:77
+msgid "File"
+msgstr "Tiedosto"
+
+#: photofilmstrip/gui/PnlEditorPage.py:87
+msgid "Overwrite existing file '%s'?"
+msgstr "Korvataanko olemassa oleva tiedosto '%s'?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:120
+#: photofilmstrip/gui/PnlPfsProject.py:122
+msgid "Set motion start to end"
+msgstr "Aseta liike alusta loppuun"
+
+#: photofilmstrip/gui/PnlPfsProject.py:124
+#: photofilmstrip/gui/PnlPfsProject.py:126
+msgid "Set motion end to start"
+msgstr "Aseta liikkeen loppu alkuun"
+
+#: photofilmstrip/gui/PnlPfsProject.py:128
+#: photofilmstrip/gui/PnlPfsProject.py:130
+msgid "Swap motion"
+msgstr "Vaihda keskenään"
+
+#: photofilmstrip/gui/PnlPfsProject.py:133
+#: photofilmstrip/gui/PnlPfsProject.py:135
+msgid "Adjust motion manual"
+msgstr "Liikkeen manuaalinen säätö"
+
+#: photofilmstrip/gui/PnlPfsProject.py:138
+#: photofilmstrip/gui/PnlPfsProject.py:140
+msgid "Preserve image dimension"
+msgstr "Säilytä kuvan mittasuhteet"
+
+#: photofilmstrip/gui/PnlPfsProject.py:301
+msgid "&Import Pictures"
+msgstr "&Tuo kuvia"
+
+#: photofilmstrip/gui/PnlPfsProject.py:306
+msgid "Move picture &left"
+msgstr "Siirrä kuvaa &vasemmalle"
+
+#: photofilmstrip/gui/PnlPfsProject.py:310
+msgid "Move picture &right"
+msgstr "Siirrä kuvaa &oikealle"
+
+#: photofilmstrip/gui/PnlPfsProject.py:315
+msgid "R&emove Picture"
+msgstr "P&oista kuva"
+
+#: photofilmstrip/gui/PnlPfsProject.py:320
+msgid "Rotate &clockwise"
+msgstr "Kierrä &myötäpäivään"
+
+#: photofilmstrip/gui/PnlPfsProject.py:324
+msgid "Rotate counter clock&wise"
+msgstr "Kierrä &vastapäivään"
+
+#: photofilmstrip/gui/PnlPfsProject.py:329
+msgid "Random &motion"
+msgstr "Satunnainen &liike"
+
+#: photofilmstrip/gui/PnlPfsProject.py:333
+msgid "Centralize m&otion"
+msgstr "Keskitä l&iike"
+
+#: photofilmstrip/gui/PnlPfsProject.py:393
+msgid "Export slideshow"
+msgstr "Vie diaesitys"
+
+#: photofilmstrip/gui/PnlPfsProject.py:396
+#: photofilmstrip/gui/PnlPfsProject.py:409
+msgid "Portable slideshow"
+msgstr "Siirrettävä diaesitys"
+
+#: photofilmstrip/gui/PnlPfsProject.py:407
+msgid "Import Slideshow"
+msgstr "Tuo diaesitys"
+
+#: photofilmstrip/gui/PnlPfsProject.py:418
+msgid "Import images"
+msgstr "Tuo kuvat"
+
+#: photofilmstrip/gui/PnlPfsProject.py:420
+msgid "Image files"
+msgstr "Kuvatiedostot"
+
+#: photofilmstrip/gui/PnlPfsProject.py:666
+msgid "Audio file '%s' does not exist! Continue anyway?"
+msgstr "Äänitiedostoa '%s' ei ole saatavissa! Jatketaanko silti?"
+
+#: photofilmstrip/gui/PnlPfsProject.py:667
+msgid "Warning"
+msgstr "Varoitus"
+
+#: photofilmstrip/gui/PnlSlideshow.py:31
+msgid "&Properties"
+msgstr "&Ominaisuudet"
+
+#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
+#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
+msgid "Import Pictures"
+msgstr "Tuo kuvia"
+
+#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
+#: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
+#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
+msgid "Render filmstrip"
+msgstr "Renderöi filmstrip"
+
+#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
+msgid "Images"
+msgstr "Kuvat"
+
+#: photofilmstrip/gui/PnlSlideshow.py:96
+msgid "Duration"
+msgstr "Kesto"
+
+#: photofilmstrip/gui/PnlStory.py:99 photofilmstrip/gui/PnlStory.py:274
+#: photofilmstrip/gui/PnlStory.py:293
+msgid "Add media"
+msgstr "Lisää media"
+
+#: photofilmstrip/gui/PnlStory.py:101
+msgid "Media files"
+msgstr "Mediatiedostot"
+
+#: photofilmstrip/gui/PnlStory.py:177
+msgid "Video file"
+msgstr "Videotiedosto"
+
+#: photofilmstrip/gui/PnlStory.py:179
+msgid "Video files"
+msgstr "Videotiedostot"
+
+#: photofilmstrip/gui/PnlStory.py:198
+msgid "Generate video %s"
+msgstr "Luo video %s"
+
+#: photofilmstrip/gui/PnlStory.py:226
+msgid "An audio stream needs to contain at least one video stream!"
+msgstr "Äänivirran on sisällettävä vähintään yksi videovirta!"
+
+#: photofilmstrip/gui/PnlStory.py:279 photofilmstrip/gui/PnlStory.py:297
+msgid "Move up"
+msgstr "Siirrä ylös"
+
+#: photofilmstrip/gui/PnlStory.py:282 photofilmstrip/gui/PnlStory.py:300
+msgid "Move down"
+msgstr "Siirrä alas"
+
+#: photofilmstrip/gui/PnlStory.py:285 photofilmstrip/gui/PnlStory.py:310
+msgid "Remove"
+msgstr "Poista"
+
+#: photofilmstrip/gui/PnlStory.py:293
+msgid "Add clip"
+msgstr "Lisää leike"
+
+#: photofilmstrip/gui/PnlStory.py:303
+msgid "Move out"
+msgstr "Siirrä ulos"
+
+#: photofilmstrip/gui/PnlStory.py:306
+msgid "Move in"
+msgstr "Siirrä sisään"
+
+#: photofilmstrip/gui/PnlStory.py:472
+msgid "It's not allowed to create more than two levels!"
+msgstr "Yli kahden tason luominen ei ole sallittua!"
+
+#: photofilmstrip/gui/PnlStory.py:478
+msgid "It's not allowed to put a video stream inside a video stream!"
+msgstr "Videostriimin lisääminen videostriimin sisään ei ole sallittua!"
+
+#: photofilmstrip/gui/PnlStory.py:480
+msgid "It's not allowed to put an audio stream inside an audio stream!"
+msgstr "Äänivirran sijoittaminen toisen äänivirran sisään ei ole sallittua!"
+
+#: photofilmstrip/gui/PnlStory.py:736
+msgid "Orientation"
+msgstr "Suuntaus"
+
+#: photofilmstrip/gui/PnlStory.py:749
+msgid "Audio"
+msgstr "Ääni"
+
+#: photofilmstrip/gui/PnlTimelapse.py:71
+msgid "Frames"
+msgstr "Kehykset"
+
+#: photofilmstrip/gui/PnlTimelapse.py:94
+msgid "The picture counter is not increasing: %s"
+msgstr "Kuvalaskuri ei kasva: %s"
+
+#: photofilmstrip/gui/PnlTimelapse.py:112
+msgid ""
+"Filename '%s' does not match a number pattern which is necessary for a time "
+"lapse slide show!"
+msgstr ""
+"Tiedostonimi '%s' ei vastaa numerojärjestystä, joka on välttämätön "
+"timelapse diaesitykselle!"
+
+#: photofilmstrip/gui/PnlWelcome.py:38 photofilmstrip/gui/PnlWelcome.py:111
+msgid "Recent projects"
+msgstr "Viimeisimmät projektit"
+
+#: photofilmstrip/gui/PnlWelcome.py:61
+msgid "Open existing project"
+msgstr "Avaa olemassa oleva projekti"
+
+#: photofilmstrip/gui/PnlWelcome.py:114
+msgid "How to start..."
+msgstr "Kuinka aloittaa..."
+
+#: photofilmstrip/gui/PnlWelcome.py:115
+msgid "Create a new project or load an existing one."
+msgstr "Luo uusi projekti tai avaa olemassa oleva."
+
+#: photofilmstrip/gui/PnlWelcome.py:146
+msgid "Update available"
+msgstr "Päivitys saatavissa"
+
+#: photofilmstrip/gui/PnlWelcome.py:149
+msgid "The following changes has been made:"
+msgstr "Seuraavat muutokset on tehty:"
+
+#: photofilmstrip/gui/WxProjectFile.py:59
+msgid "Loading project %s"
+msgstr "Ladataan projektia %s"
+
+#: photofilmstrip/gui/WxProjectFile.py:75
+msgid "Saving project %s"
+msgstr "Tallennetaan projektia %s"
+
+#: photofilmstrip/gui/WxProjectFile.py:100
+msgid ""
+"Some images does not exist in the folder '%s' anymore. If the files has "
+"moved you can select the new path. Do you want to select a new path?"
+msgstr ""
+"Joitakin kuvia ei enää ole kansiossa '%s'. Jos tiedostot on siirretty, voit "
+"valita uuden polun. Haluatko valita uuden polun?"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
+msgid "Info"
+msgstr "Tietoa"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
+msgid "Elapsed time"
+msgstr "Kulunut aika"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:85
+msgid "Remaining time"
+msgstr "Jäljellä oleva aika"
+
+#: photofilmstrip/lib/jobimpl/DlgJobVisual.py:203
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: photofilmstrip/lib/jobimpl/PnlJobManager.py:50
+msgid "&Clear list"
+msgstr "&Tyhjennä lista"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:130
+msgid "Abort"
+msgstr "Keskeytä"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:136
+msgid "Remove from list"
+msgstr "Poista listalta"
+
+#: photofilmstrip/lib/jobimpl/PnlJobVisual.py:226
+msgid "Abort selected process?"
+msgstr "Keskeytetäänkö valittu prosessi?"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:29
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:25
+msgid "Waiting..."
+msgstr "Odottaa..."
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:68
+#: photofilmstrip/lib/jobimpl/VisualJob.py:85
+#: photofilmstrip/lib/jobimpl/VisualJobMixin.py:60
+msgid "Aborted"
+msgstr "Keskeytetty"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:70
+msgid "Done"
+msgstr "Valmis"
+
+#: photofilmstrip/lib/jobimpl/VisualJob.py:79
+msgid "Aborting..."
+msgstr "Keskeytetään..."
+
+#: photofilmstrip/ux/gnome.py:62 photofilmstrip/ux/uwp.py:66
+msgid "Slideshow created!"
+msgstr "Diaesitys luotu!"
