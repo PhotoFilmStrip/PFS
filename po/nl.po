@@ -6,10 +6,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PhotoFilmStrip\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-08 17:34+0100\n"
-"PO-Revision-Date: 2011-07-10 13:36+0100\n"
+"POT-Creation-Date: 2026-11-09 22:13+0100\n"
+"PO-Revision-Date: 2026-11-09 21:38+0100\n"
 "Last-Translator: Jens Göpfert <jens@sg-dev.de>\n"
+"Language: nl\n"
 "Language-Team: Jens Göpfert <jens@sg-dev.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +24,7 @@ msgstr "Willekeurige bewegingen"
 
 #: photofilmstrip/action/ActionCenterPath.py:21
 msgid "Centralize motion"
-msgstr ""
+msgstr "Beweging centreren"
 
 #: photofilmstrip/action/ActionI18N.py:24
 #: photofilmstrip/gui/ActionManager.py:175
@@ -41,13 +43,12 @@ msgid "Play video"
 msgstr "Video afspelen"
 
 #: photofilmstrip/action/ActionRender.py:38
-#, fuzzy
 msgid "Start"
-msgstr "&Start"
+msgstr "Start"
 
 #: photofilmstrip/action/ActionRender.py:84
 msgid "The following audio files are invalid or missing:"
-msgstr ""
+msgstr "De volgende audio bestanden zijn ongeldig of ontbreken:"
 
 #: photofilmstrip/cli/Main.py:46 photofilmstrip/cli/Main.py:202
 msgid "all done"
@@ -81,7 +82,7 @@ msgstr ""
 
 #: photofilmstrip/cli/Main.py:104 photofilmstrip/cli/Main.py:128
 msgid "Option videonorm is deprecated, use an appropriate profile!"
-msgstr ""
+msgstr "Optie videonorm is verouderd, gebruik een geschikt profiel!"
 
 #: photofilmstrip/cli/Main.py:106
 msgid "enable draft mode"
@@ -117,7 +118,6 @@ msgid "invalid profile specified: %s"
 msgstr "ongeldig profiel opgegeven: %s"
 
 #: photofilmstrip/cli/Main.py:145
-#, fuzzy
 msgid "cannot load project"
 msgstr "kan fotofilmstrip niet laden"
 
@@ -129,7 +129,7 @@ msgstr "kan uitvoer niet opslaan in: %s"
 #: photofilmstrip/cli/Main.py:168
 #, python-format
 msgid "The selected profile '%s' is not available in portrait mode!"
-msgstr ""
+msgstr "Het geselecteerde profiel '%s' is niet beschikbaar in portretmodus!"
 
 #: photofilmstrip/cli/Main.py:175 photofilmstrip/gui/DlgConfigureAudio.py:291
 #: photofilmstrip/gui/DlgConfigureAudio.py:313
@@ -156,45 +156,44 @@ msgstr "nee"
 
 #: photofilmstrip/core/Media.py:119
 msgid "Auto detect"
-msgstr ""
+msgstr "Automatisch detecteren"
 
 #: photofilmstrip/core/Media.py:120
-#, fuzzy
 msgid "Rotate left"
-msgstr "Roteer &Rechtsom"
+msgstr "Roteer linksom"
 
 #: photofilmstrip/core/Media.py:121
 msgid "Rotate right"
-msgstr ""
+msgstr "Roteer rechtsom"
 
 #: photofilmstrip/core/Media.py:122
 msgid "Upside down"
-msgstr ""
+msgstr "Omdraaien"
 
 #: photofilmstrip/core/Media.py:147
 msgid "Muted"
-msgstr ""
+msgstr "Gedempt"
 
 #: photofilmstrip/core/Media.py:148
 msgid "Silent"
-msgstr ""
+msgstr "Stil"
 
 #: photofilmstrip/core/Media.py:149
 msgid "Medium"
-msgstr ""
+msgstr "Gemiddeld"
 
 #: photofilmstrip/core/Media.py:150
 msgid "Loud"
-msgstr ""
+msgstr "Luid"
 
 #: photofilmstrip/core/Media.py:151
 msgid "Full"
-msgstr ""
+msgstr "Vol"
 
 #: photofilmstrip/core/ProjectFile.py:221
-#, fuzzy, python-format
+#, python-format
 msgid "Saving '%s' ..."
-msgstr "Aan het laden '%s' ..."
+msgstr "Opslaan '%s' ..."
 
 #: photofilmstrip/core/ProjectFile.py:279
 #, python-format
@@ -214,17 +213,16 @@ msgid "processing image %d/%d"
 msgstr "bewerk foto %d/%d"
 
 #: photofilmstrip/core/RenderEngine.py:155
-#, fuzzy, python-format
 msgid "processing loop transition"
-msgstr "overgang verwerking %d/%d"
+msgstr "verwerken lus overgang"
 
 #: photofilmstrip/core/StoryEngine.py:68
 msgid "Prepare rendering..."
-msgstr ""
+msgstr "Voorbereiden rendering..."
 
 #: photofilmstrip/core/StoryEngine.py:86 photofilmstrip/gui/FrmMain.py:163
 msgid "Rendering in progress..."
-msgstr ""
+msgstr "Renderen is bezig..."
 
 #: photofilmstrip/core/tasks.py:48
 msgid "generating subtitle"
@@ -233,11 +231,11 @@ msgstr "genereren ondertiteling"
 #: photofilmstrip/core/renderer/CairoRenderer.py:35
 #: photofilmstrip/gui/PnlStory.py:314
 msgid "Preview"
-msgstr ""
+msgstr "Voorbeeld"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:55
 msgid "GStreamer (python-gst-1.0) required!"
-msgstr ""
+msgstr "GStreamer (python-gst-1.0) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:346
 msgid "Bitrate must be a number!"
@@ -250,49 +248,49 @@ msgstr "Bitrate moet een getal zijn!"
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:867
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:919
 msgid "libav (gstreamer1.0-libav) required!"
-msgstr ""
+msgstr "libav (gstreamer1.0-libav) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:569
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:652
 msgid "x264-Codec (gstreamer1.0-plugins-ugly) required!"
-msgstr ""
+msgstr "x264-Codec (gstreamer1.0-plugins-ugly) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:573
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:726
 msgid "MKV-Muxer (gstreamer1.0-plugins-good) required!"
-msgstr ""
+msgstr "MKV-Muxer (gstreamer1.0-plugins-good) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:656
 msgid "MP4-Muxer (gstreamer1.0-plugins-good) required!"
-msgstr ""
+msgstr "MP4-Muxer (gstreamer1.0-plugins-good) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:722
 msgid "x265-Codec (gstreamer1.0-plugins-ugly) required!"
-msgstr ""
+msgstr "x265-Codec (gstreamer1.0-plugins-ugly) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:764
 msgid "Theora-Codec (gstreamer1.0-plugins-base) required!"
-msgstr ""
+msgstr "Theora-Codec (gstreamer1.0-plugins-base) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:768
 msgid "Vorbis-Codec (gstreamer1.0-plugins-base) required!"
-msgstr ""
+msgstr "Vorbis-Codec (gstreamer1.0-plugins-base) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:772
 msgid "OGV-Muxer (gstreamer1.0-plugins-base) required!"
-msgstr ""
+msgstr "OGV-Muxer (gstreamer1.0-plugins-base) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:814
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:863
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:915
 msgid "MPEG-1/2-Codec (gstreamer1.0-libav) required!"
-msgstr ""
+msgstr "MPEG-1/2-Codec (gstreamer1.0-libav) nodig!"
 
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:822
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:871
 #: photofilmstrip/core/renderer/GStreamerRenderer.py:923
 msgid "MPEG-Muxer (gstreamer1.0-plugins-bad) required!"
-msgstr ""
+msgstr "MPEG-Muxer (gstreamer1.0-plugins-bad) nodig!"
 
 #: photofilmstrip/core/renderer/SingleFileRenderer.py:21
 msgid "Single pictures"
@@ -316,45 +314,45 @@ msgstr "&Help"
 
 #: photofilmstrip/gui/ActionManager.py:80
 msgid "New Slideshow"
-msgstr ""
+msgstr "Nieuwe diapresentatie"
 
 #: photofilmstrip/gui/ActionManager.py:85
 msgid "Open"
-msgstr ""
+msgstr "Openen"
 
 #: photofilmstrip/gui/ActionManager.py:91
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: photofilmstrip/gui/ActionManager.py:101
 msgid "Show job queue"
-msgstr ""
+msgstr "Toon job wachtrij"
 
 #: photofilmstrip/gui/ActionManager.py:110
-#: photofilmstrip/gui/PnlSlideshow.py:27
+#: photofilmstrip/gui/PnlSlideshow.py:26
 msgid "Slideshow"
-msgstr ""
+msgstr "Diapresentatie"
 
 #: photofilmstrip/gui/ActionManager.py:112
-#: photofilmstrip/gui/PnlTimelapse.py:21
+#: photofilmstrip/gui/PnlTimelapse.py:20
 msgid "Timelapse"
-msgstr ""
+msgstr "Tijdlap"
 
 #: photofilmstrip/gui/ActionManager.py:115
 msgid "Story"
-msgstr ""
+msgstr "Verhaal"
 
 #: photofilmstrip/gui/ActionManager.py:120
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 #: photofilmstrip/gui/ActionManager.py:122
 msgid "&Open"
-msgstr ""
+msgstr "&Openen"
 
 #: photofilmstrip/gui/ActionManager.py:127
 msgid "&Save"
-msgstr ""
+msgstr "&Opslaan"
 
 #: photofilmstrip/gui/ActionManager.py:140
 msgid "&Close"
@@ -402,17 +400,17 @@ msgstr "Sorry, deze functie is tijdelijk niet beschikbaar ..."
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:209
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:217
 #: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
-#: photofilmstrip/gui/PnlTimelapse.py:116
+#: photofilmstrip/gui/PnlTimelapse.py:115
 msgid "Error"
 msgstr "Fout"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:61
 msgid "Configure your audio files that are used as a background music."
-msgstr ""
+msgstr "Configureer uw audio-bestanden die worden gebruikt als achtergrondmuziek."
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:98
 msgid "Set the duration of your slideshow to fit your audio files"
-msgstr ""
+msgstr "Stel de duur van uw diapresentatie in op de lengte van uw audio-bestanden"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:100
 #: photofilmstrip/gui/DlgNewProject.py:89
@@ -436,20 +434,18 @@ msgstr "&Ok"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:112
 #: photofilmstrip/gui/DlgConfigureAudio.py:117
-#: photofilmstrip/gui/PnlSlideshow.py:49 photofilmstrip/gui/PnlSlideshow.py:50
-#: photofilmstrip/gui/PnlTimelapse.py:36 photofilmstrip/gui/PnlTimelapse.py:37
+#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
+#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
 msgid "Configure music"
-msgstr ""
+msgstr "Muziek configureren"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:126
-#, fuzzy
 msgid "Select an entry"
-msgstr "Kies partijverwerkings-bestand"
+msgstr "Kies een item"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:127
-#, fuzzy
 msgid "Browse for audio files"
-msgstr "Blader naar de map"
+msgstr "Blader naar audio-bestanden"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:185
 msgid "Select music"
@@ -460,9 +456,8 @@ msgid "Audio files"
 msgstr "Audio bestanden"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:303
-#, fuzzy
 msgid "Audio file not supported!"
-msgstr "Geluidsbestand bestaat niet!"
+msgstr "Audio-bestand niet ondersteund!"
 
 #: photofilmstrip/gui/DlgNewProject.py:64
 msgid "Project name:"
@@ -478,12 +473,11 @@ msgstr "Aspect ratio:"
 
 #: photofilmstrip/gui/DlgNewProject.py:85
 msgid "Portrait mode"
-msgstr ""
+msgstr "Portretmodus"
 
 #: photofilmstrip/gui/DlgNewProject.py:121
-#, fuzzy
 msgid "Unnamed project"
-msgstr "kan fotofilmstrip niet laden"
+msgstr "Naamloos project"
 
 #: photofilmstrip/gui/DlgNewProject.py:125
 msgid "My PhotoFilmStrips"
@@ -491,7 +485,7 @@ msgstr "Mijn Fotofilmstrip"
 
 #: photofilmstrip/gui/DlgNewProject.py:150
 msgid "Browse for folder"
-msgstr "Blader naar de map"
+msgstr "Blader naar map"
 
 #: photofilmstrip/gui/DlgNewProject.py:169
 #, python-format
@@ -522,50 +516,53 @@ msgstr "De naam van het project moet worden ingevuld."
 
 #: photofilmstrip/gui/DlgNewProject.py:210
 msgid "The project name contains invalid characters."
-msgstr ""
+msgstr "De projectnaam bevat ongeldige tekens."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:24
-#: photofilmstrip/gui/PnlSlideshow.py:56 photofilmstrip/gui/PnlSlideshow.py:57
+#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
 msgid "Adjust picture durations"
-msgstr ""
+msgstr "Fotoduur aanpassen"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:27
 msgid "Adjust picture durations to audio file"
-msgstr ""
+msgstr "Fotoduur aanpassen aan audio-bestand"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:31
 msgid ""
 "Find your picture duration by playing the audio file of your project and\n"
 "pressing the hit button to apply the current playing time."
 msgstr ""
+"Vind uw fotoduur door het audio-bestand van uw project af te spelen en\n"
+"de 'hit'-knop in te drukken om de huidige speeltijd toe te passen."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:44
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:154
 msgid "Play"
-msgstr ""
+msgstr "Afspelen"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:47
 msgid "Hit"
-msgstr ""
+msgstr "Raken"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:101
 msgid "Stop"
-msgstr ""
+msgstr "Stop"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:180
-#, fuzzy
 msgid "Playing time"
-msgstr "Video afspelen"
+msgstr "Speeltijd"
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:208
 msgid "Your project does not have an audio file configured."
-msgstr ""
+msgstr "Uw project heeft geen audio-bestand geconfigureerd."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:216
 msgid ""
 "Your project uses more than one audio file. Currently the durations can "
 "be adjusted only for one audio file."
 msgstr ""
+"Uw project gebruikt meer dan een audio-bestand. Momenteel kunnen de "
+"duuren alleen worden aangepast voor een audio-bestand."
 
 #: photofilmstrip/gui/DlgPositionInput.py:146
 msgid "Motion positions"
@@ -595,12 +592,11 @@ msgstr "Hertsel"
 
 #: photofilmstrip/gui/DlgPositionInput.py:258
 msgid "Adjust motion positions directly"
-msgstr "Pas beweging posities direct aan"
+msgstr "Pas bewegingsposities direct aan"
 
 #: photofilmstrip/gui/DlgRender.py:97
-#, fuzzy
 msgid "Render project"
-msgstr "Recente projecten"
+msgstr "Project renderen"
 
 #: photofilmstrip/gui/DlgRender.py:108
 msgid "Format:"
@@ -663,27 +659,24 @@ msgid "User defined:"
 msgstr "Door gebruiker gedefinieerd:"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:68
-#, fuzzy
 msgid "Fit to audio files"
-msgstr "Audio bestanden"
+msgstr "Aanpassen aan audio-bestanden"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:72
-#, fuzzy
 msgid "Create seamless loop"
-msgstr "Portable"
+msgstr "Naadloze lus maken"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:73
 msgid "Last image transitions back to first image"
-msgstr ""
+msgstr "Laatste afbeelding gaat terug naar eerste afbeelding"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:87
-#, fuzzy
 msgid "Slideshow properties"
-msgstr "Eigenschappen"
+msgstr "Diapresentatie eigenschappen"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:91
 msgid "Configure slideshow properties"
-msgstr ""
+msgstr "Configureer diapresentatie eigenschappen"
 
 #: photofilmstrip/gui/FrmMain.py:82
 msgid "Welcome"
@@ -691,21 +684,19 @@ msgstr "Welkom"
 
 #: photofilmstrip/gui/FrmMain.py:84
 msgid "Job queue"
-msgstr ""
+msgstr "Job wachtrij"
 
 #: photofilmstrip/gui/FrmMain.py:256 photofilmstrip/gui/PnlWelcome.py:59
-#, fuzzy
 msgid "Create new slideshow"
-msgstr "Portable"
+msgstr "Maak nieuwe diapresentatie"
 
 #: photofilmstrip/gui/FrmMain.py:263
-#, fuzzy
 msgid "Create new timelapse"
-msgstr "Maak een nieuw project"
+msgstr "Maak nieuwe tijdlap"
 
 #: photofilmstrip/gui/FrmMain.py:271
 msgid "New Story"
-msgstr ""
+msgstr "Nieuw verhaal"
 
 #: photofilmstrip/gui/FrmMain.py:275
 #, python-format
@@ -713,9 +704,8 @@ msgid "Select %s-Project"
 msgstr "Selecteer %s-Project"
 
 #: photofilmstrip/gui/FrmMain.py:277
-#, fuzzy
 msgid "Files"
-msgstr "&Bestand"
+msgstr "Bestanden"
 
 #: photofilmstrip/gui/FrmMain.py:315
 #, python-format
@@ -743,7 +733,7 @@ msgstr "Ongeldige %(app)s-Project: %(file)s"
 
 #: photofilmstrip/gui/PnlAddPics.py:52 photofilmstrip/gui/PnlWelcome.py:31
 msgid "Welcome to PhotoFilmStrip"
-msgstr "Welkom bij Fotofilmstrip "
+msgstr "Welkom bij Fotofilmstrip"
 
 #: photofilmstrip/gui/PnlAddPics.py:54
 msgid ""
@@ -751,9 +741,9 @@ msgid ""
 "click the button below\n"
 "to add pictures to your new PhotoFilmStrip."
 msgstr ""
-"Sleep een paar foto's op deze tekst of \n"
-"Klik op de onderstaande knop \n"
-"om foto's toe te voegen aan uw nieuwe Fotofilmstrip "
+"Sleep een paar foto's op deze tekst of\n"
+"Klik op de onderstaande knop\n"
+"om foto's toe te voegen aan uw nieuwe Fotofilmstrip."
 
 #: photofilmstrip/gui/PnlEditPicture.py:142
 msgid "Settings"
@@ -773,13 +763,13 @@ msgstr "Proces"
 
 #: photofilmstrip/gui/PnlEditPicture.py:184
 msgid "Movement:"
-msgstr ""
+msgstr "Beweging:"
 
 #: photofilmstrip/gui/PnlEditPicture.py:196
 #: photofilmstrip/gui/PnlEditPicture.py:212
 #: photofilmstrip/gui/PnlEditPicture.py:359
 msgid "sec"
-msgstr ""
+msgstr "sec"
 
 #: photofilmstrip/gui/PnlEditPicture.py:200
 msgid "Transition:"
@@ -791,15 +781,15 @@ msgstr "Ondertiteling"
 
 #: photofilmstrip/gui/PnlEditPicture.py:240
 msgid "Linear"
-msgstr ""
+msgstr "Lineair"
 
 #: photofilmstrip/gui/PnlEditPicture.py:241
 msgid "Accelerated"
-msgstr ""
+msgstr "Versneld"
 
 #: photofilmstrip/gui/PnlEditPicture.py:242
 msgid "Delayed"
-msgstr ""
+msgstr "Vertraagd"
 
 #: photofilmstrip/gui/PnlEditPicture.py:250
 msgid "No effect"
@@ -827,11 +817,11 @@ msgstr "Rollen"
 
 #: photofilmstrip/gui/PnlEditPicture.py:354
 msgid "fpp"
-msgstr ""
+msgstr "fpp"
 
 #: photofilmstrip/gui/PnlEditPicture.py:355
 msgid "frames per picture - the number of frames each picture will be shown"
-msgstr ""
+msgstr "beelden per foto - het aantal beelden waarin elke foto wordt getoond"
 
 #: photofilmstrip/gui/PnlEditorPage.py:26
 #, python-format
@@ -840,7 +830,7 @@ msgstr "Kon bestand '%(file)s' niet opslaan: %(errMsg)s"
 
 #: photofilmstrip/gui/PnlEditorPage.py:45
 msgid "New file"
-msgstr ""
+msgstr "Nieuw bestand"
 
 #: photofilmstrip/gui/PnlEditorPage.py:48
 #, python-format
@@ -848,14 +838,13 @@ msgid "'%s' has been modified. Save changes?"
 msgstr "'%s' is gewijzigd. Wijzigingen opslaan?"
 
 #: photofilmstrip/gui/PnlEditorPage.py:74
-#, fuzzy, python-format
+#, python-format
 msgid "Save %s"
-msgstr "Opslaan '%s'-Project"
+msgstr "Opslaan %s"
 
 #: photofilmstrip/gui/PnlEditorPage.py:77
-#, fuzzy
 msgid "File"
-msgstr "&Bestand"
+msgstr "Bestand"
 
 #: photofilmstrip/gui/PnlEditorPage.py:87
 #, python-format
@@ -874,9 +863,8 @@ msgstr "Zet eind beweging aan het begin"
 
 #: photofilmstrip/gui/PnlPfsProject.py:128
 #: photofilmstrip/gui/PnlPfsProject.py:130
-#, fuzzy
 msgid "Swap motion"
-msgstr "Willekeurige bewegingen"
+msgstr "Beweging wisselen"
 
 #: photofilmstrip/gui/PnlPfsProject.py:133
 #: photofilmstrip/gui/PnlPfsProject.py:135
@@ -886,7 +874,7 @@ msgstr "Beweging handmatig instellen"
 #: photofilmstrip/gui/PnlPfsProject.py:138
 #: photofilmstrip/gui/PnlPfsProject.py:140
 msgid "Preserve image dimension"
-msgstr ""
+msgstr "Afbeeldingsdimensie behouden"
 
 #: photofilmstrip/gui/PnlPfsProject.py:301
 msgid "&Import Pictures"
@@ -901,9 +889,8 @@ msgid "Move picture &right"
 msgstr "Verplaats foto &rechts"
 
 #: photofilmstrip/gui/PnlPfsProject.py:315
-#, fuzzy
 msgid "R&emove Picture"
-msgstr "&Verwijder foto"
+msgstr "Fot&o verwijderen"
 
 #: photofilmstrip/gui/PnlPfsProject.py:320
 msgid "Rotate &clockwise"
@@ -914,160 +901,157 @@ msgid "Rotate counter clock&wise"
 msgstr "Roteer &Linksom"
 
 #: photofilmstrip/gui/PnlPfsProject.py:329
-#, fuzzy
 msgid "Random &motion"
-msgstr "Willekeurige bewegingen"
+msgstr "Willekeurige &bewegingen"
 
 #: photofilmstrip/gui/PnlPfsProject.py:333
 msgid "Centralize m&otion"
-msgstr ""
+msgstr "C&entreren beweging"
 
 #: photofilmstrip/gui/PnlPfsProject.py:393
 msgid "Export slideshow"
-msgstr ""
+msgstr "Exporteer diapresentatie"
 
 #: photofilmstrip/gui/PnlPfsProject.py:396
 #: photofilmstrip/gui/PnlPfsProject.py:409
-#, fuzzy
 msgid "Portable slideshow"
-msgstr "Portable"
+msgstr "Draagbare diapresentatie"
 
 #: photofilmstrip/gui/PnlPfsProject.py:407
-#, fuzzy
 msgid "Import Slideshow"
-msgstr "Importeer foto's"
+msgstr "Diapresentatie importeren"
 
 #: photofilmstrip/gui/PnlPfsProject.py:418
 msgid "Import images"
 msgstr "Importeer foto's"
 
 #: photofilmstrip/gui/PnlPfsProject.py:420
-#, fuzzy
 msgid "Image files"
-msgstr "Afbeeldings bestanden"
+msgstr "Afbeelding bestanden"
 
 #: photofilmstrip/gui/PnlPfsProject.py:666
 #, python-format
 msgid "Audio file '%s' does not exist! Continue anyway?"
-msgstr "Geluid-bestand '%s' bestaat niet! Toch doorgaan?"
+msgstr "Audio-bestand '%s' bestaat niet! Toch doorgaan?"
 
 #: photofilmstrip/gui/PnlPfsProject.py:667
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: photofilmstrip/gui/PnlSlideshow.py:32
+#: photofilmstrip/gui/PnlSlideshow.py:31
 msgid "&Properties"
 msgstr "&Eigenschappen"
 
-#: photofilmstrip/gui/PnlSlideshow.py:41 photofilmstrip/gui/PnlSlideshow.py:42
-#: photofilmstrip/gui/PnlTimelapse.py:28 photofilmstrip/gui/PnlTimelapse.py:29
+#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
+#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
 msgid "Import Pictures"
 msgstr "Importeer Foto's"
 
-#: photofilmstrip/gui/PnlSlideshow.py:64 photofilmstrip/gui/PnlSlideshow.py:65
+#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
 #: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
-#: photofilmstrip/gui/PnlTimelapse.py:44 photofilmstrip/gui/PnlTimelapse.py:45
+#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
 msgid "Render filmstrip"
 msgstr "Render filmstrip"
 
-#: photofilmstrip/gui/PnlSlideshow.py:92 photofilmstrip/gui/PnlTimelapse.py:69
+#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
 msgid "Images"
 msgstr "Foto's"
 
-#: photofilmstrip/gui/PnlSlideshow.py:97
+#: photofilmstrip/gui/PnlSlideshow.py:96
 msgid "Duration"
 msgstr "Tijdsduur"
 
 #: photofilmstrip/gui/PnlStory.py:99 photofilmstrip/gui/PnlStory.py:274
 #: photofilmstrip/gui/PnlStory.py:293
 msgid "Add media"
-msgstr ""
+msgstr "Media toevoegen"
 
 #: photofilmstrip/gui/PnlStory.py:101
-#, fuzzy
 msgid "Media files"
-msgstr "Audio bestanden"
+msgstr "Media bestanden"
 
 #: photofilmstrip/gui/PnlStory.py:177
-#, fuzzy
 msgid "Video file"
-msgstr "Audio bestanden"
+msgstr "Video bestand"
 
 #: photofilmstrip/gui/PnlStory.py:179
-#, fuzzy
 msgid "Video files"
-msgstr "Audio bestanden"
+msgstr "Video bestanden"
 
 #: photofilmstrip/gui/PnlStory.py:198
 #, python-format
 msgid "Generate video %s"
-msgstr ""
+msgstr "Video genereren %s"
 
 #: photofilmstrip/gui/PnlStory.py:226
 msgid "An audio stream needs to contain at least one video stream!"
-msgstr ""
+msgstr "Een audio-stroom moet minstens één video-stroom bevatten!"
 
 #: photofilmstrip/gui/PnlStory.py:279 photofilmstrip/gui/PnlStory.py:297
 msgid "Move up"
-msgstr ""
+msgstr "Omhoog verplaatsen"
 
 #: photofilmstrip/gui/PnlStory.py:282 photofilmstrip/gui/PnlStory.py:300
 msgid "Move down"
-msgstr ""
+msgstr "Omlaag verplaatsen"
 
 #: photofilmstrip/gui/PnlStory.py:285 photofilmstrip/gui/PnlStory.py:310
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: photofilmstrip/gui/PnlStory.py:293
 msgid "Add clip"
-msgstr ""
+msgstr "Klips toevoegen"
 
 #: photofilmstrip/gui/PnlStory.py:303
 msgid "Move out"
-msgstr ""
+msgstr "Uit verplaatsen"
 
 #: photofilmstrip/gui/PnlStory.py:306
 msgid "Move in"
-msgstr ""
+msgstr "In verplaatsen"
 
 #: photofilmstrip/gui/PnlStory.py:472
 msgid "It's not allowed to create more than two levels!"
-msgstr ""
+msgstr "Het is niet toegestaan om meer dan twee niveaus te creëren!"
 
 #: photofilmstrip/gui/PnlStory.py:478
 msgid "It's not allowed to put a video stream inside a video stream!"
 msgstr ""
+"Het is niet toegestaan om een video-stroom in een video-stroom te "
+"plaatsen!"
 
 #: photofilmstrip/gui/PnlStory.py:480
 msgid "It's not allowed to put an audio stream inside an audio stream!"
 msgstr ""
+"Het is niet toegestaan om een audio-stroom in een audio-stroom te "
+"plaatsen!"
 
 #: photofilmstrip/gui/PnlStory.py:736
-#, fuzzy
 msgid "Orientation"
-msgstr "Tijdsduur"
+msgstr "Orientatie"
 
 #: photofilmstrip/gui/PnlStory.py:749
-#, fuzzy
 msgid "Audio"
-msgstr "Audio bestanden"
+msgstr "Audio"
 
-#: photofilmstrip/gui/PnlTimelapse.py:72
+#: photofilmstrip/gui/PnlTimelapse.py:71
 msgid "Frames"
-msgstr ""
+msgstr "Beelden"
 
-#: photofilmstrip/gui/PnlTimelapse.py:95
+#: photofilmstrip/gui/PnlTimelapse.py:94
 #, python-format
 msgid "The picture counter is not increasing: %s"
-msgstr ""
+msgstr "De fototeller neemt niet toe: %s"
 
-#: photofilmstrip/gui/PnlTimelapse.py:113
+#: photofilmstrip/gui/PnlTimelapse.py:112
 #, python-format
 msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a "
 "time lapse slide show!"
 msgstr ""
+"Bestandsnaam '%s' komt niet overeen met een nummerpatroon dat nodig is "
+"voor een tijdlap diapresentatie!"
 
 #: photofilmstrip/gui/PnlWelcome.py:38 photofilmstrip/gui/PnlWelcome.py:113
 msgid "Recent projects"
@@ -1079,11 +1063,11 @@ msgstr "Open bestaand project"
 
 #: photofilmstrip/gui/PnlWelcome.py:119
 msgid "How to start..."
-msgstr "Hoe te beginnen"
+msgstr "Hoe te beginnen..."
 
 #: photofilmstrip/gui/PnlWelcome.py:120
 msgid "Create a new project or load an existing one."
-msgstr "Maak een nieuw project of laad een bestaand project"
+msgstr "Maak een nieuw project of laad een bestaand project."
 
 #: photofilmstrip/gui/PnlWelcome.py:153
 msgid "Update available"
@@ -1091,25 +1075,27 @@ msgstr "Update beschikbaar"
 
 #: photofilmstrip/gui/PnlWelcome.py:156
 msgid "The following changes has been made:"
-msgstr "De volgende wijzigingen zijn gemaakt"
+msgstr "De volgende wijzigingen zijn gemaakt:"
 
 #: photofilmstrip/gui/PnlWelcome.py:247
 msgid "Clear list"
-msgstr ""
+msgstr "Lijst wissen"
 
 #: photofilmstrip/gui/PnlWelcome.py:250
 msgid "Removes all entries from this list. The project files are kept."
 msgstr ""
+"Verwijdert alle items van deze lijst. De projectbestanden blijven "
+"behouden."
 
 #: photofilmstrip/gui/WxProjectFile.py:59
-#, fuzzy, python-format
+#, python-format
 msgid "Loading project %s"
-msgstr "Laad Project"
+msgstr "Laden project %s"
 
 #: photofilmstrip/gui/WxProjectFile.py:75
-#, fuzzy, python-format
+#, python-format
 msgid "Saving project %s"
-msgstr "Bewaar Project"
+msgstr "Opslaan project %s"
 
 #: photofilmstrip/gui/WxProjectFile.py:100
 #, python-format
@@ -1122,62 +1108,58 @@ msgstr ""
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:64
 msgid "Info"
-msgstr ""
+msgstr "Informatie"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:73
 msgid "Elapsed time"
-msgstr ""
+msgstr "Verstreken tijd"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:85
 msgid "Remaining time"
-msgstr ""
+msgstr "Resterende tijd"
 
 #: photofilmstrip/lib/jobimpl/DlgJobVisual.py:203
 msgid "Unknown"
-msgstr ""
+msgstr "Onbekend"
 
 #: photofilmstrip/lib/jobimpl/PnlJobManager.py:50
 msgid "&Clear list"
-msgstr ""
+msgstr "&Lijst wissen"
 
 #: photofilmstrip/lib/jobimpl/PnlJobVisual.py:130
 msgid "Abort"
-msgstr ""
+msgstr "Afbreken"
 
 #: photofilmstrip/lib/jobimpl/PnlJobVisual.py:136
 msgid "Remove from list"
-msgstr ""
+msgstr "Verwijderen van lijst"
 
 #: photofilmstrip/lib/jobimpl/PnlJobVisual.py:226
-#, fuzzy
 msgid "Abort selected process?"
-msgstr "Onderbreek huidige bewerking?"
+msgstr "Geselecteerd proces afbreken?"
 
 #: photofilmstrip/lib/jobimpl/VisualJob.py:29
 #: photofilmstrip/lib/jobimpl/VisualJobMixin.py:25
-#, fuzzy
 msgid "Waiting..."
-msgstr "afbreken ..."
+msgstr "Wachten..."
 
 #: photofilmstrip/lib/jobimpl/VisualJob.py:68
 #: photofilmstrip/lib/jobimpl/VisualJob.py:85
 #: photofilmstrip/lib/jobimpl/VisualJobMixin.py:60
-#, fuzzy
 msgid "Aborted"
-msgstr "...onderbroken!"
+msgstr "Afgebroken"
 
 #: photofilmstrip/lib/jobimpl/VisualJob.py:70
 msgid "Done"
-msgstr ""
+msgstr "Voltooid"
 
 #: photofilmstrip/lib/jobimpl/VisualJob.py:79
-#, fuzzy
 msgid "Aborting..."
-msgstr "afbreken ..."
+msgstr "Afbreken..."
 
 #: photofilmstrip/ux/gnome.py:62 photofilmstrip/ux/uwp.py:66
 msgid "Slideshow created!"
-msgstr ""
+msgstr "Diapresentatie gemaakt!"
 
 #~ msgid "Audio files:"
 #~ msgstr "Audio bestanden"
@@ -1325,10 +1307,4 @@ msgstr ""
 
 #~ msgid "Invalid audio file!"
 #~ msgstr "Ongeldige geluids  bestand!"
-
-#~ msgid "Slideshow duration"
-#~ msgstr ""
-
-#~ msgid "Configure duration of slideshow"
-#~ msgstr ""
 

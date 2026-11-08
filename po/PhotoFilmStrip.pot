@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PhotoFilmStrip 4.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-08 17:34+0100\n"
+"POT-Creation-Date: 2026-11-09 22:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -325,12 +325,12 @@ msgid "Show job queue"
 msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:110
-#: photofilmstrip/gui/PnlSlideshow.py:27
+#: photofilmstrip/gui/PnlSlideshow.py:26
 msgid "Slideshow"
 msgstr ""
 
 #: photofilmstrip/gui/ActionManager.py:112
-#: photofilmstrip/gui/PnlTimelapse.py:21
+#: photofilmstrip/gui/PnlTimelapse.py:20
 msgid "Timelapse"
 msgstr ""
 
@@ -394,7 +394,7 @@ msgstr ""
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:209
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:217
 #: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
-#: photofilmstrip/gui/PnlTimelapse.py:116
+#: photofilmstrip/gui/PnlTimelapse.py:115
 msgid "Error"
 msgstr ""
 
@@ -428,8 +428,8 @@ msgstr ""
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:112
 #: photofilmstrip/gui/DlgConfigureAudio.py:117
-#: photofilmstrip/gui/PnlSlideshow.py:49 photofilmstrip/gui/PnlSlideshow.py:50
-#: photofilmstrip/gui/PnlTimelapse.py:36 photofilmstrip/gui/PnlTimelapse.py:37
+#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
+#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
 msgid "Configure music"
 msgstr ""
 
@@ -513,7 +513,7 @@ msgid "The project name contains invalid characters."
 msgstr ""
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:24
-#: photofilmstrip/gui/PnlSlideshow.py:56 photofilmstrip/gui/PnlSlideshow.py:57
+#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
 msgid "Adjust picture durations"
 msgstr ""
 
@@ -920,26 +920,26 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: photofilmstrip/gui/PnlSlideshow.py:32
+#: photofilmstrip/gui/PnlSlideshow.py:31
 msgid "&Properties"
 msgstr ""
 
-#: photofilmstrip/gui/PnlSlideshow.py:41 photofilmstrip/gui/PnlSlideshow.py:42
-#: photofilmstrip/gui/PnlTimelapse.py:28 photofilmstrip/gui/PnlTimelapse.py:29
+#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
+#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
 msgid "Import Pictures"
 msgstr ""
 
-#: photofilmstrip/gui/PnlSlideshow.py:64 photofilmstrip/gui/PnlSlideshow.py:65
+#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
 #: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
-#: photofilmstrip/gui/PnlTimelapse.py:44 photofilmstrip/gui/PnlTimelapse.py:45
+#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
 msgid "Render filmstrip"
 msgstr ""
 
-#: photofilmstrip/gui/PnlSlideshow.py:92 photofilmstrip/gui/PnlTimelapse.py:69
+#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
 msgid "Images"
 msgstr ""
 
-#: photofilmstrip/gui/PnlSlideshow.py:97
+#: photofilmstrip/gui/PnlSlideshow.py:96
 msgid "Duration"
 msgstr ""
 
@@ -1013,16 +1013,16 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: photofilmstrip/gui/PnlTimelapse.py:72
+#: photofilmstrip/gui/PnlTimelapse.py:71
 msgid "Frames"
 msgstr ""
 
-#: photofilmstrip/gui/PnlTimelapse.py:95
+#: photofilmstrip/gui/PnlTimelapse.py:94
 #, python-format
 msgid "The picture counter is not increasing: %s"
 msgstr ""
 
-#: photofilmstrip/gui/PnlTimelapse.py:113
+#: photofilmstrip/gui/PnlTimelapse.py:112
 #, python-format
 msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a "

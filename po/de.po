@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  PhotoFilmStrip\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-08 17:34+0100\n"
+"POT-Creation-Date: 2026-11-09 22:13+0100\n"
 "PO-Revision-Date: 2025-11-09 14:42+0100\n"
 "Last-Translator: jensgoe <mail@jensgoepfert.de>\n"
 "Language: de\n"
@@ -212,9 +212,8 @@ msgid "processing image %d/%d"
 msgstr "Verarbeite Bild %d/%d"
 
 #: photofilmstrip/core/RenderEngine.py:155
-#, fuzzy
 msgid "processing loop transition"
-msgstr "Berechne Bildübergang %d/%d"
+msgstr "Verarbeite Loop-Übergang"
 
 #: photofilmstrip/core/StoryEngine.py:68
 msgid "Prepare rendering..."
@@ -329,12 +328,12 @@ msgid "Show job queue"
 msgstr "Auftragsliste zeigen"
 
 #: photofilmstrip/gui/ActionManager.py:110
-#: photofilmstrip/gui/PnlSlideshow.py:27
+#: photofilmstrip/gui/PnlSlideshow.py:26
 msgid "Slideshow"
 msgstr "Slideshow"
 
 #: photofilmstrip/gui/ActionManager.py:112
-#: photofilmstrip/gui/PnlTimelapse.py:21
+#: photofilmstrip/gui/PnlTimelapse.py:20
 msgid "Timelapse"
 msgstr "Zeitraffer"
 
@@ -400,7 +399,7 @@ msgstr "Entschuldigung, diese Funktion ist zur Zeit nicht verfügbar."
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:209
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:217
 #: photofilmstrip/gui/FrmMain.py:415 photofilmstrip/gui/PnlPfsProject.py:478
-#: photofilmstrip/gui/PnlTimelapse.py:116
+#: photofilmstrip/gui/PnlTimelapse.py:115
 msgid "Error"
 msgstr "Fehler"
 
@@ -436,8 +435,8 @@ msgstr "&Ok"
 
 #: photofilmstrip/gui/DlgConfigureAudio.py:112
 #: photofilmstrip/gui/DlgConfigureAudio.py:117
-#: photofilmstrip/gui/PnlSlideshow.py:49 photofilmstrip/gui/PnlSlideshow.py:50
-#: photofilmstrip/gui/PnlTimelapse.py:36 photofilmstrip/gui/PnlTimelapse.py:37
+#: photofilmstrip/gui/PnlSlideshow.py:48 photofilmstrip/gui/PnlSlideshow.py:49
+#: photofilmstrip/gui/PnlTimelapse.py:35 photofilmstrip/gui/PnlTimelapse.py:36
 msgid "Configure music"
 msgstr "Hintergrundmusik konfigurieren"
 
@@ -521,7 +520,7 @@ msgid "The project name contains invalid characters."
 msgstr "Der Projektname enthält ungültige Zeichen."
 
 #: photofilmstrip/gui/DlgPicDurationByAudio.py:24
-#: photofilmstrip/gui/PnlSlideshow.py:56 photofilmstrip/gui/PnlSlideshow.py:57
+#: photofilmstrip/gui/PnlSlideshow.py:55 photofilmstrip/gui/PnlSlideshow.py:56
 msgid "Adjust picture durations"
 msgstr "Anzeigedauer für Bilder einstellen"
 
@@ -668,23 +667,20 @@ msgid "Fit to audio files"
 msgstr "An Audiodateien angleichen"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:72
-#, fuzzy
 msgid "Create seamless loop"
-msgstr "Neue Slideshow erstellen"
+msgstr "Nahtloser Loop erstellen"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:73
 msgid "Last image transitions back to first image"
-msgstr ""
+msgstr "Das letzte Bild geht nahtlos zum ersten Bild zurück"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:87
-#, fuzzy
 msgid "Slideshow properties"
-msgstr "Slideshow erstellt!"
+msgstr "Slideshow-Eigenschaften"
 
 #: photofilmstrip/gui/DlgSlideshowProperties.py:91
-#, fuzzy
 msgid "Configure slideshow properties"
-msgstr "Länge der Slideshow konfigurieren"
+msgstr "Slideshow-Eigenschaften konfigurieren"
 
 #: photofilmstrip/gui/FrmMain.py:82
 msgid "Welcome"
@@ -946,26 +942,26 @@ msgstr "Audio-Datei '%s' nicht vorhanden! Dennoch fortsetzen?"
 msgid "Warning"
 msgstr "Warnung"
 
-#: photofilmstrip/gui/PnlSlideshow.py:32
+#: photofilmstrip/gui/PnlSlideshow.py:31
 msgid "&Properties"
 msgstr "&Eigenschaften"
 
-#: photofilmstrip/gui/PnlSlideshow.py:41 photofilmstrip/gui/PnlSlideshow.py:42
-#: photofilmstrip/gui/PnlTimelapse.py:28 photofilmstrip/gui/PnlTimelapse.py:29
+#: photofilmstrip/gui/PnlSlideshow.py:40 photofilmstrip/gui/PnlSlideshow.py:41
+#: photofilmstrip/gui/PnlTimelapse.py:27 photofilmstrip/gui/PnlTimelapse.py:28
 msgid "Import Pictures"
 msgstr "Bilder importieren"
 
-#: photofilmstrip/gui/PnlSlideshow.py:64 photofilmstrip/gui/PnlSlideshow.py:65
+#: photofilmstrip/gui/PnlSlideshow.py:63 photofilmstrip/gui/PnlSlideshow.py:64
 #: photofilmstrip/gui/PnlStory.py:319 photofilmstrip/gui/PnlStory.py:320
-#: photofilmstrip/gui/PnlTimelapse.py:44 photofilmstrip/gui/PnlTimelapse.py:45
+#: photofilmstrip/gui/PnlTimelapse.py:43 photofilmstrip/gui/PnlTimelapse.py:44
 msgid "Render filmstrip"
 msgstr "Filmstreifen erstellen"
 
-#: photofilmstrip/gui/PnlSlideshow.py:92 photofilmstrip/gui/PnlTimelapse.py:69
+#: photofilmstrip/gui/PnlSlideshow.py:91 photofilmstrip/gui/PnlTimelapse.py:68
 msgid "Images"
 msgstr "Bilder"
 
-#: photofilmstrip/gui/PnlSlideshow.py:97
+#: photofilmstrip/gui/PnlSlideshow.py:96
 msgid "Duration"
 msgstr "Dauer"
 
@@ -1039,16 +1035,16 @@ msgstr "Ausrichtung"
 msgid "Audio"
 msgstr "Musikdateien"
 
-#: photofilmstrip/gui/PnlTimelapse.py:72
+#: photofilmstrip/gui/PnlTimelapse.py:71
 msgid "Frames"
 msgstr "Einzelbilder"
 
-#: photofilmstrip/gui/PnlTimelapse.py:95
+#: photofilmstrip/gui/PnlTimelapse.py:94
 #, python-format
 msgid "The picture counter is not increasing: %s"
 msgstr "Die Dateinummerierung ist nicht fortlaufend: %s"
 
-#: photofilmstrip/gui/PnlTimelapse.py:113
+#: photofilmstrip/gui/PnlTimelapse.py:112
 #, python-format
 msgid ""
 "Filename '%s' does not match a number pattern which is necessary for a "
