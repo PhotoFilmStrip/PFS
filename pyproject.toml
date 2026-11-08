@@ -49,6 +49,23 @@ pfs-cli = "python photofilmstrip/CLI.py"
 win-port = "python setup.py bdist_winport"
 win-exe = "python setup.py bdist_win"
 tests = "pytest"
+pot = "pybabel extract --project=PhotoFilmStrip --version 4.3.0 -o po/PhotoFilmStrip.pot photofilmstrip"
+
+[tool.poe.tasks.update-po]
+shell = """
+  for f in po/*.po; do
+    lang=$(basename "$f" .po)
+    pybabel update -i po/PhotoFilmStrip.pot -o "$f" -l "$lang"
+  done
+"""
+
+[tool.poe.tasks.check-po]
+shell = """
+  for f in po/*.po; do
+    lang=$(basename "$f" .po)
+    pybabel compile -i "$f" --statistics -o tmp
+  done
+"""
 
 
 [tool.poetry]
