@@ -90,6 +90,7 @@ class DlgNewProject(wx.Dialog):
               name="cmdCancel")
         self.cmdOk = wx.Button(self, id=wx.ID_OK, label=_("&Ok"),
               name="cmdOk")
+        self.cmdOk.SetDefault()
         self.cmdOk.Bind(wx.EVT_BUTTON, self.OnCmdOkButton, id=wx.ID_OK)
 
     def __init__(self, parent, title):
@@ -118,8 +119,6 @@ class DlgNewProject(wx.Dialog):
         self.choiceAspect.SetMinSize(self.FromDIP(wx.Size(300, -1)))
 
         self.tcProject.SetValue(_("Unnamed project"))
-        self.tcProject.SelectAll()
-        self.tcProject.SetFocus()
 
         projPath = Settings().GetProjectPath()
         if not projPath:
@@ -132,7 +131,9 @@ class DlgNewProject(wx.Dialog):
         self.SetInitialSize(self.GetEffectiveMinSize())
         self.Fit()
         self.CenterOnParent()
-        self.SetFocus()
+
+        self.tcProject.SelectAll()
+        self.tcProject.SetFocus()
 
     def __OnAspectChanged(self, event):
         aspect = self.choiceAspect.GetStringSelection()
