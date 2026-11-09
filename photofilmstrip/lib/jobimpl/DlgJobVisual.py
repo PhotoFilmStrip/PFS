@@ -234,4 +234,3 @@ class DlgJobVisual(wx.Dialog, WxVisualJobHandler):
 
             self.__Update(self.__job.GetProgress(),
                           self.__job.GetInfo())
-

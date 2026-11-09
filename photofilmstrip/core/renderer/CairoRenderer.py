@@ -125,4 +125,3 @@ def get_fps(clock, value):
     tol = 0.1
 #    print fps, abs(fps - value), abs(fps * tol)
     return not (fps > 1 and abs(fps - value) <= abs(fps * tol))
-

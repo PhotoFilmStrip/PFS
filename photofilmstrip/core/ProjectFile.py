@@ -34,7 +34,7 @@ CREATE TABLE `picture` (
     filename TEXT,
     width INTEGER,
     height INTEGER,
-    start_left INTEGER, 
+    start_left INTEGER,
     start_top INTEGER,
     start_width INTEGER,
     start_height INTEGER,

@@ -66,7 +66,7 @@ class UxAdapter:
 
     def OnStart(self):
         '''
-        Triggers right after the process has started. Raise 
+        Triggers right after the process has started. Raise
         PreventStartupSignal if startup may be prevented
         '''
         pass
@@ -95,4 +95,3 @@ class Ux:
 
 class UxPreventStartupSignal(Exception):
     pass
-

@@ -34,4 +34,3 @@ class PicturePattern:
 
     def IsOk(self):
         return self.num is not None
-

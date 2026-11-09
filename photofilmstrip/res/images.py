@@ -3901,4 +3901,3 @@ DIA_S = (
     b'InBhdGgyMiIgLz4NCiAgPC9nPg0KPC9zdmc+DQo=')
 index.append('DIA_S')
 catalog['DIA_S'] = DIA_S
-

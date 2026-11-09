@@ -295,4 +295,3 @@ class JobManager(Singleton, Destroyable):
                     self.__logger.debug("<%s> joined!", worker.name)
 
         self.__logger.debug("destroyed")
-

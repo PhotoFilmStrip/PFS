@@ -53,4 +53,3 @@ class FloatValidator(wx.Validator):
         # Returning without calling even.Skip eats the event before it
         # gets to the text control
         return
-

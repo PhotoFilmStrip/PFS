@@ -109,4 +109,3 @@ class ValueChangedEvent(wx.PyCommandEvent):
 
     def GetValue(self):
         return self.__value
-
