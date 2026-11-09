@@ -1,0 +1,12 @@
+repos:
+  - repo: builtin
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix, lf]
+        files: '\.(rs|py)$'
+
+files:
+  glob:
+    - "photofilmstrip/**/*.py"
