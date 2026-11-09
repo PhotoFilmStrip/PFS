@@ -33,6 +33,9 @@ class ActionManager:
     ID_LANG_UK = wx.NewIdRef()
     ID_LANG_EL = wx.NewIdRef()
     ID_LANG_ES = wx.NewIdRef()
+    ID_LANG_FI = wx.NewIdRef()
+    ID_LANG_KA = wx.NewIdRef()
+    ID_LANG_TR = wx.NewIdRef()
 
     LANG_MAP = {
         ID_LANG_EN: "en",
@@ -47,7 +50,10 @@ class ActionManager:
         ID_LANG_TA: "ta",
         ID_LANG_UK: "uk",
         ID_LANG_EL: "el",
-        ID_LANG_ES: "es"
+        ID_LANG_ES: "es",
+        ID_LANG_FI: "fi",
+        ID_LANG_KA: "ka",
+        ID_LANG_TR: "tr"
     }
 
     def __init__(self, frame, menuBar, toolBar):
@@ -172,6 +178,9 @@ class ActionManager:
         langMenu.AppendRadioItem(self.ID_LANG_UK, "Український")
         langMenu.AppendRadioItem(self.ID_LANG_EL, "ελληνικά")
         langMenu.AppendRadioItem(self.ID_LANG_ES, "Español")
+        langMenu.AppendRadioItem(self.ID_LANG_FI, "Suomi")
+        langMenu.AppendRadioItem(self.ID_LANG_KA, "ქართული")
+        langMenu.AppendRadioItem(self.ID_LANG_TR, "Türkçe")
         menu.AppendSubMenu(langMenu, _("Language"))
         menu.AppendSeparator()
         CreateMenuItem(menu, wx.ID_ABOUT,
