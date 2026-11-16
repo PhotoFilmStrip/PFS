@@ -10,6 +10,7 @@ import wx.lib.masked.timectrl
 
 from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.ctrls.PnlDlgHeader import PnlDlgHeader
+from photofilmstrip.core.Aspect import Aspect
 
 
 class DlgSlideshowProperties(wx.Dialog):
@@ -21,6 +22,11 @@ class DlgSlideshowProperties(wx.Dialog):
         szManual.AddSpacer(self.FromDIP(8))
         szManual.Add(self.timeCtrlTotalLength, 1)
 
+        szAspect = wx.BoxSizer(wx.HORIZONTAL)
+        szAspect.Add(self.stAspect, flag=wx.ALIGN_CENTER_VERTICAL)
+        szAspect.AddSpacer(self.FromDIP(8))
+        szAspect.Add(self.choiceAspect, 1, flag=wx.EXPAND)
+
         szCtrls = wx.BoxSizer(orient=wx.VERTICAL)
         szCtrls.AddSpacer(self.FromDIP(8))
         szCtrls.Add(self.cbTotalLength, border=self.FromDIP(8), flag=wx.LEFT)
@@ -30,6 +36,10 @@ class DlgSlideshowProperties(wx.Dialog):
         szCtrls.Add(szManual, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
         szCtrls.AddSpacer(self.FromDIP(8))
         szCtrls.Add(self.cbLoop, border=self.FromDIP(8), flag=wx.LEFT | wx.EXPAND)
+        szCtrls.AddSpacer(self.FromDIP(16))
+        szCtrls.Add(szAspect, border=self.FromDIP(8), flag=wx.LEFT | wx.EXPAND)
+        szCtrls.AddSpacer(self.FromDIP(4))
+        szCtrls.Add(self.cbPortraitMode, border=self.FromDIP(32), flag=wx.LEFT | wx.EXPAND)
 
         szCmds = wx.BoxSizer(orient=wx.HORIZONTAL)
         szCmds.Add(self.cmdCancel, 0, border=0, flag=0)
@@ -72,6 +82,13 @@ class DlgSlideshowProperties(wx.Dialog):
               label=_("Create seamless loop"), name="cbLoop")
         self.cbLoop.SetToolTip(_("Last image transitions back to first image"))
 
+        self.stAspect = wx.StaticText(self,
+              label=_("Aspect ratio:"), name="stAspect")
+
+        self.choiceAspect = wx.Choice(self, choices=[], name="choiceAspect")
+
+        self.cbPortraitMode = wx.CheckBox(self, label=_("Portrait mode"), name="cbPortraitMode")
+
         self.staticLine = wx.StaticLine(self)
 
         self.cmdCancel = wx.Button(self, id=wx.ID_CANCEL, label=_("&Cancel"),
@@ -103,6 +120,24 @@ class DlgSlideshowProperties(wx.Dialog):
         self.timeCtrlTotalLength.SetLimited(True)
 
         self.__project = project
+
+        # Initialize aspect ratio controls
+        self.choiceAspect.Append(Aspect.ASPECT_16_9)
+        self.choiceAspect.Append(Aspect.ASPECT_16_10)
+        self.choiceAspect.Append(Aspect.ASPECT_21_9)
+        self.choiceAspect.Append(Aspect.ASPECT_5_4)
+        self.choiceAspect.Append(Aspect.ASPECT_4_3)
+        self.choiceAspect.Append(Aspect.ASPECT_3_2)
+        self.choiceAspect.Append(Aspect.ASPECT_1_1)
+
+        self.choiceAspect.SetMinSize(self.FromDIP(wx.Size(300, -1)))
+        self.choiceAspect.Bind(wx.EVT_CHOICE, self.__OnAspectChanged)
+
+        # Set current aspect ratio
+        currentAspect = project.GetAspect()
+        self.__aspect = currentAspect
+        self.choiceAspect.SetStringSelection(currentAspect)
+        self.__UpdatePortraitModeState()
 
         pfsDur = project.GetDuration(calc=True)
         duration = project.GetDuration(calc=False)
@@ -136,6 +171,19 @@ class DlgSlideshowProperties(wx.Dialog):
         self.CenterOnParent()
         self.SetFocus()
 
+    def __OnAspectChanged(self, event):
+        self.__UpdatePortraitModeState()
+        event.Skip()
+
+    def __UpdatePortraitModeState(self):
+        aspect = self.choiceAspect.GetStringSelection()
+        try:
+            Aspect.ToPortraitMode(aspect)
+            self.cbPortraitMode.Enable(True)
+        except ValueError:
+            self.cbPortraitMode.SetValue(False)
+            self.cbPortraitMode.Enable(False)
+
     def OnControlStatusTotalLength(self, event):
         self.__ControlStatusTotalLength()
         event.Skip()
@@ -143,6 +191,13 @@ class DlgSlideshowProperties(wx.Dialog):
     def OnCmdOkButton(self, event):
         self.__project.SetDuration(self.__GetTotalLength())
         self.__project.SetLoop(self.cbLoop.GetValue())
+        
+        # Save aspect ratio
+        aspect = self.choiceAspect.GetStringSelection()
+        if self.cbPortraitMode.GetValue():
+            aspect = Aspect.ToPortraitMode(aspect)
+        self.__project.SetAspect(aspect)
+        
         event.Skip()
 
     def __ControlStatusTotalLength(self):

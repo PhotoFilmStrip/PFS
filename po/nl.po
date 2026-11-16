@@ -468,10 +468,12 @@ msgid "Folder:"
 msgstr "Map:"
 
 #: photofilmstrip/gui/DlgNewProject.py:81
+#: photofilmstrip/gui/DlgSlideshowProperties.py:86
 msgid "Aspect ratio:"
-msgstr "Aspect ratio:"
+msgstr "Beeldverhouding:"
 
 #: photofilmstrip/gui/DlgNewProject.py:85
+#: photofilmstrip/gui/DlgSlideshowProperties.py:90
 msgid "Portrait mode"
 msgstr "Portretmodus"
 

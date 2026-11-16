@@ -301,11 +301,31 @@ class PhotoFilmStripList(wx.ScrolledWindow):
         event.Skip()
 
     def OnKeyDown(self, event):
+        key = event.GetKeyCode()
+        
+        # Handle Ctrl+A (Select All)
+        if event.ControlDown() and key == ord('A'):
+            if self.GetItemCount() > 0:
+                for i in range(self.GetItemCount()):
+                    self.Select(i, on=True, deselectOthers=False)
+            return
+
+        # Handle Alt+Left / Alt+Right: move selection one picture left/right
+        if event.AltDown() and key in (wx.WXK_LEFT, wx.WXK_RIGHT):
+            if self.__selIdxs:
+                sel = self.__selIdxs[0]
+                if key == wx.WXK_LEFT and sel > 0:
+                    self.Select(sel - 1)
+                    self.EnsureVisible(sel - 1)
+                elif key == wx.WXK_RIGHT and sel < self.GetItemCount() - 1:
+                    self.Select(sel + 1)
+                    self.EnsureVisible(sel + 1)
+            return
+
         if event.HasModifiers():
             event.Skip()
             return
-
-        key = event.GetKeyCode()
+        
         if self.__selIdxs:
             if event.ShiftDown():
                 # if add to selection use last selected item as reference

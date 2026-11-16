@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Wrapper that loads the project virtualenv (.venv) when it is not already
+# active, then runs photofilmstrip/GUI.py with any given arguments.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV_DIR="$SCRIPT_DIR/.venv"
+
+if [ -z "${VIRTUAL_ENV:-}" ] && [ -f "$VENV_DIR/bin/activate" ]; then
+    # shellcheck source=/dev/null
+    source "$VENV_DIR/bin/activate"
+fi
+
+cd "$SCRIPT_DIR"
+exec python photofilmstrip/GUI.py "$@"

@@ -6,6 +6,7 @@
 #
 
 import wx
+from PIL import Image
 
 from photofilmstrip.gui.Art import Art
 from photofilmstrip.gui.PnlPfsProject import (
@@ -20,7 +21,45 @@ from photofilmstrip.gui.ImageSectionEditor import ImageProxy
 [ID_PROJECT_PROPS,
  ID_PIC_DURATION_BY_AUDIO,
  ID_PREVIEW,
-] = [wx.NewIdRef() for __ in range(3)]
+ ID_PIC_REMOVE_DUPES,
+ ID_PIC_SELECT_PREV,
+ ID_PIC_SELECT_NEXT,
+] = [wx.NewIdRef() for __ in range(6)]
+
+# perceptual hash settings for duplicate detection
+DUP_HASH_SIZE = 16
+DUP_MAX_DISTANCE = 10  # max hamming distance of 256 bits to count as duplicate
+
+
+def DHashFromPixels(pixels, hashSize=DUP_HASH_SIZE):
+    """Difference hash (dHash) from grayscale pixels of a
+    (hashSize+1) x hashSize image. Returns an int bitmask."""
+    bits = 0
+    for row in range(hashSize):
+        for col in range(hashSize):
+            bits = (bits << 1) | (1 if pixels[row * (hashSize + 1) + col + 1]
+                                  > pixels[row * (hashSize + 1) + col] else 0)
+    return bits
+
+
+def CalcImageHash(filename, hashSize=DUP_HASH_SIZE):
+    """Difference hash (dHash) of an image, robust against scaling and
+    different file sizes. Returns an int bitmask or None if unreadable."""
+    try:
+        with Image.open(filename) as img:
+            try:
+                img.draft("L", (hashSize + 1, hashSize))
+            except Exception:
+                pass
+            img = img.convert("L").resize((hashSize + 1, hashSize), Image.LANCZOS)
+            pixels = list(img.getdata())
+    except Exception:
+        return None
+    return DHashFromPixels(pixels, hashSize)
+
+
+def HammingDistance(a, b):
+    return bin(a ^ b).count("1")
 
 
 class PnlSlideshow(PnlPfsProject):
@@ -42,10 +81,22 @@ class PnlSlideshow(PnlPfsProject):
                        _("Select &All") + "\tCtrl+A",
                        Art.GetBitmapBundle('PFS_FILMSTRIP', wx.ART_MENU),
                        wx.NullBitmap)
+        CreateMenuItem(menu, ID_PIC_SELECT_PREV,
+                       _("Select &previous picture") + "\tAlt+Left",
+                       Art.GetBitmapBundle('PFS_IMAGE_MOVING_LEFT', wx.ART_MENU),
+                       wx.NullBitmap)
+        CreateMenuItem(menu, ID_PIC_SELECT_NEXT,
+                       _("Select &next picture") + "\tAlt+Right",
+                       Art.GetBitmapBundle('PFS_IMAGE_MOVING_RIGHT', wx.ART_MENU),
+                       wx.NullBitmap)
         CreateMenuItem(menu, ID_PIC_SHUFFLE,
                        _("&Shuffle Pictures") + "\tAlt+S",
                        Art.GetBitmapBundle('PFS_MOTION_RANDOM', wx.ART_MENU),
                        Art.GetBitmapBundle('PFS_MOTION_RANDOM_D', wx.ART_MENU))
+        CreateMenuItem(menu, ID_PIC_REMOVE_DUPES,
+                       _("Remove &duplicate pictures"),
+                       Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_MENU),
+                       wx.NullBitmap)
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PREVIEW,
                        _("&Quick Preview") + "\tAlt+Q",
@@ -74,6 +125,13 @@ class PnlSlideshow(PnlPfsProject):
                           wx.ITEM_NORMAL,
                           _("Shuffle Pictures"),
                           _("Shuffle Pictures"),
+                          None)
+        toolBar.AddTool(ID_PIC_REMOVE_DUPES, '',
+                          Art.GetBitmapBundle('PFS_LIST_REMOVE', wx.ART_TOOLBAR),
+                          wx.NullBitmap,
+                          wx.ITEM_NORMAL,
+                          _("Remove duplicate pictures"),
+                          _("Remove duplicate pictures (images that look the same)"),
                           None)
         toolBar.AddSeparator()
         toolBar.AddTool(ID_MUSIC, '',
@@ -111,18 +169,26 @@ class PnlSlideshow(PnlPfsProject):
         evtHandler.Bind(wx.EVT_MENU, self.OnProperties, id=ID_PROJECT_PROPS)
         evtHandler.Bind(wx.EVT_MENU, self.OnPicDurationByAudio, id=ID_PIC_DURATION_BY_AUDIO)
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdSelectAllButton, id=ID_PIC_SELECT_ALL)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdSelectPrev, id=ID_PIC_SELECT_PREV)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdSelectNext, id=ID_PIC_SELECT_NEXT)
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdShuffleButton, id=ID_PIC_SHUFFLE)
+        evtHandler.Bind(wx.EVT_MENU, self.OnCmdRemoveDuplicates, id=ID_PIC_REMOVE_DUPES)
         evtHandler.Bind(wx.EVT_MENU, self.OnPreview, id=ID_PREVIEW)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_DURATION_BY_AUDIO)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_SELECT_ALL)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_SELECT_PREV)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_SELECT_NEXT)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_SHUFFLE)
+        evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PIC_REMOVE_DUPES)
         evtHandler.Bind(wx.EVT_UPDATE_UI, self.OnCheckProjectReady, id=ID_PREVIEW)
         # Bind Delete key to remove selected pictures - bind to lvPics which gets focus
         self.lvPics.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
 
     def DisconnEvents(self, evtHandler):
         PnlPfsProject.DisconnEvents(self, evtHandler)
-        for wId in [ID_PROJECT_PROPS, ID_PIC_DURATION_BY_AUDIO, ID_PIC_SELECT_ALL, ID_PIC_SHUFFLE, ID_PREVIEW]:
+        for wId in [ID_PROJECT_PROPS, ID_PIC_DURATION_BY_AUDIO, ID_PIC_SELECT_ALL,
+                    ID_PIC_SELECT_PREV, ID_PIC_SELECT_NEXT, ID_PIC_SHUFFLE,
+                    ID_PIC_REMOVE_DUPES, ID_PREVIEW]:
             while evtHandler.Disconnect(wId):
                 pass
         try:
@@ -175,22 +241,82 @@ class PnlSlideshow(PnlPfsProject):
             self.OnCmdRemoveButton(None)
         event.Skip()
 
+    def OnCmdSelectPrev(self, event):  # pylint: disable=unused-argument
+        sel = self.lvPics.GetSelected()
+        if sel and sel[0] > 0:
+            self.lvPics.Select(sel[0] - 1)
+            self.lvPics.EnsureVisible(sel[0] - 1)
+
+    def OnCmdSelectNext(self, event):  # pylint: disable=unused-argument
+        sel = self.lvPics.GetSelected()
+        if sel and sel[0] < self.lvPics.GetItemCount() - 1:
+            self.lvPics.Select(sel[0] + 1)
+            self.lvPics.EnsureVisible(sel[0] + 1)
+
     def OnPreview(self, event):  # pylint: disable=unused-argument
         project = self.GetProject()
         if project:
-            # Get selected pictures
-            selectedIndices = self.lvPics.GetSelected()
-            if len(selectedIndices) > 0:
-                selectedPics = [project.GetPictures()[i] for i in selectedIndices]
+            # Preview the selected pictures (in strip order); if nothing is
+            # selected, preview all pictures
+            pics = self.lvPics.GetPictures()
+            selIdxs = sorted(self.lvPics.GetSelected())
+            if selIdxs:
+                selectedPics = [pics[i] for i in selIdxs if i < len(pics)]
             else:
-                # If nothing selected, use all pictures
-                selectedPics = project.GetPictures()
-            
+                selectedPics = pics
+
             if len(selectedPics) > 0:
                 aspectRatio = project.GetAspect()
                 # Create preview dialog - it will be hidden but manage the job queue
                 dlg = DlgPreview(self, project, aspectRatio, selectedPics)
                 # Dialog is hidden, but it will show in job queue and close when done
+
+    def OnCmdRemoveDuplicates(self, event):  # pylint: disable=unused-argument
+        import os
+        pics = self.lvPics.GetPictures()
+        if len(pics) < 2:
+            return
+
+        progress = wx.ProgressDialog(_("Remove duplicate pictures"),
+                                     _("Analyzing pictures..."),
+                                     maximum=len(pics), parent=self,
+                                     style=wx.PD_APP_MODAL | wx.PD_CAN_ABORT
+                                     | wx.PD_AUTO_HIDE)
+        keptHashes = []
+        dupeIndices = []
+        cancelled = False
+        try:
+            for idx, pic in enumerate(pics):
+                keepGoing, _skip = progress.Update(idx, os.path.basename(pic.GetFilename()))
+                if not keepGoing:
+                    cancelled = True
+                    break
+                imgHash = CalcImageHash(pic.GetFilename())
+                if imgHash is None:
+                    continue
+                if any(k is not None and HammingDistance(imgHash, k) <= DUP_MAX_DISTANCE
+                       for k in keptHashes):
+                    dupeIndices.append(idx)
+                else:
+                    keptHashes.append(imgHash)
+        finally:
+            progress.Destroy()
+
+        if cancelled:
+            return
+
+        # remove duplicates starting at the end so indices stay valid
+        for idx in sorted(dupeIndices, reverse=True):
+            self.lvPics.DeleteItem(idx)
+
+        if dupeIndices:
+            msg = _("Removed %d duplicate picture(s).") % len(dupeIndices)
+        else:
+            msg = _("No duplicate pictures found.")
+        wx.MessageBox(msg, _("Remove duplicate pictures"),
+                      wx.OK | wx.ICON_INFORMATION, self)
+
+        self.Layout()
 
     def _InitImageProxy(self):
         self.imgProxyLeft = self.imgProxyRight = ImageProxy(self._imageCache)
