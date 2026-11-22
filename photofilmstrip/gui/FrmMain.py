@@ -54,9 +54,18 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
               pos=wx.Point(-1, -1), size=wx.Size(-1, -1),
               style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
         WxVisualJobManager.__init__(self)
-        self.SetTitle(Constants.APP_NAME)
+        self.SetTitle(Constants.APP_TITLE)
 
         iconBundle = Art.GetIconBundle("PFS_ICON")
+        iconsOk = any(iconBundle.GetIconByIndex(i).IsOk()
+                      for i in range(iconBundle.GetIconCount()))
+        if not iconsOk:
+            # fall back to the packaged icon file if the SVG bundle is invalid
+            from photofilmstrip.lib.util import GetDataDir
+            xpmPath = os.path.join(GetDataDir("") or "", "photofilmstrip.xpm")
+            if os.path.isfile(xpmPath):
+                iconBundle = wx.IconBundle()
+                iconBundle.AddIcon(wx.Icon(xpmPath, wx.BITMAP_TYPE_XPM))
         self.SetIcons(iconBundle)
 
         self.statusBar = wx.StatusBar(self)
@@ -177,13 +186,13 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         page = None
         if sel == 0:
             self.notebook.SetWindowStyleFlag(0)
-            self.SetTitle(Constants.APP_NAME)
+            self.SetTitle(Constants.APP_TITLE)
         else:
             page = self.notebook.GetPage(sel)
             self.notebook.SetWindowStyleFlag(wx.aui.AUI_NB_CLOSE_ON_ACTIVE_TAB)
 
             filepath = page.GetProject().GetFilename()
-            self.SetTitle(Constants.APP_NAME + ' - ' + filepath)
+            self.SetTitle(Constants.APP_TITLE + ' - ' + filepath)
 
         self._actionMgr.UpdateActions(page)
         self.UpdateStatusText()
@@ -249,6 +258,10 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
                 return
         JobManager().RemoveVisual(self)
         self.frmJobManager.Destroy()
+        # detach the menu bar before teardown, otherwise wxGTK logs
+        # "window wxMenuBar ... lost focus even though it didn't have it"
+        self.SetMenuBar(None)
+        self.menuBar.Destroy()
         event.Skip()
 
 # Menu
@@ -366,6 +379,7 @@ class FrmMain(wx.Frame, Observer, WxVisualJobManager):
         else:
             self.statusBar.SetStatusText(page.GetStatusText(0), 1)
             self.statusBar.SetStatusText(page.GetStatusText(1), 2)
+            self.statusBar.SetStatusText(page.GetStatusText(2), 3)
 
     def ClosePage(self, idx):
         page = self.notebook.GetPage(idx)

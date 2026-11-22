@@ -67,7 +67,13 @@ from photofilmstrip.core.exceptions import RenderException
  ID_MUSIC,
  ID_RENDER_FILMSTRIP,
  ID_EXPORT, ID_IMPORT,
-] = [wx.NewIdRef() for __ in range(12)]
+ ID_PIC_SHUFFLE,
+ ID_PIC_SELECT_ALL,
+ ID_PIC_IMPORT_DIR,
+] = [wx.NewIdRef() for __ in range(15)]
+
+IMAGE_FILE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp',
+                         '.gif', '.tif', '.tiff', '.webp')
 
 
 class PnlPfsProject(PnlEditorPage, Observer):
@@ -301,6 +307,10 @@ class PnlPfsProject(PnlEditorPage, Observer):
                        _("&Import Pictures") + "\tCtrl+I",
                        Art.GetBitmapBundle('PFS_IMPORT_PICTURES', wx.ART_MENU),
                        Art.GetBitmapBundle('PFS_IMPORT_PICTURES_D', wx.ART_MENU))
+        CreateMenuItem(menu, ID_PIC_IMPORT_DIR,
+                       _("Import &Directory...") + "\tCtrl+Shift+I",
+                       Art.GetBitmapBundle('PFS_FOLDER_OPEN', wx.ART_MENU),
+                       wx.NullBitmap)
         menu.AppendSeparator()
         CreateMenuItem(menu, ID_PIC_MOVE_LEFT,
                        _("Move picture &left"),
@@ -348,6 +358,7 @@ class PnlPfsProject(PnlEditorPage, Observer):
         evtHandler.Bind(wx.EVT_MENU, self.OnCmdMotionCenter, id=ID_PIC_MOTION_CENTER)
 
         evtHandler.Bind(wx.EVT_MENU, self.OnImportPics, id=ID_PIC_IMPORT)
+        evtHandler.Bind(wx.EVT_MENU, self.OnImportPicsDir, id=ID_PIC_IMPORT_DIR)
         evtHandler.Bind(wx.EVT_MENU, self.OnConfigureMusic, id=ID_MUSIC)
         evtHandler.Bind(wx.EVT_MENU, self.OnRenderFilmstrip, id=ID_RENDER_FILMSTRIP)
 
@@ -364,7 +375,8 @@ class PnlPfsProject(PnlEditorPage, Observer):
         for wId in [ID_EXPORT, ID_IMPORT,
                     ID_PIC_MOVE_LEFT, ID_PIC_MOVE_RIGHT, ID_PIC_REMOVE,
                     ID_PIC_ROTATE_CCW, ID_PIC_ROTATE_CW, ID_PIC_MOTION_RANDOM,
-                    ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_MUSIC, ID_RENDER_FILMSTRIP]:
+                    ID_PIC_MOTION_CENTER, ID_PIC_IMPORT, ID_PIC_IMPORT_DIR,
+                    ID_MUSIC, ID_RENDER_FILMSTRIP]:
             while evtHandler.Disconnect(wId):
                 pass
 
@@ -420,25 +432,48 @@ class PnlPfsProject(PnlEditorPage, Observer):
                             _("Image files") + " (*.*)|*.*",
                             wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_PREVIEW)
         if dlg.ShowModal() == wx.ID_OK:
-            pics = []
-            for path in dlg.GetPaths():
-                if not self._CheckImportedPic(path):
-                    continue
-
-                pic = Picture(path)
-                pics.append(pic)
-                self._imageCache.RegisterPicture(pic)
-
-            selItms = self.lvPics.GetSelected()
-            self.InsertPictures(pics,
-                                selItms[0] + 1 if selItms else None,
-                                autopath=True)
-
-            Settings().SetImagePath(os.path.dirname(path))
-
-            selPics = self.lvPics.GetSelectedPictures()
-            self.pnlEditPicture.SetPictures(selPics)
+            paths = dlg.GetPaths()
+            self._InsertPicPaths(paths)
+            if paths:
+                Settings().SetImagePath(os.path.dirname(paths[0]))
         dlg.Destroy()
+
+    def OnImportPicsDir(self, event):
+        dlg = wx.DirDialog(self, _("Import directory"),
+                           Settings().GetImagePath(),
+                           wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST)
+        if dlg.ShowModal() == wx.ID_OK:
+            paths = []
+            for root, dirs, files in os.walk(dlg.GetPath()):
+                dirs.sort()
+                for fname in sorted(files):
+                    if os.path.splitext(fname)[1].lower() in IMAGE_FILE_EXTENSIONS:
+                        paths.append(os.path.join(root, fname))
+            if paths:
+                self._InsertPicPaths(paths)
+                Settings().SetImagePath(dlg.GetPath())
+            else:
+                wx.MessageBox(_("No pictures found in the selected directory."),
+                              _("Import directory"), wx.OK | wx.ICON_INFORMATION, self)
+        dlg.Destroy()
+
+    def _InsertPicPaths(self, paths):
+        pics = []
+        for path in paths:
+            if not self._CheckImportedPic(path):
+                continue
+
+            pic = Picture(path)
+            pics.append(pic)
+            self._imageCache.RegisterPicture(pic)
+
+        selItms = self.lvPics.GetSelected()
+        self.InsertPictures(pics,
+                            selItms[0] + 1 if selItms else None,
+                            autopath=True)
+
+        selPics = self.lvPics.GetSelectedPictures()
+        self.pnlEditPicture.SetPictures(selPics)
 
     def _CheckImportedPic(self, path):  # pylint: disable=unused-argument
         return True
@@ -588,6 +623,27 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         self.Layout()
 
+    def OnCmdSelectAllButton(self, event):
+        if self.lvPics.GetItemCount() > 0:
+            for i in range(self.lvPics.GetItemCount()):
+                self.lvPics.Select(i, on=True, deselectOthers=False)
+
+    def OnCmdShuffleButton(self, event):
+        import random
+        pics = self.lvPics.GetPictures()
+        if len(pics) <= 1:
+            return
+        
+        shuffled = pics[:]
+        random.shuffle(shuffled)
+        
+        self.lvPics.DeleteAllItems()
+        for pic in shuffled:
+            self.lvPics.InsertPicture(len(self.lvPics.GetPictures()), pic)
+        
+        self.__project.SetPictures(shuffled)
+        self.SetChanged(True)
+
     def OnCmdRotateLeftButton(self, event):
         self.pnlEditPicture.OnCmdRotateLeftButton(event)
 
@@ -701,6 +757,36 @@ class PnlPfsProject(PnlEditorPage, Observer):
 
         self.lvPics.SetFocus()
 
+    def __UpdateAllPicturesToAspect(self, aspect):
+        from photofilmstrip.core.Aspect import Aspect
+        ratio = Aspect.ToFloat(aspect)
+        
+        for pic in self.__project.GetPictures():
+            startRect = pic.GetStartRect()
+            targetRect = pic.GetTargetRect()
+            
+            newStartRect = self.__AdjustRectToAspect(startRect, ratio)
+            newTargetRect = self.__AdjustRectToAspect(targetRect, ratio)
+            
+            pic.SetStartRect(newStartRect)
+            pic.SetTargetRect(newTargetRect)
+
+    def __AdjustRectToAspect(self, rect, ratio):
+        left, top, width, height = rect
+        
+        current_ratio = width / height if height != 0 else ratio
+        
+        if current_ratio > ratio:
+            new_width = int(round(height * ratio))
+            left = left + (width - new_width) // 2
+            width = new_width
+        elif current_ratio < ratio:
+            new_height = int(round(width / ratio))
+            top = top + (height - new_height) // 2
+            height = new_height
+        
+        return (left, top, width, height)
+
     def ObservableUpdate(self, obj, arg):
         if isinstance(obj, Picture):
             if arg == 'bitmap':
@@ -724,6 +810,11 @@ class PnlPfsProject(PnlEditorPage, Observer):
         elif isinstance(obj, Project):
             if arg == 'duration':
                 self.pnlEditPicture.SetupModeByProject(self.__project)
+                self.SetChanged(True)
+            elif arg == 'aspect':
+                self.bitmapLeft.SetAspect(obj.GetAspect())
+                self.bitmapRight.SetAspect(obj.GetAspect())
+                self.__UpdateAllPicturesToAspect(obj.GetAspect())
                 self.SetChanged(True)
             elif arg in ('audiofile', 'loop'):
                 self.SetChanged(True)
@@ -781,7 +872,7 @@ class ImageDropTarget(wx.FileDropTarget):
         pics = []
         for path in filenames:
             ext = os.path.splitext(path)[1].lower()
-            if ext in ['.jpg', '.jpeg', '.png', '.bmp']:
+            if ext in IMAGE_FILE_EXTENSIONS:
                 pic = Picture(path)
                 pics.append(pic)
 

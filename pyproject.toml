@@ -44,8 +44,8 @@ testpaths = [
 envfile = ".env"
 
 [tool.poe.tasks]
-pfs-gui = "python photofilmstrip/GUI.py"
-pfs-cli = "python photofilmstrip/CLI.py"
+pfs-gui = "python -m photofilmstrip.GUI"
+pfs-cli = "python -m photofilmstrip.CLI"
 win-port = "python setup.py bdist_winport"
 win-exe = "python setup.py bdist_win"
 tests = "pytest"

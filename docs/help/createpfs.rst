@@ -20,6 +20,12 @@ You have two options to specify the total length.
 
 - Audio file, to set the total length to the length of an audio file.
 
+Seamless loop
+~~~~~~~~~~~~~
+
+If you activate "Create seamless loop" in the slideshow properties, the last picture
+transitions back to the first picture. The rendered movie can then be played in an
+endless loop without a visible jump.
 
 
 .. _add_pics:
@@ -29,6 +35,28 @@ Add pictures
 
 To add pictures to your PhotoFilmStrip you can use the entry in the main menu (Tools -> Import pictures), 
 the toolbutton in the toolbar or by dropping some file in the imagelist at the bottom of the main window.
+With "Import Directory..." (Ctrl+Shift+I) you can import a complete directory: all pictures
+in the directory and its subdirectories are added to the PhotoFilmStrip.
+
+Managing pictures
+~~~~~~~~~~~~~~~~~
+
+The picture list at the bottom of the main window supports several shortcuts and
+toolbar buttons:
+
+- Select All (Ctrl+A): selects all pictures in the list.
+- Select previous/next picture (Alt+Left / Alt+Right): moves the selection one
+  picture to the left or right.
+- Shuffle Pictures (Alt+S): randomizes the order of the pictures.
+- Remove duplicate pictures: removes pictures that look the same. The comparison is
+  based on the image content (a perceptual hash), so duplicates are found even if
+  file name, file size or modification date differ. The first picture of each group
+  of duplicates is kept.
+- Delete: removes the selected pictures from the PhotoFilmStrip.
+- Quick Preview (Alt+Q): renders a fast draft preview of the selected pictures
+  (or of all pictures if none are selected) and plays it looping in an external
+  player (mplayer, mpv or vlc are tried in this order). Press Alt+Q again to stop
+  the preview.
 
 
 .. _motion_control:
@@ -39,8 +67,14 @@ Motion control
 After selecting a picture you see it once on the left hand side and once on the right hand side. 
 Now you can move a rectange on both pictures. To zoom the rectangle simply use the mousewheel. 
 Move it by dragging it with the mouse. 
+When resizing the rectangle by dragging a corner or edge, hold Ctrl to keep the center of the
+rectangle fixed (the rectangle then grows/shrinks symmetrically around its center).
 The rectangle on the left picture defines where the animated path of the picture starts. 
 The ending point is defined with the rectangle on the right picture.
+
+Instead of defining the motion path yourself you can let PhotoFilmStrip choose a
+random one for the selected picture with the "Random motion" entry in the context
+menu or by pressing Ctrl+D.
 
 
 .. _settings:

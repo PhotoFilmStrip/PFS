@@ -5,6 +5,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+_build/
+_static/
 dist/
 sdist/
 var/
@@ -20,3 +22,5 @@ _pkgInfo.py
 /win32_x64
 /.pytest_cache/
 /.venv
+/.vscode
+PhotoFilmStrip.egg-info

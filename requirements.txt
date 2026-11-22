@@ -1,2 +1,27 @@
+# PhotoFilmStrip runtime dependencies (pip-installable).
+# Kept in sync with [tool.poetry.dependencies] in pyproject.toml.
 pillow==12.3.0
 wxpython>=4.2.2
+
+# ---------------------------------------------------------------------------
+# Linux system packages required in addition (not pip-installable).
+# The app uses PyGObject/GStreamer (gi.repository: Gst, GES, GstPbutils,
+# GLib, Gio, GObject, Pango, GdkPixbuf, Notify). On Windows these ship as
+# the bundled 'pfs_gi' wheel (see pyproject.toml); on Linux install them
+# from the distribution instead.
+#
+# Debian / Ubuntu:
+#   sudo apt install \
+#     python3-gi python3-gi-cairo \
+#     gir1.2-gstreamer-1.0 gir1.2-gst-plugins-base-1.0 gir1.2-ges-1.0 \
+#     gir1.2-gdkpixbuf-2.0 gir1.2-pango-1.0 gir1.2-notify-0.7 \
+#     libgtk-3-0 xdg-utils \
+#     gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+#     gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav \
+#     gstreamer1.0-alsa gstreamer1.0-pulseaudio \
+#     mplayer   # optional: looping quick preview (mpv or vlc also work)
+#
+# Fedora / Arch / others: the equivalent python-gobject/gtk3 packages plus
+# the gstreamer1 plugin sets (base, good, bad, ugly, libav) and the
+# GStreamer editing services (GES) typelibs.
+# ---------------------------------------------------------------------------

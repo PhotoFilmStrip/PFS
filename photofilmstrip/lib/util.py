@@ -49,7 +49,8 @@ def GetDocDir(subfolder):
     basedir = os.path.dirname(os.path.abspath(sys.argv[0]))
     for docDir in (os.path.join("..", "share", "doc", "photofilmstrip", subfolder),  # linux
                    os.path.join("share", "doc", "photofilmstrip", subfolder),  # win
-                   os.path.join("..", "build", "sphinx", subfolder)):  # source
+                   os.path.join("..", "build", "sphinx", subfolder),  # source (setup.py build)
+                   os.path.join("..", "docs", "help", "_build", subfolder)):  # source (docs Makefile)
         docDir = os.path.join(basedir, docDir)
         if os.path.isdir(docDir):
             return os.path.abspath(docDir)

@@ -92,7 +92,7 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def SetAspect(self, aspect):
         self.RATIO = Aspect.ToFloat(aspect)
-        self.__KeepRectInImage()
+        self.__KeepRectInImage(force=True)
         self.Refresh()
 
     def SetImgProxy(self, imgProxy):
@@ -398,31 +398,38 @@ class ImageSectionEditor(wx.Panel, Observer):
                 sx = self._startRect.GetX()
                 sy = self._startRect.GetY()
 
-                # we need an algorithm for this
-                if self._action == self.POSITION_TOP | self.POSITION_LEFT:
-                    nx = sx - dx
-                    ny = sy - dy
-                elif self._action == self.POSITION_TOP | self.POSITION_RIGHT:
-                    nx = sx
-                    ny = sy - dy
-                elif self._action == self.POSITION_BOTTOM | self.POSITION_RIGHT:
-                    nx = sx
-                    ny = sy
-                elif self._action == self.POSITION_BOTTOM | self.POSITION_LEFT:
-                    nx = sx - dx
-                    ny = sy
-                elif self._action == self.POSITION_LEFT:
-                    nx = sx - dx
-                    ny = sy - dy / 2
-                elif self._action == self.POSITION_RIGHT:
-                    nx = sx
-                    ny = sy - dy / 2
-                elif self._action == self.POSITION_TOP:
-                    nx = sx - dx / 2
-                    ny = sy - dy
-                elif self._action == self.POSITION_BOTTOM:
-                    nx = sx - dx / 2
-                    ny = sy
+                if event.ControlDown():
+                    # keep the center of the rectangle fixed while resizing
+                    centerX = sx + self._startRect.GetWidth() / 2.0
+                    centerY = sy + self._startRect.GetHeight() / 2.0
+                    nx = centerX - width / 2.0
+                    ny = centerY - height / 2.0
+                else:
+                    # we need an algorithm for this
+                    if self._action == self.POSITION_TOP | self.POSITION_LEFT:
+                        nx = sx - dx
+                        ny = sy - dy
+                    elif self._action == self.POSITION_TOP | self.POSITION_RIGHT:
+                        nx = sx
+                        ny = sy - dy
+                    elif self._action == self.POSITION_BOTTOM | self.POSITION_RIGHT:
+                        nx = sx
+                        ny = sy
+                    elif self._action == self.POSITION_BOTTOM | self.POSITION_LEFT:
+                        nx = sx - dx
+                        ny = sy
+                    elif self._action == self.POSITION_LEFT:
+                        nx = sx - dx
+                        ny = sy - dy / 2
+                    elif self._action == self.POSITION_RIGHT:
+                        nx = sx
+                        ny = sy - dy / 2
+                    elif self._action == self.POSITION_TOP:
+                        nx = sx - dx / 2
+                        ny = sy - dy
+                    elif self._action == self.POSITION_BOTTOM:
+                        nx = sx - dx / 2
+                        ny = sy
 
                 # check pos
                 if self._lock:
@@ -489,6 +496,11 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def OnKeyDown(self, event):
         key = event.GetKeyCode()
+        if event.AltDown():
+            # let Alt+... keys (e.g. Alt+Left/Right to select the previous/next
+            # picture) propagate to the frame's menu accelerators
+            event.Skip()
+            return
         step = 20
         if key == wx.WXK_NUMPAD_ADD:
             self._sectRect.Inflate(step, int(round(step / self.RATIO)))
@@ -531,7 +543,7 @@ class ImageSectionEditor(wx.Panel, Observer):
         self._SendRectChangedEvent()
         self.__UpdateSectRect()
 
-    def __KeepRectInImage(self):
+    def __KeepRectInImage(self, force=False):
         if not self._imgProxy.IsOk():
             return
 
@@ -540,11 +552,11 @@ class ImageSectionEditor(wx.Panel, Observer):
         width = self._sectRect.GetWidth()
         height = self._sectRect.GetHeight()
 
-        if self._lock:
-            if width > self._imgProxy.GetWidth():
+        if self._lock or force:
+            if force or width > self._imgProxy.GetWidth():
                 width = self._imgProxy.GetWidth()
                 height = int(round(width / self.RATIO))
-            if height > self._imgProxy.GetHeight():
+            if force or height > self._imgProxy.GetHeight():
                 height = self._imgProxy.GetHeight()
                 width = int(round(height * self.RATIO))
 
@@ -598,6 +610,7 @@ class ImageSectionEditor(wx.Panel, Observer):
 
     def SetSection(self, rect):
         self._sectRect = wx.Rect(rect.GetPosition(), rect.GetSize())
+        self.__KeepRectInImage()
         self.Refresh()
 
     def SetLock(self, lock):
